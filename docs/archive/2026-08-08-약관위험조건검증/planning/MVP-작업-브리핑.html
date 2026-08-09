@@ -1,0 +1,761 @@
+<title>MVP 작업 브리핑 — 금융문서 위험조건 검증</title>
+<style>
+  :root{
+    color-scheme: light;
+    --paper:#F4F5F2;
+    --card:#FFFFFF;
+    --ink:#1C2431;
+    --ink-soft:#5A6472;
+    --line:#DBDED6;
+    --hl:#FFE14D;
+    --hl-soft:#FFF4BE;
+    --danger:#B93A32;
+    --danger-soft:#F7E5E3;
+    --caution:#8A6D00;
+    --ok:#2F7A5B;
+    --ok-soft:#E3EFE9;
+    --serif:'Noto Serif KR', 'Apple SD Gothic Neo', 'Batang', serif;
+    --sans:'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    --mono:'IBM Plex Mono', 'SF Mono', Consolas, monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:16px;
+    line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{max-width:880px;margin:0 auto;padding:0 24px 96px;}
+
+  /* ---- top strip ---- */
+  .topbar{
+    display:flex;justify-content:space-between;align-items:center;gap:12px;
+    padding:14px 0;border-bottom:1.5px solid var(--ink);
+    font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--ink-soft);
+    flex-wrap:wrap;
+  }
+  .topbar strong{color:var(--ink);font-weight:500;}
+  .print-btn{
+    font-family:var(--mono);font-size:12px;letter-spacing:.04em;
+    border:1px solid var(--ink);background:transparent;color:var(--ink);
+    padding:5px 14px;border-radius:2px;cursor:pointer;
+  }
+  .print-btn:hover{background:var(--ink);color:var(--paper);}
+
+  /* ---- hero ---- */
+  .hero{padding:72px 0 20px;}
+  .eyebrow{
+    font-family:var(--mono);font-size:12.5px;letter-spacing:.14em;
+    color:var(--danger);text-transform:uppercase;margin-bottom:20px;
+  }
+  h1{
+    font-family:var(--serif);font-weight:900;
+    font-size:clamp(32px, 5.6vw, 52px);
+    line-height:1.32;letter-spacing:-0.015em;text-wrap:balance;
+    margin-bottom:22px;
+  }
+  .hl{
+    background:linear-gradient(180deg, transparent 58%, var(--hl) 58%);
+    padding:0 2px;
+  }
+  .lede{font-size:17.5px;color:var(--ink-soft);max-width:640px;line-height:1.85;}
+  .lede b{color:var(--ink);font-weight:700;}
+
+  /* ---- signature: annotated clause ---- */
+  .demo-wrap{margin:44px 0 0;}
+  .demo-label{
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;
+    color:var(--ink-soft);margin-bottom:10px;
+  }
+  .doc-card{
+    background:var(--card);border:1px solid var(--line);
+    box-shadow:0 2px 14px rgba(28,36,49,.06);
+    display:grid;grid-template-columns:1fr 268px;
+  }
+  .clause{
+    padding:30px 32px 32px;
+    font-family:var(--serif);font-size:15.5px;line-height:2.05;
+    border-right:1px dashed var(--line);
+  }
+  .clause .no{
+    display:block;font-family:var(--mono);font-size:12px;letter-spacing:.06em;
+    color:var(--ink-soft);margin-bottom:10px;
+  }
+  .clause .head{font-weight:700;}
+  .clause mark{
+    background:var(--hl);padding:1px 2px;
+    box-decoration-break:clone;-webkit-box-decoration-break:clone;
+  }
+  .clause .std{
+    margin-top:16px;padding-top:14px;border-top:1px dashed var(--line);
+    font-family:var(--sans);font-size:13px;line-height:1.8;color:var(--ink-soft);
+  }
+  .clause .std b{color:var(--ink);font-weight:500;}
+  .annot{
+    padding:26px 24px;background:#FBFBF8;
+    display:flex;flex-direction:column;gap:12px;justify-content:center;
+  }
+  .badge{
+    display:inline-flex;align-items:center;gap:7px;align-self:flex-start;
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;
+    color:var(--danger);border:1px solid var(--danger);
+    padding:3px 10px;border-radius:2px;background:var(--danger-soft);
+  }
+  .badge::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--danger);}
+  .annot p{font-size:13.5px;line-height:1.8;color:var(--ink);}
+  .annot .refs{
+    font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);
+    border-top:1px solid var(--line);padding-top:10px;line-height:1.9;
+  }
+
+  /* ---- sections as 조항 ---- */
+  section{margin-top:88px;}
+  .art{
+    font-family:var(--mono);font-size:12.5px;letter-spacing:.14em;
+    color:var(--ink-soft);margin-bottom:8px;
+  }
+  h2{
+    font-family:var(--serif);font-weight:700;
+    font-size:clamp(23px, 3.4vw, 29px);line-height:1.4;text-wrap:balance;
+    margin-bottom:8px;
+  }
+  .sec-lede{color:var(--ink-soft);font-size:15.5px;max-width:660px;margin-bottom:28px;}
+  .sec-lede b{color:var(--ink);}
+
+  /* checklist */
+  .check{border-top:1.5px solid var(--ink);}
+  .check-row{
+    display:grid;grid-template-columns:28px 220px 1fr;gap:16px;
+    padding:16px 0;border-bottom:1px solid var(--line);align-items:baseline;
+  }
+  .tick{
+    width:20px;height:20px;border-radius:50%;
+    background:var(--ok-soft);color:var(--ok);
+    display:flex;align-items:center;justify-content:center;
+    font-size:12px;font-weight:700;position:relative;top:3px;
+  }
+  .tick.open{background:transparent;border:1.5px dashed var(--ink-soft);color:transparent;}
+  .check-row .req{font-weight:700;font-size:14.5px;line-height:1.6;}
+  .check-row .ans{font-size:14.5px;color:var(--ink-soft);line-height:1.75;}
+  .check-row .ans b{color:var(--ink);font-weight:500;}
+  .check-row .ans code{font-family:var(--mono);font-size:12.5px;background:var(--hl-soft);padding:1px 5px;border-radius:2px;color:var(--caution);}
+
+  /* flow */
+  .flow{
+    display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:20px 0 26px;
+  }
+  .flow span{
+    font-family:var(--mono);font-size:12.5px;
+    background:var(--card);border:1px solid var(--line);
+    padding:6px 12px;border-radius:2px;white-space:nowrap;
+  }
+  .flow em{color:var(--ink-soft);font-style:normal;font-size:13px;}
+  .flow span.plus{background:var(--hl-soft);border-color:#E5C93B;font-weight:500;}
+  .flow span.todo{
+    background:transparent;border-style:dashed;color:var(--ink-soft);
+  }
+  .flow-label{
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;color:var(--ink-soft);
+    margin-top:26px;
+  }
+
+  /* pillars */
+  .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:24px;}
+  .pillar{
+    background:var(--card);border:1px solid var(--line);padding:22px 20px 20px;
+  }
+  .pillar .k{
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;color:var(--danger);
+    margin-bottom:10px;
+  }
+  .pillar h3{font-family:var(--serif);font-size:16.5px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .pillar p{font-size:13.5px;color:var(--ink-soft);line-height:1.8;}
+  .pillar .rule{
+    font-family:var(--mono);font-size:12px;line-height:1.9;color:var(--ink);
+    background:var(--paper);border:1px solid var(--line);padding:10px 12px;margin-top:10px;
+  }
+  .principle{
+    margin-top:18px;background:var(--card);border-left:4px solid var(--hl);
+    border-top:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:18px 22px;font-size:14.5px;line-height:1.85;
+  }
+  .principle b{font-weight:700;}
+  .principle .tag{
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;color:var(--ink-soft);
+    display:block;margin-bottom:6px;
+  }
+
+  /* data rows */
+  .data-list{border-top:1.5px solid var(--ink);}
+  .data-row{
+    display:grid;grid-template-columns:210px 1fr;gap:20px;
+    padding:20px 0;border-bottom:1px solid var(--line);
+  }
+  .data-row .src{font-weight:700;font-size:14.5px;line-height:1.6;}
+  .data-row .src small{
+    display:block;font-family:var(--mono);font-weight:400;font-size:11px;
+    letter-spacing:.06em;color:var(--ink-soft);margin-top:5px;
+  }
+  .data-row .desc{font-size:14.5px;color:var(--ink);line-height:1.8;}
+  .data-row .desc .use{
+    display:inline-block;font-family:var(--mono);font-size:11.5px;
+    background:var(--ok-soft);color:var(--ok);padding:2px 9px;border-radius:2px;
+    margin-top:8px;letter-spacing:.03em;
+  }
+
+  /* stats */
+  .stats{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:24px;
+  }
+  .stat{
+    background:var(--card);border:1px solid var(--line);padding:18px 18px 16px;
+  }
+  .stat .n{
+    font-family:var(--serif);font-size:32px;font-weight:900;line-height:1.1;
+    font-variant-numeric:tabular-nums;
+  }
+  .stat .n small{font-size:15px;font-weight:700;color:var(--ink-soft);}
+  .stat .l{
+    font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--ink-soft);
+    margin-top:8px;line-height:1.7;
+  }
+  .stat.pass .n{color:var(--ok);}
+
+  /* roles */
+  .mvp{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:24px;}
+  .mvp .col{background:var(--card);border:1px solid var(--line);padding:20px 20px 18px;}
+  .mvp .col h3{
+    font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.1em;
+    margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--line);
+  }
+  .mvp .col.must h3{color:var(--ink);}
+  .mvp .col.add h3{color:var(--caution);}
+  .mvp .col.opt h3{color:var(--ink-soft);}
+  .mvp .col.add{border-color:#E5C93B;background:#FFFDF2;}
+  .mvp ul{list-style:none;}
+  .mvp li{font-size:13.5px;line-height:1.7;padding:5px 0 5px 16px;position:relative;}
+  .mvp li::before{content:"·";position:absolute;left:2px;color:var(--danger);font-weight:700;}
+  .mvp .owner{
+    font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--ink-soft);
+    margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);
+  }
+
+  /* timeline */
+  .timeline{margin-top:44px;}
+  .tl-bar{
+    position:relative;height:6px;background:var(--line);border-radius:3px;margin:34px 6px 10px;
+  }
+  .tl-fill{position:absolute;left:0;top:0;bottom:0;width:46%;background:var(--ink);border-radius:3px;}
+  .tl-now{
+    position:absolute;left:46%;top:-9px;width:2px;height:24px;background:var(--danger);
+  }
+  .tl-now::after{
+    content:"오늘 8.08 · D-30";position:absolute;top:-24px;left:50%;transform:translateX(-50%);
+    font-family:var(--mono);font-size:11px;color:var(--danger);white-space:nowrap;letter-spacing:.03em;
+  }
+  .tl-ends{
+    display:flex;justify-content:space-between;
+    font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);letter-spacing:.04em;
+  }
+  .weeks{margin-top:26px;border-top:1.5px solid var(--ink);}
+  .week{
+    display:grid;grid-template-columns:96px 1fr;gap:16px;
+    padding:12px 0;border-bottom:1px solid var(--line);
+    font-size:14px;line-height:1.7;
+  }
+  .week .w{font-family:var(--mono);font-size:12px;color:var(--ink-soft);letter-spacing:.04em;padding-top:3px;}
+  .week .gate{
+    display:block;font-family:var(--mono);font-size:11.5px;color:var(--danger);margin-top:3px;
+  }
+
+  /* risks */
+  .risk-list{margin-top:20px;border-top:1.5px solid var(--ink);}
+  .risk{
+    display:grid;grid-template-columns:230px 1fr;gap:20px;
+    padding:15px 0;border-bottom:1px solid var(--line);font-size:14px;line-height:1.75;
+  }
+  .risk .r{font-weight:700;color:var(--danger);font-size:13.5px;}
+  .risk .a{color:var(--ink);}
+  .risk .a b{font-weight:500;}
+
+  /* decisions */
+  .decide{border-top:1.5px solid var(--ink);}
+  .decide-row{
+    display:grid;grid-template-columns:28px 200px 1fr;gap:16px;
+    padding:16px 0;border-bottom:1px solid var(--line);align-items:baseline;
+  }
+  .decide-row .q{font-weight:700;font-size:14.5px;line-height:1.6;}
+  .decide-row .o{font-size:14px;color:var(--ink-soft);line-height:1.8;}
+  .decide-row .o b{color:var(--ink);font-weight:500;}
+  .decide-row .o .why{display:block;font-size:13px;margin-top:3px;}
+  .decide-row .o .why::before{content:"↳ ";color:var(--danger);}
+
+  /* run block */
+  .run{
+    margin-top:24px;background:var(--ink);color:var(--paper);
+    font-family:var(--mono);font-size:12.5px;line-height:2;
+    padding:20px 22px;overflow-x:auto;
+  }
+  .run .c{color:var(--hl);}
+  .run .n{color:#9BA5B2;}
+
+  /* footer */
+  footer{margin-top:96px;border-top:1.5px solid var(--ink);padding-top:22px;}
+  footer .f-label{
+    font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--ink-soft);margin-bottom:14px;
+  }
+  footer ol{padding-left:20px;}
+  footer li{font-size:12.5px;color:var(--ink-soft);line-height:1.9;margin-bottom:3px;}
+  footer code{font-family:var(--mono);color:var(--ink);}
+  footer a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line);word-break:break-all;}
+  footer a:hover{border-bottom-color:var(--ink);}
+  footer .note{
+    margin-top:22px;font-size:12px;color:var(--ink-soft);line-height:1.8;
+    border-top:1px dashed var(--line);padding-top:14px;
+  }
+  a:focus-visible,button:focus-visible{outline:2px solid var(--danger);outline-offset:2px;}
+
+  /* responsive */
+  @media (max-width:720px){
+    .doc-card{grid-template-columns:1fr;}
+    .clause{border-right:none;border-bottom:1px dashed var(--line);padding:24px 22px;}
+    .annot{padding:20px 22px;}
+    .check-row,.decide-row{grid-template-columns:24px 1fr;grid-template-rows:auto auto;}
+    .check-row .ans,.decide-row .o{grid-column:2;}
+    .data-row,.risk,.week{grid-template-columns:1fr;gap:6px;}
+    .pillars,.mvp{grid-template-columns:1fr;}
+    .stats{grid-template-columns:1fr 1fr;}
+  }
+  @media print{
+    body{background:#fff;}
+    .print-btn{display:none;}
+    section{margin-top:48px;}
+    .doc-card,.pillar,.mvp .col,.stat{box-shadow:none;}
+  }
+</style>
+
+<div class="page">
+
+  <div class="topbar">
+    <div>MVP 작업 브리핑 · <strong>2026 금융 AI Challenge</strong></div>
+    <div>작성일 2026.08.08 · 제출 마감 <strong>09.07</strong></div>
+    <button class="print-btn" onclick="window.print()">인쇄 / PDF 저장</button>
+  </div>
+
+  <div class="hero">
+    <div class="eyebrow">팀 공유용 — MVP 진행 보고</div>
+    <h1>약관 스캔 MVP,<br><span class="hl">전 구간이 돌아갑니다</span><br>남은 건 실약관을 채우는 일</h1>
+    <p class="lede">
+      상품 3탭 선택 → 조항 전수 스캔 → 별표15 표준약관 편차 → 약관규제법 유형 → 등급·근거 카드까지
+      <b>한 번도 끊기지 않고 이어집니다.</b> API 키 없이 로컬에서 바로 돌아가고, 타입체크·테스트 80건·레드팀 12건이
+      통과 상태입니다. 다만 지금 화면에 뜨는 약관은 <b>전부 시연용 가상 문서</b>입니다.
+      8월은 이 자리를 실제 공시 약관과 실제 별표15로 바꾸는 데 씁니다.
+    </p>
+
+    <div class="demo-wrap">
+      <div class="demo-label">▼ 지금 코드가 실제로 뱉는 결과 (가상 약관 · 문구·근거 모두 실행 출력 그대로)</div>
+      <div class="doc-card">
+        <div class="clause">
+          <span class="no">(무)든든 암보험 2504 · 제10조</span>
+          <span class="head">제10조(계약 전 알릴 의무 위반의 효과)</span>
+          ① 회사는 계약자 또는 피보험자가 계약 전 알릴 의무를 위반한 경우, 그 사실을 안 날부터
+          <mark>상당한 기간</mark>이 지난 후에도 계약을 해지하고 보험금을 지급하지 아니할 수 있습니다.
+          <div class="std">
+            <b>표준약관(별표15) 같은 조항</b> — 회사는 계약자 또는 피보험자가 고의 또는 중대한 과실로 계약 전 알릴 의무를
+            위반한 경우, 그 사실을 안 날부터 <b>1개월 이내</b>에 계약을 해지할 수 있습니다.
+          </div>
+        </div>
+        <div class="annot">
+          <span class="badge">경고 · 근거 2계열</span>
+          <p>표준약관은 해지권 행사 기간을 '안 날부터 1개월'로 제한하지만, 이 조항은 '상당한 기간'으로 넓혀
+            소비자에게 불리하게 변형되어 있습니다.</p>
+          <div class="refs">
+            근거 ① 표준약관 편차 (불리 방향)<br>
+            근거 ② 약관규제법 제9조(계약의 해제·해지) 유형 후보<br>
+            심결례 — 공정위 결정문 DB 검색 안내
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 제1조 -->
+  <section>
+    <div class="art">제1조</div>
+    <h2>지금 돌아가는 것</h2>
+    <p class="sec-lede">
+      아래는 전부 <b>코드에 있고 테스트가 붙어 있는 기능</b>입니다. 계획이 아니라 오늘 <code>npm run dev</code>로 확인 가능한 상태입니다.
+    </p>
+    <div class="check">
+      <div class="check-row">
+        <div class="tick">✓</div>
+        <div class="req">3탭 상품 선택</div>
+        <div class="ans">보험사 → 상품군 → 상품. <b>업로드 없이 3번의 선택</b>으로 분석 시작. 현재 코퍼스는 가상 상품 3건(암·종신·건강).</div>
+      </div>
+      <div class="check-row">
+        <div class="tick">✓</div>
+        <div class="req">조항 전수 스캔 · 필드 추출</div>
+        <div class="ans">조 단위 분할 후 7개 필드(<b>보장기간 · 면책사유 · 해지·해제 · 감액·삭감 · 자동갱신 · 알릴의무 · 보험금지급</b>) 추출. 질문해야 답하는 챗봇이 아니라 능동 스캔.</div>
+      </div>
+      <div class="check-row">
+        <div class="tick">✓</div>
+        <div class="req">별표15 편차 탐지</div>
+        <div class="ans">질병·상해보험 표준약관과 조항을 정렬해 편차를 잡고 <b>불리 방향인지까지 판정</b>. 좌우 대비 렌더용 표준 조문도 함께 반환합니다.</div>
+      </div>
+      <div class="check-row">
+        <div class="tick">✓</div>
+        <div class="req">약관규제법 유형 매칭</div>
+        <div class="ans">제6~14조 무효 유형 후보를 조항에 부착. 현재 데모에서 제7조(면책)·제9조(해지)·제10조(채무이행)·제12조(의사표시 의제)가 실제로 걸립니다.</div>
+      </div>
+      <div class="check-row">
+        <div class="tick">✓</div>
+        <div class="req">3단계 등급 + 근거 카드</div>
+        <div class="ans">참고 / 주의 / 경고. 모든 판정에 <b>표준약관 조문·법 조항이 인용</b>되고, 미등록 출처를 인용하려 하면 런타임에서 막힙니다.</div>
+      </div>
+      <div class="check-row">
+        <div class="tick">✓</div>
+        <div class="req">신뢰 스파인</div>
+        <div class="ans">인젝션 가드레일 · 출처 강제 RAG · HITL 확인 게이트 · 레이트리밋 · 레드팀 러너. 주제와 무관한 공통 기반이라 <b>주제가 바뀌어도 살아남는 자산</b>입니다.</div>
+      </div>
+      <div class="check-row">
+        <div class="tick">✓</div>
+        <div class="req">fake 모드</div>
+        <div class="ans">API 키 없이 전체 파이프라인 완주. <b>팀원 온보딩·CI 비용 0</b>이고 심사 기간 크레딧 소진 시 폴백으로도 씁니다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 제2조 -->
+  <section>
+    <div class="art">제2조</div>
+    <h2>파이프라인 — 채워진 구간과 빈 구간</h2>
+    <p class="sec-lede">
+      기획서에 그린 8단계 흐름 중 <b>분석 코어는 전부 연결</b>됐습니다. 비어 있는 건 앞단(문서 수집·파싱)과 뒷단(비교·확장) 쪽입니다.
+    </p>
+    <div class="flow">
+      <span>① 상품 선택(3탭)</span><em>→</em>
+      <span>② 조항 분할</span><em>→</em>
+      <span>③ 필드 추출</span><em>→</em>
+      <span class="plus">④ 별표15 편차</span><em>→</em>
+      <span class="plus">⑤ 법 유형 매칭</span><em>→</em>
+      <span>⑥ 등급 결정</span><em>→</em>
+      <span>⑦ 근거 카드 · 출력 필터</span><em>→</em>
+      <span>⑧ 화면 · 원문 연결</span>
+    </div>
+    <div class="flow-label">아직 빈 구간 — 8월 작업 대상</div>
+    <div class="flow">
+      <span class="todo">실약관 수집기(6개사)</span>
+      <span class="todo">PDF · HWP 파서</span>
+      <span class="todo">AI Hub 불리조항 분류기</span>
+      <span class="todo">심결례 · 분쟁조정 RAG</span>
+      <span class="todo">2개 상품 비교표</span>
+      <span class="todo">쉬운 말 변환(코드는 있음 · 실모델 연결 시 동작)</span>
+      <span class="todo">상품명 퍼지 매칭</span>
+    </div>
+    <p class="sec-lede" style="margin-bottom:0;">
+      즉 지금 교체해야 할 것은 <b>알고리즘이 아니라 데이터</b>입니다. 코퍼스 인터페이스(<code>CorpusProduct</code> / <code>StandardTerms</code>)는 이미 고정돼 있어서,
+      수집기가 같은 모양으로 채워 넣기만 하면 분석 코어는 손대지 않아도 됩니다.
+    </p>
+  </section>
+
+  <!-- 제3조 -->
+  <section>
+    <div class="art">제3조</div>
+    <h2>등급 규칙과 무력화 방지</h2>
+    <p class="sec-lede">
+      심사에서 가장 먼저 찔릴 지점이 <b>"그 경고, 무슨 근거로 나온 건가"</b>입니다. 그래서 등급은 모델의 감이 아니라
+      코드에 명문화된 규칙 하나로만 나오게 했습니다.
+    </p>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="k">축 1 — 규칙</div>
+        <h3>근거 계열 수로 결정</h3>
+        <p>등급을 만드는 함수는 하나뿐이고, 입력은 편차와 법 유형 두 가지입니다.</p>
+        <div class="rule">
+          경고 = 불리 편차 ≥1 <b>AND</b> 법 유형 ≥1<br>
+          주의 = 둘 중 <b>하나</b><br>
+          참고 = 그 외(정보성 신호만)
+        </div>
+      </div>
+      <div class="pillar">
+        <div class="k">축 2 — 불변식</div>
+        <h3>근거 0건이면 등급 없음</h3>
+        <p>주의·경고는 근거 카드가 최소 1건 있어야만 성립합니다. 파이프라인이 등급 부여 직후 이 조건을 검증하고,
+          위반하면 조용히 넘어가지 않고 예외로 중단합니다. 테스트로도 고정돼 있습니다.</p>
+      </div>
+      <div class="pillar">
+        <div class="k">축 3 — 검증 순서</div>
+        <h3>카드 수로 부풀릴 수 없음</h3>
+        <p>심결례 안내 카드는 모든 주의·경고에 자동으로 붙습니다. 그래서 <b>불변식 검증을 자동 부착 이전에</b> 돌립니다.
+          장식용 카드가 근거 개수를 대신 채우는 경로를 원천 차단한 것으로, 산타 리뷰에서 지적돼 고친 지점입니다.</p>
+      </div>
+    </div>
+    <div class="principle">
+      <span class="tag">표현 원칙</span>
+      서비스는 <b>"독소조항이다"라고 단정하지 않습니다.</b> 화면에 나가는 모든 문장은 "근거 기반 가능성 표시"이고,
+      법률 자문이 아님을 상시 고지합니다. 이건 취향이 아니라 방어선입니다 — 정규식 출력 필터가
+      "무효다 · 승소 보장" 같은 단정 표현을 차단하고, 필터를 통과하지 못한 문구는 <b>대체 문구로 바꾸는 게 아니라 아예 표시하지 않습니다.</b>
+    </div>
+  </section>
+
+  <!-- 제4조 -->
+  <section>
+    <div class="art">제4조</div>
+    <h2>숨기지 않기로 한 것</h2>
+    <p class="sec-lede">
+      데모에서 제일 유혹적인 게 한계를 가리는 겁니다. 반대로 갔습니다 — <b>못 한 부분을 화면에 숫자로 띄웁니다.</b>
+      심사 질의응답에서 이게 방패가 됩니다.
+    </p>
+    <div class="data-list">
+      <div class="data-row">
+        <div class="src">미분할 조항 수<small>unparsedClauses</small></div>
+        <div class="desc">
+          조 단위 분할에 실패한 잔여 텍스트를 버리지 않고 세어서 리포트에 표기합니다. "몇 개를 못 읽었는지"를 감추면
+          전수 검증이라는 주장 자체가 무너집니다.
+          <br><span class="use">화면 상단 상시 노출</span>
+        </div>
+      </div>
+      <div class="data-row">
+        <div class="src">기준선 없는 조항 수<small>clausesWithoutBaseline</small></div>
+        <div class="desc">
+          표준약관에 대응 조항이 없어 diff를 못 한 조항 수. 커버리지 한계를 그대로 드러냅니다.
+          현재 데모 상품에서도 1건 잡혀서 실제로 표시됩니다.
+          <br><span class="use">화면 상단 상시 노출</span>
+        </div>
+      </div>
+      <div class="data-row">
+        <div class="src">심결례 건수<small>정직성 원칙</small></div>
+        <div class="desc">
+          "유사 사례 n건"은 <b>지어내지 않습니다.</b> RAG 색인이 붙기 전까지는 공정위 결정문 DB에서 확인하라는 안내만 내보내고,
+          건수 추정 금지를 코드 주석과 테스트로 못 박아 뒀습니다.
+          <br><span class="use">RAG 연결 시 실제 건수로 교체</span>
+        </div>
+      </div>
+      <div class="data-row">
+        <div class="src">시연용 가상 약관 배너<small>demo 플래그</small></div>
+        <div class="desc">
+          코퍼스에 가상 문서가 하나라도 있으면 화면 상단에 경고가 뜹니다. 실약관으로 교체되면 자동으로 사라집니다.
+          <br><span class="use">실데이터 교체 시 자동 해제</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 제5조 -->
+  <section>
+    <div class="art">제5조</div>
+    <h2>검증 상태</h2>
+    <p class="sec-lede">
+      오늘(8/8) 기준 실행 결과입니다. 숫자는 팀원 누구든 로컬에서 재현할 수 있습니다.
+    </p>
+    <div class="stats">
+      <div class="stat pass">
+        <div class="n">80<small> / 80</small></div>
+        <div class="l">유닛 · 파이프라인 테스트<br>11개 파일</div>
+      </div>
+      <div class="stat pass">
+        <div class="n">12<small> / 12</small></div>
+        <div class="l">레드팀 시나리오<br>1~4세대 + 도메인 공격 3종</div>
+      </div>
+      <div class="stat pass">
+        <div class="n">3<small> 라운드</small></div>
+        <div class="l">산타 리뷰 수렴<br>독립 리뷰어 2인 동시 PASS</div>
+      </div>
+      <div class="stat pass">
+        <div class="n">0</div>
+        <div class="l">타입 에러<br>tsc --noEmit clean</div>
+      </div>
+    </div>
+    <p class="sec-lede" style="margin-top:24px;margin-bottom:0;">
+      산타 리뷰 3라운드에서 잡힌 크리티컬은 <b>전부 출력 필터 위음성</b>이었습니다 —
+      "무효다"의 활용형, 주어가 멀리 떨어진 단정문이 통과하던 문제. 룰을 재설계하고 테스트를 22건 늘려 막았습니다.
+      정규식 가드레일의 체계적 약점으로 기록해 뒀고, 실모델을 붙이는 단계에서 LLM 2차 필터를 병행할 근거가 됩니다.
+    </p>
+  </section>
+
+  <!-- 제6조 -->
+  <section>
+    <div class="art">제6조</div>
+    <h2>지금의 한계 — 회의에서 감출 것 없이</h2>
+    <p class="sec-lede">
+      아래는 <b>알고 있는데 아직 안 한 것</b>들입니다. 순서대로 8월 작업 대상이 됩니다.
+    </p>
+    <div class="risk-list">
+      <div class="risk">
+        <div class="r">코퍼스가 전부 가상</div>
+        <div class="a">상품 3건 · 조항 4~5개짜리 문서입니다. 실제 약관은 수백 조항이라 <b>분할 품질과 편차 정밀도는 아직 검증되지 않았습니다.</b> 실약관 30건이 들어오는 순간 진짜 시험이 시작됩니다.</div>
+      </div>
+      <div class="risk">
+        <div class="r">AI Hub 580 미승인</div>
+        <div class="a">불리조항 분류기 학습 데이터입니다. <b>승인 리드타임이 크리티컬 패스</b>라 신청이 최우선. 지연되면 자체 골드셋 20~50건 + few-shot 폴백으로 강행하고, 승인은 가점이지 전제가 아니게 설계합니다.</div>
+      </div>
+      <div class="risk">
+        <div class="r">편차 탐지가 문자열 유사도</div>
+        <div class="a">문구 재배열·동의어 치환에 약합니다. 실약관에서 <b>위음성(놓침)이 나올 것으로 예상</b>합니다. 골드셋으로 P/R을 재고, 필요하면 조항 정렬 방식을 조번호+제목 복합 키로 바꿉니다.</div>
+      </div>
+      <div class="risk">
+        <div class="r">레이트리미터 메모리 누수</div>
+        <div class="a">만료 키를 회수하지 않아 <b>배포 전에 상한·청소가 필요</b>합니다. 산타 리뷰 이월 1번. 심사 기간 무중단 요건과 직결되므로 Phase 4 전에 처리합니다.</div>
+      </div>
+      <div class="risk">
+        <div class="r">별표15가 아직 축약본</div>
+        <div class="a">diff 기준선도 시연용입니다. law.go.kr에서 <b>현행 + 주요 연혁판</b>을 받아 교체해야 구계약 버전 매칭이라는 차별화가 성립합니다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 제7조 -->
+  <section>
+    <div class="art">제7조</div>
+    <h2>8월 계획과 역할</h2>
+    <p class="sec-lede">
+      공식 마감은 9/7 10:00이지만 <b>9/5 제출을 목표</b>로 이틀 버퍼를 둡니다. 9/7~9/11은 심사자 접속 기간이라
+      이 기간에 서비스가 죽으면 결격입니다.
+    </p>
+
+    <div class="timeline">
+      <div class="tl-bar">
+        <div class="tl-fill"></div>
+        <div class="tl-now"></div>
+      </div>
+      <div class="tl-ends"><span>07.13 대회 시작</span><span>09.07 제출 마감</span></div>
+      <div class="weeks">
+        <div class="week">
+          <div class="w">~08.14</div>
+          <div>실약관 수집기(삼성화재 정적 PDF · DB손보 AJAX 우선) + PDF·HWP 파서 + 별표15 실데이터 교체
+            <span class="gate">게이트 — 약관 30건이 조항 단위로 파싱·색인되면 통과</span></div>
+        </div>
+        <div class="week">
+          <div class="w">~08.22</div>
+          <div>불리조항 분류기(AI Hub 승인 시 학습 / 미승인 시 few-shot) + 심결례·분쟁조정 RAG 색인
+            <span class="gate">게이트 — 실상품 1건이 프리로드→분석→근거 카드까지 완주</span></div>
+        </div>
+        <div class="week">
+          <div class="w">~08.30</div>
+          <div>2개 상품 비교표 · 쉬운 말 변환 · 시니어 모드 + 정량 평가 확정(필드 EM/F1, 분류 F1, diff P/R)
+            <span class="gate">게이트 — 심사자 시나리오 5분 내 완주</span></div>
+        </div>
+        <div class="week">
+          <div class="w">~09.05</div>
+          <div>Vercel 배포 · 부하 점검 · 레드팀 확장 실행 → 기획서 hwpx 전사, 기능명세서 작성, <b>9/5 제출</b></div>
+        </div>
+        <div class="week">
+          <div class="w">09.07~11</div>
+          <div>심사 접속 기간 무중단 — 업타임 모니터링, 크레딧 잔량 알림, 코드·데이터 프리즈(핫픽스만), 온콜 당번</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mvp">
+      <div class="col must">
+        <h3>트랙 A — 데이터 · 수집</h3>
+        <ul>
+          <li>보험사 6개사 약관 수집기</li>
+          <li>PDF · HWP 파서</li>
+          <li>별표15 현행 + 연혁판 확보</li>
+          <li>수집 수칙 준수 로그 보존</li>
+        </ul>
+        <div class="owner">담당 — 미정 (크리티컬 패스)</div>
+      </div>
+      <div class="col add">
+        <h3>트랙 B — 분석 코어</h3>
+        <ul>
+          <li>골드셋 20~50건 라벨링</li>
+          <li>불리조항 분류기</li>
+          <li>심결례 RAG 색인</li>
+          <li>정량 지표 측정</li>
+        </ul>
+        <div class="owner">담당 — 미정 · 은행 현직자 검수 필요</div>
+      </div>
+      <div class="col opt">
+        <h3>트랙 C — 제품화 · 제출</h3>
+        <ul>
+          <li>비교표 · 쉬운 말 · 시니어 모드</li>
+          <li>배포 · 무중단 설계</li>
+          <li>기획서 hwpx 전사</li>
+          <li>기능명세서(구현 기능만)</li>
+        </ul>
+        <div class="owner">담당 — 미정</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 제8조 -->
+  <section>
+    <div class="art">제8조</div>
+    <h2>이번 회의에서 정할 것</h2>
+    <p class="sec-lede">
+      네 건입니다. <b>모두 이번 주 안에 정해져야</b> 다음 작업이 막히지 않습니다.
+    </p>
+    <div class="decide">
+      <div class="decide-row">
+        <div class="tick open">·</div>
+        <div class="q">서비스 명칭</div>
+        <div class="o">후보 — <b>약관레이더 / 폴리시가드 / 깨알약관</b>
+          <span class="why">양식이 직관성을 요구합니다. 이름만 보고 "무엇을 해주는지" 읽혀야 합니다.</span></div>
+      </div>
+      <div class="decide-row">
+        <div class="tick open">·</div>
+        <div class="q">리드 페르소나</div>
+        <div class="o">가입 전 검토 단계의 <b>사회초년생</b> vs 보유 계약을 재점검하는 <b>시니어</b>
+          <span class="why">화면 우선순위가 갈립니다 — 쉬운 말·큰 글씨를 기본으로 둘지, 부가 기능으로 둘지.</span></div>
+      </div>
+      <div class="decide-row">
+        <div class="tick open">·</div>
+        <div class="q">AI Hub 580 신청 주체</div>
+        <div class="o">팀장 명의로 <b>즉시 신청</b> — 사용 목적 기재 필요
+          <span class="why">승인 리드타임이 불명이라 오늘 넣어도 분류기 학습 일정이 빠듯합니다.</span></div>
+      </div>
+      <div class="decide-row">
+        <div class="tick open">·</div>
+        <div class="q">프리로드 대상 6개사</div>
+        <div class="o">권장 — <b>삼성화재 · DB손보 우선</b> 착수 후 확대
+          <span class="why">수집 난이도가 가장 낮은 것으로 확인됐습니다. 사이트가 막히면 우회하지 않고 해당 사만 수동 수집으로 대체합니다.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 제9조 -->
+  <section>
+    <div class="art">제9조</div>
+    <h2>직접 돌려보기</h2>
+    <p class="sec-lede">
+      API 키가 필요 없습니다. 클론하고 세 줄이면 위 데모 화면이 그대로 뜹니다.
+    </p>
+    <div class="run">
+      <span class="n"># 데모 UI — 키 없이 fake 모드로 동작</span><br>
+      <span class="c">npm install</span><br>
+      <span class="c">npm run dev</span><br>
+      <br>
+      <span class="n"># 검증 재현</span><br>
+      <span class="c">npm test</span>          <span class="n">→ 80/80</span><br>
+      <span class="c">npm run redteam</span>   <span class="n">→ 12/12 · docs/redteam/report.md 갱신</span><br>
+      <span class="c">npx tsc --noEmit</span>  <span class="n">→ clean</span>
+    </div>
+    <p class="sec-lede" style="margin-top:20px;margin-bottom:0;">
+      실모델을 붙이려면 <code>AI_GATEWAY_API_KEY</code>만 넣으면 됩니다(모델 폴백 지원). 넣지 않으면 자동으로 fake 모드로 떨어지므로
+      <b>키가 없다고 아무것도 안 보이는 상황은 없습니다.</b>
+    </p>
+  </section>
+
+  <footer>
+    <div class="f-label">부칙 — 관련 문서</div>
+    <ol>
+      <li>기획서 초안 (첨부1 양식 매핑) — <code>docs/planning/기획서-초안.md</code></li>
+      <li>페이즈 계획 v2 (마감 역산) — <code>docs/planning/페이즈-계획.md</code></li>
+      <li>산타 리뷰 로그 (3라운드 수렴 · 이월 6건) — <code>docs/reviews/santa-리뷰-MVP-스켈레톤.md</code></li>
+      <li>자체 레드팀 리포트 (제출물 부록 후보) — <code>docs/redteam/report.md</code></li>
+      <li>신뢰 스파인 설계 — <code>src/lib/spine/README.md</code></li>
+      <li>검증 리서치 Stream 5~8 (데이터·법령 / 경쟁지형 / UX / 법적 리스크) — <code>docs/research/</code></li>
+      <li>대회 페이지 — <a href="https://daker.ai/public/hackathons/2026-finance-ai-challenge">daker.ai/public/hackathons/2026-finance-ai-challenge</a></li>
+    </ol>
+    <div class="note">
+      본 문서는 팀 내부 공유용 진행 보고입니다. 데모 화면의 약관 문구·보험사명은 전부 시연을 위해 작성한 가상 문서이며 실제 상품이 아닙니다.
+      서비스가 표시하는 등급은 확정 판정이 아니라 근거 기반 가능성 표시이고, 법률 자문을 대체하지 않습니다.
+    </div>
+  </footer>
+
+</div>
