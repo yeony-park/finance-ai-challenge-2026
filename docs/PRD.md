@@ -2,12 +2,13 @@
 
 ## 0. 문서 정보
 
-- 문서 기준일 : 2026-08-08 KST
+- 문서 기준일 : 2026-08-10 KST
 - 제품 상태 : 로컬 MVP 구현, 상품 확장 회귀 테스트 진행 중
 - 실행 주소 : `http://127.0.0.1:8000`
 - 대상 자산 : 부동산 조각투자, 미술품 투자계약증권
 - 제외 자산 : 음악 저작권
 - 분석 표본 : 부동산 3건, 미술품 5건
+- 별도 연구 저장본 : 아트앤가이드 187건, 아트투게더 145건, TESSA 매각대금 정산 공시 6건, 투자계약증권 적합성 테스트 10문항
 
 ## 1. 제품 정의
 
@@ -129,6 +130,17 @@ DAKER는 조각투자 상품을 단순 나열하는 서비스가 아니다. 공�
 | VWorld 개별공시지가 | `VWORLD_API_KEY`와 등록 domain으로 NED 조회 | 공시지가·토지특성·토지이용을 표시하되 건물 포함 거래가와 직접 비교하지 않음 |
 | KYS·Artprice 공개 API | 공개 PDF는 확인했으나 재배포 가능한 공식 API를 확인하지 못함 | PDF 원문 링크와 수기 정규화 값만 사용 |
 | DART 금액 자동추출 | OpenDART 원문 ZIP 수신·최근 공시 목록은 연결됐지만 정정·복수표 XML 파싱은 미구현 | 수기 정규화 금액은 `저장 수치`로 표시 |
+
+### 5.6 플랫폼 자체 게시 트랙레코드
+
+| 데이터셋 | 원문 | 수집·검증 시점 | 저장 범위 | 제품 처리 |
+|---|---|---|---|---|
+| 아트앤가이드 매각현황 | [화면](https://artnguide.co.kr/purchase-summary), [목록 API](https://api.artnguide.co.kr/api/v1/gp/use-gp-plan), [집계 API](https://api.artnguide.co.kr/api/v1/gp/gp-stats) | 2026-08-10 21:10~21:15 KST 수집, 21:22 KST 검증 | 19페이지 187건, 레코드별 19개 필드 | 메인 상품·발행사 이력과 분리한 검증 저장본. 상단 188건과 목록 187건 차이를 보존 |
+| 아트투게더 지난 공동구매 | [화면](https://weshareart.com/goods?type=ALL&page=1), [목록 API](https://weshareart.com/api/public/goods/co-purchase/page?page=1&size=200&coPurchaseStatusCategory=ALL) | 2026-08-10 21:42~21:46 KST | 15페이지 145건, 목록 18개 필드, 개인정보 제거 공개 상세 | 메인 상품·발행사 이력과 분리. 매각 상세는 비로그인 HTTP 401이므로 확인 불가 유지 |
+| 아트투게더 적합성 테스트 | [canonical 화면](https://weshareart.com/invest/tendency/inquiry), [client JavaScript](https://weshareart.com/_next/static/chunks/app/%28member%29/invest/tendency/inquiry/page-4d96406a42a7b354.js) | 2026-08-10 21:42~21:46 KST | 10문항·각 2개 선택지·client 정답 위치 | 제출 기능 없음. 회원·세션·개인 답안·개인 만기일 수집 금지. 법률 정답 독립 검증 아님 |
+| TESSA 매각대금 정산 공시 | [공시 화면](http://www.tessa.art/%EA%B3%B5%EC%8B%9C), 공시별 원문·첨부 PDF | 2026-08-10 21:53 KST | 공개 공시 137건 중 검색 결과 6건, 첨부 PDF 12개에서 정규화한 값 | PDF·작품 이미지는 복제하지 않음. 공시 원문 수익률과 DAKER 계산값, timezone 미기재 등록시각을 분리 |
+
+세 출처의 트랙레코드·공시는 플랫폼 자체 게시 자료로 표시한다. 외부 거래 원자료를 독립 검증한 이력이나 가격 적정성 표본으로 합산하지 않는다. 작품 이미지 파일·장문 HTML·첨부 PDF는 복제하지 않고 구조화 사실값과 원문 링크만 제공한다.
 
 ## 6. 현재 분석 표본
 
@@ -264,7 +276,7 @@ DAKER는 조각투자 상품을 단순 나열하는 서비스가 아니다. 공�
 ### 부동산 상세
 
 - 주소, 토지·연면적의 ㎡와 평, 공모·취득가를 표시한다.
-- 감정가, 임대료, 미납, 순이익, 배당, 연환산 수치를 저장본으로 표시한다.
+- 감정가, 임대료, 미납, 순이익, 배당 원데이터를 저장한다. 연환산 수치는 2026-08-10 IDI 결정에 따라 원데이터에 보존하고 UI에는 표시하지 않는다.
 - 실존·소유·권리 독립 확인 상태를 별도 경고로 표시한다.
 - RTMS 실시간 표본과 5년 저장본을 섞지 않고 별도 표로 표시한다.
 - 표본 수, 중위값, 단가 차이, 판정 보류 이유를 표시한다.
@@ -284,18 +296,31 @@ DAKER는 조각투자 상품을 단순 나열하는 서비스가 아니다. 공�
 - 준비금이 원금보장이 아니라는 경고를 표시한다.
 - 각 사업자의 원문 링크를 표시한다.
 
+### 플랫폼 트랙레코드·적합성 테스트
+
+- 아트앤가이드, 아트투게더, TESSA를 출처별로 분리하고 저장 건수·검증 시점을 표시한다.
+- 작가명, 작품명, 상태, 식별자를 검색하고 출처별 상태 filter와 12건 단위 페이지 이동을 제공한다.
+- 선택 레코드의 정규화 필드와 개인정보 제거 원값 JSON을 모두 확인할 수 있어야 한다.
+- 아트앤가이드 `EXPECTED_TRANSFER`의 `soldMoney : 0`은 0원 매각으로 표시하지 않는다.
+- 아트투게더 금액 필드는 currency code가 없고 timestamp에는 timezone offset이 없으므로 통화·시간대를 임의로 붙이지 않는다.
+- TESSA의 공시 기재 수익률과 `[DAKER 계산]` 단순 세전 정산수익률을 분리하고, 게시판 등록시각의 timezone을 임의로 붙이지 않는다.
+- 적합성 테스트 10문항과 각 2개 선택지, 현재 client 정답 위치를 읽기 전용으로 표시한다. radio, 제출 button, 완료 API 호출은 만들지 않는다.
+- 회원 이름·연락처·주소·계좌·세션·개인 답안·개인 만기일, 작가의 상세 인물 프로필은 저장·표시하지 않는다.
+- 플랫폼 자체 게시값이며 외부 거래 원자료·법률 정답을 독립 검증하지 않았다는 경고를 화면에 고정 표시한다.
+
 ## 9. 시스템 요구사항
 
 - Python 표준 라이브러리만 사용한다.
 - 서버는 `127.0.0.1:8000`에만 bind한다.
 - `/api/catalog`가 상품·사업자·출처 상태를 하나의 JSON으로 반환한다.
+- `/api/track-records/artnguide`, `/api/research/weshareart`, `/api/track-records/tessa`가 검증 저장본만 반환한다.
 - `/api/catalog.api_status.products[상품 ID]`가 상품별 API 상태를 반환한다. 한 상품의 실패가 다른 상품의 상태를 바꾸지 않아야 한다.
 - SOU·RTMS·건축HUB·VWorld 성공 결과는 상품·필지별 24시간 cache에 둔다.
 - `data/sou_property_configs.json`은 상품 ID·SOU ID·PNU·법정동·RTMS 지역을 검증한다. 중복 ID/PNU, PNU와 필지코드 불일치, 상품 누락은 시작 시 거부한다.
 - 외부 응답은 허용 호스트(host)·HTTPS·최종 경로(path)·응답 크기·스키마(schema)·날짜·숫자 범위를 검증한다.
 - RTMS는 CP949와 CSV header를 검증하고 손상 행을 가격 계산에 사용하지 않는다.
 - 외부 호출이나 schema 검증 실패 시 API 전체를 실패시키지 않고 저장본을 반환한다.
-- 정적 서버는 `index.html`, `styles.css`, 허용된 JavaScript 파일만 제공한다.
+- 정적 서버는 고정 allowlist의 HTML·CSS·JavaScript·검증 JSON만 제공한다. `/live`는 11개 파일과 `js`, `data` 디렉터리만 허용한다.
 - API 응답에는 `no-store`, CSP, `nosniff`를 적용한다.
 
 ## 10. 성공 기준
@@ -308,6 +333,9 @@ DAKER는 조각투자 상품을 단순 나열하는 서비스가 아니다. 공�
 - SOU, 상업·업무용 RTMS, 토지 RTMS, 건축HUB, VWorld NED, OpenDART 원문을 secret-safe smoke test로 확인해야 한다.
 - 데이터 검증, JavaScript 계산 테스트, Python 회귀 테스트가 통과해야 한다.
 - 데스크톱과 390px 모바일에서 문서 전체 가로 넘침이 없어야 한다.
+- 세 출처의 트랙레코드·공시 합계 338건과 적합성 테스트 10문항이 저장본에서 누락 없이 로드돼야 한다.
+- 트랙레코드 출처·상태 filter, 검색, 페이지 이동, 상세 원값 펼치기가 데스크톱과 390px 모바일에서 작동해야 한다.
+- 회원·세션·개인 답안·개인 만기일 값과 UTM 추적 매개변수가 source JSON·`/live`·화면에 없어야 한다.
 
 ## 11. 실행과 검증
 
@@ -320,8 +348,10 @@ python3 server.py
 
 ```bash
 python3 tests/validate_data.py
+python3 scripts/build_artnguide_track_records.py --check
+python3 scripts/build_weshareart_research.py --check
 npm run test:js
-python3 -m unittest tests/test_server.py
+python3 -m unittest tests/test_artnguide_data.py tests/test_weshareart_data.py tests/test_tessa_data.py tests/test_server.py tests/test_live_static.py
 python3 tests/smoke_live.py
 ```
 

@@ -1,6 +1,6 @@
 # 조각투자 실사 대시보드
 
-SOU 부동산 3건과 투게더아트 미술품 5건의 공식 원문, 기준일, 가격 연결 근거, 사업자 이행·재무 이력을 나눠 표시한다. 원문 근거에 따른 가격·위험 경고를 제공하지만 개인별 매수·매도 권유나 공식 감정평가는 제공하지 않는다.
+SOU 부동산 3건과 투게더아트 미술품 5건의 공식 원문, 기준일, 가격 연결 근거, 사업자 이행·재무 이력을 나눠 표시한다. 별도 연구 영역에는 아트앤가이드 187건, 아트투게더 145건, TESSA 매각대금 정산 공시 6건의 플랫폼 자체 게시 트랙레코드와 투자계약증권 적합성 테스트 10문항을 연결한다. 원문 근거에 따른 가격·위험 경고를 제공하지만 개인별 매수·매도 권유나 공식 감정평가는 제공하지 않는다.
 
 ## 실행
 
@@ -10,6 +10,14 @@ python3 server.py
 ```
 
 `http://127.0.0.1:8000`에서 연다. `/api/catalog`는 SOU와 아래 공식 API를 서버에서만 조회한다. 브라우저·응답 JSON·출처 URL에는 인증키를 넣지 않는다. 각 출처는 5초 제한, HTTPS·고정 host/path, redirect 거부, 응답 크기 제한, schema 검증, 24시간 cache를 적용한다. `data/sou_property_configs.json`이 상품별 PNU·법정동·API 범위를 고정하며 한 상품 또는 출처가 실패해도 다른 상품의 상태를 바꾸지 않는다.
+
+아트앤가이드 트랙레코드는 기존 8개 상품과 합치지 않은 별도 검증 저장본이다. `data/artnguide_track_records.json`에 2026-08-10 21:10~21:15 KST 수집·21:22 KST 검증된 187건과 19개 원필드, 화면 표시값, 상단 집계 원값과 재합계 차이를 보존한다. `python3 scripts/build_artnguide_track_records.py`로 지정 근거 문서에서 다시 생성하고 `--check`로 checked-in JSON과 일치하는지 확인한다. Python 서버는 `/api/track-records/artnguide`, 정적 경로는 `/data/artnguide_track_records.json`으로 제공한다.
+
+아트앤가이드 local due-diligence artifact는 `data/artnguide_due_diligence.json`, source registry는 `data/artnguide_evidence_sources.json`, 사람용 evidence report는 `deliverables/artnguide_due_diligence_evidence_2026-08-10.md`다. 모두 2026-08-10 21:22 KST snapshot을 입력으로 한 로컬 검증 산출물이며 frontend, `/api`, `/live`에 연결하지 않는다. `python3 scripts/build_artnguide_due_diligence.py --check`와 `python3 -m unittest tests/test_artnguide_due_diligence.py`는 artifact·registry·report의 일치와 45개 whitespace-normalized 작가 aggregate를 확인한다.
+
+아트투게더 연구 저장본은 `data/weshareart_research.json`에 2026-08-10 21:42~21:46 KST 검증된 지난 공동구매 145건과 적합성 테스트 10문항을 보존한다. 공동구매 목록 18개 필드와 개인정보 제거 공개 상세를 수록하되 회원·계정·세션·개인 답안·개인 만기일, 작가의 상세 인물 프로필, 장문 HTML·이미지 파일은 포함하지 않는다. `python3 scripts/build_weshareart_research.py`와 `--check`로 Markdown 근거 문서에서 결정적으로 재생성한다. Python 서버는 `/api/research/weshareart`, 정적 경로는 `/data/weshareart_research.json`으로 제공한다.
+
+TESSA 저장본은 `data/tessa_sale_records.json`에 2026-08-10 21:53 KST 검증된 매각대금 검색 결과 6건과 첨부 PDF 12개의 정규화 값·파일 검증 metadata를 보존한다. 원문 정리는 `deliverables/tessa_artwork_sale_disclosures_2026-08-10.md`다. Python 서버는 `/api/track-records/tessa`, 정적 경로는 `/data/tessa_sale_records.json`으로 제공한다. 공시 기재 수익률과 DAKER 계산 수익률을 분리하고 연환산하지 않는다. 세 플랫폼 트랙레코드는 메인 상품 8건이나 법적 발행사의 독립 이행실적에 합산하지 않고 별도 검색·상세 화면에서만 표시한다.
 
 ### 환경 변수
 
@@ -31,9 +39,9 @@ cp -n .env.example .env
 chmod 600 .env
 ```
 
-공개 HTML·JavaScript·저장 데이터가 바뀌면 `npm run build:live`를 실행한다. 빌더는 고정 allowlist의 7개 파일만 `/live`에 복사하고 source/target symlink나 허용되지 않은 파일이 있으면 중단하며 `.env`를 읽거나 복사하지 않는다. `npm run check:live`로 생성 파일 hash와 정확한 파일 목록을 확인한다.
+공개 HTML·JavaScript·저장 데이터가 바뀌면 `npm run build:live`를 실행한다. 빌더는 고정 allowlist의 11개 파일만 `/live`에 복사하고 source/target symlink나 허용되지 않은 파일이 있으면 중단하며 `.env`를 읽거나 복사하지 않는다. `npm run check:live`로 생성 파일 hash와 정확한 파일 목록을 확인한다.
 
-VS Code Live Server는 생성된 `/live`의 `data/products.json`과 `data/issuers.json`만 읽으므로 저장 상품 검색은 작동한다. 이 경우 화면에 `Live Server 저장본 · 공식 API 미연결`로 표시되며 건축HUB·VWorld·RTMS·OpenDART 실시간 확인은 실행하지 않는다. 공식 API 결과까지 보려면 권장 실행 방식인 `python3 server.py`를 사용하고 `http://127.0.0.1:8000`을 연다. 브라우저에서 다른 출처의 8000번 서버로 우회 요청하지 않는다.
+VS Code Live Server는 생성된 `/live`의 상품·사업자·아트앤가이드·아트투게더·TESSA 연구 저장본을 읽어 상품 검색과 트랙레코드 검색·필터·상세를 제공한다. 이 경우 화면에 `Live Server 저장본 · 공식 API 미연결`로 표시되며 건축HUB·VWorld·RTMS·OpenDART 실시간 확인은 실행하지 않는다. 공식 API 결과까지 보려면 권장 실행 방식인 `python3 server.py`를 사용하고 `http://127.0.0.1:8000`을 연다. 브라우저에서 다른 출처의 8000번 서버로 우회 요청하지 않는다.
 
 - `COMMERCIAL_API_KEY` : 국토교통부 상업·업무용 실거래가 OpenAPI. 실패 시 기존 RTMS CSV만 보조 경로로 사용한다.
 - `LAND_API_KEY` : 국토교통부 토지 실거래가 OpenAPI. 법정동 단위 자료이며 대상 필지와의 일치는 별도 확인한다.
@@ -45,6 +53,13 @@ VS Code Live Server는 생성된 `/live`의 `data/products.json`과 `data/issuer
 
 ```bash
 python3 tests/validate_data.py
+python3 scripts/build_artnguide_track_records.py --check
+python3 -m unittest tests/test_artnguide_data.py
+python3 scripts/build_artnguide_due_diligence.py --check
+python3 -m unittest tests/test_artnguide_due_diligence.py
+python3 scripts/build_weshareart_research.py --check
+python3 -m unittest tests/test_weshareart_data.py
+python3 -m unittest tests/test_tessa_data.py
 npm run test:js
 python3 -m unittest tests/test_server.py
 python3 tests/smoke_live.py

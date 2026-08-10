@@ -25,9 +25,10 @@
 ## 파일 안내
 
 - 서버·API adapter : `server.py`
-- UI : `index.html`, `styles.css`, `js/app.js`, `js/api.js`, `js/calculations.js`
-- 데이터 : `data/products.json`, `data/issuers.json`, `data/source_snapshots.json`, `data/sou_property_configs.json`
-- 검증 : `tests/validate_data.py`, `tests/test_calculations.mjs`, `tests/test_api.mjs`, `tests/test_server.py`, `tests/test_live_static.py`, `tests/smoke_live.py`
+- UI : `index.html`, `styles.css`, `js/app.js`, `js/api.js`, `js/calculations.js`, `js/track-records.js`
+- 데이터 : `data/products.json`, `data/issuers.json`, `data/source_snapshots.json`, `data/sou_property_configs.json`, `data/artnguide_track_records.json`, `data/artnguide_due_diligence.json`, `data/artnguide_evidence_sources.json`, `data/weshareart_research.json`, `data/tessa_sale_records.json`
+- 아트앤가이드 자료 생성 : `scripts/build_artnguide_track_records.py`, `scripts/build_artnguide_due_diligence.py` (`--check`는 local-only artifact·registry·evidence report의 결정적 일치만 확인하며 frontend, `/api`, `/live`에 연결하지 않음)
+- 검증 : `tests/validate_data.py`, `tests/test_calculations.mjs`, `tests/test_api.mjs`, `tests/test_track_records.mjs`, `tests/test_artnguide_data.py`, `tests/test_artnguide_due_diligence.py`, `tests/test_weshareart_data.py`, `tests/test_tessa_data.py`, `tests/test_server.py`, `tests/test_live_static.py`, `tests/smoke_live.py`
 - 공개 정적본 builder : `scripts/build_live_static.py`
 
 ## 변경 후 검증
@@ -36,6 +37,12 @@
 
 ```bash
 python3 tests/validate_data.py
+python3 scripts/build_artnguide_track_records.py --check
+python3 -m unittest tests/test_artnguide_data.py
+python3 scripts/build_artnguide_due_diligence.py --check
+python3 -m unittest tests/test_artnguide_due_diligence.py
+python3 scripts/build_weshareart_research.py --check
+python3 -m unittest tests/test_weshareart_data.py tests/test_tessa_data.py
 npm run test:js
 python3 -m unittest tests/test_server.py tests/test_live_static.py
 npm run check:live

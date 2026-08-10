@@ -35,3 +35,12 @@
 - `.env` 값은 출력하거나 Git에 추가하지 않는다.
 - 실시간 출처 상태는 이 문서의 과거 결과로 단정하지 말고 해당 작업 시점에 다시 확인한다.
 - 변경 뒤에는 `AGENTS.md`의 검증 명령과 실제 브라우저 화면을 다시 확인한다.
+
+## 2026-08-10 연구 데이터 및 화면 통합
+
+- [팩트] 2026-08-10 21:10~21:59 KST 공개 화면과 공개 API를 조회해 ArtNGuide 작품 트랙레코드 187건(1~19페이지), WeshareArt 지난 공동구매 145건(1~15페이지), WeshareArt 투자계약증권 적합성 테스트 10문항, TESSA 매각·정산 공시 6건을 영문 파일명의 Markdown으로 보존했다. 원문 출처 : `https://artnguide.co.kr/purchase-summary`, `https://weshareart.com/goods?type=ALL&page=1`, `https://weshareart.com/invest/tendency/inquiry`, TESSA 문서별 링크는 해당 Markdown에 수록.
+- [팩트] 산출물은 `deliverables/artnguide_artwork_track_records_2026-08-10.md`, `deliverables/weshareart_co_purchase_track_records_2026-08-10.md`, `deliverables/weshareart_investment_contract_securities_suitability_test_2026-08-10.md`, `deliverables/tessa_artwork_sale_disclosures_2026-08-10.md`이다. 회원정보, 계정·세션값, 개인 답안·결과·만기일, UTM 값은 수집하지 않았고 WeshareArt 작가 상세의 개인 프로필성 9개 필드는 145건 모두 제거했다.
+- [팩트] `data/artnguide_track_records.json`, `data/weshareart_research.json`, `data/tessa_sale_records.json`과 `/api/track-records/artnguide`, `/api/research/weshareart`, `/api/track-records/tessa`를 추가했다. 화면에는 출처·상태·검색 filter, 12건 단위 pagination, 상세·원본 JSON, WeshareArt 적합성 테스트 정적 문항을 연결했다.
+- [팩트] 2026-08-10 22:04~22:28 KST 실제 브라우저에서 1440×900 및 390×844 화면을 확인했다. 출처별 187·145·6건, 적합성 테스트 10문항·선택지 20개가 렌더링됐고 문서 전체 수평 overflow 및 로컬 console error·warning은 없었다.
+- [팩트] 2026-08-10 22:34 KST 기준 Python unit test 61건, JavaScript test suite, `tests/validate_data.py`, live allowlist 11개 파일 build·hash check가 모두 통과했다. `tests/smoke_live.py`는 SOU·RTMS·일부 건축HUB·VWorld·OpenDART·catalog 확인을 통과했고 VWorld 1필지와 건축HUB 북수동 1건은 외부 응답 상태로 `SKIP`됐다.
+- [팩트] ArtNGuide 상단 집계는 총 188회지만 페이지 목록은 187건이며 원인을 공개 응답만으로 확인하지 못했다. WeshareArt 인증 필요 매각 상세 endpoint는 비로그인 상태에서 HTTP 401이어서 우회하지 않았다. TESSA 일부 공시는 표시 수익률과 산술값, 수수료 원 미만 처리에서 차이가 있으나 원문의 반올림·절사 규칙은 기재되지 않아 원문값과 산술값을 분리 표시했다.

@@ -225,12 +225,132 @@
 | `data/sou_property_configs.json` | SOU 상품별 ID·PNU·법정동·RTMS 지역·공모 원문 ID | 중복 ID/PNU와 PNU-필지 코드 불일치를 시작 시 검증 |
 | `data/issuers.json` | 루센트블록·투게더아트 사업자 상태와 이행 사례 | 공식 공지·정기공시·청산 공시를 제한적으로 정규화 |
 | `data/source_snapshots.json` | 궁동 RTMS 5년 비교거래 6건 | 공식 실거래 CSV에서 해제·지분·중복 거래를 제거하고 범위 필터 적용 |
+| `data/artnguide_track_records.json` | 아트앤가이드 플랫폼 자체 게시 트랙레코드 187건 | 검증 Markdown에서 결정적으로 재생성, 메인 상품·발행사 이력과 분리 |
+| `data/artnguide_due_diligence.json` | 아트앤가이드 local due-diligence evidence와 whitespace-normalized 작가별 aggregate 45행 | 2026-08-10 21:22 KST snapshot 기반, frontend·`/api`·`/live` 비연결 |
+| `data/artnguide_evidence_sources.json` | local due-diligence source registry | unverified artist candidate URL을 exact match와 분리해 보존 |
+| `data/weshareart_research.json` | 아트투게더 지난 공동구매 145건과 적합성 테스트 10문항 | 개인정보 제거 Markdown에서 결정적으로 재생성, 메인 상품·발행사 이력과 분리 |
+| `data/tessa_sale_records.json` | TESSA 매각대금 정산 공시 6건과 첨부 PDF 12개 manifest | 공시·PDF 값을 수기 정규화하고 DAKER 계산을 별도 필드로 분리 |
 | `js/calculations.js` | 단가, 중위값, 괴리율, 표본·현재성 경고 | 프로젝트 자체 계산 규칙 |
+| `js/track-records.js` | 세 플랫폼 트랙레코드 정규화·검색·상태 필터·페이지 분할 | 원문 순서를 유지하는 클라이언트 표시 규칙 |
+
+### 2.8 아트앤가이드 청약·공동구매 트랙레코드
+
+| 항목 | 내용 |
+|---|---|
+| 제공자 | 아트앤가이드·주식회사 열매컴퍼니 |
+| 수집 대상 | [청약·공동구매 작품 매각현황](https://artnguide.co.kr/purchase-summary) |
+| 목록 원문 | 사이트가 호출하는 first-party internal API [`GET /api/v1/gp/use-gp-plan`](https://api.artnguide.co.kr/api/v1/gp/use-gp-plan) |
+| 집계 원문 | [`GET /api/v1/gp/gp-stats`](https://api.artnguide.co.kr/api/v1/gp/gp-stats) |
+| 수집·검증 시점 | 2026-08-10 21:10~21:15 KST 수집, 21:22 KST 최종 검증 |
+| 저장 범위 | 19페이지 187건, 레코드별 19개 원필드와 화면 표시값 |
+| 저장 파일 | `data/artnguide_track_records.json` |
+| 데이터 성격 | `service_platform_self_reported_track_record`, 검증 저장본 |
+| 법적 발행사 연결 | 확인하지 않음 |
+| 독립 검증 | 매각 계약서·경매 낙찰 결과·입금 내역 등 외부 자료 검증을 수행하지 않음 |
+| API 공개성 | 현재 사이트가 사용하는 endpoint이나 외부 개발자용 공개 API 문서화 여부는 확인되지 않음 |
+
+[확인된 데이터 차이]
+
+- 2026-08-10 21:22 KST 검증 기준 상단 집계 API는 188건, 목록은 187건이다.
+- 상단 집계와 187건 재합계의 차이는 모집·공동구매 금액 3,000,000원, 매각완료 1건, 매각금액 7,400,000원이다.
+- 공개 화면·JavaScript·API 응답만으로 차이의 원인은 확인되지 않았다. 두 값을 별도 필드로 보존하고 임의 보정하지 않는다.
+- `EXPECTED_TRANSFER` 37건의 `soldMoney : 0`은 0원 매각을 뜻하지 않는다. `null`, 빈 문자열, 공백 문자열과 숫자 0을 서로 다른 값으로 보존한다.
+
+[이용 범위 판단]
+
+- 현재 저장본은 플랫폼 자체 게시 트랙레코드이며 독립 확인된 발행사 이행 실적으로 합산하지 않는다.
+- 작품 이미지 파일은 복제하지 않고 원본 썸네일 URL만 보존한다.
+- 외부 공개·상업 이용 전 자동수집, 구조화 저장, 재배포, 파생 통계 표시 범위에 관한 제공자 허락과 이용조건 확인이 필요하다.
+
+### 2.8.1 아트앤가이드 local due-diligence artifact
+
+| 항목 | 내용 |
+|---|---|
+| 기준 시점 | 2026-08-10 21:22 KST snapshot |
+| 산출물 | `data/artnguide_due_diligence.json`, `data/artnguide_evidence_sources.json`, `deliverables/artnguide_due_diligence_evidence_2026-08-10.md` |
+| 생성·검증 | `python3 scripts/build_artnguide_due_diligence.py --check`, `python3 -m unittest tests/test_artnguide_due_diligence.py` |
+| 연결 범위 | local-only. frontend, `/api`, `/live`에 연결하지 않음 |
+| 작가 aggregate | raw `authorName`을 whitespace-only 정규화한 45개 이름. alias 자동 병합 금지, `공부차`는 `non_artist_candidate` 유지 |
+| 금액·표본 규칙 | all-record `gpMoney` 합계, 완료 `TRANSFER`·`RETURNED_PRODUCT` 150건의 `soldMoney` 합계, 완료 non-null raw `profit`·`dateHold`의 descriptive statistics |
+| 제외 규칙 | `EXPECTED_TRANSFER`의 `soldMoney : 0`과 모든 `yearProfit`은 aggregate 제외 |
+
+[한계]
+
+- amount, profit, dateHold은 모두 플랫폼 self-reported raw value다. 이 artifact는 독립 매각·수수료·세금·분배·작가 identity를 확인하지 않는다.
 
 [법적 위험 판단]
 
 - 계산식, 필터 조건과 새로 산출한 괴리율은 프로젝트가 만든 결과다.
 - 파생 데이터의 이용 가능성은 원천 데이터의 적법한 수집·이용을 전제로 한다. 원천 이용허락이 해결되지 않으면 계산값만 남겨도 위험이 모두 없어지는 것은 아니다.
+
+### 2.9 아트투게더 지난 공동구매·적합성 테스트
+
+| 항목 | 내용 |
+|---|---|
+| 제공자 | 주식회사 투게더아트, 아트투게더 |
+| 목록 화면 | [지난 공동구매](https://weshareart.com/goods?type=ALL&page=1) |
+| 목록 원문 | [`GET /api/public/goods/co-purchase/page`](https://weshareart.com/api/public/goods/co-purchase/page?page=1&size=200&coPurchaseStatusCategory=ALL) |
+| 상세 원문 | [`GET /api/public/goods?id=166` 표본](https://weshareart.com/api/public/goods?id=166) |
+| 적합성 테스트 | [canonical 페이지](https://weshareart.com/invest/tendency/inquiry), [현재 client JavaScript](https://weshareart.com/_next/static/chunks/app/%28member%29/invest/tendency/inquiry/page-4d96406a42a7b354.js) |
+| 수집·검증 시점 | 2026-08-10 21:42~21:46 KST |
+| 저장 범위 | 지난 공동구매 15페이지 145건, 목록 18개 필드, 개인정보 제거 공개 상세, 적합성 테스트 10문항·각 2개 선택지 |
+| 저장 파일 | `data/weshareart_research.json` |
+| 데이터 성격 | `service_platform_self_reported_track_record`, 검증 저장본 |
+| 독립 검증 | 매각 계약서·경매 낙찰 결과·입금·분배 내역 및 문항의 법적 타당성을 독립 검증하지 않음 |
+| API 공개성 | 현재 사이트가 사용하는 first-party endpoint이나 외부 개발자용 공개 API 문서화 여부는 확인되지 않음 |
+
+[확인된 데이터 범위]
+
+- 2026-08-10 21:42~21:46 KST 기준 목록 API는 145건을 반환한다. 1~14페이지는 각 10건, 15페이지는 5건이며 `goodsId`·`goodsCoPurchaseId` 중복은 각각 0건이다.
+- 같은 시점 상태는 `RECRUITED / BOUGHT` 93건, `DISTRIBUTED / DISTRIBUTED` 52건이다. 목록 15페이지 결합 순서와 `size=200` 단일 응답 순서는 일치한다.
+- 같은 시점 공개 상품 상세 145건은 모두 응답했다. 목록과 상세의 상품명, 모집기간, 수익률, 상태, 작가명, 대표 이미지 연결은 전수 대조에서 불일치 0건이었다.
+- 비로그인 상태의 매각 summary·목록·상세 endpoint는 HTTP 401 `COMMON_INVALID_SESSION`을 반환했다. 로그인 세션이나 인증 우회 없이 매각일·매각가·배분내역은 확인할 수 없다.
+- 적합성 테스트는 현재 client JavaScript에 정적 문항 10개와 `answerIndex`를 포함한다. 화면상 정답 위치는 `2, 2, 2, 2, 2, 2, 1, 2, 1, 2`이며 이는 client 코드의 원값이지 법률 정답을 독립 검증한 결과가 아니다.
+- 테스트 완료는 `PUT /api/public/invest-tendency`로 회원 상태를 변경하는 쓰기 작업이므로 실행하지 않았다.
+
+[개인정보·저작물 처리]
+
+- 로그인 쿠키, 세션, 회원 이름, 연락처, 주소, 계좌, 실제 답안·결과, 개인별 만기일은 수집하거나 저장하지 않는다.
+- 작품 식별에 필요한 공개 작가명만 저작자 표시로 유지한다. 작가의 생년·사망년·국적·학력·인물 이미지·약력·수상·전시·소개 값은 저장본과 화면에서 제거한다.
+- 상품 이미지 파일, 장문 HTML 설명, 마케팅 문구는 복제하지 않는다. 구조화된 사실값과 원문 링크만 사용한다.
+- UTM 추적 매개변수는 저장하지 않고 canonical 적합성 테스트 URL만 사용한다.
+
+[이용 범위 판단]
+
+- 현재 저장본은 로컬 내부 검증용이며 플랫폼 자체 게시 트랙레코드다. 메인 상품 8건, 법적 발행사의 독립 이행·청산 실적 또는 가격 적정성 표본에 합산하지 않는다.
+- 투게더아트 약관과 `All rights reserved` 표시상 대량 구조화·재배포·상업 이용 허락은 확인되지 않았다. 외부 공개·상용화 전 자동수집, 저장, 파생통계, 화면 표시 범위를 제공자에게 확인해야 한다.
+
+### 2.10 TESSA 매각대금 정산 공시
+
+| 항목 | 내용 |
+|---|---|
+| 제공자 표시 | TESSA |
+| 공시 화면 | [TESSA 공시](http://www.tessa.art/%EA%B3%B5%EC%8B%9C) |
+| 목록 원문 | 공시 화면이 호출하는 first-party internal `POST /fm/lists/...` endpoint |
+| 상세 원문 | `http://www.tessa.art/forum/view/{공시 ID}` |
+| 수집·검증 시점 | 2026-08-10 21:53 KST |
+| 저장 범위 | 공개 공시 137건 중 `매각대금` 검색 결과 6건, 첨부 PDF 12개 |
+| 저장 파일 | `data/tessa_sale_records.json` |
+| 근거 문서 | `deliverables/tessa_artwork_sale_disclosures_2026-08-10.md` |
+| 데이터 성격 | `service_platform_self_reported_sale_disclosure`, 수기 정규화 저장본 |
+| 법적 발행사 연결 | 확인하지 않음 |
+| 독립 검증 | 매매계약서·경매 결과·입금·투자자별 지급 자료로 검증하지 않음 |
+| API 공개성 | 현재 사이트가 사용하는 endpoint이나 외부 개발자용 공개 API 문서화 여부는 확인되지 않음 |
+
+[확인된 데이터 범위]
+
+- 2026-08-10 21:53 KST 기준 공개 공시는 137건이며 정기공시 93건, 수시공시 44건이다. `매각대금` 검색은 고유 공시 6건, `수익보고서` 검색은 5건이다.
+- PDF 12개는 모두 HTTPS 200 `application/pdf`였고 각 1페이지였다. 파일 크기와 SHA-256은 JSON attachment manifest에 저장했다. PDF·표 이미지·작품 이미지는 사이트에 복제하지 않는다.
+- 공시 원문에 수익률이 직접 기재된 사례는 리우 예의 판매가격 대비 가치 상승률 2.75% 한 건이다. DAKER 단순 세전 정산수익률은 정산·지급 총액을 공모시 자산가격·TESSA 판매 가격과 비교한 별도 계산값이며 연환산하지 않는다.
+- 공시 목록 등록시각에는 timezone이 표시되지 않는다. 리우 예의 본문 원작성일 2023-08-03과 현재 게시판 등록시각 2024-02-27 17:31:07을 별도 필드로 보존한다.
+- `-`, 숫자 0, `null`을 합치지 않는다. 매각대금, 최종매각대금, 정산 대상 금액·지급 총액도 서로 다른 원문 항목으로 유지한다.
+- 개별 `records[]`와 `sources[]`는 별도 `mode`·`as_of`가 없으면 상위 `dataset.mode`, `dataset.as_of`, `dataset.collected_at`을 상속한다.
+- 앤디 워홀·데이비드 호크니의 원문 매각 수수료는 `매각 수익 × 10%` 산술값보다 각각 0.70원·0.40원 작고 원 미만 처리 규칙은 기재되지 않았다. 리우 예의 공시 표시 수익률 2.75%도 최종매각대금 기준 산술값 2.758521%와 0.008521%p 차이가 있으며 원문 소수점 처리 규칙은 확인되지 않았다.
+
+[이용 범위 판단]
+
+- 현재 저장본은 TESSA 자체 공시값이며 법적 발행사의 독립 이행 실적이나 가격 적정성 표본으로 합산하지 않는다.
+- 자동수집, 구조화 저장, 재배포, 상업 화면 표시 허락 범위는 확인되지 않았다. 외부 공개·상용화 전 제공자 이용조건을 확인해야 한다.
 
 ## 3. 공통 법률 기준
 
