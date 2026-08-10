@@ -1,0 +1,19 @@
+# Dependencies and Next.js output
+node_modules/
+.next/
+out/
+
+# Local environment and logs
+.env*
+!.env.example
+*.log
+
+# Editor and operating-system files
+.DS_Store
+
+# Python artifacts from local experiments
+__pycache__/
+*.py[cod]
+
+# TypeScript cache
+*.tsbuildinfo

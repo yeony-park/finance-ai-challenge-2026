@@ -1,0 +1,7 @@
+.git
+.next
+node_modules
+npm-debug.log*
+.env*
+__pycache__
+*.pyc
