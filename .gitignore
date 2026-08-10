@@ -17,3 +17,5 @@ __pycache__/
 
 # TypeScript cache
 *.tsbuildinfo
+
+AGENTS.md
