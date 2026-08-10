@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="원문 기반 조각투자 가치검증 대시보드">
+  <title>조각투자 가치검증</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar"><div class="wrap"><p class="eyebrow">원문 기반 조각투자 가치검증</p><h1>상품별 가격·회수 근거 확인</h1><p>저장 원문과 계산 기준을 분리해 보여줍니다. 투자 권유나 공식 감정평가가 아닙니다.</p></div></header>
+  <main class="wrap">
+    <section class="filters" aria-label="상품 필터">
+      <div><h2>상태</h2><div id="lifecycle-tabs" class="filter-group" role="group" aria-label="상태별 상품"></div><p id="outside-note" class="muted"></p></div>
+      <div><h2>자산</h2><div id="asset-filter" class="filter-group" role="group" aria-label="자산별 상품"></div></div>
+    </section>
+    <section aria-labelledby="products-title"><div class="section-heading"><h2 id="products-title">검증한 상품</h2><p class="muted">상태와 위험은 별도 항목입니다.</p></div><div id="product-cards" data-testid="product-list" class="product-cards"></div><p id="cards-empty" hidden class="empty">필터 조건에 맞는 상품이 없습니다.</p></section>
+    <section class="supporting-details" aria-label="자료 및 검색 정보">
+      <details class="technical compact-meta"><summary>자료 상태</summary><p id="load-state" role="status" aria-live="polite" class="muted">원문 상태를 확인하고 있습니다.</p></details>
+      <details class="technical search"><summary>상품명·주소·작가·DART 접수번호 검색</summary><label for="search-input">검색어</label><input id="search-input" data-testid="search-input" type="search" autocomplete="off" placeholder="예 : 대전 하나 스타트업파크, 김환기, 20260513000002"></details>
+      <details class="technical compact-meta"><summary>데이터 품질 규칙</summary><p class="data-rule">카드의 기초자산가와 공모 프리미엄은 원문 취득가가 있을 때만 계산합니다. 기준일은 상품 상세에 표시하며, 투자 판단이나 권유가 아닙니다.</p></details>
+    </section>
+    <section id="compare-section" aria-labelledby="compare-title"><div class="section-heading"><h2 id="compare-title">상품 비교</h2><p id="compare-message" aria-live="polite" class="muted">최대 3개 상품을 비교할 수 있습니다.</p></div><div id="compare-content"></div></section>
+    <section id="detail" data-testid="product-detail" aria-live="polite"><p class="empty">상품을 선택하세요.</p></section>
+  </main>
+  <footer class="footer">데이터 품질 규칙과 원문 확인 범위를 표시합니다. 개인별 투자 판단은 별도 검토가 필요합니다.</footer>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+{
+  "as_of": "2026-08-08",
+  "properties": [
+    {
+      "id": "sou-product-13",
+      "product_id": 13,
+      "expected_name": "대전 하나 스타트업파크",
+      "expected_address": "대전 유성구 궁동 429-8",
+      "notice_id": 146,
+      "notice_markers": ["2026년 3월 9일", "예비인가", "거래 서비스"],
+      "offering_announcement_id": 209,
+      "announcement_type": 2,
+      "announcement_title": "공모 청약 안내",
+      "attachment_terms": ["증권신고서", "감정평가서"],
+      "status": "거래 중단 / 신규 매수 불가 / 공모 종료 / 운용 중",
+      "status_detail": "2026-03-09 09:00부터 거래 서비스가 중단됐습니다. 매각완료 목록 등재 여부와 별개로 신규 매수는 불가합니다.",
+      "legal_dong": "궁동",
+      "target_site_area_m2": 207.4,
+      "snapshot_key": "rtms_daejeon_gungdong",
+      "rtms_region": {"sido":"30000","sgg":"30200","emd":"12200","sidoNm":"대전광역시","sggNm":"유성구","emdNm":"궁동"},
+      "parcels": [
+        {"pnu":"3020012200104290008","sigungu_code":"30200","bjdong_code":"12200","legal_dong":"궁동","bun":"0429","ji":"0008","building_title":true}
+      ]
+    },
+    {
+      "id": "sou-product-6",
+      "product_id": 6,
+      "expected_name": "전주 시화연풍",
+      "expected_address": "전북 전주시 완산구 풍남문3길 9-5",
+      "notice_id": 146,
+      "notice_markers": ["2026년 3월 9일", "예비인가", "거래 서비스"],
+      "offering_announcement_id": 39,
+      "announcement_type": 2,
+      "announcement_title": "공모 청약 확정 안내",
+      "attachment_terms": ["증권신고서", "감정평가서"],
+      "status": "거래 중단 / 신규 매수 불가 / 매각완료 목록 미등재",
+      "status_detail": "매각완료 목록 미등재 · 2026-06-23 최근 배당 공시 확인. 이 두 사실만으로 현재 소유권·운용 지속을 독립 확인하지 않습니다.",
+      "legal_dong": "전동",
+      "target_site_area_m2": 519.0,
+      "rtms_region": {"sido":"52000","sgg":"52111","emd":"11100","sidoNm":"전북특별자치도","sggNm":"전주시 완산구","emdNm":"전동"},
+      "parcels": [
+        {"pnu":"5211111100101660003","sigungu_code":"52111","bjdong_code":"11100","legal_dong":"전동","bun":"0166","ji":"0003","building_title":true},
+        {"pnu":"5211111100101660013","sigungu_code":"52111","bjdong_code":"11100","legal_dong":"전동","bun":"0166","ji":"0013","building_title":false}
+      ]
+    },
+    {
+      "id": "sou-product-7",
+      "product_id": 7,
+      "expected_name": "수원행궁 뉴스뮤지엄",
+      "expected_address": "경기 수원시 팔달구 화서문로 76-3",
+      "notice_id": 146,
+      "notice_markers": ["2026년 3월 9일", "예비인가", "거래 서비스"],
+      "offering_announcement_id": 54,
+      "announcement_type": 2,
+      "announcement_title": "공모 청약 확정 안내",
+      "attachment_terms": ["증권신고서", "감정평가서"],
+      "status": "거래 중단 / 신규 매수 불가 / 매각완료 목록 미등재",
+      "status_detail": "매각완료 목록 미등재 · 2026-06-23 최근 배당 공시 확인. 이 두 사실만으로 현재 소유권·운용 지속을 독립 확인하지 않습니다.",
+      "legal_dong": "북수동",
+      "target_site_area_m2": 332.0,
+      "rtms_region": {"sido":"41000","sgg":"41115","emd":"12900","sidoNm":"경기도","sggNm":"수원시 팔달구","emdNm":"북수동"},
+      "parcels": [
+        {"pnu":"4111512900102300000","sigungu_code":"41115","bjdong_code":"12900","legal_dong":"북수동","bun":"0230","ji":"0000","building_title":true}
+      ]
+    }
+  ]
+}
