@@ -1,27 +1,261 @@
 {
   "as_of": "2026-08-08",
+  "common_model_version": "2026-08-10.v1",
   "products": [
     {
       "id": "sou-product-13",
       "category": "부동산",
       "name": "대전 하나 스타트업파크",
       "issuer": "루센트블록",
+      "common_model": {
+        "legal_issuer": {
+          "id": null,
+          "name": null,
+          "display_name": "-",
+          "verification_status": "pending"
+        },
+        "service": {
+          "brand": "SOU",
+          "operator": "루센트블록",
+          "platform": "SOU",
+          "verification_status": "unverified"
+        },
+        "schedule": {
+          "platform_registered_at": null,
+          "offering_announcement_date": "2025-02-28",
+          "subscription_start_date": null,
+          "subscription_end_date": null,
+          "target_operating_period_months": null,
+          "actual_operating_period_months": null
+        },
+        "investment_terms": {
+          "minimum_investment_amount_krw": null,
+          "fundraising_amount_krw": 995000000,
+          "dividend_confirmed": true,
+          "expected_dividend": null,
+          "actual_dividend": {
+            "amount_krw": 7562000,
+            "as_of": "2026-06-15",
+            "rate_pct": null
+          }
+        },
+        "lifecycle": {
+          "state": "TRADING_STOPPED",
+          "new_purchase_available": false
+        },
+        "review_status": {
+          "value": "-",
+          "reason": "가격·현금흐름·회수 근거가 충분하지 않아 판정하지 않음"
+        },
+        "evidence": {
+          "version": "2026-08-10.v1",
+          "source_ids": [
+            "sou-13-product",
+            "sou-13-notice-146",
+            "sou-13-announcements",
+            "sou-13-announcement-209"
+          ]
+        },
+        "comments": {
+          "generation_method": "deterministic_evidence_template",
+          "card": {
+            "text": "[확인된 사실] SOU 거래 중단과 신규 매수 불가 상태가 기존 저장본에 기재돼 있습니다.",
+            "evidence_version": "2026-08-10.v1",
+            "source_ids": [
+              "sou-13-notice-146"
+            ]
+          },
+          "detail": [
+            {
+              "text": "[확인된 사실] 2026-06-15 기준 배당 공시 수치가 저장돼 있습니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "sou-13-announcements"
+              ]
+            },
+            {
+              "text": "[AI 해석] 거래 중단 상태라 신규 매수 가능 여부를 운용 상태만으로 판단하지 않습니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "sou-13-notice-146"
+              ]
+            },
+            {
+              "text": "[AI 해석] 엄격 비교 표본이 부족해 가격 적정성은 판정 보류입니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "sou-13-announcement-209"
+              ]
+            }
+          ]
+        },
+        "validation": {
+          "pending": true,
+          "reason": "법적 발행사와 검토 기준이 확인되지 않음"
+        },
+        "change_history": [],
+        "identification": {
+          "product_name": "대전 하나 스타트업파크",
+          "asset_category": "부동산",
+          "legal_issuer_id": null,
+          "legal_issuer_name": null,
+          "service_brand": "SOU",
+          "service_operator": "루센트블록",
+          "subscription_platform": "SOU"
+        },
+        "status": {
+          "lifecycle_state": "TRADING_STOPPED",
+          "status_text": "거래 중단 / 신규 매수 불가 / 공모 종료 / 운용 중",
+          "status_detail": "2026-03-09 09:00부터 거래가 중단됐습니다. 루센트블록은 2026-02-13 예비인가를 받지 못했습니다.",
+          "new_purchase_available": false
+        },
+        "recovery": {
+          "expected_method": null,
+          "actual_sale_price_krw": null,
+          "total_return_krw": null,
+          "total_return_pct": null
+        },
+        "review": {
+          "status": "-",
+          "status_reason": "가격·현금흐름·회수 근거가 충분하지 않아 판정하지 않음",
+          "item_evidence_source_ids": [
+            "sou-13-product",
+            "sou-13-notice-146",
+            "sou-13-announcements",
+            "sou-13-announcement-209"
+          ],
+          "ai_comments": [
+            {
+              "text": "[확인된 사실] 2026-06-15 기준 배당 공시 수치가 저장돼 있습니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "sou-13-announcements"
+              ]
+            },
+            {
+              "text": "[AI 해석] 거래 중단 상태라 신규 매수 가능 여부를 운용 상태만으로 판단하지 않습니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "sou-13-notice-146"
+              ]
+            },
+            {
+              "text": "[AI 해석] 엄격 비교 표본이 부족해 가격 적정성은 판정 보류입니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "sou-13-announcement-209"
+              ]
+            }
+          ],
+          "validation_pending": true,
+          "validation_reason": "법적 발행사와 검토 기준이 확인되지 않음"
+        }
+      },
       "status": "거래 중단 / 신규 매수 불가 / 공모 종료 / 운용 중",
       "status_code": "TRADING_STOPPED",
       "status_detail": "2026-03-09 09:00부터 거래가 중단됐습니다. 루센트블록은 2026-02-13 예비인가를 받지 못했습니다.",
       "as_of": "2026-08-08",
       "source_state": "공식 자료 저장본",
-      "asset": {"address":"대전 유성구 궁동 429-8","asset_type":"일반건축물 전부","floors":"3층","site_area_m2":207.4,"gross_floor_area_m2":323.46,"completion_date":"1998-07-13","zoning":"제2종일반주거지역","use":"제2종근린생활시설","far_pct":155.96,"bcr_pct":56.93},
-      "existence_check":{"verified_facts":"SOU 공식 API의 주소·면적·준공일 저장본","limitation":"RTMS 일반건축물 지번은 4**로 마스킹돼 정확한 대상 일치 확인이 불가합니다. 건축HUB 실시간 결과는 서버 응답에서 별도 표시합니다.","verdict":"건축HUB 표제부가 실패하면 실존·소유·권리 독립 확인 미완료입니다. 등기·소유권·담보권은 건축HUB로 확인하지 않습니다.","source_url":"https://www.data.go.kr/data/15134735/openapi.do"},
-      "offering": {"amount":995000000,"acquisition":800000000,"units":199000,"unit_price":5000},
-      "appraisals": [{"amount":1233753200,"date":"2024-12-20"},{"amount":1220814800,"date":"2024-12-20"}],
-      "operations": {"report_period_end":"2026-06-15","monthly_rent":8300000,"rent_arrears":"없음","period_net_profit":7681902,"dividend":7562000,"dividend_per_unit_before_tax":38,"annualized_dividend_yield_pct":9.25,"label":"회사 공시 수치 · 외부감사 확인 아님"},
-      "real_estate": {"strict_comps":[],"snapshot_key":"rtms_daejeon_gungdong","offering_units":{"land_per_m2":4797493,"gross_per_m2":3076115},"acquisition_units":{"land_per_m2":3857281,"gross_per_m2":2473258},"strict_rule":"법정동·용도지역·용도 확인, 일반건축물 전부 거래, 토지와 연면적 모두 대상의 0.5~2배, 취소·공유 거래 제외","verdict":"자료 부족·가격 적정성 판정 보류","verdict_reason":"대상 용도지역 세부 등급은 공모 원문에서 재확인 필요하며, 면적 조건만으로도 엄격 비교 0건입니다."},
-      "sources":[
-        {"label":"공식 자료 저장본","as_of":"2026-08-08","url":"https://api.sou.place/api/v1/public/products/product/13"},
-        {"label":"공식 자료 저장본","as_of":"2026-08-08","url":"https://api.sou.place/api/v1/public/notices/146"},
-        {"label":"공식 자료 저장본","as_of":"2026-06-15","url":"https://api.sou.place/api/v1/public/products/product/13/announcements"},
-        {"label":"원문 검증 자료","as_of":"2024-12-20","url":"https://api.sou.place/api/v1/public/announcements/announcement/209"}
+      "asset": {
+        "address": "대전 유성구 궁동 429-8",
+        "asset_type": "일반건축물 전부",
+        "floors": "3층",
+        "site_area_m2": 207.4,
+        "gross_floor_area_m2": 323.46,
+        "completion_date": "1998-07-13",
+        "zoning": "제2종일반주거지역",
+        "use": "제2종근린생활시설",
+        "far_pct": 155.96,
+        "bcr_pct": 56.93
+      },
+      "existence_check": {
+        "verified_facts": "SOU 공식 API의 주소·면적·준공일 저장본",
+        "limitation": "RTMS 일반건축물 지번은 4**로 마스킹돼 정확한 대상 일치 확인이 불가합니다. 건축HUB 실시간 결과는 서버 응답에서 별도 표시합니다.",
+        "verdict": "건축HUB 표제부가 실패하면 실존·소유·권리 독립 확인 미완료입니다. 등기·소유권·담보권은 건축HUB로 확인하지 않습니다.",
+        "source_url": "https://www.data.go.kr/data/15134735/openapi.do"
+      },
+      "offering": {
+        "amount": 995000000,
+        "acquisition": 800000000,
+        "units": 199000,
+        "unit_price": 5000
+      },
+      "appraisals": [
+        {
+          "amount": 1233753200,
+          "date": "2024-12-20"
+        },
+        {
+          "amount": 1220814800,
+          "date": "2024-12-20"
+        }
+      ],
+      "operations": {
+        "report_period_end": "2026-06-15",
+        "monthly_rent": 8300000,
+        "rent_arrears": "없음",
+        "period_net_profit": 7681902,
+        "dividend": 7562000,
+        "dividend_per_unit_before_tax": 38,
+        "annualized_dividend_yield_pct": 9.25,
+        "label": "회사 공시 수치 · 외부감사 확인 아님"
+      },
+      "real_estate": {
+        "strict_comps": [],
+        "snapshot_key": "rtms_daejeon_gungdong",
+        "offering_units": {
+          "land_per_m2": 4797493,
+          "gross_per_m2": 3076115
+        },
+        "acquisition_units": {
+          "land_per_m2": 3857281,
+          "gross_per_m2": 2473258
+        },
+        "strict_rule": "법정동·용도지역·용도 확인, 일반건축물 전부 거래, 토지와 연면적 모두 대상의 0.5~2배, 취소·공유 거래 제외",
+        "verdict": "자료 부족·가격 적정성 판정 보류",
+        "verdict_reason": "대상 용도지역 세부 등급은 공모 원문에서 재확인 필요하며, 면적 조건만으로도 엄격 비교 0건입니다."
+      },
+      "sources": [
+        {
+          "id": "sou-13-product",
+          "label": "공식 자료 저장본",
+          "as_of": "2026-08-08",
+          "url": "https://api.sou.place/api/v1/public/products/product/13",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        },
+        {
+          "id": "sou-13-notice-146",
+          "label": "공식 자료 저장본",
+          "as_of": "2026-08-08",
+          "url": "https://api.sou.place/api/v1/public/notices/146",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        },
+        {
+          "id": "sou-13-announcements",
+          "label": "공식 자료 저장본",
+          "as_of": "2026-06-15",
+          "url": "https://api.sou.place/api/v1/public/products/product/13/announcements",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        },
+        {
+          "id": "sou-13-announcement-209",
+          "label": "원문 검증 자료",
+          "as_of": "2024-12-20",
+          "url": "https://api.sou.place/api/v1/public/announcements/announcement/209",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        }
       ]
     },
     {
@@ -29,22 +263,267 @@
       "category": "부동산",
       "name": "전주 시화연풍",
       "issuer": "루센트블록",
+      "common_model": {
+        "legal_issuer": {
+          "id": null,
+          "name": null,
+          "display_name": "-",
+          "verification_status": "pending"
+        },
+        "service": {
+          "brand": "SOU",
+          "operator": "루센트블록",
+          "platform": "SOU",
+          "verification_status": "unverified"
+        },
+        "schedule": {
+          "platform_registered_at": null,
+          "offering_announcement_date": "2023-07-23",
+          "subscription_start_date": null,
+          "subscription_end_date": null,
+          "target_operating_period_months": null,
+          "actual_operating_period_months": null
+        },
+        "investment_terms": {
+          "minimum_investment_amount_krw": null,
+          "fundraising_amount_krw": 1470000000,
+          "dividend_confirmed": true,
+          "expected_dividend": null,
+          "actual_dividend": null
+        },
+        "lifecycle": {
+          "state": "TRADING_STOPPED",
+          "new_purchase_available": false
+        },
+        "review_status": {
+          "value": "-",
+          "reason": "필지 범위와 가격·회수 근거가 충분하지 않아 판정하지 않음"
+        },
+        "evidence": {
+          "version": "2026-08-10.v1",
+          "source_ids": [
+            "sou-6-product",
+            "sou-6-notice-146",
+            "sou-6-announcement-39",
+            "sou-6-dividend-384",
+            "sou-6-announcements",
+            "sou-6-sell-completed"
+          ]
+        },
+        "comments": {
+          "generation_method": "deterministic_evidence_template",
+          "card": {
+            "text": "[확인된 사실] 매각완료 목록 미등재와 최근 배당 공시가 기존 저장본에 기재돼 있습니다.",
+            "evidence_version": "2026-08-10.v1",
+            "source_ids": [
+              "sou-6-dividend-384",
+              "sou-6-sell-completed",
+              "sou-6-notice-146"
+            ]
+          },
+          "detail": [
+            {
+              "text": "[확인된 사실] 공모 원문상 대상은 2필지입니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "sou-6-announcement-39"
+              ]
+            },
+            {
+              "text": "[AI 해석] 현재 소유권·운용 지속은 이 자료만으로 독립 확인되지 않습니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "sou-6-product",
+                "sou-6-sell-completed"
+              ]
+            },
+            {
+              "text": "[AI 해석] 전체 필지 범위 확인 전 가격 적정성은 판정 보류입니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "sou-6-announcement-39"
+              ]
+            }
+          ]
+        },
+        "validation": {
+          "pending": true,
+          "reason": "법적 발행사와 전체 필지 범위가 확인되지 않음"
+        },
+        "change_history": [],
+        "identification": {
+          "product_name": "전주 시화연풍",
+          "asset_category": "부동산",
+          "legal_issuer_id": null,
+          "legal_issuer_name": null,
+          "service_brand": "SOU",
+          "service_operator": "루센트블록",
+          "subscription_platform": "SOU"
+        },
+        "status": {
+          "lifecycle_state": "TRADING_STOPPED",
+          "status_text": "거래 중단 / 신규 매수 불가 / 매각완료 목록 미등재",
+          "status_detail": "매각완료 목록 미등재 · 2026-06-23 최근 배당 공시 확인. 이 두 사실만으로 현재 소유권·운용 지속을 독립 확인하지 않습니다.",
+          "new_purchase_available": false
+        },
+        "recovery": {
+          "expected_method": null,
+          "actual_sale_price_krw": null,
+          "total_return_krw": null,
+          "total_return_pct": null
+        },
+        "review": {
+          "status": "-",
+          "status_reason": "필지 범위와 가격·회수 근거가 충분하지 않아 판정하지 않음",
+          "item_evidence_source_ids": [
+            "sou-6-product",
+            "sou-6-notice-146",
+            "sou-6-announcement-39",
+            "sou-6-dividend-384",
+            "sou-6-announcements",
+            "sou-6-sell-completed"
+          ],
+          "ai_comments": [
+            {
+              "text": "[확인된 사실] 공모 원문상 대상은 2필지입니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "sou-6-announcement-39"
+              ]
+            },
+            {
+              "text": "[AI 해석] 현재 소유권·운용 지속은 이 자료만으로 독립 확인되지 않습니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "sou-6-product",
+                "sou-6-sell-completed"
+              ]
+            },
+            {
+              "text": "[AI 해석] 전체 필지 범위 확인 전 가격 적정성은 판정 보류입니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "sou-6-announcement-39"
+              ]
+            }
+          ],
+          "validation_pending": true,
+          "validation_reason": "법적 발행사와 전체 필지 범위가 확인되지 않음"
+        }
+      },
       "status": "거래 중단 / 신규 매수 불가 / 매각완료 목록 미등재",
       "status_code": "TRADING_STOPPED",
       "status_detail": "매각완료 목록 미등재 · 2026-06-23 최근 배당 공시 확인. 이 두 사실만으로 현재 소유권·운용 지속을 독립 확인하지 않습니다.",
       "as_of": "2026-08-08",
       "source_state": "공식 자료 저장본",
-      "asset": {"address":"전북 전주시 완산구 풍남문3길 9-5","asset_type":"일반건축물 전부 · 공모 원문상 2필지","floors":"지상 3층 / 지하 1층","site_area_m2":519.0,"gross_floor_area_m2":895.66,"completion_date":"1985-12-09","zoning":null,"use":null,"far_pct":147.7,"bcr_pct":57.4},
-      "existence_check":{"verified_facts":"SOU 상품 원문은 전동 166-3·166-13 두 필지 합계 519㎡와 연면적 895.66㎡를 기재합니다.","limitation":"VWorld·건축물대장 API가 두 필지 전체를 같은 범위로 반환하는지 확인돼야 합니다. 등기·소유권·담보권은 별도 확인 대상입니다.","verdict":"전체 필지 범위 확인 전에는 실존 범위와 가격 적정성을 확정하지 않습니다.","source_url":"https://www.data.go.kr/data/15134735/openapi.do"},
-      "offering": {"amount":1470000000,"entrusted_benefit_payment":1400000000,"issuance_cost":70000000,"acquisition":null,"units":294000,"unit_price":5000,"basis_note":"공모 원문상 관리처분신탁 관련 위탁수익금입니다. 위탁자의 위탁수익권에 대한 대가로 정의되며, 부동산 취득가로 독립 확인한 값이 아닙니다."},
-      "operations": {"latest_dividend_announcement":"33기 배당금 지급 안내","report_period_end":"2026-06-23","label":"SOU 최근 배당 공시 존재만 확인 · 소유권·운용 지속의 독립 증명 아님"},
-      "real_estate": {"strict_comps":[],"offering_units":{"land_per_m2":2832370,"gross_per_m2":1641398},"strict_rule":"법정동·용도지역·건물 용도 확인, 일반건축물 전부 거래, 토지와 연면적 모두 대상의 0.5~2배, 취소·지분 거래 제외, 엄격 표본 5건 이상","verdict":"자료 부족·가격 적정성 판정 보류","verdict_reason":"공모 원문상 2필지인데 VWorld·건축물대장 전체 범위 확인이 끝나지 않으면 엄격 비교를 차단합니다.","parcel_scope":{"pnu_count":2,"source":"공모 증권신고서","as_of":"2023-07-23"}},
-      "sources":[
-        {"label":"SOU 상품 원문","as_of":"2026-08-08","url":"https://api.sou.place/api/v1/public/products/product/6"},
-        {"label":"SOU 공모 원문","as_of":"2023-07-23","url":"https://api.sou.place/api/v1/public/announcements/announcement/39"},
-        {"label":"SOU 최근 배당 공시","as_of":"2026-06-23","url":"https://api.sou.place/api/v1/public/announcements/announcement/384"},
-        {"label":"SOU 상품별 공시 목록","as_of":"2026-08-08","url":"https://api.sou.place/api/v1/public/products/product/6/announcements"},
-        {"label":"SOU 매각완료 목록","as_of":"2026-08-08","url":"https://api.sou.place/api/v1/public/products/sell-completed"}
+      "asset": {
+        "address": "전북 전주시 완산구 풍남문3길 9-5",
+        "asset_type": "일반건축물 전부 · 공모 원문상 2필지",
+        "floors": "지상 3층 / 지하 1층",
+        "site_area_m2": 519,
+        "gross_floor_area_m2": 895.66,
+        "completion_date": "1985-12-09",
+        "zoning": null,
+        "use": null,
+        "far_pct": 147.7,
+        "bcr_pct": 57.4
+      },
+      "existence_check": {
+        "verified_facts": "SOU 상품 원문은 전동 166-3·166-13 두 필지 합계 519㎡와 연면적 895.66㎡를 기재합니다.",
+        "limitation": "VWorld·건축물대장 API가 두 필지 전체를 같은 범위로 반환하는지 확인돼야 합니다. 등기·소유권·담보권은 별도 확인 대상입니다.",
+        "verdict": "전체 필지 범위 확인 전에는 실존 범위와 가격 적정성을 확정하지 않습니다.",
+        "source_url": "https://www.data.go.kr/data/15134735/openapi.do"
+      },
+      "offering": {
+        "amount": 1470000000,
+        "entrusted_benefit_payment": 1400000000,
+        "issuance_cost": 70000000,
+        "acquisition": null,
+        "units": 294000,
+        "unit_price": 5000,
+        "basis_note": "공모 원문상 관리처분신탁 관련 위탁수익금입니다. 위탁자의 위탁수익권에 대한 대가로 정의되며, 부동산 취득가로 독립 확인한 값이 아닙니다."
+      },
+      "operations": {
+        "latest_dividend_announcement": "33기 배당금 지급 안내",
+        "report_period_end": "2026-06-23",
+        "label": "SOU 최근 배당 공시 존재만 확인 · 소유권·운용 지속의 독립 증명 아님"
+      },
+      "real_estate": {
+        "strict_comps": [],
+        "offering_units": {
+          "land_per_m2": 2832370,
+          "gross_per_m2": 1641248
+        },
+        "strict_rule": "법정동·용도지역·건물 용도 확인, 일반건축물 전부 거래, 토지와 연면적 모두 대상의 0.5~2배, 취소·지분 거래 제외, 엄격 표본 5건 이상",
+        "verdict": "자료 부족·가격 적정성 판정 보류",
+        "verdict_reason": "공모 원문상 2필지인데 VWorld·건축물대장 전체 범위 확인이 끝나지 않으면 엄격 비교를 차단합니다.",
+        "parcel_scope": {
+          "pnu_count": 2,
+          "source": "공모 증권신고서",
+          "as_of": "2023-07-23"
+        }
+      },
+      "sources": [
+        {
+          "id": "sou-6-product",
+          "label": "SOU 상품 원문",
+          "as_of": "2026-08-08",
+          "url": "https://api.sou.place/api/v1/public/products/product/6",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        },
+        {
+          "id": "sou-6-notice-146",
+          "label": "공식 자료 저장본",
+          "as_of": "2026-08-08",
+          "url": "https://api.sou.place/api/v1/public/notices/146",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        },
+        {
+          "id": "sou-6-announcement-39",
+          "label": "SOU 공모 원문",
+          "as_of": "2023-07-23",
+          "url": "https://api.sou.place/api/v1/public/announcements/announcement/39",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        },
+        {
+          "id": "sou-6-dividend-384",
+          "label": "SOU 최근 배당 공시",
+          "as_of": "2026-06-23",
+          "url": "https://api.sou.place/api/v1/public/announcements/announcement/384",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        },
+        {
+          "id": "sou-6-announcements",
+          "label": "SOU 상품별 공시 목록",
+          "as_of": "2026-08-08",
+          "url": "https://api.sou.place/api/v1/public/products/product/6/announcements",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        },
+        {
+          "id": "sou-6-sell-completed",
+          "label": "SOU 매각완료 목록",
+          "as_of": "2026-08-08",
+          "url": "https://api.sou.place/api/v1/public/products/sell-completed",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        }
       ]
     },
     {
@@ -52,121 +531,1451 @@
       "category": "부동산",
       "name": "수원행궁 뉴스뮤지엄",
       "issuer": "루센트블록",
+      "common_model": {
+        "legal_issuer": {
+          "id": null,
+          "name": null,
+          "display_name": "-",
+          "verification_status": "pending"
+        },
+        "service": {
+          "brand": "SOU",
+          "operator": "루센트블록",
+          "platform": "SOU",
+          "verification_status": "unverified"
+        },
+        "schedule": {
+          "platform_registered_at": null,
+          "offering_announcement_date": "2023-10-24",
+          "subscription_start_date": null,
+          "subscription_end_date": null,
+          "target_operating_period_months": null,
+          "actual_operating_period_months": null
+        },
+        "investment_terms": {
+          "minimum_investment_amount_krw": null,
+          "fundraising_amount_krw": 2890000000,
+          "dividend_confirmed": true,
+          "expected_dividend": null,
+          "actual_dividend": null
+        },
+        "lifecycle": {
+          "state": "TRADING_STOPPED",
+          "new_purchase_available": false
+        },
+        "review_status": {
+          "value": "-",
+          "reason": "가격·회수 근거가 충분하지 않아 판정하지 않음"
+        },
+        "evidence": {
+          "version": "2026-08-10.v1",
+          "source_ids": [
+            "sou-7-product",
+            "sou-7-notice-146",
+            "sou-7-announcement-54",
+            "sou-7-issuance-113",
+            "sou-7-dividend-385",
+            "sou-7-announcements",
+            "sou-7-sell-completed"
+          ]
+        },
+        "comments": {
+          "generation_method": "deterministic_evidence_template",
+          "card": {
+            "text": "[확인된 사실] 매각완료 목록 미등재와 최근 배당 공시가 기존 저장본에 기재돼 있습니다.",
+            "evidence_version": "2026-08-10.v1",
+            "source_ids": [
+              "sou-7-dividend-385",
+              "sou-7-sell-completed",
+              "sou-7-notice-146"
+            ]
+          },
+          "detail": [
+            {
+              "text": "[확인된 사실] 공모·발행 원문이 저장돼 있습니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "sou-7-announcement-54",
+                "sou-7-issuance-113"
+              ]
+            },
+            {
+              "text": "[AI 해석] 현재 소유권은 이 자료만으로 독립 확인되지 않습니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "sou-7-product",
+                "sou-7-sell-completed"
+              ]
+            },
+            {
+              "text": "[AI 해석] 엄격 비교 표본이 부족해 가격 적정성은 판정 보류입니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "sou-7-announcement-54"
+              ]
+            }
+          ]
+        },
+        "validation": {
+          "pending": true,
+          "reason": "법적 발행사와 가격·회수 근거가 확인되지 않음"
+        },
+        "change_history": [],
+        "identification": {
+          "product_name": "수원행궁 뉴스뮤지엄",
+          "asset_category": "부동산",
+          "legal_issuer_id": null,
+          "legal_issuer_name": null,
+          "service_brand": "SOU",
+          "service_operator": "루센트블록",
+          "subscription_platform": "SOU"
+        },
+        "status": {
+          "lifecycle_state": "TRADING_STOPPED",
+          "status_text": "거래 중단 / 신규 매수 불가 / 매각완료 목록 미등재",
+          "status_detail": "매각완료 목록 미등재 · 2026-06-23 최근 배당 공시 확인. 이 두 사실만으로 현재 소유권·운용 지속을 독립 확인하지 않습니다.",
+          "new_purchase_available": false
+        },
+        "recovery": {
+          "expected_method": null,
+          "actual_sale_price_krw": null,
+          "total_return_krw": null,
+          "total_return_pct": null
+        },
+        "review": {
+          "status": "-",
+          "status_reason": "가격·회수 근거가 충분하지 않아 판정하지 않음",
+          "item_evidence_source_ids": [
+            "sou-7-product",
+            "sou-7-notice-146",
+            "sou-7-announcement-54",
+            "sou-7-issuance-113",
+            "sou-7-dividend-385",
+            "sou-7-announcements",
+            "sou-7-sell-completed"
+          ],
+          "ai_comments": [
+            {
+              "text": "[확인된 사실] 공모·발행 원문이 저장돼 있습니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "sou-7-announcement-54",
+                "sou-7-issuance-113"
+              ]
+            },
+            {
+              "text": "[AI 해석] 현재 소유권은 이 자료만으로 독립 확인되지 않습니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "sou-7-product",
+                "sou-7-sell-completed"
+              ]
+            },
+            {
+              "text": "[AI 해석] 엄격 비교 표본이 부족해 가격 적정성은 판정 보류입니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "sou-7-announcement-54"
+              ]
+            }
+          ],
+          "validation_pending": true,
+          "validation_reason": "법적 발행사와 가격·회수 근거가 확인되지 않음"
+        }
+      },
       "status": "거래 중단 / 신규 매수 불가 / 매각완료 목록 미등재",
       "status_code": "TRADING_STOPPED",
       "status_detail": "매각완료 목록 미등재 · 2026-06-23 최근 배당 공시 확인. 이 두 사실만으로 현재 소유권·운용 지속을 독립 확인하지 않습니다.",
       "as_of": "2026-08-08",
       "source_state": "공식 자료 저장본",
-      "asset": {"address":"경기 수원시 팔달구 화서문로 76-3","asset_type":"일반건축물 전부","floors":"지상 4층 / 지하 1층","site_area_m2":332.0,"gross_floor_area_m2":996.53,"completion_date":"1988-07-28","zoning":null,"use":null,"far_pct":265.09,"bcr_pct":70.09},
-      "existence_check":{"verified_facts":"SOU 상품 원문은 북수동 230, 대지 332㎡, 연면적 996.53㎡를 기재합니다.","limitation":"건축물대장은 건물 존재·표제부를 확인하지만 등기·소유권·담보권을 확인하지 않습니다.","verdict":"건축물대장과 VWorld가 같은 필지를 반환해도 현재 소유권은 독립 확인되지 않습니다.","source_url":"https://www.data.go.kr/data/15134735/openapi.do"},
-      "offering": {"amount":2890000000,"entrusted_benefit_payment":2790000000,"issuance_cost":100000000,"acquisition":null,"units":578000,"unit_price":5000,"basis_note":"공모·발행 원문상 관리처분신탁 관련 위탁수익금입니다. 위탁자의 위탁수익권에 대한 대가로 정의되며, 부동산 취득가로 독립 확인한 값이 아닙니다."},
-      "operations": {"latest_dividend_announcement":"30기 배당금 지급 안내","report_period_end":"2026-06-23","label":"SOU 최근 배당 공시 존재만 확인 · 소유권·운용 지속의 독립 증명 아님"},
-      "real_estate": {"strict_comps":[],"offering_units":{"land_per_m2":8704819,"gross_per_m2":2899983},"strict_rule":"법정동·용도지역·건물 용도 확인, 일반건축물 전부 거래, 토지와 연면적 모두 대상의 0.5~2배, 취소·지분 거래 제외, 엄격 표본 5건 이상","verdict":"자료 부족·가격 적정성 판정 보류","verdict_reason":"정부 API의 같은 필지 확인과 엄격 비교 5건 이상이 모두 충족돼야 가격 신호를 냅니다."},
-      "sources":[
-        {"label":"SOU 상품 원문","as_of":"2026-08-08","url":"https://api.sou.place/api/v1/public/products/product/7"},
-        {"label":"SOU 공모 원문","as_of":"2023-10-24","url":"https://api.sou.place/api/v1/public/announcements/announcement/54"},
-        {"label":"SOU 발행실적 원문","as_of":"2024-06-19","url":"https://api.sou.place/api/v1/public/announcements/announcement/113"},
-        {"label":"SOU 최근 배당 공시","as_of":"2026-06-23","url":"https://api.sou.place/api/v1/public/announcements/announcement/385"},
-        {"label":"SOU 상품별 공시 목록","as_of":"2026-08-08","url":"https://api.sou.place/api/v1/public/products/product/7/announcements"},
-        {"label":"SOU 매각완료 목록","as_of":"2026-08-08","url":"https://api.sou.place/api/v1/public/products/sell-completed"}
+      "asset": {
+        "address": "경기 수원시 팔달구 화서문로 76-3",
+        "asset_type": "일반건축물 전부",
+        "floors": "지상 4층 / 지하 1층",
+        "site_area_m2": 332,
+        "gross_floor_area_m2": 996.53,
+        "completion_date": "1988-07-28",
+        "zoning": null,
+        "use": null,
+        "far_pct": 265.09,
+        "bcr_pct": 70.09
+      },
+      "existence_check": {
+        "verified_facts": "SOU 상품 원문은 북수동 230, 대지 332㎡, 연면적 996.53㎡를 기재합니다.",
+        "limitation": "건축물대장은 건물 존재·표제부를 확인하지만 등기·소유권·담보권을 확인하지 않습니다.",
+        "verdict": "건축물대장과 VWorld가 같은 필지를 반환해도 현재 소유권은 독립 확인되지 않습니다.",
+        "source_url": "https://www.data.go.kr/data/15134735/openapi.do"
+      },
+      "offering": {
+        "amount": 2890000000,
+        "entrusted_benefit_payment": 2790000000,
+        "issuance_cost": 100000000,
+        "acquisition": null,
+        "units": 578000,
+        "unit_price": 5000,
+        "basis_note": "공모·발행 원문상 관리처분신탁 관련 위탁수익금입니다. 위탁자의 위탁수익권에 대한 대가로 정의되며, 부동산 취득가로 독립 확인한 값이 아닙니다."
+      },
+      "operations": {
+        "latest_dividend_announcement": "30기 배당금 지급 안내",
+        "report_period_end": "2026-06-23",
+        "label": "SOU 최근 배당 공시 존재만 확인 · 소유권·운용 지속의 독립 증명 아님"
+      },
+      "real_estate": {
+        "strict_comps": [],
+        "offering_units": {
+          "land_per_m2": 8704819,
+          "gross_per_m2": 2900063
+        },
+        "strict_rule": "법정동·용도지역·건물 용도 확인, 일반건축물 전부 거래, 토지와 연면적 모두 대상의 0.5~2배, 취소·지분 거래 제외, 엄격 표본 5건 이상",
+        "verdict": "자료 부족·가격 적정성 판정 보류",
+        "verdict_reason": "정부 API의 같은 필지 확인과 엄격 비교 5건 이상이 모두 충족돼야 가격 신호를 냅니다."
+      },
+      "sources": [
+        {
+          "id": "sou-7-product",
+          "label": "SOU 상품 원문",
+          "as_of": "2026-08-08",
+          "url": "https://api.sou.place/api/v1/public/products/product/7",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        },
+        {
+          "id": "sou-7-notice-146",
+          "label": "공식 자료 저장본",
+          "as_of": "2026-08-08",
+          "url": "https://api.sou.place/api/v1/public/notices/146",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        },
+        {
+          "id": "sou-7-announcement-54",
+          "label": "SOU 공모 원문",
+          "as_of": "2023-10-24",
+          "url": "https://api.sou.place/api/v1/public/announcements/announcement/54",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        },
+        {
+          "id": "sou-7-issuance-113",
+          "label": "SOU 발행실적 원문",
+          "as_of": "2024-06-19",
+          "url": "https://api.sou.place/api/v1/public/announcements/announcement/113",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        },
+        {
+          "id": "sou-7-dividend-385",
+          "label": "SOU 최근 배당 공시",
+          "as_of": "2026-06-23",
+          "url": "https://api.sou.place/api/v1/public/announcements/announcement/385",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        },
+        {
+          "id": "sou-7-announcements",
+          "label": "SOU 상품별 공시 목록",
+          "as_of": "2026-08-08",
+          "url": "https://api.sou.place/api/v1/public/products/product/7/announcements",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        },
+        {
+          "id": "sou-7-sell-completed",
+          "label": "SOU 매각완료 목록",
+          "as_of": "2026-08-08",
+          "url": "https://api.sou.place/api/v1/public/products/sell-completed",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        }
       ]
     },
     {
-      "id":"at-kim-whanki-009-01",
-      "category":"미술품",
-      "name":"9-1 김환기 Untitled",
-      "issuer":"투게더아트",
-      "status":"발행 완료 · 처분 공시 미발견",
-      "status_detail":"발행 공시는 확인됐고 2026-08-08 기준 처분 공시는 찾지 못했습니다. 현재 청약 또는 거래 가능 상태는 확인하지 않았습니다.",
-      "as_of":"2026-08-08",
-      "source_state":"원문 검증 자료",
-      "asset":{"artist":"김환기","title":"Untitled","year":1967,"material":"oil on canvas","size":"127 × 101 cm"},
-      "art_price":{"hammer":550000000,"hammer_date":"2025-12-23","acquisition":600000000,"offering":685000000,"exact_work_evidence":{"reported":true,"row_url":"https://artprice.kr/data_archive/20260312_132032_cf7c4a16.pdf#page=6","identity_confidence":"중간","provenance_or_lot":"미확인"},"chain_note":"KYS가 동일 작품으로 보고한 공개 낙찰가 → 취득가 → 공모가","warning":"제목이 일반명이고 provenance·lot 번호가 없어 동일 작품으로 보고된 거래의 행 단위 원문 연결이 더 필요합니다. 공개 낙찰가 대비 공모가는 20% 이상 높습니다."},
-      "artist_market":{"period":2025,"hammer_total":12419250000,"lots":104,"sold":67,"sell_through_pct":64.42,"rank":2,"source_note":"KYS 연간 표 원문, 확인일 2026-08-08"},
-      "sources":[
-        {"label":"원문 검증 자료","as_of":"2026-05-13","url":"https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260513000002"},
-        {"label":"9차 통합 공모 페이지 · 공식 원문 저장본","as_of":"2026-08-08","url":"https://www.weshareart.com/goods/subscription/detail/178"},
-        {"label":"KYS 2025 원문 검증 자료","as_of":"2025-12-29","url":"https://artprice.kr/data_archive/20260312_132032_cf7c4a16.pdf"}
+      "id": "at-kim-whanki-009-01",
+      "category": "미술품",
+      "name": "9-1 김환기 Untitled",
+      "issuer": "투게더아트",
+      "common_model": {
+        "legal_issuer": {
+          "id": "togetherart-co-ltd",
+          "name": "주식회사 투게더아트",
+          "display_name": "주식회사 투게더아트",
+          "verification_status": "verified"
+        },
+        "service": {
+          "brand": "투게더아트",
+          "operator": "주식회사 투게더아트",
+          "platform": "투게더아트",
+          "verification_status": "verified"
+        },
+        "schedule": {
+          "platform_registered_at": null,
+          "offering_announcement_date": null,
+          "subscription_start_date": null,
+          "subscription_end_date": null,
+          "target_operating_period_months": null,
+          "actual_operating_period_months": null
+        },
+        "investment_terms": {
+          "minimum_investment_amount_krw": null,
+          "fundraising_amount_krw": 685000000,
+          "dividend_confirmed": null,
+          "expected_dividend": null,
+          "actual_dividend": null
+        },
+        "lifecycle": {
+          "state": "UNVERIFIED",
+          "new_purchase_available": false
+        },
+        "review_status": {
+          "value": "-",
+          "reason": "처분·거래 가능 상태와 가격 근거가 충분하지 않아 판정하지 않음"
+        },
+        "evidence": {
+          "version": "2026-08-10.v1",
+          "source_ids": [
+            "at-kim-dart",
+            "at-kim-platform",
+            "at-kim-kys"
+          ]
+        },
+        "comments": {
+          "generation_method": "deterministic_evidence_template",
+          "card": {
+            "text": "[확인된 사실] 발행 공시는 확인됐으나 2026-08-08 기준 처분 공시는 찾지 못했습니다.",
+            "evidence_version": "2026-08-10.v1",
+            "source_ids": [
+              "at-kim-dart",
+              "at-kim-platform"
+            ]
+          },
+          "detail": [
+            {
+              "text": "[AI 해석] 동일 작품으로 보고된 공개 낙찰가 원문 연결은 보강이 필요합니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "at-kim-kys"
+              ]
+            },
+            {
+              "text": "[AI 해석] 현재 청약 또는 거래 가능 상태는 공개 자료에서 확인되지 않았습니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "at-kim-dart",
+                "at-kim-platform"
+              ]
+            },
+            {
+              "text": "[AI 해석] 가격 적정성은 판정하지 않습니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "at-kim-kys"
+              ]
+            }
+          ]
+        },
+        "validation": {
+          "pending": true,
+          "reason": "처분 상태와 동일 작품 식별 근거가 확인되지 않음"
+        },
+        "change_history": [],
+        "identification": {
+          "product_name": "9-1 김환기 Untitled",
+          "asset_category": "미술품",
+          "legal_issuer_id": "togetherart-co-ltd",
+          "legal_issuer_name": "주식회사 투게더아트",
+          "service_brand": "투게더아트",
+          "service_operator": "주식회사 투게더아트",
+          "subscription_platform": "투게더아트"
+        },
+        "status": {
+          "lifecycle_state": "UNVERIFIED",
+          "status_text": "발행 완료 · 처분 공시 미발견",
+          "status_detail": "발행 공시는 확인됐고 2026-08-08 기준 처분 공시는 찾지 못했습니다. 현재 청약 또는 거래 가능 상태는 확인하지 않았습니다.",
+          "new_purchase_available": false
+        },
+        "recovery": {
+          "expected_method": null,
+          "actual_sale_price_krw": null,
+          "total_return_krw": null,
+          "total_return_pct": null
+        },
+        "review": {
+          "status": "-",
+          "status_reason": "처분·거래 가능 상태와 가격 근거가 충분하지 않아 판정하지 않음",
+          "item_evidence_source_ids": [
+            "at-kim-dart",
+            "at-kim-platform",
+            "at-kim-kys"
+          ],
+          "ai_comments": [
+            {
+              "text": "[AI 해석] 동일 작품으로 보고된 공개 낙찰가 원문 연결은 보강이 필요합니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "at-kim-kys"
+              ]
+            },
+            {
+              "text": "[AI 해석] 현재 청약 또는 거래 가능 상태는 공개 자료에서 확인되지 않았습니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "at-kim-dart",
+                "at-kim-platform"
+              ]
+            },
+            {
+              "text": "[AI 해석] 가격 적정성은 판정하지 않습니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "at-kim-kys"
+              ]
+            }
+          ],
+          "validation_pending": true,
+          "validation_reason": "처분 상태와 동일 작품 식별 근거가 확인되지 않음"
+        }
+      },
+      "status": "발행 완료 · 처분 공시 미발견",
+      "status_detail": "발행 공시는 확인됐고 2026-08-08 기준 처분 공시는 찾지 못했습니다. 현재 청약 또는 거래 가능 상태는 확인하지 않았습니다.",
+      "as_of": "2026-08-08",
+      "source_state": "원문 검증 자료",
+      "asset": {
+        "artist": "김환기",
+        "title": "Untitled",
+        "year": 1967,
+        "material": "oil on canvas",
+        "size": "127 × 101 cm"
+      },
+      "art_price": {
+        "hammer": 550000000,
+        "hammer_date": "2025-12-23",
+        "acquisition": 600000000,
+        "offering": 685000000,
+        "exact_work_evidence": {
+          "reported": true,
+          "row_url": "https://artprice.kr/data_archive/20260312_132032_cf7c4a16.pdf#page=6",
+          "identity_confidence": "중간",
+          "provenance_or_lot": "미확인"
+        },
+        "chain_note": "KYS가 동일 작품으로 보고한 공개 낙찰가 → 취득가 → 공모가",
+        "warning": "제목이 일반명이고 provenance·lot 번호가 없어 동일 작품으로 보고된 거래의 행 단위 원문 연결이 더 필요합니다. 공개 낙찰가 대비 공모가는 20% 이상 높습니다."
+      },
+      "artist_market": {
+        "period": 2025,
+        "hammer_total": 12419250000,
+        "lots": 104,
+        "sold": 67,
+        "sell_through_pct": 64.42,
+        "rank": 2,
+        "source_note": "KYS 연간 표 원문, 확인일 2026-08-08"
+      },
+      "sources": [
+        {
+          "id": "at-kim-dart",
+          "label": "원문 검증 자료",
+          "as_of": "2026-05-13",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260513000002",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        },
+        {
+          "id": "at-kim-platform",
+          "label": "9차 통합 공모 페이지 · 공식 원문 저장본",
+          "as_of": "2026-08-08",
+          "url": "https://www.weshareart.com/goods/subscription/detail/178",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        },
+        {
+          "id": "at-kim-kys",
+          "label": "KYS 2025 원문 검증 자료",
+          "as_of": "2025-12-29",
+          "url": "https://artprice.kr/data_archive/20260312_132032_cf7c4a16.pdf",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        }
       ]
     },
     {
-      "id":"at-chonghyun-009-02",
-      "category":"미술품",
-      "name":"9-2 하종현 Conjunction 20-65",
-      "issuer":"투게더아트",
-      "status":"발행 완료 · 2026-08-08 기준 처분 공시 미발견",
-      "status_detail":"발행일 이후 71일 경과한 표본입니다. 처분 공시를 찾지 못했으며 현재 청약 또는 거래 가능 상태는 확인하지 않았습니다.",
-      "as_of":"2026-08-08",
-      "source_state":"원문 검증 자료",
-      "asset":{"artist":"하종현","title":"Conjunction 20-65","year":2020,"material":"oil on hemp cloth","size":"116.8 × 91 cm"},
-      "art_price":{"acquisition":203760000,"issuance_cost":21240000,"offering":225000000,"public_subscription":116000000,"planned_public_allocation":202500000,"issuer_take_up":109000000,"chain_note":"2026-03-05 K Auction 취득가 2억376만원 + 발행비용 2124만원 = 공모 2억2500만원","warning":"가격 연결은 비용 합계로 확인됩니다. 2025년 국내 경매 낙찰률은 작가 수요·유동성 참고 지표이며 이 작품의 가치 증명은 아닙니다."},
-      "artist_market":{"year":2025,"lots":40,"sold":21,"sell_through_pct":52.50,"hammer_total":2425000000,"rank":11,"comparables":[{"work":"Conjunction 20-68","size":"116.8 × 91 cm","date":"2025-11-26","venue":"K Auction","source_kind":"DART 기재 경매 이력","as_of":"2026-05-12","source_url":"https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260512000391","amount":279600000,"currency":"KRW"},{"work":"Conjunction 20-66","size":"116.8 × 91 cm","date":"2025-09-24","venue":"K Auction","source_kind":"DART 기재 경매 이력","as_of":"2026-05-12","source_url":"https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260512000391","amount":279600000,"currency":"KRW"},{"work":"Conjunction 20-34","size":"117 × 91 cm","date":"2025-11-27","venue":"Sotheby's","source_kind":"DART 기재 경매 이력","as_of":"2026-05-12","source_url":"https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260512000391","amount":48989,"currency":"USD"},{"work":"Conjunction 20-68","size":"116.8 × 91 cm","date":"2025-09-29","venue":"Sotheby's","source_kind":"DART 기재 경매 이력","as_of":"2026-05-12","source_url":"https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260512000391","amount":81596,"currency":"USD"},{"work":"Conjunction 18-73","size":"116.8 × 91 cm","date":"2025-09-24","venue":"K Auction","source_kind":"DART 기재 경매 이력","as_of":"2026-05-12","source_url":"https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260512000391","amount":262125000,"currency":"KRW"}]},
-      "sources":[
-        {"label":"원문 검증 자료","as_of":"2026-05-13","url":"https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260513000002"},
-        {"label":"원문 검증 자료","as_of":"2026-05-12","url":"https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260512000391"},
-        {"label":"원문 검증 자료","as_of":"2026-05-29","url":"https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260529000528"},
-        {"label":"9차 통합 공모 페이지 · 공식 원문 저장본","as_of":"2026-08-08","url":"https://weshareart.com/goods/subscription/detail/178"}
+      "id": "at-chonghyun-009-02",
+      "category": "미술품",
+      "name": "9-2 하종현 Conjunction 20-65",
+      "issuer": "투게더아트",
+      "common_model": {
+        "legal_issuer": {
+          "id": "togetherart-co-ltd",
+          "name": "주식회사 투게더아트",
+          "display_name": "주식회사 투게더아트",
+          "verification_status": "verified"
+        },
+        "service": {
+          "brand": "투게더아트",
+          "operator": "주식회사 투게더아트",
+          "platform": "투게더아트",
+          "verification_status": "verified"
+        },
+        "schedule": {
+          "platform_registered_at": null,
+          "offering_announcement_date": null,
+          "subscription_start_date": null,
+          "subscription_end_date": null,
+          "target_operating_period_months": null,
+          "actual_operating_period_months": null
+        },
+        "investment_terms": {
+          "minimum_investment_amount_krw": null,
+          "fundraising_amount_krw": 225000000,
+          "dividend_confirmed": null,
+          "expected_dividend": null,
+          "actual_dividend": null
+        },
+        "lifecycle": {
+          "state": "UNVERIFIED",
+          "new_purchase_available": false
+        },
+        "review_status": {
+          "value": "-",
+          "reason": "처분·거래 가능 상태와 가격 근거가 충분하지 않아 판정하지 않음"
+        },
+        "evidence": {
+          "version": "2026-08-10.v1",
+          "source_ids": [
+            "at-ha-dart-final",
+            "at-ha-dart-correction",
+            "at-ha-dart-result",
+            "at-ha-platform"
+          ]
+        },
+        "comments": {
+          "generation_method": "deterministic_evidence_template",
+          "card": {
+            "text": "[확인된 사실] 발행 공시는 확인됐으나 2026-08-08 기준 처분 공시는 찾지 못했습니다.",
+            "evidence_version": "2026-08-10.v1",
+            "source_ids": [
+              "at-ha-dart-result",
+              "at-ha-platform"
+            ]
+          },
+          "detail": [
+            {
+              "text": "[확인된 사실] 취득가와 발행비용의 합계가 공모가로 기재돼 있습니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "at-ha-dart-correction"
+              ]
+            },
+            {
+              "text": "[AI 해석] 현재 청약 또는 거래 가능 상태는 공개 자료에서 확인되지 않았습니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "at-ha-dart-result",
+                "at-ha-platform"
+              ]
+            },
+            {
+              "text": "[AI 해석] 가격 적정성은 판정하지 않습니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "at-ha-dart-correction"
+              ]
+            }
+          ]
+        },
+        "validation": {
+          "pending": true,
+          "reason": "처분 상태와 가격 검토 기준이 확인되지 않음"
+        },
+        "change_history": [],
+        "identification": {
+          "product_name": "9-2 하종현 Conjunction 20-65",
+          "asset_category": "미술품",
+          "legal_issuer_id": "togetherart-co-ltd",
+          "legal_issuer_name": "주식회사 투게더아트",
+          "service_brand": "투게더아트",
+          "service_operator": "주식회사 투게더아트",
+          "subscription_platform": "투게더아트"
+        },
+        "status": {
+          "lifecycle_state": "UNVERIFIED",
+          "status_text": "발행 완료 · 2026-08-08 기준 처분 공시 미발견",
+          "status_detail": "발행일 이후 71일 경과한 표본입니다. 처분 공시를 찾지 못했으며 현재 청약 또는 거래 가능 상태는 확인하지 않았습니다.",
+          "new_purchase_available": false
+        },
+        "recovery": {
+          "expected_method": null,
+          "actual_sale_price_krw": null,
+          "total_return_krw": null,
+          "total_return_pct": null
+        },
+        "review": {
+          "status": "-",
+          "status_reason": "처분·거래 가능 상태와 가격 근거가 충분하지 않아 판정하지 않음",
+          "item_evidence_source_ids": [
+            "at-ha-dart-final",
+            "at-ha-dart-correction",
+            "at-ha-dart-result",
+            "at-ha-platform"
+          ],
+          "ai_comments": [
+            {
+              "text": "[확인된 사실] 취득가와 발행비용의 합계가 공모가로 기재돼 있습니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "at-ha-dart-correction"
+              ]
+            },
+            {
+              "text": "[AI 해석] 현재 청약 또는 거래 가능 상태는 공개 자료에서 확인되지 않았습니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "at-ha-dart-result",
+                "at-ha-platform"
+              ]
+            },
+            {
+              "text": "[AI 해석] 가격 적정성은 판정하지 않습니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "at-ha-dart-correction"
+              ]
+            }
+          ],
+          "validation_pending": true,
+          "validation_reason": "처분 상태와 가격 검토 기준이 확인되지 않음"
+        }
+      },
+      "status": "발행 완료 · 2026-08-08 기준 처분 공시 미발견",
+      "status_detail": "발행일 이후 71일 경과한 표본입니다. 처분 공시를 찾지 못했으며 현재 청약 또는 거래 가능 상태는 확인하지 않았습니다.",
+      "as_of": "2026-08-08",
+      "source_state": "원문 검증 자료",
+      "asset": {
+        "artist": "하종현",
+        "title": "Conjunction 20-65",
+        "year": 2020,
+        "material": "oil on hemp cloth",
+        "size": "116.8 × 91 cm"
+      },
+      "art_price": {
+        "acquisition": 203760000,
+        "issuance_cost": 21240000,
+        "offering": 225000000,
+        "public_subscription": 116000000,
+        "planned_public_allocation": 202500000,
+        "issuer_take_up": 109000000,
+        "chain_note": "2026-03-05 K Auction 취득가 2억376만원 + 발행비용 2124만원 = 공모 2억2500만원",
+        "warning": "가격 연결은 비용 합계로 확인됩니다. 2025년 국내 경매 낙찰률은 작가 수요·유동성 참고 지표이며 이 작품의 가치 증명은 아닙니다."
+      },
+      "artist_market": {
+        "year": 2025,
+        "lots": 40,
+        "sold": 21,
+        "sell_through_pct": 52.5,
+        "hammer_total": 2425000000,
+        "rank": 11,
+        "comparables": [
+          {
+            "work": "Conjunction 20-68",
+            "size": "116.8 × 91 cm",
+            "date": "2025-11-26",
+            "venue": "K Auction",
+            "source_kind": "DART 기재 경매 이력",
+            "as_of": "2026-05-12",
+            "source_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260512000391",
+            "amount": 279600000,
+            "currency": "KRW"
+          },
+          {
+            "work": "Conjunction 20-66",
+            "size": "116.8 × 91 cm",
+            "date": "2025-09-24",
+            "venue": "K Auction",
+            "source_kind": "DART 기재 경매 이력",
+            "as_of": "2026-05-12",
+            "source_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260512000391",
+            "amount": 279600000,
+            "currency": "KRW"
+          },
+          {
+            "work": "Conjunction 20-34",
+            "size": "117 × 91 cm",
+            "date": "2025-11-27",
+            "venue": "Sotheby's",
+            "source_kind": "DART 기재 경매 이력",
+            "as_of": "2026-05-12",
+            "source_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260512000391",
+            "amount": 48989,
+            "currency": "USD"
+          },
+          {
+            "work": "Conjunction 20-68",
+            "size": "116.8 × 91 cm",
+            "date": "2025-09-29",
+            "venue": "Sotheby's",
+            "source_kind": "DART 기재 경매 이력",
+            "as_of": "2026-05-12",
+            "source_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260512000391",
+            "amount": 81596,
+            "currency": "USD"
+          },
+          {
+            "work": "Conjunction 18-73",
+            "size": "116.8 × 91 cm",
+            "date": "2025-09-24",
+            "venue": "K Auction",
+            "source_kind": "DART 기재 경매 이력",
+            "as_of": "2026-05-12",
+            "source_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260512000391",
+            "amount": 262125000,
+            "currency": "KRW"
+          }
+        ]
+      },
+      "sources": [
+        {
+          "id": "at-ha-dart-final",
+          "label": "원문 검증 자료",
+          "as_of": "2026-05-13",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260513000002",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        },
+        {
+          "id": "at-ha-dart-correction",
+          "label": "원문 검증 자료",
+          "as_of": "2026-05-12",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260512000391",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        },
+        {
+          "id": "at-ha-dart-result",
+          "label": "원문 검증 자료",
+          "as_of": "2026-05-29",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260529000528",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        },
+        {
+          "id": "at-ha-platform",
+          "label": "9차 통합 공모 페이지 · 공식 원문 저장본",
+          "as_of": "2026-08-08",
+          "url": "https://weshareart.com/goods/subscription/detail/178",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        }
       ]
     },
     {
-      "id":"at-youngkuk-008",
-      "category":"미술품",
-      "name":"AT-YOUNGKUK-008 유영국 Work",
-      "issuer":"투게더아트",
-      "status":"현재 상태 재확인 필요",
-      "status_detail":"보유 확인일은 2025-12-31이며 2026-08-08 기준 220일 지났습니다. 현재 투자 가능 여부와 처분 여부를 이 자료만으로 판단하지 않습니다.",
-      "as_of":"2025-12-31",
-      "source_state":"현재성 만료",
-      "asset":{"artist":"유영국","title":"Work","year":1984,"material":"oil","size":"97 × 130.5 cm, 60호"},
-      "art_price":{"offering":660000000,"public_subscription":520000000,"issuer_take_up":140000000,"warning":"2025-12-23 K Auction의 다른 작품(105 × 105 cm) 낙찰가 7억원은 동일 작품이 아닙니다. 크기·식별 차이 때문에 가격 차이를 계산하지 않습니다."},
-      "artist_market":{"year":2025,"lots":26,"sold":20,"sell_through_pct":76.92,"hammer_total":2370150000,"different_work":{"work":"다른 작품","date":"2025-12-23","venue":"K Auction","amount":700000000,"currency":"KRW"}},
-      "sources":[
-        {"label":"현재성 만료","as_of":"2025-12-31","url":"https://dzb2k3770zezk.cloudfront.net/file/data/board/disclosure/20260401/202604011737122e7aabd8-718f-44cb-967e-9801efd9f3e1.pdf"},
-        {"label":"접수번호 오류·원문 미확인","as_of":"2026-08-08","url":"https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20251022100010"}
+      "id": "at-youngkuk-008",
+      "category": "미술품",
+      "name": "AT-YOUNGKUK-008 유영국 Work",
+      "issuer": "투게더아트",
+      "common_model": {
+        "legal_issuer": {
+          "id": "togetherart-co-ltd",
+          "name": "주식회사 투게더아트",
+          "display_name": "주식회사 투게더아트",
+          "verification_status": "verified"
+        },
+        "service": {
+          "brand": "투게더아트",
+          "operator": "주식회사 투게더아트",
+          "platform": "투게더아트",
+          "verification_status": "verified"
+        },
+        "schedule": {
+          "platform_registered_at": null,
+          "offering_announcement_date": null,
+          "subscription_start_date": null,
+          "subscription_end_date": null,
+          "target_operating_period_months": null,
+          "actual_operating_period_months": null
+        },
+        "investment_terms": {
+          "minimum_investment_amount_krw": null,
+          "fundraising_amount_krw": 660000000,
+          "dividend_confirmed": null,
+          "expected_dividend": null,
+          "actual_dividend": null
+        },
+        "lifecycle": {
+          "state": "UNVERIFIED",
+          "new_purchase_available": false
+        },
+        "review_status": {
+          "value": "-",
+          "reason": "현재 상태와 가격 근거가 충분하지 않아 판정하지 않음"
+        },
+        "evidence": {
+          "version": "2026-08-10.v1",
+          "source_ids": [
+            "at-yoo-periodic",
+            "at-yoo-dart-unverified"
+          ]
+        },
+        "comments": {
+          "generation_method": "deterministic_evidence_template",
+          "card": {
+            "text": "[확인된 사실] 보유 확인일은 2025-12-31입니다.",
+            "evidence_version": "2026-08-10.v1",
+            "source_ids": [
+              "at-yoo-periodic"
+            ]
+          },
+          "detail": [
+            {
+              "text": "[확인된 사실] 비교된 공개 낙찰가는 다른 작품입니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "at-yoo-periodic"
+              ]
+            },
+            {
+              "text": "[AI 해석] 현재 투자 가능 여부와 처분 여부는 이 자료만으로 판단하지 않습니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "at-yoo-periodic"
+              ]
+            },
+            {
+              "text": "[AI 해석] 가격 차이는 계산하지 않습니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "at-yoo-periodic"
+              ]
+            }
+          ]
+        },
+        "validation": {
+          "pending": true,
+          "reason": "현재 상태와 원문 접수번호가 확인되지 않음"
+        },
+        "change_history": [],
+        "identification": {
+          "product_name": "AT-YOUNGKUK-008 유영국 Work",
+          "asset_category": "미술품",
+          "legal_issuer_id": "togetherart-co-ltd",
+          "legal_issuer_name": "주식회사 투게더아트",
+          "service_brand": "투게더아트",
+          "service_operator": "주식회사 투게더아트",
+          "subscription_platform": "투게더아트"
+        },
+        "status": {
+          "lifecycle_state": "UNVERIFIED",
+          "status_text": "현재 상태 재확인 필요",
+          "status_detail": "보유 확인일은 2025-12-31이며 2026-08-08 기준 220일 지났습니다. 현재 투자 가능 여부와 처분 여부를 이 자료만으로 판단하지 않습니다.",
+          "new_purchase_available": false
+        },
+        "recovery": {
+          "expected_method": null,
+          "actual_sale_price_krw": null,
+          "total_return_krw": null,
+          "total_return_pct": null
+        },
+        "review": {
+          "status": "-",
+          "status_reason": "현재 상태와 가격 근거가 충분하지 않아 판정하지 않음",
+          "item_evidence_source_ids": [
+            "at-yoo-periodic",
+            "at-yoo-dart-unverified"
+          ],
+          "ai_comments": [
+            {
+              "text": "[확인된 사실] 비교된 공개 낙찰가는 다른 작품입니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "at-yoo-periodic"
+              ]
+            },
+            {
+              "text": "[AI 해석] 현재 투자 가능 여부와 처분 여부는 이 자료만으로 판단하지 않습니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "at-yoo-periodic"
+              ]
+            },
+            {
+              "text": "[AI 해석] 가격 차이는 계산하지 않습니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "at-yoo-periodic"
+              ]
+            }
+          ],
+          "validation_pending": true,
+          "validation_reason": "현재 상태와 원문 접수번호가 확인되지 않음"
+        }
+      },
+      "status": "현재 상태 재확인 필요",
+      "status_detail": "보유 확인일은 2025-12-31이며 2026-08-08 기준 220일 지났습니다. 현재 투자 가능 여부와 처분 여부를 이 자료만으로 판단하지 않습니다.",
+      "as_of": "2025-12-31",
+      "source_state": "현재성 만료",
+      "asset": {
+        "artist": "유영국",
+        "title": "Work",
+        "year": 1984,
+        "material": "oil",
+        "size": "97 × 130.5 cm, 60호"
+      },
+      "art_price": {
+        "offering": 660000000,
+        "public_subscription": 520000000,
+        "issuer_take_up": 140000000,
+        "warning": "2025-12-23 K Auction의 다른 작품(105 × 105 cm) 낙찰가 7억원은 동일 작품이 아닙니다. 크기·식별 차이 때문에 가격 차이를 계산하지 않습니다."
+      },
+      "artist_market": {
+        "year": 2025,
+        "lots": 26,
+        "sold": 20,
+        "sell_through_pct": 76.92,
+        "hammer_total": 2370150000,
+        "different_work": {
+          "work": "다른 작품",
+          "date": "2025-12-23",
+          "venue": "K Auction",
+          "amount": 700000000,
+          "currency": "KRW"
+        }
+      },
+      "sources": [
+        {
+          "id": "at-yoo-periodic",
+          "label": "현재성 만료",
+          "as_of": "2025-12-31",
+          "url": "https://dzb2k3770zezk.cloudfront.net/file/data/board/disclosure/20260401/202604011737122e7aabd8-718f-44cb-967e-9801efd9f3e1.pdf",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        },
+        {
+          "id": "at-yoo-dart-unverified",
+          "label": "접수번호 오류·원문 미확인",
+          "as_of": "2026-08-08",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20251022100010",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        }
       ]
     },
     {
-      "id":"at-kusama-001",
-      "category":"미술품",
-      "name":"AT-KUSAMA-001 Yayoi Kusama Pumpkin",
-      "issuer":"투게더아트",
-      "status":"플랫폼 상태 STORED · 현재 소유·미처분 독립 확인 안 됨",
-      "status_detail":"2026-08-08 플랫폼 상태 API는 STORED를 반환했습니다. 2025-12-31 정기공시 순자산 표에 남아 있지만 이 두 정보만으로 현재 소유권이나 미처분을 증명하지 않습니다.",
-      "as_of":"2026-08-08",
-      "source_state":"플랫폼 상태 API 실시간 · 보유 공시는 현재성 제한",
-      "asset":{"artist":"야요이 쿠사마 (Yayoi Kusama)","title":"Pumpkin","year":2002,"material":"acrylic on canvas","size":"22 × 27.3 cm"},
-      "art_price":{"acquisition":1094030255,"issuance_cost":87969745,"offering":1182000000,"units":11820,"unit_price":100000,"chain_note":"취득가 1,094,030,255원 + 비용 87,969,745원 = 공모 1,182,000,000원","independent_comparables":"insufficient","warning":"독립 비교거래 자료가 부족해 작품 가격 적정성을 판정하지 않습니다. 발행인 분석의 과거 사례 수는 독립 감정이나 해당 작품의 가치 증명이 아닙니다."},
-      "artist_market":{"period":"발행인 분석 기재","issuer_reported_cases":359,"source_note":"발행인이 증권신고서에 기재한 과거 사례 359건 · 독립 검산 안 됨"},
-      "platform_check":{"code":"STORED","checked_at":"2026-08-08","limitation":"상태 코드와 공시명 검색만으로는 현재 소유·미처분을 증명하지 못합니다."},
-      "sources":[
-        {"label":"투게더아트 상품 API","as_of":"2026-08-08","url":"https://weshareart.com/api/public/goods?id=169"},
-        {"label":"투게더아트 상태 API","as_of":"2026-08-08","url":"https://weshareart.com/api/public/goods/subscription-by-goods-id?goodsId=169"},
-        {"label":"투게더아트 상품 원문","as_of":"2026-08-08","url":"https://weshareart.com/goods/subscription/detail/169"},
-        {"label":"DART 증권신고서","as_of":"2024-01-16","url":"https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20240116000005"},
-        {"label":"DART 발행실적","as_of":"2024-01-25","url":"https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20240125000013"},
-        {"label":"2025-12-31 정기공시","as_of":"2025-12-31","url":"https://dzb2k3770zezk.cloudfront.net/file/data/board/disclosure/20260401/202604011737122e7aabd8-718f-44cb-967e-9801efd9f3e1.pdf"}
+      "id": "at-kusama-001",
+      "category": "미술품",
+      "name": "AT-KUSAMA-001 Yayoi Kusama Pumpkin",
+      "issuer": "투게더아트",
+      "common_model": {
+        "legal_issuer": {
+          "id": "togetherart-co-ltd",
+          "name": "주식회사 투게더아트",
+          "display_name": "주식회사 투게더아트",
+          "verification_status": "verified"
+        },
+        "service": {
+          "brand": "투게더아트",
+          "operator": "주식회사 투게더아트",
+          "platform": "투게더아트",
+          "verification_status": "verified"
+        },
+        "schedule": {
+          "platform_registered_at": null,
+          "offering_announcement_date": "2024-01-16",
+          "subscription_start_date": null,
+          "subscription_end_date": null,
+          "target_operating_period_months": null,
+          "actual_operating_period_months": null
+        },
+        "investment_terms": {
+          "minimum_investment_amount_krw": null,
+          "fundraising_amount_krw": 1182000000,
+          "dividend_confirmed": null,
+          "expected_dividend": null,
+          "actual_dividend": null
+        },
+        "lifecycle": {
+          "state": "UNVERIFIED",
+          "new_purchase_available": false
+        },
+        "review_status": {
+          "value": "-",
+          "reason": "현재 소유·처분 상태와 독립 비교자료가 충분하지 않아 판정하지 않음"
+        },
+        "evidence": {
+          "version": "2026-08-10.v1",
+          "source_ids": [
+            "at-kusama-product-api",
+            "at-kusama-status-api",
+            "at-kusama-product",
+            "at-kusama-dart",
+            "at-kusama-dart-result",
+            "at-kusama-periodic"
+          ]
+        },
+        "comments": {
+          "generation_method": "deterministic_evidence_template",
+          "card": {
+            "text": "[확인된 사실] 2026-08-08 플랫폼 상태 API는 STORED를 반환했습니다.",
+            "evidence_version": "2026-08-10.v1",
+            "source_ids": [
+              "at-kusama-status-api"
+            ]
+          },
+          "detail": [
+            {
+              "text": "[AI 해석] 독립 비교거래 자료가 부족합니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "at-kusama-dart"
+              ]
+            },
+            {
+              "text": "[AI 해석] 현재 소유권이나 미처분은 이 자료만으로 증명되지 않습니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "at-kusama-status-api",
+                "at-kusama-periodic"
+              ]
+            },
+            {
+              "text": "[AI 해석] 가격 적정성은 판정하지 않습니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "at-kusama-dart"
+              ]
+            }
+          ]
+        },
+        "validation": {
+          "pending": true,
+          "reason": "현재 소유·처분 상태와 독립 비교자료가 확인되지 않음"
+        },
+        "change_history": [],
+        "identification": {
+          "product_name": "AT-KUSAMA-001 Yayoi Kusama Pumpkin",
+          "asset_category": "미술품",
+          "legal_issuer_id": "togetherart-co-ltd",
+          "legal_issuer_name": "주식회사 투게더아트",
+          "service_brand": "투게더아트",
+          "service_operator": "주식회사 투게더아트",
+          "subscription_platform": "투게더아트"
+        },
+        "status": {
+          "lifecycle_state": "UNVERIFIED",
+          "status_text": "플랫폼 상태 STORED · 현재 소유·미처분 독립 확인 안 됨",
+          "status_detail": "2026-08-08 플랫폼 상태 API는 STORED를 반환했습니다. 2025-12-31 정기공시 순자산 표에 남아 있지만 이 두 정보만으로 현재 소유권이나 미처분을 증명하지 않습니다.",
+          "new_purchase_available": false
+        },
+        "recovery": {
+          "expected_method": null,
+          "actual_sale_price_krw": null,
+          "total_return_krw": null,
+          "total_return_pct": null
+        },
+        "review": {
+          "status": "-",
+          "status_reason": "현재 소유·처분 상태와 독립 비교자료가 충분하지 않아 판정하지 않음",
+          "item_evidence_source_ids": [
+            "at-kusama-product-api",
+            "at-kusama-status-api",
+            "at-kusama-product",
+            "at-kusama-dart",
+            "at-kusama-dart-result",
+            "at-kusama-periodic"
+          ],
+          "ai_comments": [
+            {
+              "text": "[AI 해석] 독립 비교거래 자료가 부족합니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "at-kusama-dart"
+              ]
+            },
+            {
+              "text": "[AI 해석] 현재 소유권이나 미처분은 이 자료만으로 증명되지 않습니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "at-kusama-status-api",
+                "at-kusama-periodic"
+              ]
+            },
+            {
+              "text": "[AI 해석] 가격 적정성은 판정하지 않습니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "at-kusama-dart"
+              ]
+            }
+          ],
+          "validation_pending": true,
+          "validation_reason": "현재 소유·처분 상태와 독립 비교자료가 확인되지 않음"
+        }
+      },
+      "status": "플랫폼 상태 STORED · 현재 소유·미처분 독립 확인 안 됨",
+      "status_detail": "2026-08-08 플랫폼 상태 API는 STORED를 반환했습니다. 2025-12-31 정기공시 순자산 표에 남아 있지만 이 두 정보만으로 현재 소유권이나 미처분을 증명하지 않습니다.",
+      "as_of": "2026-08-08",
+      "source_state": "플랫폼 상태 API 실시간 · 보유 공시는 현재성 제한",
+      "asset": {
+        "artist": "야요이 쿠사마 (Yayoi Kusama)",
+        "title": "Pumpkin",
+        "year": 2002,
+        "material": "acrylic on canvas",
+        "size": "22 × 27.3 cm"
+      },
+      "art_price": {
+        "acquisition": 1094030255,
+        "issuance_cost": 87969745,
+        "offering": 1182000000,
+        "units": 11820,
+        "unit_price": 100000,
+        "chain_note": "취득가 1,094,030,255원 + 비용 87,969,745원 = 공모 1,182,000,000원",
+        "independent_comparables": "insufficient",
+        "warning": "독립 비교거래 자료가 부족해 작품 가격 적정성을 판정하지 않습니다. 발행인 분석의 과거 사례 수는 독립 감정이나 해당 작품의 가치 증명이 아닙니다."
+      },
+      "artist_market": {
+        "period": "발행인 분석 기재",
+        "issuer_reported_cases": 359,
+        "source_note": "발행인이 증권신고서에 기재한 과거 사례 359건 · 독립 검산 안 됨"
+      },
+      "platform_check": {
+        "code": "STORED",
+        "checked_at": "2026-08-08",
+        "limitation": "상태 코드와 공시명 검색만으로는 현재 소유·미처분을 증명하지 못합니다."
+      },
+      "sources": [
+        {
+          "id": "at-kusama-product-api",
+          "label": "투게더아트 상품 API",
+          "as_of": "2026-08-08",
+          "url": "https://weshareart.com/api/public/goods?id=169",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        },
+        {
+          "id": "at-kusama-status-api",
+          "label": "투게더아트 상태 API",
+          "as_of": "2026-08-08",
+          "url": "https://weshareart.com/api/public/goods/subscription-by-goods-id?goodsId=169",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        },
+        {
+          "id": "at-kusama-product",
+          "label": "투게더아트 상품 원문",
+          "as_of": "2026-08-08",
+          "url": "https://weshareart.com/goods/subscription/detail/169",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        },
+        {
+          "id": "at-kusama-dart",
+          "label": "DART 증권신고서",
+          "as_of": "2024-01-16",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20240116000005",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        },
+        {
+          "id": "at-kusama-dart-result",
+          "label": "DART 발행실적",
+          "as_of": "2024-01-25",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20240125000013",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        },
+        {
+          "id": "at-kusama-periodic",
+          "label": "2025-12-31 정기공시",
+          "as_of": "2025-12-31",
+          "url": "https://dzb2k3770zezk.cloudfront.net/file/data/board/disclosure/20260401/202604011737122e7aabd8-718f-44cb-967e-9801efd9f3e1.pdf",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        }
       ]
     },
     {
-      "id":"at-condo-002",
-      "category":"미술품",
-      "name":"AT-CONDO-002 George Condo The Horizon of Insanity",
-      "issuer":"투게더아트",
-      "status":"플랫폼 상태 STORED · 현재 소유·미처분 독립 확인 안 됨",
-      "status_detail":"2026-08-08 플랫폼 상태 API는 STORED를 반환했습니다. 2025-12-31 정기공시 순자산 표에 남아 있지만 이 두 정보만으로 현재 소유권이나 미처분을 증명하지 않습니다.",
-      "as_of":"2026-08-08",
-      "source_state":"플랫폼 상태 API 실시간 · 보유 공시는 현재성 제한",
-      "asset":{"artist":"조지 콘도 (George Condo)","title":"The Horizon of Insanity","year":2001,"material":"oil on canvas","size":"152.4 × 121.9 cm"},
-      "art_price":{"acquisition":934951942,"issuance_cost":93048058,"offering":1028000000,"units":10280,"unit_price":100000,"chain_note":"취득가 934,951,942원 + 비용 93,048,058원 = 공모 1,028,000,000원","independent_comparables":"insufficient","warning":"독립 비교거래 자료가 부족해 작품 가격 적정성을 판정하지 않습니다. 발행인 분석의 과거 사례 수는 독립 감정이나 해당 작품의 가치 증명이 아닙니다."},
-      "artist_market":{"period":"발행인 분석 기재","issuer_reported_cases":511,"source_note":"발행인이 증권신고서에 기재한 과거 사례 511건 · 독립 검산 안 됨"},
-      "platform_check":{"code":"STORED","checked_at":"2026-08-08","limitation":"상태 코드와 공시명 검색만으로는 현재 소유·미처분을 증명하지 못합니다."},
-      "sources":[
-        {"label":"투게더아트 상품 API","as_of":"2026-08-08","url":"https://weshareart.com/api/public/goods?id=170"},
-        {"label":"투게더아트 상태 API","as_of":"2026-08-08","url":"https://weshareart.com/api/public/goods/subscription-by-goods-id?goodsId=170"},
-        {"label":"투게더아트 상품 원문","as_of":"2026-08-08","url":"https://weshareart.com/goods/subscription/detail/170"},
-        {"label":"DART 증권신고서","as_of":"2024-03-25","url":"https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20240325000139"},
-        {"label":"DART 발행실적","as_of":"2024-04-03","url":"https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20240403003155"},
-        {"label":"2025-12-31 정기공시","as_of":"2025-12-31","url":"https://dzb2k3770zezk.cloudfront.net/file/data/board/disclosure/20260401/202604011737122e7aabd8-718f-44cb-967e-9801efd9f3e1.pdf"}
+      "id": "at-condo-002",
+      "category": "미술품",
+      "name": "AT-CONDO-002 George Condo The Horizon of Insanity",
+      "issuer": "투게더아트",
+      "common_model": {
+        "legal_issuer": {
+          "id": "togetherart-co-ltd",
+          "name": "주식회사 투게더아트",
+          "display_name": "주식회사 투게더아트",
+          "verification_status": "verified"
+        },
+        "service": {
+          "brand": "투게더아트",
+          "operator": "주식회사 투게더아트",
+          "platform": "투게더아트",
+          "verification_status": "verified"
+        },
+        "schedule": {
+          "platform_registered_at": null,
+          "offering_announcement_date": "2024-03-25",
+          "subscription_start_date": null,
+          "subscription_end_date": null,
+          "target_operating_period_months": null,
+          "actual_operating_period_months": null
+        },
+        "investment_terms": {
+          "minimum_investment_amount_krw": null,
+          "fundraising_amount_krw": 1028000000,
+          "dividend_confirmed": null,
+          "expected_dividend": null,
+          "actual_dividend": null
+        },
+        "lifecycle": {
+          "state": "UNVERIFIED",
+          "new_purchase_available": false
+        },
+        "review_status": {
+          "value": "-",
+          "reason": "현재 소유·처분 상태와 독립 비교자료가 충분하지 않아 판정하지 않음"
+        },
+        "evidence": {
+          "version": "2026-08-10.v1",
+          "source_ids": [
+            "at-condo-product-api",
+            "at-condo-status-api",
+            "at-condo-product",
+            "at-condo-dart",
+            "at-condo-dart-result",
+            "at-condo-periodic"
+          ]
+        },
+        "comments": {
+          "generation_method": "deterministic_evidence_template",
+          "card": {
+            "text": "[확인된 사실] 2026-08-08 플랫폼 상태 API는 STORED를 반환했습니다.",
+            "evidence_version": "2026-08-10.v1",
+            "source_ids": [
+              "at-condo-status-api"
+            ]
+          },
+          "detail": [
+            {
+              "text": "[AI 해석] 독립 비교거래 자료가 부족합니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "at-condo-dart"
+              ]
+            },
+            {
+              "text": "[AI 해석] 현재 소유권이나 미처분은 이 자료만으로 증명되지 않습니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "at-condo-status-api",
+                "at-condo-periodic"
+              ]
+            },
+            {
+              "text": "[AI 해석] 가격 적정성은 판정하지 않습니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "at-condo-dart"
+              ]
+            }
+          ]
+        },
+        "validation": {
+          "pending": true,
+          "reason": "현재 소유·처분 상태와 독립 비교자료가 확인되지 않음"
+        },
+        "change_history": [],
+        "identification": {
+          "product_name": "AT-CONDO-002 George Condo The Horizon of Insanity",
+          "asset_category": "미술품",
+          "legal_issuer_id": "togetherart-co-ltd",
+          "legal_issuer_name": "주식회사 투게더아트",
+          "service_brand": "투게더아트",
+          "service_operator": "주식회사 투게더아트",
+          "subscription_platform": "투게더아트"
+        },
+        "status": {
+          "lifecycle_state": "UNVERIFIED",
+          "status_text": "플랫폼 상태 STORED · 현재 소유·미처분 독립 확인 안 됨",
+          "status_detail": "2026-08-08 플랫폼 상태 API는 STORED를 반환했습니다. 2025-12-31 정기공시 순자산 표에 남아 있지만 이 두 정보만으로 현재 소유권이나 미처분을 증명하지 않습니다.",
+          "new_purchase_available": false
+        },
+        "recovery": {
+          "expected_method": null,
+          "actual_sale_price_krw": null,
+          "total_return_krw": null,
+          "total_return_pct": null
+        },
+        "review": {
+          "status": "-",
+          "status_reason": "현재 소유·처분 상태와 독립 비교자료가 충분하지 않아 판정하지 않음",
+          "item_evidence_source_ids": [
+            "at-condo-product-api",
+            "at-condo-status-api",
+            "at-condo-product",
+            "at-condo-dart",
+            "at-condo-dart-result",
+            "at-condo-periodic"
+          ],
+          "ai_comments": [
+            {
+              "text": "[AI 해석] 독립 비교거래 자료가 부족합니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "at-condo-dart"
+              ]
+            },
+            {
+              "text": "[AI 해석] 현재 소유권이나 미처분은 이 자료만으로 증명되지 않습니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "at-condo-status-api",
+                "at-condo-periodic"
+              ]
+            },
+            {
+              "text": "[AI 해석] 가격 적정성은 판정하지 않습니다.",
+              "evidence_version": "2026-08-10.v1",
+              "source_ids": [
+                "at-condo-dart"
+              ]
+            }
+          ],
+          "validation_pending": true,
+          "validation_reason": "현재 소유·처분 상태와 독립 비교자료가 확인되지 않음"
+        }
+      },
+      "status": "플랫폼 상태 STORED · 현재 소유·미처분 독립 확인 안 됨",
+      "status_detail": "2026-08-08 플랫폼 상태 API는 STORED를 반환했습니다. 2025-12-31 정기공시 순자산 표에 남아 있지만 이 두 정보만으로 현재 소유권이나 미처분을 증명하지 않습니다.",
+      "as_of": "2026-08-08",
+      "source_state": "플랫폼 상태 API 실시간 · 보유 공시는 현재성 제한",
+      "asset": {
+        "artist": "조지 콘도 (George Condo)",
+        "title": "The Horizon of Insanity",
+        "year": 2001,
+        "material": "oil on canvas",
+        "size": "152.4 × 121.9 cm"
+      },
+      "art_price": {
+        "acquisition": 934951942,
+        "issuance_cost": 93048058,
+        "offering": 1028000000,
+        "units": 10280,
+        "unit_price": 100000,
+        "chain_note": "취득가 934,951,942원 + 비용 93,048,058원 = 공모 1,028,000,000원",
+        "independent_comparables": "insufficient",
+        "warning": "독립 비교거래 자료가 부족해 작품 가격 적정성을 판정하지 않습니다. 발행인 분석의 과거 사례 수는 독립 감정이나 해당 작품의 가치 증명이 아닙니다."
+      },
+      "artist_market": {
+        "period": "발행인 분석 기재",
+        "issuer_reported_cases": 511,
+        "source_note": "발행인이 증권신고서에 기재한 과거 사례 511건 · 독립 검산 안 됨"
+      },
+      "platform_check": {
+        "code": "STORED",
+        "checked_at": "2026-08-08",
+        "limitation": "상태 코드와 공시명 검색만으로는 현재 소유·미처분을 증명하지 못합니다."
+      },
+      "sources": [
+        {
+          "id": "at-condo-product-api",
+          "label": "투게더아트 상품 API",
+          "as_of": "2026-08-08",
+          "url": "https://weshareart.com/api/public/goods?id=170",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        },
+        {
+          "id": "at-condo-status-api",
+          "label": "투게더아트 상태 API",
+          "as_of": "2026-08-08",
+          "url": "https://weshareart.com/api/public/goods/subscription-by-goods-id?goodsId=170",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        },
+        {
+          "id": "at-condo-product",
+          "label": "투게더아트 상품 원문",
+          "as_of": "2026-08-08",
+          "url": "https://weshareart.com/goods/subscription/detail/170",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        },
+        {
+          "id": "at-condo-dart",
+          "label": "DART 증권신고서",
+          "as_of": "2024-03-25",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20240325000139",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        },
+        {
+          "id": "at-condo-dart-result",
+          "label": "DART 발행실적",
+          "as_of": "2024-04-03",
+          "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20240403003155",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        },
+        {
+          "id": "at-condo-periodic",
+          "label": "2025-12-31 정기공시",
+          "as_of": "2025-12-31",
+          "url": "https://dzb2k3770zezk.cloudfront.net/file/data/board/disclosure/20260401/202604011737122e7aabd8-718f-44cb-967e-9801efd9f3e1.pdf",
+          "document_name": null,
+          "publisher": null,
+          "collected_at": null,
+          "evidence_grade": null
+        }
       ]
     }
   ]

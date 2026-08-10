@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import fs from "node:fs";import {artComparableStats,artEvidenceAssessment,artEvidenceVerdict,artShares,broadGapMessage,broadStats,evidenceConfidence,lifecycleState,percent,priceBurden,pricing,realEstateComparison,recoveryRisk,searchProducts,selectionAfterSearch,sourceExpired} from "../js/calculations.js";
+import fs from "node:fs";import {artComparableStats,artEvidenceAssessment,artEvidenceVerdict,artShares,broadGapMessage,broadStats,evidenceConfidence,filterProductsByIntent,lifecycleState,newnessDate,parseSearchIntent,percent,priceBurden,pricing,realEstateComparison,recoveryRisk,searchCatalog,searchProducts,selectionAfterSearch,sortProductsByNewness,sourceExpired} from "../js/calculations.js";
 const fixedNow=new Date("2026-08-08T00:00:00+09:00");
 assert.equal(sourceExpired("2020-01-01",fixedNow),true);assert.equal(sourceExpired("2026-08-08",fixedNow),false);
 assert.equal(sourceExpired("2026-02-09",fixedNow),false);assert.equal(sourceExpired("2026-02-08",fixedNow),true);assert.equal(sourceExpired("2026-08-08garbage",fixedNow),null);assert.equal(sourceExpired("2026-08-08T15:00:00Z","2026-08-09"),false);
@@ -15,7 +15,7 @@ const a={acquisition:203760000,issuance_cost:21240000,offering:225000000,public_
 const ps=[{id:"a",name:"alpha"},{id:"b",name:"beta"}];assert.equal(selectionAfterSearch(ps,"beta",ps[0]).id,"b");assert.equal(selectionAfterSearch(ps,"none",ps[0]),null);
 const products=JSON.parse(fs.readFileSync(new URL('../data/products.json',import.meta.url))).products;assert.equal(searchProducts(products,"야요이 쿠사마")[0].id,"at-kusama-001");assert.equal(searchProducts(products,"조지 콘도")[0].id,"at-condo-002");assert.equal(searchProducts(products,"화서문로 76-3")[0].id,"sou-product-7");assert.equal(searchProducts(products,"20240325000139")[0].id,"at-condo-002");assert.equal(selectionAfterSearch(products,"없는 상품",products[0]),null);
 assert.equal(artEvidenceVerdict(products.find(x=>x.id==="at-kusama-001")),"독립 비교자료 부족 · 가격 적정성 판정 보류");
-assert.equal(lifecycleState({category:"부동산",status:"거래 중단 / 운용 중",status_code:"TRADING_STOPPED"}),"OPERATING");
+assert.equal(lifecycleState({category:"부동산",status:"거래 중단 / 운용 중",status_code:"TRADING_STOPPED"}),"TRADING_STOPPED");
 assert.equal(lifecycleState({category:"부동산",status:"매각 완료",sale_list_check:{listed:false}}),"OUTSIDE_FILTER");
 assert.equal(lifecycleState({category:"부동산",status:"매각 완료",sale_list_check:{listed:true}}),"OUTSIDE_FILTER");
 assert.equal(lifecycleState({category:"부동산",as_of:"2026-08-08",status:"매각 완료",sale_list_check:{listed:true,checked_at:"2026-08-08",source_url:"https://example.test/sold"}},fixedNow),"COMPLETED");
@@ -36,9 +36,9 @@ assert.equal(lifecycleState({category:"미술품",as_of:"2026-08-08",status:"처
 assert.equal(lifecycleState({category:"미술품",as_of:"2026-08-08",status:"처분 완료",completion_check:{confirmed:true,checked_at:"2026-02-30T00:00:00+09:00",source_url:"https://example.test/disposal"}},fixedNow),"OUTSIDE_FILTER");
 assert.notEqual(recoveryRisk({category:"미술품",as_of:"2026-08-08",status:"처분 완료",completion_check:{confirmed:true,checked_at:"2026-02-30T00:00:00+09:00",source_url:"https://example.test/disposal"}},fixedNow).value,"회수 완료 확인");
 assert.equal(lifecycleState({category:"미술품",status:"처분 완료 · 처분 공시 미발견"}),"OUTSIDE_FILTER");
-assert.equal(lifecycleState(products.find(x=>x.id==="sou-product-13")),"OPERATING");
-assert.equal(lifecycleState(products.find(x=>x.id==="sou-product-6")),"OUTSIDE_FILTER");
-assert.equal(lifecycleState(products.find(x=>x.id==="sou-product-7")),"OUTSIDE_FILTER");
+assert.equal(lifecycleState(products.find(x=>x.id==="sou-product-13")),"TRADING_STOPPED");
+assert.equal(lifecycleState(products.find(x=>x.id==="sou-product-6")),"TRADING_STOPPED");
+assert.equal(lifecycleState(products.find(x=>x.id==="sou-product-7")),"TRADING_STOPPED");
 assert.equal(lifecycleState({category:"부동산",status:"매각 완료",status_detail:"현재 상태 재확인 필요",sale_list_check:{listed:true}}),"OUTSIDE_FILTER");
 assert.equal(lifecycleState({category:"미술품",status:"발행 완료"}),"OUTSIDE_FILTER");
 assert.equal(lifecycleState({category:"미술품",status:"처분 완료",status_detail:"처분 공시 미발견"}),"OUTSIDE_FILTER");
@@ -70,4 +70,59 @@ assert.match(broadGapMessage({offering_units:{land_per_m2:4797493,gross_per_m2:3
 assert.deepEqual(broadGapMessage({offering_units:{land_per_m2:null,gross_per_m2:3076115}},snap),{land:null,gross:null,message:"비교 단가 확인 불가"});
 const comparable=artComparableStats({art_price:{offering:225,acquisition:203.76},artist_market:{comparables:[{currency:"KRW",amount:279.6},{currency:"KRW",amount:279.6},{currency:"KRW",amount:262.125},{currency:"USD",amount:10}]}});assert.equal(comparable.count,3);assert.equal(comparable.median,279.6);assert.equal((comparable.offering_gap*100).toFixed(2),"-19.53");
 assert.equal(artComparableStats({artist_market:{}}).available,false);assert.equal(artComparableStats({artist_market:{comparables:[]}}).available,true);assert.equal(artShares({offering:100}).cost_reconciled,null);
+const intent=parseSearchIntent("수원에 있는 부동산 거래 중단 상품",products);assert.equal(intent.filters.category,"부동산");assert.equal(intent.filters.region,"수원");assert.equal(intent.filters.lifecycle,"TRADING_STOPPED");assert.ok(intent.recognized_tags.length===3);assert.equal(intent.remaining_keywords,"");
+assert.deepEqual(parseSearchIntent("기간이 짧은 미술품",products).filters,{category:"미술품"});
+assert.equal(parseSearchIntent("최소 투자금액 100만원 이하",products).filters.minimum_investment_amount_krw.value,1000000);
+assert.equal(parseSearchIntent("최소 투자 금액 100만원 이하",products).filters.minimum_investment_amount_krw.value,1000000);
+assert.equal(parseSearchIntent("목표 운용기간 3년 이하",products).filters.target_operating_period_months.value,36);
+assert.equal(filterProductsByIntent(products,parseSearchIntent("투게더아트",products)).length,5);
+assert.equal(searchCatalog(products,"수원 부동산 거래 중단").products[0].id,"sou-product-7");
+assert.equal(searchCatalog(products,"검토 상태 양호").products.length,0);
+assert.deepEqual(sortProductsByNewness([{id:"old",common_model:{schedule:{offering_announcement_date:"2024-01-01"}}},{id:"none",common_model:{schedule:{}}},{id:"new",common_model:{schedule:{platform_registered_at:"2025-01-01",offering_announcement_date:"2025-02-01"}}},{id:"same",common_model:{schedule:{subscription_start_date:"2025-01-01"}}}]).map(x=>x.id),["new","same","old","none"]);
+assert.equal(newnessDate({common_model:{schedule:{platform_registered_at:"2025-02-01",offering_announcement_date:"2025-01-15",subscription_start_date:"2025-02-15"}}}),"2025-01-15");assert.equal(newnessDate({common_model:{schedule:{}}}),null);
+
+const syntheticProducts=[
+  {id:"real-stopped",category:"부동산",name:"대전 테스트 부동산",issuer:"알파발행",status:"거래 중단",asset:{address:"대전 유성구 테스트로 1",title:"테스트 빌딩"},common_model:{legal_issuer:{name:"알파발행"},service:{brand:"알파서비스",operator:"알파운용",platform:"알파플랫폼"},schedule:{platform_registered_at:"2025-01-03",offering_announcement_date:"2025-01-05",subscription_start_date:"2025-01-10",target_operating_period_months:24},investment_terms:{minimum_investment_amount_krw:500000,actual_dividend:{amount_krw:1000,rate_pct:4.2}},lifecycle:{state:"TRADING_STOPPED"},review_status:{value:"양호"}}},
+  {id:"art-dividend",category:"미술품",name:"김 작가 파란 작품",issuer:"베타발행",status:"운용 중",asset:{artist:"김 작가",title:"파란 작품",year:2020},common_model:{legal_issuer:{name:"베타발행"},service:{brand:"베타서비스",operator:"베타운용",platform:"베타플랫폼"},schedule:{platform_registered_at:"2025-02-01",offering_announcement_date:"2025-02-10",subscription_start_date:"2025-02-20",target_operating_period_months:36},investment_terms:{minimum_investment_amount_krw:1000000,actual_dividend:{amount_krw:2000,rate_pct:5.5}},lifecycle:{state:"OPERATING"},review_status:{value:"주의"}}},
+  {id:"unknown-fields",category:"부동산",name:"서울 미확인 상품",issuer:"감마발행",status:"",asset:{address:"서울 중구 확인로 1"},common_model:{legal_issuer:{name:"감마발행"},service:{brand:"감마서비스"},schedule:{platform_registered_at:null,offering_announcement_date:null,subscription_start_date:null,target_operating_period_months:null},investment_terms:{minimum_investment_amount_krw:null,actual_dividend:null,expected_dividend:null},lifecycle:{state:"UNVERIFIED"},review_status:{value:"-"}}},
+];
+const syntheticIds=(query)=>searchCatalog(syntheticProducts,query).products.map(product=>product.id);
+const rangeAndDividendProducts=[
+  {id:"year-2019",category:"미술품",asset:{year:2019},common_model:{investment_terms:{minimum_investment_amount_krw:1000000}}},
+  {id:"year-2020",category:"미술품",asset:{year:2020},common_model:{investment_terms:{minimum_investment_amount_krw:1000000,actual_dividend:{amount_krw:2000,rate_pct:5.5}}}},
+  {id:"expected-rate",category:"미술품",asset:{year:2021},common_model:{investment_terms:{minimum_investment_amount_krw:1000000,actual_dividend:{amount_krw:3000},expected_dividend:{amount_krw:1500,rate_pct:6.2}}}},
+  {id:"unknown-regression",category:"미술품",asset:{},common_model:{investment_terms:{minimum_investment_amount_krw:null,actual_dividend:null,expected_dividend:null}}},
+];
+const rangeAndDividendIds=(query)=>searchCatalog(rangeAndDividendProducts,query).products.map(product=>product.id);
+assert.deepEqual(syntheticIds("거래 중단 상태의 대전 부동산 상품"),["real-stopped"]);
+assert.deepEqual(syntheticIds("배당이 있는 미술품"),["art-dividend"]);
+assert.deepEqual(syntheticIds("최소 투자 금액 100만원 이하인 상품"),["art-dividend","real-stopped"]);
+assert.deepEqual(syntheticIds("목표 운용기간 2년 이하 상품"),["real-stopped"]);
+assert.deepEqual(syntheticIds("배당률 5% 이상 미술품"),["art-dividend"]);
+assert.deepEqual(syntheticIds("알파발행 부동산"),["real-stopped"]);
+assert.deepEqual(syntheticIds("김 작가 미술품"),["art-dividend"]);
+assert.deepEqual(syntheticIds("검토 상태가 양호인 상품"),["real-stopped"]);
+assert.deepEqual(syntheticIds("등록일 2025-02-01 이후 상품"),["art-dividend"]);
+assert.deepEqual(syntheticIds("공고일 2025-02-10 상품"),["art-dividend"]);
+assert.deepEqual(syntheticIds("청약 시작일 2025년 1월 10일 이후 상품"),["art-dividend","real-stopped"]);
+assert.deepEqual(filterProductsByIntent(syntheticProducts,{filters:{minimum_investment_amount_krw:{value:500000,operator:"gte"}}}).map(product=>product.id),["real-stopped","art-dividend"]);
+assert.deepEqual(filterProductsByIntent(syntheticProducts,{filters:{target_operating_period_months:{value:24,operator:"lte"}}}).map(product=>product.id),["real-stopped"]);
+assert.deepEqual(filterProductsByIntent(syntheticProducts,{filters:{dividend_confirmed:true}}).map(product=>product.id),["real-stopped","art-dividend"]);
+const dividendNoticeOnly={id:"dividend-notice-only",category:"미술품",operations:{latest_dividend_announcement:"배당금 지급 안내"},common_model:{investment_terms:{dividend_confirmed:true,actual_dividend:null,expected_dividend:null}}};
+assert.deepEqual(filterProductsByIntent([dividendNoticeOnly],{filters:{dividend_confirmed:true}}).map(product=>product.id),["dividend-notice-only"]);
+assert.deepEqual(filterProductsByIntent([dividendNoticeOnly],{filters:{dividend_rate_pct:{value:1,operator:"gte"}}}).map(product=>product.id),[]);
+const souIntent=parseSearchIntent("sOu",products);assert.equal(souIntent.filters.issuer,"SOU");assert.equal(souIntent.recognized_tags.find(tag=>tag.key==="issuer")?.label,"발행사·서비스 : SOU");assert.equal(souIntent.remaining_keywords,"");
+assert.deepEqual(filterProductsByIntent(products,souIntent).map(product=>product.id),products.filter(product=>product.id.startsWith("sou-")).map(product=>product.id));
+assert.deepEqual(filterProductsByIntent(products,{filters:{issuer:"sou"}}).map(product=>product.id),products.filter(product=>product.id.startsWith("sou-")).map(product=>product.id));
+assert.deepEqual(filterProductsByIntent(syntheticProducts,{filters:{platform_registered_at:{value:"2025-01-01",operator:"gte"}}}).map(product=>product.id),["real-stopped","art-dividend"]);
+const unknownIntent=parseSearchIntent("확인할 수 없는 의미의 문장",syntheticProducts);assert.deepEqual(unknownIntent.filters,{});assert.equal(unknownIntent.remaining_keywords,"확인할 수 없는 의미의 문장");
+assert.deepEqual(rangeAndDividendIds("2020년 작품"),["year-2020"]);
+assert.deepEqual(rangeAndDividendIds("2020년 이후 작품"),["year-2020","expected-rate"]);
+assert.deepEqual(rangeAndDividendIds("2020년 이상 작품"),["year-2020","expected-rate"]);
+assert.deepEqual(rangeAndDividendIds("2020년 이전 작품"),["year-2019"]);
+assert.deepEqual(rangeAndDividendIds("2020년 이하 작품"),["year-2019","year-2020"]);
+assert.deepEqual(rangeAndDividendIds("배당률 5% 이상 미술품"),["year-2020","expected-rate"]);
+assert.equal(rangeAndDividendIds("2020년 이후 작품").includes("unknown-regression"),false);
+assert.equal(rangeAndDividendIds("배당률 5% 이상 상품").includes("unknown-regression"),false);
+assert.deepEqual(sortProductsByNewness([{id:"same-a",common_model:{schedule:{offering_announcement_date:"2025-01-01"}}},{id:"none",common_model:{schedule:{}}},{id:"same-b",common_model:{schedule:{subscription_start_date:"2025-01-01"}}}]).map(product=>product.id),["same-a","same-b","none"]);
 console.log("PASS: calculations");

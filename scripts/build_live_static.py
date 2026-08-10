@@ -15,8 +15,12 @@ SOURCE_MAP = (
     (PurePosixPath("js/app.js"), PurePosixPath("js/app.js")),
     (PurePosixPath("js/api.js"), PurePosixPath("js/api.js")),
     (PurePosixPath("js/calculations.js"), PurePosixPath("js/calculations.js")),
+    (PurePosixPath("js/track-records.js"), PurePosixPath("js/track-records.js")),
     (PurePosixPath("data/products.json"), PurePosixPath("data/products.json")),
     (PurePosixPath("data/issuers.json"), PurePosixPath("data/issuers.json")),
+    (PurePosixPath("data/artnguide_track_records.json"), PurePosixPath("data/artnguide_track_records.json")),
+    (PurePosixPath("data/weshareart_research.json"), PurePosixPath("data/weshareart_research.json")),
+    (PurePosixPath("data/tessa_sale_records.json"), PurePosixPath("data/tessa_sale_records.json")),
 )
 ALLOWED_FILES = frozenset(target for _, target in SOURCE_MAP)
 ALLOWED_DIRS = frozenset((PurePosixPath("js"), PurePosixPath("data")))

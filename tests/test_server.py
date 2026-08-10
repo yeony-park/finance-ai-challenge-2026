@@ -1,4 +1,4 @@
-import http.client,json,sys,threading,unittest
+import http.client,json,sys,tempfile,threading,unittest
 from http.server import ThreadingHTTPServer
 from unittest.mock import patch
 from pathlib import Path
@@ -79,12 +79,34 @@ class T(unittest.TestCase):
  def test_static_allowlist(self):
   httpd=ThreadingHTTPServer(('127.0.0.1',0),server.Handler);threading.Thread(target=httpd.serve_forever,daemon=True).start()
   try:
-   for path,expected in [('/index.html',200),('/styles.css',200),('/js/app.js',200),('/data/products.json',200),('/data/issuers.json',200),('/server.py',404),('/data/source_snapshots.json',404),('/tests',404),('/js/../server.py',404)]:
-    c=http.client.HTTPConnection('127.0.0.1',httpd.server_port);c.request('GET',path);self.assertEqual(c.getresponse().status,expected)
+   for path,expected in [('/index.html',200),('/styles.css',200),('/js/app.js',200),('/js/track-records.js',200),('/data/products.json',200),('/data/issuers.json',200),('/data/artnguide_track_records.json',200),('/data/weshareart_research.json',200),('/data/tessa_sale_records.json',200),('/server.py',404),('/data/source_snapshots.json',404),('/data/artnguide_due_diligence.json',404),('/data/artnguide_evidence_sources.json',404),('/deliverables/artnguide_artwork_track_records_2026-08-10.md',404),('/deliverables/artnguide_due_diligence_evidence_2026-08-10.md',404),('/tests',404),('/js/../server.py',404)]:
+    c=http.client.HTTPConnection('127.0.0.1',httpd.server_port);c.request('GET',path);response=c.getresponse();self.assertEqual(response.status,expected);response.read();c.close()
+   for path,count_path,expected in [('/api/track-records/artnguide',('dataset','record_count'),187),('/api/research/weshareart',('dataset','record_count'),145),('/api/track-records/tessa',('dataset','record_count'),6)]:
+    c=http.client.HTTPConnection('127.0.0.1',httpd.server_port);c.request('GET',path);response=c.getresponse();self.assertEqual(response.status,200);self.assertEqual(response.getheader('Cache-Control'),'no-store');body=json.loads(response.read());self.assertEqual(body[count_path[0]][count_path[1]],expected)
    with patch.object(server.SERVICE,'catalog',side_effect=RuntimeError('offline')):
     c=http.client.HTTPConnection('127.0.0.1',httpd.server_port);c.request('GET','/api/catalog');self.assertEqual(c.getresponse().status,503)
    with patch.object(Path,'is_symlink',return_value=True):
     c=http.client.HTTPConnection('127.0.0.1',httpd.server_port);c.request('GET','/styles.css');self.assertEqual(c.getresponse().status,404)
+  finally:httpd.shutdown();httpd.server_close()
+ def test_artnguide_fixed_reader_rejects_file_and_parent_symlinks(self):
+  with tempfile.TemporaryDirectory() as tmp:
+   root=Path(tmp);(root/'data').mkdir();(root/'outside.json').write_text('{"outside": true}',encoding='utf-8')
+   (root/'data'/'artnguide.json').write_text('{"ok": true}',encoding='utf-8')
+   with patch.object(server,'ROOT',root):
+    self.assertEqual(server.read_fixed_json(Path('data/artnguide.json')),{"ok":True})
+    (root/'data'/'file-link.json').symlink_to(root/'outside.json')
+    with self.assertRaises(OSError):server.read_fixed_json(Path('data/file-link.json'))
+    (root/'linked-data').symlink_to(root/'data',target_is_directory=True)
+    with self.assertRaises(OSError):server.read_fixed_json(Path('linked-data/artnguide.json'))
+ def test_artnguide_endpoint_head_contract_and_symlink_rejection(self):
+  httpd=ThreadingHTTPServer(('127.0.0.1',0),server.Handler);threading.Thread(target=httpd.serve_forever,daemon=True).start()
+  try:
+   c=http.client.HTTPConnection('127.0.0.1',httpd.server_port);c.request('GET','/api/track-records/artnguide');response=c.getresponse();body=response.read();self.assertEqual(response.status,200);self.assertEqual(response.getheader('Content-Type'),'application/json; charset=utf-8');self.assertEqual(response.getheader('Cache-Control'),'no-store');self.assertGreater(len(body),0)
+   c=http.client.HTTPConnection('127.0.0.1',httpd.server_port);c.request('HEAD','/api/track-records/artnguide');response=c.getresponse();self.assertEqual(response.status,200);self.assertEqual(response.getheader('Content-Type'),'application/json; charset=utf-8');self.assertEqual(response.getheader('Cache-Control'),'no-store');self.assertEqual(response.getheader('Content-Length'),str(len(body)));self.assertEqual(response.read(),b'')
+   with tempfile.TemporaryDirectory() as tmp:
+    root=Path(tmp);(root/'data').mkdir();(root/'outside.json').write_bytes(body);(root/'data'/'artnguide_track_records.json').symlink_to(root/'outside.json')
+    with patch.object(server,'ROOT',root),patch.object(server,'ARTNGUIDE_TRACK_RECORDS_PATH',Path('data/artnguide_track_records.json')):
+     c=http.client.HTTPConnection('127.0.0.1',httpd.server_port);c.request('GET','/api/track-records/artnguide');self.assertEqual(c.getresponse().status,503)
   finally:httpd.shutdown();httpd.server_close()
  def test_official_client_single_escaping_and_redirect_rejection(self):
   calls=[]

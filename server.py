@@ -15,6 +15,24 @@ SOU_DEFAULT={"product_id":13,"notice_id":146,"offering_announcement_id":209,"exp
 class SourceError(RuntimeError): pass
 def now_kst(): return datetime.now(KST)
 def read_json(path): return json.loads((ROOT/path).read_text(encoding="utf-8"))
+ARTNGUIDE_TRACK_RECORDS_PATH=Path("data/artnguide_track_records.json")
+WESHAREART_RESEARCH_PATH=Path("data/weshareart_research.json")
+TESSA_SALE_RECORDS_PATH=Path("data/tessa_sale_records.json")
+def read_fixed_json(path):
+    relative=Path(path)
+    if relative.is_absolute() or any(part in (".","..") for part in relative.parts): raise ValueError("invalid fixed path")
+    root=ROOT.resolve();candidate=root.joinpath(*relative.parts)
+    try: candidate.relative_to(root)
+    except ValueError as exc: raise ValueError("path outside root") from exc
+    current=root
+    for part in relative.parts:
+        current=current/part
+        if current.is_symlink(): raise OSError("symlink path component")
+    resolved=candidate.resolve(strict=False)
+    try: resolved.relative_to(root)
+    except ValueError as exc: raise ValueError("path outside root") from exc
+    if not candidate.is_file() or not candidate.stat().st_mode & 0o170000 == 0o100000: raise OSError("not a regular file")
+    return json.loads(candidate.read_text(encoding="utf-8"))
 def median(values): return statistics.median(values) if values else None
 def mad(values):
     m=median(values); return median([abs(x-m) for x in values]) if m is not None else None
@@ -583,8 +601,17 @@ class Handler(BaseHTTPRequestHandler):
         if path=="/api/catalog":
             try:return self._send(200,json.dumps(SERVICE.catalog(),ensure_ascii=False).encode(),"application/json; charset=utf-8",head)
             except Exception:return self._send(503,b'{"error":"catalog unavailable"}',"application/json; charset=utf-8",head)
+        if path=="/api/track-records/artnguide":
+            try:return self._send(200,json.dumps(read_fixed_json(ARTNGUIDE_TRACK_RECORDS_PATH),ensure_ascii=False).encode(),"application/json; charset=utf-8",head)
+            except Exception:return self._send(503,b'{"error":"track records unavailable"}',"application/json; charset=utf-8",head)
+        if path=="/api/research/weshareart":
+            try:return self._send(200,json.dumps(read_fixed_json(WESHAREART_RESEARCH_PATH),ensure_ascii=False).encode(),"application/json; charset=utf-8",head)
+            except Exception:return self._send(503,b'{"error":"weshareart research unavailable"}',"application/json; charset=utf-8",head)
+        if path=="/api/track-records/tessa":
+            try:return self._send(200,json.dumps(read_fixed_json(TESSA_SALE_RECORDS_PATH),ensure_ascii=False).encode(),"application/json; charset=utf-8",head)
+            except Exception:return self._send(503,b'{"error":"tessa sale records unavailable"}',"application/json; charset=utf-8",head)
         if path=="/":path="/index.html"
-        allowed=path in {"/index.html","/styles.css","/js/app.js","/js/api.js","/js/calculations.js","/data/products.json","/data/issuers.json"}
+        allowed=path in {"/index.html","/styles.css","/js/app.js","/js/api.js","/js/calculations.js","/js/track-records.js","/data/products.json","/data/issuers.json","/data/artnguide_track_records.json","/data/weshareart_research.json","/data/tessa_sale_records.json"}
         candidate=ROOT/path.lstrip("/");target=candidate.resolve()
         if not allowed or candidate.is_symlink() or ROOT not in target.parents or not target.is_file():return self._send(404,b"not found",head=head)
         types={".html":"text/html; charset=utf-8",".css":"text/css; charset=utf-8",".js":"application/javascript; charset=utf-8",".json":"application/json; charset=utf-8"};return self._send(200,target.read_bytes(),types[target.suffix],head)
