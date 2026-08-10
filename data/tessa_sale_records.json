@@ -1,0 +1,669 @@
+{
+  "schema_version": "1.0.0",
+  "dataset": {
+    "id": "tessa-sale-disclosures-2026-08-10",
+    "title": "TESSA 미술품 매각대금 정산 공시",
+    "kind": "service_platform_self_reported_sale_disclosure",
+    "mode": "manual_normalization",
+    "source_document": "deliverables/tessa_artwork_sale_disclosures_2026-08-10.md",
+    "source_document_sha256": "a30a7bb0d82b2f577ac5e417a4069b30c9113b2e88efa2b3d2a0f8efb6a74a35",
+    "collected_at": "2026-08-10T21:53:02+09:00",
+    "as_of": "2026-08-10T21:53:02+09:00",
+    "source_disclosure_count": 137,
+    "source_category_counts": {
+      "정기공시": 93,
+      "수시공시": 44
+    },
+    "sale_search_count": 6,
+    "profit_report_search_count": 5,
+    "record_count": 6,
+    "attachment_count": 12,
+    "evidence_scope": "first_party_self_reported",
+    "publisher_claim": "TESSA",
+    "legal_issuer": {
+      "verification_status": "pending",
+      "id": null,
+      "name": null
+    },
+    "legal_issuer_mapping_status": "unverified",
+    "independent_verification_status": "not_performed",
+    "api_documentation_status": "not_confirmed",
+    "registration_timestamp_timezone": null
+  },
+  "sources": [
+    {
+      "id": "tessa-disclosure-page",
+      "label": "TESSA 공시",
+      "url": "http://www.tessa.art/%EA%B3%B5%EC%8B%9C",
+      "role": "public_page",
+      "as_of": "2026-08-10T21:53:02+09:00"
+    },
+    {
+      "id": "tessa-forum-list-endpoint",
+      "label": "TESSA 공시 화면 internal 목록 endpoint",
+      "url": "http://www.tessa.art/fm/lists/pid/15817089/sid/tessaart/page/%EA%B3%B5%EC%8B%9C/view/200/page_num/1",
+      "role": "record_index",
+      "method": "POST",
+      "request_body": "sfl=all&stx=매각대금&scate=",
+      "as_of": "2026-08-10T21:53:02+09:00"
+    }
+  ],
+  "calculation_policy": {
+    "settlement_return_pct_formula": "(settlement_or_payout_total_krw / initial_asset_or_sale_price_krw - 1) * 100",
+    "classification": "DAKER calculation",
+    "annualized": false,
+    "individual_tax_reflected": false,
+    "individual_fractional_won_ceiling_reflected": false
+  },
+  "validation": {
+    "unique_disclosure_ids": 6,
+    "duplicate_disclosure_ids": 0,
+    "downloaded_pdf_count": 12,
+    "parsed_pdf_count": 12,
+    "rendered_pdf_page_count": 12,
+    "visually_reviewed_pdf_page_count": 12,
+    "missing_attachment_count": 0,
+    "unit_prices_match_six_decimal_truncation": true,
+    "source_http_links_disclosed": true,
+    "member_or_investor_personal_data_collected": false,
+    "pdf_files_copied_to_public_data": false,
+    "artwork_images_copied": false
+  },
+  "limitations": [
+    "TESSA가 공개 공시와 첨부 PDF에 게시한 값이며 매매계약서, 경매사 결과, 입금내역, 투자자별 지급내역을 제삼자 자료로 독립 검증하지 않았습니다.",
+    "현재 공시 화면이 사용하는 internal endpoint이나 외부 개발자용 공개 API로 문서화됐는지는 확인되지 않았습니다.",
+    "공시 목록의 등록시각에는 timezone이 기재되지 않았습니다.",
+    "TESSA 공시 목록과 본문 원문은 현재 암호화되지 않은 HTTP 외부 링크이며 첨부 PDF 링크는 HTTPS입니다.",
+    "회원·투자자 개인정보, 계정·세션값, 개인별 답안·결과·지급내역은 수집하거나 표시하지 않습니다.",
+    "법적 발행사 연결을 확인하지 않았으므로 발행사 이력으로 자동 합산하지 않습니다.",
+    "외부 공개·상업 이용을 위한 자동수집, 구조화 저장, 재배포 허락 범위는 확인되지 않았습니다."
+  ],
+  "records": [
+    {
+      "sequence": 1,
+      "record_id": "tessa:forum:1410133",
+      "disclosure_id": "1410133",
+      "template_family": "profit_krw_v2",
+      "category": "수시공시",
+      "registration_timestamp": "2026-02-23 15:46:39",
+      "registration_timestamp_timezone": null,
+      "page_display_date": "2026-02-23",
+      "original_written_date": null,
+      "corrected": false,
+      "disclosure_title": "[대금 정산] 앤디 워홀 - Marilyn Monroe (F&S II.22) 매각대금 정산 및 지급 안내",
+      "disclosure_url": "http://www.tessa.art/forum/view/1410133",
+      "asset": {
+        "product_code": "#0027",
+        "artist": "앤디 워홀",
+        "edition_index": 3,
+        "title": "Marilyn Monroe (F&S II.22)"
+      },
+      "holding_period_days": 1569,
+      "vote_date": "2026-02-11",
+      "sale_method": "프라이빗 세일",
+      "initial_price": {
+        "label": "공모시 자산가격",
+        "amount_krw": 290000000,
+        "total_units": 290000,
+        "nominal_unit_price_krw": 1000
+      },
+      "sale_price": {
+        "label": "매각대금",
+        "amount": 328282500,
+        "currency": "KRW",
+        "reference_foreign_amount": 227500,
+        "reference_foreign_currency": "USD",
+        "net_after_expenses_amount": null,
+        "net_after_expenses_currency": null,
+        "final_sale_amount_krw": null,
+        "conversion_rate_krw_per_currency": null
+      },
+      "expenses": [
+        {"label": "수출입세금", "amount": null, "currency": "KRW", "raw_value": "-"},
+        {"label": "운송및보험", "amount": null, "currency": "KRW", "raw_value": "-"},
+        {"label": "외환송금수수료", "amount": 20073, "currency": "KRW", "reference_foreign_amount": 13.91, "reference_foreign_currency": "USD"}
+      ],
+      "sale_profit": {
+        "label": "매각 수익",
+        "amount_krw": 38262427,
+        "formula": "매각대금 - 제반비용 - 공모시 자산가격"
+      },
+      "sale_fee": {
+        "amount_krw": 3826242,
+        "formula": "매각 수익 * 10%",
+        "note": "원문값은 산술값 3,826,242.70원보다 0.70원 작으며 원 미만 처리 규칙은 기재되지 않았습니다."
+      },
+      "settlement": {
+        "label": "정산 대상 금액",
+        "amount_krw": 324436185,
+        "total_units": 290000,
+        "per_unit_krw": 1118.745465,
+        "per_unit_label": "분할 소유권 1좌당 정산 단가",
+        "per_unit_calculation_raw": "KRW 1,118.745465",
+        "per_unit_report_raw": "1,118.745465원",
+        "payment_method_raw": "앱 내 [자산 > 신청하기] 화면을 통한 현금 지급\n(예치금에 산입)",
+        "recipient_fixed_date_label": "정산대상자 확정일",
+        "recipient_fixed_date": "2026-02-20",
+        "payout_date": "2026-02-24"
+      },
+      "source_reported_return_pct": null,
+      "calculated_settlement_return_pct": 11.874546551724138,
+      "calculated_settlement_return_display": "+11.874547%",
+      "tax_note": "수익보고서는 배당 소득세 적용과 25년 7월 개정안 시행을 기재했습니다.",
+      "corrections": [],
+      "attachments": [
+        {
+          "type": "profit_calculation",
+          "label": "수익 산출내역서",
+          "url": "https://dbm9jhyrx0h6k.cloudfront.net/disclosure/2026/02/23/%EC%88%98%EC%9D%B5%20%EC%82%B0%EC%B6%9C%EB%82%B4%EC%97%AD%EC%84%9C.pdf-1771828845269",
+          "content_type": "application/pdf",
+          "bytes": 149363,
+          "page_count": 1,
+          "sha256": "3791877b9db9702db8a6b58a8c0064c95c3fff0adc5b34916e05b85dc776fd23"
+        },
+        {
+          "type": "profit_report",
+          "label": "수익보고서",
+          "url": "https://dbm9jhyrx0h6k.cloudfront.net/disclosure/2026/02/23/%EC%88%98%EC%9D%B5%EB%B3%B4%EA%B3%A0%EC%84%9C.pdf-1771828845269",
+          "content_type": "application/pdf",
+          "bytes": 89704,
+          "page_count": 1,
+          "sha256": "56da38bd8d8dc128225114bd42465e07c9cdf414e973e4967de93bd7bc3a7673"
+        }
+      ]
+    },
+    {
+      "sequence": 2,
+      "record_id": "tessa:forum:1387646",
+      "disclosure_id": "1387646",
+      "template_family": "profit_krw_v2",
+      "category": "수시공시",
+      "registration_timestamp": "2026-01-15 16:30:00",
+      "registration_timestamp_timezone": null,
+      "page_display_date": "2026-01-15",
+      "original_written_date": null,
+      "corrected": false,
+      "disclosure_title": "[대금 정산] 데이비드 호크니 - Lithograph of Water 매각대금 정산 및 지급 안내",
+      "disclosure_url": "http://www.tessa.art/forum/view/1387646",
+      "asset": {
+        "product_code": "#0022",
+        "artist": "데이비드 호크니",
+        "edition_index": 4,
+        "title": "Lithograph of Water"
+      },
+      "holding_period_days": 1580,
+      "vote_date": "2025-12-05",
+      "sale_method": "프라이빗 세일",
+      "initial_price": {
+        "label": "공모시 자산가격",
+        "amount_krw": 260000000,
+        "total_units": 260000,
+        "nominal_unit_price_krw": 1000
+      },
+      "sale_price": {
+        "label": "매각대금",
+        "amount": 272061000,
+        "currency": "KRW",
+        "reference_foreign_amount": 185000,
+        "reference_foreign_currency": "USD",
+        "net_after_expenses_amount": null,
+        "net_after_expenses_currency": null,
+        "final_sale_amount_krw": null,
+        "conversion_rate_krw_per_currency": null
+      },
+      "expenses": [
+        {"label": "수출입세금", "amount": null, "currency": "KRW", "raw_value": "-"},
+        {"label": "운송및보험", "amount": null, "currency": "KRW", "raw_value": "-"},
+        {"label": "외환송금수수료", "amount": 77766, "currency": "KRW", "reference_foreign_amount": 52.88, "reference_foreign_currency": "USD"}
+      ],
+      "sale_profit": {
+        "label": "매각 수익",
+        "amount_krw": 11983234,
+        "formula": "매각대금 - 제반비용 - 공모시 자산가격"
+      },
+      "sale_fee": {
+        "amount_krw": 1198323,
+        "formula": "매각 수익 * 10%",
+        "note": "원문값은 산술값 1,198,323.40원보다 0.40원 작으며 원 미만 처리 규칙은 기재되지 않았습니다."
+      },
+      "settlement": {
+        "label": "정산 대상 금액",
+        "amount_krw": 270784911,
+        "total_units": 260000,
+        "per_unit_krw": 1041.480426,
+        "per_unit_label": "분할 소유권 1좌당 정산 단가",
+        "per_unit_calculation_raw": "KRW 1,041.480426",
+        "per_unit_report_raw": "1,041.480426원",
+        "payment_method_raw": "앱 내 [자산 > 신청하기] 화면을 통한 현금 지급\n(예치금에 산입)",
+        "recipient_fixed_date_label": "정산대상자 확정일",
+        "recipient_fixed_date": "2026-01-14",
+        "payout_date": "2026-01-16"
+      },
+      "source_reported_return_pct": null,
+      "calculated_settlement_return_pct": 4.148042692307692,
+      "calculated_settlement_return_display": "+4.148043%",
+      "tax_note": "수익보고서는 배당 소득세 적용과 25년 7월 개정안 시행을 기재했습니다.",
+      "corrections": [],
+      "attachments": [
+        {
+          "type": "profit_calculation",
+          "label": "수익 산출내역서",
+          "url": "https://dbm9jhyrx0h6k.cloudfront.net/disclosure/2026/01/15/%EC%88%98%EC%9D%B5%20%EC%82%B0%EC%B6%9C%EB%82%B4%EC%97%AD%EC%84%9C.pdf-1768459675857",
+          "content_type": "application/pdf",
+          "bytes": 148610,
+          "page_count": 1,
+          "sha256": "0e3759c9cbe5ba35f8ec7ccf0ec73531a16052fae8f60cd684480d432e9138cd"
+        },
+        {
+          "type": "profit_report",
+          "label": "수익보고서",
+          "url": "https://dbm9jhyrx0h6k.cloudfront.net/disclosure/2026/01/15/%EC%88%98%EC%9D%B5%EB%B3%B4%EA%B3%A0%EC%84%9C.pdf-1768459675857",
+          "content_type": "application/pdf",
+          "bytes": 89482,
+          "page_count": 1,
+          "sha256": "7bfcb9f9c9940b021984ab1268b44aae18772b1b6dab02232d869eb268bdd261"
+        }
+      ]
+    },
+    {
+      "sequence": 3,
+      "record_id": "tessa:forum:1068605",
+      "disclosure_id": "1068605",
+      "template_family": "profit_hkd_v1",
+      "category": "수시공시",
+      "registration_timestamp": "2024-07-04 18:02:19",
+      "registration_timestamp_timezone": null,
+      "page_display_date": "2024-07-04",
+      "original_written_date": null,
+      "corrected": false,
+      "disclosure_title": "[대금 정산] 알렉스 카츠 - Red Dogwood I 매각대금 정산 및 지급 안내",
+      "disclosure_url": "http://www.tessa.art/forum/view/1068605",
+      "asset": {
+        "product_code": "#0046",
+        "artist": "알렉스 카츠",
+        "edition_index": 1,
+        "title": "Red Dogwood I"
+      },
+      "holding_period_days": 761,
+      "vote_date": "2024-04-14",
+      "sale_method": "경매",
+      "initial_price": {
+        "label": "공모시 자산가격",
+        "amount_krw": 1200000000,
+        "total_units": 1200000,
+        "nominal_unit_price_krw": 1000
+      },
+      "sale_price": {
+        "label": "매각가",
+        "amount": 4000000,
+        "currency": "HKD",
+        "reference_foreign_amount": null,
+        "reference_foreign_currency": null,
+        "net_after_expenses_amount": 3999818.26,
+        "net_after_expenses_currency": "HKD",
+        "final_sale_amount_krw": null,
+        "conversion_rate_krw_per_currency": 176.45
+      },
+      "expenses": [
+        {"label": "경매수수료", "amount": 0, "currency": "HKD"},
+        {"label": "딜러수수료", "amount": 0, "currency": "HKD"},
+        {"label": "위탁수수료", "amount": 0, "currency": "HKD"},
+        {"label": "운송및보험", "amount": 0, "currency": "HKD"},
+        {"label": "중개은행수수료", "amount": 125, "currency": "HKD"},
+        {"label": "타발송금수수료", "amount": 56.74, "currency": "HKD"}
+      ],
+      "sale_profit": {
+        "label": "매각 수익",
+        "amount_krw": -494232069,
+        "formula": "정산 대상 금액 - 공모시 자산가격"
+      },
+      "sale_fee": {
+        "amount_krw": 0,
+        "formula": null
+      },
+      "settlement": {
+        "label": "정산 대상 금액",
+        "amount_krw": 705767931,
+        "total_units": 1200000,
+        "per_unit_krw": 588.139942,
+        "per_unit_label": "분할 소유권 1좌당 정산 단가",
+        "per_unit_calculation_raw": "KRW 588.139942",
+        "per_unit_report_raw": "588.139942원",
+        "payment_method_raw": "앱 내 [자산 > 신청하기] 화면을 통한 현금 지급\n(예치금에 산입)",
+        "recipient_fixed_date_label": "정산대상자 확정일",
+        "recipient_fixed_date": "2024-07-03",
+        "payout_date": "2024-07-04"
+      },
+      "source_reported_return_pct": null,
+      "calculated_settlement_return_pct": -41.18600575,
+      "calculated_settlement_return_display": "-41.186006%",
+      "tax_note": "수익보고서는 기타 소득세 적용과 정부 정책에 따른 변경 가능성을 기재했습니다.",
+      "corrections": [],
+      "attachments": [
+        {
+          "type": "profit_calculation",
+          "label": "수익 산출내역서",
+          "url": "https://dbm9jhyrx0h6k.cloudfront.net/disclosure/2024/07/04/%EC%88%98%EC%9D%B5%20%EC%82%B0%EC%B6%9C%EB%82%B4%EC%97%AD%EC%84%9C.pdf-1720082500639",
+          "content_type": "application/pdf",
+          "bytes": 80651,
+          "page_count": 1,
+          "sha256": "4632c865c94f806107cbc6d5fbd2bbb15e79f6d01b4b607d77c970bbe3ed7929"
+        },
+        {
+          "type": "profit_report",
+          "label": "수익보고서",
+          "url": "https://dbm9jhyrx0h6k.cloudfront.net/disclosure/2024/07/04/%EC%88%98%EC%9D%B5%EB%B3%B4%EA%B3%A0%EC%84%9C.pdf-1720082500639",
+          "content_type": "application/pdf",
+          "bytes": 86834,
+          "page_count": 1,
+          "sha256": "de8fa95d19df3ddc9f8f29abb7dc997ac72df78c405b4cbea8e15b2151612b48"
+        }
+      ]
+    },
+    {
+      "sequence": 4,
+      "record_id": "tessa:forum:1068604",
+      "disclosure_id": "1068604",
+      "template_family": "profit_hkd_v1",
+      "category": "수시공시",
+      "registration_timestamp": "2024-07-04 18:02:04",
+      "registration_timestamp_timezone": null,
+      "page_display_date": "2024-07-04",
+      "original_written_date": null,
+      "corrected": false,
+      "disclosure_title": "[대금 정산] 마르크 샤갈 - La mariée or Les amoureux aux fleurs 매각대금 정산 및 지급 안내",
+      "disclosure_url": "http://www.tessa.art/forum/view/1068604",
+      "asset": {
+        "product_code": "#0020",
+        "artist": "마르크 샤갈",
+        "edition_index": 1,
+        "title": "La mariée or Les amoureux aux fleurs"
+      },
+      "holding_period_days": 1048,
+      "vote_date": "2024-04-14",
+      "sale_method": "경매",
+      "initial_price": {
+        "label": "공모시 자산가격",
+        "amount_krw": 2750000000,
+        "total_units": 2750000,
+        "nominal_unit_price_krw": 1000
+      },
+      "sale_price": {
+        "label": "매각가",
+        "amount": 12000000,
+        "currency": "HKD",
+        "reference_foreign_amount": null,
+        "reference_foreign_currency": null,
+        "net_after_expenses_amount": 11999818.26,
+        "net_after_expenses_currency": "HKD",
+        "final_sale_amount_krw": null,
+        "conversion_rate_krw_per_currency": 176.45
+      },
+      "expenses": [
+        {"label": "경매수수료", "amount": 0, "currency": "HKD"},
+        {"label": "딜러수수료", "amount": 0, "currency": "HKD"},
+        {"label": "위탁수수료", "amount": 0, "currency": "HKD"},
+        {"label": "운송및보험", "amount": 0, "currency": "HKD"},
+        {"label": "중개은행수수료", "amount": 125, "currency": "HKD"},
+        {"label": "타발송금수수료", "amount": 56.74, "currency": "HKD"}
+      ],
+      "sale_profit": {
+        "label": "매각 수익",
+        "amount_krw": -632632069,
+        "formula": "정산 대상 금액 - 공모시 자산가격"
+      },
+      "sale_fee": {
+        "amount_krw": 0,
+        "formula": null
+      },
+      "settlement": {
+        "label": "정산 대상 금액",
+        "amount_krw": 2117367931,
+        "total_units": 2750000,
+        "per_unit_krw": 769.951974,
+        "per_unit_label": "분할 소유권 1좌당 정산 단가",
+        "per_unit_calculation_raw": "KRW 769.951974",
+        "per_unit_report_raw": "769.951974원",
+        "payment_method_raw": "앱 내 [자산 > 신청하기] 화면을 통한 현금 지급\n(예치금에 산입)",
+        "recipient_fixed_date_label": "정산대상자 확정일",
+        "recipient_fixed_date": "2024-07-03",
+        "payout_date": "2024-07-04"
+      },
+      "source_reported_return_pct": null,
+      "calculated_settlement_return_pct": -23.00480250909091,
+      "calculated_settlement_return_display": "-23.004803%",
+      "tax_note": "수익보고서는 기타 소득세 적용과 정부 정책에 따른 변경 가능성을 기재했습니다.",
+      "corrections": [],
+      "attachments": [
+        {
+          "type": "profit_calculation",
+          "label": "수익 산출내역서",
+          "url": "https://dbm9jhyrx0h6k.cloudfront.net/disclosure/2024/07/04/%EC%88%98%EC%9D%B5%20%EC%82%B0%EC%B6%9C%EB%82%B4%EC%97%AD%EC%84%9C.pdf-1720082426571",
+          "content_type": "application/pdf",
+          "bytes": 80667,
+          "page_count": 1,
+          "sha256": "79c4cec8e5516c772d5c7429179e985326c23120a42285ddb493dcca7931391c"
+        },
+        {
+          "type": "profit_report",
+          "label": "수익보고서",
+          "url": "https://dbm9jhyrx0h6k.cloudfront.net/disclosure/2024/07/04/%EC%88%98%EC%9D%B5%EB%B3%B4%EA%B3%A0%EC%84%9C.pdf-1720082426571",
+          "content_type": "application/pdf",
+          "bytes": 87023,
+          "page_count": 1,
+          "sha256": "eba2ba191f552d340fea8f257af2427caa3fd50de0c3110dfd2d1cf7cbb8556f"
+        }
+      ]
+    },
+    {
+      "sequence": 5,
+      "record_id": "tessa:forum:1068603",
+      "disclosure_id": "1068603",
+      "template_family": "profit_hkd_v1",
+      "category": "수시공시",
+      "registration_timestamp": "2024-07-04 18:01:38",
+      "registration_timestamp_timezone": null,
+      "page_display_date": "2024-07-04",
+      "original_written_date": null,
+      "corrected": false,
+      "disclosure_title": "[대금 정산] 페르난도 보테로 - People Drinking 매각대금 정산 및 지급 안내",
+      "disclosure_url": "http://www.tessa.art/forum/view/1068603",
+      "asset": {
+        "product_code": "#0011",
+        "artist": "페르난도 보테로",
+        "edition_index": 1,
+        "title": "People Drinking"
+      },
+      "holding_period_days": 1181,
+      "vote_date": "2024-04-14",
+      "sale_method": "경매",
+      "initial_price": {
+        "label": "공모시 자산가격",
+        "amount_krw": 780000000,
+        "total_units": 780000,
+        "nominal_unit_price_krw": 1000
+      },
+      "sale_price": {
+        "label": "매각가",
+        "amount": 3200000,
+        "currency": "HKD",
+        "reference_foreign_amount": null,
+        "reference_foreign_currency": null,
+        "net_after_expenses_amount": 3199818.26,
+        "net_after_expenses_currency": "HKD",
+        "final_sale_amount_krw": null,
+        "conversion_rate_krw_per_currency": 176.45
+      },
+      "expenses": [
+        {"label": "경매수수료", "amount": 0, "currency": "HKD"},
+        {"label": "딜러수수료", "amount": 0, "currency": "HKD"},
+        {"label": "위탁수수료", "amount": 0, "currency": "HKD"},
+        {"label": "운송및보험", "amount": 0, "currency": "HKD"},
+        {"label": "중개은행수수료", "amount": 125, "currency": "HKD"},
+        {"label": "타발송금수수료", "amount": 56.74, "currency": "HKD"}
+      ],
+      "sale_profit": {
+        "label": "매각 수익",
+        "amount_krw": -215392069,
+        "formula": "정산 대상 금액 - 공모시 자산가격"
+      },
+      "sale_fee": {
+        "amount_krw": 0,
+        "formula": null
+      },
+      "settlement": {
+        "label": "정산 대상 금액",
+        "amount_krw": 564607931,
+        "total_units": 780000,
+        "per_unit_krw": 723.856321,
+        "per_unit_label": "분할 소유권 1좌당 정산 단가",
+        "per_unit_calculation_raw": "KRW 723.856321",
+        "per_unit_report_raw": "723.856321원",
+        "payment_method_raw": "앱 내 [자산 > 신청하기] 화면을 통한 현금 지급\n(예치금에 산입)",
+        "recipient_fixed_date_label": "정산대상자 확정일",
+        "recipient_fixed_date": "2024-07-03",
+        "payout_date": "2024-07-04"
+      },
+      "source_reported_return_pct": null,
+      "calculated_settlement_return_pct": -27.61436782051282,
+      "calculated_settlement_return_display": "-27.614368%",
+      "tax_note": "수익보고서는 기타 소득세 적용과 정부 정책에 따른 변경 가능성을 기재했습니다.",
+      "corrections": [],
+      "attachments": [
+        {
+          "type": "profit_calculation",
+          "label": "수익 산출내역서",
+          "url": "https://dbm9jhyrx0h6k.cloudfront.net/disclosure/2024/07/04/%EC%88%98%EC%9D%B5%20%EC%82%B0%EC%B6%9C%EB%82%B4%EC%97%AD%EC%84%9C.pdf-1720082043276",
+          "content_type": "application/pdf",
+          "bytes": 80818,
+          "page_count": 1,
+          "sha256": "722d05f0d6a5ed7938f40e7f11c4e1a951ba6321ea3700f73697ff0deb1576cc"
+        },
+        {
+          "type": "profit_report",
+          "label": "수익보고서",
+          "url": "https://dbm9jhyrx0h6k.cloudfront.net/disclosure/2024/07/04/%EC%88%98%EC%9D%B5%EB%B3%B4%EA%B3%A0%EC%84%9C.pdf-1720082043276",
+          "content_type": "application/pdf",
+          "bytes": 86874,
+          "page_count": 1,
+          "sha256": "2ef77829bc8cd393697110adc7428aa8bba39d70188f12a66dbf335a8a47fd9e"
+        }
+      ]
+    },
+    {
+      "sequence": 6,
+      "record_id": "tessa:forum:1006292",
+      "disclosure_id": "1006292",
+      "template_family": "legacy_sale_krw",
+      "category": "수시공시",
+      "registration_timestamp": "2024-02-27 17:31:07",
+      "registration_timestamp_timezone": null,
+      "page_display_date": "2024-02-27",
+      "original_written_date": "2023-08-03",
+      "corrected": true,
+      "disclosure_title": "[대금 정산] 리우 예 - Angel 매각대금 정산 안내 (리우 예, 1964~ | Angel)(정정)",
+      "disclosure_url": "http://www.tessa.art/forum/view/1006292",
+      "asset": {
+        "product_code": "#0036",
+        "artist": "리우 예",
+        "edition_index": 1,
+        "title": "Angel"
+      },
+      "holding_period_days": 516,
+      "vote_date": "2023-06-12",
+      "sale_method": "매각투표에 따른 매각",
+      "initial_price": {
+        "label": "TESSA 판매 가격",
+        "amount_krw": 1190000000,
+        "total_units": 1190000,
+        "nominal_unit_price_krw": 1000
+      },
+      "sale_price": {
+        "label": "매각대금",
+        "amount": 1262999487,
+        "currency": "KRW",
+        "reference_foreign_amount": 1000000,
+        "reference_foreign_currency": "USD",
+        "net_after_expenses_amount": null,
+        "net_after_expenses_currency": null,
+        "final_sale_amount_krw": 1222826400,
+        "conversion_rate_krw_per_currency": null
+      },
+      "expenses": [
+        {"label": "경매수수료", "amount": null, "currency": "KRW", "raw_value": "-"},
+        {"label": "딜러수수료", "amount": 31574987, "currency": "KRW", "reference_foreign_amount": 25000, "reference_foreign_currency": "USD"},
+        {"label": "위탁수수료", "amount": null, "currency": "KRW", "raw_value": "-"},
+        {"label": "운송및보험", "amount": 8598100, "currency": "KRW"}
+      ],
+      "sale_profit": {
+        "label": "판매가 대비 상승액",
+        "amount_krw": 32826400,
+        "formula": "최종매각대금 - TESSA 판매 가격"
+      },
+      "sale_fee": {
+        "amount_krw": 1641320,
+        "formula": "판매가 대비 상승액 * 5%",
+        "note": "공시 본문은 마켓 서비스 중단 보상으로 매각 수수료 50% 감면이 적용됐다고 기재했습니다."
+      },
+      "settlement": {
+        "label": "지급 총액",
+        "amount_krw": 1221185080,
+        "total_units": 1190000,
+        "per_unit_krw": 1026.205949,
+        "per_unit_label": "1 분할 소유권당 지급액",
+        "per_unit_calculation_raw": "KRW 1026.205949",
+        "per_unit_report_raw": "1,026.205949 원 (세전 금액)",
+        "payment_method_raw": "앱 내 투표/정산 화면을 통한 현금 지급 (예치금에 산입)",
+        "recipient_fixed_date_label": "지급기준일",
+        "recipient_fixed_date": "2023-07-19",
+        "payout_date": "2023-08-03"
+      },
+      "source_reported_return_pct": 2.75,
+      "source_reported_return_basis": "원문 설명상 최종매각대금 기준. 산식과 소수점 처리 규칙은 미기재",
+      "source_reported_return_recalculation": {
+        "formula": "최종매각대금 / TESSA 판매 가격 - 1",
+        "arithmetic_pct": 2.7585210084033613,
+        "arithmetic_display": "2.758521%",
+        "difference_from_reported_pct_point": 0.008521008403361344,
+        "rounding_policy": "not_disclosed"
+      },
+      "calculated_settlement_return_pct": 2.6205949579831933,
+      "calculated_settlement_return_display": "+2.620595%",
+      "tax_note": "매각대금 안내문은 기타 소득세 적용과 정부 정책에 따른 변경 가능성을 기재했습니다.",
+      "corrections": [
+        {
+          "date": "2023-08-07",
+          "field": "지급기준일",
+          "before": "2023-07-21",
+          "after": "2023-07-19"
+        },
+        {
+          "date": "2023-08-11",
+          "field": "보유기간",
+          "before": "518일",
+          "after": "516일"
+        }
+      ],
+      "attachments": [
+        {
+          "type": "sale_details",
+          "label": "매각대금 내역",
+          "url": "https://dbm9jhyrx0h6k.cloudfront.net/service/1690956261116-7845e6b9-045a-46df-9d89-b4a9e8f7fc35.pdf",
+          "content_type": "application/pdf",
+          "bytes": 57774,
+          "page_count": 1,
+          "sha256": "e5a63cba3b8097ffb4f5dbf0fb5954078c97090682806dcc01ad3fb472a0cc68"
+        },
+        {
+          "type": "sale_notice_corrected",
+          "label": "매각대금 안내문 정정본",
+          "url": "https://dbm9jhyrx0h6k.cloudfront.net/service/1691401105697-890f17cc-df6e-406d-8588-3df53679ed31.pdf",
+          "content_type": "application/pdf",
+          "bytes": 63661,
+          "page_count": 1,
+          "sha256": "77e2ab1fc56270f872d6287f8d1679206a423e73474ed8e235705963ecb690b8"
+        }
+      ]
+    }
+  ]
+}
