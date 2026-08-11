@@ -8,7 +8,7 @@
  * - 익명화(발행사명·이력번호·지역)는 여기서 끝낸다 — 클라이언트로는 마스킹 결과만 나간다
  * - 판정 문구는 3값(일치 / 원장에서 확인되지 않음 / 확인 불가)만 쓰고 원인을 단정하지 않는다
  */
-import type { Verdict } from "../types";
+import type { ClaimKind, Verdict } from "../types";
 import {
   formatIsoDate,
   formatIsoDateShort,
@@ -164,7 +164,7 @@ const shortSourceName = (sources: readonly string[]): string => {
 const findJudgement = (
   judgements: readonly JudgementRecord[],
   subject: string,
-  kind: string,
+  kind: ClaimKind,
 ): JudgementRecord | undefined =>
   judgements.find((j) => j.claim.subject === subject && j.claim.kind === kind);
 

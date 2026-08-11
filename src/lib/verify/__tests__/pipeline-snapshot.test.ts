@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, test } from "vitest";
+import { hasLocalFile, rawXmlPath, SNAPSHOT_PATH, skipReason } from "./local-data";
 import { createFakeTraceAdapter } from "../adapters/livestock-trace-fake";
 import { runVerification } from "../pipeline";
 import { buildReport, reportFileName } from "../report/build";
@@ -8,8 +9,15 @@ import type { VerifyReport } from "../types";
 const RCP_NO = "20260806000159";
 const GENERATED_AT = "2026-08-12T00:00:00.000Z";
 
+/** 실측 회귀는 원문 XML과 이력제 스냅샷(둘 다 로컬 전용) 위에서만 성립한다 */
+const RAW_XML_PATH = rawXmlPath(RCP_NO);
+const hasLocalData = hasLocalFile(RAW_XML_PATH) && hasLocalFile(SNAPSHOT_PATH);
+const localDataNote = hasLocalData
+  ? ""
+  : skipReason(`${RAW_XML_PATH} / ${SNAPSHOT_PATH}`);
+
 const runFakePipeline = async (): Promise<VerifyReport> => {
-  const xml = readFileSync(`data/raw/${RCP_NO}/${RCP_NO}.xml`, "utf8");
+  const xml = readFileSync(RAW_XML_PATH, "utf8");
   const trace = await createFakeTraceAdapter();
   return runVerification({
     rcpNo: RCP_NO,
@@ -19,7 +27,9 @@ const runFakePipeline = async (): Promise<VerifyReport> => {
   });
 };
 
-describe("뱅카우 9호 완주 — 2026-08-10 실측 스냅샷 회귀", () => {
+describe.skipIf(!hasLocalData)(
+  `뱅카우 9호 완주 — 2026-08-10 실측 스냅샷 회귀 ${localDataNote}`,
+  () => {
   test("37두 중 36두 일치 · 학산 24호 1두 불일치 · 확인 불가 0두", async () => {
     // Act
     const report = await runFakePipeline();
@@ -43,7 +53,8 @@ describe("뱅카우 9호 완주 — 2026-08-10 실측 스냅샷 회귀", () => {
     expect(mismatches).toHaveLength(1);
     expect(mismatches[0].claim.subject).toBe("학산 24호");
     expect(mismatches[0].claim.kind).toBe("custody_location");
-    expect(mismatches[0].evidence[0].observed).toContain("포항");
+    // 실측 지명은 테스트에 박지 않는다 — 기재 광역(강원)과 다른 광역이면 된다
+    expect(mismatches[0].evidence[0].observed).not.toMatch(/^강원/);
     expect(mismatches[0].evidence[0].stance).toBe("contradicts");
   });
 
@@ -96,8 +107,9 @@ describe("뱅카우 9호 완주 — 2026-08-10 실측 스냅샷 회귀", () => {
       JSON.stringify(first.bySubject),
     );
     expect(JSON.stringify(second.summary)).toBe(JSON.stringify(first.summary));
-  });
-});
+    });
+  },
+);
 
 describe("리포트 조립", () => {
   test("판정 없이도 리포트는 만들어지고 집계는 0이다", () => {

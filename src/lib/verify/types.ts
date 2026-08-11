@@ -5,6 +5,7 @@
  * - 판정은 3값 유니언(일치/불일치/확인 불가)이며, **근거가 0건인 판정은 존재할 수 없다**
  * - claim은 문서 버전(rcpNo·제출일)을 축으로 가지며, 두 버전을 기계적으로 비교할 수 있다
  */
+import { assertRcpNo } from "./paths";
 
 /** 3값 판정 — 자료 부족은 절대 mismatch가 아니라 unverifiable이다. */
 export type Verdict = "match" | "mismatch" | "unverifiable";
@@ -260,10 +261,8 @@ export const diffClaims = (
   };
 };
 
-/** 접수번호(YYYYMMDD + 일련번호)에서 제출일을 도출한다. */
+/** 접수번호(YYYYMMDD + 일련번호)에서 제출일을 도출한다. 형식 가드는 paths.ts가 단일 소스다. */
 export const submittedOnFromRcpNo = (rcpNo: string): string => {
-  if (!/^\d{14}$/.test(rcpNo)) {
-    throw new Error(`접수번호 형식이 올바르지 않습니다: ${rcpNo}`);
-  }
-  return `${rcpNo.slice(0, 4)}-${rcpNo.slice(4, 6)}-${rcpNo.slice(6, 8)}`;
+  const checked = assertRcpNo(rcpNo);
+  return `${checked.slice(0, 4)}-${checked.slice(4, 6)}-${checked.slice(6, 8)}`;
 };

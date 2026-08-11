@@ -37,6 +37,16 @@ yarn-error.log*
 # vercel
 .vercel
 
+# 개인정보 포함 원천 데이터 — 로컬 전용 (git 커밋 금지)
+#   raw       : DART 신고서 원문 (농장 상세주소·개체 식별자)
+#   snapshots : 이력제 API 실측 응답 (농장주 실명 farmerNm·상세주소 farmAddr)
+#   reports   : 내부 판정 리포트 (농장번호·상세주소)
+# 커밋 대상은 data/MANIFEST.md(재확보 안내)와 data/public/(마스킹 완료 공개 리포트)뿐이다.
+# 재확보: npm run verify:collect -- <rcpNo> · npm run verify -- --rcpNo <rcpNo> (상세는 data/MANIFEST.md)
+data/raw/
+data/snapshots/
+data/reports/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

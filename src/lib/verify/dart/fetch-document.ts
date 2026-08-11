@@ -10,6 +10,7 @@
 import { mkdir, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { unzipSync } from "fflate";
+import { assertRcpNo, rawDataDir } from "../paths";
 
 const DART_DOCUMENT_ENDPOINT = "https://opendart.fss.or.kr/api/document.xml";
 
@@ -22,16 +23,19 @@ export interface FetchedDocument {
   readonly files: readonly string[];
 }
 
+/** 접수번호 가드를 통과한 원문 디렉토리 — 경로 조립의 유일한 통로 */
 export const rawDocumentDir = (rcpNo: string, dataDir = "data"): string =>
-  path.join(dataDir, "raw", rcpNo);
+  rawDataDir(rcpNo, dataDir);
 
 /** 로컬에 이미 받아둔 원문 xml 파일 목록 (없으면 빈 배열) */
 export const listRawDocuments = async (
   rcpNo: string,
   dataDir = "data",
 ): Promise<readonly string[]> => {
+  // 가드는 try 밖에서 — 형식 위반을 "파일 없음"으로 삼키지 않는다
+  const dir = rawDocumentDir(rcpNo, dataDir);
   try {
-    const entries = await readdir(rawDocumentDir(rcpNo, dataDir));
+    const entries = await readdir(dir);
     return entries.filter((name) => name.toLowerCase().endsWith(".xml")).sort();
   } catch {
     return [];
@@ -54,7 +58,7 @@ export const fetchDocumentZip = async (
   apiKey: string,
   fetchImpl: typeof fetch = fetch,
 ): Promise<Readonly<Record<string, Uint8Array>>> => {
-  const url = `${DART_DOCUMENT_ENDPOINT}?crtfc_key=${encodeURIComponent(apiKey)}&rcept_no=${encodeURIComponent(rcpNo)}`;
+  const url = `${DART_DOCUMENT_ENDPOINT}?crtfc_key=${encodeURIComponent(apiKey)}&rcept_no=${encodeURIComponent(assertRcpNo(rcpNo))}`;
   const response = await fetchImpl(url);
   if (!response.ok) {
     throw new Error(`DART HTTP ${response.status} ${response.statusText}`);
@@ -77,6 +81,7 @@ export const collectRawDocument = async (
     readonly fetchImpl?: typeof fetch;
   } = {},
 ): Promise<FetchedDocument> => {
+  assertRcpNo(rcpNo);
   const dataDir = options.dataDir ?? "data";
   const dir = rawDocumentDir(rcpNo, dataDir);
 

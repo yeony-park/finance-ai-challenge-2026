@@ -4,6 +4,7 @@
  * 스냅샷이 곧 회귀 기준이다 (36두 일치 · 학산 24호 불일치).
  */
 import { readFile } from "node:fs/promises";
+import { z } from "zod";
 import {
   TRACE_ENDPOINT,
   TRACE_SOURCE_ID,
@@ -17,34 +18,61 @@ import {
 export const DEFAULT_SNAPSHOT_PATH =
   "data/snapshots/2026-08-10-bankcow9-37head-trace.json";
 
-interface SnapshotFarm {
-  readonly regYmd?: string;
-  readonly regType?: string;
-  readonly farmNo?: string;
-  readonly farmerNm?: string;
-  readonly farmAddr?: string;
-}
+/**
+ * 스냅샷 경계 스키마 — 파일도 "외부에서 들어오는 JSON"이다.
+ * `claims/schema.ts`·`report/snapshot.ts`와 같은 원칙으로, 모양이 어긋나면 즉시 실패한다
+ * (조용히 undefined가 퍼져 가짜 "확인 불가"를 만드는 것을 막는다).
+ * 스냅샷에는 분석용 필드가 더 있지만 zod가 걷어낸다 — 어댑터가 쓰는 필드만 계약이다.
+ */
+const optionalText = z.string().nullish();
 
-interface SnapshotVerdict {
-  readonly docTraceNo9: string;
-  readonly queriedTraceNo12: string;
-  readonly apiCattleNo15?: string;
-  readonly exists: boolean;
-  readonly birthYmd?: string;
-  readonly lsTypeNm?: string;
-  readonly sexNm?: string;
-  readonly currentFarmNo?: string;
-  readonly farmHistory?: readonly SnapshotFarm[];
-  readonly slaughtered?: boolean;
-  readonly vaccinationCount?: number;
-  readonly lastVaccination?: { readonly injectionYmd?: string };
-  readonly brucellosis?: { readonly inspectYn?: string };
-}
+const snapshotFarmSchema = z.object({
+  regYmd: optionalText,
+  regType: optionalText,
+  farmNo: optionalText,
+  farmerNm: optionalText,
+  farmAddr: optionalText,
+});
 
-interface Snapshot {
-  readonly generatedAt: string;
-  readonly verdicts: readonly SnapshotVerdict[];
-}
+const snapshotVerdictSchema = z.object({
+  docTraceNo9: z.string().min(1),
+  queriedTraceNo12: z.string().min(1),
+  apiCattleNo15: optionalText,
+  exists: z.boolean(),
+  birthYmd: optionalText,
+  lsTypeNm: optionalText,
+  sexNm: optionalText,
+  currentFarmNo: optionalText,
+  farmHistory: z.array(snapshotFarmSchema).nullish(),
+  slaughtered: z.boolean().nullish(),
+  vaccinationCount: z.number().nullish(),
+  lastVaccination: z.object({ injectionYmd: optionalText }).nullish(),
+  brucellosis: z.object({ inspectYn: optionalText }).nullish(),
+});
+
+const snapshotSchema = z.object({
+  generatedAt: z.string().min(1),
+  verdicts: z.array(snapshotVerdictSchema),
+});
+
+type SnapshotFarm = z.infer<typeof snapshotFarmSchema>;
+type SnapshotVerdict = z.infer<typeof snapshotVerdictSchema>;
+
+/** 검증된 스냅샷만 돌려준다. 형식이 어긋나면 사람이 읽을 수 있는 오류로 실패한다. */
+export const parseTraceSnapshot = (
+  raw: unknown,
+  source: string,
+): z.infer<typeof snapshotSchema> => {
+  const parsed = snapshotSchema.safeParse(raw);
+  if (!parsed.success) {
+    const reason = parsed.error.issues
+      .slice(0, 3)
+      .map((issue) => `${issue.path.join(".") || "(root)"}: ${issue.message}`)
+      .join("; ");
+    throw new Error(`이력제 스냅샷 형식이 올바르지 않습니다 (${source}) — ${reason}`);
+  }
+  return parsed.data;
+};
 
 const toFarm = (farm: SnapshotFarm): FarmRegistration => ({
   regYmd: farm.regYmd ?? "",
@@ -90,7 +118,7 @@ export const createFakeTraceAdapter = async (
   snapshotPath: string = DEFAULT_SNAPSHOT_PATH,
 ): Promise<LivestockTraceAdapter> => {
   const raw = await readFile(snapshotPath, "utf8");
-  const snapshot = JSON.parse(raw) as Snapshot;
+  const snapshot = parseTraceSnapshot(JSON.parse(raw), snapshotPath);
   const observedAt = new Date(snapshot.generatedAt).toISOString();
   const byTraceNo = new Map(
     snapshot.verdicts.map((verdict) => [verdict.docTraceNo9, verdict]),

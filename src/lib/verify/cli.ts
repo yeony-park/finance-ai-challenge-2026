@@ -7,8 +7,10 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { resolveLivestockTraceAdapter } from "./adapters/livestock-trace-fake";
 import { listRawDocuments, rawDocumentDir } from "./dart/fetch-document";
+import { assertRcpNo } from "./paths";
 import { runVerification } from "./pipeline";
 import { writeReport } from "./report/build";
+import { writePublicReport } from "./report/public-report";
 import type { VerifyReport } from "./types";
 
 const DEFAULT_RCP_NO = "20260806000159";
@@ -25,7 +27,8 @@ const parseArgs = (argv: readonly string[]): CliOptions => {
     return index >= 0 ? argv[index + 1] : undefined;
   };
   return {
-    rcpNo: valueOf("--rcpNo") ?? DEFAULT_RCP_NO,
+    // CLI 인자는 곧 파일 경로가 된다 — 파싱 즉시 형식을 검증한다
+    rcpNo: assertRcpNo(valueOf("--rcpNo") ?? DEFAULT_RCP_NO),
     forceFake: argv.includes("--fake"),
     dataDir: valueOf("--dataDir") ?? "data",
   };
@@ -35,6 +38,7 @@ const loadRawXml = async (
   rcpNo: string,
   dataDir: string,
 ): Promise<string> => {
+  assertRcpNo(rcpNo);
   const files = await listRawDocuments(rcpNo, dataDir);
   const first = files[0];
   if (!first) {
@@ -48,7 +52,10 @@ const loadRawXml = async (
   return readFile(path.join(rawDocumentDir(rcpNo, dataDir), first), "utf8");
 };
 
-const printSummary = (report: VerifyReport, file: string): void => {
+const printSummary = (
+  report: VerifyReport,
+  files: { readonly internal: string; readonly published: string },
+): void => {
   const heads = report.bySubject;
   const count = (verdict: string) =>
     heads.filter((head) => head.verdict === verdict).length;
@@ -72,7 +79,8 @@ const printSummary = (report: VerifyReport, file: string): void => {
   }
 
   for (const note of report.notes) console.log(`  note: ${note}`);
-  console.log(`\n리포트 저장: ${file}`);
+  console.log(`\n내부 리포트 저장(로컬 전용): ${files.internal}`);
+  console.log(`공개 리포트 저장(마스킹·커밋 대상): ${files.published}`);
 };
 
 const main = async (): Promise<void> => {
@@ -87,8 +95,10 @@ const main = async (): Promise<void> => {
     xml,
     trace,
   });
-  const file = await writeReport(report, options.dataDir);
-  printSummary(report, file);
+  // 내부 리포트(개인정보 포함·로컬 전용) → data/reports, 공개 리포트(마스킹) → data/public
+  const internal = await writeReport(report, options.dataDir);
+  const published = await writePublicReport(report, options.dataDir);
+  printSummary(report, { internal, published });
 };
 
 main().catch((error: unknown) => {

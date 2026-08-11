@@ -17,9 +17,9 @@ const claim = (
   value: string,
   over: Partial<Claim> = {},
 ): Claim => ({
-  id: `${kind}:학산 1호`,
+  id: `${kind}:검증 1호`,
   kind,
-  subject: "학산 1호",
+  subject: "검증 1호",
   field: kind,
   value,
   document: DOC,
@@ -42,16 +42,16 @@ const record = (over: Partial<LivestockTraceRecord> = {}): LivestockTraceRecord 
       regYmd: "20260730",
       regType: "양수",
       farmNo: "485464",
-      farmerName: "[비식별화]",
-      farmAddress: "[비식별화]",
+      farmerName: "김검증",
+      farmAddress: "강원특별자치도 검증군 가상읍 가상로90번길",
     },
   ],
   currentFarm: {
     regYmd: "20260730",
     regType: "양수",
     farmNo: "485464",
-    farmerName: "[비식별화]",
-    farmAddress: "[비식별화]",
+    farmerName: "김검증",
+    farmAddress: "강원특별자치도 검증군 가상읍 가상로90번길",
   },
   slaughtered: false,
   vaccinationCount: 1,
@@ -76,7 +76,7 @@ describe("판정 엔진", () => {
       claim("livestock_trace_no", "212786152"),
       claim("livestock_breed", "한우"),
       claim("livestock_sex", "수"),
-      claim("custody_location", "강원도 횡성군횡성읍"),
+      claim("custody_location", "강원도 검증군가상읍"),
       claim("acquisition_date", "2026-07-14"),
     ];
 
@@ -122,7 +122,7 @@ describe("판정 엔진", () => {
 
   test("보관장소 행정구역이 다르면 mismatch", async () => {
     const outcome = await judgeClaims(
-      [claim("livestock_trace_no", "212786152"), claim("custody_location", "강원도 횡성군횡성읍")],
+      [claim("livestock_trace_no", "212786152"), claim("custody_location", "강원도 검증군가상읍")],
       {
         trace: stubAdapter(
           record({
@@ -130,8 +130,8 @@ describe("판정 엔진", () => {
               regYmd: "20260105",
               regType: "전산등록",
               farmNo: "387221",
-              farmerName: "[비식별화]",
-              farmAddress: "[비식별화]",
+              farmerName: "박합성",
+              farmAddress: "경상북도 검증시 남구 가상읍 가상로4391번길",
             },
           }),
         ),
@@ -166,8 +166,8 @@ describe("판정 엔진", () => {
                 regYmd: "20260105",
                 regType: "전산등록",
                 farmNo: "387221",
-                farmerName: "[비식별화]",
-                farmAddress: "경상북도 포항시 남구 구룡포읍",
+                farmerName: "박합성",
+                farmAddress: "경상북도 검증시 남구 가상읍",
               },
             ],
           }),
@@ -229,6 +229,61 @@ describe("판정 엔진", () => {
 
 describe("행정구역 토큰 추출", () => {
   test("시·군·구와 읍·면·동만 뽑는다", () => {
-    expect(locationTokens("강원도 횡성군횡성읍")).toEqual(["횡성군", "횡성읍"]);
+    expect(locationTokens("강원도 검증군가상읍")).toEqual(["검증군", "가상읍"]);
+  });
+});
+
+/**
+ * 개체 수만큼 외부 API를 호출하므로 순차 실행은 느리고, 무제한 병렬은 쿼터를 위협한다.
+ * 상한 있는 동시 배치가 이 두 조건을 동시에 만족하는지 고정한다.
+ */
+describe("원장 조회 동시성", () => {
+  const traceClaims = (count: number): readonly Claim[] =>
+    Array.from({ length: count }, (_, index) =>
+      claim("livestock_trace_no", `21278615${index % 10}`, {
+        id: `livestock_trace_no:검증 ${index + 1}호`,
+        subject: `검증 ${index + 1}호`,
+      }),
+    );
+
+  const countingAdapter = (
+    state: { inFlight: number; peak: number; order: string[] },
+  ): LivestockTraceAdapter => ({
+    name: "fake",
+    sourceId: "livestock-trace",
+    sourceName: "축산물이력제(stub)",
+    url: "http://example.test/trace",
+    lookup: async (traceNo: string) => {
+      state.inFlight += 1;
+      state.peak = Math.max(state.peak, state.inFlight);
+      state.order.push(traceNo);
+      await new Promise((resolve) => setTimeout(resolve, 1));
+      state.inFlight -= 1;
+      return record();
+    },
+  });
+
+  test("동시 호출 수가 상한(4)을 넘지 않는다", async () => {
+    // Arrange
+    const state = { inFlight: 0, peak: 0, order: [] as string[] };
+
+    // Act
+    await judgeClaims(traceClaims(12), { trace: countingAdapter(state) });
+
+    // Assert
+    expect(state.order).toHaveLength(12);
+    expect(state.peak).toBeGreaterThan(1); // 순차가 아니다
+    expect(state.peak).toBeLessThanOrEqual(4);
+  });
+
+  test("동시 조회를 해도 판정 순서는 입력 순서를 따른다 (결정성)", async () => {
+    const state = { inFlight: 0, peak: 0, order: [] as string[] };
+    const outcome = await judgeClaims(traceClaims(8), {
+      trace: countingAdapter(state),
+    });
+
+    expect(outcome.judgements.map((j) => j.claim.subject)).toEqual(
+      Array.from({ length: 8 }, (_, index) => `검증 ${index + 1}호`),
+    );
   });
 });

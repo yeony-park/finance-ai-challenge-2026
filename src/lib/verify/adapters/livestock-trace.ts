@@ -11,6 +11,7 @@
  * 5. 이력번호는 어댑터 진입점에서 12자리로 정규화 (신고서 기재는 9자리)
  */
 import { XMLParser } from "fast-xml-parser";
+import { z } from "zod";
 
 export const TRACE_ENDPOINT =
   "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch";
@@ -105,15 +106,38 @@ const text = (value: unknown): string | undefined => {
   return raw.length > 0 ? raw : undefined;
 };
 
-const property = (source: unknown, key: string): unknown =>
-  source && typeof source === "object"
-    ? (source as Record<string, unknown>)[key]
-    : undefined;
+/**
+ * 응답 경계 스키마 — 외부에서 들어오는 XML도 zod 게이트를 통과해야 한다.
+ * 항목 자체는 infoType별로 필드가 제각각(선택 필드는 태그가 아예 없음)이라
+ * 레코드 단위로만 검증하고, 필드 해석은 정규화 단계가 담당한다.
+ *
+ * 형식이 어긋나면 "개체 없음"으로 흘려보내지 않고 실패시킨다 —
+ * 서비스 장애 응답(HTML·오류 XML)이 조용히 "확인 불가"로 둔갑하는 것을 막는다.
+ */
+const traceItemSchema = z.record(z.string(), z.unknown());
+
+const traceResponseSchema = z.object({
+  response: z.object({
+    // <items/> (빈 응답)은 문자열로 파싱된다 — 미존재 이력번호의 정상 응답이다
+    body: z.object({
+      items: z
+        .union([z.object({ item: z.array(traceItemSchema) }), z.string()])
+        .nullish(),
+    }),
+  }),
+});
 
 const readItems = (parsed: unknown): readonly Record<string, unknown>[] => {
-  const body = property(property(parsed, "response"), "body");
-  const items = property(property(body, "items"), "item");
-  return Array.isArray(items) ? (items as Record<string, unknown>[]) : [];
+  const result = traceResponseSchema.safeParse(parsed);
+  if (!result.success) {
+    const reason = result.error.issues
+      .slice(0, 2)
+      .map((issue) => `${issue.path.join(".") || "(root)"}: ${issue.message}`)
+      .join("; ");
+    throw new Error(`축산물이력제 응답 형식을 인식할 수 없습니다 — ${reason}`);
+  }
+  const items = result.data.response.body.items;
+  return typeof items === "object" && items !== null ? items.item : [];
 };
 
 const toFarmRegistration = (

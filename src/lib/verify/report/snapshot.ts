@@ -115,5 +115,6 @@ export const parseReportSnapshot = (raw: unknown): ReportSnapshot => {
       .join("; ");
     throw new Error(`리포트 스냅샷 형식이 올바르지 않습니다 — ${reason}`);
   }
-  return parsed.data as ReportSnapshot;
+  // `as` 단언이 아니라 `satisfies` — zod 스키마와 엔진 계약(types.ts)이 어긋나면 컴파일이 깨진다
+  return parsed.data satisfies ReportSnapshot;
 };

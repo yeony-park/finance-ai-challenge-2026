@@ -1,6 +1,6 @@
 /**
  * 홈 — 검증 엔진 산출 리포트를 바인딩한 데모 화면 (S0.4).
- * Server Component가 최신 스냅샷(data/reports/{offerId}/report-*.json)을 읽어
+ * Server Component가 최신 공개 리포트(data/public/{offerId}/report-*.json · 마스킹 완료)를 읽어
  * 뷰 모델로 변환한 뒤 클라이언트 컴포넌트에 props로 넘긴다. 클라이언트 fetch 없음.
  * S3에서 `/offers/[id]`로 라우트를 분리할 때 이 로딩 경로를 그대로 옮긴다.
  */

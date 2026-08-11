@@ -11,8 +11,12 @@ const VISIBLE_DIGITS = 2;
 const MASK_CHAR = "●";
 const REGION_MASK = "○○";
 
-/** 이력번호를 "21●●●●●79" 형태로 가린다. */
+/**
+ * 이력번호를 "21●●●●●79" 형태로 가린다.
+ * 이미 마스킹된 문자열은 그대로 돌려준다 — 저장된 공개 리포트에 뷰가 재적용해도 안전해야 한다(멱등).
+ */
 export const maskTraceNo = (raw: string): string => {
+  if (raw.includes(MASK_CHAR)) return raw;
   const digits = raw.replace(/\D/g, "");
   if (digits.length <= VISIBLE_DIGITS * 2) {
     return MASK_CHAR.repeat(digits.length);
@@ -64,12 +68,19 @@ export const maskFreeText = (raw: string): string =>
     .replace(LONG_DIGITS_PATTERN, (digits) => maskTraceNo(digits))
     .replace(REGION_TOKEN_PATTERN, (_match, suffix: string) => `${REGION_MASK}${suffix}`);
 
+/** maskRegion이 이미 내놓은 형태 — "강원 ○○군" / "강원 ○○" / "○○ 지역" */
+const MASKED_REGION_PATTERN = new RegExp(
+  `^([가-힣]{2} )?${REGION_MASK}( ?[시군구]| 지역)?$`,
+);
+
 /**
  * 주소를 "강원 ○○군" 수준으로 가린다.
  * 번지·농장번호·읍면동 등 개체를 특정할 수 있는 뒷부분은 아예 버린다.
+ * 이미 마스킹된 문자열은 그대로 돌려준다(멱등) — 저장된 공개 리포트에 뷰가 재적용하기 때문이다.
  */
 export const maskRegion = (raw: string): string => {
   const text = raw.trim();
+  if (MASKED_REGION_PATTERN.test(text)) return text;
   for (const sido of SIDO_TABLE) {
     const matched = sido.names.find((name) => text.startsWith(name));
     if (!matched) continue;

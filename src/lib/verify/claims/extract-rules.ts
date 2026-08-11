@@ -20,6 +20,7 @@ import {
   traceNo9Schema,
   type GateResult,
 } from "./schema";
+import { buildSexIndex, detectSex, type SexIndexTarget } from "./sex-index";
 
 /**
  * 개체 명세표를 식별하는 헤더 시그니처.
@@ -35,12 +36,9 @@ const HEAD_TABLE_SIGNATURE = [
 const SECTION = "8. 기초자산 취득에 관한 사항";
 const TABLE_NAME = "기초자산 개체 명세표";
 
-/** 산문에 적힌 성별 — "한우 송아지(숫소)" 같은 서술에서 규칙으로 읽는다 */
-const SEX_PATTERNS: readonly (readonly [RegExp, string])[] = [
-  [/송아지\s*\(\s*숫소\s*\)/, "수"],
-  [/송아지\s*\(\s*암소\s*\)/, "암"],
-  [/거세우/, "거세"],
-];
+/** 개체 행에서 성별을 읽지 못했을 때 남기는 강등 사유 */
+const SEX_NOT_FOUND =
+  "개체 행에서 성별 서술을 찾지 못했습니다 (문서 전체 서술은 개체에 전파하지 않습니다)";
 
 export interface ClaimDemotion {
   readonly claimId: string;
@@ -94,13 +92,6 @@ const buildClaim = (
   };
 };
 
-const detectSex = (xml: string): string | undefined => {
-  for (const [pattern, value] of SEX_PATTERNS) {
-    if (pattern.test(xml)) return value;
-  }
-  return undefined;
-};
-
 const rowSpecs = (
   cells: readonly string[],
   columns: Readonly<Record<string, number>>,
@@ -145,14 +136,16 @@ const rowSpecs = (
     },
   ];
 
-  if (sexRaw !== undefined) {
-    specs.splice(2, 0, {
-      kind: "livestock_sex",
-      field: "성별",
-      raw: sexRaw,
-      gated: gate(sexSchema, sexRaw),
-    });
-  }
+  // 성별은 개체마다 붙이되, 그 행에서 읽지 못했으면 그 행만 확인 불가로 강등한다
+  specs.splice(2, 0, {
+    kind: "livestock_sex",
+    field: "성별",
+    raw: sexRaw ?? "",
+    gated:
+      sexRaw === undefined
+        ? { ok: false, reason: SEX_NOT_FOUND }
+        : gate(sexSchema, sexRaw),
+  });
   return specs;
 };
 
@@ -198,28 +191,48 @@ export const extractClaims = (
 
   const table = candidates[0];
   const columns = columnMap(table);
-  const sexRaw = detectSex(xml);
-  if (sexRaw === undefined) {
-    notes.push("원문 산문에서 성별 서술을 찾지 못해 성별 claim을 생략했습니다.");
-  }
+
+  // 개체 행 목록을 먼저 확정한 뒤, 성별을 개체 행 단위로 찾는다
+  const heads = table.rows
+    .map((cells, offset) => ({ cells, row: offset + 1 }))
+    .filter(({ cells }) => isHeadRow((cells[columns.label] ?? "").trim(), cells))
+    .map(({ cells, row }) => ({
+      cells,
+      row,
+      subject: (cells[columns.label] ?? "").trim(),
+      traceNoRaw: (cells[columns.trace] ?? "").trim(),
+    }));
+
+  const sexTargets: readonly SexIndexTarget[] = heads.map(
+    ({ subject, traceNoRaw }) => ({ subject, traceNoRaw }),
+  );
+  const sexIndex = buildSexIndex(tables, sexTargets);
 
   const claims: Claim[] = [];
   const demotions: ClaimDemotion[] = [];
 
-  table.rows.forEach((cells, offset) => {
-    const subject = (cells[columns.label] ?? "").trim();
-    if (!isHeadRow(subject, cells)) return;
+  for (const head of heads) {
+    // 행 안에 성별 서술이 있으면 그것이 우선, 없으면 다른 표에서 같은 개체를 가리킨 행에서 읽는다
+    const sexRaw =
+      detectSex(head.cells.join(" ")) ?? sexIndex.get(head.subject);
 
-    // 격자 행 번호는 헤더(0행) 다음부터 1-base
-    const row = offset + 1;
-    for (const spec of rowSpecs(cells, columns, sexRaw)) {
-      const claim = buildClaim(spec, subject, document, row);
+    for (const spec of rowSpecs(head.cells, columns, sexRaw)) {
+      const claim = buildClaim(spec, head.subject, document, head.row);
       claims.push(claim);
       if (!spec.gated.ok) {
         demotions.push({ claimId: claim.id, reason: spec.gated.reason });
       }
     }
-  });
+  }
+
+  const sexMissing = claims.filter(
+    (claim) => claim.kind === "livestock_sex" && claim.verifiability === "unparsed",
+  ).length;
+  if (sexMissing > 0) {
+    notes.push(
+      `개체 행에서 성별 서술을 찾지 못한 ${sexMissing}건은 확인 불가로 강등했습니다 (문서 전체 서술은 개체에 전파하지 않습니다).`,
+    );
+  }
 
   if (claims.length === 0) {
     notes.push("개체 명세표에서 유효한 개체 행을 찾지 못했습니다.");
