@@ -58,6 +58,18 @@
   color: inherit;
   letter-spacing: inherit;
 }
+/* 화면에는 없지만 스크린리더·문서 구조에는 남아야 하는 제목 */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
 .root :focus-visible {
   outline: 2px solid var(--f-brand);
   outline-offset: 2px;
@@ -717,70 +729,7 @@
   margin-right: 4px;
 }
 
-/* ── ② 가격 위치: 분포 차트 ────────────────── */
-.chartCap {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 14px;
-}
-.chartT {
-  font-weight: 700;
-  font-size: 14.5px;
-}
-.chartS {
-  font-size: 11.5px;
-  color: var(--f-faint);
-}
-.bars {
-  display: flex;
-  flex-direction: column;
-  gap: 9px;
-}
-.brow {
-  display: grid;
-  grid-template-columns: 42px 1fr;
-  gap: 10px;
-  align-items: center;
-}
-.browG {
-  font-size: 12.5px;
-  font-weight: 700;
-  text-align: right;
-  color: var(--f-sub);
-  font-variant-numeric: tabular-nums;
-}
-.btrack {
-  position: relative;
-  height: 22px;
-}
-.baseline {
-  position: absolute;
-  inset: -3px auto -3px 0;
-  width: 1.5px;
-  background: var(--f-line);
-}
-.bfill {
-  position: absolute;
-  inset: 3px auto 3px 0;
-  border-radius: 999px;
-}
-.bval {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 12px;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  color: var(--f-ink);
-  white-space: nowrap;
-}
-.bval small {
-  color: var(--f-faint);
-  font-weight: 500;
-  margin-left: 4px;
-}
+/* ── ② 가격 위치 ──────────────────────────── */
 .priceNote {
   margin-top: 16px;
   padding: 13px 15px;
@@ -792,10 +741,6 @@
 }
 .priceNote b {
   color: var(--f-ink);
-}
-.priceOk {
-  color: var(--f-good);
-  font-weight: 700;
 }
 
 /* ── ③ 이행 이력 ──────────────────────────── */
@@ -854,7 +799,7 @@
   border-radius: 16px;
   padding: 22px;
 }
-.alertCard h4 {
+.alertCard h3 {
   margin: 0 0 6px;
   font-weight: 700;
   font-size: 16px;
