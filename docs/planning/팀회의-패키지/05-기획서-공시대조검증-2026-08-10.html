@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>조각투자 공시 대조 검증 — 제품 기획서 v2 (2026-08-10)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700;900&family=Noto+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F4F5F2; --card:#FFFFFF; --ink:#1C2431; --ink-soft:#5A6472;
+    --line:#DBDED6; --hl:#FFE14D; --hl-soft:#FFF4BE;
+    --danger:#B93A32; --danger-soft:#F7E5E3; --ok:#2F7A5B; --ok-soft:#E3EFE9;
+    --serif:'Noto Serif KR','Apple SD Gothic Neo',serif;
+    --sans:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    --mono:'IBM Plex Mono','SF Mono',Consolas,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.75;-webkit-font-smoothing:antialiased;}
+  .page{max-width:880px;margin:0 auto;padding:0 24px 96px;}
+  .topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0;
+    border-bottom:1.5px solid var(--ink);font-family:var(--mono);font-size:12px;letter-spacing:.04em;
+    color:var(--ink-soft);flex-wrap:wrap;}
+  .topbar strong{color:var(--ink);font-weight:500;}
+  .hero{padding:64px 0 8px;}
+  .eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.14em;color:var(--danger);text-transform:uppercase;margin-bottom:18px;}
+  h1{font-family:var(--serif);font-weight:900;font-size:clamp(30px,5.2vw,46px);line-height:1.34;letter-spacing:-.015em;margin-bottom:20px;}
+  .hl{background:linear-gradient(180deg,transparent 58%,var(--hl) 58%);padding:0 2px;}
+  .lede{font-size:17px;color:var(--ink-soft);max-width:660px;line-height:1.85;}
+  .lede b{color:var(--ink);font-weight:700;}
+  .meta{margin-top:26px;border-top:1px solid var(--line);padding-top:14px;font-size:13.5px;color:var(--ink-soft);line-height:2;}
+  .meta b{color:var(--ink);font-weight:500;}
+  section{margin-top:76px;}
+  .art{font-family:var(--mono);font-size:12.5px;letter-spacing:.14em;color:var(--ink-soft);margin-bottom:8px;}
+  h2{font-family:var(--serif);font-weight:700;font-size:clamp(22px,3.2vw,27px);line-height:1.4;margin-bottom:8px;}
+  .sec-lede{color:var(--ink-soft);font-size:15.5px;max-width:660px;margin-bottom:24px;}
+  .sec-lede b{color:var(--ink);}
+  .tag{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.05em;
+    padding:1px 8px;border-radius:2px;margin-right:8px;position:relative;top:-1px;white-space:nowrap;}
+  .t-fact{color:var(--ok);border:1px solid var(--ok);background:var(--ok-soft);}
+  .t-dec{color:#24496E;border:1px solid #24496E;background:#E3ECF5;}
+  .t-inf{color:var(--danger);border:1px solid var(--danger);background:var(--danger-soft);}
+  .para{font-size:15px;line-height:1.9;margin-bottom:16px;max-width:720px;}
+  .para b{font-weight:700;}
+  .src{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);}
+  .doc-card{background:var(--card);border:1px solid var(--line);box-shadow:0 2px 14px rgba(28,36,49,.06);padding:26px 28px;margin-top:22px;}
+  .doc-card h3{font-family:var(--serif);font-size:17.5px;margin-bottom:12px;}
+  .doc-card p{font-size:14.5px;color:var(--ink-soft);line-height:1.85;}
+  .doc-card p b{color:var(--ink);}
+  .doc-card + .doc-card{margin-top:14px;}
+  .refs{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);border-top:1px solid var(--line);margin-top:14px;padding-top:10px;line-height:1.9;}
+  ul.plain{list-style:none;max-width:720px;}
+  ul.plain li{padding:9px 0 9px 26px;border-bottom:1px solid var(--line);font-size:14.5px;line-height:1.75;position:relative;}
+  ul.plain li::before{content:"—";position:absolute;left:2px;color:var(--ink-soft);}
+  ul.plain li b{font-weight:700;}
+  table{width:100%;border-collapse:collapse;margin-top:18px;font-size:14px;}
+  th{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;color:var(--ink-soft);font-weight:500;
+    text-align:left;padding:8px 12px;border-bottom:1.5px solid var(--ink);}
+  td{padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.7;}
+  td b{font-weight:700;}
+  .t-wrap{overflow-x:auto;}
+  mark{background:var(--hl);padding:1px 3px;box-decoration-break:clone;-webkit-box-decoration-break:clone;}
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:18px 0 4px;}
+  .flow span{font-family:var(--mono);font-size:12px;background:var(--card);border:1px solid var(--line);padding:6px 12px;border-radius:2px;}
+  .flow .sep{border:0;background:none;color:var(--ink-soft);padding:0 2px;}
+  .check{border-top:1.5px solid var(--ink);max-width:100%;}
+  .check-row{display:grid;grid-template-columns:28px 230px 1fr;gap:16px;padding:15px 0;border-bottom:1px solid var(--line);align-items:baseline;}
+  .tick{width:20px;height:20px;border-radius:50%;background:var(--ok-soft);color:var(--ok);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;position:relative;top:3px;}
+  .tick.warn{background:var(--danger-soft);color:var(--danger);}
+  .check-row .req{font-weight:700;font-size:14.5px;line-height:1.6;}
+  .check-row .ans{font-size:14.5px;color:var(--ink-soft);line-height:1.75;}
+  .check-row .ans b{color:var(--ink);font-weight:500;}
+  @media (max-width:640px){.check-row{grid-template-columns:28px 1fr;}.check-row .ans{grid-column:2;}}
+  .foot{margin-top:88px;padding-top:16px;border-top:1.5px solid var(--ink);
+    font-family:var(--mono);font-size:12px;color:var(--ink-soft);line-height:2;}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="topbar">
+    <span><strong>조각투자 공시 대조 검증</strong> · 제품 기획서 v2</span>
+    <span>작성 기준일 2026-08-10 KST</span>
+  </div>
+
+  <div class="hero">
+    <p class="eyebrow">Product Brief · MVP</p>
+    <h1>공시는 제출에서 끝나지만,<br>투자는 <span class="hl">제출 이후</span>에 일어난다</h1>
+    <p class="lede">
+      발행사가 증권신고서에 공시한 주장을 국가 공공 데이터와 자동 대조하고, 제출 이후의 변화를
+      지속 재검증하는 <b>독립 검증 레이어</b>. 확인 불가능했던 공시 검증을 청약 전 3초~5분으로
+      단축하고, 문서가 바뀌면 다시 검증해 알린다.
+    </p>
+    <div class="meta">
+      <b>문서 성격</b> · 제품 방향과 범위를 정리한 기획 문서 — 구현 완료 문서가 아님<br>
+      <b>대상 독자</b> · 팀 전원 (2026 금융 AI Challenge 출품, 1차 제출 9/7 · 팀 목표 9/5)<br>
+      <b>본문 표기</b> · <span class="tag t-fact">팩트</span>확인된 사실
+      <span class="tag t-dec">제품 결정</span>합의·확정한 사항
+      <span class="tag t-inf">추론</span>사실로부터의 해석 — 사실과 구분해 읽을 것
+    </div>
+  </div>
+
+  <section>
+    <p class="art">제1항 — 배경</p>
+    <h2>공시가 이제 막 전수로 생겨나는 시장</h2>
+    <p class="para">
+      <span class="tag t-fact">팩트</span>조각투자는 4년간 규제 샌드박스 특례로 운영됐다. 공시는
+      플랫폼 자체 채널에 흩어져 있었고, 그 채널에는 무결성 보장이 없었으며, 플랫폼이 사라지면
+      공시 채널도 함께 사라졌다 — 2026년에만 샌드박스 사업자 6곳 중 2곳(카사·펀블)이 인가
+      미취득으로 폐업했고, 카사는 2026-08-10 서비스를 종료했다.
+    </p>
+    <p class="para">
+      <span class="tag t-fact">팩트</span><mark>2026-07-28 대통령령 제36543호</mark>로 조각투자
+      증권신고서 제출이 전면 의무화됐다(소액공모 특례에서 조각투자증권만 배제). 이제 모든 공모의
+      주장이 전자공시(DART)라는 불변 원장에 쌓이기 시작한다 — 한번 접수된 문서는 교체할 수 없고,
+      정정은 새 문서로만 가능하다. 장외거래소 2개사 예비인가(2026-02), 토큰증권법 시행(2027-02)이
+      뒤따른다.
+      <span class="src">근거 · law.go.kr 자본시장법 시행령 개정이력 · 금융위 2026-02-13</span>
+    </p>
+    <p class="para">
+      <span class="tag t-inf">추론</span>시장은 작다(유통 4사 2024년 연 거래 145억 원). 그러나
+      공시 의무화 다음에는 그 진위를 검증하는 계층이 별도 산업으로 분화한다 — EU에서 지속가능성
+      공시 의무화(CSRD) 이후 제3자 검증 시장이 평가 시장보다 빠르게 성장한 선례가 있다.
+      검증 인프라를 세울 수 있게 된 최초의 시점이 지금이다.
+    </p>
+  </section>
+
+  <section>
+    <p class="art">제2항 — 문제</p>
+    <h2>공시는 제출에서 끝난다 — 대조도, 감시도 없다</h2>
+    <p class="para">
+      <span class="tag t-fact">팩트</span><b>대조 공백.</b> 공시된 주장(개체 이력번호·공모가·
+      자금용도)이 사실인지 확인하려면 수십 페이지 비정형 문서를 읽고 공공 데이터를 수작업으로
+      대조해야 하며, 그 비용이 투자금을 초과한다. 이를 대신하는 제3자는 국내 0곳(혁신금융
+      1,112건 중 제3자 검증 지정 0건), 비유동 실물자산 기준으로는 해외에도 확인되지 않는다.
+    </p>
+    <p class="para">
+      <span class="tag t-fact">팩트</span><b>감시 공백.</b> 신고서는 제출 후에도 계속 변한다.
+      정정 시 "정정 전후 대비표"가 법정 서식으로 붙지만, <mark>발행인이 지정한 항목만 수록된다</mark> —
+      실제 정정신고서에 발행인이 직접 명시한다: "제2부 발행인에 관한 사항에는 정정사항을 본문의
+      색깔 표시 없이 반영하였으며, 정오표를 별도로 기재하지 않았습니다"(요약정보 동일). DART에는
+      버전 비교 기능이 없고, 공시 밖 사실(가축 원장·실거래가)의 변화는 애초에 정정 의무 대상이
+      아니다.
+      <span class="src">근거 · DART 투게더아트 정정신고서 원문 직접 열람 (rcpNo 20260512000391)</span>
+    </p>
+    <p class="para">
+      <span class="tag t-fact">팩트</span>실사용자 전수조사(4개 자산군, 앱리뷰·커뮤니티·언론)에서
+      확인된 최강 실증이 정확히 이 지점이다: 청약 때 있던 '매입확약' 문구가 청약 종료 후 정정공시
+      없이 사라진 것을 <b>투자자가 우연히 발견</b>했고(비즈한국 단독 보도, 2024-11 — 샌드박스기
+      자체 공시 채널), 정산 지연 공지를 <b>"앱을 뒤져보다 우연히 발견"</b>했다(ZDNet 2022).
+      두 번 모두 '우연히'다 — 도구가 없기 때문이다.
+    </p>
+  </section>
+
+  <section>
+    <p class="art">제3항 — 발단</p>
+    <h2>손으로 직접 해봤더니, 일상의 문제였다</h2>
+    <div class="doc-card">
+      <h3>실측 ① — 첫 대조에서 불일치가 나왔다</h3>
+      <p>
+        청약을 앞둔 한우 투자계약증권(청약 8/27 개시)의 신고서에 기재된 개체 37두를 국가 축산물
+        이력 원장과 실호출로 대조했다. 결과 — <b>36두는 전 항목 일치, 1두는 소유권 이전 기록
+        없이 다른 농장 소재로 기록.</b> 서비스를 만들기 전 첫 수작업 대조에서 실제 불일치가
+        발견됐다. 원인(등록 지연·오기 등)은 단정하지 않는다 — 그러나 "확인해볼 가치"는 실증됐다.
+      </p>
+      <div class="refs">근거 · data/snapshots/2026-08-10-bankcow9-37head-trace.json (스냅샷 보존)</div>
+    </div>
+    <div class="doc-card">
+      <h3>실측 ② — 정정은 예외가 아니라 관행이었다</h3>
+      <p>
+        전자공시 API로 투자계약증권 공시 전수(2023~2026)를 집계했다. <b>98건 중 정정이
+        64건(65%), 공모당 평균 2.4회.</b> 표본 11건의 대비표를 판독한 결과 정정 내용의 다수가
+        공모가격 결정 방법·기초자산 가격 산정 근거·투자위험 등 판단 직결 사항이었고, 금융감독원
+        요구에 의한 정정도 포함돼 있었다. 한 발행사는 작품 가격 산정 근거를 2주 새 세 번
+        고쳤다. <b>공시는 "한 번 읽고 끝나는 문서"가 아니라 계속 변하는 살아있는 문서인데,
+        그 변화를 지켜보는 눈이 시장에 없다.</b>
+      </p>
+      <div class="refs">근거 · OpenDART 공시검색 C005·C010 전수 자체 집계 + 표본 11건 원문 판독 (방법론 병기)</div>
+    </div>
+  </section>
+
+  <section>
+    <p class="art">제4항 — 해결</p>
+    <h2>보존 → 대조 → 감시 → 알림, 공시의 생애주기를 지키는 검증 레이어</h2>
+    <p class="para">
+      <span class="tag t-dec">제품 결정</span>이 제품은 일회성 검증 리포트 발급기가 아니라
+      공시의 생애주기 전체를 다루는 검증 레이어다. 심사자와 투자자가 보는 것은 "특정 시점의
+      검증"이 아니라 <b>"지금 이 순간까지 유효한 검증"</b>이다.
+    </p>
+    <ul class="plain">
+      <li><b>보존</b> — 모든 공시 버전을 스냅샷으로 저장한다. 발행사·플랫폼이 사라져도 검증 기록은 남는다.</li>
+      <li><b>대조</b> — 주장을 3층위로 검증한다: ① 실재 확인(개체·자산 ↔ 국가 원장) ② 가격 위치(공모가 ↔ 시장 실거래 분포) ③ 이행 이력(발행사 트랙레코드 — 예상 vs 실제, 손실 포함).</li>
+      <li><b>감시(정정 재검증)</b> — 정정신고서가 접수되면 <b>같은 검증 엔진을 다시 실행</b>한다. 알림에는 사실 2가지만 담는다: 변경된 항목의 나열, 그리고 재검증 결과 판정의 유지/변동. <b>중요·안 중요의 등급은 매기지 않는다</b> — 단정 금지 원칙의 확장이다. 발행인이 대비표에 올리지 않은 변경도 전체 문서 비교로 잡는다.</li>
+      <li><b>알림 + 리플레이</b> — 관심 공모의 변동을 알리고, 과거의 발견 과정을 스냅샷 diff로 재생한다. 심사 기간 중 실제 변동이 없어도 기능을 증명할 수 있다.</li>
+    </ul>
+    <p class="para" style="margin-top:14px;">
+      <span class="tag t-dec">제품 결정</span>AI의 역할 경계 — AI는 비정형 신고서에서 검증 가능한
+      주장을 추출하고, 검증 가능성을 판별하고, 눈높이 서술을 작성한다(4종 태깅:
+      [확인된 사실]/[발행사 주장]/[계산]/[AI 해석]). <b>판정 자체는 결정론적 대조가 수행한다.</b>
+      추출은 규칙 파서와 교차검증하며 불일치 필드는 확인 불가로 강등 — 환각이 판정에 닿지 않는
+      구조.
+    </p>
+  </section>
+
+  <section>
+    <p class="art">제5항 — 핵심 사용자</p>
+    <h2>청약을 검토 중이지만 신고서를 검증할 수단이 없는 개인 투자자</h2>
+    <ul class="plain">
+      <li><b>주 사용자</b> — 조각투자 공모 청약 검토 투자자. 트리거는 신규 공모 공고·청약 개시, 채널은 웹. 이용 목적은 탐색·기초 검토 비용 절감. <span class="src">출처 · 2026-08-10 인뎁스 인터뷰</span></li>
+      <li><b>차기(로드맵)</b> — 보유 중 투자자의 자산 변동 추적.</li>
+      <li><b>대상 아님</b> — 투자 추천을 원하는 사용자(판정만 제공, 권유·자문 없음), B2B/B2G(확장 항목 서술만 — 최종 인수 주체는 금융기관 리스크·컴플라이언스 부서).</li>
+    </ul>
+  </section>
+
+  <section>
+    <p class="art">제6항 — 범위와 비범위</p>
+    <h2>MVP가 하는 것과 하지 않는 것</h2>
+    <div class="doc-card">
+      <h3>포함 범위 (MVP)</h3>
+      <p>
+        <b>1 · 검증 리포트 2축</b> — 한우 투자계약증권 라이브 검증(청약 8/27~9/10이 심사 접속
+        기간 9/7~11과 겹침) + 부동산 수익증권 사후 검증(예상값·실제값 분리 표기).<br>
+        <b>2 · 3초 판정 첫 화면</b> — 판정 집계 → 개체 카드 → 상세 → 근거 원문의 단계 공개.
+        접속 즉시 불일치 사례로 드릴다운되는 동선.<br>
+        <b>3 · 눈높이 서술 2프리셋</b> — 초보/숙련 토글, 사전 생성·캐싱, 자유 입력 없음.<br>
+        <b>4 · 정정 재검증 + 관심 공모 알림</b> — 위 제4항의 감시 기능. 리플레이 포함.<br>
+        <b>5 · 익명화 기본</b> — 발행사명·이력번호·지역 마스킹. 실명 전환은 팀 결정 전까지 없음.
+      </p>
+    </div>
+    <div class="doc-card">
+      <h3>포함하지 않는 범위</h3>
+      <p>
+        자유 대화형 챗봇 / 상품 추천·자문·적정성 단정 / <b>정정의 중대성 등급(A~D류) 부여</b>
+        — 사실 대조에서 평가로 넘어가는 선을 넘지 않는다 / 미술품·항공기 엔진 자산군(공개 대조
+        데이터 미확보 — 로드맵) / 자연어 검색·상품 등급(로드맵) / 플랫폼 웹 크롤링(공시 API만
+        사용).
+      </p>
+      <div class="refs">범위 결정 근거 · 자문 평결 4회(필요성·방향성·기획서 항목·정정 재검증) + 재구조화안 통합 검토. 최종 합의는 팀 회의에서.</div>
+    </div>
+  </section>
+
+  <section>
+    <p class="art">제7항 — 핵심 사용자 흐름</p>
+    <h2>접속에서 판단까지, 그리고 그 이후까지</h2>
+    <div class="flow">
+      <span>접속</span><span class="sep">→</span>
+      <span>공모 선택</span><span class="sep">→</span>
+      <span>3초 판정 (36 일치 · 1 미확인)</span><span class="sep">→</span>
+      <span>개체 카드 · 근거 원문 병치</span><span class="sep">→</span>
+      <span>사용자가 직접 판단</span><span class="sep">→</span>
+      <span>관심 등록 · 정정 시 재검증 알림</span>
+    </div>
+    <p class="para" style="margin-top:14px;">
+      <span class="tag t-dec">제품 결정</span>서비스는 판단을 대신하지 않는다. 판정은
+      일치/원장에서 확인되지 않음/확인 불가 3값뿐이고, 근거 없는 판정은 코드 수준에서 생성이
+      차단되며, 자료 부족은 부정 판정의 사유가 아니다. 모든 판정에 원문 위치와 조회 시각이
+      붙는다.
+    </p>
+  </section>
+
+  <section>
+    <p class="art">제8항 — 데이터 출처</p>
+    <h2>전부 무료·자동승인 공공 데이터, 크롤링 없음</h2>
+    <div class="t-wrap"><table>
+      <tr><th>출처</th><th>용도</th><th>확인 상태</th></tr>
+      <tr><td>전자공시(DART) 공시검색·원문</td><td>신고서 원문 + 정정 계보 수집</td><td>실증 완료 — 전수 98건 집계, 원문 11건 판독</td></tr>
+      <tr><td>축산물이력제 (data.go.kr)</td><td>① 실재 확인</td><td><b>실호출 검증 완료</b> — 37두 대조, 자동승인</td></tr>
+      <tr><td>축산물등급판정정보</td><td>② 가격 위치 (경락가)</td><td><b>실호출 검증 완료</b> — 일 한도 캐싱 전제</td></tr>
+      <tr><td>국토부 실거래가</td><td>② 가격 위치 (부동산)</td><td>자동승인 — 비교군 충분성 이번 주 실측</td></tr>
+    </table></div>
+  </section>
+
+  <section>
+    <p class="art">제9항 — 일정</p>
+    <h2>9월 5일 제출 기준 역산</h2>
+    <div class="t-wrap"><table>
+      <tr><th>구간</th><th>기간</th><th>완료 기준</th></tr>
+      <tr><td><b>1 · 검증 엔진</b></td><td>8/11 – 8/18</td><td>한우 공모 1건이 신고서 입력→추출→3층위 대조→근거 리포트를 명령 한 번으로 완주, 8/10 실측(36/37) 재현. 정정 재검증용 문서 버전 축 포함</td></tr>
+      <tr><td><b>2 · 분석 코어</b></td><td>8/19 – 8/26</td><td>부동산 사후 검증 + 추출 정확도 측정 + 트랙레코드 집계</td></tr>
+      <tr><td><b>3 · 제품화</b></td><td>8/27 – 9/1</td><td>심사자 시나리오 5분 내 무안내 완주 — 팀 외 5인 테스트</td></tr>
+      <tr><td><b>4 · 제출 준비</b></td><td>9/2 – 9/5</td><td>배포·부하 테스트, 자체 레드팀, 기획서·기능명세서 PDF, <b>9/5 제출</b></td></tr>
+      <tr><td>심사 접속</td><td>9/7 – 9/11</td><td>무중단 — API 장애 시 스냅샷 모드 자동 전환(기준일 표시)</td></tr>
+    </table></div>
+    <p class="para" style="margin-top:16px;">
+      <span class="tag t-fact">팩트</span>검증 대상 공모의 청약(8/27–9/10)이 심사 접속 기간과
+      겹치고, 정정 관행(공모당 2.4회)상 그 사이 정정신고서가 접수될 확률이 높다. 정정이 뜨면
+      <b>정정 재검증이 실전으로 작동하는 장면</b>을 심사자가 직접 본다. 안 떠도 리플레이(실데이터
+      소재 확보됨)로 기능을 증명한다.
+    </p>
+  </section>
+
+  <section>
+    <p class="art">제10항 — 미확정 항목</p>
+    <h2>아직 정하지 않은 것 — 임의로 확정하지 않는다</h2>
+    <div class="check">
+      <div class="check-row"><span class="tick warn">!</span><span class="req">서비스 명칭</span>
+        <span class="ans">가칭 사용 중 — 팀 회의에서 결정</span></div>
+      <div class="check-row"><span class="tick warn">!</span><span class="req">실명 표시 여부</span>
+        <span class="ans">익명화가 기본. 실명 전환(트랙레코드 포함)은 법적 검토 의견 포함 팀 결정</span></div>
+      <div class="check-row"><span class="tick warn">!</span><span class="req">정정 알림의 법적 검토</span>
+        <span class="ans">"변경 항목 나열"이 자문 해석 여지를 남기는지 — 은행 현직자 포함 검토</span></div>
+      <div class="check-row"><span class="tick warn">!</span><span class="req">첫 화면 상세 설계</span>
+        <span class="ans">"3초 판정 → 드릴다운" 와이어프레임 — 이번 주 확정 목표</span></div>
+      <div class="check-row"><span class="tick warn">!</span><span class="req">코드베이스 수렴</span>
+        <span class="ans">기존 프로토타입과 본진 저장소의 통합 방안 — 살릴 자산 목록 포함</span></div>
+      <div class="check-row"><span class="tick warn">!</span><span class="req">추출 정확도 목표치</span>
+        <span class="ans">골드셋 라벨 착수 후 확정 — 임의 숫자를 넣지 않는다</span></div>
+    </div>
+  </section>
+
+  <div class="foot">
+    조각투자 공시 대조 검증 · 제품 기획서 v2 · 2026-08-10 KST<br>
+    상세 근거 — docs/research/공시감시공백-드릴다운-2026-08-10.md ·
+    docs/research/사용자후기-전수조사-2026-08-10.md ·
+    docs/research/시장반론방어-마켓리서치-2026-08-10.md ·
+    docs/planning/council-평결-3차·4차-2026-08-10.md ·
+    .claude/prds/disclosure-verification.prd.md (v1.2)<br>
+    이 문서는 기획 문서이며, 완료 여부는 실제 구현과 검증 결과로 판정한다.
+  </div>
+
+</div>
+</body>
+</html>
