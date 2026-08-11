@@ -9,10 +9,15 @@
     "lint": "eslint",
     "test:watch": "vitest",
     "redteam": "tsx src/lib/spine/redteam/cli.ts",
+    "verify": "tsx src/lib/verify/cli.ts",
+    "verify:live": "tsx --env-file-if-exists=.env src/lib/verify/cli.ts",
+    "verify:collect": "tsx --env-file-if-exists=.env src/lib/verify/dart/collect-cli.ts",
     "test": "vitest run"
   },
   "dependencies": {
     "ai": "^7.0.44",
+    "fast-xml-parser": "^5.10.1",
+    "fflate": "^0.8.3",
     "next": "16.2.12",
     "react": "19.2.4",
     "react-dom": "19.2.4",

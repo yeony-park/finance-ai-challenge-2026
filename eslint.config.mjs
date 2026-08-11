@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // 프로젝트 소스가 아닌 ECC 도구 스크립트
+    ".claude/**",
   ]),
 ]);
 
