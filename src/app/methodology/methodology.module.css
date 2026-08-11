@@ -1,0 +1,250 @@
+/*
+ * 검증 방법 — 읽는 문서에 가까운 지면.
+ * 랜딩보다 좁은 단, 넉넉한 행간, 좌측 규칙선으로 절(節)을 나눈다.
+ */
+
+.wrap {
+  width: 100%;
+  max-width: var(--ds-maxw-narrow);
+  margin: 0 auto;
+  padding-inline: var(--ds-gutter);
+}
+
+.header {
+  padding-block: clamp(2.5rem, 1.6rem + 4vw, 5rem) var(--ds-section-y-tight);
+  border-bottom: 1px solid var(--ds-line);
+}
+.eyebrow {
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  letter-spacing: var(--ds-tracking-wide);
+  text-transform: uppercase;
+  color: var(--ds-ink-faint);
+}
+.title {
+  margin-top: var(--ds-space-3);
+  font-size: var(--ds-title-lg);
+  font-weight: var(--ds-weight-black);
+  letter-spacing: var(--ds-tracking-tight);
+  line-height: var(--ds-leading-tight);
+  word-break: keep-all;
+}
+.lead {
+  margin-top: var(--ds-space-4);
+  max-width: var(--ds-maxw-prose);
+  color: var(--ds-ink-muted);
+  font-size: var(--ds-text-lg);
+  line-height: var(--ds-leading-relaxed);
+  word-break: keep-all;
+}
+
+.body {
+  padding-block: var(--ds-section-y-tight) var(--ds-section-y);
+  display: grid;
+  gap: var(--ds-space-9);
+}
+
+.section {
+  display: grid;
+  gap: var(--ds-space-4);
+}
+.sectionTitle {
+  font-size: var(--ds-title-md);
+  font-weight: var(--ds-weight-bold);
+  letter-spacing: var(--ds-tracking-tight);
+  line-height: var(--ds-leading-snug);
+  word-break: keep-all;
+}
+.sectionTitle::before {
+  content: "";
+  display: block;
+  width: 2.5rem;
+  height: 3px;
+  margin-bottom: var(--ds-space-4);
+  background: var(--ds-accent);
+  border-radius: 2px;
+}
+.paragraph {
+  max-width: var(--ds-maxw-prose);
+  color: var(--ds-ink-muted);
+  font-size: var(--ds-text-md);
+  line-height: var(--ds-leading-relaxed);
+  word-break: keep-all;
+}
+.paragraph strong {
+  color: var(--ds-ink);
+  font-weight: var(--ds-weight-bold);
+}
+
+/* 층위 목록 — 번호가 순서를 말하게 둔다 */
+.layerList {
+  display: grid;
+  gap: var(--ds-space-5);
+  counter-reset: layer;
+}
+.layerItem {
+  display: grid;
+  gap: var(--ds-space-2);
+  padding-left: var(--ds-space-6);
+  border-left: 1px solid var(--ds-line);
+  position: relative;
+}
+.layerItem::before {
+  counter-increment: layer;
+  content: "0" counter(layer);
+  position: absolute;
+  left: 0;
+  transform: translateX(-50%);
+  padding-block: 0.15rem;
+  background: var(--ds-bg);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  color: var(--ds-ink-faint);
+}
+.layerTitle {
+  font-size: var(--ds-text-lg);
+  font-weight: var(--ds-weight-bold);
+  letter-spacing: var(--ds-tracking-snug);
+  word-break: keep-all;
+}
+.layerNote {
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  color: var(--ds-ink-faint);
+  line-height: 1.7;
+}
+
+/* 데이터 출처 표 — 좁은 화면에서는 가로 스크롤을 자기 상자 안에서 처리한다 */
+.tableScroll {
+  overflow-x: auto;
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-surface);
+}
+.table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  font-size: var(--ds-text-sm);
+}
+.table th,
+.table td {
+  padding: var(--ds-space-4);
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--ds-line);
+  word-break: keep-all;
+}
+.table tbody tr:last-child th,
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+.table thead th {
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  letter-spacing: var(--ds-tracking-wide);
+  text-transform: uppercase;
+  color: var(--ds-ink-faint);
+  font-weight: var(--ds-weight-regular);
+  background: var(--ds-bg-muted);
+}
+.table tbody th {
+  font-weight: var(--ds-weight-bold);
+  color: var(--ds-ink);
+}
+.table td {
+  color: var(--ds-ink-muted);
+}
+
+/* 판정 3값 정의 */
+.verdictList {
+  display: grid;
+  gap: var(--ds-space-3);
+}
+.verdictItem {
+  display: grid;
+  gap: var(--ds-space-2);
+  padding: var(--ds-space-5);
+  border-radius: var(--ds-radius-lg);
+  border: 1px solid var(--ds-line);
+}
+.verdictMatch {
+  border-color: var(--ds-verdict-match-line);
+  background: var(--ds-verdict-match-soft);
+}
+.verdictMiss {
+  border-color: var(--ds-verdict-miss-line);
+  background: var(--ds-verdict-miss-soft);
+}
+.verdictUnknown {
+  border-color: var(--ds-verdict-unknown-line);
+  background: var(--ds-verdict-unknown-soft);
+}
+.verdictTerm {
+  font-size: var(--ds-text-md);
+  font-weight: var(--ds-weight-bold);
+  letter-spacing: var(--ds-tracking-snug);
+  word-break: keep-all;
+}
+.verdictDesc {
+  font-size: var(--ds-text-sm);
+  color: var(--ds-ink-muted);
+  line-height: var(--ds-leading-relaxed);
+  word-break: keep-all;
+}
+
+/* 원칙·한계 목록 */
+.ruleList {
+  display: grid;
+  gap: var(--ds-space-4);
+  max-width: var(--ds-maxw-prose);
+}
+.ruleItem {
+  display: grid;
+  gap: var(--ds-space-1);
+}
+.ruleTerm {
+  font-size: var(--ds-text-md);
+  font-weight: var(--ds-weight-bold);
+  word-break: keep-all;
+}
+.ruleDesc {
+  color: var(--ds-ink-muted);
+  font-size: var(--ds-text-sm);
+  line-height: var(--ds-leading-relaxed);
+  word-break: keep-all;
+}
+
+.callout {
+  padding: var(--ds-space-5);
+  border-left: 3px solid var(--ds-ink);
+  background: var(--ds-bg-muted);
+  border-radius: 0 var(--ds-radius-md) var(--ds-radius-md) 0;
+  font-size: var(--ds-text-sm);
+  line-height: var(--ds-leading-relaxed);
+  word-break: keep-all;
+}
+.callout strong {
+  font-weight: var(--ds-weight-bold);
+}
+
+.backLink {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+  padding: 0.55rem 1rem;
+  border: 1px solid var(--ds-line-strong);
+  border-radius: var(--ds-radius-pill);
+  color: var(--ds-ink);
+  font-size: var(--ds-text-sm);
+  font-weight: var(--ds-weight-medium);
+  text-decoration: none;
+  transition:
+    background-color var(--ds-duration-base) var(--ds-ease),
+    border-color var(--ds-duration-base) var(--ds-ease);
+}
+.backLink:hover {
+  background: var(--ds-bg-sunken);
+  border-color: var(--ds-ink);
+}
