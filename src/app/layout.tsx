@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, Noto_Sans_KR, Noto_Serif_KR } from "next/font/google";
 
+import { MotionProvider } from "@/components/motion/MotionProvider";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SERVICE_DEFINITION, SERVICE_NAME, SERVICE_ROLE } from "@/components/site/service";
@@ -60,15 +61,22 @@ export default function RootLayout({
       className={`${sansKr.variable} ${serifKr.variable} ${plexMono.variable} antialiased`}
     >
       <body>
-        <a href="#content" className={s.skipLink}>
-          본문으로 건너뛰기
-        </a>
-        <SiteHeader />
-        {/* 모든 라우트가 같은 본문 랜드마크를 공유한다 — 건너뛰기 링크의 목적지 */}
-        <main id="content" className={s.main}>
-          {children}
-        </main>
-        <SiteFooter />
+        {/* 스크립트가 없으면 스크롤 리빌이 영영 오지 않는다 — 그때는 처음부터 보여 준다 */}
+        <noscript>
+          <style>{`.ds-reveal-pending{opacity:1}`}</style>
+        </noscript>
+        {/* 모션 런타임 경계 — DOM을 만들지 않는다. 셸의 마크업·시각은 그대로다 */}
+        <MotionProvider>
+          <a href="#content" className={s.skipLink}>
+            본문으로 건너뛰기
+          </a>
+          <SiteHeader />
+          {/* 모든 라우트가 같은 본문 랜드마크를 공유한다 — 건너뛰기 링크의 목적지 */}
+          <main id="content" className={s.main}>
+            {children}
+          </main>
+          <SiteFooter />
+        </MotionProvider>
       </body>
     </html>
   );

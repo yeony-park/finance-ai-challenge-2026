@@ -4,6 +4,7 @@
  */
 import Link from "next/link";
 
+import { Reveal } from "@/components/motion/Reveal";
 import { FEATURED_OFFER_HREF } from "@/components/site/service";
 import type { DemoView, TallyView } from "@/lib/verify/report/view-model";
 
@@ -18,7 +19,7 @@ const TONE_CLASS: Record<TallyView["tone"], string> = {
 export function ReportsSection({ view }: { view: DemoView }) {
   return (
     <section id="reports" className={`${s.section} ${s.sectionMuted}`} aria-labelledby="reports-title">
-      <div className={s.wrap}>
+      <Reveal className={s.wrap}>
         <div className={s.sectionHead}>
           <p className={s.eyebrow}>검증 리포트</p>
           <h2 id="reports-title" className={s.sectionTitle}>
@@ -74,7 +75,7 @@ export function ReportsSection({ view }: { view: DemoView }) {
             </p>
           </article>
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }

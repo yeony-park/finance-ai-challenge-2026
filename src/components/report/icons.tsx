@@ -1,49 +1,13 @@
 /**
- * 데모 화면 전용 스트로크 아이콘 세트.
- * 스프라이트 대신 컴포넌트로 관리한다 — 트리셰이킹과 타입 안전을 위해.
+ * 리포트 화면 스트로크 아이콘 — 데모 화면에서 실제로 쓰이던 것만 옮겨 왔다.
+ * 스프라이트 대신 컴포넌트로 두는 이유는 트리셰이킹과 타입 안전 때문이다.
+ * 굵기·마감은 report.module.css의 .ic가 정한다.
  */
 import type { SVGProps } from "react";
 
 type IconProps = SVGProps<SVGSVGElement> & { className?: string };
 
-export function IconCrosscheck(props: IconProps) {
-  return (
-    <svg viewBox="0 0 16 16" aria-hidden="true" {...props}>
-      <path d="M2.2 5.6a5.9 5.9 0 0 1 11.1-1M13.8 10.4a5.9 5.9 0 0 1-11.1 1" />
-      <path d="M13.6 1.6v3h-3M2.4 14.4v-3h3M5.4 8.3 7.3 10l3.3-3.7" />
-    </svg>
-  );
-}
-
-export function IconEartag(props: IconProps) {
-  return (
-    <svg viewBox="0 0 20 20" aria-hidden="true" {...props}>
-      <path d="M6 2.5h8a1.5 1.5 0 0 1 1.5 1.5v3.2L10 17.5 4.5 7.2V4A1.5 1.5 0 0 1 6 2.5Z" />
-      <circle cx="10" cy="5.4" r="1.15" />
-      <path d="M7.4 9.2h5.2" />
-    </svg>
-  );
-}
-
-export function IconBuilding(props: IconProps) {
-  return (
-    <svg viewBox="0 0 20 20" aria-hidden="true" {...props}>
-      <path d="M4 17.5V4.2A1.2 1.2 0 0 1 5.2 3h6.1a1.2 1.2 0 0 1 1.2 1.2v13.3M12.5 7.5H15a1.2 1.2 0 0 1 1.2 1.2v8.8M2.5 17.5h15" />
-      <path d="M6.6 6h1.6M6.6 9h1.6M6.6 12h1.6M9.8 6h.9M9.8 9h.9M9.8 12h.9" />
-    </svg>
-  );
-}
-
-export function IconPig(props: IconProps) {
-  return (
-    <svg viewBox="0 0 20 20" aria-hidden="true" {...props}>
-      <path d="M3.4 8.2C4.6 5.7 7.1 4.2 10 4.2s5.4 1.5 6.6 4c.5 1.1.5 2.5 0 3.6-1.2 2.5-3.7 4-6.6 4s-5.4-1.5-6.6-4a4.3 4.3 0 0 1 0-3.6Z" />
-      <ellipse cx="10" cy="10" rx="2.6" ry="2.1" />
-      <path d="M9.1 10h.01M10.9 10h.01M4.6 5.9 3.2 4.3M15.4 5.9l1.4-1.6" />
-    </svg>
-  );
-}
-
+/** 신고서 원문 위치 */
 export function IconDoc(props: IconProps) {
   return (
     <svg viewBox="0 0 16 16" aria-hidden="true" {...props}>
@@ -53,6 +17,7 @@ export function IconDoc(props: IconProps) {
   );
 }
 
+/** 국가 원장 조회 */
 export function IconDb(props: IconProps) {
   return (
     <svg viewBox="0 0 16 16" aria-hidden="true" {...props}>
@@ -62,6 +27,7 @@ export function IconDb(props: IconProps) {
   );
 }
 
+/** 재검증·되돌아봄 */
 export function IconUndo(props: IconProps) {
   return (
     <svg viewBox="0 0 16 16" aria-hidden="true" {...props}>
@@ -71,6 +37,7 @@ export function IconUndo(props: IconProps) {
   );
 }
 
+/** 일치 */
 export function IconCheck(props: IconProps) {
   return (
     <svg viewBox="0 0 16 16" aria-hidden="true" {...props}>
@@ -79,6 +46,7 @@ export function IconCheck(props: IconProps) {
   );
 }
 
+/** 기록 항목 */
 export function IconList(props: IconProps) {
   return (
     <svg viewBox="0 0 16 16" aria-hidden="true" {...props}>
@@ -88,6 +56,7 @@ export function IconList(props: IconProps) {
   );
 }
 
+/** 알림 */
 export function IconBell(props: IconProps) {
   return (
     <svg viewBox="0 0 16 16" aria-hidden="true" {...props}>
@@ -96,6 +65,7 @@ export function IconBell(props: IconProps) {
   );
 }
 
+/** 정직 표기 */
 export function IconInfo(props: IconProps) {
   return (
     <svg viewBox="0 0 16 16" aria-hidden="true" {...props}>
@@ -106,6 +76,7 @@ export function IconInfo(props: IconProps) {
   );
 }
 
+/** 원장에서 확인되지 않은 항목 */
 export function IconAlert(props: IconProps) {
   return (
     <svg viewBox="0 0 16 16" aria-hidden="true" {...props}>
@@ -116,14 +87,7 @@ export function IconAlert(props: IconProps) {
   );
 }
 
-export function IconArrow(props: IconProps) {
-  return (
-    <svg viewBox="0 0 16 16" aria-hidden="true" {...props}>
-      <path d="M2.5 8h10M9 4.5 12.9 8 9 11.5" />
-    </svg>
-  );
-}
-
+/** 리플레이 재생 */
 export function IconPlay(props: IconProps) {
   return (
     <svg viewBox="0 0 12 12" aria-hidden="true" {...props}>

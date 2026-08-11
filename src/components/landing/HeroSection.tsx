@@ -5,6 +5,7 @@
  */
 import Link from "next/link";
 
+import { Pressable } from "@/components/motion/Pressable";
 import { RichText } from "@/components/site/RichText";
 import { FEATURED_OFFER_HREF } from "@/components/site/service";
 import type { DemoView, TallyView } from "@/lib/verify/report/view-model";
@@ -53,44 +54,47 @@ export function HeroSection({ view }: { view: DemoView }) {
           </div>
         </div>
 
-        <article className={s.featured} aria-labelledby="featured-title">
-          <div className={s.featuredTop}>
-            <span className={s.featuredTag}>{view.offer.tag}</span>
-            <span className={s.badgeAccent}>대표 검증 리포트</span>
-          </div>
+        {/* 카드 전체가 리포트로 가는 큰 버튼이다 — 큰 면적일수록 배율을 낮춘다 */}
+        <Pressable hover={1.01} tap={0.99}>
+          <article className={s.featured} aria-labelledby="featured-title">
+            <div className={s.featuredTop}>
+              <span className={s.featuredTag}>{view.offer.tag}</span>
+              <span className={s.badgeAccent}>대표 검증 리포트</span>
+            </div>
 
-          <h2 id="featured-title" className={s.featuredTitle}>
-            {view.offer.title}
-          </h2>
+            <h2 id="featured-title" className={s.featuredTitle}>
+              {view.offer.title}
+            </h2>
 
-          {/* dt(용어)가 마크업 순서상 앞이어야 한다 — 수치를 위로 올리는 건 CSS order */}
-          <dl className={s.tallies}>
-            {view.verdict.tallies.map((tally) => (
-              <div key={tally.label} className={s.tally}>
-                <dt className={s.tallyLabel}>{tally.label}</dt>
-                <dd className={`${s.tallyValue} ${TONE_CLASS[tally.tone]}`}>{tally.value}</dd>
-              </div>
-            ))}
-          </dl>
+            {/* dt(용어)가 마크업 순서상 앞이어야 한다 — 수치를 위로 올리는 건 CSS order */}
+            <dl className={s.tallies}>
+              {view.verdict.tallies.map((tally) => (
+                <div key={tally.label} className={s.tally}>
+                  <dt className={s.tallyLabel}>{tally.label}</dt>
+                  <dd className={`${s.tallyValue} ${TONE_CLASS[tally.tone]}`}>{tally.value}</dd>
+                </div>
+              ))}
+            </dl>
 
-          <p className={s.featuredSummary}>
-            <RichText parts={view.verdict.oneLiner.easy} strongClassName={s.summaryStrong} />
-          </p>
-
-          <div className={s.featuredFoot}>
-            <p className={s.featuredMeta}>
-              {view.verdict.eyebrow}
-              <br />
-              {view.verdict.when}
+            <p className={s.featuredSummary}>
+              <RichText parts={view.verdict.oneLiner.easy} strongClassName={s.summaryStrong} />
             </p>
-            <Link href={FEATURED_OFFER_HREF} className={s.featuredCta}>
-              근거 카드까지 열어 보기
-              <span className={s.arrow} aria-hidden="true">
-                →
-              </span>
-            </Link>
-          </div>
-        </article>
+
+            <div className={s.featuredFoot}>
+              <p className={s.featuredMeta}>
+                {view.verdict.eyebrow}
+                <br />
+                {view.verdict.when}
+              </p>
+              <Link href={FEATURED_OFFER_HREF} className={s.featuredCta}>
+                근거 카드까지 열어 보기
+                <span className={s.arrow} aria-hidden="true">
+                  →
+                </span>
+              </Link>
+            </div>
+          </article>
+        </Pressable>
       </div>
     </section>
   );

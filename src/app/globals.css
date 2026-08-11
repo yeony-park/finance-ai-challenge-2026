@@ -59,3 +59,17 @@ body {
 :where(b, strong) {
   font-weight: var(--ds-weight-bold);
 }
+
+/*
+ * 스크롤 리빌의 초기 상태 — src/components/motion/Reveal.tsx가 쓰는 유일한 전역 클래스.
+ * 인라인 스타일 대신 클래스로 두는 이유는 서버·클라이언트 첫 렌더를 똑같이 만들기 위해서다.
+ * 모션 축소를 요청한 사용자에게는 처음부터 보여 준다 — JS가 붙기 전에도 지면이 비지 않는다.
+ */
+.ds-reveal-pending {
+  opacity: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ds-reveal-pending {
+    opacity: 1;
+  }
+}

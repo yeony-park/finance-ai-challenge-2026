@@ -48,7 +48,8 @@ npm run redteam   # 자체 레드팀 실행 → docs/redteam/report.md
 
 실모델 연결은 `.env.example` 참조 (`AI_GATEWAY_API_KEY` 권장).
 
-> `npm run dev` 홈 화면은 **데모 목업 v2** (`src/components/demo/`) — 3화면(공모 선택 → 검증 리포트 → 알림·리플레이), 8/10 실측 데이터 기반, 익명화 적용. Phase 3에서 실제 파이프라인과 연결한다.
+> `npm run dev`는 서비스 화면을 띄운다 — 랜딩(`/`), 검증 방법(`/methodology`), 검증 리포트 상세(`/offers/[id]`).
+> 화면에 찍히는 수치·문구는 전부 검증 엔진 산출 리포트(`data/public/{offerId}/report-*.json`)에서 파생되며 익명화가 적용된 상태다.
 
 ## 구조
 

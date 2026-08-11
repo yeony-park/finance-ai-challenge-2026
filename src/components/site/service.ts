@@ -16,8 +16,17 @@ export const SERVICE_DEFINITION =
 /** 대표 검증 리포트가 붙어 있는 공모 식별자 — 리포트 상세 라우트 키 */
 export const FEATURED_OFFER_ID = "bankcow-9";
 
-/** 대표 검증 리포트 경로 (상세 화면은 후속 단계에서 생성된다) */
+/** 대표 검증 리포트 경로 */
 export const FEATURED_OFFER_HREF = `/offers/${FEATURED_OFFER_ID}`;
+
+/**
+ * 리포트가 공개된 공모 — `/offers/[id]`가 정적으로 굽는 목록이자 허용목록이다.
+ * 대조 결과가 나오기 전에는 화면을 만들어 두지 않는다(목록에 넣지 않으면 404).
+ */
+export const PUBLISHED_OFFER_IDS: readonly string[] = [FEATURED_OFFER_ID];
+
+export const isPublishedOfferId = (offerId: string): boolean =>
+  PUBLISHED_OFFER_IDS.includes(offerId);
 
 /** 대조에 쓰는 공공 데이터 출처 — 전부 공개·무료 */
 export interface DataSource {

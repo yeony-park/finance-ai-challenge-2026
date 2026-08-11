@@ -4,6 +4,8 @@
  */
 import Link from "next/link";
 
+import { Reveal } from "@/components/motion/Reveal";
+
 import s from "./landing.module.css";
 
 interface VerdictTerm {
@@ -33,7 +35,7 @@ export const VERDICT_TERMS: readonly VerdictTerm[] = [
 export function VerdictSection() {
   return (
     <section className={s.section} aria-labelledby="verdict-title">
-      <div className={s.wrap}>
+      <Reveal className={s.wrap}>
         <div className={s.sectionHead}>
           <p className={s.eyebrow}>판정 언어</p>
           <h2 id="verdict-title" className={s.sectionTitle}>
@@ -60,7 +62,7 @@ export function VerdictSection() {
             검증 방법 전문 읽기
           </Link>
         </p>
-      </div>
+      </Reveal>
     </section>
   );
 }

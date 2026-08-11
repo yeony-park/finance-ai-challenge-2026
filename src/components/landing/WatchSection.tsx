@@ -3,6 +3,7 @@
  * 확인 비용이 커서 아무도 확인하지 않는 문서를, 알림 한 건 확인 수준으로 낮추는 것이 요지다.
  * 아직 붙지 않은 기능은 뷰 모델이 남긴 정직 표기를 그대로 가져와 드러낸다.
  */
+import { Reveal } from "@/components/motion/Reveal";
 import type { DemoView, NoteItemView } from "@/lib/verify/report/view-model";
 
 import s from "./landing.module.css";
@@ -32,7 +33,7 @@ export function WatchSection({ view }: { view: DemoView }) {
 
   return (
     <section className={`${s.section} ${s.sectionMuted}`} aria-labelledby="watch-title">
-      <div className={`${s.wrap} ${s.watchGrid}`}>
+      <Reveal className={`${s.wrap} ${s.watchGrid}`}>
         <div>
           <p className={s.eyebrow}>정정 재검증</p>
           <h2 id="watch-title" className={s.sectionTitle}>
@@ -78,7 +79,7 @@ export function WatchSection({ view }: { view: DemoView }) {
             </div>
           ) : null}
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }

@@ -5,6 +5,7 @@
  */
 import Link from "next/link";
 
+import { Reveal } from "@/components/motion/Reveal";
 import type { DemoView } from "@/lib/verify/report/view-model";
 
 import s from "./landing.module.css";
@@ -43,7 +44,7 @@ export function MethodSection({ view }: { view: DemoView }) {
 
   return (
     <section className={s.section} aria-labelledby="method-title">
-      <div className={s.wrap}>
+      <Reveal className={s.wrap}>
         <div className={s.sectionHead}>
           <p className={s.eyebrow}>검증 방법</p>
           <h2 id="method-title" className={s.sectionTitle}>
@@ -71,7 +72,7 @@ export function MethodSection({ view }: { view: DemoView }) {
             판정 기준과 한계 읽기
           </Link>
         </p>
-      </div>
+      </Reveal>
     </section>
   );
 }
