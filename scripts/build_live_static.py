@@ -11,6 +11,8 @@ from pathlib import Path, PurePosixPath
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE_MAP = (
     (PurePosixPath("index.html"), PurePosixPath("index.html")),
+    (PurePosixPath("search.html"), PurePosixPath("search.html")),
+    (PurePosixPath("suitability.html"), PurePosixPath("suitability.html")),
     (PurePosixPath("styles.css"), PurePosixPath("styles.css")),
     (PurePosixPath("js/app.js"), PurePosixPath("js/app.js")),
     (PurePosixPath("js/api.js"), PurePosixPath("js/api.js")),

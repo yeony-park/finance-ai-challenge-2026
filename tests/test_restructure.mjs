@@ -6,6 +6,8 @@ const root = new URL("../", import.meta.url);
 const products = JSON.parse(fs.readFileSync(new URL("data/products.json", root))).products;
 const issuers = JSON.parse(fs.readFileSync(new URL("data/issuers.json", root))).issuers;
 const index = fs.readFileSync(new URL("index.html", root), "utf8");
+const search = fs.readFileSync(new URL("search.html", root), "utf8");
+const suitability = fs.readFileSync(new URL("suitability.html", root), "utf8");
 const app = fs.readFileSync(new URL("js/app.js", root), "utf8");
 const liveRoot = new URL("live/", root);
 const ids = new Set(products.map((product) => product.id));
@@ -141,21 +143,67 @@ const dated = [
 assert.equal(newnessDate(dated[0]), null);
 assert.deepEqual(sortProductsByNewness(dated).map((product) => product.id), ["new", "same-a", "same-b", "null-a", "null-b"]);
 
-// index 구조와 접근성 계약
-assert.match(index, /<form id="search-form"[^>]*role="search"/);
-assert.match(index, /<input id="search-input"[^>]*type="search"/);
-assert.match(index, /<section class="results"/);
-assert.match(index, /id="product-cards"/);
-assert.match(index, /id="detail"[^>]*data-testid="product-detail"/);
-assert.match(index, /aria-live="polite"/);
-assert.match(index, /<label for="search-input">/);
+// 메인·검색 결과·적합성 테스트는 서로 다른 문서이고, 트랙레코드는 검색 전 나열하지 않는다.
+assert.match(index, /<body data-page="home">/);
+assert.match(index, /<form class="search-form" action="search.html" method="get" role="search"/);
+assert.doesNotMatch(index, /id="product-cards"|id="track-list"|id="suitability-questions"/);
+assert.match(search, /<body data-page="search">/);
+assert.match(search, /<form id="search-form"[^>]*role="search"/);
+assert.match(search, /<input id="search-input"[^>]*type="search"/);
+assert.match(search, /<section class="results"/);
+assert.match(search, /id="product-cards"/);
+assert.doesNotMatch(search, /id="product-cards"[^>]*aria-live=/);
+assert.match(search, /id="detail"[^>]*data-testid="product-detail"/);
+assert.match(search, /aria-live="polite"/);
+assert.match(search, /<label for="search-input">/);
+assert.match(search, /id="track-pagination"[^>]*hidden/);
+assert.match(search, /전체 데이터는 나열하지 않습니다/);
+assert.doesNotMatch(search, /id="suitability-questions"/);
+assert.match(suitability, /<body data-page="suitability">/);
+assert.match(suitability, /id="suitability-questions"/);
+assert.doesNotMatch(suitability, /id="product-cards"|id="track-list"/);
+assert.match(app, /function filteredTrackRecords\(\)\{return S\.track\.query\.trim\(\)\?filterTrackRecords/);
+assert.match(app, /검색 전에는 트랙레코드를 표시하지 않습니다/);
 assert.match(app, /setAttribute\("aria-pressed",String\(/);
 assert.match(app, /setAttribute\("aria-label",/);
+assert.match(search, /<nav id="product-pagination"[^>]*aria-label="상품 결과 페이지"[^>]*hidden/);
+assert.match(search, /<button id="product-prev"[^>]*aria-label="이전 상품 페이지"/);
+assert.match(search, /<button id="product-next"[^>]*aria-label="다음 상품 페이지"/);
+assert.match(search, /<dialog id="detail"[^>]*data-testid="product-detail"[^>]*aria-labelledby="detail-title"/);
+assert.match(search, /<button id="detail-close"[^>]*aria-label="상품 상세 닫기"/);
+assert.match(search, /id="detail-content"[^>]*tabindex="-1"/);
+assert.match(app, /pageSize:6/);
+assert.match(app, /function productPage\(\).*S\.pageSize/);
+assert.match(app, /\$\("product-page-state"\)\.textContent=`\$\{resultPage\.currentPage\} \/ \$\{resultPage\.totalPages\}페이지 · 페이지당 \$\{S\.pageSize\}개`/);
+assert.match(app, /open\.setAttribute\("aria-haspopup","dialog"\)/);
+assert.match(app, /function markSelectedProduct\(productId\)/);
+assert.match(app, /function openDetail\(product,trigger\).*markSelectedProduct\(product\.id\).*dialog\.showModal\(\)/);
+assert.match(app, /\$\("detail"\)\.addEventListener\("cancel",event=>\{event\.preventDefault\(\);closeDetail\(\)\}\)/);
+assert.match(app, /\$\("detail"\)\.addEventListener\("click",event=>\{if\(event\.target===\$\("detail"\)\)closeDetail\(\)\}\)/);
+assert.match(app, /\$\("detail"\)\.addEventListener\("close",\(\)=>\{const trigger=detailTrigger;detailTrigger=null;document\.body\.classList\.remove\("dialog-open"\);requestAnimationFrame\(\(\)=>trigger\?\.focus\(/);
+const styles = fs.readFileSync(new URL("styles.css", root), "utf8");
+assert.match(styles, /\.product-cards\{display:grid;grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
+assert.match(styles, /\.product-card\{display:flex;min-width:0;min-height:310px/);
+assert.match(styles, /\.product-dialog\{width:min\(1040px,calc\(100% - 32px\)\);max-height:min\(860px,calc\(100dvh - 32px\)\)/);
+assert.match(styles, /\.dialog-content\{min-height:0;overflow:auto/);
+assert.match(styles, /body\.dialog-open\{overflow:hidden\}/);
+assert.match(styles, /@media\(max-width:620px\).*\.product-dialog\{width:100dvw;max-width:none;height:100dvh;max-height:none/s);
 assert.equal((app.match(/const assetTiles=/g) || []).length, 1);
 const assetBlock = app.match(/const assetTiles=.*?function renderAssetTiles/s)?.[0] || "";
 const lifecycleBlock = app.match(/const lifecycleTabs=.*?const assetTiles/s)?.[0] || "";
 assert.deepEqual([...assetBlock.matchAll(/\["(ALL|부동산|미술품|항공기 엔진)",/g)].map((match) => match[1]), ["ALL", "부동산", "미술품", "항공기 엔진"]);
 assert.deepEqual([...lifecycleBlock.matchAll(/\["(ALL|UPCOMING|SUBSCRIPTION|OPERATING|COMPLETED|TRADING_STOPPED|UNVERIFIED)",/g)].map((match) => match[1]), ["ALL", "UPCOMING", "SUBSCRIPTION", "OPERATING", "COMPLETED", "TRADING_STOPPED", "UNVERIFIED"]);
+
+// 기본 화면은 목록을 비우고, 검색·분류 조건이 있을 때 상품 8건과 플랫폼 DB 338건을 하나의 인덱스에서 찾는다.
+assert.match(search, /id="index-scope"/);
+assert.match(search, /id="track-records"[^>]*hidden/);
+assert.match(app, /function catalogSearchActive\(\)\{return Boolean\(S\.query\.trim\(\)\)\|\|S\.asset!=="ALL"\|\|S\.lifecycle!=="ALL"\}/);
+assert.match(app, /function allTrackRecords\(\)\{return Object\.values\(S\.track\.datasets\)\.flat\(\)\}/);
+assert.match(app, /function baseVisibleProducts\(\)\{if\(!catalogSearchActive\(\)\)return \[\]/);
+assert.match(app, /function baseVisibleTrackRecords\(\)\{if\(!catalogSearchActive\(\)/);
+assert.match(app, /function trackCatalogCard\(record\)/);
+assert.match(app, /검색 조건에 일치하는 등록 자료/);
+assert.match(app, /등록 범위 \$\{total\}건 · 기본 상품 \$\{S\.products\.length\}건/);
 
 // 현 단계에서 비교·연환산 값·직접 청약 UI는 만들지 않음
 assert.doesNotMatch(`${index}\n${app}`, /annualized/i);
@@ -281,7 +329,7 @@ for (const directory of ["", "js", "data"]) {
   }
 }
 assert.deepEqual(liveFiles.sort(), [
-  "data/artnguide_track_records.json", "data/issuers.json", "data/products.json", "data/tessa_sale_records.json", "data/weshareart_research.json", "index.html", "js/api.js", "js/app.js", "js/calculations.js", "js/track-records.js", "styles.css",
+  "data/artnguide_track_records.json", "data/issuers.json", "data/products.json", "data/tessa_sale_records.json", "data/weshareart_research.json", "index.html", "js/api.js", "js/app.js", "js/calculations.js", "js/track-records.js", "search.html", "styles.css", "suitability.html",
 ]);
 
 console.log("PASS: restructure contract");

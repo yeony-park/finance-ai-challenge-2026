@@ -3,66 +3,42 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="국내 조각투자 상품의 공개 근거를 검색하고 검토하는 DAKER">
-  <title>DAKER | 조각투자 상품 검토</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta name="description" content="국내 조각투자 상품과 공개 근거를 검색하는 DAKER">
+  <title>DAKER | 조각투자 공개 근거 검색</title>
+  <link rel="stylesheet" href="styles.css?v=20260811-catalog">
 </head>
-<body>
-  <header class="topbar">
-    <div class="wrap hero">
-      <p class="eyebrow">DAKER</p>
-      <h1>조각투자 상품을 찾고, 공개 근거를 확인합니다.</h1>
-      <p>국내 조각투자 상품의 조건·운용 기록·원문 근거를 한곳에서 검토합니다. 투자 권유나 감정평가가 아니며, 직접 주문 기능을 제공하지 않습니다.</p>
-      <form id="search-form" class="search-form" role="search">
-        <label for="search-input">상품을 문장으로 검색</label>
-        <div class="search-row"><input id="search-input" data-testid="search-input" type="search" autocomplete="off" placeholder="예 : 대전 부동산 거래 중단"><button type="submit">검색</button></div>
-        <p class="search-examples">예 : 대전 부동산 거래 중단 · 김환기 미술품 · 항공기 엔진(수집 범위 내 0건)</p>
-      </form>
-      <div id="intent-tags" class="intent-tags" aria-live="polite" aria-label="인식한 검색 조건"></div>
-      <div class="quick-links" aria-label="빠른 검색"><button type="button" data-lifecycle="SUBSCRIPTION">현재 청약 가능</button><button type="button" data-lifecycle="UPCOMING">모집 예정</button><a href="#track-records">플랫폼 트랙레코드</a></div>
-      <p class="hero-disclaimer">현재 청약 가능 여부는 저장된 공개 자료 기준입니다. 청약·주문은 해당 플랫폼에서 직접 확인해야 합니다.</p>
-    </div>
+<body data-page="home">
+  <header class="site-header">
+    <nav class="wrap site-nav" aria-label="주요 메뉴"><a class="brand" href="index.html">DAKER</a><a href="suitability.html">적합성 테스트 자료</a></nav>
   </header>
-  <main class="wrap">
-    <section class="asset-tiles" aria-labelledby="asset-title">
-      <div class="section-heading"><h2 id="asset-title">어떤 상품을 찾으세요?</h2><p id="load-state" role="status" aria-live="polite" class="muted">자료를 불러오는 중입니다.</p></div>
-      <div id="asset-filter" class="tile-grid" role="group" aria-label="자산 분류"></div>
-    </section>
-    <section class="results" aria-labelledby="products-title">
-      <div class="section-heading"><h2 id="products-title">검색 결과</h2><p id="result-summary" class="muted" aria-live="polite"></p></div>
-      <div id="lifecycle-tabs" class="filter-group" role="group" aria-label="생애주기 상태"></div>
-      <div id="product-cards" data-testid="product-list" class="product-cards"></div>
-      <p id="cards-empty" hidden class="empty">등록 상품 없음</p>
-    </section>
-    <section id="detail" data-testid="product-detail" aria-live="polite"><p class="empty">상품을 선택하세요.</p></section>
-    <section id="track-records" class="research-panel" aria-labelledby="track-records-title">
-      <div class="section-heading"><h2 id="track-records-title">플랫폼 자체 게시 트랙레코드</h2><p id="track-load-state" role="status" aria-live="polite" class="muted">자료를 불러오는 중입니다.</p></div>
-      <p class="notice stop">플랫폼이 자체 게시한 저장본입니다. 매각 계약서·경매 낙찰 결과·입금·분배 내역을 외부 자료로 독립 검증한 결과가 아닙니다.</p>
-      <div id="track-source-tabs" class="filter-group" role="group" aria-label="트랙레코드 출처"></div>
-      <form id="track-search-form" class="track-search" role="search">
-        <label for="track-search-input">작가·작품·상태·식별자 검색</label>
-        <div class="search-row"><input id="track-search-input" type="search" autocomplete="off" placeholder="예 : 김환기 매각완료"><button type="submit">검색</button></div>
-      </form>
-      <div id="track-status-tabs" class="filter-group" role="group" aria-label="트랙레코드 상태"></div>
-      <p id="track-result-summary" class="muted" aria-live="polite"></p>
-      <div class="track-layout">
-        <div>
-          <div id="track-list" class="track-list" aria-label="트랙레코드 검색 결과"></div>
-          <p id="track-empty" hidden class="empty">검색 결과가 없습니다.</p>
-          <nav class="track-pagination" aria-label="트랙레코드 페이지"><button id="track-prev" type="button">이전</button><span id="track-page-state" aria-live="polite"></span><button id="track-next" type="button">다음</button></nav>
-        </div>
-        <section id="track-detail" class="track-detail"><p class="empty">트랙레코드를 선택하세요.</p></section>
+  <main>
+    <section class="landing-hero">
+      <div class="wrap">
+        <p class="eyebrow">PUBLIC EVIDENCE SEARCH</p>
+        <h1>조각투자 상품과 공개 근거를 검색합니다.</h1>
+        <p>상품 조건, 운용 기록, 플랫폼 자체 게시 트랙레코드를 검색 결과에서 구분해 확인합니다.</p>
+        <form class="search-form" action="search.html" method="get" role="search">
+          <label for="search-input">상품·작가·작품·상태 검색</label>
+          <div class="search-row"><input id="search-input" name="q" type="search" autocomplete="off" placeholder="예 : 김환기 매각완료" required><button type="submit">검색</button></div>
+          <p class="search-examples">예 : 대전 부동산 거래 중단 · 김환기 미술품 · 항공기 엔진(수집 범위 내 0건) · 매각완료</p>
+        </form>
+        <p class="hero-disclaimer">검색 결과는 공개 자료와 검증 저장본을 구분해 표시합니다. 투자 권유나 감정평가가 아니며 직접 주문 기능을 제공하지 않습니다.</p>
       </div>
     </section>
-    <section id="suitability-test" class="research-panel" aria-labelledby="suitability-title">
-      <div class="section-heading"><h2 id="suitability-title">투자계약증권 적합성 테스트 공개 구조</h2><p class="muted">개인 답안·계정·만기일 미수집</p></div>
-      <p class="notice">현재 client JavaScript에 공개된 문항과 정답 위치를 정리한 자료입니다. 법률 정답을 독립 검증한 결과가 아니며, 이 화면은 테스트를 제출하거나 회원 상태를 변경하지 않습니다.</p>
-      <div id="suitability-summary"></div>
-      <div id="suitability-questions" class="suitability-list"></div>
-      <p id="suitability-empty" class="empty">자료를 불러오는 중입니다.</p>
+    <section class="wrap landing-section" aria-labelledby="browse-title">
+      <div class="section-heading"><h2 id="browse-title">상품 분류로 보기</h2><p class="muted">선택한 분류의 검색 결과 페이지로 이동합니다.</p></div>
+      <div class="tile-grid">
+        <a class="tile" href="search.html?asset=%EB%B6%80%EB%8F%99%EC%82%B0"><strong>부동산</strong><span>지역·임대·회수 근거 확인</span></a>
+        <a class="tile" href="search.html?asset=%EB%AF%B8%EC%88%A0%ED%92%88"><strong>미술품</strong><span>작가·작품·공개 거래 근거 확인</span></a>
+        <a class="tile" href="search.html"><strong>전체 상품</strong><span>수집 범위 내 등록 상품 확인</span></a>
+      </div>
+    </section>
+    <section class="wrap database-note" aria-labelledby="database-title">
+      <p class="eyebrow">PLATFORM DATABASE</p>
+      <h2 id="database-title">플랫폼 자체 게시 트랙레코드는 검색할 때만 표시합니다.</h2>
+      <p>전체 목록을 메인에 나열하지 않습니다. 작가, 작품, 상태, 식별자를 검색하면 일치하는 저장본만 검색 결과에 표시합니다.</p>
     </section>
   </main>
   <footer class="footer">DAKER는 공개 자료를 정리한 상품 검토 서비스입니다. 투자 권유·감정평가가 아니며 직접 주문 기능을 제공하지 않습니다.</footer>
-  <script type="module" src="js/app.js?v=20260810-research"></script>
 </body>
 </html>

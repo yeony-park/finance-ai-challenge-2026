@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="DAKER 조각투자 상품 및 플랫폼 트랙레코드 검색 결과">
+  <title>검색 결과 | DAKER</title>
+  <link rel="stylesheet" href="styles.css?v=20260811-catalog">
+</head>
+<body data-page="search">
+  <header class="site-header">
+    <nav class="wrap site-nav" aria-label="주요 메뉴"><a class="brand" href="index.html">DAKER</a><a href="suitability.html">적합성 테스트 자료</a></nav>
+    <div class="wrap search-header">
+      <p class="eyebrow">SEARCH RESULTS</p>
+      <h1>검색 결과</h1>
+      <form id="search-form" class="search-form" role="search">
+        <label for="search-input">상품·작가·작품·상태 검색</label>
+        <div class="search-row"><input id="search-input" name="q" data-testid="search-input" type="search" autocomplete="off" placeholder="예 : 김환기 매각완료"><button type="submit">검색</button></div>
+      </form>
+      <div id="intent-tags" class="intent-tags" aria-live="polite" aria-label="인식한 검색 조건"></div>
+    </div>
+  </header>
+  <main class="wrap">
+    <section class="asset-tiles" aria-labelledby="asset-title">
+      <div class="section-heading"><h2 id="asset-title">상품 분류</h2><p id="load-state" role="status" aria-live="polite" class="muted">자료를 불러오는 중입니다.</p></div>
+      <div id="asset-filter" class="tile-grid" role="group" aria-label="자산 분류"></div>
+    </section>
+    <section class="results" aria-labelledby="products-title">
+      <div class="section-heading"><h2 id="products-title">등록 자료 검색 결과</h2><p id="result-summary" class="muted" aria-live="polite"></p></div>
+      <p id="index-scope" class="database-query-guide">상품과 플랫폼 DB 검색 인덱스를 불러오는 중입니다.</p>
+      <div id="lifecycle-tabs" class="filter-group" role="group" aria-label="생애주기 상태"></div>
+      <div id="product-cards" data-testid="product-list" class="product-cards"></div>
+      <p id="cards-empty" hidden class="empty">등록 상품 없음</p>
+      <nav id="product-pagination" class="product-pagination" aria-label="상품 결과 페이지" hidden>
+        <button id="product-prev" type="button" aria-label="이전 상품 페이지">이전</button><span id="product-page-state" aria-live="polite"></span><button id="product-next" type="button" aria-label="다음 상품 페이지">다음</button>
+      </nav>
+    </section>
+    <section id="track-records" class="research-panel" aria-labelledby="track-records-title" hidden>
+      <div class="section-heading"><h2 id="track-records-title">플랫폼 자체 게시 트랙레코드</h2><p id="track-load-state" role="status" aria-live="polite" class="muted">자료를 불러오는 중입니다.</p></div>
+      <p class="notice stop">플랫폼이 자체 게시한 저장본입니다. 매각 계약서·경매 낙찰 결과·입금·분배 내역을 외부 자료로 독립 검증한 결과가 아닙니다.</p>
+      <p id="track-query-guide" class="database-query-guide">검색어를 입력하면 일치하는 트랙레코드만 표시합니다. 전체 데이터는 나열하지 않습니다.</p>
+      <div id="track-source-tabs" class="filter-group" role="group" aria-label="트랙레코드 출처"></div>
+      <div id="track-status-tabs" class="filter-group" role="group" aria-label="트랙레코드 상태"></div>
+      <p id="track-result-summary" class="muted" aria-live="polite"></p>
+      <div class="track-layout">
+        <div>
+          <div id="track-list" class="track-list" aria-label="트랙레코드 검색 결과"></div>
+          <p id="track-empty" class="empty">검색어를 입력하세요.</p>
+          <nav id="track-pagination" class="track-pagination" aria-label="트랙레코드 페이지" hidden><button id="track-prev" type="button">이전</button><span id="track-page-state" aria-live="polite"></span><button id="track-next" type="button">다음</button></nav>
+        </div>
+        <section id="track-detail" class="track-detail"><p class="empty">검색 결과에서 트랙레코드를 선택하세요.</p></section>
+      </div>
+    </section>
+  </main>
+  <dialog id="detail" data-testid="product-detail" class="product-dialog" aria-labelledby="detail-title" aria-describedby="detail-safety-note">
+    <div class="dialog-shell"><div class="dialog-bar"><p class="eyebrow">상품 상세 검토</p><button id="detail-close" class="dialog-close" type="button" aria-label="상품 상세 닫기">닫기</button></div><div id="detail-content" class="dialog-content" tabindex="-1"><p class="empty">상품을 선택하세요.</p></div><p id="detail-safety-note" class="dialog-safety">투자 권유·감정평가가 아니며, 직접 주문 기능을 제공하지 않습니다.</p></div>
+  </dialog>
+  <footer class="footer">DAKER는 공개 자료를 정리한 상품 검토 서비스입니다. 투자 권유·감정평가가 아니며 직접 주문 기능을 제공하지 않습니다.</footer>
+  <script type="module" src="js/app.js?v=20260811-catalog2"></script>
+</body>
+</html>

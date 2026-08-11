@@ -611,7 +611,7 @@ class Handler(BaseHTTPRequestHandler):
             try:return self._send(200,json.dumps(read_fixed_json(TESSA_SALE_RECORDS_PATH),ensure_ascii=False).encode(),"application/json; charset=utf-8",head)
             except Exception:return self._send(503,b'{"error":"tessa sale records unavailable"}',"application/json; charset=utf-8",head)
         if path=="/":path="/index.html"
-        allowed=path in {"/index.html","/styles.css","/js/app.js","/js/api.js","/js/calculations.js","/js/track-records.js","/data/products.json","/data/issuers.json","/data/artnguide_track_records.json","/data/weshareart_research.json","/data/tessa_sale_records.json"}
+        allowed=path in {"/index.html","/search.html","/suitability.html","/styles.css","/js/app.js","/js/api.js","/js/calculations.js","/js/track-records.js","/data/products.json","/data/issuers.json","/data/artnguide_track_records.json","/data/weshareart_research.json","/data/tessa_sale_records.json"}
         candidate=ROOT/path.lstrip("/");target=candidate.resolve()
         if not allowed or candidate.is_symlink() or ROOT not in target.parents or not target.is_file():return self._send(404,b"not found",head=head)
         types={".html":"text/html; charset=utf-8",".css":"text/css; charset=utf-8",".js":"application/javascript; charset=utf-8",".json":"application/json; charset=utf-8"};return self._send(200,target.read_bytes(),types[target.suffix],head)
