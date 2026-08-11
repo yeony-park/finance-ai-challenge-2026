@@ -19,6 +19,29 @@ const nextConfig: NextConfig = {
   // VM 게스트 IP로 접속하는 호스트 브라우저에서 dev 리소스(HMR·클라이언트 청크)가
   // 교차 출처로 차단되어 하이드레이션이 죽는 문제 방지 — dev 전용 설정.
   allowedDevOrigins: ["192.168.140.132"],
+  // 보안 헤더 (배포 보안 리뷰 2026-08-12). script-src 'unsafe-inline'은 App Router의
+  // 하이드레이션 인라인 스크립트 때문 — nonce 기반 전환은 로드맵(레이트리미터 부채와 함께).
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "X-Frame-Options", value: "DENY" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+          {
+            key: "Content-Security-Policy",
+            value:
+              "default-src 'self'; script-src 'self' 'unsafe-inline'; " +
+              "style-src 'self' 'unsafe-inline'; img-src 'self' data:; " +
+              "font-src 'self'; connect-src 'self'; frame-ancestors 'none'; " +
+              "object-src 'none'; base-uri 'self'",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
