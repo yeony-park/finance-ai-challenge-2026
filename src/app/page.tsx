@@ -1,15 +1,22 @@
 /**
- * 홈 — 데모 화면 목업 v2 (2026-08-10).
- * 아티팩트로 검증한 3화면 목업을 앱으로 이식했다. Phase 3 제품화 시 이 목업이
- * 실제 파이프라인(수집→추출→대조→판정)과 연결된 화면의 스펙 기준이 된다.
- * 기획 근거: .claude/prds/disclosure-verification.prd.md
+ * 홈 — 검증 엔진 산출 리포트를 바인딩한 데모 화면 (S0.4).
+ * Server Component가 최신 스냅샷(data/reports/{offerId}/report-*.json)을 읽어
+ * 뷰 모델로 변환한 뒤 클라이언트 컴포넌트에 props로 넘긴다. 클라이언트 fetch 없음.
+ * S3에서 `/offers/[id]`로 라우트를 분리할 때 이 로딩 경로를 그대로 옮긴다.
  */
 import { DemoApp } from "@/components/demo/DemoApp";
+import { loadLatestReport } from "@/lib/verify/report/load";
+import { toDemoView } from "@/lib/verify/report/view-model";
 
-export default function Home() {
+/** S0 데모 대상 공모 — S3에서 라우트 파라미터로 대체된다 */
+const OFFER_ID = "bankcow-9";
+
+export default async function Home() {
+  const loaded = await loadLatestReport(OFFER_ID);
+
   return (
     <main>
-      <DemoApp />
+      <DemoApp view={toDemoView(loaded)} />
     </main>
   );
 }
