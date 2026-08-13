@@ -5,6 +5,9 @@ import { usePathname } from "next/navigation";
 
 const navigation = [
   { href: "/", label: "Overview" },
+  { href: "/search", label: "상품 검색" },
+  { href: "/track-records", label: "플랫폼 이력" },
+  { href: "/suitability", label: "자료 확인" },
   { href: "/real-estate", label: "부동산" },
   { href: "/livestock/cattle", label: "한우" },
   { href: "/livestock/pig", label: "돼지" },
@@ -37,6 +40,7 @@ export function SiteHeader() {
             );
           })}
         </nav>
+        <span className="mobile-nav-hint" aria-hidden="true">← 좌우로 밀어 메뉴 더 보기 →</span>
         <span className="prototype-pill">UI prototype</span>
       </div>
     </header>
