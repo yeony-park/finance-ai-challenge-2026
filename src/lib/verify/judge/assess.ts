@@ -175,6 +175,10 @@ export const assess = (
     case "acquisition_date":
       return assessAcquisitionDate(claim.value, record);
     case "acquisition_price":
+    case "real_estate_address":
+    case "offer_amount":
+    case "sale_amount":
+    case "sale_date":
       return NO_ADAPTER;
   }
   const unreachable: never = claim.kind;

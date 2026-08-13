@@ -12,7 +12,9 @@
     "verify": "tsx src/lib/verify/cli.ts",
     "verify:live": "tsx --env-file-if-exists=.env src/lib/verify/cli.ts",
     "verify:collect": "tsx --env-file-if-exists=.env src/lib/verify/dart/collect-cli.ts",
+    "verify:realestate": "tsx src/lib/verify/real-estate-cli.ts",
     "reference:collect": "tsx --env-file-if-exists=.env src/lib/verify/reference/auction-collect-cli.ts",
+    "reference:rtms": "tsx --env-file-if-exists=.env src/lib/verify/reference/rtms-collect-cli.ts",
     "goldset:prelabel": "tsx src/lib/verify/goldset/cli.ts prelabel",
     "goldset:score": "tsx src/lib/verify/goldset/cli.ts score",
     "data:manifest": "node scripts/update-data-manifest.mjs",
@@ -20,6 +22,7 @@
   },
   "dependencies": {
     "@ai-sdk/openai": "^4.0.41",
+    "@vercel/blob": "^2.8.0",
     "ai": "^7.0.44",
     "fast-xml-parser": "^5.10.1",
     "fflate": "^0.8.3",

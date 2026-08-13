@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { Reveal } from "@/components/motion/Reveal";
 import { MOTION_DURATION, MOTION_EASE } from "@/components/motion/tokens";
 import { useReducedMotionSafe } from "@/components/motion/useReducedMotionSafe";
+import type { WatchStatusView } from "@/lib/verify/amend/watch-view";
 import type { DemoView } from "@/lib/verify/report/view-model";
 
 import { IconBell, IconInfo, IconPlay } from "./icons";
@@ -16,7 +17,26 @@ const REPLAY_STEP_DELAY_MS = 650;
 const REPLAY_PUSH_DELAY_MS = 250;
 const STEP_DIM = 0.32;
 
-export function WatchSection({ view }: { readonly view: DemoView }) {
+const UNCONNECTED_WATCH_TEXT =
+  "이 공모의 정정 접수 여부는 아직 조회되지 않았습니다 — 위 리플레이는 실제 대조 실행 기록이며, 마지막 알림 화면은 미리보기입니다.";
+
+const NOTIFY_CHANNEL_TEXT =
+  "알림 발송 채널은 아직 연결되지 않았습니다 — 마지막 알림 화면은 미리보기입니다.";
+
+const watchStatusText = (watch: WatchStatusView): string => {
+  const filings = watch.amendments
+    .map((item) => `${item.receivedOnLabel} ${item.reportName}`)
+    .join(" · ");
+  const listing = filings.length > 0 ? ` 접수 목록 — ${filings}.` : "";
+  return `${watch.headline}${listing} ${watch.detail}.`;
+};
+
+interface WatchSectionProps {
+  readonly view: DemoView;
+  readonly watch?: WatchStatusView | null;
+}
+
+export function WatchSection({ view, watch }: WatchSectionProps) {
   const isReduced = useReducedMotionSafe();
   const [litCount, setLitCount] = useState(0);
   const [isPushShown, setIsPushShown] = useState(false);
@@ -63,6 +83,13 @@ export function WatchSection({ view }: { readonly view: DemoView }) {
             정정신고서가 접수되거나 판정이 달라지면 이 공모는 같은 파이프라인으로 다시 대조됩니다
           </span>
         </header>
+
+        {watch ? (
+          <div className={s.honesty}>
+            <IconInfo className={s.ic} />
+            <span>{watchStatusText(watch)}</span>
+          </div>
+        ) : null}
 
         <div className={s.replayCard}>
           <h3 className={s.replayTitle}>{view.replay.heading}</h3>
@@ -133,10 +160,7 @@ export function WatchSection({ view }: { readonly view: DemoView }) {
 
         <div className={s.honesty}>
           <IconInfo className={s.ic} />
-          <span>
-            알림 발송·정정 감시는 아직 연결되지 않았습니다 — 위 리플레이는 실제 대조 실행 기록이며,
-            마지막 알림 화면은 미리보기입니다.
-          </span>
+          <span>{watch ? NOTIFY_CHANNEL_TEXT : UNCONNECTED_WATCH_TEXT}</span>
         </div>
       </Reveal>
     </section>

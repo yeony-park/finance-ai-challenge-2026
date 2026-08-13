@@ -2,6 +2,7 @@ import { formatWon } from "../format";
 import { maskFreeText } from "../mask";
 import type { PricePlacementRecord } from "../snapshot";
 import type { ReportContext } from "./context";
+import { buildRealEstatePriceSection } from "./real-estate";
 import type { DemoView, NoteItemView } from "./types";
 
 const NO_PLACEMENT_REASON = "대조할 공공 데이터가 아직 연결되지 않았습니다.";
@@ -113,6 +114,8 @@ const unplacedItems = (ctx: ReportContext): readonly NoteItemView[] => {
 };
 
 export const buildPriceSection = (ctx: ReportContext): DemoView["price"] => {
+  if (ctx.assetKind === "real-estate") return buildRealEstatePriceSection(ctx);
+
   const placements = ctx.report.pricePlacements;
   const first = placements[0];
 

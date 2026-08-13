@@ -3,6 +3,7 @@ import type {
   Claim,
   Evidence,
   PricePlacement,
+  RealEstatePlacement,
   UnjudgedClaim,
   Verdict,
   VerifyReport,
@@ -25,6 +26,10 @@ const claimSchema = z.object({
     "custody_location",
     "acquisition_date",
     "acquisition_price",
+    "real_estate_address",
+    "offer_amount",
+    "sale_amount",
+    "sale_date",
   ]),
   subject: z.string(),
   field: z.string(),
@@ -96,8 +101,38 @@ const pricePlacementSchema = z.object({
   statement: z.string(),
 });
 
+const comparableSchema = z.object({
+  dealOn: z.string(),
+  dong: z.string(),
+  buildingUse: z.string(),
+  floor: z.number().optional(),
+  buildingAreaSqm: z.number().optional(),
+  amountWon: z.number(),
+});
+
+const realEstatePlacementSchema = z.object({
+  claim: claimSchema,
+  label: z.string(),
+  origin: z.enum(["issuer", "market"]),
+  originLabel: z.string(),
+  amountWon: z.number(),
+  regionLabel: z.string(),
+  windowMonths: z.array(z.string()),
+  comparableCount: z.number(),
+  thinSample: z.boolean(),
+  medianAmountWon: z.number().optional(),
+  minAmountWon: z.number().optional(),
+  maxAmountWon: z.number().optional(),
+  rankFromTop: z.number().optional(),
+  topPercent: z.number().optional(),
+  comparables: z.array(comparableSchema),
+  evidence: z.array(evidenceSchema).min(1, "근거 0건 위치 제시는 존재할 수 없습니다"),
+  statement: z.string(),
+});
+
 const reportSchema = z.object({
   offerId: z.string(),
+  assetKind: z.enum(["livestock", "real-estate"]).default("livestock"),
   document: documentRefSchema,
   generatedAt: z.string(),
   mode: z.enum(["fake", "live"]),
@@ -118,6 +153,7 @@ const reportSchema = z.object({
   judgements: z.array(judgementSchema),
   unjudged: z.array(z.object({ claim: claimSchema, reason: z.string() })),
   pricePlacements: z.array(pricePlacementSchema).default([]),
+  realEstatePlacements: z.array(realEstatePlacementSchema).default([]),
   notes: z.array(z.string()),
 });
 
@@ -132,11 +168,20 @@ export interface PricePlacementRecord extends Omit<PricePlacement, "evidence"> {
   readonly evidence: readonly Evidence[];
 }
 
+export interface RealEstatePlacementRecord
+  extends Omit<RealEstatePlacement, "evidence"> {
+  readonly evidence: readonly Evidence[];
+}
+
 export interface ReportSnapshot
-  extends Omit<VerifyReport, "judgements" | "pricePlacements"> {
+  extends Omit<
+    VerifyReport,
+    "judgements" | "pricePlacements" | "realEstatePlacements"
+  > {
   readonly judgements: readonly JudgementRecord[];
   readonly unjudged: readonly UnjudgedClaim[];
   readonly pricePlacements: readonly PricePlacementRecord[];
+  readonly realEstatePlacements: readonly RealEstatePlacementRecord[];
 }
 
 export const parseReportSnapshot = (raw: unknown): ReportSnapshot => {

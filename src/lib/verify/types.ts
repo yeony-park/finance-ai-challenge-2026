@@ -21,7 +21,15 @@ export type ClaimKind =
   | "livestock_sex"
   | "custody_location"
   | "acquisition_date"
-  | "acquisition_price";
+  | "acquisition_price"
+  | "real_estate_address"
+  | "offer_amount"
+  | "sale_amount"
+  | "sale_date";
+
+export type AssetKind = "livestock" | "real-estate";
+
+export const DEFAULT_ASSET_KIND: AssetKind = "livestock";
 
 export interface DocumentRef {
   readonly offerId: string;
@@ -109,6 +117,37 @@ export interface PricePlacement {
   readonly statement: string;
 }
 
+export type AmountOrigin = "issuer" | "market";
+
+export interface RealEstateComparable {
+  readonly dealOn: string;
+  readonly dong: string;
+  readonly buildingUse: string;
+  readonly floor?: number;
+  readonly buildingAreaSqm?: number;
+  readonly amountWon: number;
+}
+
+export interface RealEstatePlacement {
+  readonly claim: Claim;
+  readonly label: string;
+  readonly origin: AmountOrigin;
+  readonly originLabel: string;
+  readonly amountWon: number;
+  readonly regionLabel: string;
+  readonly windowMonths: readonly string[];
+  readonly comparableCount: number;
+  readonly thinSample: boolean;
+  readonly medianAmountWon?: number;
+  readonly minAmountWon?: number;
+  readonly maxAmountWon?: number;
+  readonly rankFromTop?: number;
+  readonly topPercent?: number;
+  readonly comparables: readonly RealEstateComparable[];
+  readonly evidence: EvidenceSet;
+  readonly statement: string;
+}
+
 export interface VerdictSummary {
   readonly total: number;
   readonly match: number;
@@ -124,6 +163,7 @@ export interface SubjectRollup {
 
 export interface VerifyReport {
   readonly offerId: string;
+  readonly assetKind: AssetKind;
   readonly document: DocumentRef;
   readonly generatedAt: string;
   readonly mode: "fake" | "live";
@@ -133,6 +173,7 @@ export interface VerifyReport {
   readonly judgements: readonly Judgement[];
   readonly unjudged: readonly UnjudgedClaim[];
   readonly pricePlacements: readonly PricePlacement[];
+  readonly realEstatePlacements: readonly RealEstatePlacement[];
   readonly notes: readonly string[];
 }
 

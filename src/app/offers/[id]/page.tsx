@@ -7,6 +7,8 @@ import { ReportFoot } from "@/components/report/ReportFoot";
 import { HistorySection, PriceSection } from "@/components/report/SummaryLayers";
 import { WatchSection } from "@/components/report/WatchSection";
 import { isPublishedOfferId, PUBLISHED_OFFER_IDS } from "@/components/site/offers";
+import { loadLatestWatchState } from "@/lib/verify/amend/watch-state";
+import { toWatchStatusView, type WatchStatusView } from "@/lib/verify/amend/watch-view";
 import { loadLatestReport } from "@/lib/verify/report/load";
 import { toDemoView, type DemoView } from "@/lib/verify/report/view-model";
 
@@ -18,6 +20,13 @@ const loadOfferView = cache(async (offerId: string): Promise<DemoView | null> =>
   if (!isPublishedOfferId(offerId)) return null;
   return toDemoView(await loadLatestReport(offerId));
 });
+
+const loadWatchStatus = cache(
+  async (offerId: string): Promise<WatchStatusView | null> => {
+    const state = await loadLatestWatchState(offerId);
+    return state ? toWatchStatusView(state) : null;
+  },
+);
 
 export function generateStaticParams() {
   return PUBLISHED_OFFER_IDS.map((id) => ({ id }));
@@ -56,12 +65,14 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
 
   if (!view) notFound();
 
+  const watch = await loadWatchStatus(id);
+
   return (
     <>
       <ReportDocument view={view} />
       <PriceSection view={view} />
       <HistorySection view={view} />
-      <WatchSection view={view} />
+      <WatchSection view={view} watch={watch} />
       <ReportFoot />
     </>
   );

@@ -86,6 +86,7 @@ const main = async (): Promise<void> => {
     console.log(
       "실패한 칸은 파일에 status=failed로 남았습니다 — 판정은 그 칸을 '대조 불가 + 사유'로 다룹니다.",
     );
+    process.exitCode = 1;
   }
 };
 

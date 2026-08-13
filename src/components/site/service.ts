@@ -26,4 +26,9 @@ export const DATA_SOURCES: readonly DataSource[] = [
     holder: "축산물품질평가원",
     use: "공시된 취득원가의 시장 위치 대조",
   },
+  {
+    name: "상업업무용 부동산 매매 신고 자료(실거래가)",
+    holder: "국토교통부",
+    use: "공시된 매각 내역 확인과 공모가·매각가의 실거래 비교군 내 위치 대조",
+  },
 ];

@@ -2,6 +2,7 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { runExtraction, type ExtractionMode } from "../claims/extract";
 import { resolveClaimExtractionClient } from "../claims/llm-client";
+import { claimKindSchema } from "../claims/llm-schema";
 import { listRawDocuments, rawDocumentDir } from "../dart/fetch-document";
 import { assertRcpNo } from "../paths";
 import { documentRefOf } from "../pipeline";
@@ -52,20 +53,26 @@ const prelabel = async (options: Options): Promise<void> => {
   const xml = await loadRawXml(options.rcpNo, options.dataDir);
   const run = await runExtraction(xml, document, { mode: "rules-only" });
 
-  const labels: GoldLabel[] = run.claims.map((claim) => ({
-    subject: claim.subject,
-    kind: claim.kind,
-    field: claim.field,
-    value: claim.value,
-    prelabeledValue: claim.value,
-    row: claim.location.row,
-    section: claim.location.section,
-    review: "pending",
-    note:
-      claim.verifiability === "verifiable"
-        ? ""
-        : `추출 강등: ${claim.demotionReason ?? claim.verifiability}`,
-  }));
+  const labels: GoldLabel[] = run.claims.flatMap((claim) => {
+    const kind = claimKindSchema.safeParse(claim.kind);
+    if (!kind.success) return [];
+    return [
+      {
+        subject: claim.subject,
+        kind: kind.data,
+        field: claim.field,
+        value: claim.value,
+        prelabeledValue: claim.value,
+        row: claim.location.row,
+        section: claim.location.section,
+        review: "pending" as const,
+        note:
+          claim.verifiability === "verifiable"
+            ? ""
+            : `추출 강등: ${claim.demotionReason ?? claim.verifiability}`,
+      },
+    ];
+  });
 
   const goldset: GoldSet = {
     offerId: document.offerId,

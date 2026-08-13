@@ -22,18 +22,44 @@ export const custodyLocationSchema = z
   .trim()
   .min(2, "보관장소가 비어 있습니다");
 
-export const acquisitionDateSchema = z
-  .string()
-  .trim()
-  .regex(/^\d{4}-\d{2}-\d{2}$/, "취득시기는 YYYY-MM-DD 형식이어야 합니다");
+const isoDateSchema = (label: string) =>
+  z
+    .string()
+    .trim()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, `${label}는 YYYY-MM-DD 형식이어야 합니다`);
 
-export const acquisitionPriceSchema = z
+const wonAmountSchema = (label: string) =>
+  z
+    .string()
+    .trim()
+    .transform((raw) => raw.replace(/[,\s원]/g, ""))
+    .refine((raw) => /^\d+$/.test(raw), `${label}는 숫자여야 합니다`)
+    .transform((raw) => Number.parseInt(raw, 10))
+    .refine((value) => value > 0, `${label}는 0보다 커야 합니다`);
+
+export const acquisitionDateSchema = isoDateSchema("취득시기");
+
+export const acquisitionPriceSchema = wonAmountSchema("취득원가");
+
+export const realEstateAddressSchema = z
   .string()
   .trim()
-  .transform((raw) => raw.replace(/[,\s원]/g, ""))
-  .refine((raw) => /^\d+$/.test(raw), "취득원가는 숫자여야 합니다")
-  .transform((raw) => Number.parseInt(raw, 10))
-  .refine((value) => value > 0, "취득원가는 0보다 커야 합니다");
+  .min(6, "소재지가 비어 있습니다")
+  .regex(
+    /(동|가|리)\s*(산\s*)?\d+(-\d+)?$/,
+    "소재지는 법정동·지번까지 적혀 있어야 합니다",
+  );
+
+export const lawdCdSchema = z
+  .string()
+  .trim()
+  .regex(/^\d{5}$/, "법정동코드(시군구)는 5자리 숫자여야 합니다");
+
+export const offerAmountSchema = wonAmountSchema("공모금액");
+
+export const saleAmountSchema = wonAmountSchema("매각금액");
+
+export const saleDateSchema = isoDateSchema("매각일");
 
 export type GateResult<T> =
   | { readonly ok: true; readonly value: T }

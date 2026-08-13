@@ -42,10 +42,41 @@ const REGION_TOKEN_PATTERN = /[가-힣]{2,}(시|군|구|읍|면|동)(?![가-힣]
 
 const LONG_DIGITS_PATTERN = /\d{9,}/g;
 
+const NON_REGION_TOKENS: ReadonlySet<string> = new Set([
+  "법정동",
+  "행정동",
+  "자치구",
+  "시군구",
+  "비교군",
+  "대조군",
+  "표본군",
+]);
+
 export const maskFreeText = (raw: string): string =>
   raw
     .replace(LONG_DIGITS_PATTERN, (digits) => maskTraceNo(digits))
-    .replace(REGION_TOKEN_PATTERN, (_match, suffix: string) => `${REGION_MASK}${suffix}`);
+    .replace(REGION_TOKEN_PATTERN, (match: string, suffix: string) =>
+      NON_REGION_TOKENS.has(match) ? match : `${REGION_MASK}${suffix}`,
+    );
+
+const SIDO_SHORT = new Map(
+  SIDO_TABLE.flatMap((sido) => sido.names.map((name) => [name, sido.short] as const)),
+);
+
+const SIDO_NAMES = [...SIDO_SHORT.keys()].sort((a, b) => b.length - a.length);
+
+const DONG_PATTERN = /[가-힣0-9]+(동|가|리)(?![가-힣])/;
+
+export const maskAddressToDong = (raw: string): string => {
+  const text = raw.trim();
+  const sido = SIDO_NAMES.find((name) => text.startsWith(name));
+  if (!sido) return maskFreeText(text);
+  const rest = text.slice(sido.length).trim();
+  const district = rest.match(DISTRICT_PATTERN)?.[0];
+  const dong = rest.match(DONG_PATTERN);
+  const head = [SIDO_SHORT.get(sido), district].filter(Boolean).join(" ");
+  return dong ? `${head} ${REGION_MASK}${dong[1]}` : `${head} ${REGION_MASK}`;
+};
 
 const MASKED_REGION_PATTERN = new RegExp(
   `^([가-힣]{2} )?${REGION_MASK}( ?[시군구]| 지역)?$`,

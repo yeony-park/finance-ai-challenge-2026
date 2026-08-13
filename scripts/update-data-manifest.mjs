@@ -43,11 +43,20 @@ const PUBLIC_GROUPS = [
   },
   {
     dir: "reference",
-    title: "경락가 월 집계 (시장 통계 · 커밋 대상)",
+    title: "참조 시장 데이터 (시장 통계 · 커밋 대상)",
     source:
-      "축산물품질평가원 축산물등급판정정보 (data.go.kr 15058822) — 소도체 등급별 경락가격",
-    recover: "`npm run reference:collect -- --from <YYYY-MM> --to <YYYY-MM>`",
-    note: "개인정보 없음(전국·등급별 집계). 개발계정 일 1,000건 쿼터 방어를 위해 사전 수집하며, 판정·화면은 이 캐시만 읽는다(런타임 API 호출 없음).",
+      "축산물품질평가원 축산물등급판정정보 (data.go.kr 15058822) — 소도체 등급별 경락가격 / 국토교통부 상업업무용 부동산 매매 신고 자료 (실거래가 오픈API)",
+    recover:
+      "`npm run reference:collect -- --from <YYYY-MM> --to <YYYY-MM>` · `npm run reference:rtms -- --from <YYYY-MM> --to <YYYY-MM> --lawdCd <시군구코드>`",
+    note: "개인정보 없음(집계·신고 통계). 쿼터 방어를 위해 사전 수집하며, 판정·화면은 이 캐시만 읽는다(런타임 API 호출 없음). 수집이 거부된 달은 status=failed로 남고 비교군에 들어가지 않는다.",
+  },
+  {
+    dir: "offers",
+    title: "공모 기초자료 (공개 자료 정리 · 커밋 대상)",
+    source:
+      "발행사 공모 공고·매각 공시와 언론 보도 등 공개 자료 (파일 안의 sources 필드에 출처·확인일 병기)",
+    recover: "수기 정리 — 새 공모 추가 시 `data/offers/{offerId}.json`을 만든다",
+    note: "개인정보 없음(상업용 건물의 공개 실거래 단위 정보). 화면에는 익명화(발행사·건물명 중립 표기, 지번 마스킹) 후 노출된다.",
   },
 ];
 
@@ -124,6 +133,8 @@ const render = (groups, publicGroups, generatedAt) =>
     "| 내부 리포트 | `data/reports/{offerId}/` | 제외(.gitignore) |",
     "| 공개 리포트 | `data/public/{offerId}/` | **커밋** |",
     "| 경락가 월 집계 | `data/reference/auction-price/` | **커밋**(시장 통계 — 개인정보 없음) |",
+    "| 실거래 월 신고 | `data/reference/rtms/` | **커밋**(시장 통계 — 개인정보 없음) |",
+    "| 공모 기초자료 | `data/offers/{offerId}.json` | **커밋**(공개 자료 정리 — 개인정보 없음) |",
     "| 매니페스트 | `data/MANIFEST.md` | **커밋** |",
     "",
     "신규 클론에서 로컬 전용 파일이 없어도 `npm test`·`npm run build`는 통과한다",

@@ -69,6 +69,7 @@ describe("공개 리포트 — 개인정보 부재 (구조 검사)", () => {
 describe("toPublicReport — 순수 변환 계약", () => {
   const synthetic: ReportSnapshot = {
     offerId: "livestock-9",
+    assetKind: "livestock",
     document: {
       offerId: "livestock-9",
       rcpNo: "20260806000159",
@@ -136,6 +137,7 @@ describe("toPublicReport — 순수 변환 계약", () => {
       },
     ],
     pricePlacements: [],
+    realEstatePlacements: [],
     notes: ["확인 불가 강등: acquisition_price:검증 7호 — 사유"],
   };
 

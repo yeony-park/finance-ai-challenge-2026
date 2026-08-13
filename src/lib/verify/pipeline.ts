@@ -1,10 +1,17 @@
 import { runExtraction, type ExtractionMode } from "./claims/extract";
 import type { ClaimExtractionClient } from "./claims/llm-client";
+import {
+  buildRealEstateClaims,
+  realEstateDocumentRef,
+  type RealEstateOffer,
+} from "./claims/real-estate";
 import { judgeClaims } from "./judge/engine";
+import { judgeRealEstate } from "./judge/real-estate";
 import { buildReport } from "./report/build";
 import { submittedOnFromRcpNo, type DocumentRef, type VerifyReport } from "./types";
 import type { LivestockTraceAdapter } from "./adapters/livestock-trace";
 import type { AuctionPriceAdapter } from "./adapters/auction-price";
+import type { RtmsTradeAdapter } from "./adapters/rtms-trade";
 
 const OFFER_REGISTRY: Readonly<Record<string, string>> = {
   "20260806000159": "livestock-9",
@@ -53,6 +60,7 @@ export const runVerification = async (
 
   return buildReport({
     document,
+    assetKind: "livestock",
     generatedAt: input.generatedAt ?? new Date().toISOString(),
     mode: input.trace.name === "fake" ? "fake" : "live",
     sources: [
@@ -63,5 +71,42 @@ export const runVerification = async (
     unjudged: outcome.unjudged,
     pricePlacements: outcome.pricePlacements,
     notes: [`추출 모드: ${extraction.mode}`, ...extraction.notes, ...demotionNotes],
+  });
+};
+
+export interface RealEstateVerifyInput {
+  readonly offer: RealEstateOffer;
+  readonly trades: RtmsTradeAdapter;
+  readonly generatedAt?: string;
+}
+
+export const runRealEstateVerification = (
+  input: RealEstateVerifyInput,
+): VerifyReport => {
+  const document = realEstateDocumentRef(input.offer);
+  const extraction = buildRealEstateClaims(input.offer);
+  const outcome = judgeRealEstate({
+    offer: input.offer,
+    claims: extraction.claims,
+    trades: input.trades,
+  });
+
+  const modeNote =
+    input.trades.name === "fake"
+      ? [
+          "국토부 실거래가 API 활용신청이 승인되지 않아 실호출이 거부됐습니다(등록되지 않은 서비스키 · returnReasonCode=30). 이 리포트의 비교군과 원장 대조는 픽스처로 실행한 것이며 실측 데이터가 아닙니다.",
+        ]
+      : [];
+
+  return buildReport({
+    document,
+    assetKind: "real-estate",
+    generatedAt: input.generatedAt ?? new Date().toISOString(),
+    mode: input.trades.name === "fake" ? "fake" : "live",
+    sources: [input.trades.sourceName],
+    judgements: outcome.judgements,
+    unjudged: outcome.unjudged,
+    realEstatePlacements: outcome.placements,
+    notes: [...modeNote, ...extraction.notes, ...outcome.notes],
   });
 };

@@ -1,4 +1,4 @@
-import type { Claim, ClaimKind, DocumentRef } from "../types";
+import type { Claim, DocumentRef } from "../types";
 import {
   acquisitionDateSchema,
   acquisitionPriceSchema,
@@ -30,7 +30,7 @@ interface FieldRule {
   readonly unit?: string;
 }
 
-const fieldRuleOf = (kind: ClaimKind): FieldRule => {
+const fieldRuleOf = (kind: LlmClaimDraft["kind"]): FieldRule => {
   switch (kind) {
     case "livestock_trace_no":
       return { field: "이력번호", schema: traceNo9Schema };

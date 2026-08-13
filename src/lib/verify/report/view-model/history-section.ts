@@ -9,7 +9,10 @@ export const buildHistorySection = (ctx: ReportContext): DemoView["history"] => 
     {
       id: "document",
       tone: "good",
-      title: `증권신고서 ${ctx.submittedOn} 제출본 대조`,
+      title:
+        ctx.assetKind === "real-estate"
+          ? `공모 공고·매각 공시(${ctx.submittedOn} 기준) 대조`
+          : `증권신고서 ${ctx.submittedOn} 제출본 대조`,
       meta: `대조 실행 ${ctx.generatedAt} · 리포트 버전 ${ctx.versionCount}건 보관`,
     },
     ...ctx.report.notes.map(

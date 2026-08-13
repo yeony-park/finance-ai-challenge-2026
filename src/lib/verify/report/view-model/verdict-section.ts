@@ -1,6 +1,7 @@
 import type { ReportContext } from "./context";
 import { b, t, VERDICT_LABEL } from "./labels";
-import type { DemoView } from "./types";
+import { realEstateOneLiner } from "./real-estate";
+import type { DemoView, TallyView } from "./types";
 
 export const buildMetaSection = (ctx: ReportContext): DemoView["meta"] => ({
   badge: "검증 엔진 산출 리포트",
@@ -12,11 +13,18 @@ export const buildMetaSection = (ctx: ReportContext): DemoView["meta"] => ({
   ],
 });
 
-export const buildOfferSection = (ctx: ReportContext): DemoView["offer"] => ({
-  title: ctx.offerTitle,
-  tag: `증권신고서 ${ctx.submittedOnShort} 접수`,
-  meta: `개체 ${ctx.headCount}두 · 항목 판정 ${ctx.report.summary.total}건 · 미판정 ${ctx.unjudgedCount}건 · 가격 위치 ${ctx.pricePlacementCount}건`,
-});
+export const buildOfferSection = (ctx: ReportContext): DemoView["offer"] =>
+  ctx.assetKind === "real-estate"
+    ? {
+        title: ctx.offerTitle,
+        tag: `매각 공시 ${ctx.submittedOnShort} 기준`,
+        meta: `자산 ${ctx.headCount}건 · 항목 판정 ${ctx.report.summary.total}건 · 미판정 ${ctx.unjudgedCount}건 · 가격 위치 ${ctx.realEstatePlacementCount}건`,
+      }
+    : {
+        title: ctx.offerTitle,
+        tag: `증권신고서 ${ctx.submittedOnShort} 접수`,
+        meta: `개체 ${ctx.headCount}두 · 항목 판정 ${ctx.report.summary.total}건 · 미판정 ${ctx.unjudgedCount}건 · 가격 위치 ${ctx.pricePlacementCount}건`,
+      };
 
 const priceSentence = (ctx: ReportContext): string => {
   const placed = ctx.pricePlacementCount;
@@ -31,17 +39,45 @@ const priceSentence = (ctx: ReportContext): string => {
   return ` 취득원가 ${placed}건은 취득한 달의 시장 경락가 위에 위치로 표시했습니다(적정성 판단이 아닙니다).${tail}`;
 };
 
+const talliesOf = (ctx: ReportContext): readonly TallyView[] => {
+  const { summary } = ctx.report;
+  if (ctx.assetKind === "real-estate") {
+    return [
+      { value: summary.match, label: VERDICT_LABEL.match, tone: "good" },
+      { value: summary.mismatch, label: VERDICT_LABEL.mismatch, tone: "warn" },
+      {
+        value: summary.unverifiable + ctx.unjudgedCount,
+        label: VERDICT_LABEL.unverifiable,
+        tone: "unk",
+      },
+    ];
+  }
+  return [
+    { value: ctx.matched, label: VERDICT_LABEL.match, tone: "good" },
+    { value: ctx.mismatched, label: VERDICT_LABEL.mismatch, tone: "warn" },
+    { value: ctx.unverifiable, label: VERDICT_LABEL.unverifiable, tone: "unk" },
+  ];
+};
+
 export const buildVerdictSection = (ctx: ReportContext): DemoView["verdict"] => {
   const { summary } = ctx.report;
+
+  if (ctx.assetKind === "real-estate") {
+    return {
+      eyebrow: `자산 ${ctx.headCount}건 사후 대조 · 국토부 실거래 원장`,
+      title: ctx.offerTitle,
+      when: `매각 공시 ${ctx.submittedOn} · 대조 실행 ${ctx.generatedAt}`,
+      tallies: talliesOf(ctx),
+      itemLine: `항목 단위 집계 · 항목 판정 ${summary.total}건 — 일치 ${summary.match} · 원장 미확인 ${summary.mismatch} · 대조 불가 ${summary.unverifiable + ctx.unjudgedCount} · 가격 위치 제시 ${ctx.realEstatePlacementCount}`,
+      oneLiner: realEstateOneLiner(ctx),
+    };
+  }
+
   return {
     eyebrow: `개체 ${ctx.headCount}두 전수 대조 · 국가 원장`,
     title: ctx.offerTitle,
     when: `신고서 제출 ${ctx.submittedOn} · 대조 실행 ${ctx.generatedAt}`,
-    tallies: [
-      { value: ctx.matched, label: VERDICT_LABEL.match, tone: "good" },
-      { value: ctx.mismatched, label: VERDICT_LABEL.mismatch, tone: "warn" },
-      { value: ctx.unverifiable, label: VERDICT_LABEL.unverifiable, tone: "unk" },
-    ],
+    tallies: talliesOf(ctx),
     itemLine: `개체 단위 집계 · 항목 판정 ${summary.total}건 — 일치 ${summary.match} · 원장 미확인 ${summary.mismatch} · 대조 불가 ${summary.unverifiable} · 미판정 ${ctx.unjudgedCount} · 가격 위치 제시 ${ctx.pricePlacementCount}`,
     oneLiner: {
       easy: [

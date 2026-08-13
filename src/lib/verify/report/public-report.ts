@@ -2,24 +2,38 @@ import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { offerDataDir } from "../paths";
 import type {
+  AssetKind,
   Claim,
   ClaimKind,
   Evidence,
+  RealEstateComparable,
   SubjectRollup,
   UnjudgedClaim,
 } from "../types";
-import { maskFreeText, maskRegion, maskTraceNo } from "./mask";
+import { maskAddressToDong, maskFreeText, maskRegion, maskTraceNo } from "./mask";
 import { reportFileName } from "./build";
 import type {
   JudgementRecord,
   PricePlacementRecord,
+  RealEstatePlacementRecord,
   ReportSnapshot,
 } from "./snapshot";
 
 const SUBJECT_NO_PATTERN = /(\d+)\s*호/;
 
-export const maskSubject = (subject: string, fallbackNo: number): string =>
-  `개체 ${subject.match(SUBJECT_NO_PATTERN)?.[1] ?? fallbackNo}호`;
+const ASSET_ALIAS_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+export const maskSubject = (
+  subject: string,
+  fallbackNo: number,
+  assetKind: AssetKind = "livestock",
+): string => {
+  if (assetKind === "real-estate") {
+    const index = Math.max(0, fallbackNo - 1) % ASSET_ALIAS_LETTERS.length;
+    return `부동산 ${ASSET_ALIAS_LETTERS[index]}`;
+  }
+  return `개체 ${subject.match(SUBJECT_NO_PATTERN)?.[1] ?? fallbackNo}호`;
+};
 
 type SubjectAliases = readonly (readonly [string, string])[];
 
@@ -32,12 +46,13 @@ const buildAliases = (report: ReportSnapshot): SubjectAliases => {
   report.judgements.forEach((judgement) => push(judgement.claim.subject));
   report.unjudged.forEach((item) => push(item.claim.subject));
   report.pricePlacements.forEach((item) => push(item.claim.subject));
+  report.realEstatePlacements.forEach((item) => push(item.claim.subject));
 
   return (
     order
       .map((subject, index): readonly [string, string] => [
         subject,
-        maskSubject(subject, index + 1),
+        maskSubject(subject, index + 1, report.assetKind),
       ])
       .sort((a, b) => b[0].length - a[0].length)
   );
@@ -59,10 +74,15 @@ const maskValue = (
       return maskTraceNo(value);
     case "custody_location":
       return maskRegion(value);
+    case "real_estate_address":
+      return maskAddressToDong(value);
     case "livestock_breed":
     case "livestock_sex":
     case "acquisition_date":
     case "acquisition_price":
+    case "offer_amount":
+    case "sale_amount":
+    case "sale_date":
       return maskText(value, aliases);
   }
   const unreachable: never = kind;
@@ -73,10 +93,11 @@ const maskObserved = (
   kind: ClaimKind,
   observed: string,
   aliases: SubjectAliases,
-): string =>
-  kind === "custody_location"
-    ? maskRegion(observed)
-    : maskText(observed, aliases);
+): string => {
+  if (kind === "custody_location") return maskRegion(observed);
+  if (kind === "real_estate_address") return maskAddressToDong(observed);
+  return maskText(observed, aliases);
+};
 
 const maskClaim = (claim: Claim, aliases: SubjectAliases): Claim => {
   const subject = applyAliases(claim.subject, aliases);
@@ -137,6 +158,25 @@ const maskPlacement = (
   statement: maskText(placement.statement, aliases),
 });
 
+const maskComparable = (item: RealEstateComparable): RealEstateComparable => ({
+  ...item,
+  dong: maskFreeText(item.dong),
+});
+
+const maskRealEstatePlacement = (
+  placement: RealEstatePlacementRecord,
+  aliases: SubjectAliases,
+): RealEstatePlacementRecord => ({
+  ...placement,
+  claim: maskClaim(placement.claim, aliases),
+  regionLabel: maskAddressToDong(placement.regionLabel),
+  comparables: placement.comparables.map(maskComparable),
+  evidence: placement.evidence.map((evidence) =>
+    maskEvidence(evidence, placement.claim.kind, aliases),
+  ),
+  statement: maskText(placement.statement, aliases),
+});
+
 const maskRollup = (
   head: SubjectRollup,
   aliases: SubjectAliases,
@@ -156,6 +196,9 @@ export const toPublicReport = (report: ReportSnapshot): ReportSnapshot => {
     unjudged: report.unjudged.map((item) => maskUnjudged(item, aliases)),
     pricePlacements: report.pricePlacements.map((placement) =>
       maskPlacement(placement, aliases),
+    ),
+    realEstatePlacements: report.realEstatePlacements.map((placement) =>
+      maskRealEstatePlacement(placement, aliases),
     ),
     notes: report.notes.map((note) => maskText(note, aliases)),
   };

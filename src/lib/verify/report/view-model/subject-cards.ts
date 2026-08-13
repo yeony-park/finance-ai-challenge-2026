@@ -36,15 +36,19 @@ export const assignSubjectNos = (
 export const buildSubjectCards = (
   report: ReportSnapshot,
 ): readonly SubjectCardView[] => {
+  const isRealEstate = report.assetKind === "real-estate";
   const nos = assignSubjectNos(report.bySubject.map((head) => head.subject));
   return report.bySubject.map((head, index) => {
-    const no = nos[index] ?? index + 1;
+    const no = isRealEstate ? index + 1 : (nos[index] ?? index + 1);
+    const label = isRealEstate ? head.subject : `${no}호`;
     return {
       no,
-      label: `${no}호`,
+      label,
       verdict: head.verdict,
       badge: VERDICT_LABEL[head.verdict],
-      ariaLabel: `개체 ${no}호, ${VERDICT_LABEL[head.verdict]}`,
+      ariaLabel: isRealEstate
+        ? `${label}, ${VERDICT_LABEL[head.verdict]}`
+        : `개체 ${label}, ${VERDICT_LABEL[head.verdict]}`,
       hasFocus: head.verdict !== "match",
     };
   });

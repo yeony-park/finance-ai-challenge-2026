@@ -1,0 +1,102 @@
+{
+  "kind": "synthetic-amendment-diff",
+  "offerId": "livestock-9",
+  "generatedAt": "2026-08-13T17:46:58.162Z",
+  "disclosure": "실제 접수된 정정신고서가 아니라 원문을 조작해 만든 합성 정정본 비교 결과입니다 — 리플레이 데모 전용.",
+  "editLabels": [
+    "개체 1건의 이력번호 끝자리 변경",
+    "개체 1건의 취득원가 변경"
+  ],
+  "facts": [
+    "값이 달라진 항목 2건 — 개체 37호 이력번호 21●●●●●75 → 21●●●●●76, 개체 1호 취득원가 4574865 → 4900000",
+    "판정 유지 180건 · 변동 5건 — 개체 37호 이력번호 일치 → 대조 불가, 개체 37호 품종 일치 → 대조 불가, 개체 37호 성별 일치 → 대조 불가, 개체 37호 취득시기 일치 → 대조 불가, 개체 37호 보관장소 일치 → 대조 불가",
+    "두 버전 모두 판정이 없는 항목 37건",
+    "실제 접수된 정정신고서가 아니라 원문을 조작해 만든 합성 정정본 비교 결과입니다 — 리플레이 데모 전용."
+  ],
+  "diff": {
+    "from": {
+      "offerId": "livestock-9",
+      "rcpNo": "20260806000159",
+      "submittedOn": "2026-08-06"
+    },
+    "to": {
+      "offerId": "offer-00000000000000",
+      "rcpNo": "00000000000000",
+      "submittedOn": "0000-00-00"
+    },
+    "changedClaims": [
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 37호",
+        "subject": "개체 37호",
+        "field": "이력번호",
+        "before": "21●●●●●75",
+        "after": "21●●●●●76",
+        "verdictBefore": "match",
+        "verdictAfter": "unverifiable",
+        "verdictShift": "changed"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_price:개체 1호",
+        "subject": "개체 1호",
+        "field": "취득원가",
+        "before": "4574865",
+        "after": "4900000",
+        "verdictShift": "not_judged"
+      }
+    ],
+    "verdictChanges": [
+      {
+        "claimId": "livestock_trace_no:개체 37호",
+        "subject": "개체 37호",
+        "field": "이력번호",
+        "before": "match",
+        "after": "unverifiable",
+        "shift": "changed"
+      },
+      {
+        "claimId": "livestock_breed:개체 37호",
+        "subject": "개체 37호",
+        "field": "품종",
+        "before": "match",
+        "after": "unverifiable",
+        "shift": "changed"
+      },
+      {
+        "claimId": "livestock_sex:개체 37호",
+        "subject": "개체 37호",
+        "field": "성별",
+        "before": "match",
+        "after": "unverifiable",
+        "shift": "changed"
+      },
+      {
+        "claimId": "acquisition_date:개체 37호",
+        "subject": "개체 37호",
+        "field": "취득시기",
+        "before": "match",
+        "after": "unverifiable",
+        "shift": "changed"
+      },
+      {
+        "claimId": "custody_location:개체 37호",
+        "subject": "개체 37호",
+        "field": "보관장소",
+        "before": "match",
+        "after": "unverifiable",
+        "shift": "changed"
+      }
+    ],
+    "summary": {
+      "changedClaims": 2,
+      "verdictMaintained": 180,
+      "verdictChanged": 5,
+      "verdictUnknown": 0,
+      "notJudged": 37
+    },
+    "notes": [
+      "실제 접수된 정정신고서가 아니라 원문을 조작해 만든 합성 정정본 비교 결과입니다 — 리플레이 데모 전용."
+    ]
+  }
+}

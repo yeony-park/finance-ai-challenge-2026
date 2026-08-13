@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "month": "2021-05",
+  "lawdCd": "11650",
+  "sigunguName": "서울 서초구",
+  "collectedAt": "2026-08-13T17:51:14.552Z",
+  "sourceId": "molit-rtms-nrg-trade",
+  "sourceName": "국토교통부 상업업무용 부동산 매매 신고 자료 (국토교통부 · data.go.kr 실거래가 오픈API)",
+  "endpoint": "https://apis.data.go.kr/1613000/RTMSDataSvcNrgTrade/getRTMSDataSvcNrgTrade",
+  "status": "failed",
+  "reason": "HTTP 403 · 실거래 API가 요청을 거부했습니다 — SERVICE_KEY_IS_NOT_REGISTERED_ERROR · 등록되지 않은 서비스키 · returnReasonCode=30",
+  "cancelledCount": 0,
+  "trades": []
+}

@@ -42,6 +42,7 @@ const SECRETS = {
 
 const INTERNAL_REPORT: ReportSnapshot = {
   offerId: OFFER_ID,
+  assetKind: "livestock",
   document: DOCUMENT,
   generatedAt: "2026-08-13T14:58:05.788Z",
   mode: "fake",
@@ -93,6 +94,7 @@ const INTERNAL_REPORT: ReportSnapshot = {
     },
   ],
   pricePlacements: [],
+  realEstatePlacements: [],
   notes: ["추출 모드: rules-only"],
 };
 

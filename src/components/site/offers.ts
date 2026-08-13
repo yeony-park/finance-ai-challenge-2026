@@ -1,4 +1,8 @@
-export type AssetKind = "livestock" | "real-estate";
+import type { AssetKind } from "@/lib/verify/types";
+
+export type { AssetKind };
+
+export type SchedulePrecision = "minute" | "day";
 
 export interface OfferEntry {
   readonly id: string;
@@ -8,6 +12,7 @@ export interface OfferEntry {
   readonly subscription: {
     readonly opensAt: string;
     readonly closesAt: string;
+    readonly precision?: SchedulePrecision;
   };
 }
 
@@ -20,6 +25,17 @@ export const OFFERS: readonly OfferEntry[] = [
     subscription: {
       opensAt: "2026-08-27T10:00:00+09:00",
       closesAt: "2026-09-10T16:00:00+09:00",
+    },
+  },
+  {
+    id: "real-estate-a",
+    title: "부동산 A",
+    assetLabel: "부동산",
+    assetKind: "real-estate",
+    subscription: {
+      opensAt: "2021-07-07T00:00:00+09:00",
+      closesAt: "2021-07-15T23:59:00+09:00",
+      precision: "day",
     },
   },
 ];
@@ -54,9 +70,26 @@ export const formatScheduleTime = (iso: string): string => {
   return `${kst.getUTCMonth() + 1}/${kst.getUTCDate()} ${pad2(kst.getUTCHours())}:${pad2(kst.getUTCMinutes())}`;
 };
 
+export const formatScheduleDate = (
+  iso: string,
+  options: { readonly withYear?: boolean } = {},
+): string => {
+  const kst = new Date(new Date(iso).getTime() + KST_OFFSET_MS);
+  const md = `${kst.getUTCMonth() + 1}. ${kst.getUTCDate()}.`;
+  return options.withYear ? `${kst.getUTCFullYear()}. ${md}` : md;
+};
+
+const scheduleLabel = (entry: OfferEntry): string => {
+  const { opensAt, closesAt, precision } = entry.subscription;
+  if (precision === "day") {
+    return `${formatScheduleDate(opensAt, { withYear: true })} ~ ${formatScheduleDate(closesAt)}`;
+  }
+  return `${formatScheduleTime(opensAt)} ~ ${formatScheduleTime(closesAt)}`;
+};
+
 export const buildOfferSchedule = (entry: OfferEntry, now: Date): OfferSchedule => {
   const { opensAt, closesAt } = entry.subscription;
-  const label = `${formatScheduleTime(opensAt)} ~ ${formatScheduleTime(closesAt)}`;
+  const label = scheduleLabel(entry);
   const base = { label, closesAt } as const;
 
   const nowMs = now.getTime();
