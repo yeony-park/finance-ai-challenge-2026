@@ -28,7 +28,7 @@ const runFakePipeline = async (): Promise<VerifyReport> => {
 };
 
 describe.skipIf(!hasLocalData)(
-  `뱅카우 9호 완주 — 2026-08-10 실측 스냅샷 회귀 ${localDataNote}`,
+  `가축투자계약증권 9호 완주 — 2026-08-10 실측 스냅샷 회귀 ${localDataNote}`,
   () => {
   test("37두 중 36두 일치 · 학산 24호 1두 불일치 · 확인 불가 0두", async () => {
     // Act
@@ -93,7 +93,7 @@ describe.skipIf(!hasLocalData)(
     const report = await runFakePipeline();
 
     expect(report.mode).toBe("fake");
-    expect(report.offerId).toBe("bankcow-9");
+    expect(report.offerId).toBe("livestock-9");
     expect(report.document.rcpNo).toBe(RCP_NO);
     expect(report.document.submittedOn).toBe("2026-08-06");
     expect(report.sources[0]).toContain("축산물이력제");
@@ -115,7 +115,7 @@ describe("리포트 조립", () => {
   test("판정 없이도 리포트는 만들어지고 집계는 0이다", () => {
     const report = buildReport({
       document: {
-        offerId: "bankcow-9",
+        offerId: "livestock-9",
         rcpNo: RCP_NO,
         submittedOn: "2026-08-06",
       },

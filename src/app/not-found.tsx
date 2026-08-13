@@ -24,8 +24,7 @@ export default function NotFound() {
       }
     >
       <p className={s.body}>
-        주소가 잘못되었거나, 해당 공모의 리포트가 아직 공개되지 않았을 수 있습니다. 대조 결과가
-        나오기 전에는 화면을 만들어 두지 않습니다.
+        주소가 잘못되었거나, 해당 공모의 리포트가 아직 공개되지 않았을 수 있습니다.
       </p>
     </StatusScreen>
   );

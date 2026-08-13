@@ -12,7 +12,7 @@ import { maskSubject, toPublicReport } from "../report/public-report";
 import { parseReportSnapshot, type ReportSnapshot } from "../report/snapshot";
 import { hasLocalFile, SNAPSHOT_PATH, skipReason } from "./local-data";
 
-const PUBLIC_DIR = "data/public/bankcow-9";
+const PUBLIC_DIR = "data/public/livestock-9";
 
 const readPublicReports = (): readonly { name: string; raw: string }[] =>
   readdirSync(PUBLIC_DIR)
@@ -78,9 +78,9 @@ describe("공개 리포트 — 개인정보 부재 (구조 검사)", () => {
 
 describe("toPublicReport — 순수 변환 계약", () => {
   const synthetic: ReportSnapshot = {
-    offerId: "bankcow-9",
+    offerId: "livestock-9",
     document: {
-      offerId: "bankcow-9",
+      offerId: "livestock-9",
       rcpNo: "20260806000159",
       submittedOn: "2026-08-06",
     },
@@ -99,7 +99,7 @@ describe("toPublicReport — 순수 변환 계약", () => {
           field: "보관장소",
           value: "충청북도 검증시 가상읍",
           document: {
-            offerId: "bankcow-9",
+            offerId: "livestock-9",
             rcpNo: "20260806000159",
             submittedOn: "2026-08-06",
           },
@@ -135,7 +135,7 @@ describe("toPublicReport — 순수 변환 계약", () => {
           numericValue: 4574865,
           unit: "원",
           document: {
-            offerId: "bankcow-9",
+            offerId: "livestock-9",
             rcpNo: "20260806000159",
             submittedOn: "2026-08-06",
           },

@@ -42,8 +42,11 @@ const resolveWithin = (base: string, segment: string): string => {
   return target;
 };
 
-/** data/ 하위 구획 — 저장 정책(로컬 전용 / 커밋 대상)의 물리적 경계 */
-export type DataSection = "raw" | "reports" | "public";
+/**
+ * data/ 하위 구획 — 저장 정책(로컬 전용 / 커밋 대상)의 물리적 경계.
+ * `goldset`은 이력번호·사육지가 담기므로 `raw`·`reports`와 같은 로컬 전용 구획이다.
+ */
+export type DataSection = "raw" | "reports" | "public" | "goldset";
 
 /** `{dataDir}/{section}/{offerId}` (절대 경로) */
 export const offerDataDir = (

@@ -32,10 +32,10 @@ describe("pickLatestFileName — 리포트 버전링에서 최신 1건 선택", 
 describe("loadLatestReport — 스냅샷 JSON 로딩 (읽기 전용)", () => {
   test("뱅카우 9호 최신 리포트를 엔진 계약대로 읽는다", async () => {
     // Act
-    const loaded = await loadLatestReport("bankcow-9");
+    const loaded = await loadLatestReport("livestock-9");
 
     // Assert
-    expect(loaded.report.offerId).toBe("bankcow-9");
+    expect(loaded.report.offerId).toBe("livestock-9");
     expect(loaded.report.bySubject).toHaveLength(37);
     expect(loaded.report.judgements.length).toBeGreaterThan(0);
     expect(loaded.report.unjudged.length).toBeGreaterThan(0);

@@ -2,7 +2,8 @@
 
 /**
  * 감시 — 정정 재검증과 알림 미리보기.
- * 리플레이는 이미 끝난 대조 실행을 순서대로 되짚어 보여 줄 뿐, 새로 대조하지 않는다.
+ * 리플레이는 이미 끝난 대조 실행을 순서대로 되짚을 뿐, 새로 대조하지 않는다.
+ * 화면 문장의 주어는 공모다 — 서비스가 무엇을 해 주는지 말하지 않는다(홈-IA-개편 §2).
  *
  * 단계 점등은 타이머가 정하고, 모션은 그 상태 변화를 부드럽게 잇기만 한다.
  * 모션 축소를 요청한 사용자에게는 지연을 0으로 만들어 결과를 즉시 보여 준다(기존 처리 보존).
@@ -67,10 +68,10 @@ export function WatchSection({ view }: { readonly view: DemoView }) {
         <header className={s.layerHead}>
           <span className={s.layerNo}>정정 재검증 · 알림</span>
           <h2 id={WATCH_HEADING_ID} className={s.layerTitle}>
-            등록한 공모의 변화를 알려드립니다
+            이 공모의 정정 접수와 재대조 기록
           </h2>
           <span className={s.layerSource}>
-            정정신고서가 접수되거나 판정이 달라지면 같은 파이프라인으로 다시 대조합니다
+            정정신고서가 접수되거나 판정이 달라지면 이 공모는 같은 파이프라인으로 다시 대조됩니다
           </span>
         </header>
 
@@ -146,8 +147,8 @@ export function WatchSection({ view }: { readonly view: DemoView }) {
         <div className={s.honesty}>
           <IconInfo className={s.ic} />
           <span>
-            알림 발송·정정 감시는 아직 연결되지 않았습니다 — 위 리플레이는 실제 대조 실행 결과를
-            재생한 뒤, 알림 화면이 어떻게 보일지 미리 보여 줍니다.
+            알림 발송·정정 감시는 아직 연결되지 않았습니다 — 위 리플레이는 실제 대조 실행 기록이며,
+            마지막 알림 화면은 미리보기입니다.
           </span>
         </div>
       </Reveal>

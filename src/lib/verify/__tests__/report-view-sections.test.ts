@@ -12,7 +12,7 @@ import { assignSubjectNos } from "../report/view-model/subject-cards";
 import type { ReportContext } from "../report/view-model/context";
 
 const buildContext = async (): Promise<ReportContext> =>
-  buildReportContext(await loadLatestReport("bankcow-9"));
+  buildReportContext(await loadLatestReport("livestock-9"));
 
 describe("assignSubjectNos — 개체 번호는 이름에서 읽되 겹치지 않는다", () => {
   test("이름의 번호를 그대로 쓴다", () => {

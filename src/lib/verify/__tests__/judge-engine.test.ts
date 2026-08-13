@@ -7,7 +7,7 @@ import type {
 import type { Claim, ClaimKind, DocumentRef } from "../types";
 
 const DOC: DocumentRef = {
-  offerId: "bankcow-9",
+  offerId: "livestock-9",
   rcpNo: "20260806000159",
   submittedOn: "2026-08-06",
 };

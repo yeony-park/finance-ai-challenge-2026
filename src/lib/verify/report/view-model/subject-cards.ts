@@ -3,7 +3,7 @@
  * 발행사·농장명은 버리고 번호만 남긴다(익명화), 번호는 화면 key로도 쓰이므로 유일해야 한다.
  */
 import type { ReportSnapshot } from "../snapshot";
-import { VERDICT_BADGE, VERDICT_LABEL } from "./labels";
+import { VERDICT_LABEL } from "./labels";
 import type { SubjectCardView } from "./types";
 
 /** "학산 24호" → 24 */
@@ -53,7 +53,7 @@ export const buildSubjectCards = (
       no,
       label: `${no}호`,
       verdict: head.verdict,
-      badge: VERDICT_BADGE[head.verdict],
+      badge: VERDICT_LABEL[head.verdict],
       ariaLabel: `개체 ${no}호, ${VERDICT_LABEL[head.verdict]}`,
       // 일치 개체는 대조할 편차가 없어 근거 카드를 열지 않는다
       hasFocus: head.verdict !== "match",

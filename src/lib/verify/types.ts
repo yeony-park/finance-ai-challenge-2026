@@ -15,7 +15,15 @@ export type Verifiability =
   | "verifiable" // 공공 데이터로 대조 가능
   | "no_reference_data" // 대조할 공개 데이터가 없음
   | "structurally_impossible" // 개체 식별자 자체가 없음 (예: 돼지 집합물)
-  | "unparsed"; // 스키마 게이트 실패 → "확인 불가"로 강등된 필드
+  | "unparsed" // 스키마 게이트 실패 → "확인 불가"로 강등된 필드
+  | "cross_check_conflict" // 규칙 추출과 LLM 추출이 달라 확인 불가로 강등된 필드
+  | "llm_only"; // LLM만 추출 — 규칙으로 교차확인되지 않아 판정을 보류한 필드
+
+/** 이 claim을 만든 추출 경로 — 근거 리포트의 출처 태깅 */
+export type ClaimSource =
+  | "rules" // 규칙 파서 단독
+  | "llm" // LLM 단독 (교차확인 없음)
+  | "both"; // 규칙·LLM 양쪽에서 관측
 
 export type ClaimKind =
   | "livestock_trace_no"
@@ -35,9 +43,14 @@ export interface DocumentRef {
 
 /** 원문 좌표 — 근거 리포트에서 "어디에 쓰여 있는가"를 되짚는 데 쓴다 */
 export interface ClaimLocation {
+  /** 인용 좌표 한 줄 — 표를 감싼 가장 가까운 번호 항목 */
   readonly section: string;
   readonly table: string;
   readonly row: number;
+  /** 최상위 부(部)부터 최하위 항목까지의 제목 경로 (파서가 원문에서 복원) */
+  readonly sectionPath?: readonly string[];
+  /** 표가 시작하는 원문 XML 문자 오프셋 — 정정 diff·원문 대조의 기준점 */
+  readonly charOffset?: number;
 }
 
 /** 신고서가 주장하는 검증 대상 사실 하나 */
@@ -55,8 +68,10 @@ export interface Claim {
   readonly document: DocumentRef;
   readonly location: ClaimLocation;
   readonly verifiability: Verifiability;
-  /** 스키마 게이트 실패 사유 (verifiability === "unparsed"일 때만) */
+  /** 스키마 게이트 실패·교차검증 강등 사유 (verifiability가 verifiable이 아닐 때) */
   readonly demotionReason?: string;
+  /** 추출 경로 태깅 — 교차검증을 돌리지 않은 경로(rules-only)에서는 비어 있다 */
+  readonly extractedBy?: ClaimSource;
 }
 
 export type EvidenceStance = "supports" | "contradicts" | "context";

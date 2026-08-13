@@ -5,7 +5,7 @@ import type { DocumentRef } from "../types";
 import { hasLocalFile, rawXmlPath, skipReason } from "./local-data";
 
 const BANKCOW9: DocumentRef = {
-  offerId: "bankcow-9",
+  offerId: "livestock-9",
   rcpNo: "20260806000159",
   submittedOn: "2026-08-06",
 };

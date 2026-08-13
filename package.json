@@ -12,6 +12,8 @@
     "verify": "tsx src/lib/verify/cli.ts",
     "verify:live": "tsx --env-file-if-exists=.env src/lib/verify/cli.ts",
     "verify:collect": "tsx --env-file-if-exists=.env src/lib/verify/dart/collect-cli.ts",
+    "goldset:prelabel": "tsx src/lib/verify/goldset/cli.ts prelabel",
+    "goldset:score": "tsx src/lib/verify/goldset/cli.ts score",
     "data:manifest": "node scripts/update-data-manifest.mjs",
     "test": "vitest run"
   },

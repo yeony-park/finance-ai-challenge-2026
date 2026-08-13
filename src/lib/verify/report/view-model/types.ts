@@ -38,7 +38,7 @@ export interface EvidenceRowView {
 export interface FocusView {
   readonly no: number;
   readonly title: string;
-  /** 이 개체가 미확인/확인 불가로 분류된 대표 사유 (엔진 rationale, 익명화 적용) */
+  /** 이 개체가 원장 미확인/대조 불가로 분류된 대표 사유 (엔진 rationale, 익명화 적용) */
   readonly summary: string;
   readonly claimHeading: string;
   readonly claimRows: readonly EvidenceRowView[];

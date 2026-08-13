@@ -154,6 +154,37 @@ export const readTables = (xml: string): readonly ParsedTable[] => {
   });
 };
 
+const TABLE_TAG_PATTERN = /<(\/?)TABLE\b[^>]*>/g;
+
+/**
+ * 원문에서 **최상위 표**의 문자 범위를 문서 순서대로 훑는다 (`[시작, 끝)`).
+ * 중첩 표(TD 안의 TABLE)는 바깥 표 범위에 포함된다 — 목차 파서가 "표 안의 문단"을
+ * 항목 제목으로 오인하지 않게 하는 것과, 표마다 원문 오프셋을 붙이는 것이 목적이다.
+ */
+export const findTableRanges = (
+  xml: string,
+): readonly (readonly [number, number])[] => {
+  const ranges: (readonly [number, number])[] = [];
+  const pattern = new RegExp(TABLE_TAG_PATTERN.source, "g");
+  let depth = 0;
+  let start = 0;
+
+  for (
+    let match = pattern.exec(xml);
+    match !== null;
+    match = pattern.exec(xml)
+  ) {
+    if (match[1]) {
+      depth = Math.max(0, depth - 1);
+      if (depth === 0) ranges.push([start, match.index + match[0].length]);
+      continue;
+    }
+    if (depth === 0) start = match.index;
+    depth += 1;
+  }
+  return ranges;
+};
+
 /** 헤더에 지정한 열 이름이 모두 있는 표를 고른다. */
 export const findTablesByHeader = (
   tables: readonly ParsedTable[],
@@ -171,3 +202,18 @@ export const columnIndex = (
   needle: string,
 ): number =>
   table.header.findIndex((cell) => cell.replace(/\s/g, "").includes(needle));
+
+/**
+ * 별칭 목록으로 열 인덱스를 찾는다 — 앞선 별칭이 우선한다.
+ * 발행사마다 같은 뜻의 열 이름이 달라("취득원가" ↔ "취득가액") 매핑을 데이터로 분리하기 위한 진입점.
+ */
+export const columnIndexByAliases = (
+  table: ParsedTable,
+  aliases: readonly string[],
+): number => {
+  for (const alias of aliases) {
+    const index = columnIndex(table, alias);
+    if (index >= 0) return index;
+  }
+  return -1;
+};

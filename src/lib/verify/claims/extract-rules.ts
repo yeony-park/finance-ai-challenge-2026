@@ -1,15 +1,26 @@
 /**
- * 규칙 기반 claim 추출 (LLM 없음 — S0 범위).
+ * 규칙 기반 claim 추출 — LLM 교차검증의 상대편이자 감사 가능한 결정적 경로.
+ *
  * 신고서의 정형 TABLE에서 개체별 이력번호·고유명칭·취득시기·취득원가·보관장소를 뽑고,
  * zod 게이트를 통과하지 못한 필드는 파이프라인을 멈추는 대신 "확인 불가"로 강등한다.
+ *
+ * S1 일반화
+ * - 표를 평면 목록이 아니라 **항목 구조가 보존된 문서 모델**(`parse/document.ts`)에서 고른다
+ *   → claim마다 항목 경로·원문 오프셋이 붙는다 (발행사 무관)
+ * - 표 이름·열 별칭·헤더 시그니처는 코드가 아니라 **발행사 프로필 데이터**(`parse/profiles.ts`)다
  */
 import type { Claim, ClaimKind, DocumentRef, Verifiability } from "../types";
 import {
-  columnIndex,
-  findTablesByHeader,
-  readTables,
-  type ParsedTable,
-} from "../parse/tables";
+  flatTables,
+  parseDocument,
+  type DocumentTable,
+} from "../parse/document";
+import { columnIndexByAliases, type ParsedTable } from "../parse/tables";
+import {
+  resolveDocumentProfile,
+  type ColumnKey,
+  type DocumentProfile,
+} from "../parse/profiles";
 import {
   acquisitionDateSchema,
   acquisitionPriceSchema,
@@ -21,20 +32,6 @@ import {
   type GateResult,
 } from "./schema";
 import { buildSexIndex, detectSex, type SexIndexTarget } from "./sex-index";
-
-/**
- * 개체 명세표를 식별하는 헤더 시그니처.
- * 신고서에는 이력번호를 쓰는 표가 10여 개 있으므로(사료비·경매가·등급 등)
- * "고유명칭 + 취득시기 + 보관장소"까지 요구해 취득 명세표만 특정한다.
- */
-const HEAD_TABLE_SIGNATURE = [
-  "고유명칭",
-  "이력번호",
-  "취득시기",
-  "보관장소",
-] as const;
-const SECTION = "8. 기초자산 취득에 관한 사항";
-const TABLE_NAME = "기초자산 개체 명세표";
 
 /** 개체 행에서 성별을 읽지 못했을 때 남기는 강등 사유 */
 const SEX_NOT_FOUND =
@@ -51,6 +48,16 @@ export interface ExtractionResult {
   readonly notes: readonly string[];
 }
 
+/** 개체 명세표를 특정한 결과 — LLM 추출도 같은 표를 입력으로 받는다 */
+export interface HeadTableSelection {
+  readonly profile: DocumentProfile;
+  readonly source: DocumentTable;
+  readonly columns: Readonly<Record<ColumnKey, number>>;
+  /** 문서 전체 표 (성별 색인처럼 명세표 밖을 훑는 규칙이 쓴다) */
+  readonly allTables: readonly ParsedTable[];
+  readonly notes: readonly string[];
+}
+
 interface FieldSpec {
   readonly kind: ClaimKind;
   readonly field: string;
@@ -59,13 +66,72 @@ interface FieldSpec {
   readonly unit?: string;
 }
 
-const claimId = (kind: ClaimKind, subject: string): string =>
+export const claimId = (kind: ClaimKind, subject: string): string =>
   `${kind}:${subject}`;
+
+const columnMap = (
+  table: ParsedTable,
+  profile: DocumentProfile,
+): Readonly<Record<ColumnKey, number>> => ({
+  label: Math.max(columnIndexByAliases(table, profile.columns.label), 0),
+  name: columnIndexByAliases(table, profile.columns.name),
+  trace: columnIndexByAliases(table, profile.columns.trace),
+  date: columnIndexByAliases(table, profile.columns.date),
+  price: columnIndexByAliases(table, profile.columns.price),
+  custody: columnIndexByAliases(table, profile.columns.custody),
+});
+
+const hasSignature = (
+  table: ParsedTable,
+  signature: readonly string[],
+): boolean =>
+  signature.every((needle) =>
+    table.header.some((cell) => cell.replace(/\s/g, "").includes(needle)),
+  );
+
+/**
+ * 문서에서 개체 명세표를 특정한다.
+ * 프로필이 등록되지 않은 공모는 폴백 프로필로 시도하고, 그 사실을 note에 남긴다.
+ */
+export const selectHeadTable = (
+  xml: string,
+  document: DocumentRef,
+): HeadTableSelection | undefined => {
+  const { profile, matched } = resolveDocumentProfile(document.offerId);
+  const parsed = parseDocument(xml);
+  const candidates = parsed.tables.filter((entry) =>
+    hasSignature(entry.table, profile.headerSignature),
+  );
+
+  const source = candidates[0];
+  if (!source) return undefined;
+
+  const notes: string[] = [];
+  if (!matched) {
+    notes.push(
+      `공모 ${document.offerId}의 발행사 프로필이 없어 기본 프로필(${profile.id})로 추출했습니다 — 사람 검수가 필요합니다.`,
+    );
+  }
+  if (candidates.length > 1) {
+    notes.push(
+      `개체 명세표 후보가 ${candidates.length}건이라 첫 번째 표만 사용했습니다.`,
+    );
+  }
+
+  return {
+    profile,
+    source,
+    columns: columnMap(source.table, profile),
+    allTables: flatTables(parsed),
+    notes,
+  };
+};
 
 const buildClaim = (
   spec: FieldSpec,
   subject: string,
   document: DocumentRef,
+  selection: HeadTableSelection,
   row: number,
 ): Claim => {
   const verifiability: Verifiability = spec.gated.ok
@@ -86,7 +152,16 @@ const buildClaim = (
     ...(numericValue === undefined ? {} : { numericValue }),
     ...(spec.unit === undefined ? {} : { unit: spec.unit }),
     document,
-    location: { section: SECTION, table: TABLE_NAME, row },
+    location: {
+      section:
+        selection.source.section.length > 0
+          ? selection.source.section
+          : selection.profile.sectionFallback,
+      table: selection.profile.tableName,
+      row,
+      sectionPath: selection.source.sectionPath,
+      charOffset: selection.source.charOffset,
+    },
     verifiability,
     ...(spec.gated.ok ? {} : { demotionReason: spec.gated.reason }),
   };
@@ -94,10 +169,10 @@ const buildClaim = (
 
 const rowSpecs = (
   cells: readonly string[],
-  columns: Readonly<Record<string, number>>,
+  columns: Readonly<Record<ColumnKey, number>>,
   sexRaw: string | undefined,
 ): readonly FieldSpec[] => {
-  const at = (key: string): string => {
+  const at = (key: ColumnKey): string => {
     const index = columns[key];
     return index >= 0 ? (cells[index] ?? "") : "";
   };
@@ -155,58 +230,62 @@ const isHeadRow = (label: string, cells: readonly string[]): boolean => {
   return label.length > 0 && cells.filter((c) => c.length > 0).length >= 3;
 };
 
-const columnMap = (table: ParsedTable): Readonly<Record<string, number>> => ({
-  label: Math.max(columnIndex(table, "구분"), 0),
-  name: columnIndex(table, "고유명칭"),
-  trace: columnIndex(table, "이력번호"),
-  date: columnIndex(table, "취득시기"),
-  price: columnIndex(table, "취득원가"),
-  custody: columnIndex(table, "보관장소"),
-});
+export interface HeadRow {
+  readonly cells: readonly string[];
+  readonly row: number;
+  readonly subject: string;
+  readonly traceNoRaw: string;
+}
+
+/** 개체 명세표에서 개체 행만 골라낸다 (합계·소계 제외) */
+export const selectHeadRows = (
+  selection: HeadTableSelection,
+): readonly HeadRow[] =>
+  selection.source.table.rows
+    .map((cells, offset) => ({ cells, row: offset + 1 }))
+    .filter(({ cells }) =>
+      isHeadRow((cells[selection.columns.label] ?? "").trim(), cells),
+    )
+    .map(({ cells, row }) => ({
+      cells,
+      row,
+      subject: (cells[selection.columns.label] ?? "").trim(),
+      traceNoRaw: (cells[selection.columns.trace] ?? "").trim(),
+    }));
+
+/** 개체 명세표를 못 찾았을 때의 사유 — 추출 모드와 무관하게 같은 문장을 쓴다 */
+export const headTableMissingNote = (offerId: string): string => {
+  const { profile } = resolveDocumentProfile(offerId);
+  return `개체 명세표(헤더 ${profile.headerSignature.join("·")})를 원문에서 찾지 못했습니다.`;
+};
 
 /** 원문 XML → 개체별 claim 목록. 실패 필드는 확인 불가로 강등하고 사유를 남긴다. */
 export const extractClaims = (
   xml: string,
   document: DocumentRef,
 ): ExtractionResult => {
-  const tables = readTables(xml);
-  const candidates = findTablesByHeader(tables, HEAD_TABLE_SIGNATURE);
+  const selection = selectHeadTable(xml, document);
+  return selection
+    ? extractClaimsFrom(selection, document)
+    : {
+        claims: [],
+        demotions: [],
+        notes: [headTableMissingNote(document.offerId)],
+      };
+};
 
-  if (candidates.length === 0) {
-    return {
-      claims: [],
-      demotions: [],
-      notes: [
-        `개체 명세표(헤더 ${HEAD_TABLE_SIGNATURE.join("·")})를 원문에서 찾지 못했습니다.`,
-      ],
-    };
-  }
-
-  const notes: string[] =
-    candidates.length > 1
-      ? [
-          `개체 명세표 후보가 ${candidates.length}건이라 첫 번째 표만 사용했습니다.`,
-        ]
-      : [];
-
-  const table = candidates[0];
-  const columns = columnMap(table);
-
-  // 개체 행 목록을 먼저 확정한 뒤, 성별을 개체 행 단위로 찾는다
-  const heads = table.rows
-    .map((cells, offset) => ({ cells, row: offset + 1 }))
-    .filter(({ cells }) => isHeadRow((cells[columns.label] ?? "").trim(), cells))
-    .map(({ cells, row }) => ({
-      cells,
-      row,
-      subject: (cells[columns.label] ?? "").trim(),
-      traceNoRaw: (cells[columns.trace] ?? "").trim(),
-    }));
+/** 이미 특정한 개체 명세표에서 claim을 뽑는다 (LLM 추출과 같은 표를 공유하기 위한 진입점) */
+export const extractClaimsFrom = (
+  selection: HeadTableSelection,
+  document: DocumentRef,
+): ExtractionResult => {
+  const notes: string[] = [...selection.notes];
+  const heads = selectHeadRows(selection);
 
   const sexTargets: readonly SexIndexTarget[] = heads.map(
     ({ subject, traceNoRaw }) => ({ subject, traceNoRaw }),
   );
-  const sexIndex = buildSexIndex(tables, sexTargets);
+  const sexIndex = buildSexIndex(selection.allTables, sexTargets);
 
   const claims: Claim[] = [];
   const demotions: ClaimDemotion[] = [];
@@ -216,8 +295,8 @@ export const extractClaims = (
     const sexRaw =
       detectSex(head.cells.join(" ")) ?? sexIndex.get(head.subject);
 
-    for (const spec of rowSpecs(head.cells, columns, sexRaw)) {
-      const claim = buildClaim(spec, head.subject, document, head.row);
+    for (const spec of rowSpecs(head.cells, selection.columns, sexRaw)) {
+      const claim = buildClaim(spec, head.subject, document, selection, head.row);
       claims.push(claim);
       if (!spec.gated.ok) {
         demotions.push({ claimId: claim.id, reason: spec.gated.reason });
@@ -226,7 +305,8 @@ export const extractClaims = (
   }
 
   const sexMissing = claims.filter(
-    (claim) => claim.kind === "livestock_sex" && claim.verifiability === "unparsed",
+    (claim) =>
+      claim.kind === "livestock_sex" && claim.verifiability === "unparsed",
   ).length;
   if (sexMissing > 0) {
     notes.push(

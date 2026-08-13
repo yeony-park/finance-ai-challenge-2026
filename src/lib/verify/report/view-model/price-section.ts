@@ -1,6 +1,6 @@
 /**
- * ② 가격 위치 층위 — 경락가 어댑터가 붙기 전까지 취득원가는 판정하지 않는다.
- * 신고서 기재값은 "대조 전 값"임을 문구로 못 박아 일치·불일치로 오독되지 않게 한다.
+ * ② 가격 위치 층위 — 경락가 어댑터가 붙기 전까지 취득원가에는 판정이 붙지 않는다.
+ * 신고서 기재값은 "대조 전 값"임을 문구로 못 박아 판정 결과로 오독되지 않게 한다.
  */
 import { formatWon } from "../format";
 import { maskFreeText } from "../mask";
@@ -48,11 +48,11 @@ export const buildPriceSection = (ctx: ReportContext): DemoView["price"] => {
       {
         id: "price-unjudged",
         tone: "unknown",
-        title: `취득원가 ${ctx.unjudgedCount}건 · 확인 불가(미판정)`,
+        title: `취득원가 ${ctx.unjudgedCount}건 · 대조 불가(미판정)`,
         meta: reason,
       },
       ...distributionItems(claimedPrices(ctx)),
     ],
-    note: "도매시장 경락가 어댑터가 연결되기 전까지 취득원가는 판정하지 않습니다. 판정할 수 없는 항목은 일치·불일치 어느 쪽으로도 세지 않고 확인 불가로 남깁니다.",
+    note: "도매시장 경락가 어댑터가 연결되기 전까지 취득원가에는 판정이 붙지 않습니다. 판정할 수 없는 항목은 일치·원장 미확인 어느 쪽으로도 세지 않고 대조 불가로 남습니다.",
   };
 };

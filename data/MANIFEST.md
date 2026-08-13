@@ -2,7 +2,7 @@
 
 # data/ 매니페스트
 
-생성 시각: 2026-08-11T17:10:27.897Z
+생성 시각: 2026-08-13T05:34:23.817Z
 
 ## 저장 정책
 
@@ -50,10 +50,10 @@
 
 | 경로 | 바이트 | sha256 |
 |---|---:|---|
-| `data/reports/bankcow-9/report-2026-08-11T16-02-04-683Z.json` | 268,249 | `52058ab3d1e1deee2dd6ac1bbfaa2ae1984191404b74e83d16e89a9c4bd031bf` |
-| `data/reports/bankcow-9/report-2026-08-11T16-04-40-307Z.json` | 260,995 | `5b3ae8b1c736c83bb685970c94366d800009c1f8e0d168b74dce56469c415ecb` |
-| `data/reports/bankcow-9/report-2026-08-11T16-06-25-434Z.json` | 268,249 | `457a752e71785d77257674ed3dcc51c52db193c55d852ae79e282bc2605b1923` |
-| `data/reports/bankcow-9/report-2026-08-11T17-10-16-301Z.json` | 268,249 | `64037a73965f3882fa2a77b050d346df9f477c5aded789d4d634b6d2d73b1101` |
+| `data/reports/livestock-9/report-2026-08-11T16-02-04-683Z.json` | 268,697 | `25f6e34939b356595fde6c3d04254877e9cf2da294d95b6f324725ffdb0fbcf9` |
+| `data/reports/livestock-9/report-2026-08-11T16-04-40-307Z.json` | 261,443 | `d244d8e53faef706a2da24aa0f6405de73b8510ec7c7d32417b12f7e6407c343` |
+| `data/reports/livestock-9/report-2026-08-11T16-06-25-434Z.json` | 268,697 | `fc747f78938bcd2792c03afea57521ce4ab97b7ac117a5e48c59dd8b843859cb` |
+| `data/reports/livestock-9/report-2026-08-11T17-10-16-301Z.json` | 268,697 | `13c1a4e6369ce59f98bc1a981232a9e2db66915dfa89d2dfc8e2249c115f7851` |
 
 ## 커밋 대상 산출물
 
@@ -65,7 +65,7 @@
 
 | 경로 | 바이트 | sha256 |
 |---|---:|---|
-| `data/public/bankcow-9/report-2026-08-11T16-02-04-683Z.json` | 268,829 | `4b287e9942238e2dca2dc9bc7085ad3f322c1e5080c34155b4d732105a001331` |
-| `data/public/bankcow-9/report-2026-08-11T16-04-40-307Z.json` | 261,575 | `47c8ee04f895d509de2565d1df1bed49e17a488a8dc7bed6b1fe4126eb7b31ca` |
-| `data/public/bankcow-9/report-2026-08-11T16-06-25-434Z.json` | 268,829 | `7c3b1b007bb7a2e84a928036df7c22581a2426f4705bf0f8ffd8b59a7423d697` |
-| `data/public/bankcow-9/report-2026-08-11T17-10-16-301Z.json` | 268,829 | `e71d19b7d65646505bbc68331b7aaa02803731ecc38291f9273f6bbf3a392c6e` |
+| `data/public/livestock-9/report-2026-08-11T16-02-04-683Z.json` | 269,277 | `fdb1945dafffa6fd6b6775f35c3d8c5206eecd49de7b55cb3fe687f89224e1bc` |
+| `data/public/livestock-9/report-2026-08-11T16-04-40-307Z.json` | 262,023 | `5bde24e29d2437cd21f8cc92c427e0c4879c5d6ad26f240214c931a05917a847` |
+| `data/public/livestock-9/report-2026-08-11T16-06-25-434Z.json` | 269,277 | `f34264dd31b48b2fcebf40d08e8b55739c8997b8bb7072b1ca9a6803eda59e79` |
+| `data/public/livestock-9/report-2026-08-11T17-10-16-301Z.json` | 269,277 | `fdb8981636fb7b7fe362d1365fbee8490f0ff0e562f946175cc491857d57a31b` |

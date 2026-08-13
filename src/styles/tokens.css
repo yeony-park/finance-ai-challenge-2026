@@ -42,7 +42,7 @@
   --ds-verdict-match: #2f7a5b;
   --ds-verdict-match-soft: #e6f1ec;
   --ds-verdict-match-line: #bcd9cc;
-  /* 원장에서 확인되지 않음 (불일치) */
+  /* 원장 미확인 (내부 용어: 불일치) */
   --ds-verdict-miss: #b93a32;
   --ds-verdict-miss-soft: #f9e9e7;
   --ds-verdict-miss-line: #ecc7c3;

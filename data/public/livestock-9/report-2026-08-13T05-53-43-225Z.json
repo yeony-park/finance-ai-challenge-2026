@@ -1,11 +1,11 @@
 {
-  "offerId": "bankcow-9",
+  "offerId": "livestock-9",
   "document": {
-    "offerId": "bankcow-9",
+    "offerId": "livestock-9",
     "rcpNo": "20260806000159",
     "submittedOn": "2026-08-06"
   },
-  "generatedAt": "2026-08-11T16:02:04.683Z",
+  "generatedAt": "2026-08-13T05:53:43.225Z",
   "mode": "fake",
   "sources": [
     "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생"
@@ -213,16 +213,24 @@
         "field": "이력번호",
         "value": "21●●●●●52",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 1
+          "row": 1,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -247,16 +255,24 @@
         "field": "품종",
         "value": "한우",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 1
+          "row": 1,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -281,16 +297,24 @@
         "field": "성별",
         "value": "수",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 1
+          "row": 1,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
       },
       "evidence": [
         {
@@ -315,16 +339,24 @@
         "field": "취득시기",
         "value": "2026-07-14",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 1
+          "row": 1,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -349,16 +381,24 @@
         "field": "보관장소",
         "value": "강원 ○○군",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 1
+          "row": 1,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -384,16 +424,24 @@
         "field": "이력번호",
         "value": "21●●●●●54",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 2
+          "row": 2,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -418,16 +466,24 @@
         "field": "품종",
         "value": "한우",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 2
+          "row": 2,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -452,16 +508,24 @@
         "field": "성별",
         "value": "수",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 2
+          "row": 2,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
       },
       "evidence": [
         {
@@ -486,16 +550,24 @@
         "field": "취득시기",
         "value": "2026-07-14",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 2
+          "row": 2,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -520,16 +592,24 @@
         "field": "보관장소",
         "value": "강원 ○○군",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 2
+          "row": 2,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -555,16 +635,24 @@
         "field": "이력번호",
         "value": "21●●●●●67",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 3
+          "row": 3,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -589,16 +677,24 @@
         "field": "품종",
         "value": "한우",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 3
+          "row": 3,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -623,16 +719,24 @@
         "field": "성별",
         "value": "수",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 3
+          "row": 3,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
       },
       "evidence": [
         {
@@ -657,16 +761,24 @@
         "field": "취득시기",
         "value": "2026-07-14",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 3
+          "row": 3,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -691,16 +803,24 @@
         "field": "보관장소",
         "value": "강원 ○○군",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 3
+          "row": 3,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -726,16 +846,24 @@
         "field": "이력번호",
         "value": "21●●●●●95",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 4
+          "row": 4,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -760,16 +888,24 @@
         "field": "품종",
         "value": "한우",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 4
+          "row": 4,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -794,16 +930,24 @@
         "field": "성별",
         "value": "수",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 4
+          "row": 4,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
       },
       "evidence": [
         {
@@ -828,16 +972,24 @@
         "field": "취득시기",
         "value": "2026-07-21",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 4
+          "row": 4,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -862,16 +1014,24 @@
         "field": "보관장소",
         "value": "강원 ○○군",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 4
+          "row": 4,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -897,16 +1057,24 @@
         "field": "이력번호",
         "value": "21●●●●●10",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 5
+          "row": 5,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -931,16 +1099,24 @@
         "field": "품종",
         "value": "한우",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 5
+          "row": 5,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -965,16 +1141,24 @@
         "field": "성별",
         "value": "수",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 5
+          "row": 5,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
       },
       "evidence": [
         {
@@ -999,16 +1183,24 @@
         "field": "취득시기",
         "value": "2026-07-21",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 5
+          "row": 5,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -1033,16 +1225,24 @@
         "field": "보관장소",
         "value": "강원 ○○군",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 5
+          "row": 5,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -1068,16 +1268,24 @@
         "field": "이력번호",
         "value": "21●●●●●13",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 6
+          "row": 6,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -1102,16 +1310,24 @@
         "field": "품종",
         "value": "한우",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 6
+          "row": 6,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -1136,16 +1352,24 @@
         "field": "성별",
         "value": "수",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 6
+          "row": 6,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
       },
       "evidence": [
         {
@@ -1170,16 +1394,24 @@
         "field": "취득시기",
         "value": "2026-07-21",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 6
+          "row": 6,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -1204,16 +1436,24 @@
         "field": "보관장소",
         "value": "강원 ○○군",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 6
+          "row": 6,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -1239,16 +1479,24 @@
         "field": "이력번호",
         "value": "21●●●●●22",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 7
+          "row": 7,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -1273,16 +1521,24 @@
         "field": "품종",
         "value": "한우",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 7
+          "row": 7,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -1307,16 +1563,24 @@
         "field": "성별",
         "value": "수",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 7
+          "row": 7,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
       },
       "evidence": [
         {
@@ -1341,16 +1605,24 @@
         "field": "취득시기",
         "value": "2026-07-21",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 7
+          "row": 7,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -1375,16 +1647,24 @@
         "field": "보관장소",
         "value": "강원 ○○군",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 7
+          "row": 7,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -1410,16 +1690,24 @@
         "field": "이력번호",
         "value": "21●●●●●61",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 8
+          "row": 8,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -1444,16 +1732,24 @@
         "field": "품종",
         "value": "한우",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 8
+          "row": 8,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -1478,16 +1774,24 @@
         "field": "성별",
         "value": "수",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 8
+          "row": 8,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
       },
       "evidence": [
         {
@@ -1512,16 +1816,24 @@
         "field": "취득시기",
         "value": "2026-07-21",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 8
+          "row": 8,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -1546,16 +1858,24 @@
         "field": "보관장소",
         "value": "강원 ○○군",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 8
+          "row": 8,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -1581,16 +1901,24 @@
         "field": "이력번호",
         "value": "21●●●●●11",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 9
+          "row": 9,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -1615,16 +1943,24 @@
         "field": "품종",
         "value": "한우",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 9
+          "row": 9,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -1649,16 +1985,24 @@
         "field": "성별",
         "value": "수",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 9
+          "row": 9,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
       },
       "evidence": [
         {
@@ -1683,16 +2027,24 @@
         "field": "취득시기",
         "value": "2026-07-22",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 9
+          "row": 9,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -1717,16 +2069,24 @@
         "field": "보관장소",
         "value": "강원 ○○군",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 9
+          "row": 9,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -1752,16 +2112,24 @@
         "field": "이력번호",
         "value": "21●●●●●60",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 10
+          "row": 10,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -1786,16 +2154,24 @@
         "field": "품종",
         "value": "한우",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 10
+          "row": 10,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -1820,16 +2196,24 @@
         "field": "성별",
         "value": "수",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 10
+          "row": 10,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
       },
       "evidence": [
         {
@@ -1854,16 +2238,24 @@
         "field": "취득시기",
         "value": "2026-07-22",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 10
+          "row": 10,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -1888,16 +2280,24 @@
         "field": "보관장소",
         "value": "강원 ○○군",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 10
+          "row": 10,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -1923,16 +2323,24 @@
         "field": "이력번호",
         "value": "21●●●●●34",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 11
+          "row": 11,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -1957,16 +2365,24 @@
         "field": "품종",
         "value": "한우",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 11
+          "row": 11,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -1991,16 +2407,24 @@
         "field": "성별",
         "value": "수",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 11
+          "row": 11,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
       },
       "evidence": [
         {
@@ -2025,16 +2449,24 @@
         "field": "취득시기",
         "value": "2026-07-22",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 11
+          "row": 11,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -2059,16 +2491,24 @@
         "field": "보관장소",
         "value": "강원 ○○군",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 11
+          "row": 11,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -2094,16 +2534,24 @@
         "field": "이력번호",
         "value": "21●●●●●30",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 12
+          "row": 12,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -2128,16 +2576,24 @@
         "field": "품종",
         "value": "한우",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 12
+          "row": 12,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -2162,16 +2618,24 @@
         "field": "성별",
         "value": "수",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 12
+          "row": 12,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
       },
       "evidence": [
         {
@@ -2196,16 +2660,24 @@
         "field": "취득시기",
         "value": "2026-07-23",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 12
+          "row": 12,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -2230,16 +2702,24 @@
         "field": "보관장소",
         "value": "강원 ○○군",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 12
+          "row": 12,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -2265,16 +2745,24 @@
         "field": "이력번호",
         "value": "21●●●●●27",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 13
+          "row": 13,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -2299,16 +2787,24 @@
         "field": "품종",
         "value": "한우",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 13
+          "row": 13,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -2333,16 +2829,24 @@
         "field": "성별",
         "value": "수",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 13
+          "row": 13,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
       },
       "evidence": [
         {
@@ -2367,16 +2871,24 @@
         "field": "취득시기",
         "value": "2026-07-23",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 13
+          "row": 13,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -2401,16 +2913,24 @@
         "field": "보관장소",
         "value": "강원 ○○군",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 13
+          "row": 13,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -2436,16 +2956,24 @@
         "field": "이력번호",
         "value": "21●●●●●76",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 14
+          "row": 14,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -2470,16 +2998,24 @@
         "field": "품종",
         "value": "한우",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 14
+          "row": 14,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -2504,16 +3040,24 @@
         "field": "성별",
         "value": "수",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 14
+          "row": 14,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
       },
       "evidence": [
         {
@@ -2538,16 +3082,24 @@
         "field": "취득시기",
         "value": "2026-07-23",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 14
+          "row": 14,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -2572,16 +3124,24 @@
         "field": "보관장소",
         "value": "강원 ○○군",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 14
+          "row": 14,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -2607,16 +3167,24 @@
         "field": "이력번호",
         "value": "21●●●●●68",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 15
+          "row": 15,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -2641,16 +3209,24 @@
         "field": "품종",
         "value": "한우",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 15
+          "row": 15,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -2675,16 +3251,24 @@
         "field": "성별",
         "value": "수",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 15
+          "row": 15,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
       },
       "evidence": [
         {
@@ -2709,16 +3293,24 @@
         "field": "취득시기",
         "value": "2026-07-24",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 15
+          "row": 15,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -2743,16 +3335,24 @@
         "field": "보관장소",
         "value": "강원 ○○군",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 15
+          "row": 15,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -2778,16 +3378,24 @@
         "field": "이력번호",
         "value": "21●●●●●01",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 16
+          "row": 16,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -2812,16 +3420,24 @@
         "field": "품종",
         "value": "한우",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 16
+          "row": 16,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -2846,16 +3462,24 @@
         "field": "성별",
         "value": "수",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 16
+          "row": 16,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
       },
       "evidence": [
         {
@@ -2880,16 +3504,24 @@
         "field": "취득시기",
         "value": "2026-07-24",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 16
+          "row": 16,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -2914,16 +3546,24 @@
         "field": "보관장소",
         "value": "강원 ○○군",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 16
+          "row": 16,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -2949,16 +3589,24 @@
         "field": "이력번호",
         "value": "21●●●●●22",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 17
+          "row": 17,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -2983,16 +3631,24 @@
         "field": "품종",
         "value": "한우",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 17
+          "row": 17,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -3017,16 +3673,24 @@
         "field": "성별",
         "value": "수",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 17
+          "row": 17,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
       },
       "evidence": [
         {
@@ -3051,16 +3715,24 @@
         "field": "취득시기",
         "value": "2026-07-24",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 17
+          "row": 17,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -3085,16 +3757,24 @@
         "field": "보관장소",
         "value": "강원 ○○군",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 17
+          "row": 17,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -3120,16 +3800,24 @@
         "field": "이력번호",
         "value": "21●●●●●84",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 18
+          "row": 18,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -3154,16 +3842,24 @@
         "field": "품종",
         "value": "한우",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 18
+          "row": 18,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -3188,16 +3884,24 @@
         "field": "성별",
         "value": "수",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 18
+          "row": 18,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
       },
       "evidence": [
         {
@@ -3222,16 +3926,24 @@
         "field": "취득시기",
         "value": "2026-07-27",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 18
+          "row": 18,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -3256,16 +3968,24 @@
         "field": "보관장소",
         "value": "강원 ○○군",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 18
+          "row": 18,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -3291,16 +4011,24 @@
         "field": "이력번호",
         "value": "21●●●●●87",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 19
+          "row": 19,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -3325,16 +4053,24 @@
         "field": "품종",
         "value": "한우",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 19
+          "row": 19,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -3359,16 +4095,24 @@
         "field": "성별",
         "value": "수",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 19
+          "row": 19,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
       },
       "evidence": [
         {
@@ -3393,16 +4137,24 @@
         "field": "취득시기",
         "value": "2026-07-27",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 19
+          "row": 19,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -3427,16 +4179,24 @@
         "field": "보관장소",
         "value": "강원 ○○군",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 19
+          "row": 19,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -3462,16 +4222,24 @@
         "field": "이력번호",
         "value": "21●●●●●18",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 20
+          "row": 20,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -3496,16 +4264,24 @@
         "field": "품종",
         "value": "한우",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 20
+          "row": 20,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -3530,16 +4306,24 @@
         "field": "성별",
         "value": "수",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 20
+          "row": 20,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
       },
       "evidence": [
         {
@@ -3564,16 +4348,24 @@
         "field": "취득시기",
         "value": "2026-07-27",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 20
+          "row": 20,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -3598,16 +4390,24 @@
         "field": "보관장소",
         "value": "강원 ○○군",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 20
+          "row": 20,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -3633,16 +4433,24 @@
         "field": "이력번호",
         "value": "21●●●●●66",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 21
+          "row": 21,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -3667,16 +4475,24 @@
         "field": "품종",
         "value": "한우",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 21
+          "row": 21,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -3701,16 +4517,24 @@
         "field": "성별",
         "value": "수",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 21
+          "row": 21,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
       },
       "evidence": [
         {
@@ -3735,16 +4559,24 @@
         "field": "취득시기",
         "value": "2026-07-27",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 21
+          "row": 21,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -3769,16 +4601,24 @@
         "field": "보관장소",
         "value": "강원 ○○군",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 21
+          "row": 21,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -3804,16 +4644,24 @@
         "field": "이력번호",
         "value": "21●●●●●39",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 22
+          "row": 22,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -3838,16 +4686,24 @@
         "field": "품종",
         "value": "한우",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 22
+          "row": 22,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -3872,16 +4728,24 @@
         "field": "성별",
         "value": "수",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 22
+          "row": 22,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
       },
       "evidence": [
         {
@@ -3906,16 +4770,24 @@
         "field": "취득시기",
         "value": "2026-07-28",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 22
+          "row": 22,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -3940,16 +4812,24 @@
         "field": "보관장소",
         "value": "강원 ○○군",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 22
+          "row": 22,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -3975,16 +4855,24 @@
         "field": "이력번호",
         "value": "21●●●●●64",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 23
+          "row": 23,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -4009,16 +4897,24 @@
         "field": "품종",
         "value": "한우",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 23
+          "row": 23,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -4043,16 +4939,24 @@
         "field": "성별",
         "value": "수",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 23
+          "row": 23,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
       },
       "evidence": [
         {
@@ -4077,16 +4981,24 @@
         "field": "취득시기",
         "value": "2026-07-28",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 23
+          "row": 23,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -4111,16 +5023,24 @@
         "field": "보관장소",
         "value": "강원 ○○군",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 23
+          "row": 23,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -4146,16 +5066,24 @@
         "field": "이력번호",
         "value": "21●●●●●79",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 24
+          "row": 24,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -4180,16 +5108,24 @@
         "field": "품종",
         "value": "한우",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 24
+          "row": 24,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -4214,16 +5150,24 @@
         "field": "성별",
         "value": "수",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 24
+          "row": 24,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
       },
       "evidence": [
         {
@@ -4248,16 +5192,24 @@
         "field": "취득시기",
         "value": "2026-07-28",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 24
+          "row": 24,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -4282,16 +5234,24 @@
         "field": "보관장소",
         "value": "강원 ○○군",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 24
+          "row": 24,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -4317,16 +5277,24 @@
         "field": "이력번호",
         "value": "21●●●●●12",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 25
+          "row": 25,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -4351,16 +5319,24 @@
         "field": "품종",
         "value": "한우",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 25
+          "row": 25,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -4385,16 +5361,24 @@
         "field": "성별",
         "value": "수",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 25
+          "row": 25,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
       },
       "evidence": [
         {
@@ -4419,16 +5403,24 @@
         "field": "취득시기",
         "value": "2026-07-28",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 25
+          "row": 25,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -4453,16 +5445,24 @@
         "field": "보관장소",
         "value": "강원 ○○군",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 25
+          "row": 25,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -4488,16 +5488,24 @@
         "field": "이력번호",
         "value": "21●●●●●03",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 26
+          "row": 26,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -4522,16 +5530,24 @@
         "field": "품종",
         "value": "한우",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 26
+          "row": 26,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -4556,16 +5572,24 @@
         "field": "성별",
         "value": "수",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 26
+          "row": 26,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
       },
       "evidence": [
         {
@@ -4590,16 +5614,24 @@
         "field": "취득시기",
         "value": "2026-07-28",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 26
+          "row": 26,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -4624,16 +5656,24 @@
         "field": "보관장소",
         "value": "강원 ○○군",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 26
+          "row": 26,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -4659,16 +5699,24 @@
         "field": "이력번호",
         "value": "21●●●●●20",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 27
+          "row": 27,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -4693,16 +5741,24 @@
         "field": "품종",
         "value": "한우",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 27
+          "row": 27,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -4727,16 +5783,24 @@
         "field": "성별",
         "value": "수",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 27
+          "row": 27,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
       },
       "evidence": [
         {
@@ -4761,16 +5825,24 @@
         "field": "취득시기",
         "value": "2026-07-28",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 27
+          "row": 27,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -4795,16 +5867,24 @@
         "field": "보관장소",
         "value": "강원 ○○군",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 27
+          "row": 27,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -4830,16 +5910,24 @@
         "field": "이력번호",
         "value": "21●●●●●71",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 28
+          "row": 28,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -4864,16 +5952,24 @@
         "field": "품종",
         "value": "한우",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 28
+          "row": 28,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -4898,16 +5994,24 @@
         "field": "성별",
         "value": "수",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 28
+          "row": 28,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
       },
       "evidence": [
         {
@@ -4932,16 +6036,24 @@
         "field": "취득시기",
         "value": "2026-07-28",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 28
+          "row": 28,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -4966,16 +6078,24 @@
         "field": "보관장소",
         "value": "강원 ○○군",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 28
+          "row": 28,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -5001,16 +6121,24 @@
         "field": "이력번호",
         "value": "22●●●●●72",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 29
+          "row": 29,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -5035,16 +6163,24 @@
         "field": "품종",
         "value": "한우",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 29
+          "row": 29,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -5069,16 +6205,24 @@
         "field": "성별",
         "value": "수",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 29
+          "row": 29,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
       },
       "evidence": [
         {
@@ -5103,16 +6247,24 @@
         "field": "취득시기",
         "value": "2026-07-28",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 29
+          "row": 29,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -5137,16 +6289,24 @@
         "field": "보관장소",
         "value": "강원 ○○군",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 29
+          "row": 29,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -5172,16 +6332,24 @@
         "field": "이력번호",
         "value": "21●●●●●70",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 30
+          "row": 30,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -5206,16 +6374,24 @@
         "field": "품종",
         "value": "한우",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 30
+          "row": 30,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -5240,16 +6416,24 @@
         "field": "성별",
         "value": "수",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 30
+          "row": 30,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
       },
       "evidence": [
         {
@@ -5274,16 +6458,24 @@
         "field": "취득시기",
         "value": "2026-07-28",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 30
+          "row": 30,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -5308,16 +6500,24 @@
         "field": "보관장소",
         "value": "강원 ○○군",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 30
+          "row": 30,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -5343,16 +6543,24 @@
         "field": "이력번호",
         "value": "21●●●●●69",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 31
+          "row": 31,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -5377,16 +6585,24 @@
         "field": "품종",
         "value": "한우",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 31
+          "row": 31,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -5411,16 +6627,24 @@
         "field": "성별",
         "value": "수",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 31
+          "row": 31,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
       },
       "evidence": [
         {
@@ -5445,16 +6669,24 @@
         "field": "취득시기",
         "value": "2026-07-28",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 31
+          "row": 31,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -5479,16 +6711,24 @@
         "field": "보관장소",
         "value": "강원 ○○군",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 31
+          "row": 31,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -5514,16 +6754,24 @@
         "field": "이력번호",
         "value": "21●●●●●85",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 32
+          "row": 32,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -5548,16 +6796,24 @@
         "field": "품종",
         "value": "한우",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 32
+          "row": 32,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -5582,16 +6838,24 @@
         "field": "성별",
         "value": "수",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 32
+          "row": 32,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
       },
       "evidence": [
         {
@@ -5616,16 +6880,24 @@
         "field": "취득시기",
         "value": "2026-07-28",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 32
+          "row": 32,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -5650,16 +6922,24 @@
         "field": "보관장소",
         "value": "강원 ○○군",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 32
+          "row": 32,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -5685,16 +6965,24 @@
         "field": "이력번호",
         "value": "21●●●●●82",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 33
+          "row": 33,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -5719,16 +7007,24 @@
         "field": "품종",
         "value": "한우",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 33
+          "row": 33,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -5753,16 +7049,24 @@
         "field": "성별",
         "value": "수",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 33
+          "row": 33,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
       },
       "evidence": [
         {
@@ -5787,16 +7091,24 @@
         "field": "취득시기",
         "value": "2026-07-28",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 33
+          "row": 33,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -5821,16 +7133,24 @@
         "field": "보관장소",
         "value": "강원 ○○군",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 33
+          "row": 33,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -5856,16 +7176,24 @@
         "field": "이력번호",
         "value": "21●●●●●77",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 34
+          "row": 34,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -5890,16 +7218,24 @@
         "field": "품종",
         "value": "한우",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 34
+          "row": 34,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -5924,16 +7260,24 @@
         "field": "성별",
         "value": "수",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 34
+          "row": 34,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
       },
       "evidence": [
         {
@@ -5958,16 +7302,24 @@
         "field": "취득시기",
         "value": "2026-07-28",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 34
+          "row": 34,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -5992,16 +7344,24 @@
         "field": "보관장소",
         "value": "강원 ○○군",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 34
+          "row": 34,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -6027,16 +7387,24 @@
         "field": "이력번호",
         "value": "21●●●●●79",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 35
+          "row": 35,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -6061,16 +7429,24 @@
         "field": "품종",
         "value": "한우",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 35
+          "row": 35,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -6095,16 +7471,24 @@
         "field": "성별",
         "value": "수",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 35
+          "row": 35,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
       },
       "evidence": [
         {
@@ -6129,16 +7513,24 @@
         "field": "취득시기",
         "value": "2026-07-28",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 35
+          "row": 35,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -6163,16 +7555,24 @@
         "field": "보관장소",
         "value": "강원 ○○군",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 35
+          "row": 35,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -6198,16 +7598,24 @@
         "field": "이력번호",
         "value": "21●●●●●64",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 36
+          "row": 36,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -6232,16 +7640,24 @@
         "field": "품종",
         "value": "한우",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 36
+          "row": 36,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -6266,16 +7682,24 @@
         "field": "성별",
         "value": "수",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 36
+          "row": 36,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
       },
       "evidence": [
         {
@@ -6300,16 +7724,24 @@
         "field": "취득시기",
         "value": "2026-07-28",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 36
+          "row": 36,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -6334,16 +7766,24 @@
         "field": "보관장소",
         "value": "강원 ○○군",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 36
+          "row": 36,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -6369,16 +7809,24 @@
         "field": "이력번호",
         "value": "21●●●●●75",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 37
+          "row": 37,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -6403,16 +7851,24 @@
         "field": "품종",
         "value": "한우",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 37
+          "row": 37,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -6437,16 +7893,24 @@
         "field": "성별",
         "value": "수",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 37
+          "row": 37,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
       },
       "evidence": [
         {
@@ -6471,16 +7935,24 @@
         "field": "취득시기",
         "value": "2026-07-28",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 37
+          "row": 37,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -6505,16 +7977,24 @@
         "field": "보관장소",
         "value": "강원 ○○군",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 37
+          "row": 37,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
       "evidence": [
         {
@@ -6543,18 +8023,26 @@
         "numericValue": 4574865,
         "unit": "원",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 1
+          "row": 1,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
-      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가)."
+      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가)."
     },
     {
       "claim": {
@@ -6566,18 +8054,26 @@
         "numericValue": 4654865,
         "unit": "원",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 2
+          "row": 2,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
-      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가)."
+      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가)."
     },
     {
       "claim": {
@@ -6589,18 +8085,26 @@
         "numericValue": 4454865,
         "unit": "원",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 3
+          "row": 3,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
-      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가)."
+      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가)."
     },
     {
       "claim": {
@@ -6612,18 +8116,26 @@
         "numericValue": 4619865,
         "unit": "원",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 4
+          "row": 4,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
-      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가)."
+      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가)."
     },
     {
       "claim": {
@@ -6635,18 +8147,26 @@
         "numericValue": 4589865,
         "unit": "원",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 5
+          "row": 5,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
-      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가)."
+      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가)."
     },
     {
       "claim": {
@@ -6658,18 +8178,26 @@
         "numericValue": 4639865,
         "unit": "원",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 6
+          "row": 6,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
-      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가)."
+      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가)."
     },
     {
       "claim": {
@@ -6681,18 +8209,26 @@
         "numericValue": 4599865,
         "unit": "원",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 7
+          "row": 7,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
-      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가)."
+      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가)."
     },
     {
       "claim": {
@@ -6704,18 +8240,26 @@
         "numericValue": 4759865,
         "unit": "원",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 8
+          "row": 8,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
-      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가)."
+      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가)."
     },
     {
       "claim": {
@@ -6727,18 +8271,26 @@
         "numericValue": 4754865,
         "unit": "원",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 9
+          "row": 9,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
-      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가)."
+      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가)."
     },
     {
       "claim": {
@@ -6750,18 +8302,26 @@
         "numericValue": 4694865,
         "unit": "원",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 10
+          "row": 10,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
-      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가)."
+      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가)."
     },
     {
       "claim": {
@@ -6773,18 +8333,26 @@
         "numericValue": 4624865,
         "unit": "원",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 11
+          "row": 11,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
-      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가)."
+      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가)."
     },
     {
       "claim": {
@@ -6796,18 +8364,26 @@
         "numericValue": 4634865,
         "unit": "원",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 12
+          "row": 12,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
-      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가)."
+      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가)."
     },
     {
       "claim": {
@@ -6819,18 +8395,26 @@
         "numericValue": 4734865,
         "unit": "원",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 13
+          "row": 13,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
-      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가)."
+      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가)."
     },
     {
       "claim": {
@@ -6842,18 +8426,26 @@
         "numericValue": 4754865,
         "unit": "원",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 14
+          "row": 14,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
-      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가)."
+      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가)."
     },
     {
       "claim": {
@@ -6865,18 +8457,26 @@
         "numericValue": 4694865,
         "unit": "원",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 15
+          "row": 15,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
-      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가)."
+      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가)."
     },
     {
       "claim": {
@@ -6888,18 +8488,26 @@
         "numericValue": 4744865,
         "unit": "원",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 16
+          "row": 16,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
-      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가)."
+      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가)."
     },
     {
       "claim": {
@@ -6911,18 +8519,26 @@
         "numericValue": 4734865,
         "unit": "원",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 17
+          "row": 17,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
-      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가)."
+      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가)."
     },
     {
       "claim": {
@@ -6934,18 +8550,26 @@
         "numericValue": 4484865,
         "unit": "원",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 18
+          "row": 18,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
-      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가)."
+      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가)."
     },
     {
       "claim": {
@@ -6957,18 +8581,26 @@
         "numericValue": 4544865,
         "unit": "원",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 19
+          "row": 19,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
-      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가)."
+      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가)."
     },
     {
       "claim": {
@@ -6980,18 +8612,26 @@
         "numericValue": 4764865,
         "unit": "원",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 20
+          "row": 20,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
-      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가)."
+      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가)."
     },
     {
       "claim": {
@@ -7003,18 +8643,26 @@
         "numericValue": 4744865,
         "unit": "원",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 21
+          "row": 21,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
-      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가)."
+      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가)."
     },
     {
       "claim": {
@@ -7026,18 +8674,26 @@
         "numericValue": 4589865,
         "unit": "원",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 22
+          "row": 22,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
-      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가)."
+      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가)."
     },
     {
       "claim": {
@@ -7049,18 +8705,26 @@
         "numericValue": 4429865,
         "unit": "원",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 23
+          "row": 23,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
-      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가)."
+      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가)."
     },
     {
       "claim": {
@@ -7072,18 +8736,26 @@
         "numericValue": 4719865,
         "unit": "원",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 24
+          "row": 24,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
-      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가)."
+      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가)."
     },
     {
       "claim": {
@@ -7095,18 +8767,26 @@
         "numericValue": 3739865,
         "unit": "원",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 25
+          "row": 25,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
-      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가)."
+      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가)."
     },
     {
       "claim": {
@@ -7118,18 +8798,26 @@
         "numericValue": 4669865,
         "unit": "원",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 26
+          "row": 26,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
-      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가)."
+      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가)."
     },
     {
       "claim": {
@@ -7141,18 +8829,26 @@
         "numericValue": 4049865,
         "unit": "원",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 27
+          "row": 27,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
-      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가)."
+      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가)."
     },
     {
       "claim": {
@@ -7164,18 +8860,26 @@
         "numericValue": 4559865,
         "unit": "원",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 28
+          "row": 28,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
-      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가)."
+      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가)."
     },
     {
       "claim": {
@@ -7187,18 +8891,26 @@
         "numericValue": 4429865,
         "unit": "원",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 29
+          "row": 29,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
-      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가)."
+      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가)."
     },
     {
       "claim": {
@@ -7210,18 +8922,26 @@
         "numericValue": 4629865,
         "unit": "원",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 30
+          "row": 30,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
-      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가)."
+      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가)."
     },
     {
       "claim": {
@@ -7233,18 +8953,26 @@
         "numericValue": 4729865,
         "unit": "원",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 31
+          "row": 31,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
-      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가)."
+      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가)."
     },
     {
       "claim": {
@@ -7256,18 +8984,26 @@
         "numericValue": 4529865,
         "unit": "원",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 32
+          "row": 32,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
-      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가)."
+      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가)."
     },
     {
       "claim": {
@@ -7279,18 +9015,26 @@
         "numericValue": 4604865,
         "unit": "원",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 33
+          "row": 33,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
-      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가)."
+      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가)."
     },
     {
       "claim": {
@@ -7302,18 +9046,26 @@
         "numericValue": 4634865,
         "unit": "원",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 34
+          "row": 34,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
-      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가)."
+      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가)."
     },
     {
       "claim": {
@@ -7325,18 +9077,26 @@
         "numericValue": 4674865,
         "unit": "원",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 35
+          "row": 35,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
-      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가)."
+      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가)."
     },
     {
       "claim": {
@@ -7348,18 +9108,26 @@
         "numericValue": 4694865,
         "unit": "원",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 36
+          "row": 36,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
-      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가)."
+      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가)."
     },
     {
       "claim": {
@@ -7371,21 +9139,31 @@
         "numericValue": 4654865,
         "unit": "원",
         "document": {
-          "offerId": "bankcow-9",
+          "offerId": "livestock-9",
           "rcpNo": "20260806000159",
           "submittedOn": "2026-08-06"
         },
         "location": {
           "section": "8. 기초자산 취득에 관한 사항",
           "table": "기초자산 개체 명세표",
-          "row": 37
+          "row": 37,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 525616
         },
-        "verifiability": "verifiable"
+        "verifiability": "verifiable",
+        "extractedBy": "both"
       },
-      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가)."
+      "reason": "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가)."
     }
   ],
   "notes": [
-    "규칙 기반 추출 claim 222건 (LLM 미사용 — S0 범위)"
+    "추출 모드: cross-check",
+    "규칙 기반 추출 claim 222건 · LLM 추출 claim 185건",
+    "규칙·LLM 교차검증(추출기 fake) — 양쪽 일치 185건 · 규칙 단독 37건 · LLM 단독 0건 · 불일치 강등 0건"
   ]
 }

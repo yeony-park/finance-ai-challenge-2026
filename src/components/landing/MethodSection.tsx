@@ -28,7 +28,7 @@ const buildLayers = (view: DemoView): readonly Layer[] => [
   {
     no: "02",
     title: "가격 위치",
-    body: "공시된 취득원가가 같은 시기 시장 어디쯤에 있는지 대조합니다. 대조할 공공 데이터가 붙기 전까지는 값을 추정하지 않고 확인 불가로 남깁니다.",
+    body: "공시된 취득원가가 같은 시기 시장 어디쯤에 있는지 대조합니다. 대조할 공공 데이터가 붙기 전까지는 값을 추정하지 않고 대조 불가로 남깁니다.",
     source: view.price.source,
   },
   {

@@ -8,7 +8,7 @@ import {
 } from "../types";
 
 const doc = (rcpNo: string, submittedOn: string) => ({
-  offerId: "bankcow-9",
+  offerId: "livestock-9",
   rcpNo,
   submittedOn,
 });

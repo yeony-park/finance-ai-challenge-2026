@@ -37,14 +37,20 @@ const claimSchema = z.object({
     section: z.string(),
     table: z.string(),
     row: z.number(),
+    // S1 파서 일반화로 붙은 좌표 — 구 스냅샷에는 없으므로 선택 필드다
+    sectionPath: z.array(z.string()).optional(),
+    charOffset: z.number().optional(),
   }),
   verifiability: z.enum([
     "verifiable",
     "no_reference_data",
     "structurally_impossible",
     "unparsed",
+    "cross_check_conflict",
+    "llm_only",
   ]),
   demotionReason: z.string().optional(),
+  extractedBy: z.enum(["rules", "llm", "both"]).optional(),
 });
 
 const evidenceSchema = z.object({

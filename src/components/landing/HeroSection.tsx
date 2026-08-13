@@ -1,7 +1,10 @@
 /**
- * 히어로 — 서사 한 줄 + 서비스 정의 + 대표 검증 리포트로 가는 큰 카드.
+ * 히어로 — 한 줄 정의 + 대표 검증 리포트로 가는 큰 카드.
  * 카드에 찍히는 수치·문구는 전부 검증 엔진 산출 리포트에서 파생된 뷰 모델(DemoView)에서 온다.
  * 화면에는 하드코딩된 판정 수치가 없다.
+ *
+ * 문장 규칙: 서비스가 주어인 문장은 h1의 정의 표준문 1개뿐이다(홈-IA-개편 §2 예외 ①).
+ * 나머지 문장의 주어는 공모·자산이며, 링크·버튼 문구만 조작 마이크로카피로 허용된다.
  */
 import Link from "next/link";
 
@@ -27,17 +30,11 @@ export function HeroSection({ view }: { view: DemoView }) {
           <p className={s.eyebrow}>조각투자 공시 대조 검증</p>
 
           <h1 id="hero-title" className={s.heroTitle}>
-            <span>공시는 제출에서 끝나지만,</span>
+            <span>증권신고서를</span>
             <span className={s.heroTitleLead}>
-              투자는 <em className={s.mark}>제출 이후</em>에 일어난다
+              <em className={s.mark}>국가 공공데이터</em>와 대조합니다
             </span>
           </h1>
-
-          <p className={s.heroLead}>
-            발행사가 증권신고서에 적어 낸 주장을 <strong>국가 공공데이터와 자동으로 대조</strong>
-            합니다. 정정신고서가 접수되면 같은 파이프라인으로 다시 대조합니다. 판정하되 단정하지
-            않는 독립 검증 레이어입니다.
-          </p>
 
           <ul className={s.chips}>
             {view.meta.items.map((item) => (
@@ -57,9 +54,9 @@ export function HeroSection({ view }: { view: DemoView }) {
         {/* 카드 전체가 리포트로 가는 큰 버튼이다 — 큰 면적일수록 배율을 낮춘다 */}
         <Pressable hover={1.01} tap={0.99}>
           <article className={s.featured} aria-labelledby="featured-title">
+            {/* "대표 검증 리포트" 뱃지는 서비스 자기소개라 뺐다 — 이 줄에는 공모의 사실만 둔다 */}
             <div className={s.featuredTop}>
               <span className={s.featuredTag}>{view.offer.tag}</span>
-              <span className={s.badgeAccent}>대표 검증 리포트</span>
             </div>
 
             <h2 id="featured-title" className={s.featuredTitle}>

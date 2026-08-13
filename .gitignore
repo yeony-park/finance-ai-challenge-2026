@@ -47,6 +47,9 @@ data/raw/
 data/snapshots/
 data/reports/
 
+# 골드셋 라벨 (이력번호·사육지 포함) — 로컬 전용. 가이드(data/goldset/README.md)만 커밋한다
+data/goldset/*/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

@@ -9,12 +9,17 @@ export const SERVICE_NAME = "공시대조";
 /** 워드마크 옆 역할 문구 — 이름만으로 무엇인지 알 수 없으니 항상 붙인다 */
 export const SERVICE_ROLE = "조각투자 공시 대조 검증";
 
-/** 한 문장 서비스 정의 — 메타데이터와 푸터가 공유한다 */
-export const SERVICE_DEFINITION =
-  "발행사가 증권신고서에 공시한 주장을 국가 공공데이터와 자동으로 대조하고, 정정이 접수되면 다시 대조하는 독립 검증 레이어입니다.";
+/**
+ * 한 문장 서비스 정의(표준문) — 화면에서 서비스가 주어인 문장은 이 한 줄뿐이다.
+ * 메타데이터·OG description도 이 값을 공유한다.
+ */
+export const SERVICE_DEFINITION = "증권신고서를 국가 공공데이터와 대조합니다.";
 
-/** 대표 검증 리포트가 붙어 있는 공모 식별자 — 리포트 상세 라우트 키 */
-export const FEATURED_OFFER_ID = "bankcow-9";
+/**
+ * 대표 검증 리포트가 붙어 있는 공모 식별자 — 리포트 상세 라우트 키.
+ * 공개 URL·데이터에 발행사 브랜드명을 남기지 않는다(익명화 원칙) — 자산군 기준 중립 id를 쓴다.
+ */
+export const FEATURED_OFFER_ID = "livestock-9";
 
 /** 대표 검증 리포트 경로 */
 export const FEATURED_OFFER_HREF = `/offers/${FEATURED_OFFER_ID}`;

@@ -4,7 +4,7 @@ import type { DemoView, RichText } from "../report/view-model";
 import { toDemoView } from "../report/view-model";
 
 const buildView = async (): Promise<DemoView> => {
-  const loaded = await loadLatestReport("bankcow-9");
+  const loaded = await loadLatestReport("livestock-9");
   return toDemoView(loaded);
 };
 
@@ -18,8 +18,8 @@ describe("toDemoView — 판정 집계는 엔진 산출에서만 나온다", () 
     // Assert
     expect(view.verdict.tallies.map((t) => [t.label, t.value])).toEqual([
       ["일치", 36],
-      ["원장에서 확인되지 않음", 1],
-      ["확인 불가", 0],
+      ["원장 미확인", 1],
+      ["대조 불가", 0],
     ]);
   });
 
@@ -28,8 +28,8 @@ describe("toDemoView — 판정 집계는 엔진 산출에서만 나온다", () 
 
     expect(view.verdict.itemLine).toContain("185건");
     expect(view.verdict.itemLine).toContain("일치 183");
-    expect(view.verdict.itemLine).toContain("불일치 1");
-    expect(view.verdict.itemLine).toContain("확인 불가 1");
+    expect(view.verdict.itemLine).toContain("원장 미확인 1");
+    expect(view.verdict.itemLine).toContain("대조 불가 1");
     expect(view.verdict.itemLine).toContain("미판정 37");
   });
 
@@ -40,7 +40,7 @@ describe("toDemoView — 판정 집계는 엔진 산출에서만 나온다", () 
       const text = plain(view.verdict.oneLiner[level]);
       expect(text).toContain("36");
       expect(text).toContain("37");
-      expect(text).toMatch(/확인 불가|확인되지 않/);
+      expect(text).toMatch(/대조 불가|확인되지 않/);
     }
   });
 
@@ -63,12 +63,12 @@ describe("toDemoView — 개체 카드와 드릴다운", () => {
     expect(view.reality.subjects[36]?.no).toBe(37);
   });
 
-  test("24호만 미확인 뱃지를 갖고 근거 카드로 연결된다", async () => {
+  test("24호만 원장 미확인 뱃지를 갖고 근거 카드로 연결된다", async () => {
     const view = await buildView();
     const flagged = view.reality.subjects.filter((s) => s.verdict !== "match");
 
     expect(flagged.map((s) => s.no)).toEqual([24]);
-    expect(flagged[0]?.badge).toBe("미확인");
+    expect(flagged[0]?.badge).toBe("원장 미확인");
     expect(flagged[0]?.hasFocus).toBe(true);
     expect(view.reality.focuses.map((f) => f.no)).toEqual([24]);
   });
@@ -84,7 +84,7 @@ describe("toDemoView — 개체 카드와 드릴다운", () => {
     expect(rows.get("취득원가")).toBe("4,719,865원");
   });
 
-  test("근거 카드 우열은 원장 관측값이며 불일치 항목이 강조된다", async () => {
+  test("근거 카드 우열은 원장 관측값이며 원장 미확인 항목이 강조된다", async () => {
     const view = await buildView();
     const focus = view.reality.focuses[0];
     const rows = focus?.ledgerRows ?? [];
@@ -108,12 +108,12 @@ describe("toDemoView — 개체 카드와 드릴다운", () => {
     expect(focus?.sourceLedger).toContain("2026. 8. 10.");
   });
 
-  test("취득원가 미판정은 근거 카드에서도 확인 불가로 표시된다", async () => {
+  test("취득원가 미판정은 근거 카드에서도 대조 불가로 표시된다", async () => {
     const view = await buildView();
     const focus = view.reality.focuses[0];
 
     expect(focus?.claimRows.find((r) => r.label === "취득원가")?.note).toContain(
-      "확인 불가",
+      "대조 불가",
     );
   });
 });
@@ -126,7 +126,7 @@ describe("toDemoView — 미판정(unjudged)은 숨기지 않는다", () => {
     expect(view.price.source).toContain("미연결");
     expect(view.price.items[0]?.title).toContain("37건");
     expect(view.price.items[0]?.tone).toBe("unknown");
-    expect(view.price.note).toContain("확인 불가");
+    expect(view.price.note).toContain("대조 불가");
   });
 
   test("신고서 기재 합계·평균은 대조 전 값임을 명시한다", async () => {
@@ -139,7 +139,7 @@ describe("toDemoView — 미판정(unjudged)은 숨기지 않는다", () => {
 
 describe("toDemoView — 문서 버전·리플레이", () => {
   test("③ 층위는 리포트 버전링과 엔진 note를 그대로 노출한다", async () => {
-    const loaded = await loadLatestReport("bankcow-9");
+    const loaded = await loadLatestReport("livestock-9");
     const view = toDemoView(loaded);
     const text = view.history.items.map((i) => `${i.title} ${i.meta}`).join(" ");
 
@@ -153,11 +153,11 @@ describe("toDemoView — 문서 버전·리플레이", () => {
 
     expect(view.replay.steps).toHaveLength(4);
     expect(view.replay.steps.filter((s) => s.isWarned).map((s) => s.title)).toEqual([
-      "개체 24호 · 원장에서 확인되지 않음",
+      "개체 24호 · 원장 미확인",
     ]);
   });
 
-  test("경고 단계의 설명은 불일치 판정 사유(사육지)에서 나온다", async () => {
+  test("경고 단계의 설명은 원장 미확인 판정 사유(사육지)에서 나온다", async () => {
     const view = await buildView();
     const warned = view.replay.steps.find((s) => s.isWarned);
 

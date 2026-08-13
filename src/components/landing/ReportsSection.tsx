@@ -1,6 +1,9 @@
 /**
  * 검증 리포트 색인 — 지금 공개된 리포트를 있는 그대로만 늘어놓는다.
  * 공개된 실데이터는 축 A 1건뿐이라 축 B는 "준비 중"으로 비워 둔다(가짜 데이터 금지).
+ *
+ * 문장 규칙: 카드 문장의 주어는 공모·자산이다. 서비스가 무엇을 하는지 설명하는 문장은 두지 않는다
+ * (홈-IA-개편 §2). 목록 구조 자체의 개편은 S2 몫이라 여기서는 문구만 바로잡는다.
  */
 import Link from "next/link";
 
@@ -25,10 +28,6 @@ export function ReportsSection({ view }: { view: DemoView }) {
           <h2 id="reports-title" className={s.sectionTitle}>
             지금 공개된 리포트
           </h2>
-          <p className={s.sectionLead}>
-            리포트는 검증 엔진이 실행될 때마다 새 버전으로 쌓입니다. 아직 공개되지 않은 축은 비워
-            둡니다 — 채워 넣지 않습니다.
-          </p>
         </div>
 
         <div className={s.reportGrid}>
@@ -66,13 +65,10 @@ export function ReportsSection({ view }: { view: DemoView }) {
             </p>
             <h3 className={s.reportTitle}>부동산 조각투자 공모가의 시장 위치</h3>
             <p className={s.reportBody}>
-              공모가를 같은 지역·유형의 실거래 비교군과 대조해 백분위로 표시하고, 비교군이 몇 건인지
-              함께 적는 리포트입니다. 비교군이 충분하지 않으면 백분위를 내지 않고 그 사실을 적습니다.
+              공모가는 같은 지역·유형 실거래 비교군 안에서 백분위로 표시됩니다. 비교군이 충분하지
+              않으면 백분위가 나오지 않습니다.
             </p>
-            <p className={s.reportPendingNote}>
-              아직 공개된 리포트가 없습니다. 대조 결과가 나오기 전까지 이 자리에 수치를 적지
-              않습니다.
-            </p>
+            <p className={s.reportPendingNote}>아직 공개된 리포트가 없습니다.</p>
           </article>
         </div>
       </Reveal>

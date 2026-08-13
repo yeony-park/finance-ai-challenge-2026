@@ -107,7 +107,7 @@ const buildClaimRows = (facts: SubjectFacts): readonly EvidenceRowView[] => {
       label: "취득원가",
       value: formatWon(price.claim.numericValue),
       isAlert: false,
-      note: `확인 불가 · ${maskFreeText(price.reason)}`,
+      note: `대조 불가 · ${maskFreeText(price.reason)}`,
     });
   }
   return rows;
@@ -208,7 +208,7 @@ const buildFootnote = (facts: SubjectFacts): Record<ExplainLevel, RichText> => {
   };
 };
 
-/** 이 개체가 미확인/확인 불가로 분류된 대표 사유 */
+/** 이 개체가 원장 미확인/대조 불가로 분류된 대표 사유 */
 const primaryRationale = (
   judgements: readonly JudgementRecord[],
   subject: string,

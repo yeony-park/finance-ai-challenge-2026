@@ -43,10 +43,10 @@ describe("접수번호 가드", () => {
 
 describe("공모 식별자 가드", () => {
   test("소문자·숫자·하이픈만 통과한다", () => {
-    expect(assertOfferId("bankcow-9")).toBe("bankcow-9");
+    expect(assertOfferId("livestock-9")).toBe("livestock-9");
   });
 
-  test.each(["../secret", "Bankcow-9", "bank cow", "bankcow/9", "", "bank_cow"])(
+  test.each(["../secret", "Livestock-9", "live stock", "livestock/9", "", "live_stock"])(
     "형식 위반 %s 은 예외",
     (bad) => {
       expect(() => assertOfferId(bad)).toThrow(/공모 식별자 형식/);
@@ -54,17 +54,17 @@ describe("공모 식별자 가드", () => {
   );
 
   test("경로 탈출 시도는 리포트 디렉토리를 만들기 전에 차단된다", () => {
-    for (const attack of ["../../etc", "bankcow-9/../../..", "/etc"]) {
+    for (const attack of ["../../etc", "livestock-9/../../..", "/etc"]) {
       expect(() => offerDataDir("public", attack)).toThrow();
     }
   });
 
   test("정상 공모 식별자는 data/{section} 아래로 해석된다", () => {
-    expect(offerDataDir("public", "bankcow-9")).toBe(
-      path.join(path.resolve("data", "public"), "bankcow-9"),
+    expect(offerDataDir("public", "livestock-9")).toBe(
+      path.join(path.resolve("data", "public"), "livestock-9"),
     );
-    expect(offerDataDir("reports", "bankcow-9")).toBe(
-      path.join(path.resolve("data", "reports"), "bankcow-9"),
+    expect(offerDataDir("reports", "livestock-9")).toBe(
+      path.join(path.resolve("data", "reports"), "livestock-9"),
     );
   });
 });

@@ -21,13 +21,13 @@ export const VERDICT_TERMS: readonly VerdictTerm[] = [
     className: s.verdictItemMatch,
   },
   {
-    term: "원장에서 확인되지 않음",
+    term: "원장 미확인",
     desc: "공공 데이터에서 해당 내용이 확인되지 않았다는 사실만을 뜻합니다. 왜 그런지는 판정하지 않습니다.",
     className: s.verdictItemMiss,
   },
   {
-    term: "확인 불가",
-    desc: "대조할 공공 데이터가 없거나 아직 연결되지 않았습니다. 일치·불일치 어느 쪽으로도 세지 않습니다.",
+    term: "대조 불가",
+    desc: "대조할 공공 데이터가 없거나 아직 연결되지 않았습니다. 일치·원장 미확인 어느 쪽으로도 세지 않습니다.",
     className: s.verdictItemUnknown,
   },
 ];

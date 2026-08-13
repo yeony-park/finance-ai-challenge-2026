@@ -69,14 +69,31 @@ const toEvidence = (
   ...(assessment.note === undefined ? {} : { note: assessment.note }),
 });
 
+/**
+ * 판정을 만들지 않는 사유. undefined면 대조를 시도한다.
+ * 사용자 노출 문자열은 판정 명칭 정책(일치 / 원장 미확인 / 대조 불가)을 따른다 —
+ * 내부 식별자(`unverifiable` 등)는 그대로 두고 문구만 맞춘다.
+ */
 const unjudgedReason = (claim: Claim): string | undefined => {
-  if (claim.verifiability === "unparsed") {
-    return `원문 값이 스키마를 통과하지 못해 확인 불가로 남깁니다: ${claim.demotionReason ?? "사유 미상"}`;
+  const detail = claim.demotionReason ?? "사유 미상";
+  switch (claim.verifiability) {
+    case "unparsed":
+      return `원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: ${detail}`;
+    case "cross_check_conflict":
+      return `규칙 추출과 LLM 추출이 갈려 대조 불가로 남깁니다: ${detail}`;
+    case "llm_only":
+      return `규칙 파서로 교차확인되지 않은 추출값이라 대조 불가로 남깁니다: ${detail}`;
+    case "no_reference_data":
+      return "이 항목을 대조할 공개 데이터가 없습니다(대조 불가).";
+    case "structurally_impossible":
+      return "개체 식별자가 없어 구조적으로 대조할 수 없습니다(대조 불가).";
+    case "verifiable":
+      return TRACE_KINDS.has(claim.kind)
+        ? undefined
+        : "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가).";
   }
-  if (!TRACE_KINDS.has(claim.kind)) {
-    return "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(확인 불가).";
-  }
-  return undefined;
+  const unreachable: never = claim.verifiability;
+  throw new Error(`미판정 사유 규칙이 없는 상태입니다: ${String(unreachable)}`);
 };
 
 interface SubjectGroup {

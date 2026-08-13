@@ -23,7 +23,7 @@ export const buildReplaySection = (ctx: ReportContext): DemoView["replay"] => {
       id: "crosscheck",
       date: runAt,
       title: `국가 원장 개체 ${ctx.headCount}두 전수 대조`,
-      detail: `항목 ${summary.total}건 판정 — 일치 ${summary.match} · 불일치 ${summary.mismatch} · 확인 불가 ${summary.unverifiable}`,
+      detail: `항목 ${summary.total}건 판정 — 일치 ${summary.match} · 원장 미확인 ${summary.mismatch} · 대조 불가 ${summary.unverifiable}`,
       isWarned: false,
     },
     ...ctx.focuses.map(
