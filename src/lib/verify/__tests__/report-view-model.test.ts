@@ -105,7 +105,8 @@ describe("toDemoView — 개체 카드와 드릴다운", () => {
 
     expect(focus?.sourceDoc).toContain("기초자산");
     expect(focus?.sourceDoc).toContain("24행");
-    expect(focus?.sourceLedger).toContain("2026. 8. 10.");
+    // 조회 시각은 재대조 때마다 갱신된다 — 특정 날짜가 아니라 날짜 형식이 붙어 있는지만 고정한다
+    expect(focus?.sourceLedger).toMatch(/\d{4}\. \d{1,2}\. \d{1,2}\./);
   });
 
   test("취득원가 미판정은 근거 카드에서도 대조 불가로 표시된다", async () => {

@@ -129,6 +129,28 @@ const groupBySubject = (claims: readonly Claim[]): readonly SubjectGroup[] => {
   });
 };
 
+/** 개체 1건의 조회 결과. 실패도 값으로 다룬다 — 전체 대조를 중단시키지 않기 위해서다. */
+interface LookupOutcome {
+  readonly record?: LivestockTraceRecord;
+  readonly error?: string;
+}
+
+/**
+ * 개체 1건 조회. 라이브 대조에서 일부 개체만 실패하는 상황(원장 일시 장애·개별 타임아웃)에
+ * 전체가 중단되면 나머지 36두의 판정까지 잃는다 — 실패한 개체만 "대조 불가"로 강등한다.
+ */
+const lookupRecord = async (
+  group: SubjectGroup,
+  trace: LivestockTraceAdapter,
+): Promise<LookupOutcome> => {
+  if (!group.identity) return {};
+  try {
+    return { record: await trace.lookup(group.identity.value) };
+  } catch (error) {
+    return { error: error instanceof Error ? error.message : String(error) };
+  }
+};
+
 /** claim 목록 → 판정 목록. 대조 불가 항목은 근거 0건 판정 대신 미판정으로 분리한다. */
 export const judgeClaims = async (
   claims: readonly Claim[],
@@ -137,26 +159,21 @@ export const judgeClaims = async (
   const groups = groupBySubject(claims);
 
   // 개체 수만큼 외부 조회가 필요하다 — 순차 대신 상한 있는 동시 배치로 돈다
-  const records = await mapWithConcurrency(
-    groups,
-    LOOKUP_CONCURRENCY,
-    async (group) =>
-      group.identity ? deps.trace.lookup(group.identity.value) : undefined,
+  const outcomes = await mapWithConcurrency(groups, LOOKUP_CONCURRENCY, (group) =>
+    lookupRecord(group, deps.trace),
   );
 
   const judgements: Judgement[] = [];
   const unjudged: UnjudgedClaim[] = [];
 
   groups.forEach((group, index) => {
-    const record = records[index];
+    const { record, error } = outcomes[index];
     if (!record) {
+      const fallbackReason = error
+        ? `${group.subject}의 이력번호를 공적 원장에서 조회하지 못했습니다: ${error}`
+        : `${group.subject}의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다.`;
       for (const claim of group.claims) {
-        unjudged.push({
-          claim,
-          reason:
-            unjudgedReason(claim) ??
-            `${group.subject}의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다.`,
-        });
+        unjudged.push({ claim, reason: unjudgedReason(claim) ?? fallbackReason });
       }
       return;
     }

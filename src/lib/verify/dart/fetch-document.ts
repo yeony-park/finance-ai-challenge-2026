@@ -71,6 +71,28 @@ export const fetchDocumentZip = async (
   return unzipSync(bytes);
 };
 
+/**
+ * 원문 ZIP → 메모리 상의 xml 문자열 (저장 없음).
+ * 서버리스 파일시스템은 읽기 전용이므로 라이브 재검증 경로는 `collectRawDocument`를 쓸 수 없다.
+ * 디코딩은 CLI가 저장본을 읽는 방식(utf8)과 같게 맞춘다 — 실측 원문이 UTF-8로 내려온다.
+ */
+export const fetchDocumentXmlInMemory = async (
+  rcpNo: string,
+  apiKey: string,
+  fetchImpl: typeof fetch = fetch,
+): Promise<string> => {
+  const unzipped = await fetchDocumentZip(rcpNo, apiKey, fetchImpl);
+  const xmlEntries = Object.entries(unzipped)
+    .filter(([name]) => name.toLowerCase().endsWith(".xml"))
+    .sort(([left], [right]) => left.localeCompare(right));
+
+  const content = xmlEntries[0]?.[1];
+  if (!content) {
+    throw new Error(`DART ZIP 안에 원문 xml이 없습니다 (rcpNo=${rcpNo})`);
+  }
+  return new TextDecoder("utf-8").decode(content);
+};
+
 /** 수집 → 저장. 이미 받아둔 원문이 있으면 네트워크를 타지 않는다. */
 export const collectRawDocument = async (
   rcpNo: string,

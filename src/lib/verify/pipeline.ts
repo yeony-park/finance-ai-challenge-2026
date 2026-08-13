@@ -20,6 +20,13 @@ const OFFER_REGISTRY: Readonly<Record<string, string>> = {
 export const resolveOfferId = (rcpNo: string): string =>
   OFFER_REGISTRY[rcpNo] ?? `offer-${rcpNo}`;
 
+/**
+ * 공모 식별자 → 접수번호 (등록된 공모만). 라이브 재검증이 원문을 다시 받을 때 쓴다.
+ * 등록되지 않은 공모는 undefined — 접수번호를 추측해서 만들지 않는다.
+ */
+export const rcpNoForOffer = (offerId: string): string | undefined =>
+  Object.keys(OFFER_REGISTRY).find((rcpNo) => OFFER_REGISTRY[rcpNo] === offerId);
+
 export const documentRefOf = (rcpNo: string): DocumentRef => ({
   offerId: resolveOfferId(rcpNo),
   rcpNo,

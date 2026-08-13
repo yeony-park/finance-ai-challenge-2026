@@ -113,14 +113,17 @@ export const createFakeClaimExtractionClient = (): ClaimExtractionClient => ({
 
 /**
  * 키가 있으면 AI SDK 어댑터, 없으면 fake.
- * 스파인 `resolveLlmClient`와 같은 판정 기준(AI Gateway 키)을 쓴다.
+ * 키 우선순위: AI_GATEWAY_API_KEY(게이트웨이) → OPENAI_API_KEY(직결).
+ * ANTHROPIC_API_KEY 단독은 어댑터가 붙을 경로가 없으므로 fake로 남는다(오배선 방지).
  */
 export const resolveClaimExtractionClient =
   async (): Promise<ClaimExtractionClient> => {
-    const hasGatewayKey = Boolean(
-      process.env.AI_GATEWAY_API_KEY ?? process.env.ANTHROPIC_API_KEY,
+    // `??`가 아니라 `||` — .env에 `AI_GATEWAY_API_KEY=`처럼 빈 값으로 남아 있으면
+    // 빈 문자열은 nullish가 아니어서 OpenAI 키까지 도달하지 못한다
+    const hasUsableKey = Boolean(
+      process.env.AI_GATEWAY_API_KEY || process.env.OPENAI_API_KEY,
     );
-    if (!hasGatewayKey) return createFakeClaimExtractionClient();
+    if (!hasUsableKey) return createFakeClaimExtractionClient();
 
     const { createAiSdkClaimExtractionClient } = await import("./llm-ai-sdk");
     return createAiSdkClaimExtractionClient();

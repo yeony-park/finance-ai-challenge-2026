@@ -18,6 +18,7 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@ai-sdk/openai": "^4.0.41",
     "ai": "^7.0.44",
     "fast-xml-parser": "^5.10.1",
     "fflate": "^0.8.3",
