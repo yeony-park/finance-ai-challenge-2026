@@ -1,7 +1,3 @@
-/**
- * 리포트 하단 — 이 문서가 무엇에 근거했고 무엇을 말하지 않는지 못 박는 자리.
- * 판정 기준 전문은 /methodology가 갖고 있으므로 여기서는 근거·한계 고지와 이동 경로만 둔다.
- */
 import Link from "next/link";
 
 import { Reveal } from "@/components/motion/Reveal";

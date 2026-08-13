@@ -1,6 +1,3 @@
-/**
- * 앱 셸 헤더 — 워드마크 + 내비. 서비스명이 미확정(가칭)이라 로고 이미지 없이 텍스트로 세운다.
- */
 import Link from "next/link";
 
 import { SiteNav } from "./SiteNav";

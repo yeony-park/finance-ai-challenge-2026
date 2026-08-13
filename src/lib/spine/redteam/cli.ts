@@ -1,8 +1,3 @@
-/**
- * 레드팀 CLI: `npm run redteam`
- * 키가 있으면 실모델, 없으면 fake 클라이언트로 실행해
- * docs/redteam/report.md 를 생성한다.
- */
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { resolveLlmClient } from "../llm/client";

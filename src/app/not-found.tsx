@@ -1,7 +1,3 @@
-/**
- * 404 — 아직 만들어지지 않은 리포트 경로도 여기로 온다.
- * "없다"가 아니라 "이 주소에서는 확인되지 않는다"로 적는다.
- */
 import Link from "next/link";
 
 import { StatusScreen } from "@/components/site/StatusScreen";

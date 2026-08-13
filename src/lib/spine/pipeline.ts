@@ -1,8 +1,3 @@
-/**
- * 신뢰 스파인 파이프라인:
- * 레이트리밋 → 입력 스크리닝 → LLM(출처 계약) → 출처 강제 → 출력 필터
- * 어떤 주제(피싱·외국인·보험…)를 골라도 이 파이프라인 위에 도메인 로직만 얹는다.
- */
 import { SYSTEM_PROMPT_CANARY } from "./constants";
 import { screenInput } from "./guardrail/input-screen";
 import { filterOutput } from "./guardrail/output-filter";

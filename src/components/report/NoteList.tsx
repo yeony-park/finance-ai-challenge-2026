@@ -1,7 +1,3 @@
-/**
- * 층위 ②·③이 공유하는 메모 목록 — 톤(일치/주의/대조 불가)만 아이콘으로 구분한다.
- * 톤은 색과 아이콘 두 채널로 전달한다. 색만으로 의미를 나르지 않는다.
- */
 import type { NoteItemView } from "@/lib/verify/report/view-model";
 
 import { IconCheck, IconList, IconUndo } from "./icons";

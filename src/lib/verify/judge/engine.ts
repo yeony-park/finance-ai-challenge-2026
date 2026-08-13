@@ -1,16 +1,8 @@
-/**
- * 판정 엔진 — claim을 개체별로 묶어 어댑터로 대조하고 3값 판정을 만든다.
- * 항목별 대조 규칙은 `assess.ts`에 있고, 여기서는 조회·조립만 한다.
- *
- * 불변식
- * - 근거가 0건이면 판정을 만들지 않는다 (미판정으로 남긴다) — createJudgement가 런타임에서도 막는다
- * - 자료 부족은 mismatch가 아니라 unverifiable이다
- * - 개체 순서·판정 순서는 입력 순서를 그대로 따른다 (동시 조회를 해도 산출은 결정적이다)
- */
 import type {
   Claim,
   Evidence,
   Judgement,
+  PricePlacement,
   UnjudgedClaim,
   Verdict,
 } from "../types";
@@ -19,19 +11,15 @@ import type {
   LivestockTraceAdapter,
   LivestockTraceRecord,
 } from "../adapters/livestock-trace";
+import type { AuctionPriceAdapter } from "../adapters/auction-price";
 import { mapWithConcurrency } from "../concurrency";
 import { assess, type Assessment } from "./assess";
+import { placePrices } from "./price";
 
 export { locationTokens } from "./assess";
 
-/**
- * 원장 조회 동시 실행 상한.
- * 공공데이터포털 쿼터(이력제 일 10,000건)와 상대 서비스 부담을 고려한 값 —
- * 올리기 전에 쿼터·레이트 리밋 실측을 먼저 하라.
- */
 const LOOKUP_CONCURRENCY = 4;
 
-/** 이 어댑터로 대조할 수 있는 claim 종류 */
 const TRACE_KINDS = new Set<Claim["kind"]>([
   "livestock_trace_no",
   "livestock_breed",
@@ -40,9 +28,12 @@ const TRACE_KINDS = new Set<Claim["kind"]>([
   "acquisition_date",
 ]);
 
+const PRICE_KIND: Claim["kind"] = "acquisition_price";
+
 export interface JudgeOutcome {
   readonly judgements: readonly Judgement[];
   readonly unjudged: readonly UnjudgedClaim[];
+  readonly pricePlacements: readonly PricePlacement[];
 }
 
 const stanceOf = (verdict: Verdict): Evidence["stance"] =>
@@ -69,11 +60,6 @@ const toEvidence = (
   ...(assessment.note === undefined ? {} : { note: assessment.note }),
 });
 
-/**
- * 판정을 만들지 않는 사유. undefined면 대조를 시도한다.
- * 사용자 노출 문자열은 판정 명칭 정책(일치 / 원장 미확인 / 대조 불가)을 따른다 —
- * 내부 식별자(`unverifiable` 등)는 그대로 두고 문구만 맞춘다.
- */
 const unjudgedReason = (claim: Claim): string | undefined => {
   const detail = claim.demotionReason ?? "사유 미상";
   switch (claim.verifiability) {
@@ -88,7 +74,7 @@ const unjudgedReason = (claim: Claim): string | undefined => {
     case "structurally_impossible":
       return "개체 식별자가 없어 구조적으로 대조할 수 없습니다(대조 불가).";
     case "verifiable":
-      return TRACE_KINDS.has(claim.kind)
+      return TRACE_KINDS.has(claim.kind) || claim.kind === PRICE_KIND
         ? undefined
         : "이 항목을 대조할 공공 데이터 어댑터가 아직 연결되지 않았습니다(대조 불가).";
   }
@@ -99,7 +85,6 @@ const unjudgedReason = (claim: Claim): string | undefined => {
 interface SubjectGroup {
   readonly subject: string;
   readonly claims: readonly Claim[];
-  /** 원장 조회 키가 되는 이력번호 claim (없으면 이 개체는 전 항목 미판정) */
   readonly identity: Claim | undefined;
 }
 
@@ -129,16 +114,11 @@ const groupBySubject = (claims: readonly Claim[]): readonly SubjectGroup[] => {
   });
 };
 
-/** 개체 1건의 조회 결과. 실패도 값으로 다룬다 — 전체 대조를 중단시키지 않기 위해서다. */
 interface LookupOutcome {
   readonly record?: LivestockTraceRecord;
   readonly error?: string;
 }
 
-/**
- * 개체 1건 조회. 라이브 대조에서 일부 개체만 실패하는 상황(원장 일시 장애·개별 타임아웃)에
- * 전체가 중단되면 나머지 36두의 판정까지 잃는다 — 실패한 개체만 "대조 불가"로 강등한다.
- */
 const lookupRecord = async (
   group: SubjectGroup,
   trace: LivestockTraceAdapter,
@@ -151,14 +131,16 @@ const lookupRecord = async (
   }
 };
 
-/** claim 목록 → 판정 목록. 대조 불가 항목은 근거 0건 판정 대신 미판정으로 분리한다. */
 export const judgeClaims = async (
   claims: readonly Claim[],
-  deps: { readonly trace: LivestockTraceAdapter },
+  deps: {
+    readonly trace: LivestockTraceAdapter;
+    readonly auction?: AuctionPriceAdapter;
+  },
 ): Promise<JudgeOutcome> => {
-  const groups = groupBySubject(claims);
+  const ledgerClaims = claims.filter((claim) => claim.kind !== PRICE_KIND);
+  const groups = groupBySubject(ledgerClaims);
 
-  // 개체 수만큼 외부 조회가 필요하다 — 순차 대신 상한 있는 동시 배치로 돈다
   const outcomes = await mapWithConcurrency(groups, LOOKUP_CONCURRENCY, (group) =>
     lookupRecord(group, deps.trace),
   );
@@ -196,5 +178,24 @@ export const judgeClaims = async (
     }
   });
 
-  return { judgements, unjudged };
+  const priceClaims = claims.filter((claim) => claim.kind === PRICE_KIND);
+  const demoted = priceClaims.flatMap((claim) => {
+    const reason = unjudgedReason(claim);
+    return reason ? [{ claim, reason }] : [];
+  });
+  const placeable = priceClaims.filter(
+    (claim) => unjudgedReason(claim) === undefined,
+  );
+  const priceLayer = placePrices({
+    claims,
+    priceClaims: placeable,
+    judgements,
+    auction: deps.auction,
+  });
+
+  return {
+    judgements,
+    unjudged: [...unjudged, ...demoted, ...priceLayer.unplaced],
+    pricePlacements: priceLayer.placements,
+  };
 };

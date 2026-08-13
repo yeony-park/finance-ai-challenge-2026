@@ -1,29 +1,19 @@
-/**
- * 공시 대조 검증 공통 타입.
- * 설계 원칙 (신뢰 스파인 계승)
- * - 모든 데이터는 불변(immutable) — 단계마다 새 객체를 반환한다
- * - 판정은 3값 유니언(일치/불일치/확인 불가)이며, **근거가 0건인 판정은 존재할 수 없다**
- * - claim은 문서 버전(rcpNo·제출일)을 축으로 가지며, 두 버전을 기계적으로 비교할 수 있다
- */
 import { assertRcpNo } from "./paths";
 
-/** 3값 판정 — 자료 부족은 절대 mismatch가 아니라 unverifiable이다. */
 export type Verdict = "match" | "mismatch" | "unverifiable";
 
-/** 검증 가능성 — 신고서 구조 실측(2026-08-10) 판정 3에서 도출 */
 export type Verifiability =
-  | "verifiable" // 공공 데이터로 대조 가능
-  | "no_reference_data" // 대조할 공개 데이터가 없음
-  | "structurally_impossible" // 개체 식별자 자체가 없음 (예: 돼지 집합물)
-  | "unparsed" // 스키마 게이트 실패 → "확인 불가"로 강등된 필드
-  | "cross_check_conflict" // 규칙 추출과 LLM 추출이 달라 확인 불가로 강등된 필드
-  | "llm_only"; // LLM만 추출 — 규칙으로 교차확인되지 않아 판정을 보류한 필드
+  | "verifiable"
+  | "no_reference_data"
+  | "structurally_impossible"
+  | "unparsed"
+  | "cross_check_conflict"
+  | "llm_only";
 
-/** 이 claim을 만든 추출 경로 — 근거 리포트의 출처 태깅 */
 export type ClaimSource =
-  | "rules" // 규칙 파서 단독
-  | "llm" // LLM 단독 (교차확인 없음)
-  | "both"; // 규칙·LLM 양쪽에서 관측
+  | "rules"
+  | "llm"
+  | "both";
 
 export type ClaimKind =
   | "livestock_trace_no"
@@ -33,50 +23,37 @@ export type ClaimKind =
   | "acquisition_date"
   | "acquisition_price";
 
-/** 문서 버전 축 — 정정신고서 재검증의 기준점 */
 export interface DocumentRef {
   readonly offerId: string;
   readonly rcpNo: string;
-  /** 접수번호 앞 8자리에서 도출한 제출일 (ISO date) */
   readonly submittedOn: string;
 }
 
-/** 원문 좌표 — 근거 리포트에서 "어디에 쓰여 있는가"를 되짚는 데 쓴다 */
 export interface ClaimLocation {
-  /** 인용 좌표 한 줄 — 표를 감싼 가장 가까운 번호 항목 */
   readonly section: string;
   readonly table: string;
   readonly row: number;
-  /** 최상위 부(部)부터 최하위 항목까지의 제목 경로 (파서가 원문에서 복원) */
   readonly sectionPath?: readonly string[];
-  /** 표가 시작하는 원문 XML 문자 오프셋 — 정정 diff·원문 대조의 기준점 */
   readonly charOffset?: number;
 }
 
-/** 신고서가 주장하는 검증 대상 사실 하나 */
 export interface Claim {
-  /** 문서 버전이 달라도 같은 주장을 가리키는 안정 키 — `{kind}:{subject}` */
   readonly id: string;
   readonly kind: ClaimKind;
-  /** 주장 대상 (예: "학산 1호") */
   readonly subject: string;
   readonly field: string;
-  /** 정규화된 값의 문자열 표현 — 비교·diff의 기준 */
   readonly value: string;
   readonly numericValue?: number;
   readonly unit?: string;
   readonly document: DocumentRef;
   readonly location: ClaimLocation;
   readonly verifiability: Verifiability;
-  /** 스키마 게이트 실패·교차검증 강등 사유 (verifiability가 verifiable이 아닐 때) */
   readonly demotionReason?: string;
-  /** 추출 경로 태깅 — 교차검증을 돌리지 않은 경로(rules-only)에서는 비어 있다 */
   readonly extractedBy?: ClaimSource;
 }
 
 export type EvidenceStance = "supports" | "contradicts" | "context";
 
-/** 외부 원장에서 관측한 사실 한 건 — 판정의 유일한 재료 */
 export interface Evidence {
   readonly sourceId: string;
   readonly sourceName: string;
@@ -89,13 +66,8 @@ export interface Evidence {
   readonly note?: string;
 }
 
-/** 최소 1건을 타입으로 강제하는 근거 목록 */
 export type EvidenceSet = readonly [Evidence, ...Evidence[]];
 
-/**
- * 브랜드 심볼 — 모듈 밖으로 내보내지 않으므로 다른 파일에서는 이 키를 채운
- * 객체 리터럴을 만들 수 없다. 근거 검사를 통과한 createJudgement가 유일한 생성 경로다.
- */
 const evidenceBacked: unique symbol = Symbol("verify/evidence-backed");
 
 export interface Judgement {
@@ -106,10 +78,35 @@ export interface Judgement {
   readonly rationale: string;
 }
 
-/** 판정할 수 없어 아예 판정하지 않은 claim — 근거 0건 판정을 만드는 대신 여기로 보낸다 */
 export interface UnjudgedClaim {
   readonly claim: Claim;
   readonly reason: string;
+}
+
+export interface PriceGradeBand {
+  readonly gradeCd: string;
+  readonly gradeName: string;
+  readonly pricePerKg: number;
+  readonly headCount: number;
+}
+
+export interface PricePlacement {
+  readonly claim: Claim;
+  readonly referenceMonth: string;
+  readonly breedName: string;
+  readonly sexName: string;
+  readonly claimedPerHead: number;
+  readonly averagePricePerKg: number;
+  readonly sampleSize: number;
+  readonly thinSample: boolean;
+  readonly grades: readonly PriceGradeBand[];
+  readonly windowMonths: readonly string[];
+  readonly windowAveragePricePerKg?: number;
+  readonly monthVsWindowPercent?: number;
+  readonly offerAveragePerHead: number;
+  readonly vsOfferAveragePercent: number;
+  readonly evidence: EvidenceSet;
+  readonly statement: string;
 }
 
 export interface VerdictSummary {
@@ -119,7 +116,6 @@ export interface VerdictSummary {
   readonly unverifiable: number;
 }
 
-/** 대상(개체)별 판정 롤업 — 화면의 "37두 중 N두" 표시 계약 */
 export interface SubjectRollup {
   readonly subject: string;
   readonly verdict: Verdict;
@@ -136,13 +132,10 @@ export interface VerifyReport {
   readonly bySubject: readonly SubjectRollup[];
   readonly judgements: readonly Judgement[];
   readonly unjudged: readonly UnjudgedClaim[];
+  readonly pricePlacements: readonly PricePlacement[];
   readonly notes: readonly string[];
 }
 
-/**
- * 판정 생성의 유일한 경로. 근거가 비어 있으면 예외를 던진다 —
- * 타입(EvidenceSet)과 런타임(이 검사) 양쪽에서 "근거 0건 판정"을 차단한다.
- */
 export const createJudgement = (input: {
   readonly claim: Claim;
   readonly verdict: Verdict;
@@ -178,7 +171,6 @@ export const summarizeVerdicts = (
     { total: 0, match: 0, mismatch: 0, unverifiable: 0 },
   );
 
-/** 대상별 롤업 — 하나라도 불일치면 불일치, 아니면 확인 불가, 전부 일치해야 일치 */
 export const rollupBySubject = (
   judgements: readonly Judgement[],
 ): readonly SubjectRollup[] => {
@@ -204,8 +196,6 @@ export const rollupBySubject = (
   });
 };
 
-// ---- 문서 버전 간 claim 비교 (정정신고서 재검증의 스키마 훅) ----
-
 export type ClaimChangeKind = "added" | "removed" | "changed";
 
 export interface ClaimChange {
@@ -226,7 +216,6 @@ export interface ClaimDiff {
 const documentOf = (claims: readonly Claim[]): DocumentRef =>
   claims[0]?.document ?? { offerId: "", rcpNo: "", submittedOn: "" };
 
-/** 두 버전의 claim 목록을 비교해 변경 필드 목록을 산출하는 순수 함수 */
 export const diffClaims = (
   before: readonly Claim[],
   after: readonly Claim[],
@@ -276,7 +265,6 @@ export const diffClaims = (
   };
 };
 
-/** 접수번호(YYYYMMDD + 일련번호)에서 제출일을 도출한다. 형식 가드는 paths.ts가 단일 소스다. */
 export const submittedOnFromRcpNo = (rcpNo: string): string => {
   const checked = assertRcpNo(rcpNo);
   return `${checked.slice(0, 4)}-${checked.slice(4, 6)}-${checked.slice(6, 8)}`;

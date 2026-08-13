@@ -4,17 +4,14 @@ import { parseReportSnapshot } from "../report/snapshot";
 
 describe("pickLatestFileName — 리포트 버전링에서 최신 1건 선택", () => {
   test("report-*.json 중 파일명(ISO 시각) 사전순 최대값을 고른다", () => {
-    // Arrange
     const files = [
       "report-2026-08-11T16-02-04-683Z.json",
       "report-2026-08-11T16-06-25-434Z.json",
       "report-2026-08-11T16-04-40-307Z.json",
     ];
 
-    // Act
     const latest = pickLatestFileName(files);
 
-    // Assert
     expect(latest).toBe("report-2026-08-11T16-06-25-434Z.json");
   });
 
@@ -31,10 +28,8 @@ describe("pickLatestFileName — 리포트 버전링에서 최신 1건 선택", 
 
 describe("loadLatestReport — 스냅샷 JSON 로딩 (읽기 전용)", () => {
   test("뱅카우 9호 최신 리포트를 엔진 계약대로 읽는다", async () => {
-    // Act
     const loaded = await loadLatestReport("livestock-9");
 
-    // Assert
     expect(loaded.report.offerId).toBe("livestock-9");
     expect(loaded.report.bySubject).toHaveLength(37);
     expect(loaded.report.judgements.length).toBeGreaterThan(0);
@@ -52,7 +47,6 @@ describe("loadLatestReport — 스냅샷 JSON 로딩 (읽기 전용)", () => {
 
 describe("parseReportSnapshot — 경계 검증", () => {
   test("근거 0건 판정이 담긴 JSON은 거부한다", () => {
-    // Arrange
     const broken = {
       offerId: "x",
       document: { offerId: "x", rcpNo: "20260806000159", submittedOn: "2026-08-06" },
@@ -86,7 +80,6 @@ describe("parseReportSnapshot — 경계 검증", () => {
       notes: [],
     };
 
-    // Act + Assert
     expect(() => parseReportSnapshot(broken)).toThrow(/리포트 스냅샷/);
   });
 });

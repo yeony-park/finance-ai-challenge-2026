@@ -48,14 +48,12 @@ const EMPTY_XML = `<?xml version="1.0" encoding="UTF-8"?>
 
 describe("실 API 응답 정규화", () => {
   test("infoType 혼합 배열을 개체 레코드로 정규화한다", () => {
-    // Act
     const record = normalizeTraceResponse(
       TRACE_XML,
       "212786152",
       "2026-08-12T00:00:00.000Z",
     );
 
-    // Assert
     expect(record.exists).toBe(true);
     expect(record.traceNo12).toBe("002212786152");
     expect(record.breedName).toBe("한우");
@@ -100,7 +98,6 @@ describe("실 API 응답 정규화", () => {
   });
 
   test("실 어댑터는 12자리로 변환한 traceNo로 호출한다", async () => {
-    // Arrange
     const calls: string[] = [];
     const adapter = createEkapeTraceAdapter({
       serviceKey: "test-key",
@@ -110,10 +107,8 @@ describe("실 API 응답 정규화", () => {
       }) as unknown as typeof fetch,
     });
 
-    // Act
     await adapter.lookup("212786152");
 
-    // Assert
     expect(calls[0]).toContain("traceNo=002212786152");
     expect(calls[0]).toContain("serviceKey=test-key");
   });
@@ -122,7 +117,6 @@ describe("실 API 응답 정규화", () => {
 describe.skipIf(!hasLocalFile(SNAPSHOT_PATH))(
   `fake 어댑터 — 실측 스냅샷 재생 ${hasLocalFile(SNAPSHOT_PATH) ? "" : skipReason(SNAPSHOT_PATH)}`,
   () => {
-    // 스냅샷의 실제 지명·성명은 테스트에 박지 않는다 — 구조와 관계만 확인한다
     test("1번 개체는 강원 지역 사육지로 확인된다", async () => {
       const adapter = await createFakeTraceAdapter();
       const record = await adapter.lookup("212786152");

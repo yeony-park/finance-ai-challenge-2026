@@ -1,12 +1,9 @@
-/**
- * 검증 방법 — 무엇을 어떤 데이터와 대조하고, 어떤 값으로 판정하며, 무엇을 하지 않는지.
- * 정적 페이지다. 특정 공모의 수치를 싣지 않으므로 리포트를 읽지 않는다.
- */
 import type { Metadata } from "next";
 import Link from "next/link";
 
 import { DATA_SOURCES } from "@/components/site/service";
 
+import { METHODOLOGY_ANCHOR } from "./anchors";
 import s from "./methodology.module.css";
 
 export const metadata: Metadata = {
@@ -91,6 +88,18 @@ const PRINCIPLES: readonly Rule[] = [
   },
 ];
 
+interface Stat {
+  readonly value: string;
+  readonly label: string;
+}
+
+const AMENDMENT_STATS: readonly Stat[] = [
+  { value: "65%", label: "투자계약증권 공시 중 정정이 차지하는 비율" },
+  { value: "2.4회", label: "공모 한 건당 평균 정정 횟수" },
+];
+
+const AMENDMENT_STATS_SOURCE = "출처 · 2023~2026 투자계약증권 공시 전수 자체 집계 (OpenDART)";
+
 const LIMITS: readonly Rule[] = [
   {
     term: "공개 데이터가 있는 범위까지만",
@@ -113,10 +122,10 @@ const LIMITS: readonly Rule[] = [
 export default function MethodologyPage() {
   return (
     <>
-      <section className={s.header} aria-labelledby="methodology-title">
+      <section className={s.header} aria-labelledby={METHODOLOGY_ANCHOR.methodology}>
         <div className={s.wrap}>
           <p className={s.eyebrow}>검증 방법</p>
-          <h1 id="methodology-title" className={s.title}>
+          <h1 id={METHODOLOGY_ANCHOR.methodology} className={s.title}>
             무엇을 어떤 기록과 대조하는가
           </h1>
           <p className={s.lead}>
@@ -127,8 +136,8 @@ export default function MethodologyPage() {
       </section>
 
       <div className={`${s.wrap} ${s.body}`}>
-        <section className={s.section} aria-labelledby="pipeline-title">
-          <h2 id="pipeline-title" className={s.sectionTitle}>
+        <section className={s.section} aria-labelledby={METHODOLOGY_ANCHOR.pipeline}>
+          <h2 id={METHODOLOGY_ANCHOR.pipeline} className={s.sectionTitle}>
             대조는 네 단계로 진행됩니다
           </h2>
           <p className={s.paragraph}>
@@ -144,8 +153,8 @@ export default function MethodologyPage() {
           </p>
         </section>
 
-        <section className={s.section} aria-labelledby="layers-title">
-          <h2 id="layers-title" className={s.sectionTitle}>
+        <section className={s.section} aria-labelledby={METHODOLOGY_ANCHOR.layers}>
+          <h2 id={METHODOLOGY_ANCHOR.layers} className={s.sectionTitle}>
             세 층위
           </h2>
           <ol className={s.layerList}>
@@ -159,8 +168,8 @@ export default function MethodologyPage() {
           </ol>
         </section>
 
-        <section className={s.section} aria-labelledby="sources-title">
-          <h2 id="sources-title" className={s.sectionTitle}>
+        <section className={s.section} aria-labelledby={METHODOLOGY_ANCHOR.sources}>
+          <h2 id={METHODOLOGY_ANCHOR.sources} className={s.sectionTitle}>
             데이터 출처
           </h2>
           <p className={s.paragraph}>
@@ -189,8 +198,8 @@ export default function MethodologyPage() {
           </div>
         </section>
 
-        <section className={s.section} aria-labelledby="verdicts-title">
-          <h2 id="verdicts-title" className={s.sectionTitle}>
+        <section className={s.section} aria-labelledby={METHODOLOGY_ANCHOR.verdicts}>
+          <h2 id={METHODOLOGY_ANCHOR.verdicts} className={s.sectionTitle}>
             판정 3값
           </h2>
           <dl className={s.verdictList}>
@@ -203,14 +212,41 @@ export default function MethodologyPage() {
           </dl>
         </section>
 
-        <section className={s.section} aria-labelledby="amendment-title">
-          <h2 id="amendment-title" className={s.sectionTitle}>
+        <section className={s.section} aria-labelledby={METHODOLOGY_ANCHOR.amendment}>
+          <h2 id={METHODOLOGY_ANCHOR.amendment} className={s.sectionTitle}>
             정정 재검증
           </h2>
           <p className={s.paragraph}>
+            투자계약증권 공시는 한 번 내고 끝나지 않습니다. 제출 이후에도 문서는 계속 바뀝니다.
+          </p>
+
+          <dl className={s.statGrid}>
+            {AMENDMENT_STATS.map((stat) => (
+              <div key={stat.value} className={s.stat}>
+                <dt className={s.statLabel}>{stat.label}</dt>
+                <dd className={s.statValue}>{stat.value}</dd>
+              </div>
+            ))}
+          </dl>
+          <p className={s.statSource}>{AMENDMENT_STATS_SOURCE}</p>
+
+          <blockquote className={s.pullQuote}>
+            정정 대비표는 발행인이 지정한 항목만 싣고, 요약정보와 제2부는 정오표 없이 본문에
+            반영된다.
+            <cite className={s.pullQuoteSource}>투자계약증권 증권신고서 정정 관행</cite>
+          </blockquote>
+
+          <p className={s.paragraph}>
+            그래서 무엇이 바뀌었는지 알아내려면 정정이 접수될 때마다 전문을 다시 열고 수십 항목을
+            눈으로 재대조해야 합니다. <strong>확인 비용이 확인 자체를 막는 병목</strong>이며,
+            대다수 투자자는 이 지점에서 확인을 포기합니다.
+          </p>
+
+          <p className={s.paragraph}>
             정정신고서는 별도의 기능이 아니라 <strong>같은 검증 파이프라인의 새 입력</strong>입니다.
             접수를 감지하면 주장을 다시 뽑고, 다시 대조하고, 판정을 다시 냅니다. 리포트는 덮어쓰지
-            않고 새 버전으로 쌓여 이전 판정과 비교할 수 있게 남습니다.
+            않고 새 버전으로 쌓여 이전 판정과 비교할 수 있게 남습니다. 재대조가 자동으로 끝나면
+            남는 일은 알림 한 건을 확인하는 것뿐입니다.
           </p>
           <p className={s.paragraph}>
             알림에는 두 가지 사실만 담습니다 — 바뀐 항목이 무엇인지, 판정이 유지됐는지 달라졌는지.
@@ -218,8 +254,8 @@ export default function MethodologyPage() {
           </p>
         </section>
 
-        <section className={s.section} aria-labelledby="principles-title">
-          <h2 id="principles-title" className={s.sectionTitle}>
+        <section className={s.section} aria-labelledby={METHODOLOGY_ANCHOR.principles}>
+          <h2 id={METHODOLOGY_ANCHOR.principles} className={s.sectionTitle}>
             표현 원칙
           </h2>
           <dl className={s.ruleList}>
@@ -232,8 +268,8 @@ export default function MethodologyPage() {
           </dl>
         </section>
 
-        <section className={s.section} aria-labelledby="limits-title">
-          <h2 id="limits-title" className={s.sectionTitle}>
+        <section className={s.section} aria-labelledby={METHODOLOGY_ANCHOR.limits}>
+          <h2 id={METHODOLOGY_ANCHOR.limits} className={s.sectionTitle}>
             한계
           </h2>
           <dl className={s.ruleList}>
@@ -253,7 +289,7 @@ export default function MethodologyPage() {
 
         <Link href="/" className={s.backLink}>
           <span aria-hidden="true">←</span>
-          검증 리포트로 돌아가기
+          공모 목록으로 돌아가기
         </Link>
       </div>
     </>

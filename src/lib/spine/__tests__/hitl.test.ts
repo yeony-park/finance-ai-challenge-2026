@@ -12,7 +12,6 @@ afterEach(() => {
 
 describe("HITL 액션 게이트", () => {
   test("executes handler only after explicit confirmation", async () => {
-    // Arrange
     let executed = false;
     const action = createPendingAction(
       "finalize-doc",
@@ -24,13 +23,10 @@ describe("HITL 액션 게이트", () => {
       },
     );
 
-    // Assert (before confirm)
     expect(executed).toBe(false);
 
-    // Act
     const result = await confirmAction(action.id);
 
-    // Assert
     expect(result.status).toBe("executed");
     expect(executed).toBe(true);
   });

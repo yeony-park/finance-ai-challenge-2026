@@ -1,13 +1,5 @@
 "use client";
 
-/**
- * 감시 — 정정 재검증과 알림 미리보기.
- * 리플레이는 이미 끝난 대조 실행을 순서대로 되짚을 뿐, 새로 대조하지 않는다.
- * 화면 문장의 주어는 공모다 — 서비스가 무엇을 해 주는지 말하지 않는다(홈-IA-개편 §2).
- *
- * 단계 점등은 타이머가 정하고, 모션은 그 상태 변화를 부드럽게 잇기만 한다.
- * 모션 축소를 요청한 사용자에게는 지연을 0으로 만들어 결과를 즉시 보여 준다(기존 처리 보존).
- */
 import { m } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
@@ -22,7 +14,6 @@ import s from "./report.module.css";
 
 const REPLAY_STEP_DELAY_MS = 650;
 const REPLAY_PUSH_DELAY_MS = 250;
-/** 아직 점등되지 않은 단계의 잔여 밝기 — 자리는 유지하되 읽히지 않게 */
 const STEP_DIM = 0.32;
 
 export function WatchSection({ view }: { readonly view: DemoView }) {
@@ -32,8 +23,6 @@ export function WatchSection({ view }: { readonly view: DemoView }) {
   const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
   const steps = view.replay.steps;
 
-  // 재생 중 언마운트되면 예약된 타이머가 남는다 — 리플레이가 배열을 갈아 끼우므로
-  // 마운트 시점 값을 스냅샷하지 않고 정리 시점의 ref를 직접 읽는다.
   useEffect(() => () => timersRef.current.forEach(clearTimeout), []);
 
   const handleReplay = () => {
@@ -118,8 +107,6 @@ export function WatchSection({ view }: { readonly view: DemoView }) {
                     </p>
                     {step.detail ? <p className={s.stepDetail}>{step.detail}</p> : null}
                     {isLast && (
-                      // 자리는 처음부터 잡아 둔다 — 나타날 때 지면이 밀리지 않게.
-                      // 서버에서도 그려지는 자리라 transform 없이 opacity만 바꾼다(하이드레이션 일치).
                       <m.div
                         className={s.push}
                         initial={false}

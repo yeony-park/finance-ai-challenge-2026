@@ -1,6 +1,3 @@
-/**
- * ① 실재 확인 층위 — 개체 카드 격자와 선택 시 열리는 근거 카드.
- */
 import type { ReportContext } from "./context";
 import { b, t } from "./labels";
 import type { DemoView } from "./types";

@@ -1,10 +1,3 @@
-/**
- * 공개 리포트 로딩 — 서버 전용, 읽기만 한다(런타임 쓰기 없음).
- * 화면(Server Component)은 이 모듈로 최신 공개 리포트 1건을 읽어 뷰 모델로 넘긴다.
- *
- * 읽는 대상은 `data/public/{offerId}/report-*.json` — 마스킹이 끝난 산출물뿐이다.
- * 개인정보가 담긴 내부 리포트(`data/reports/`)는 로컬 전용이며 배포 번들에 포함되지 않는다.
- */
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { assertOfferId } from "../paths";
@@ -14,13 +7,10 @@ const REPORT_FILE_PATTERN = /^report-.*\.json$/;
 
 export interface LoadedReport {
   readonly report: ReportSnapshot;
-  /** 읽어 온 스냅샷 파일명 */
   readonly fileName: string;
-  /** 같은 공모의 리포트 버전 수 — 정정 재검증 이력 표시용 */
   readonly versionCount: number;
 }
 
-/** 파일명이 곧 ISO 시각이므로 사전순 최대값이 최신이다. */
 export const pickLatestFileName = (
   files: readonly string[],
 ): string | undefined =>
@@ -38,11 +28,6 @@ const listReportFiles = async (dir: string): Promise<readonly string[]> => {
   }
 };
 
-/**
- * 최신 공개 리포트 1건을 읽는다 — 정적 프리렌더 시각(빌드)에 읽힌다.
- * 경로 앞부분을 리터럴로 고정해 번들러의 파일 추적 범위가 data/public 밑으로 좁혀지게 하고,
- * offerId는 허용목록 가드를 통과한 것만 디렉토리명이 된다.
- */
 export const loadLatestReport = async (offerId: string): Promise<LoadedReport> => {
   const dir = path.join(process.cwd(), "data", "public", assertOfferId(offerId));
   const files = await listReportFiles(dir);

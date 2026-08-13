@@ -19,20 +19,17 @@ describe.skipIf(!hasRawXml)(
   `규칙 기반 claim 추출 — 뱅카우 9호 원문 ${hasRawXml ? "" : skipReason(RAW_XML_PATH)}`,
   () => {
     test("37두 이력번호를 전수 추출한다", () => {
-      // Arrange
       const xml = rawXml();
 
-      // Act
       const result = extractClaims(xml, BANKCOW9);
       const traceNos = result.claims
         .filter((c) => c.kind === "livestock_trace_no")
         .map((c) => c.value);
 
-      // Assert
       expect(traceNos).toHaveLength(37);
       expect(new Set(traceNos).size).toBe(37);
       expect(traceNos[0]).toBe("212786152");
-      expect(traceNos[23]).toBe("217935879"); // 24번째 개체
+      expect(traceNos[23]).toBe("217935879");
       expect(traceNos[36]).toBe("214820575");
     });
 
@@ -62,7 +59,6 @@ describe.skipIf(!hasRawXml)(
       expect(of("livestock_breed")[0].value).toBe("한우");
       expect(of("livestock_sex")).toHaveLength(37);
       expect(of("livestock_sex")[0].value).toBe("수");
-      // 지명 자체는 테스트에 박지 않는다 — "시도 + 시·군" 형태인지만 확인한다
       expect(of("custody_location")[0].value).toMatch(/[가-힣]+도\s*[가-힣]+(시|군)/);
     });
 
@@ -108,7 +104,6 @@ const SYNTHETIC_XML = `<?xml version="1.0" encoding="utf-8"?>
 
 describe("스키마 게이트 강등", () => {
   test("형식 위반 필드는 파이프라인을 멈추지 않고 확인 불가로 강등된다", () => {
-    // Act
     const result = extractClaims(SYNTHETIC_XML, BANKCOW9);
     const badTrace = result.claims.find(
       (c) => c.kind === "livestock_trace_no" && c.subject === "검증 2호",
@@ -117,7 +112,6 @@ describe("스키마 게이트 강등", () => {
       (c) => c.kind === "acquisition_price" && c.subject === "검증 2호",
     );
 
-    // Assert — 정상 행은 그대로 살아 있다
     expect(
       result.claims.find(
         (c) => c.kind === "livestock_trace_no" && c.subject === "검증 1호",
@@ -145,11 +139,6 @@ describe("스키마 게이트 강등", () => {
   });
 });
 
-/**
- * 성별은 문서 전체 1회 스캔이 아니라 개체 행에서 읽어야 한다.
- * 혼성 우군(숫소·암소·거세우 혼재)에서 문서 전체 스캔은 전 개체에 같은 값을 붙여
- * 가짜 불일치를 제조한다 — 이 스위트가 그 회귀를 막는다.
- */
 const MIXED_HERD_XML = `<?xml version="1.0" encoding="utf-8"?>
 <DOCUMENT>
 <P>본건 기초자산 중 거세우인 경우 26개월 이후 출하합니다.</P>
@@ -174,14 +163,12 @@ const MIXED_HERD_XML = `<?xml version="1.0" encoding="utf-8"?>
 
 describe("성별 추출 — 개체 행 단위", () => {
   test("혼성 우군에서 개체마다 자기 행의 성별을 갖는다", () => {
-    // Act
     const result = extractClaims(MIXED_HERD_XML, BANKCOW9);
     const sexOf = (subject: string) =>
       result.claims.find(
         (c) => c.kind === "livestock_sex" && c.subject === subject,
       );
 
-    // Assert
     expect(sexOf("검증 1호")?.value).toBe("수");
     expect(sexOf("검증 2호")?.value).toBe("암");
     expect(sexOf("검증 3호")?.value).toBe("거세");
@@ -203,7 +190,6 @@ describe("성별 추출 — 개체 행 단위", () => {
     expect(
       result.demotions.some((d) => d.claimId === "livestock_sex:검증 4호"),
     ).toBe(true);
-    // 다른 개체는 전혀 영향받지 않는다
     expect(
       result.claims.find(
         (c) => c.kind === "livestock_sex" && c.subject === "검증 1호",
@@ -212,7 +198,6 @@ describe("성별 추출 — 개체 행 단위", () => {
   });
 
   test("문서 산문의 성별 서술은 개체에 전파되지 않는다", () => {
-    // 산문에만 "거세우"가 등장하고 개체 행에는 성별 서술이 없는 문서
     const proseOnly = `<?xml version="1.0" encoding="utf-8"?>
 <DOCUMENT>
 <P>거세우의 경우 26개월 이후 출하합니다.</P>

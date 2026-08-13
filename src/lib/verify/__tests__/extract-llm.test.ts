@@ -1,6 +1,10 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, test } from "vitest";
-import { extractClaimsWithLlm } from "../claims/extract-llm";
+import {
+  extractClaimsWithLlm,
+  CHUNK_RETRY_LIMIT,
+  MAX_ROWS_PER_REQUEST,
+} from "../claims/extract-llm";
 import { extractClaims, selectHeadTable } from "../claims/extract-rules";
 import { runExtraction } from "../claims/extract";
 import {
@@ -43,10 +47,8 @@ const stubClient = (
 
 describe("추출 프롬프트 — 문서 좌표 보존", () => {
   test("항목 경로·표 이름·원문 오프셋·행 번호가 모두 실린다", () => {
-    // Arrange
     const head = selection();
 
-    // Act
     const prompt = buildExtractionPrompt(DOCUMENT, head, [
       {
         cells: ["검증 1호", "한우 송아지", "212786152"],
@@ -56,12 +58,35 @@ describe("추출 프롬프트 — 문서 좌표 보존", () => {
       },
     ]);
 
-    // Assert
     expect(prompt.user).toContain("8. 기초자산 취득에 관한 사항");
     expect(prompt.user).toContain("기초자산 개체 명세표");
     expect(prompt.user).toContain(`오프셋 ${head.source.charOffset}`);
     expect(prompt.user).toContain("행 1 | 검증 1호");
     expect(prompt.system).toContain("추측 금지");
+  });
+
+  test("응답 분량 기대치를 못 박는다 — 모델이 앞 몇 행만 처리하고 멈추지 않게", () => {
+    const head = selection();
+
+    const prompt = buildExtractionPrompt(DOCUMENT, head, [
+      {
+        cells: ["검증 1호", "한우 송아지", "212786152"],
+        row: 1,
+        subject: "검증 1호",
+        traceNoRaw: "212786152",
+      },
+      {
+        cells: ["검증 2호", "한우 송아지", "214838454"],
+        row: 2,
+        subject: "검증 2호",
+        traceNoRaw: "214838454",
+      },
+    ]);
+
+    expect(prompt.user).toContain("행이 정확히 2개");
+    expect(prompt.user).toContain("행 번호 1, 2");
+    expect(prompt.user).toContain("한 행도 건너뛰지 마십시오");
+    expect(prompt.system).toContain("모든 행");
   });
 
   test("직렬화한 행은 되읽을 수 있다 (fake 클라이언트의 입력 계약)", () => {
@@ -75,7 +100,6 @@ describe("추출 프롬프트 — 문서 좌표 보존", () => {
 
 describe("fake 추출기 — 키 없이 결정적으로 완주한다", () => {
   test("셀 내용 모양으로 읽어 규칙 파서와 같은 값을 낸다", async () => {
-    // Act
     const result = await extractClaimsWithLlm(
       selection(),
       DOCUMENT,
@@ -84,7 +108,6 @@ describe("fake 추출기 — 키 없이 결정적으로 완주한다", () => {
     const valueOf = (kind: string, subject: string) =>
       result.claims.find((c) => c.kind === kind && c.subject === subject)?.value;
 
-    // Assert
     expect(result.clientName).toBe("fake");
     expect(valueOf("livestock_trace_no", "검증 1호")).toBe("212786152");
     expect(valueOf("livestock_breed", "검증 1호")).toBe("한우");
@@ -119,7 +142,6 @@ describe("fake 추출기 — 키 없이 결정적으로 완주한다", () => {
 
 describe("LLM 추출 방어선", () => {
   test("표에 없는 행 번호를 가리키는 추출값은 채택하지 않는다", async () => {
-    // Arrange — 존재하지 않는 99행을 지어낸 응답
     const client = stubClient(async () => ({
       claims: [
         {
@@ -131,10 +153,8 @@ describe("LLM 추출 방어선", () => {
       ],
     }));
 
-    // Act
     const result = await extractClaimsWithLlm(selection(), DOCUMENT, client);
 
-    // Assert
     expect(result.claims).toHaveLength(0);
     expect(result.notes.join(" ")).toContain("문서 좌표 미확인");
   });
@@ -152,7 +172,6 @@ describe("LLM 추출 방어선", () => {
   });
 
   test("LLM 실패는 규칙 단독 채택으로 흘러 claim을 잃지 않는다", async () => {
-    // Act
     const run = await runExtraction(XML, DOCUMENT, {
       mode: "cross-check",
       extractor: stubClient(async () => {
@@ -161,14 +180,12 @@ describe("LLM 추출 방어선", () => {
     });
     const rulesOnly = extractClaims(XML, DOCUMENT);
 
-    // Assert
     expect(run.claims).toHaveLength(rulesOnly.claims.length);
     expect(run.crossCheck?.rulesOnly).toBe(rulesOnly.claims.length);
     expect(run.crossCheck?.conflict).toBe(0);
   });
 
   test("모델이 값을 뒤집으면 그 필드만 확인 불가로 강등된다", async () => {
-    // Arrange — 취득원가만 다른 값을 말하는 모델
     const client = stubClient(async () => ({
       claims: [
         {
@@ -180,7 +197,6 @@ describe("LLM 추출 방어선", () => {
       ],
     }));
 
-    // Act
     const run = await runExtraction(XML, DOCUMENT, {
       mode: "cross-check",
       extractor: client,
@@ -192,10 +208,137 @@ describe("LLM 추출 방어선", () => {
       (c) => c.kind === "livestock_trace_no" && c.subject === "검증 1호",
     );
 
-    // Assert
     expect(price?.verifiability).toBe("cross_check_conflict");
     expect(trace?.verifiability).toBe("verifiable");
     expect(run.crossCheck?.conflict).toBe(1);
+  });
+});
+
+describe("청크·재시도 — 커버리지 방어", () => {
+  const manyRowsXml = (count: number): string => {
+    const rows = Array.from({ length: count }, (_, index) => {
+      const no = index + 1;
+      const trace = String(210000000 + no);
+      return `<TR><TD>검증 ${no}호</TD><TD>한우 송아지</TD><TD>${trace}</TD><TD>2026-07-14</TD><TD>4,574,865</TD><TD>강원도 검증군 가상읍</TD></TR>`;
+    }).join("\n");
+    return XML.replace(
+      /<TR><TD>검증 1호<\/TD>[\s\S]*?<TD>4,654,865<\/TD><\/TR>/,
+      rows,
+    );
+  };
+
+  const selectionOf = (xml: string) => {
+    const found = selectHeadTable(xml, DOCUMENT);
+    if (!found) throw new Error("픽스처에서 개체 명세표를 찾지 못했습니다");
+    return found;
+  };
+
+  test("한 청크에 실리는 행 수를 상한으로 잘라 여러 번 부른다", async () => {
+    const rowCount = MAX_ROWS_PER_REQUEST * 2 + 3;
+    const head = selectionOf(manyRowsXml(rowCount));
+    const batchSizes: number[] = [];
+    const client = stubClient(async ({ user }) => {
+      batchSizes.push(
+        user.split("\n").filter((line) => parseRowLine(line) !== undefined)
+          .length,
+      );
+      return {
+        claims: user
+          .split("\n")
+          .map(parseRowLine)
+          .filter((parsed) => parsed !== undefined)
+          .map(({ row, cells }) => ({
+            row,
+            subject: cells[0] ?? "",
+            kind: "livestock_trace_no" as const,
+            value: cells[2] ?? "",
+          })),
+      };
+    });
+
+    const result = await extractClaimsWithLlm(head, DOCUMENT, client);
+
+    expect(MAX_ROWS_PER_REQUEST).toBeLessThanOrEqual(10);
+    expect(batchSizes).toHaveLength(Math.ceil(rowCount / MAX_ROWS_PER_REQUEST));
+    expect(Math.max(...batchSizes)).toBeLessThanOrEqual(MAX_ROWS_PER_REQUEST);
+    expect(result.claims).toHaveLength(rowCount);
+    expect(result.failed).toBe(false);
+  });
+
+  test("일시적 호출 실패는 한 번 더 불러 만회한다", async () => {
+    let calls = 0;
+    const client = stubClient(async () => {
+      calls += 1;
+      if (calls === 1) throw new Error("gateway 503");
+      return {
+        claims: [
+          {
+            row: 1,
+            subject: "검증 1호",
+            kind: "livestock_trace_no" as const,
+            value: "212786152",
+          },
+          {
+            row: 2,
+            subject: "검증 2호",
+            kind: "livestock_trace_no" as const,
+            value: "214838454",
+          },
+        ],
+      };
+    });
+
+    const result = await extractClaimsWithLlm(selection(), DOCUMENT, client);
+
+    expect(calls).toBe(2);
+    expect(result.failed).toBe(false);
+    expect(result.claims).toHaveLength(2);
+  });
+
+  test("행을 빠뜨린 응답은 한 번 더 불러 더 많이 다룬 쪽을 택한다", async () => {
+    let calls = 0;
+    const draft = (row: number, subject: string, value: string) => ({
+      row,
+      subject,
+      kind: "livestock_trace_no" as const,
+      value,
+    });
+    const client = stubClient(async () => {
+      calls += 1;
+      return calls === 1
+        ? { claims: [draft(1, "검증 1호", "212786152")] }
+        : {
+            claims: [
+              draft(1, "검증 1호", "212786152"),
+              draft(2, "검증 2호", "214838454"),
+            ],
+          };
+    });
+
+    const result = await extractClaimsWithLlm(selection(), DOCUMENT, client);
+
+    expect(calls).toBe(CHUNK_RETRY_LIMIT + 1);
+    expect(result.claims).toHaveLength(2);
+    expect(result.notes.join(" ")).not.toContain("다루지 않아");
+  });
+
+  test("재시도해도 빠진 행은 사유로 남고 파이프라인은 멈추지 않는다", async () => {
+    const client = stubClient(async () => ({
+      claims: [
+        {
+          row: 1,
+          subject: "검증 1호",
+          kind: "livestock_trace_no" as const,
+          value: "212786152",
+        },
+      ],
+    }));
+
+    const result = await extractClaimsWithLlm(selection(), DOCUMENT, client);
+
+    expect(result.failed).toBe(false);
+    expect(result.claims).toHaveLength(1);
+    expect(result.notes.join(" ")).toContain("개체 행 1건을 다루지 않아");
   });
 });
 
@@ -205,19 +348,15 @@ const hasRawXml = hasLocalFile(RAW_XML_PATH);
 describe.skipIf(!hasRawXml)(
   `원문 회귀 — fake 교차검증이 규칙 추출을 훼손하지 않는다 ${hasRawXml ? "" : skipReason(RAW_XML_PATH)}`,
   () => {
-    test("37두 전 필드가 양쪽 일치이거나 규칙 단독이며, 불일치 강등은 0건이다", async () => {
-      // Arrange
+    test("37두 전 필드가 양쪽 일치이거나 규칙 단독이며, 값 상충 강등은 0건이다", async () => {
       const xml = readFileSync(RAW_XML_PATH, "utf8");
 
-      // Act
       const run = await runExtraction(xml, DOCUMENT, { mode: "cross-check" });
       const rulesOnly = extractClaims(xml, DOCUMENT);
 
-      // Assert
       expect(run.crossCheck?.conflict).toBe(0);
       expect(run.crossCheck?.llmOnly).toBe(0);
       expect(run.claims).toHaveLength(rulesOnly.claims.length);
-      // 성별은 명세표 밖(취득가액 표)에서 읽으므로 규칙 단독, 나머지 5종은 양쪽 일치
       expect(run.crossCheck?.agreed).toBe(37 * 5);
       expect(run.crossCheck?.rulesOnly).toBe(37);
     });
@@ -231,7 +370,6 @@ describe.skipIf(!hasRawXml)(
         mode: "rules-only",
       });
 
-      // 출처 태그는 교차검증 모드에만 붙으므로 비교에서 제외한다
       const strip = (claims: typeof crossCheck.claims) =>
         claims.map((claim) => ({ ...claim, extractedBy: undefined }));
 

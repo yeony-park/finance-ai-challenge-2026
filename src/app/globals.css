@@ -1,12 +1,6 @@
 @import "tailwindcss";
 @import "../styles/tokens.css";
 
-/*
- * 전역 기본값 — 토큰 정의는 ../styles/tokens.css 한 곳에만 둔다.
- * 여기서는 (1) 토큰을 Tailwind 테마로 노출하고 (2) 문서 전체의 기본 타이포·포커스만 정한다.
- * 컴포넌트 스타일은 각자 CSS Module로 간다(기존 관례).
- */
-
 @theme inline {
   --color-bg: var(--ds-bg);
   --color-bg-muted: var(--ds-bg-muted);
@@ -25,7 +19,6 @@
 }
 
 html {
-  /* 헤더가 sticky라 앵커 이동 시 제목이 가려지지 않게 */
   scroll-padding-top: calc(var(--ds-header-h) + var(--ds-space-5));
 }
 
@@ -39,11 +32,9 @@ body {
   font-size: var(--ds-text-base);
   line-height: var(--ds-leading-normal);
   letter-spacing: var(--ds-tracking-snug);
-  /* 좁은 화면에서 긴 수치·URL이 지면을 밀어내지 않게 */
   overflow-wrap: break-word;
 }
 
-/* 마우스 클릭에는 링을 그리지 않고 키보드 이동에만 그린다 */
 :focus-visible {
   outline: none;
   box-shadow: var(--ds-focus-ring);
@@ -55,16 +46,9 @@ body {
   color: var(--ds-ink);
 }
 
-/* 숫자는 자리가 흔들리면 대조 화면의 신뢰를 깎는다 */
 :where(b, strong) {
   font-weight: var(--ds-weight-bold);
 }
-
-/*
- * 스크롤 리빌의 초기 상태 — src/components/motion/Reveal.tsx가 쓰는 유일한 전역 클래스.
- * 인라인 스타일 대신 클래스로 두는 이유는 서버·클라이언트 첫 렌더를 똑같이 만들기 위해서다.
- * 모션 축소를 요청한 사용자에게는 처음부터 보여 준다 — JS가 붙기 전에도 지면이 비지 않는다.
- */
 .ds-reveal-pending {
   opacity: 0;
 }

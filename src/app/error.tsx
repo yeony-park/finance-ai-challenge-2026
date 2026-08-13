@@ -1,9 +1,5 @@
 "use client";
 
-/**
- * 루트 오류 경계 — Next 16의 error 파일 규약(props는 `error`와 `retry`).
- * 실패 원인을 화면에서 추정하지 않는다. 서버 상세는 digest만 보여 준다.
- */
 import Link from "next/link";
 import { useEffect } from "react";
 
@@ -17,7 +13,6 @@ interface ErrorProps {
 
 export default function RootError({ error, retry }: ErrorProps) {
   useEffect(() => {
-    // 상세 맥락은 서버 로그에 남긴다 — 화면에는 추적용 digest만 노출한다
     console.error("[render error]", error);
   }, [error]);
 

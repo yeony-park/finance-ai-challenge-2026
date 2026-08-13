@@ -1,15 +1,6 @@
-/**
- * 항목별 대조 규칙 — claim 하나와 원장 레코드 하나를 견주어 3값 판정 재료를 만든다.
- * 여기에는 I/O도 상태도 없다(순수). 오케스트레이션은 `engine.ts`가 맡는다.
- *
- * 불변식
- * - 자료 부족은 mismatch가 아니라 unverifiable이다
- * - 표현은 단정하지 않는다 ("확인되지 않습니다"이지 "허위입니다"가 아니다)
- */
 import type { Claim, Verdict } from "../types";
 import type { LivestockTraceRecord } from "../adapters/livestock-trace";
 
-/** 신고서 취득시기 ~ ±N일 안에 양수 등록이 있으면 이행으로 본다 (일괄 등록 관행 반영) */
 export const ACQUISITION_WINDOW_DAYS = 30;
 
 export interface Assessment {
@@ -30,10 +21,6 @@ const ymdToDate = (ymd: string): Date | undefined => {
 const dayDiff = (from: Date, to: Date): number =>
   Math.round((to.getTime() - from.getTime()) / 86_400_000);
 
-/**
- * 보관장소 서술에서 대조 가능한 행정구역 토큰만 뽑는다 (시·군·구 / 읍·면·동).
- * 광역(…도)은 "강원도 ↔ 강원특별자치도"처럼 개편으로 표기가 달라져 대조 기준에서 제외한다.
- */
 export const locationTokens = (raw: string): readonly string[] => {
   const compact = raw.replace(/\s/g, "");
   const matched = compact.match(/[가-힣]+?[도시군구읍면동]/g) ?? [];
@@ -172,11 +159,6 @@ const NO_ADAPTER: Assessment = {
   rationale: "이 어댑터로 대조할 수 없는 항목입니다.",
 };
 
-/**
- * claim 종류별 대조 규칙 라우팅.
- * `default` 절이 없다 — 새 ClaimKind가 추가되면 아래 `never` 할당에서 **컴파일이 깨진다**.
- * (조용히 "확인 불가"로 흘려보내는 대신 규칙을 명시하도록 강제한다)
- */
 export const assess = (
   claim: Claim,
   record: LivestockTraceRecord,
@@ -193,7 +175,6 @@ export const assess = (
     case "acquisition_date":
       return assessAcquisitionDate(claim.value, record);
     case "acquisition_price":
-      // 경락가 어댑터 미연결 — 판정 대신 미판정으로 분리되지만 계약상 규칙을 명시한다
       return NO_ADAPTER;
   }
   const unreachable: never = claim.kind;

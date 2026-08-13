@@ -1,13 +1,12 @@
-/**
- * 리포트 스냅샷 경계 검증.
- * `data/reports/{offerId}/report-*.json`은 화면의 유일한 데이터 소스이므로,
- * 파싱 시점에 엔진 계약(types.ts)과 같은 모양인지 확인하고 아니면 즉시 실패한다.
- *
- * 판정 객체는 브랜드 심볼로 봉인되어 있어(createJudgement) JSON에서 복원할 수 없다.
- * 화면은 판정을 새로 만들지 않고 읽기만 하므로, 심볼을 뺀 읽기 전용 뷰 타입을 쓴다.
- */
 import { z } from "zod";
-import type { Claim, Evidence, UnjudgedClaim, Verdict, VerifyReport } from "../types";
+import type {
+  Claim,
+  Evidence,
+  PricePlacement,
+  UnjudgedClaim,
+  Verdict,
+  VerifyReport,
+} from "../types";
 
 const verdictSchema = z.enum(["match", "mismatch", "unverifiable"]);
 
@@ -37,7 +36,6 @@ const claimSchema = z.object({
     section: z.string(),
     table: z.string(),
     row: z.number(),
-    // S1 파서 일반화로 붙은 좌표 — 구 스냅샷에는 없으므로 선택 필드다
     sectionPath: z.array(z.string()).optional(),
     charOffset: z.number().optional(),
   }),
@@ -65,12 +63,37 @@ const evidenceSchema = z.object({
   note: z.string().optional(),
 });
 
-/** 근거 0건 판정은 엔진에서 만들 수 없다 — 읽는 쪽에서도 같은 불변식을 지킨다. */
 const judgementSchema = z.object({
   verdict: verdictSchema,
   claim: claimSchema,
   evidence: z.array(evidenceSchema).min(1, "근거 0건 판정은 존재할 수 없습니다"),
   rationale: z.string(),
+});
+
+const gradeBandSchema = z.object({
+  gradeCd: z.string(),
+  gradeName: z.string(),
+  pricePerKg: z.number(),
+  headCount: z.number(),
+});
+
+const pricePlacementSchema = z.object({
+  claim: claimSchema,
+  referenceMonth: z.string(),
+  breedName: z.string(),
+  sexName: z.string(),
+  claimedPerHead: z.number(),
+  averagePricePerKg: z.number(),
+  sampleSize: z.number(),
+  thinSample: z.boolean(),
+  grades: z.array(gradeBandSchema),
+  windowMonths: z.array(z.string()),
+  windowAveragePricePerKg: z.number().optional(),
+  monthVsWindowPercent: z.number().optional(),
+  offerAveragePerHead: z.number(),
+  vsOfferAveragePercent: z.number(),
+  evidence: z.array(evidenceSchema).min(1, "근거 0건 위치 제시는 존재할 수 없습니다"),
+  statement: z.string(),
 });
 
 const reportSchema = z.object({
@@ -94,10 +117,10 @@ const reportSchema = z.object({
   ),
   judgements: z.array(judgementSchema),
   unjudged: z.array(z.object({ claim: claimSchema, reason: z.string() })),
+  pricePlacements: z.array(pricePlacementSchema).default([]),
   notes: z.array(z.string()),
 });
 
-/** 심볼 봉인을 뺀 판정 — JSON에서 복원 가능한 읽기 전용 형태 */
 export interface JudgementRecord {
   readonly verdict: Verdict;
   readonly claim: Claim;
@@ -105,13 +128,17 @@ export interface JudgementRecord {
   readonly rationale: string;
 }
 
-/** 엔진의 VerifyReport와 같은 모양이되 판정만 읽기 전용 뷰 타입 */
-export interface ReportSnapshot extends Omit<VerifyReport, "judgements"> {
-  readonly judgements: readonly JudgementRecord[];
-  readonly unjudged: readonly UnjudgedClaim[];
+export interface PricePlacementRecord extends Omit<PricePlacement, "evidence"> {
+  readonly evidence: readonly Evidence[];
 }
 
-/** 검증된 스냅샷만 돌려준다. 형식이 어긋나면 사람이 읽을 수 있는 오류로 실패한다. */
+export interface ReportSnapshot
+  extends Omit<VerifyReport, "judgements" | "pricePlacements"> {
+  readonly judgements: readonly JudgementRecord[];
+  readonly unjudged: readonly UnjudgedClaim[];
+  readonly pricePlacements: readonly PricePlacementRecord[];
+}
+
 export const parseReportSnapshot = (raw: unknown): ReportSnapshot => {
   const parsed = reportSchema.safeParse(raw);
   if (!parsed.success) {
@@ -121,6 +148,5 @@ export const parseReportSnapshot = (raw: unknown): ReportSnapshot => {
       .join("; ");
     throw new Error(`리포트 스냅샷 형식이 올바르지 않습니다 — ${reason}`);
   }
-  // `as` 단언이 아니라 `satisfies` — zod 스키마와 엔진 계약(types.ts)이 어긋나면 컴파일이 깨진다
   return parsed.data satisfies ReportSnapshot;
 };

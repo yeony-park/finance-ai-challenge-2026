@@ -1,10 +1,3 @@
-/**
- * 라이브 재검증(`POST /api/verify/[id]`)의 순수 로직 계약.
- *
- * 라우트 파일은 배선만 하고 판단은 전부 `live/revalidate.ts`·`live/policy.ts`가 한다 —
- * 그래서 Next 런타임 없이 여기서 전 분기를 검증할 수 있다.
- * 가장 중요한 불변식은 **응답이 마스킹을 반드시 거친다**는 것이다.
- */
 import { readFileSync } from "node:fs";
 import { describe, expect, test } from "vitest";
 
@@ -40,7 +33,6 @@ const DOCUMENT: DocumentRef = {
   submittedOn: "2026-08-06",
 };
 
-/** 평문 개인정보를 일부러 담은 내부 리포트 — 응답에 이 값들이 남으면 실패다 */
 const SECRETS = {
   traceNo: "002212786152",
   farmer: "김검증",
@@ -100,6 +92,7 @@ const INTERNAL_REPORT: ReportSnapshot = {
       reason: `학산 25호의 이력번호를 공적 원장에서 조회하지 못했습니다: 축산물이력제 조회 실패 (HTTP 503) traceNo=${SECRETS.traceNo}`,
     },
   ],
+  pricePlacements: [],
   notes: ["추출 모드: rules-only"],
 };
 
@@ -135,7 +128,6 @@ const asError = (body: LiveVerifyBody | LiveVerifyError): LiveVerifyError =>
 
 describe("라이브 재검증 — 허용목록·에러 계약", () => {
   test("공개 목록에 없는 공모는 404이고 원문을 받아 보지도 않는다", async () => {
-    // Arrange
     let fetched = 0;
     const deps = baseDeps({
       dartApiKey: "dart",
@@ -146,13 +138,11 @@ describe("라이브 재검증 — 허용목록·에러 계약", () => {
       },
     });
 
-    // Act
     const result = await revalidateOffer(
       { offerId: "not-published", clientKey: "1.1.1.1" },
       deps,
     );
 
-    // Assert
     expect(result.status).toBe(404);
     expect(asError(result.body).error).toBe("not_found");
     expect(asError(result.body).message).toContain("공모");
@@ -197,7 +187,6 @@ describe("라이브 재검증 — 허용목록·에러 계약", () => {
     expect(body.mode).toBe("snapshot");
     expect(body.note).toContain("DART_API_KEY");
     expect(body.note).toContain("DATA_GO_KR_API_KEY");
-    // 저장 시각을 그대로 쓴다 — 지금 대조한 것처럼 시각을 갈아 끼우지 않는다
     expect(body.verifiedAt).toBe(INTERNAL_REPORT.generatedAt);
   });
 
@@ -240,16 +229,13 @@ describe("라이브 재검증 — 허용목록·에러 계약", () => {
 
 describe("라이브 재검증 — 마스킹 강제", () => {
   test("평문 이력번호(002+9자리)가 응답에 실리지 않는다", async () => {
-    // Act
     const result = await revalidateOffer(
       { offerId: OFFER_ID, clientKey: "1.1.1.1" },
       baseDeps(),
     );
     const serialized = JSON.stringify(result.body);
 
-    // Assert
     expect(serialized).not.toMatch(/002\d{9}/);
-    // 공시 접수번호(공개 식별자)를 뺀 9자리 이상 숫자열이 남으면 식별자 유출이다
     const longDigits = new Set(serialized.match(/\d{9,}/g) ?? []);
     expect([...longDigits].filter((digits) => digits !== RCP_NO)).toEqual([]);
   });
@@ -323,24 +309,20 @@ describe("레이트리밋 정책", () => {
           TRACE_CALLS_PER_REVALIDATION,
       ),
     );
-    // 배정 쿼터를 넘겨 쓰지 않는다
     expect(LIVE_VERIFY_DAILY_MAX * TRACE_CALLS_PER_REVALIDATION).toBeLessThanOrEqual(
       TRACE_DAILY_CALL_QUOTA * TRACE_QUOTA_BUDGET_RATIO,
     );
   });
 
   test("같은 IP는 윈도당 상한만큼만 통과하고 이후 Retry-After가 붙는다", () => {
-    // Arrange
     const gate = createLiveVerifyGate();
     const start = 1_000_000;
 
-    // Act
     const allowed = Array.from({ length: LIVE_VERIFY_BURST_MAX }, (_, index) =>
       gate("1.1.1.1", start + index),
     );
     const denied = gate("1.1.1.1", start + LIVE_VERIFY_BURST_MAX);
 
-    // Assert
     expect(allowed.every((decision) => decision.allowed)).toBe(true);
     expect(denied.allowed).toBe(false);
     expect(denied.scope).toBe("client");
@@ -406,16 +388,13 @@ describe("부분 실패 — 개체 1건 조회 실패는 전체를 멈추지 않
   };
 
   test("실패한 개체만 대조 불가로 강등되고 나머지 판정은 살아남는다", async () => {
-    // Arrange
     const claims = [
       claimOf("livestock_trace_no", "검증 1호", "212786152"),
       claimOf("livestock_trace_no", "검증 2호", "212786153"),
     ];
 
-    // Act
     const outcome = await judgeClaims(claims, { trace: flakyAdapter });
 
-    // Assert
     expect(outcome.judgements).toHaveLength(1);
     expect(outcome.judgements[0].claim.subject).toBe("검증 1호");
     expect(outcome.unjudged).toHaveLength(1);
@@ -432,7 +411,6 @@ describe.skipIf(!hasLocalData)(
     hasLocalData ? "" : skipReason(`${RAW_XML_PATH} / ${SNAPSHOT_PATH}`)
   }`,
   () => {
-    /** 실호출 어댑터 자리에 실측 스냅샷 재생기를 끼운다 — 네트워크 없이 라이브 경로를 통과시킨다 */
     const liveLikeDeps = async (): Promise<LiveVerifyDeps> => {
       const replay = await createFakeTraceAdapter();
       return baseDeps({
@@ -465,7 +443,6 @@ describe.skipIf(!hasLocalData)(
       const serialized = JSON.stringify(result.body);
 
       expect(serialized).not.toMatch(/002\d{9}/);
-      // 접수번호(공개 식별자)를 뺀 9자리 이상 숫자열이 남으면 식별자 유출이다
       const longDigits = new Set(serialized.match(/\d{9,}/g) ?? []);
       expect([...longDigits].filter((digits) => digits !== RCP_NO)).toEqual([]);
     });

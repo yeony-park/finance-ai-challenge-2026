@@ -2,10 +2,6 @@ import { describe, expect, test } from "vitest";
 import { crossCheckClaims } from "../claims/cross-check";
 import type { Claim, ClaimKind, DocumentRef } from "../types";
 
-/**
- * 교차검증 채택 규칙의 **계약 테스트**.
- * 주석이 아니라 이 스위트가 규칙의 정본이다 — 규칙을 바꾸려면 여기부터 바꿔야 한다.
- */
 const DOCUMENT: DocumentRef = {
   offerId: "livestock-9",
   rcpNo: "20260806000159",
@@ -31,14 +27,11 @@ const claimOf = (
 
 describe("교차검증 — 양쪽이 같은 값", () => {
   test("채택하고 출처를 both로 태깅한다", () => {
-    // Arrange
     const rules = [claimOf("livestock_trace_no", "1호", "212786152")];
     const llm = [claimOf("livestock_trace_no", "1호", "212786152")];
 
-    // Act
     const result = crossCheckClaims(rules, llm);
 
-    // Assert
     expect(result.claims).toHaveLength(1);
     expect(result.claims[0].verifiability).toBe("verifiable");
     expect(result.claims[0].extractedBy).toBe("both");
@@ -58,7 +51,6 @@ describe("교차검증 — 양쪽이 같은 값", () => {
 
 describe("교차검증 — 양쪽이 다른 값", () => {
   test("파이프라인을 멈추지 않고 그 필드만 확인 불가로 강등한다", () => {
-    // Arrange
     const rules = [
       claimOf("livestock_trace_no", "1호", "212786152"),
       claimOf("acquisition_price", "1호", "4574865"),
@@ -68,12 +60,10 @@ describe("교차검증 — 양쪽이 다른 값", () => {
       claimOf("acquisition_price", "1호", "4574000"),
     ];
 
-    // Act
     const result = crossCheckClaims(rules, llm);
     const price = result.claims.find((c) => c.kind === "acquisition_price");
     const trace = result.claims.find((c) => c.kind === "livestock_trace_no");
 
-    // Assert — 강등은 해당 필드에만 적용된다
     expect(price?.verifiability).toBe("cross_check_conflict");
     expect(trace?.verifiability).toBe("verifiable");
     expect(result.claims).toHaveLength(2);
@@ -113,7 +103,6 @@ describe("교차검증 — 한쪽만 있을 때의 보수 채택", () => {
   });
 
   test("규칙이 스키마 게이트에 걸린 필드는 LLM 값으로 복구하지 않는다", () => {
-    // Arrange — 원문이 "12345"라 9자리 게이트에 걸린 상태
     const rules = [
       claimOf("livestock_trace_no", "1호", "12345", {
         verifiability: "unparsed",
@@ -122,10 +111,8 @@ describe("교차검증 — 한쪽만 있을 때의 보수 채택", () => {
     ];
     const llm = [claimOf("livestock_trace_no", "1호", "212786152")];
 
-    // Act
     const result = crossCheckClaims(rules, llm);
 
-    // Assert — 값도 상태도 규칙 쪽 그대로다
     expect(result.claims[0].value).toBe("12345");
     expect(result.claims[0].verifiability).toBe("unparsed");
     expect(result.entries[0].decision).toBe("rules_only");

@@ -67,7 +67,6 @@ const traceAdapter: LivestockTraceAdapter = {
   },
 };
 
-/** 취득원가만 다른 값을 말하는 모델 — 교차검증이 어디까지 번지는지 보는 스텁 */
 const conflictingExtractor: ClaimExtractionClient = {
   name: "stub-conflict",
   async extract() {
@@ -93,7 +92,6 @@ describe("추출 모드 스위치", () => {
   });
 
   test("rules-only 모드는 LLM을 아예 호출하지 않는다", async () => {
-    // Arrange — 호출되면 실패하는 스텁
     let called = false;
     const spy: ClaimExtractionClient = {
       name: "spy",
@@ -103,13 +101,11 @@ describe("추출 모드 스위치", () => {
       },
     };
 
-    // Act
     const run = await runExtraction(XML, DOCUMENT, {
       mode: "rules-only",
       extractor: spy,
     });
 
-    // Assert
     expect(called).toBe(false);
     expect(run.crossCheck).toBeUndefined();
     expect(run.notes.join(" ")).toContain("rules-only");
@@ -129,7 +125,6 @@ describe("추출 모드 스위치", () => {
 
 describe("파이프라인 — 교차검증 불일치의 파급 범위", () => {
   test("불일치 필드는 판정이 아니라 미판정으로 남는다", async () => {
-    // Act
     const report = await runVerification({
       rcpNo: RCP_NO,
       xml: XML,
@@ -138,7 +133,6 @@ describe("파이프라인 — 교차검증 불일치의 파급 범위", () => {
       generatedAt: "2026-08-13T00:00:00.000Z",
     });
 
-    // Assert — 취득원가는 애초에 대조 어댑터가 없어 미판정이지만, 사유가 교차검증 강등으로 바뀐다
     const price = report.unjudged.find(
       (item) => item.claim.kind === "acquisition_price",
     );

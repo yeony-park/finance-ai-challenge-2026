@@ -1,19 +1,12 @@
-/**
- * 마스킹 계약 테스트.
- * 픽스처는 전부 합성값이다 — 실제 농장주 성명·상세주소는 테스트에도 넣지 않는다.
- */
 import { describe, expect, test } from "vitest";
 import { maskFreeText, maskRegion, maskTraceNo } from "../report/mask";
 
 describe("maskTraceNo — 이력번호 마스킹 (목업 v4 수준 유지)", () => {
   test("앞 2자리와 뒤 2자리만 남기고 가운데를 가린다", () => {
-    // Arrange
     const traceNo = "217935879";
 
-    // Act
     const masked = maskTraceNo(traceNo);
 
-    // Assert
     expect(masked).toBe("21●●●●●79");
   });
 
@@ -32,14 +25,11 @@ describe("maskRegion — 지역 마스킹 (시도만 남기고 시군구는 ○�
   });
 
   test("원장 관측 주소의 상세 번지·농장번호는 남기지 않는다", () => {
-    // Arrange — 합성 주소
     const observed =
       "경상북도 검증시 남구 가상읍 가상로1234번길 (전산등록 20260105, 농장번호 387221)";
 
-    // Act
     const masked = maskRegion(observed);
 
-    // Assert
     expect(masked).toBe("경북 ○○시");
     expect(masked).not.toContain("검증시");
     expect(masked).not.toContain("387221");
@@ -56,10 +46,6 @@ describe("maskRegion — 지역 마스킹 (시도만 남기고 시군구는 ○�
   });
 });
 
-/**
- * 저장되는 공개 리포트는 이미 마스킹된 문자열을 담는다.
- * 뷰 모델이 방어적으로 한 번 더 마스킹해도 값이 변하면 안 된다(멱등).
- */
 describe("마스킹 멱등성 — 이미 마스킹된 값에 재적용해도 불변", () => {
   test("maskTraceNo는 마스킹 결과에 재적용해도 같다", () => {
     for (const raw of ["217935879", "002-217935879", "1234", "410002212786152"]) {

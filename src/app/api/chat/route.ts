@@ -8,7 +8,6 @@ const bodySchema = z.object({
   message: z.string().min(1).max(4_000),
 });
 
-// 모듈 스코프 리미터 — Fluid Compute 인스턴스 재사용 범위에서 유효
 const rateLimiter = createMemoryRateLimiter();
 
 export async function POST(request: NextRequest): Promise<NextResponse> {

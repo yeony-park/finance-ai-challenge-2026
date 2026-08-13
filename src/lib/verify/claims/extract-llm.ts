@@ -1,14 +1,3 @@
-/**
- * LLM 기반 claim 추출 — 규칙 추출의 **교차검증 상대**.
- *
- * 설계 제약
- * - 입력은 규칙 파서가 특정한 것과 **같은 표**다. 교차검증의 대상은 "표 선택"이 아니라 "값 해석"이다
- * - 모든 추출값은 문서 좌표(행 번호)를 달고 와야 한다 — 좌표 없는 값은 근거가 될 수 없다
- * - 표에 없는 행 번호를 가리키는 값은 **버린다**(환각 차단) 그리고 그 사실을 note에 남긴다
- * - 정규화는 규칙 파서와 **동일한 zod 게이트**를 쓴다 — 두 경로의 차이가 서식 차이로 위장되지 않게
- * - 추출 실패(네트워크·계약 위반)는 파이프라인을 멈추지 않는다. 그 경우 LLM 근거는 0건이 되고
- *   교차검증은 "규칙 단독 채택" 경로로 흐른다 (사유는 리포트 note에 남는다)
- */
 import type { Claim, ClaimKind, DocumentRef } from "../types";
 import {
   acquisitionDateSchema,
@@ -31,8 +20,9 @@ import type { ClaimExtractionClient } from "./llm-client";
 import type { LlmClaimDraft } from "./llm-schema";
 import { z } from "zod";
 
-/** 한 번의 호출에 싣는 최대 행 수 — 컨텍스트·비용 방어 */
-export const MAX_ROWS_PER_REQUEST = 40;
+export const MAX_ROWS_PER_REQUEST = 10;
+
+export const CHUNK_RETRY_LIMIT = 1;
 
 interface FieldRule {
   readonly field: string;
@@ -40,10 +30,6 @@ interface FieldRule {
   readonly unit?: string;
 }
 
-/**
- * claim 종류별 게이트 — 규칙 파서와 같은 스키마를 쓴다.
- * `default` 절이 없다: 새 ClaimKind가 생기면 여기서 컴파일이 깨진다.
- */
 const fieldRuleOf = (kind: ClaimKind): FieldRule => {
   switch (kind) {
     case "livestock_trace_no":
@@ -67,7 +53,6 @@ export interface LlmExtractionResult {
   readonly claims: readonly Claim[];
   readonly notes: readonly string[];
   readonly clientName: string;
-  /** 호출이 한 번이라도 실패했는가 — 교차검증이 채택 규칙을 보수적으로 잡는 데 쓴다 */
   readonly failed: boolean;
 }
 
@@ -118,7 +103,42 @@ const toClaim = (
 const errorMessage = (error: unknown): string =>
   error instanceof Error ? error.message : String(error);
 
-/** 개체 명세표 → LLM 추출 claim 목록 (규칙 추출과 같은 정규화·같은 좌표계) */
+interface ChunkOutcome {
+  readonly drafts: readonly LlmClaimDraft[];
+  readonly coveredRows: number;
+  readonly error?: string;
+}
+
+const coveredRowCount = (
+  drafts: readonly LlmClaimDraft[],
+  rows: ReadonlySet<number>,
+): number =>
+  new Set(drafts.filter((draft) => rows.has(draft.row)).map((d) => d.row)).size;
+
+const extractChunk = async (
+  client: ClaimExtractionClient,
+  prompt: ReturnType<typeof buildExtractionPrompt>,
+  batch: readonly HeadRow[],
+): Promise<ChunkOutcome> => {
+  const rows = new Set(batch.map((head) => head.row));
+  let best: ChunkOutcome | undefined;
+  let lastError: string | undefined;
+
+  for (let attempt = 0; attempt <= CHUNK_RETRY_LIMIT; attempt += 1) {
+    try {
+      const payload = await client.extract(prompt);
+      const coveredRows = coveredRowCount(payload.claims, rows);
+      const outcome: ChunkOutcome = { drafts: payload.claims, coveredRows };
+      if (coveredRows >= rows.size) return outcome;
+      if (!best || coveredRows > best.coveredRows) best = outcome;
+    } catch (error: unknown) {
+      lastError = errorMessage(error);
+    }
+  }
+
+  return best ?? { drafts: [], coveredRows: 0, error: lastError ?? "알 수 없는 오류" };
+};
+
 export const extractClaimsWithLlm = async (
   selection: HeadTableSelection,
   document: DocumentRef,
@@ -132,18 +152,28 @@ export const extractClaimsWithLlm = async (
   const notes: string[] = [];
   const drafts: LlmClaimDraft[] = [];
   let failed = false;
+  let uncoveredRows = 0;
 
   for (const batch of chunk(heads, MAX_ROWS_PER_REQUEST)) {
     const prompt = buildExtractionPrompt(document, selection, batch);
-    try {
-      const payload = await client.extract(prompt);
-      drafts.push(...payload.claims);
-    } catch (error: unknown) {
+    const outcome = await extractChunk(client, prompt, batch);
+
+    if (outcome.error !== undefined) {
       failed = true;
       notes.push(
-        `LLM 추출 호출이 실패해 이 구간(${batch.length}행)은 규칙 추출만으로 진행합니다: ${errorMessage(error)}`,
+        `LLM 추출 호출이 실패해 이 구간(${batch.length}행)은 규칙 추출만으로 진행합니다: ${outcome.error}`,
       );
+      continue;
     }
+
+    drafts.push(...outcome.drafts);
+    uncoveredRows += batch.length - outcome.coveredRows;
+  }
+
+  if (uncoveredRows > 0) {
+    notes.push(
+      `LLM 응답이 개체 행 ${uncoveredRows}건을 다루지 않아(재시도 1회 후에도) 그 행은 규칙 단독으로 진행합니다.`,
+    );
   }
 
   const claims: Claim[] = [];
@@ -154,14 +184,13 @@ export const extractClaimsWithLlm = async (
   for (const draft of drafts) {
     const head = knownRows.get(draft.row);
     if (!head) {
-      // 프롬프트에 없던 행을 가리키는 값 — 좌표가 없는 주장이므로 채택하지 않는다
       outOfRange += 1;
       continue;
     }
     if (head.subject !== draft.subject) subjectMismatch += 1;
 
     const key = `${draft.kind}:${draft.subject}`;
-    if (seen.has(key)) continue; // 같은 claim을 두 번 말하면 첫 값만 쓴다
+    if (seen.has(key)) continue;
     seen.add(key);
 
     const rule = fieldRuleOf(draft.kind);

@@ -1,9 +1,3 @@
-/**
- * 골드셋 파일 입출력.
- *
- * ⚠️ 골드셋에는 이력번호·사육지가 그대로 담긴다 — `data/raw`·`data/reports`와 같은
- * **로컬 전용** 구획이며 git에 올리지 않는다(.gitignore). 커밋 대상은 라벨 가이드뿐이다.
- */
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { assertRcpNo, offerDataDir } from "../paths";
@@ -29,7 +23,6 @@ export const writeGoldSet = async (
   return file;
 };
 
-/** 파일도 "외부에서 들어오는 JSON"이다 — 모양이 어긋나면 즉시 실패한다 */
 export const readGoldSet = async (
   offerId: string,
   rcpNo: string,

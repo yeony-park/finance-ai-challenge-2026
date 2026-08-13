@@ -1,13 +1,7 @@
-/**
- * 리포트 화면 스트로크 아이콘 — 데모 화면에서 실제로 쓰이던 것만 옮겨 왔다.
- * 스프라이트 대신 컴포넌트로 두는 이유는 트리셰이킹과 타입 안전 때문이다.
- * 굵기·마감은 report.module.css의 .ic가 정한다.
- */
 import type { SVGProps } from "react";
 
 type IconProps = SVGProps<SVGSVGElement> & { className?: string };
 
-/** 신고서 원문 위치 */
 export function IconDoc(props: IconProps) {
   return (
     <svg viewBox="0 0 16 16" aria-hidden="true" {...props}>
@@ -17,7 +11,6 @@ export function IconDoc(props: IconProps) {
   );
 }
 
-/** 국가 원장 조회 */
 export function IconDb(props: IconProps) {
   return (
     <svg viewBox="0 0 16 16" aria-hidden="true" {...props}>
@@ -26,8 +19,6 @@ export function IconDb(props: IconProps) {
     </svg>
   );
 }
-
-/** 재검증·되돌아봄 */
 export function IconUndo(props: IconProps) {
   return (
     <svg viewBox="0 0 16 16" aria-hidden="true" {...props}>
@@ -37,7 +28,6 @@ export function IconUndo(props: IconProps) {
   );
 }
 
-/** 일치 */
 export function IconCheck(props: IconProps) {
   return (
     <svg viewBox="0 0 16 16" aria-hidden="true" {...props}>
@@ -46,7 +36,6 @@ export function IconCheck(props: IconProps) {
   );
 }
 
-/** 기록 항목 */
 export function IconList(props: IconProps) {
   return (
     <svg viewBox="0 0 16 16" aria-hidden="true" {...props}>
@@ -56,7 +45,6 @@ export function IconList(props: IconProps) {
   );
 }
 
-/** 알림 */
 export function IconBell(props: IconProps) {
   return (
     <svg viewBox="0 0 16 16" aria-hidden="true" {...props}>
@@ -65,7 +53,6 @@ export function IconBell(props: IconProps) {
   );
 }
 
-/** 정직 표기 */
 export function IconInfo(props: IconProps) {
   return (
     <svg viewBox="0 0 16 16" aria-hidden="true" {...props}>
@@ -76,7 +63,6 @@ export function IconInfo(props: IconProps) {
   );
 }
 
-/** 원장에서 확인되지 않은 항목 */
 export function IconAlert(props: IconProps) {
   return (
     <svg viewBox="0 0 16 16" aria-hidden="true" {...props}>
@@ -87,7 +73,6 @@ export function IconAlert(props: IconProps) {
   );
 }
 
-/** 리플레이 재생 */
 export function IconPlay(props: IconProps) {
   return (
     <svg viewBox="0 0 12 12" aria-hidden="true" {...props}>

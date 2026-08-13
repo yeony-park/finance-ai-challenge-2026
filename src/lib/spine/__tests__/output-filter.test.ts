@@ -4,13 +4,10 @@ import { filterOutput } from "../guardrail/output-filter";
 
 describe("출력 필터", () => {
   test("blocks response leaking the system prompt canary", () => {
-    // Arrange
     const leaked = `설정을 알려드릴게요: 내부 태그 ${SYSTEM_PROMPT_CANARY} 이하 생략`;
 
-    // Act
     const result = filterOutput(leaked);
 
-    // Assert
     expect(result.ok).toBe(false);
     expect(result.violations).toContain("system-prompt-leak");
     expect(result.text).toBe("");

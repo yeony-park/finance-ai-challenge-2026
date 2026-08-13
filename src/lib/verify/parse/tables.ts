@@ -1,14 +1,8 @@
-/**
- * DART 원문(dart4.xsd) XML에서 표(TABLE)를 구조 그대로 읽어낸다.
- * 규칙 추출의 토대 — ROWSPAN/COLSPAN을 펼쳐 "행 × 열" 격자로 정규화한다.
- */
 import { XMLParser } from "fast-xml-parser";
 
 export interface ParsedTable {
-  /** 문서 내 등장 순서 — 문서 좌표의 일부 */
   readonly index: number;
   readonly header: readonly string[];
-  /** 헤더를 제외한 데이터 행. 열 수는 헤더와 동일하게 맞춰진다. */
   readonly rows: readonly (readonly string[])[];
 }
 
@@ -27,7 +21,6 @@ const parser = new XMLParser({
   isArray: (name) => ARRAY_TAGS.has(name),
 });
 
-/** 노드 하위의 텍스트를 모두 이어붙인다 (속성 제외). */
 export const nodeText = (node: unknown): string => {
   if (node == null) return "";
   if (typeof node === "string") return node;
@@ -89,10 +82,6 @@ interface PendingCell {
   readonly remaining: number;
 }
 
-/**
- * ROWSPAN/COLSPAN을 펼쳐 균일한 격자로 만든다.
- * 뱅카우 신고서의 개체 명세표는 보관장소·사진 열이 ROWSPAN=38이라 이 처리가 필수다.
- */
 const expandGrid = (rows: unknown[]): string[][] => {
   const pending = new Map<number, PendingCell>();
   const grid: string[][] = [];
@@ -144,7 +133,6 @@ const expandGrid = (rows: unknown[]): string[][] => {
   return grid;
 };
 
-/** 원문 XML 전체에서 표를 순서대로 읽어낸다. */
 export const readTables = (xml: string): readonly ParsedTable[] => {
   const document = parser.parse(xml);
   return collectTableNodes(document).map((table, index) => {
@@ -156,11 +144,6 @@ export const readTables = (xml: string): readonly ParsedTable[] => {
 
 const TABLE_TAG_PATTERN = /<(\/?)TABLE\b[^>]*>/g;
 
-/**
- * 원문에서 **최상위 표**의 문자 범위를 문서 순서대로 훑는다 (`[시작, 끝)`).
- * 중첩 표(TD 안의 TABLE)는 바깥 표 범위에 포함된다 — 목차 파서가 "표 안의 문단"을
- * 항목 제목으로 오인하지 않게 하는 것과, 표마다 원문 오프셋을 붙이는 것이 목적이다.
- */
 export const findTableRanges = (
   xml: string,
 ): readonly (readonly [number, number])[] => {
@@ -185,7 +168,6 @@ export const findTableRanges = (
   return ranges;
 };
 
-/** 헤더에 지정한 열 이름이 모두 있는 표를 고른다. */
 export const findTablesByHeader = (
   tables: readonly ParsedTable[],
   required: readonly string[],
@@ -196,17 +178,12 @@ export const findTablesByHeader = (
     ),
   );
 
-/** 헤더 이름으로 열 인덱스를 찾는다 (공백 무시·부분 일치). */
 export const columnIndex = (
   table: ParsedTable,
   needle: string,
 ): number =>
   table.header.findIndex((cell) => cell.replace(/\s/g, "").includes(needle));
 
-/**
- * 별칭 목록으로 열 인덱스를 찾는다 — 앞선 별칭이 우선한다.
- * 발행사마다 같은 뜻의 열 이름이 달라("취득원가" ↔ "취득가액") 매핑을 데이터로 분리하기 위한 진입점.
- */
 export const columnIndexByAliases = (
   table: ParsedTable,
   aliases: readonly string[],

@@ -44,6 +44,14 @@ npm install
 npm run dev       # API 키 없이 fake 모드로 동작
 npm test          # 스파인 유닛/파이프라인 테스트
 npm run redteam   # 자체 레드팀 실행 → docs/redteam/report.md
+npm run verify    # 검증 파이프라인 완주 (fake 모드 — 키 없이 동작)
+```
+
+경락가 월 집계는 **사전 수집 후 커밋**한다 — 축평원 등급판정정보 개발계정이 일 1,000건이라
+판정·화면·재검증은 캐시(`data/reference/auction-price/`)만 읽는다.
+
+```bash
+npm run reference:collect   # 실키 전용 · 호출 수 = 월 수 × 성별 수 (기본 4×3 = 12건)
 ```
 
 실모델 연결은 `.env.example` 참조 (`AI_GATEWAY_API_KEY` 권장).

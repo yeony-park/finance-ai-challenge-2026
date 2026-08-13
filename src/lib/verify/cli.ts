@@ -1,14 +1,7 @@
-/**
- * 검증 CLI: `npm run verify -- --rcpNo 20260806000159`
- * 키가 없으면 자동으로 fake 모드(실측 스냅샷 재생 + fake 추출기)로 완주한다 —
- * 팀원·CI가 키 없이 돌릴 수 있어야 한다.
- * 실키로 대조하려면 `npm run verify:live -- --rcpNo …` (.env의 DATA_GO_KR_API_KEY·AI_GATEWAY_API_KEY 사용).
- *
- * 추출 모드: `--extract cross-check`(기본) | `--extract rules-only`(S0 경로).
- */
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { resolveLivestockTraceAdapter } from "./adapters/livestock-trace-fake";
+import { resolveAuctionPriceAdapter } from "./adapters/auction-price-fake";
 import {
   createFakeClaimExtractionClient,
   resolveClaimExtractionClient,
@@ -51,7 +44,6 @@ const parseArgs = (argv: readonly string[]): CliOptions => {
     return index >= 0 ? argv[index + 1] : undefined;
   };
   return {
-    // CLI 인자는 곧 파일 경로가 된다 — 파싱 즉시 형식을 검증한다
     rcpNo: assertRcpNo(valueOf("--rcpNo") ?? DEFAULT_RCP_NO),
     forceFake: argv.includes("--fake"),
     dataDir: valueOf("--dataDir") ?? "data",
@@ -89,13 +81,19 @@ const printSummary = (
 
   console.log(`\n■ ${report.offerId} (접수번호 ${report.document.rcpNo}, 제출 ${report.document.submittedOn})`);
   console.log(`  대조 모드: ${report.mode} · 출처: ${report.sources.join(", ") || "-"}`);
-  // 판정 명칭은 화면과 같은 어휘를 쓴다 — 일치 / 원장 미확인 / 대조 불가
   console.log(
     `  개체 ${heads.length}두 — 일치 ${count("match")} · 불일치 ${count("mismatch")} · 원장 미확인 ${count("unverifiable")}`,
   );
   console.log(
     `  항목 판정 ${report.summary.total}건 — 일치 ${report.summary.match} · 불일치 ${report.summary.mismatch} · 원장 미확인 ${report.summary.unverifiable} · 대조 불가 ${report.unjudged.length}`,
   );
+  const placements = report.pricePlacements;
+  console.log(
+    `  ② 가격 위치 제시 ${placements.length}건 (판정 아님) · 위치 미제시 ${report.unjudged.filter((item) => item.claim.kind === "acquisition_price").length}건`,
+  );
+  if (placements[0]) {
+    console.log(`      예시: ${placements[0].statement}`);
+  }
 
   for (const judgement of report.judgements) {
     if (judgement.verdict === "match") continue;
@@ -117,7 +115,10 @@ const main = async (): Promise<void> => {
   const trace = await resolveLivestockTraceAdapter({
     forceFake: options.forceFake,
   });
-  // 이력제 어댑터와 같은 원칙 — `--fake`면 강제 fake, 아니면 키 유무로 자동 판정(키 없으면 fake)
+  const auction = await resolveAuctionPriceAdapter({
+    forceFake: options.forceFake,
+    dataDir: options.dataDir,
+  });
   const extractor = options.forceFake
     ? createFakeClaimExtractionClient()
     : await resolveClaimExtractionClient();
@@ -126,10 +127,10 @@ const main = async (): Promise<void> => {
     rcpNo: options.rcpNo,
     xml,
     trace,
+    auction,
     extractionMode: options.extractionMode,
     extractor,
   });
-  // 내부 리포트(개인정보 포함·로컬 전용) → data/reports, 공개 리포트(마스킹) → data/public
   const internal = await writeReport(report, options.dataDir);
   const published = await writePublicReport(report, options.dataDir);
   printSummary(report, { internal, published });

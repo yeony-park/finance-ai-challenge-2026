@@ -1,19 +1,11 @@
-/**
- * 골드셋 CLI (S1 착수분).
- *
- *   npm run goldset:prelabel -- --rcpNo 20260806000159   # 규칙 추출 → 검수 대기 선라벨 생성
- *   npm run goldset:score    -- --rcpNo 20260806000159   # 검수 완료 라벨 대비 점수 (골격)
- *
- * 선라벨은 **정답이 아니다**. 검수(`review: confirmed|corrected|not_in_doc`)를 거친 라벨만
- * 점수 분모에 들어간다 — 자기 산출물을 정답 삼는 자기채점을 막기 위한 규칙이다.
- */
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { runExtraction, type ExtractionMode } from "../claims/extract";
+import { resolveClaimExtractionClient } from "../claims/llm-client";
 import { listRawDocuments, rawDocumentDir } from "../dart/fetch-document";
 import { assertRcpNo } from "../paths";
 import { documentRefOf } from "../pipeline";
-import { scoreExtraction } from "./score";
+import { scoreAgainstPrelabels, scoreExtraction, type ScoreResult } from "./score";
 import { readGoldSet, writeGoldSet } from "./store";
 import type { GoldLabel, GoldSet } from "./types";
 
@@ -23,6 +15,7 @@ interface Options {
   readonly rcpNo: string;
   readonly dataDir: string;
   readonly mode: ExtractionMode;
+  readonly live: boolean;
 }
 
 const parseArgs = (argv: readonly string[]): Options => {
@@ -34,8 +27,14 @@ const parseArgs = (argv: readonly string[]): Options => {
     rcpNo: assertRcpNo(valueOf("--rcpNo") ?? DEFAULT_RCP_NO),
     dataDir: valueOf("--dataDir") ?? "data",
     mode: valueOf("--extract") === "cross-check" ? "cross-check" : "rules-only",
+    live: argv.includes("--live"),
   };
 };
+
+const extractorFor = async (options: Options) =>
+  options.live && options.mode === "cross-check"
+    ? { extractor: await resolveClaimExtractionClient() }
+    : {};
 
 const loadRawXml = async (rcpNo: string, dataDir: string): Promise<string> => {
   const files = await listRawDocuments(rcpNo, dataDir);
@@ -51,7 +50,6 @@ const loadRawXml = async (rcpNo: string, dataDir: string): Promise<string> => {
 const prelabel = async (options: Options): Promise<void> => {
   const document = documentRefOf(options.rcpNo);
   const xml = await loadRawXml(options.rcpNo, options.dataDir);
-  // 선라벨은 결정적인 규칙 추출에서만 뽑는다 — LLM 산출을 정답 후보로 깔지 않는다
   const run = await runExtraction(xml, document, { mode: "rules-only" });
 
   const labels: GoldLabel[] = run.claims.map((claim) => ({
@@ -83,23 +81,47 @@ const prelabel = async (options: Options): Promise<void> => {
   console.log("다음 단계: data/goldset/README.md의 검수 절차에 따라 review 값을 채우세요.");
 };
 
+const printReference = (
+  predicted: Parameters<typeof scoreAgainstPrelabels>[1],
+  goldset: GoldSet,
+): void => {
+  const reference: ScoreResult = scoreAgainstPrelabels(goldset, predicted);
+  const { breakdown } = reference;
+  console.log(
+    `  [참고치] 선라벨(미검수) 대비 EM ${breakdown.exactMatch.toFixed(3)} · P ${breakdown.precision.toFixed(3)} · R ${breakdown.recall.toFixed(3)} (TP ${breakdown.truePositive}/FP ${breakdown.falsePositive}/FN ${breakdown.falseNegative})`,
+  );
+  console.log(
+    "  ⚠ 기준이 규칙 추출의 산출물이므로 정답 대비 정확도가 아닙니다 — 정식 점수를 대체하지 않습니다.",
+  );
+};
+
 const score = async (options: Options): Promise<void> => {
   const document = documentRefOf(options.rcpNo);
   const [xml, goldset] = await Promise.all([
     loadRawXml(options.rcpNo, options.dataDir),
     readGoldSet(document.offerId, document.rcpNo, options.dataDir),
   ]);
-  const run = await runExtraction(xml, document, { mode: options.mode });
+  const run = await runExtraction(xml, document, {
+    mode: options.mode,
+    ...(await extractorFor(options)),
+  });
   const result = scoreExtraction(goldset, run.claims);
   const { breakdown } = result;
   const scorable = goldset.labels.length - breakdown.skippedPending;
 
   console.log(`\n■ ${document.offerId} 골드셋 점수 (추출 모드 ${run.mode})`);
-  // 분모가 0인 점수는 숫자가 아니라 오해다 — 계산 대신 다음 할 일을 알린다
+  if (run.crossCheck) {
+    const bothSides = run.crossCheck.agreed + run.crossCheck.conflict;
+    const rate = bothSides === 0 ? 0 : run.crossCheck.agreed / bothSides;
+    console.log(
+      `  규칙↔LLM 필드 일치율 ${run.crossCheck.agreed}/${bothSides} (${(rate * 100).toFixed(1)}%) · LLM 단독 ${run.crossCheck.llmOnly} · 값 상충 강등 ${run.crossCheck.conflict} · 추출기 ${run.extractorName ?? "-"}`,
+    );
+  }
   if (scorable === 0) {
     console.log(
-      `  검수를 마친 라벨이 없습니다 (전체 ${goldset.labels.length}건 미검수).`,
+      `  검수를 마친 라벨이 없어 정식 F1은 계산하지 않습니다 (전체 ${goldset.labels.length}건 미검수).`,
     );
+    printReference(run.llmClaims ?? run.claims, goldset);
     console.log("  data/goldset/README.md의 검수 절차를 먼저 수행하세요.");
     return;
   }

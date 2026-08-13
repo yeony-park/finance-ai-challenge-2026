@@ -3,17 +3,14 @@ import { createMemoryRateLimiter } from "../ops/rate-limit";
 
 describe("레이트리밋", () => {
   test("allows up to the limit then rejects within the window", () => {
-    // Arrange
     const limiter = createMemoryRateLimiter(3, 1_000);
     const t0 = 1_000_000;
 
-    // Act
     const first = limiter.check("ip1", t0);
     limiter.check("ip1", t0 + 10);
     limiter.check("ip1", t0 + 20);
     const fourth = limiter.check("ip1", t0 + 30);
 
-    // Assert
     expect(first.allowed).toBe(true);
     expect(fourth.allowed).toBe(false);
     expect(fourth.retryAfterMs).toBeGreaterThan(0);

@@ -39,10 +39,8 @@ const evidence = (over: Partial<Evidence> = {}): Evidence => ({
 
 describe("판정 계약", () => {
   test("근거가 붙은 판정만 생성된다", () => {
-    // Arrange
     const backing = [evidence()];
 
-    // Act
     const judgement = createJudgement({
       claim: claim(),
       verdict: "match",
@@ -50,7 +48,6 @@ describe("판정 계약", () => {
       rationale: "공적 원장에 개체가 등록되어 있습니다.",
     });
 
-    // Assert
     expect(judgement.verdict).toBe("match");
     expect(judgement.evidence).toHaveLength(1);
   });
@@ -113,7 +110,6 @@ describe("문서 버전 간 claim diff", () => {
   const v2 = doc("20260901000111", "2026-09-01");
 
   test("값이 바뀐 필드만 changed로 나온다", () => {
-    // Arrange
     const before = [
       claim({ document: v1 }),
       claim({
@@ -135,10 +131,8 @@ describe("문서 버전 간 claim diff", () => {
       }),
     ];
 
-    // Act
     const diff = diffClaims(before, after);
 
-    // Assert
     expect(diff.changes).toHaveLength(1);
     expect(diff.changes[0]).toMatchObject({
       changeKind: "changed",

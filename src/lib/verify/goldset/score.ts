@@ -1,14 +1,3 @@
-/**
- * 골드셋 대비 추출 점수 — **골격**(S1 착수분).
- * 본 측정(표본 10건·모드별 비교)은 S2 범위이므로, 여기서는 계산 규칙만 고정한다.
- *
- * 채점 규칙
- * - 비교 단위는 `{kind}:{subject}` 필드 하나
- * - TP: 골드에 있고 예측도 같은 값을 냈다
- * - FP: 예측했는데 골드에 없거나(허위 생성) 값이 다르다
- * - FN: 골드에 있는데 예측이 없거나 값이 다르다  (값이 다르면 FP·FN 양쪽에 든다)
- * - 검수를 마치지 않은(`pending`) 라벨은 분모에서 제외하고 그 수를 따로 보고한다
- */
 import type { Claim } from "../types";
 import { isScorable, labelKey, type GoldLabel, type GoldSet } from "./types";
 
@@ -19,9 +8,7 @@ export interface ScoreBreakdown {
   readonly precision: number;
   readonly recall: number;
   readonly f1: number;
-  /** 정답 대비 정확히 일치한 비율 (exact match) */
   readonly exactMatch: number;
-  /** 측정에서 제외한 미검수 라벨 수 — 점수와 함께 반드시 보고한다 */
   readonly skippedPending: number;
 }
 
@@ -42,16 +29,11 @@ const ratio = (numerator: number, denominator: number): number =>
 
 const normalize = (value: string): string => value.replace(/\s+/g, " ").trim();
 
-export const scoreExtraction = (
-  gold: GoldSet,
+const compare = (
+  goldByKey: ReadonlyMap<string, string>,
   predicted: readonly Claim[],
+  skippedPending: number,
 ): ScoreResult => {
-  const scorable = gold.labels.filter(isScorable);
-  const skippedPending = gold.labels.length - scorable.length;
-
-  const goldByKey = new Map<string, GoldLabel>(
-    scorable.map((label) => [labelKey(label), label]),
-  );
   const predictedByKey = new Map<string, Claim>(
     predicted.map((claim) => [labelKey(claim), claim]),
   );
@@ -61,14 +43,14 @@ export const scoreExtraction = (
   let falsePositive = 0;
   let falseNegative = 0;
 
-  for (const [key, label] of goldByKey) {
+  for (const [key, goldValue] of goldByKey) {
     const claim = predictedByKey.get(key);
     if (!claim) {
       falseNegative += 1;
-      mismatches.push({ key, kind: "missing", gold: label.value });
+      mismatches.push({ key, kind: "missing", gold: goldValue });
       continue;
     }
-    if (normalize(claim.value) === normalize(label.value)) {
+    if (normalize(claim.value) === normalize(goldValue)) {
       truePositive += 1;
       continue;
     }
@@ -77,7 +59,7 @@ export const scoreExtraction = (
     mismatches.push({
       key,
       kind: "wrong_value",
-      gold: label.value,
+      gold: goldValue,
       predicted: claim.value,
     });
   }
@@ -105,3 +87,30 @@ export const scoreExtraction = (
     mismatches,
   };
 };
+
+export const scoreExtraction = (
+  gold: GoldSet,
+  predicted: readonly Claim[],
+): ScoreResult => {
+  const scorable = gold.labels.filter(isScorable);
+  return compare(
+    new Map(scorable.map((label: GoldLabel) => [labelKey(label), label.value])),
+    predicted,
+    gold.labels.length - scorable.length,
+  );
+};
+
+export const scoreAgainstPrelabels = (
+  gold: GoldSet,
+  predicted: readonly Claim[],
+): ScoreResult =>
+  compare(
+    new Map(
+      gold.labels.map((label: GoldLabel) => [
+        labelKey(label),
+        label.prelabeledValue,
+      ]),
+    ),
+    predicted,
+    0,
+  );

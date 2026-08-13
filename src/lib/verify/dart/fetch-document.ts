@@ -1,12 +1,3 @@
-/**
- * OpenDART 원문(document.xml) 수집기.
- * 접수번호(rcpNo)로 공시 원문 ZIP을 내려받아 해제한 뒤 `data/raw/{rcpNo}/` 에 저장한다.
- *
- * 원칙
- * - 키는 반드시 process.env 경유 (하드코딩 금지)
- * - 실패 시 가짜 원문을 만들지 않는다 — 명시적으로 예외를 던진다
- * - 이미 원문이 있으면 재호출하지 않는다(멱등·쿼터 보호)
- */
 import { mkdir, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { unzipSync } from "fflate";
@@ -14,8 +5,7 @@ import { assertRcpNo, rawDataDir } from "../paths";
 
 const DART_DOCUMENT_ENDPOINT = "https://opendart.fss.or.kr/api/document.xml";
 
-/** DART 오류 응답은 ZIP이 아니라 XML(status/message)로 온다 — 시그니처로 구분한다. */
-const ZIP_MAGIC = [0x50, 0x4b]; // "PK"
+const ZIP_MAGIC = [0x50, 0x4b];
 
 export interface FetchedDocument {
   readonly rcpNo: string;
@@ -23,16 +13,13 @@ export interface FetchedDocument {
   readonly files: readonly string[];
 }
 
-/** 접수번호 가드를 통과한 원문 디렉토리 — 경로 조립의 유일한 통로 */
 export const rawDocumentDir = (rcpNo: string, dataDir = "data"): string =>
   rawDataDir(rcpNo, dataDir);
 
-/** 로컬에 이미 받아둔 원문 xml 파일 목록 (없으면 빈 배열) */
 export const listRawDocuments = async (
   rcpNo: string,
   dataDir = "data",
 ): Promise<readonly string[]> => {
-  // 가드는 try 밖에서 — 형식 위반을 "파일 없음"으로 삼키지 않는다
   const dir = rawDocumentDir(rcpNo, dataDir);
   try {
     const entries = await readdir(dir);
@@ -49,10 +36,6 @@ const decodeDartError = (bytes: Uint8Array): string => {
   return `DART 응답 오류 (status=${status}): ${message}`;
 };
 
-/**
- * 원문 ZIP을 받아 해제한다. ZIP 안의 파일명은 대개 `{rcpNo}.xml` 하나다.
- * DART 원문은 EUC-KR 인코딩이므로 바이트를 그대로 저장하고, 파싱 단계에서 디코딩한다.
- */
 export const fetchDocumentZip = async (
   rcpNo: string,
   apiKey: string,
@@ -71,11 +54,6 @@ export const fetchDocumentZip = async (
   return unzipSync(bytes);
 };
 
-/**
- * 원문 ZIP → 메모리 상의 xml 문자열 (저장 없음).
- * 서버리스 파일시스템은 읽기 전용이므로 라이브 재검증 경로는 `collectRawDocument`를 쓸 수 없다.
- * 디코딩은 CLI가 저장본을 읽는 방식(utf8)과 같게 맞춘다 — 실측 원문이 UTF-8로 내려온다.
- */
 export const fetchDocumentXmlInMemory = async (
   rcpNo: string,
   apiKey: string,
@@ -93,7 +71,6 @@ export const fetchDocumentXmlInMemory = async (
   return new TextDecoder("utf-8").decode(content);
 };
 
-/** 수집 → 저장. 이미 받아둔 원문이 있으면 네트워크를 타지 않는다. */
 export const collectRawDocument = async (
   rcpNo: string,
   options: {

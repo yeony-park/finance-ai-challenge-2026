@@ -1,11 +1,3 @@
-/**
- * 공개 리포트(커밋·배포 대상)의 개인정보 부재를 강제하는 테스트.
- *
- * 두 층으로 검사한다.
- * 1) 구조 검사 — 로컬 데이터 없이도 항상 돈다(신규 클론·CI)
- * 2) 실측 대조 — 로컬 스냅샷이 있을 때만, 스냅샷의 실명·상세주소가 공개본에 없는지 확인
- *    (실명을 테스트 코드에 복사하지 않기 위해 이 방향으로 검사한다)
- */
 import { readdirSync, readFileSync } from "node:fs";
 import { describe, expect, test } from "vitest";
 import { maskSubject, toPublicReport } from "../report/public-report";
@@ -24,10 +16,8 @@ const readPublicReports = (): readonly { name: string; raw: string }[] =>
 
 describe("공개 리포트 — 개인정보 부재 (구조 검사)", () => {
   test("커밋된 공개 리포트가 최소 1건 있고 엔진 계약을 만족한다", () => {
-    // Act
     const reports = readPublicReports();
 
-    // Assert
     expect(reports.length).toBeGreaterThan(0);
     for (const { raw } of reports) {
       const parsed = parseReportSnapshot(JSON.parse(raw));
@@ -50,10 +40,10 @@ describe("공개 리포트 — 개인정보 부재 (구조 검사)", () => {
   test("도로명 상세주소·번지·농장번호 원문이 남지 않는다", () => {
     for (const { name, raw } of readPublicReports()) {
       for (const pattern of [
-        /[가-힣]+로\d+번길/, // 도로명 + 건물번호
+        /[가-힣]+로\d+번길/,
         /번지/,
         /농장번호\s*\d/,
-        /[가-힣]{2,}(시|군|구|읍|면|동)(?![가-힣])/, // 마스킹되지 않은 지명 토큰
+        /[가-힣]{2,}(시|군|구|읍|면|동)(?![가-힣])/,
       ]) {
         expect(pattern.test(raw), `${name}: ${pattern} 가 남아 있습니다`).toBe(
           false,
@@ -145,15 +135,14 @@ describe("toPublicReport — 순수 변환 계약", () => {
         reason: "검증 7호의 취득원가를 대조할 어댑터가 없습니다.",
       },
     ],
+    pricePlacements: [],
     notes: ["확인 불가 강등: acquisition_price:검증 7호 — 사유"],
   };
 
   test("농장주 실명·상세주소·농장번호는 시·군 단위 마스킹으로 사라진다", () => {
-    // Act
     const published = toPublicReport(synthetic);
     const serialized = JSON.stringify(published);
 
-    // Assert
     expect(published.judgements[0]?.evidence[0]?.observed).toBe("경북 ○○시");
     for (const secret of ["김검증", "가상로1234번길", "387221", "가상시"]) {
       expect(serialized).not.toContain(secret);
@@ -199,7 +188,6 @@ describe.skipIf(!hasLocalFile(SNAPSHOT_PATH))(
   `공개 리포트 — 실측 스냅샷 대조 ${hasLocalFile(SNAPSHOT_PATH) ? "" : skipReason(SNAPSHOT_PATH)}`,
   () => {
     test("스냅샷의 농장주 실명·상세주소가 공개 리포트에 없다", () => {
-      // Arrange — 실명 목록은 로컬 스냅샷에서만 읽는다(테스트 코드에 복사 금지)
       const snapshot = JSON.parse(readFileSync(SNAPSHOT_PATH, "utf8")) as {
         verdicts?: readonly {
           farmHistory?: readonly {
@@ -221,7 +209,6 @@ describe.skipIf(!hasLocalFile(SNAPSHOT_PATH))(
       }
       expect(secrets.size).toBeGreaterThan(0);
 
-      // Act + Assert
       for (const { name, raw } of readPublicReports()) {
         const leaked = [...secrets].filter((secret) => raw.includes(secret));
         expect(leaked, `${name} 에 실측 개인정보가 남아 있습니다`).toEqual([]);

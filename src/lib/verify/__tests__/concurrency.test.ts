@@ -3,16 +3,13 @@ import { mapWithConcurrency } from "../concurrency";
 
 describe("mapWithConcurrency — 상한 있는 동시 실행", () => {
   test("결과는 입력 순서를 그대로 보존한다", async () => {
-    // Arrange
     const items = [5, 1, 4, 2, 3];
 
-    // Act — 늦게 끝나는 항목이 앞에 있어도 순서가 뒤집히면 안 된다
     const results = await mapWithConcurrency(items, 3, async (value) => {
       await new Promise((resolve) => setTimeout(resolve, value));
       return value * 10;
     });
 
-    // Assert
     expect(results).toEqual([50, 10, 40, 20, 30]);
   });
 

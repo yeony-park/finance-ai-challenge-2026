@@ -3,16 +3,13 @@ import { enforceCitations } from "../rag/citations";
 
 describe("출처 강제", () => {
   test("returns answer with citations for registered sources", () => {
-    // Arrange
     const draft = {
       text: "지급정지 후 3영업일 내 서면 피해구제를 신청해야 합니다.",
       sourceIds: ["fss-remedy-procedure"],
     };
 
-    // Act
     const answer = enforceCitations(draft);
 
-    // Assert
     expect(answer.kind).toBe("answer");
     if (answer.kind === "answer") {
       expect(answer.citations[0].sourceId).toBe("fss-remedy-procedure");

@@ -1,13 +1,8 @@
-/**
- * 앱 셸 푸터 — 서비스의 성격을 못 박는 자리다.
- * 판정 3값·단정 금지·익명화·데이터 출처, 그리고 투자 권유가 아니라는 고지를 항상 노출한다.
- */
 import Link from "next/link";
 
 import { DATA_SOURCES, SERVICE_NAME, SERVICE_ROLE } from "./service";
 import s from "./shell.module.css";
 
-/** 화면 판정 명칭은 이 3종만 쓴다 — "불일치"는 내부·문서용 용어다(홈-IA-개편 §2) */
 const VERDICT_TERMS: readonly string[] = [
   "일치 — 공시 내용이 공공 데이터에서 확인됩니다",
   "원장 미확인 — 공공 데이터에서 확인되지 않습니다",

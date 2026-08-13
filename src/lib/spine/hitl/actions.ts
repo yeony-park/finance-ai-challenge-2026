@@ -1,8 +1,3 @@
-/**
- * Human-in-the-loop 액션 게이트.
- * 실행성 행동(서류 확정, 외부 연결 등)은 즉시 실행하지 않고 PendingAction으로 만들어
- * 사용자가 명시적으로 확인해야 실행된다 — 금융 AI 가이드라인 '보조수단성' 원칙의 구현.
- */
 import { randomUUID } from "node:crypto";
 import { PENDING_ACTION_TTL_MS } from "../constants";
 import type { PendingAction } from "../types";
@@ -63,7 +58,6 @@ export const confirmAction = async (
   return { status: "executed", message };
 };
 
-/** 테스트 격리용 */
 export const clearPendingActions = (): void => {
   store.clear();
 };

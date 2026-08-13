@@ -9,10 +9,6 @@ import {
 } from "../parse/profiles";
 import { hasLocalFile, rawXmlPath, skipReason } from "./local-data";
 
-/**
- * 항목 구조가 보존되는지를 보는 스위트.
- * 발행사 지식 없이 태그 중첩(PART·SECTION-n)과 번호 패턴만으로 좌표가 나와야 한다.
- */
 const SECTIONED_XML = `<?xml version="1.0" encoding="utf-8"?>
 <DOCUMENT>
 <BODY>
@@ -56,14 +52,11 @@ describe("항목 목차 파서", () => {
   });
 
   test("표 안의 번호 문단은 항목으로 잡히지 않는다", () => {
-    // Arrange
     const ranges = findTableRanges(SECTIONED_XML);
 
-    // Act
     const outline = readOutline(SECTIONED_XML, ranges);
     const titles = outline.map((node) => node.title);
 
-    // Assert
     expect(titles).toContain("8. 기초자산 취득에 관한 사항");
     expect(titles).not.toContain("8. 이 문단은 표 안이라 항목이 아니다");
   });
@@ -71,11 +64,9 @@ describe("항목 목차 파서", () => {
 
 describe("문서 모델 — 표마다 항목 경로와 원문 오프셋", () => {
   test("표는 자기를 감싼 항목 경로를 갖는다", () => {
-    // Act
     const document = parseDocument(SECTIONED_XML);
     const headTable = document.tables[1];
 
-    // Assert
     expect(document.tables).toHaveLength(2);
     expect(headTable.sectionPath).toEqual([
       "제1부 모집 또는 매출에 관한 사항",
@@ -83,7 +74,6 @@ describe("문서 모델 — 표마다 항목 경로와 원문 오프셋", () => 
       "8. 기초자산 취득에 관한 사항",
       "가. 기초자산 요약정보",
     ]);
-    // 인용 좌표는 번호 항목이다 (하위 항목 "가."가 아니라)
     expect(headTable.section).toBe("8. 기초자산 취득에 관한 사항");
   });
 
@@ -137,14 +127,11 @@ describe.skipIf(!hasRawXml)(
   `원문 회귀 — 일반화한 파서가 기존 표 목록을 그대로 재현한다 ${hasRawXml ? "" : skipReason(RAW_XML_PATH)}`,
   () => {
     test("표 개수·행 구성이 평면 파서와 동일하다", () => {
-      // Arrange
       const xml = readFileSync(RAW_XML_PATH, "utf8");
 
-      // Act
       const document = parseDocument(xml);
       const flat = readTables(xml);
 
-      // Assert
       expect(document.tables).toHaveLength(flat.length);
       const rowCounts = (rows: readonly number[]) => [...rows].sort();
       expect(
@@ -167,7 +154,6 @@ describe.skipIf(!hasRawXml)(
       expect(candidates[0].section).toBe("8. 기초자산 취득에 관한 사항");
       expect(candidates[0].sectionPath[0]).toContain("제1부");
       expect(candidates[0].charOffset).toBeGreaterThan(0);
-      // 헤더 1행 + 개체 37행
       expect(candidates[0].table.rows).toHaveLength(38);
     });
   },

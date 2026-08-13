@@ -1,8 +1,3 @@
-/**
- * 프롬프트 인젝션·탈옥 휴리스틱 룰 카탈로그.
- * 금보원 AI 레드팀 보고서의 공격 세대 구분을 참고한 1차 방어선(정규식 계층).
- * LLM 분류기는 이 위에 선택적으로 얹는다(pipeline 참조).
- */
 import type { RuleHit } from "../types";
 
 export interface ScreenRule {

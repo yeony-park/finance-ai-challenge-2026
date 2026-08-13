@@ -1,26 +1,15 @@
-/**
- * LLM 추출 프롬프트 직렬화.
- *
- * 프롬프트는 두 가지를 반드시 담는다.
- * 1. **문서 좌표** — 항목 경로·표 이름·원문 오프셋·행 번호. 좌표 없는 추출값은 근거가 될 수 없다.
- * 2. **표 원문 그대로의 행** — 요약·재서술 없이 셀을 그대로 옮긴다(환각 표면 최소화).
- *
- * 행 직렬화 형식은 fake 클라이언트가 되읽는 계약이기도 하므로 여기 한 곳에만 둔다.
- */
 import type { DocumentRef } from "../types";
 import type { HeadRow, HeadTableSelection } from "./extract-rules";
 
 export const CELL_SEPARATOR = " | ";
 export const ROW_LINE_PATTERN = /^행\s+(\d+)\s*\|(.*)$/;
 
-/** 셀 안의 구분자·줄바꿈을 지워 행 한 줄이 모호해지지 않게 한다 */
 const flattenCell = (cell: string): string =>
   cell.replace(/[|\r\n]+/g, " / ").replace(/\s+/g, " ").trim();
 
 export const serializeRow = (row: HeadRow): string =>
   `행 ${row.row}${CELL_SEPARATOR}${row.cells.map(flattenCell).join(CELL_SEPARATOR)}`;
 
-/** 직렬화한 행 한 줄 → 행 번호와 셀 목록 (fake 클라이언트가 쓴다) */
 export const parseRowLine = (
   line: string,
 ): { readonly row: number; readonly cells: readonly string[] } | undefined => {
@@ -41,6 +30,7 @@ export const EXTRACTION_SYSTEM_PROMPT = [
   "2. 값은 원문 표기 그대로 옮기십시오. 단위·서식·순서를 임의로 바꾸지 마십시오.",
   "3. 모든 추출값에는 그 값이 적힌 **원문 행 번호(row)**를 반드시 붙이십시오.",
   "4. 값을 해석·요약·평가하지 마십시오. 판정은 다른 단계가 공적 원장과 대조해 수행합니다.",
+  "5. 제시된 **모든 행**을 빠짐없이 처리하십시오. 몇 행만 예시로 처리하고 멈추면 안 됩니다.",
 ].join("\n");
 
 export interface ExtractionPrompt {
@@ -48,7 +38,6 @@ export interface ExtractionPrompt {
   readonly user: string;
 }
 
-/** 개체 명세표 한 덩어리(행 묶음) → 프롬프트 */
 export const buildExtractionPrompt = (
   document: DocumentRef,
   selection: HeadTableSelection,
@@ -71,6 +60,9 @@ export const buildExtractionPrompt = (
     "- acquisition_price: 취득원가",
     "- custody_location: 보관장소(사육지)",
     "행에 없는 종류는 넣지 마십시오. subject에는 그 행의 개체 라벨을 그대로 쓰십시오.",
+    "",
+    `[분량] 위 표에는 행이 정확히 ${rows.length}개 있습니다 (행 번호 ${rows.map((row) => row.row).join(", ")}).`,
+    "행 번호 오름차순으로 **모든 행을 하나씩** 처리하십시오. 한 행도 건너뛰지 마십시오.",
   ].join("\n");
 
   return { system: EXTRACTION_SYSTEM_PROMPT, user };

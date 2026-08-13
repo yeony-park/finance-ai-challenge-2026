@@ -1,16 +1,10 @@
-/**
- * claim 스키마 v1 — 원문에서 규칙으로 뽑은 원시 문자열을 정규화·검증하는 게이트.
- * 게이트 실패는 파이프라인 중단이 아니라 해당 필드의 "확인 불가" 강등으로 처리한다.
- */
 import { z } from "zod";
 
-/** 신고서 기재 이력번호는 9자리 (API 조회 시 002 프리픽스를 붙여 12자리로 변환) */
 export const traceNo9Schema = z
   .string()
   .trim()
   .regex(/^\d{9}$/, "이력번호는 9자리 숫자여야 합니다");
 
-/** "한우 송아지" → 품종 "한우" */
 export const breedSchema = z
   .string()
   .trim()
@@ -33,7 +27,6 @@ export const acquisitionDateSchema = z
   .trim()
   .regex(/^\d{4}-\d{2}-\d{2}$/, "취득시기는 YYYY-MM-DD 형식이어야 합니다");
 
-/** "4,574,865 " → 4574865 */
 export const acquisitionPriceSchema = z
   .string()
   .trim()
@@ -46,7 +39,6 @@ export type GateResult<T> =
   | { readonly ok: true; readonly value: T }
   | { readonly ok: false; readonly reason: string };
 
-/** zod 스키마 게이트 — 실패 사유를 사람이 읽을 수 있는 한 줄로 돌려준다. */
 export const gate = <T>(
   schema: z.ZodType<T>,
   raw: unknown,

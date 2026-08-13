@@ -1,7 +1,3 @@
-/**
- * 근거 병치 카드 — 신고서 기재(좌)와 국가 원장 관측(우)을 나란히 놓는다.
- * 모든 행은 엔진 판정·근거에서만 파생되며, 지명·이력번호는 여기서 마스킹된다.
- */
 import type { ClaimKind, UnjudgedClaim, Verdict } from "../../types";
 import {
   formatIsoDate,
@@ -11,20 +7,22 @@ import {
   formatYmd8,
 } from "../format";
 import { maskFreeText, maskRegion, maskTraceNo } from "../mask";
-import type { JudgementRecord, ReportSnapshot } from "../snapshot";
+import type {
+  JudgementRecord,
+  PricePlacementRecord,
+  ReportSnapshot,
+} from "../snapshot";
 import { b, shortSourceName, t, VERDICT_LABEL } from "./labels";
 import type { EvidenceRowView, ExplainLevel, FocusView, RichText } from "./types";
 
 const BIRTH_PATTERN = /출생\s*(\d{8})/;
 const TRANSFER_PATTERN = /양수\s*등록\s*(\d{8})/;
 
-/** 나머지 개체의 일괄 양수(소유권 이전) 등록일 — 비교군 문구의 근거 */
 interface PeerTransfer {
   readonly count: number;
   readonly date: string;
 }
 
-/** 한 개체에 걸린 판정들을 항목별로 모아 둔 묶음 */
 interface SubjectFacts {
   readonly trace?: JudgementRecord;
   readonly breed?: JudgementRecord;
@@ -32,6 +30,7 @@ interface SubjectFacts {
   readonly acquired?: JudgementRecord;
   readonly custody?: JudgementRecord;
   readonly price?: UnjudgedClaim;
+  readonly placement?: PricePlacementRecord;
   readonly peer?: PeerTransfer;
 }
 
@@ -73,13 +72,15 @@ const collectFacts = (
       (item) =>
         item.claim.subject === subject && item.claim.kind === "acquisition_price",
     ),
+    placement: snapshot.pricePlacements.find(
+      (item) => item.claim.subject === subject,
+    ),
     peer: peerTransfer(judgements, subject),
   };
 };
 
-/** 좌열 — 신고서에 적힌 값 그대로(마스킹만 적용) */
 const buildClaimRows = (facts: SubjectFacts): readonly EvidenceRowView[] => {
-  const { trace, acquired, custody, price } = facts;
+  const { trace, acquired, custody, price, placement } = facts;
   const rows: EvidenceRowView[] = [];
   if (trace) {
     rows.push({
@@ -109,11 +110,17 @@ const buildClaimRows = (facts: SubjectFacts): readonly EvidenceRowView[] => {
       isAlert: false,
       note: `대조 불가 · ${maskFreeText(price.reason)}`,
     });
+  } else if (placement) {
+    rows.push({
+      label: "취득원가",
+      value: formatWon(placement.claimedPerHead),
+      isAlert: false,
+      note: `위치 제시 · 기준 ${placement.referenceMonth} ${placement.breedName} ${placement.sexName} 경락가 평균 ${Math.round(placement.averagePricePerKg).toLocaleString("en-US")}원/kg(${placement.sampleSize.toLocaleString("en-US")}두) · 적정성 판단 아님`,
+    });
   }
   return rows;
 };
 
-/** 우열 — 원장 조회 응답에서 관측된 값 */
 const buildLedgerRows = (facts: SubjectFacts): readonly EvidenceRowView[] => {
   const { trace, breed, sex, acquired, custody, peer } = facts;
   const rows: EvidenceRowView[] = [];
@@ -176,7 +183,6 @@ const buildLedgerRows = (facts: SubjectFacts): readonly EvidenceRowView[] => {
   return rows;
 };
 
-/** 카드 하단 해설 — 판정은 같고 설명 깊이만 다르다 */
 const buildFootnote = (facts: SubjectFacts): Record<ExplainLevel, RichText> => {
   const { acquired, custody, peer } = facts;
   const claimRegion = custody ? maskRegion(custody.claim.value) : "기재 지역";
@@ -208,7 +214,6 @@ const buildFootnote = (facts: SubjectFacts): Record<ExplainLevel, RichText> => {
   };
 };
 
-/** 이 개체가 원장 미확인/대조 불가로 분류된 대표 사유 */
 const primaryRationale = (
   judgements: readonly JudgementRecord[],
   subject: string,

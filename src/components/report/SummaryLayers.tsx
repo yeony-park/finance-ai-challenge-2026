@@ -1,13 +1,10 @@
-/**
- * 층위 ②·③ — 메모 목록 한 벌로 끝나는 두 층위.
- * 둘 다 판정이 아니라 "무엇을 아직 대조하지 못했는가"를 밝히는 자리다.
- *
- * 서버 컴포넌트다. 스크롤 리빌만 클라이언트 래퍼(Reveal)가 맡고 데이터는 서버에 남는다.
- */
 import { Reveal } from "@/components/motion/Reveal";
 import type { DemoView } from "@/lib/verify/report/view-model";
 
+import { METHODOLOGY_ANCHOR } from "@/app/methodology/anchors";
+
 import { HISTORY_HEADING_ID, PRICE_HEADING_ID } from "./ids";
+import { MethodologyLink } from "./MethodologyLink";
 import { NoteList } from "./NoteList";
 import s from "./report.module.css";
 
@@ -24,10 +21,15 @@ export function PriceSection({ view }: { readonly view: DemoView }) {
             {view.price.heading}
           </h2>
           <span className={s.layerSource}>{view.price.source}</span>
+          <MethodologyLink anchor={METHODOLOGY_ANCHOR.layers} />
         </header>
 
         <NoteList items={view.price.items} />
         <p className={s.priceNote}>{view.price.note}</p>
+        <MethodologyLink
+          anchor={METHODOLOGY_ANCHOR.limits}
+          label="대조할 수 없는 항목은 어떻게 처리되나요?"
+        />
       </Reveal>
     </section>
   );
@@ -43,6 +45,7 @@ export function HistorySection({ view }: { readonly view: DemoView }) {
             {view.history.heading}
           </h2>
           <span className={s.layerSource}>{view.history.source}</span>
+          <MethodologyLink anchor={METHODOLOGY_ANCHOR.layers} />
         </header>
 
         <NoteList items={view.history.items} />

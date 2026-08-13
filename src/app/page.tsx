@@ -1,29 +1,37 @@
-/**
- * 랜딩 — 서비스가 무엇을 대조하는지 보여 주고 대표 검증 리포트로 보낸다.
- *
- * Server Component가 최신 공개 리포트(data/public/{offerId}/report-*.json · 마스킹 완료)를 읽어
- * 뷰 모델로 변환한 뒤 각 섹션에 props로 넘긴다. 클라이언트 fetch 없음, 정적 프리렌더.
- * 화면에 찍히는 판정 수치·공모 메타는 전부 이 뷰 모델에서 파생된다 — 하드코딩 없음.
- */
 import { HeroSection } from "@/components/landing/HeroSection";
-import { MethodSection } from "@/components/landing/MethodSection";
-import { ReportsSection } from "@/components/landing/ReportsSection";
-import { VerdictSection } from "@/components/landing/VerdictSection";
-import { WatchSection } from "@/components/landing/WatchSection";
-import { FEATURED_OFFER_ID } from "@/components/site/service";
+import { OfferListSection } from "@/components/landing/OfferListSection";
+import { OFFERS, TOTAL_2026_OFFER_COUNT } from "@/components/site/offers";
 import { loadLatestReport } from "@/lib/verify/report/load";
-import { toDemoView } from "@/lib/verify/report/view-model";
+import { buildOfferCard, type OfferCardView } from "@/lib/verify/report/view-model";
+
+const byCloseAsc = (a: OfferCardView, b: OfferCardView): number =>
+  Date.parse(a.schedule.closesAt) - Date.parse(b.schedule.closesAt);
+
+const coverageText = (published: number) => [
+  { text: `2026년 투자계약증권 공모 ${TOTAL_2026_OFFER_COUNT}건 중 ` },
+  { text: `${published}건`, isStrong: true },
+  { text: "이 국가 공공데이터 대조를 거쳤습니다." },
+];
 
 export default async function Home() {
-  const view = toDemoView(await loadLatestReport(FEATURED_OFFER_ID));
+  const now = new Date();
+
+  const cards = await Promise.all(
+    OFFERS.map(async (offer) =>
+      buildOfferCard({ offer, now, ...(await loadLatestReport(offer.id)) }),
+    ),
+  );
+
+  const open = cards.filter((card) => card.schedule.phase === "open").toSorted(byCloseAsc);
+  const closed = cards
+    .filter((card) => card.schedule.phase === "closed")
+    .toSorted((a, b) => byCloseAsc(b, a));
 
   return (
     <>
-      <HeroSection view={view} />
-      <ReportsSection view={view} />
-      <MethodSection view={view} />
-      <WatchSection view={view} />
-      <VerdictSection />
+      <HeroSection coverage={coverageText(cards.length)} />
+      <OfferListSection id="open-offers" title="청약 진행 중" cards={open} isMuted />
+      <OfferListSection id="closed-offers" title="청약 종료 · 사후 검증" cards={closed} />
     </>
   );
 }

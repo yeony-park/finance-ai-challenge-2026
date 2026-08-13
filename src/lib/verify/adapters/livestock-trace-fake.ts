@@ -1,8 +1,3 @@
-/**
- * fake 축산물이력제 어댑터 — 2026-08-10 37두 실측 스냅샷을 재생한다.
- * 키·네트워크 없이 전체 파이프라인이 완주해야 하므로 이것이 CI·데모의 기본값이다.
- * 스냅샷이 곧 회귀 기준이다 (36두 일치 · 학산 24호 불일치).
- */
 import { readFile } from "node:fs/promises";
 import { z } from "zod";
 import {
@@ -18,12 +13,6 @@ import {
 export const DEFAULT_SNAPSHOT_PATH =
   "data/snapshots/2026-08-10-bankcow9-37head-trace.json";
 
-/**
- * 스냅샷 경계 스키마 — 파일도 "외부에서 들어오는 JSON"이다.
- * `claims/schema.ts`·`report/snapshot.ts`와 같은 원칙으로, 모양이 어긋나면 즉시 실패한다
- * (조용히 undefined가 퍼져 가짜 "확인 불가"를 만드는 것을 막는다).
- * 스냅샷에는 분석용 필드가 더 있지만 zod가 걷어낸다 — 어댑터가 쓰는 필드만 계약이다.
- */
 const optionalText = z.string().nullish();
 
 const snapshotFarmSchema = z.object({
@@ -58,7 +47,6 @@ const snapshotSchema = z.object({
 type SnapshotFarm = z.infer<typeof snapshotFarmSchema>;
 type SnapshotVerdict = z.infer<typeof snapshotVerdictSchema>;
 
-/** 검증된 스냅샷만 돌려준다. 형식이 어긋나면 사람이 읽을 수 있는 오류로 실패한다. */
 export const parseTraceSnapshot = (
   raw: unknown,
   source: string,
@@ -113,7 +101,6 @@ const toRecord = (
   };
 };
 
-/** 스냅샷 JSON을 읽어 fake 어댑터를 만든다. 없는 이력번호는 "미등록"으로 재생된다. */
 export const createFakeTraceAdapter = async (
   snapshotPath: string = DEFAULT_SNAPSHOT_PATH,
 ): Promise<LivestockTraceAdapter> => {
@@ -148,10 +135,6 @@ export const createFakeTraceAdapter = async (
   };
 };
 
-/**
- * 어댑터 선택 — 키가 없으면 자동으로 fake.
- * (이력제 API는 서비스키를 검증하지 않지만, 실호출 여부는 명시적으로 키에 건다)
- */
 export const resolveLivestockTraceAdapter = async (options: {
   readonly forceFake?: boolean;
   readonly snapshotPath?: string;

@@ -1,20 +1,5 @@
-/*
- * 디자인 토큰 — 조각투자 공시 대조 검증 서비스
- *
- * 방향: 화이트 기반 클린 핀테크 콘텐츠 플랫폼.
- * 배경은 흰 지면, 섹션이 교차할 때만 아주 옅은 웜 그레이로 리듬을 준다.
- * 유채색은 두 갈래로만 쓴다 —
- *   ① 브랜드 액센트(옐로): 밑줄 하이라이트·뱃지 등 장식 목적. 판정에는 절대 쓰지 않는다
- *   ② 판정 시맨틱(green/red/neutral): 일치 / 원장에서 확인되지 않음 / 확인 불가 3값 전용
- * 라이트 단일 룩을 의도적으로 고정한다(심사 데모 안정성) — 다크모드 강제 없음.
- *
- * 명명 규칙: `--ds-<범주>-<역할>`. 후속 화면(리포트 상세 등)도 이 이름만 쓰면 된다.
- */
-
 :root {
-  /* ---------------------------------------------------------------- 표면 */
   --ds-bg: #ffffff;
-  /* 섹션 교차용 웜 그레이 — 흰 지면과 대비가 거의 없어야 한다 */
   --ds-bg-muted: #faf9f6;
   --ds-bg-sunken: #f4f3ef;
   --ds-surface: #ffffff;
@@ -23,56 +8,43 @@
   --ds-line-strong: #d3d0c8;
   --ds-line-dashed: #d8d5cc;
 
-  /* ------------------------------------------------------------------ 잉크 */
   --ds-ink: #14161a;
   --ds-ink-strong: #000000;
   --ds-ink-muted: #5b6068;
   --ds-ink-faint: #8b9099;
   --ds-ink-invert: #fbfbf9;
 
-  /* -------------------------------------------------------- 브랜드 액센트 */
-  /* 옐로는 의미를 갖지 않는다 — 하이라이트·뱃지 전용 */
   --ds-accent: #ffe14d;
   --ds-accent-soft: #fff6cc;
   --ds-accent-line: #f0cf3c;
   --ds-accent-ink: #4a3d00;
 
-  /* ---------------------------------------------------------- 판정 시맨틱 */
-  /* 일치 */
   --ds-verdict-match: #2f7a5b;
   --ds-verdict-match-soft: #e6f1ec;
   --ds-verdict-match-line: #bcd9cc;
-  /* 원장 미확인 (내부 용어: 불일치) */
   --ds-verdict-miss: #b93a32;
   --ds-verdict-miss-soft: #f9e9e7;
   --ds-verdict-miss-line: #ecc7c3;
-  /* 확인 불가 (미판정 포함) */
   --ds-verdict-unknown: #6b7280;
   --ds-verdict-unknown-soft: #f1f1ee;
   --ds-verdict-unknown-line: #dedcd5;
 
-  /* ------------------------------------------------------------- 타이포 */
-  /* layout.tsx의 next/font 변수를 그대로 물려받는다 */
   --ds-font-sans: var(--font-sans-kr), "Apple SD Gothic Neo", system-ui, sans-serif;
   --ds-font-serif: var(--font-serif-kr), "Apple SD Gothic Neo", serif;
   --ds-font-mono: var(--font-plex-mono), ui-monospace, Consolas, monospace;
 
-  /* 본문 스케일 */
-  --ds-text-2xs: 0.6875rem; /* 11px — 모노 메타·캡션 */
-  --ds-text-xs: 0.75rem; /* 12px */
-  --ds-text-sm: 0.8125rem; /* 13px */
-  --ds-text-base: 0.9375rem; /* 15px — 기본 본문 */
-  --ds-text-md: 1rem; /* 16px */
-  --ds-text-lg: 1.125rem; /* 18px — 리드 문단 */
-  --ds-text-xl: 1.375rem; /* 22px */
+  --ds-text-2xs: 0.6875rem;
+  --ds-text-xs: 0.75rem;
+  --ds-text-sm: 0.8125rem;
+  --ds-text-base: 0.9375rem;
+  --ds-text-md: 1rem;
+  --ds-text-lg: 1.125rem;
+  --ds-text-xl: 1.375rem;
 
-  /* 제목 스케일 — 뷰포트 반응형 */
   --ds-title-sm: clamp(1.125rem, 0.95rem + 0.8vw, 1.375rem);
   --ds-title-md: clamp(1.375rem, 1.1rem + 1.2vw, 1.875rem);
   --ds-title-lg: clamp(1.75rem, 1.3rem + 2vw, 2.75rem);
-  /* 히어로 — 큰 스케일 대비가 위계의 축이다 */
   --ds-display: clamp(1.9375rem, 1.05rem + 4.4vw, 4.25rem);
-  /* 판정 집계처럼 "숫자가 주인공"인 자리 */
   --ds-numeral: clamp(1.875rem, 1.4rem + 1.9vw, 2.75rem);
   --ds-numeral-sm: clamp(1.25rem, 1.05rem + 0.8vw, 1.625rem);
 
@@ -91,7 +63,6 @@
   --ds-tracking-normal: 0;
   --ds-tracking-wide: 0.08em;
 
-  /* ------------------------------------------------------------- 여백 */
   --ds-space-1: 0.25rem;
   --ds-space-2: 0.5rem;
   --ds-space-3: 0.75rem;
@@ -103,17 +74,14 @@
   --ds-space-9: 4rem;
   --ds-space-10: 5.5rem;
 
-  /* 섹션 세로 여백 — 넉넉하게, 뷰포트에 따라 호흡이 달라진다 */
   --ds-section-y: clamp(4rem, 3rem + 5vw, 8rem);
   --ds-section-y-tight: clamp(2.75rem, 2rem + 3vw, 5rem);
 
-  /* 지면 폭 */
   --ds-gutter: clamp(1.125rem, 0.5rem + 2.4vw, 2.5rem);
   --ds-maxw: 1180px;
   --ds-maxw-narrow: 880px;
   --ds-maxw-prose: 62ch;
 
-  /* ------------------------------------------------------------- 형태 */
   --ds-radius-sm: 6px;
   --ds-radius-md: 12px;
   --ds-radius-lg: 16px;
@@ -124,20 +92,16 @@
   --ds-shadow-md: 0 1px 2px rgba(20, 22, 26, 0.04), 0 8px 24px rgba(20, 22, 26, 0.05);
   --ds-shadow-lg: 0 2px 4px rgba(20, 22, 26, 0.04), 0 18px 48px rgba(20, 22, 26, 0.09);
 
-  /* 키보드 포커스 링 — 전 화면 공통 */
   --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-ink);
 
-  /* ------------------------------------------------------------- 모션 */
   --ds-duration-fast: 120ms;
   --ds-duration-base: 200ms;
   --ds-duration-slow: 380ms;
   --ds-ease: cubic-bezier(0.2, 0.7, 0.3, 1);
 
-  /* --------------------------------------------------------- 레이아웃 상수 */
   --ds-header-h: 60px;
 }
 
-/* 사용자가 모션 축소를 요청하면 전환을 사실상 끈다 */
 @media (prefers-reduced-motion: reduce) {
   :root {
     --ds-duration-fast: 1ms;

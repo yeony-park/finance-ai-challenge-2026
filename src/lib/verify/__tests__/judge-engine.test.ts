@@ -71,7 +71,6 @@ const stubAdapter = (
 
 describe("판정 엔진", () => {
   test("모든 판정에 근거가 최소 1건 붙는다", async () => {
-    // Arrange
     const claims = [
       claim("livestock_trace_no", "212786152"),
       claim("livestock_breed", "한우"),
@@ -80,12 +79,10 @@ describe("판정 엔진", () => {
       claim("acquisition_date", "2026-07-14"),
     ];
 
-    // Act
     const outcome = await judgeClaims(claims, {
       trace: stubAdapter(record()),
     });
 
-    // Assert
     expect(outcome.judgements).toHaveLength(5);
     expect(
       outcome.judgements.every((j) => j.evidence.length > 0),
@@ -180,7 +177,7 @@ describe("판정 엔진", () => {
     ).toBe("unverifiable");
   });
 
-  test("어댑터가 없는 항목은 근거 0건 판정 대신 미판정으로 분리된다", async () => {
+  test("경락가 참조가 없으면 취득원가는 근거 0건 판정 대신 사유 있는 대조 불가로 남는다", async () => {
     const outcome = await judgeClaims(
       [
         claim("livestock_trace_no", "212786152"),
@@ -191,7 +188,11 @@ describe("판정 엔진", () => {
 
     expect(outcome.judgements).toHaveLength(1);
     expect(outcome.unjudged).toHaveLength(1);
-    expect(outcome.unjudged[0].reason).toMatch(/어댑터/);
+    expect(outcome.unjudged[0].claim.kind).toBe("acquisition_price");
+    expect(outcome.unjudged[0].reason).toMatch(
+      /경락가 참조 데이터가 연결되지 않아/,
+    );
+    expect(outcome.pricePlacements).toHaveLength(0);
   });
 
   test("스키마 게이트에서 강등된 claim은 판정하지 않는다", async () => {
@@ -233,10 +234,6 @@ describe("행정구역 토큰 추출", () => {
   });
 });
 
-/**
- * 개체 수만큼 외부 API를 호출하므로 순차 실행은 느리고, 무제한 병렬은 쿼터를 위협한다.
- * 상한 있는 동시 배치가 이 두 조건을 동시에 만족하는지 고정한다.
- */
 describe("원장 조회 동시성", () => {
   const traceClaims = (count: number): readonly Claim[] =>
     Array.from({ length: count }, (_, index) =>
@@ -264,15 +261,12 @@ describe("원장 조회 동시성", () => {
   });
 
   test("동시 호출 수가 상한(4)을 넘지 않는다", async () => {
-    // Arrange
     const state = { inFlight: 0, peak: 0, order: [] as string[] };
 
-    // Act
     await judgeClaims(traceClaims(12), { trace: countingAdapter(state) });
 
-    // Assert
     expect(state.order).toHaveLength(12);
-    expect(state.peak).toBeGreaterThan(1); // 순차가 아니다
+    expect(state.peak).toBeGreaterThan(1);
     expect(state.peak).toBeLessThanOrEqual(4);
   });
 

@@ -1,7 +1,3 @@
-/**
- * 레드팀 러너 — 시나리오를 파이프라인에 통과시켜 기대/실제를 대조하고
- * 기획서 부록용 마크다운 리포트를 생성한다.
- */
 import { createMemoryRateLimiter } from "../ops/rate-limit";
 import { runPipeline } from "../pipeline";
 import type { LlmClient, SpineAnswer } from "../types";
@@ -34,7 +30,6 @@ export const runRedTeam = async (
   const results: ScenarioResult[] = [];
 
   for (const scenario of scenarios) {
-    // 시나리오마다 독립 리미터 — 레이트리밋이 판정을 오염시키지 않게 함
     const answer = await runPipeline(
       { llm, rateLimiter: createMemoryRateLimiter() },
       `redteam:${scenario.id}`,

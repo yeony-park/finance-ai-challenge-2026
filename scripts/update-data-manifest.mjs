@@ -1,13 +1,4 @@
 #!/usr/bin/env node
-/**
- * data/MANIFEST.md 생성기 — `npm run data:manifest`
- *
- * 목적: 개인정보(농장주 실명·상세주소·농장번호)가 담긴 원천 데이터는 git에 올리지 않는다.
- * 대신 무엇이 어디에 있어야 하는지(경로·sha256·바이트·출처·재확보 방법)를 매니페스트로만 커밋해
- * 신규 클론이 "무엇이 없는지"와 "어떻게 다시 받는지"를 알 수 있게 한다.
- *
- * 표준 라이브러리만 사용한다(의존성 추가 금지).
- */
 import { createHash } from "node:crypto";
 import { readdir, readFile, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
@@ -17,7 +8,6 @@ const ROOT = process.cwd();
 const DATA_DIR = path.join(ROOT, "data");
 const MANIFEST_PATH = path.join(DATA_DIR, "MANIFEST.md");
 
-/** 로컬 전용(커밋 금지) 디렉토리와 그 재확보 방법 */
 const LOCAL_ONLY_GROUPS = [
   {
     dir: "raw",
@@ -43,14 +33,23 @@ const LOCAL_ONLY_GROUPS = [
   },
 ];
 
-/** 커밋 대상 — 마스킹이 끝난 공개 산출물 */
-const PUBLIC_GROUP = {
-  dir: "public",
-  title: "공개 리포트 (마스킹 완료 · 커밋 대상)",
-  source: "toPublicReport(내부 리포트) 산출",
-  recover: "`npm run verify -- --rcpNo <rcpNo>`",
-  note: "화면·배포가 읽는 유일한 데이터. 이력번호·개체명·지역·자유텍스트 마스킹 적용.",
-};
+const PUBLIC_GROUPS = [
+  {
+    dir: "public",
+    title: "공개 리포트 (마스킹 완료 · 커밋 대상)",
+    source: "toPublicReport(내부 리포트) 산출",
+    recover: "`npm run verify -- --rcpNo <rcpNo>`",
+    note: "화면·배포가 읽는 유일한 데이터. 이력번호·개체명·지역·자유텍스트 마스킹 적용.",
+  },
+  {
+    dir: "reference",
+    title: "경락가 월 집계 (시장 통계 · 커밋 대상)",
+    source:
+      "축산물품질평가원 축산물등급판정정보 (data.go.kr 15058822) — 소도체 등급별 경락가격",
+    recover: "`npm run reference:collect -- --from <YYYY-MM> --to <YYYY-MM>`",
+    note: "개인정보 없음(전국·등급별 집계). 개발계정 일 1,000건 쿼터 방어를 위해 사전 수집하며, 판정·화면은 이 캐시만 읽는다(런타임 API 호출 없음).",
+  },
+];
 
 const listFilesRecursively = async (dir) => {
   let entries;
@@ -105,7 +104,7 @@ const renderGroup = (group, heading) => [
   renderTable(group.files),
 ].join("\n");
 
-const render = (groups, publicGroup, generatedAt) =>
+const render = (groups, publicGroups, generatedAt) =>
   [
     "<!-- 이 파일은 `npm run data:manifest`로 생성됩니다. 직접 수정하지 마세요. -->",
     "",
@@ -124,6 +123,7 @@ const render = (groups, publicGroup, generatedAt) =>
     "| 실측 스냅샷 | `data/snapshots/` | 제외(.gitignore) |",
     "| 내부 리포트 | `data/reports/{offerId}/` | 제외(.gitignore) |",
     "| 공개 리포트 | `data/public/{offerId}/` | **커밋** |",
+    "| 경락가 월 집계 | `data/reference/auction-price/` | **커밋**(시장 통계 — 개인정보 없음) |",
     "| 매니페스트 | `data/MANIFEST.md` | **커밋** |",
     "",
     "신규 클론에서 로컬 전용 파일이 없어도 `npm test`·`npm run build`는 통과한다",
@@ -134,20 +134,25 @@ const render = (groups, publicGroup, generatedAt) =>
     ...groups.map((group, index) => renderGroup(group, `${index + 1}. ${group.title}`)),
     "## 커밋 대상 산출물",
     "",
-    renderGroup(publicGroup, publicGroup.title),
+    ...publicGroups.map((group) => renderGroup(group, group.title)),
   ].join("\n");
 
 const main = async () => {
   const groups = [];
   for (const group of LOCAL_ONLY_GROUPS) groups.push(await describeGroup(group));
-  const publicGroup = await describeGroup(PUBLIC_GROUP);
+  const publicGroups = [];
+  for (const group of PUBLIC_GROUPS) publicGroups.push(await describeGroup(group));
 
-  const markdown = render(groups, publicGroup, new Date().toISOString());
+  const markdown = render(groups, publicGroups, new Date().toISOString());
   await writeFile(MANIFEST_PATH, markdown, "utf8");
 
   const total = groups.reduce((sum, group) => sum + group.files.length, 0);
+  const published = publicGroups.reduce(
+    (sum, group) => sum + group.files.length,
+    0,
+  );
   console.log(
-    `매니페스트 갱신: ${path.relative(ROOT, MANIFEST_PATH)} — 로컬 전용 ${total}건 · 공개 ${publicGroup.files.length}건`,
+    `매니페스트 갱신: ${path.relative(ROOT, MANIFEST_PATH)} — 로컬 전용 ${total}건 · 커밋 대상 ${published}건`,
   );
 };
 

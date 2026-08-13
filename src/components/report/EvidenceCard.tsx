@@ -1,12 +1,5 @@
 "use client";
 
-/**
- * 근거 병치 카드 — 신고서 기재(좌)와 국가 원장 관측(우)을 나란히 놓는다.
- * 개체 버튼의 aria-controls가 가리키는 대상이므로 id는 개체 번호에서 파생한다.
- *
- * 모션은 드릴다운의 개폐만 전달한다(opacity + y). 카드가 어디서 열렸는지 알려 주는 것이
- * 목적이라 이동 거리는 짧게 두고, 높이는 애니메이트하지 않는다 — 지면이 흔들리지 않게.
- */
 import { m } from "motion/react";
 import { Fragment, type ReactNode, type Ref } from "react";
 
@@ -21,7 +14,6 @@ import s from "./report.module.css";
 
 const RISE = 8;
 
-/** 좌/우 열 한 벌 — 기재값과 관측값의 마크업이 같아야 눈으로 대조된다 */
 function EvidenceColumn({
   heading,
   rows,

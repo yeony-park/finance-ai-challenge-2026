@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { scoreExtraction } from "../goldset/score";
+import { scoreAgainstPrelabels, scoreExtraction } from "../goldset/score";
 import { goldSetSchema, isScorable, type GoldSet } from "../goldset/types";
 import type { Claim, ClaimKind, DocumentRef } from "../types";
 
@@ -49,18 +49,15 @@ const goldset = (
 
 describe("골드셋 채점", () => {
   test("검수를 마치지 않은 라벨은 분모에서 빠지고 그 수가 보고된다", () => {
-    // Arrange
     const gold = goldset([
       { kind: "livestock_trace_no", subject: "1호", value: "212786152", review: "confirmed" },
       { kind: "livestock_trace_no", subject: "2호", value: "214838454", review: "pending" },
     ]);
 
-    // Act
     const result = scoreExtraction(gold, [
       claim("livestock_trace_no", "1호", "212786152"),
     ]);
 
-    // Assert
     expect(result.breakdown.skippedPending).toBe(1);
     expect(result.breakdown.truePositive).toBe(1);
     expect(result.breakdown.f1).toBe(1);
@@ -119,5 +116,58 @@ describe("골드셋 채점", () => {
     ]);
 
     expect(gold.labels.map(isScorable)).toEqual([true, true, false, false]);
+  });
+});
+
+describe("선라벨 대비 참고치 — 정식 점수와 섞이지 않는다", () => {
+  test("미검수 라벨도 기준에 넣는다 (정식 점수는 같은 입력에서 0건 측정)", () => {
+    const gold = goldset([
+      { kind: "livestock_trace_no", subject: "1호", value: "212786152", review: "pending" },
+      { kind: "livestock_trace_no", subject: "2호", value: "214838454", review: "pending" },
+    ]);
+    const predicted = [
+      claim("livestock_trace_no", "1호", "212786152"),
+      claim("livestock_trace_no", "2호", "999999999"),
+    ];
+
+    const official = scoreExtraction(gold, predicted);
+    const reference = scoreAgainstPrelabels(gold, predicted);
+
+    expect(official.breakdown.truePositive).toBe(0);
+    expect(official.breakdown.skippedPending).toBe(2);
+    expect(reference.breakdown.truePositive).toBe(1);
+    expect(reference.breakdown.exactMatch).toBe(0.5);
+    expect(reference.breakdown.skippedPending).toBe(0);
+  });
+
+  test("기준은 검수값이 아니라 선라벨값이다", () => {
+    const gold = goldSetSchema.parse({
+      offerId: "livestock-9",
+      rcpNo: "20260806000159",
+      generatedAt: "2026-08-13T00:00:00.000Z",
+      prelabeledBy: "extract-rules",
+      reviewer: "검수자",
+      labels: [
+        {
+          subject: "1호",
+          kind: "acquisition_price",
+          field: "취득원가",
+          value: "4574865",
+          prelabeledValue: "4574000",
+          row: 1,
+          section: "8. 기초자산 취득에 관한 사항",
+          review: "corrected",
+          note: "",
+        },
+      ],
+    });
+
+    const reference = scoreAgainstPrelabels(gold, [
+      claim("acquisition_price", "1호", "4574000"),
+    ]);
+
+    expect(reference.breakdown.truePositive).toBe(1);
+    expect(scoreExtraction(gold, [claim("acquisition_price", "1호", "4574000")])
+      .breakdown.truePositive).toBe(0);
   });
 });

@@ -1,8 +1,3 @@
-/**
- * 출처 레지스트리 — 인용 가능한 공식 문서의 화이트리스트.
- * 주제 확정 후 실제 코퍼스로 교체한다. 샘플은 메커니즘 검증용(보이스피싱 공식 절차 요약).
- * 원칙: 여기 등록되지 않은 출처는 인용으로 인정하지 않는다 (RAG 오염 3세대 공격 방어).
- */
 import type { Citation, CorpusDoc } from "../types";
 
 export const SAMPLE_CORPUS: readonly CorpusDoc[] = [
@@ -30,7 +25,6 @@ export const SAMPLE_CORPUS: readonly CorpusDoc[] = [
     content:
       "전 금융권의 정기예금·적금·주택담보대출·전세자금대출·개인신용대출 상품 조건과 금리를 비교 공시한다. 오픈API로 동일 데이터를 제공한다.",
   },
-  // ---- 약관 위험조건 검증 도메인 코퍼스 (주제 확정 후 추가) ----
   {
     id: "std-disease-injury",
     title: "질병·상해보험 표준약관 (보험업감독업무시행세칙 별표15)",
@@ -71,7 +65,6 @@ export const findDoc = (id: string): CorpusDoc | undefined => byId.get(id);
 
 export const isRegisteredSource = (id: string): boolean => byId.has(id);
 
-/** abstain 응답에 안내할 공식 채널 (코퍼스에서 파생) */
 export const officialChannels = (): readonly Citation[] =>
   SAMPLE_CORPUS.map((doc) => ({
     sourceId: doc.id,
@@ -79,7 +72,6 @@ export const officialChannels = (): readonly Citation[] =>
     url: doc.url,
   }));
 
-/** 시스템 프롬프트에 주입할 코퍼스 컨텍스트 직렬화 */
 export const corpusAsContext = (): string =>
   SAMPLE_CORPUS.map(
     (doc) => `[${doc.id}] ${doc.title} (${doc.issuer})\n${doc.content}`,

@@ -1,8 +1,3 @@
-/**
- * 신뢰 스파인 공통 타입.
- * 설계 원칙: 모든 데이터는 불변(immutable) — 단계마다 새 객체를 반환한다.
- */
-
 export type ScreenDecision = "allow" | "flag" | "block";
 
 export interface RuleHit {
@@ -33,7 +28,6 @@ export interface CorpusDoc {
   readonly content: string;
 }
 
-/** LLM이 반드시 채워야 하는 응답 계약 — 출처 없으면 abstain으로 강등된다. */
 export interface LlmDraft {
   readonly text: string;
   readonly sourceIds: readonly string[];
@@ -46,8 +40,6 @@ export interface PendingAction {
   readonly payload: Readonly<Record<string, unknown>>;
   readonly expiresAt: number;
 }
-
-/** 파이프라인 최종 응답 — UI는 이 kind로 분기한다. */
 export type SpineAnswer =
   | {
       readonly kind: "answer";

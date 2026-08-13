@@ -1,7 +1,3 @@
-/**
- * 루트 로딩 상태 — 리포트가 도착하기 전 지면의 뼈대만 먼저 세운다.
- * 아직 아무것도 확인되지 않은 상태이므로 판정 수치를 흉내 내지 않는다.
- */
 import s from "@/components/site/status.module.css";
 
 export default function Loading() {

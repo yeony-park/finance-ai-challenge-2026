@@ -16,17 +16,14 @@ describe.skipIf(!hasLocalFile(RAW_XML_PATH))(
   `DART 원문 수집 — 로컬 원문 재사용 ${hasLocalFile(RAW_XML_PATH) ? "" : skipReason(RAW_XML_PATH)}`,
   () => {
     test("이미 받아둔 원문이 있으면 네트워크를 타지 않는다", async () => {
-      // Arrange
       let called = false;
       const fetchImpl = (async () => {
         called = true;
         return new Response("", { status: 200 });
       }) as unknown as typeof fetch;
 
-      // Act
       const result = await collectRawDocument(RCP_NO, { fetchImpl });
 
-      // Assert
       expect(called).toBe(false);
       expect(result.files).toContain(`${RCP_NO}.xml`);
     });

@@ -1,7 +1,3 @@
-/**
- * ③ 이행 이력 층위 — 어떤 문서를 언제 대조했는지, 엔진이 남긴 실행 기록은 무엇인지.
- * 아직 연결되지 않은 감시 기능은 숨기지 않고 마지막 항목으로 드러낸다.
- */
 import { maskFreeText } from "../mask";
 import type { ReportContext } from "./context";
 import type { DemoView, NoteItemView } from "./types";

@@ -1,7 +1,3 @@
-/**
- * 감지 리플레이 — 실제 대조 실행을 시간 순으로 재생한다.
- * 마지막 "알림 발송"만 미연결(예정) 단계이며, 문구로 미리보기임을 밝힌다.
- */
 import { formatKstShortDateTime } from "../format";
 import type { ReportContext } from "./context";
 import type { DemoView, ReplayStepView } from "./types";

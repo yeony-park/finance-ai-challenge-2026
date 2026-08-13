@@ -1,4 +1,3 @@
-/** 입력 스크리닝 — 룰 매칭 점수를 합산해 allow/flag/block을 판정한다. */
 import { BLOCK_SCORE_THRESHOLD, FLAG_SCORE_THRESHOLD } from "../constants";
 import type { ScreenVerdict } from "../types";
 import { matchRules } from "./rules";

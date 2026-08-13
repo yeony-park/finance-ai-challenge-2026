@@ -1,12 +1,5 @@
 "use client";
 
-/**
- * 판정 히어로 — 3초 안에 결론이 읽히는 자리.
- * 공모 제목이 이 지면의 h1이고, 그 아래는 개체 단위 집계(3값)와 한 문장 요약뿐이다.
- *
- * 눈높이 토글은 설명 깊이만 바꾸고 판정은 바꾸지 않는다 — 두 수준이 같은 수치를 인용한다.
- * 그래서 전환은 짧은 크로스페이드다. 값이 새로 계산됐다는 인상을 주면 안 된다.
- */
 import { AnimatePresence, m } from "motion/react";
 
 import { MOTION_DURATION, MOTION_EASE } from "@/components/motion/tokens";
@@ -14,10 +7,12 @@ import { useReducedMotionSafe } from "@/components/motion/useReducedMotionSafe";
 import { RichText } from "@/components/site/RichText";
 import type { DemoView, ExplainLevel, TallyView } from "@/lib/verify/report/view-model";
 
+import { METHODOLOGY_ANCHOR } from "@/app/methodology/anchors";
+
 import { VERDICT_HEADING_ID } from "./ids";
+import { MethodologyLink } from "./MethodologyLink";
 import s from "./report.module.css";
 
-/** 판정 톤 → 의미색. 색은 판정에만 쓰고 장식으로 재사용하지 않는다 */
 const TONE_CLASS: Record<TallyView["tone"], string> = {
   good: s.toneGood,
   warn: s.toneWarn,
@@ -55,7 +50,6 @@ export function VerdictHero({
           {view.verdict.when}
         </p>
 
-        {/* dt(용어)가 마크업 순서상 앞이어야 한다 — 수치를 위로 올리는 건 CSS order */}
         <dl className={s.tallies}>
           {view.verdict.tallies.map((tally) => (
             <div key={tally.label} className={s.tally}>
@@ -66,8 +60,8 @@ export function VerdictHero({
         </dl>
 
         <p className={s.itemLine}>{view.verdict.itemLine}</p>
+        <MethodologyLink anchor={METHODOLOGY_ANCHOR.verdicts} />
 
-        {/* 눈높이가 바뀌면 문장만 갈아 끼운다 — 판정 수치는 위에서 그대로 유지된다 */}
         <AnimatePresence mode="wait" initial={false}>
           <m.p
             key={level}
@@ -103,7 +97,6 @@ export function VerdictHero({
           <span className={s.levelHint}>판정은 동일하며, 설명 깊이만 달라집니다</span>
         </div>
 
-        {/* 실행 조건은 판정 옆에 붙인다 — 스냅샷 재생인지 실호출인지 숨기지 않는다 */}
         <p className={s.modeChips}>
           <span className={s.modeBadge}>{view.meta.badge}</span>
           {view.meta.items.map((item) => (

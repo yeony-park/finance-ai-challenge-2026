@@ -1,7 +1,3 @@
-/**
- * 화면이 받는 뷰 계약 — 이 파일이 데모 화면과 엔진 사이의 유일한 인터페이스다.
- * 조립 규칙과 원칙은 index.ts 헤더 주석 참조.
- */
 import type { Verdict } from "../../types";
 import type { ReportSnapshot } from "../snapshot";
 
@@ -38,7 +34,6 @@ export interface EvidenceRowView {
 export interface FocusView {
   readonly no: number;
   readonly title: string;
-  /** 이 개체가 원장 미확인/대조 불가로 분류된 대표 사유 (엔진 rationale, 익명화 적용) */
   readonly summary: string;
   readonly claimHeading: string;
   readonly claimRows: readonly EvidenceRowView[];
@@ -50,7 +45,6 @@ export interface FocusView {
 }
 
 export interface NoteItemView {
-  /** 목록 key용 안정 식별자 — 제목은 엔진 자유 문장이라 key로 쓸 수 없다 */
   readonly id: string;
   readonly tone: "good" | "warn" | "unknown";
   readonly title: string;
@@ -58,7 +52,6 @@ export interface NoteItemView {
 }
 
 export interface ReplayStepView {
-  /** 목록 key용 안정 식별자 — 제목은 판정 문구에서 파생돼 중복될 수 있다 */
   readonly id: string;
   readonly date: string;
   readonly title: string;

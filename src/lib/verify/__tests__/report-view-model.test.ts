@@ -12,10 +12,8 @@ const plain = (rich: RichText): string => rich.map((part) => part.text).join("")
 
 describe("toDemoView — 판정 집계는 엔진 산출에서만 나온다", () => {
   test("개체 단위 집계는 bySubject 롤업과 같다", async () => {
-    // Act
     const view = await buildView();
 
-    // Assert
     expect(view.verdict.tallies.map((t) => [t.label, t.value])).toEqual([
       ["일치", 36],
       ["원장 미확인", 1],
@@ -30,10 +28,11 @@ describe("toDemoView — 판정 집계는 엔진 산출에서만 나온다", () 
     expect(view.verdict.itemLine).toContain("일치 183");
     expect(view.verdict.itemLine).toContain("원장 미확인 1");
     expect(view.verdict.itemLine).toContain("대조 불가 1");
-    expect(view.verdict.itemLine).toContain("미판정 37");
+    expect(view.verdict.itemLine).toContain("미판정 1");
+    expect(view.verdict.itemLine).toContain("가격 위치 제시 36");
   });
 
-  test("한 줄 요약은 두 수준 모두 미판정 37건을 숨기지 않는다", async () => {
+  test("한 줄 요약은 두 수준 모두 위치 제시와 대조 불가를 함께 말한다", async () => {
     const view = await buildView();
 
     for (const level of ["easy", "pro"] as const) {
@@ -41,6 +40,7 @@ describe("toDemoView — 판정 집계는 엔진 산출에서만 나온다", () 
       expect(text).toContain("36");
       expect(text).toContain("37");
       expect(text).toMatch(/대조 불가|확인되지 않/);
+      expect(text).toContain("적정성 판단이 아닙니다");
     }
   });
 
@@ -94,7 +94,6 @@ describe("toDemoView — 개체 카드와 드릴다운", () => {
     expect(custody?.isAlert).toBe(true);
     expect(rows.find((r) => r.label === "개체 존재")?.value).toContain("한우");
     expect(rows.find((r) => r.label === "취득 시점")?.isAlert).toBe(true);
-    // 비교군 — 나머지 36두의 일괄 양수 등록일은 원장 근거에서 파생된다
     expect(rows.find((r) => r.label === "참고")?.value).toContain("36두");
     expect(rows.find((r) => r.label === "참고")?.value).toContain("2026. 7. 30.");
   });
@@ -105,11 +104,10 @@ describe("toDemoView — 개체 카드와 드릴다운", () => {
 
     expect(focus?.sourceDoc).toContain("기초자산");
     expect(focus?.sourceDoc).toContain("24행");
-    // 조회 시각은 재대조 때마다 갱신된다 — 특정 날짜가 아니라 날짜 형식이 붙어 있는지만 고정한다
     expect(focus?.sourceLedger).toMatch(/\d{4}\. \d{1,2}\. \d{1,2}\./);
   });
 
-  test("취득원가 미판정은 근거 카드에서도 대조 불가로 표시된다", async () => {
+  test("취득시기 미확인 개체의 취득원가는 근거 카드에서도 대조 불가로 표시된다", async () => {
     const view = await buildView();
     const focus = view.reality.focuses[0];
 
@@ -120,13 +118,26 @@ describe("toDemoView — 개체 카드와 드릴다운", () => {
 });
 
 describe("toDemoView — 미판정(unjudged)은 숨기지 않는다", () => {
-  test("② 층위가 취득원가 37건 미판정을 정면으로 표시한다", async () => {
+  test("② 층위가 기준 월·모수·평균가를 출처와 함께 제시한다", async () => {
     const view = await buildView();
+    const labels = view.price.items.map((i) => `${i.title} ${i.meta}`).join(" ");
 
     expect(view.price.heading).toContain("취득원가");
-    expect(view.price.source).toContain("미연결");
-    expect(view.price.items[0]?.title).toContain("37건");
-    expect(view.price.items[0]?.tone).toBe("unknown");
+    expect(view.price.source).toContain("축산물등급판정정보");
+    expect(labels).toMatch(/기준 2026-0\d/);
+    expect(labels).toMatch(/등급판정 [\d,]+두/);
+    expect(labels).toMatch(/원\/kg/);
+  });
+
+  test("위치를 만들지 못한 취득원가는 사유와 함께 대조 불가로 남는다", async () => {
+    const view = await buildView();
+    const unplaced = view.price.items.filter((item) =>
+      item.title.includes("대조 불가"),
+    );
+
+    expect(unplaced.length).toBeGreaterThan(0);
+    expect(unplaced[0].meta.length).toBeGreaterThan(0);
+    expect(view.price.note).toContain("적정성 판단이 아닙니다");
     expect(view.price.note).toContain("대조 불가");
   });
 
@@ -169,10 +180,8 @@ describe("toDemoView — 문서 버전·리플레이", () => {
 
 describe("toDemoView — 익명화 (목업 v4 수준 유지)", () => {
   test("직렬화된 화면 데이터에 실명·이력번호·지역·농장번호가 없다", async () => {
-    // Act
     const serialized = JSON.stringify(await buildView());
 
-    // Assert
     for (const secret of [
       "학산",
       "217935879",

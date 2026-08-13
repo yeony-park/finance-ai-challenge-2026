@@ -1,8 +1,3 @@
-/**
- * 출처 강제(citation enforcement) — 신뢰 스파인의 핵심 계약.
- * 모델 초안(LlmDraft)의 sourceIds가 ①비어 있거나 ②레지스트리 밖이면
- * 답변을 내보내지 않고 abstain(공식 채널 안내)으로 강등한다.
- */
 import { ASSISTIVE_NOTICE } from "../constants";
 import type { Citation, LlmDraft, SpineAnswer } from "../types";
 import { findDoc, isRegisteredSource, officialChannels } from "./corpus";
