@@ -7,11 +7,21 @@ import { buildOfferCard, type OfferCardView } from "@/lib/verify/report/view-mod
 const byCloseAsc = (a: OfferCardView, b: OfferCardView): number =>
   Date.parse(a.schedule.closesAt) - Date.parse(b.schedule.closesAt);
 
-const coverageText = (published: number) => [
+const coverageText = (cohort2026: number, pastClosed: number) => [
   { text: `2026년 투자계약증권 공모 ${TOTAL_2026_OFFER_COUNT}건 중 ` },
-  { text: `${published}건`, isStrong: true },
+  { text: `${cohort2026}건`, isStrong: true },
   { text: "이 국가 공공데이터 대조를 거쳤습니다." },
+  ...(pastClosed > 0
+    ? [
+        { text: " 종료된 공모 " },
+        { text: `${pastClosed}건`, isStrong: true },
+        { text: "의 사후 검증 리포트가 함께 공개돼 있습니다." },
+      ]
+    : []),
 ];
+
+const isCohort2026 = (closesAt: string): boolean =>
+  new Date(closesAt).getFullYear() === 2026;
 
 export default async function Home() {
   const now = new Date();
@@ -29,7 +39,12 @@ export default async function Home() {
 
   return (
     <>
-      <HeroSection coverage={coverageText(cards.length)} />
+      <HeroSection
+        coverage={coverageText(
+          OFFERS.filter((offer) => isCohort2026(offer.subscription.closesAt)).length,
+          OFFERS.filter((offer) => !isCohort2026(offer.subscription.closesAt)).length,
+        )}
+      />
       <OfferListSection id="open-offers" title="청약 진행 중" cards={open} isMuted />
       <OfferListSection id="closed-offers" title="청약 종료 · 사후 검증" cards={closed} />
     </>
