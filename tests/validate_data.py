@@ -79,6 +79,14 @@ ok(next(x for x in track_records if x['id']==16)['profit']==0 and next(x for x i
 ok(track['recomputed_stats']=={'record_count':187,'total_gp_money_krw':49598300000,'completed_count':150,'total_sold_money_krw':41513812500},'Art n Guide recomputed stats')
 ok([x['difference'] for x in track['known_discrepancies']['items']]==[1,3000000,1,7400000] and track['known_discrepancies']['cause']=='확인 불가','Art n Guide known discrepancies')
 env_path=R/'.env';ok(not env_path.exists() or env_path.is_file(),'.env structure')
+excluded_scan_parts={'.git','.next','node_modules','tmp','_workspace'}
+repository_text_files=(
+ f for f in R.rglob('*')
+ if f.is_file()
+ and not f.name.startswith('.env')
+ and not excluded_scan_parts.intersection(f.parts)
+)
+repository_text=[f.read_text(encoding='utf8',errors='ignore').lower() for f in repository_text_files]
 for bad in ('Ka'+'sa','연결 '+'예정','가격 '+'관측과 사용 제한','운영사 '+'주장'):
- ok(all(bad.lower() not in f.read_text(encoding='utf8',errors='ignore').lower() for f in R.rglob('*') if f.is_file() and f.name!='.env' and '.git' not in f.parts),bad)
+ ok(all(bad.lower() not in text for text in repository_text),bad)
 print('PASS: data')

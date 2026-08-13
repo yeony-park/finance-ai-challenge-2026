@@ -286,10 +286,12 @@ assert.ok(sourceBadgesSource, "source badge formatter");
 assert.match(sourceBadgesSource, /sourceExpired\(source\.as_of,new Date\(\)\)/);
 assert.match(sourceBadgesSource, /\$\{source\.label\} · \$\{kst\(source\.as_of\)\}/);
 
-// 금지어 검사는 .env 및 .git 내부를 읽기 전에 제외하고, .env는 구조만 확인한다.
+// 금지어 검사는 환경 파일·생성물·dependency·로컬 작업 디렉터리를 읽기 전에 제외하고, .env는 구조만 확인한다.
 const validation = fs.readFileSync(new URL("tests/validate_data.py", root), "utf8");
 assert.match(validation, /env_path=R\/['"]\.env['"];ok\(not env_path\.exists\(\) or env_path\.is_file\(\)/);
-assert.match(validation, /f\.is_file\(\) and f\.name!='\.env' and '\.git' not in f\.parts/);
+assert.match(validation, /excluded_scan_parts=\{'\.git','\.next','node_modules','tmp','_workspace'\}/);
+assert.match(validation, /not f\.name\.startswith\('\.env'\)/);
+assert.match(validation, /not excluded_scan_parts\.intersection\(f\.parts\)/);
 
 // null/null은 법적 발행사 매칭을 만들지 않고, SOU 이력은 서비스·운영 참고 표로만 보인다.
 const legalIssuerMatchSource = app.match(/^function legalIssuerMatch.*$/m)?.[0];
