@@ -1,12 +1,1 @@
-import Link from "next/link";
-
-export default function NotFound() {
-  return (
-    <main className="not-found shell">
-      <p>404</p>
-      <h1>페이지를 찾을 수 없습니다.</h1>
-      <span>자산 워크스페이스가 이동했거나 아직 준비되지 않았습니다.</span>
-      <Link className="primary-button" href="/">Overview로 돌아가기</Link>
-    </main>
-  );
-}
+import Link from "next/link";export default function NotFound(){return <main id="main-content" className="state-panel state-large not-found-art"><span>404</span><h1>페이지를 찾을 수 없습니다.</h1><p>잘못된 주소이거나 분석 데이터가 없는 항목입니다.</p><div><Link className="button button-primary" href="/products">상품 목록으로</Link><Link className="button button-secondary" href="/artists">작가 목록으로</Link></div></main>}

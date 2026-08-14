@@ -1,0 +1,1 @@
+export default function Loading(){return <main id="main-content" className="listing-page"><div className="art-shell"><div className="page-title"><p className="section-kicker">LOADING</p><h1>분석 데이터를 불러오고 있습니다.</h1></div><div className="loading-skeleton" aria-label="로딩 중"/></div></main>}

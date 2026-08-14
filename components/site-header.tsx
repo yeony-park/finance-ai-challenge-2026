@@ -1,48 +1,7 @@
 "use client";
-
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
-const navigation = [
-  { href: "/", label: "Overview" },
-  { href: "/search", label: "상품 검색" },
-  { href: "/track-records", label: "플랫폼 이력" },
-  { href: "/suitability", label: "자료 확인" },
-  { href: "/real-estate", label: "부동산" },
-  { href: "/livestock/cattle", label: "한우" },
-  { href: "/livestock/pig", label: "돼지" },
-  { href: "/art", label: "미술품" },
-];
-
-export function SiteHeader() {
-  const pathname = usePathname();
-
-  return (
-    <header className="site-header">
-      <div className="shell header-inner">
-        <Link className="brand" href="/" aria-label="JeomJeom 홈">
-          <span className="brand-mark" aria-hidden="true">·</span>
-          <strong>JeomJeom</strong>
-        </Link>
-        <nav className="main-nav" aria-label="주요 메뉴">
-          {navigation.map((item) => {
-            const isActive =
-              item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
-
-            return (
-              <Link
-                className={isActive ? "active" : undefined}
-                href={item.href}
-                key={item.href}
-              >
-                {item.label}
-              </Link>
-            );
-          })}
-        </nav>
-        <span className="mobile-nav-hint" aria-hidden="true">← 좌우로 밀어 메뉴 더 보기 →</span>
-        <span className="prototype-pill">UI prototype</span>
-      </div>
-    </header>
-  );
-}
+import { useEffect, useRef, useState } from "react";
+import { CompareNavCount } from "@/components/art/compare-client";
+const nav=[{href:"/products",label:"청약 상품"},{href:"/artists",label:"작가"},{href:"/platforms",label:"플랫폼"},{href:"/compare",label:"상품 비교"},{href:"/methodology",label:"분석 기준"}];
+export function SiteHeader(){const pathname=usePathname();const [open,setOpen]=useState(false);const dialog=useRef<HTMLDivElement>(null);useEffect(()=>{if(!open)return;const handler=(e:KeyboardEvent)=>{if(e.key==="Escape")setOpen(false);if(e.key==="Tab"&&dialog.current){const els=[...dialog.current.querySelectorAll<HTMLElement>('a,button')];if(!els.length)return;const first=els[0],last=els[els.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}};document.addEventListener("keydown",handler);dialog.current?.querySelector<HTMLElement>("a")?.focus();return()=>document.removeEventListener("keydown",handler)},[open]);return <header className="art-header"><div className="art-shell header-row"><Link href="/" className="art-brand" aria-label="아트체크 홈"><span aria-hidden="true">A</span><strong>아트체크</strong></Link><nav className="desktop-nav" aria-label="주요 메뉴">{nav.map(n=><Link className={pathname.startsWith(n.href)?"active":""} key={n.href} href={n.href}>{n.label}{n.href==="/compare"?<CompareNavCount/>:null}</Link>)}</nav><button className="menu-button" type="button" aria-expanded={open} aria-controls="mobile-menu" onClick={()=>setOpen(!open)}><span aria-hidden="true">☰</span><span className="sr-only">메뉴 열기</span></button></div>{open?<><button className="drawer-backdrop" aria-label="메뉴 닫기" onClick={()=>setOpen(false)}/><div className="mobile-drawer" id="mobile-menu" ref={dialog} role="dialog" aria-modal="true" aria-label="모바일 메뉴"><button type="button" className="drawer-close" onClick={()=>setOpen(false)}>닫기 ×</button>{nav.map(n=><Link key={n.href} href={n.href} onClick={()=>setOpen(false)}>{n.label}{n.href==="/compare"?<CompareNavCount/>:null}</Link>)}</div></>:null}</header>}

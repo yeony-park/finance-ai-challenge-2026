@@ -1,69 +1,13 @@
-import Link from "next/link";
-import { notFound } from "next/navigation";
-import { formatKrw, products, productReviewReason } from "@/lib/catalog";
-
-type ProductPageProps = { params: Promise<{ id: string }> };
-
-const assetFactLabels: Record<string, string> = {
-  address: "주소",
-  artist: "작가",
-  artist_name: "작가",
-  asset_type: "자산 유형",
-  bcr_pct: "건폐율",
-  completion_date: "사용승인일",
-  far_pct: "용적률",
-  floors: "층수",
-  gross_floor_area_m2: "연면적",
-  material: "재료",
-  site_area_m2: "대지면적",
-  size: "크기",
-  title: "작품명",
-  use: "용도",
-  year: "제작연도",
-  zoning: "용도지역",
-};
-
-export function generateStaticParams() {
-  return products.map((product) => ({ id: product.id }));
-}
-
-export default async function ProductPage({ params }: ProductPageProps) {
-  const { id } = await params;
-  const product = products.find((item) => item.id === id);
-  if (!product) notFound();
-
-  const assetFacts = Object.entries(product.asset ?? {})
-    .flatMap(([key, value]) => {
-      const label = assetFactLabels[key];
-      return label && ["string", "number"].includes(typeof value) ? [[key, label, String(value)] as const] : [];
-    })
-    .slice(0, 5);
-  const cardFact = product.common_model?.comments?.card?.text;
-
-  return (
-    <main className="catalog-page shell product-detail-page">
-      <Link className="back-link" href="/search">← 상품 검색으로</Link>
-      <header className="detail-hero">
-        <div><p className="section-label">{product.category} · {product.source_state}</p><h1>{product.name}</h1><p>{product.status_detail ?? product.status}</p></div>
-        <aside><span>저장본 기준일</span><strong>{product.as_of}</strong><small>실시간 상태가 아닐 수 있습니다.</small></aside>
-      </header>
-      <section className="detail-summary" aria-label="상품 기본 정보">
-        <div><span>운영·발행 관련 표기</span><strong>{product.issuer}</strong></div>
-        <div><span>공모금액</span><strong>{formatKrw(product.offering?.amount)}</strong></div>
-        <div><span>표시 상태</span><strong>{product.status}</strong></div>
-      </section>
-      <section className="detail-card" aria-labelledby="review-title">
-        <p className="section-label">REVIEW BOUNDARY</p><h2 id="review-title">검토 상태 : 판정 보류</h2>
-        <p>{productReviewReason(product)}</p>
-        {cardFact ? <p className="fact-callout">{cardFact}</p> : null}
-        <p className="detail-note">[팩트] 이 화면은 저장된 공시·플랫폼·원문 검증 자료의 표기입니다. 가격 적정성, 매수·매도 여부, 예상 수익은 표시하지 않습니다.</p>
-      </section>
-      {assetFacts.length ? <section className="detail-card" aria-labelledby="asset-title"><p className="section-label">ASSET FACTS</p><h2 id="asset-title">기초자산 표기</h2><dl className="detail-facts">{assetFacts.map(([key, label, value]) => <div key={key}><dt>{label}</dt><dd>{value}</dd></div>)}</dl></section> : null}
-      <section className="detail-card" aria-labelledby="sources-title">
-        <p className="section-label">SOURCE PROVENANCE</p><h2 id="sources-title">원문과 저장본 출처</h2>
-        <p className="detail-note">출처별 기준일이 다를 수 있습니다. 링크는 원문 확인용이며, 각 제공자의 이용조건은 별도로 확인해야 합니다.</p>
-        <div className="source-list">{product.sources.map((source) => <a key={source.id} href={source.url} target="_blank" rel="noreferrer"><span>{source.label}</span><strong>{source.document_name ?? source.publisher ?? source.id}</strong><small>기준일 : {source.as_of ?? "확인 불가"} · 원문 열기 ↗</small></a>)}</div>
-      </section>
-    </main>
-  );
-}
+import Image from "next/image";import Link from "next/link";import { notFound } from "next/navigation";
+import { AiQuestionPanel } from "@/components/art/ai-question-panel";import { AuctionResultChart, ComparablePriceChart, ComparableSalesTable, ExitTimelineChart, TrackRecordTable } from "@/components/art/charts";import { AiJudgmentPanel, AuctionVolumeChart, Breadcrumb, ChangeLogTable, DataModeBadge, EvidenceAccordion, ExpectedActualChart, MetricCard, PageContainer, PlatformOutcomeChart, PriceBridgeChart, PriceTrendChart } from "@/components/art/ui";import { CompareButton } from "@/components/art/compare-client";import { formatKrw, formatPercent, latestAnnualSellThroughRate, medianAuctionPrice, pricePremiumRate, sumDisclosedCosts, unexplainedDifference } from "@/lib/domain/calculations";import { changeLogRepository, productRepository, statusLabels } from "@/lib/repositories/art-repositories";
+type Props={params:Promise<{id:string}>;searchParams:Promise<{tab?:string|string[]}>};const tabs=[['summary','요약'],['price','공모가'],['comparables','유사 작품'],['artist','작가 기록'],['exit','회수 분석'],['platform','플랫폼 이력'],['evidence','근거']] as const;export const dynamicParams = false;export function generateStaticParams(){return productRepository.getList().map(p=>({id:p.offering.id}))}
+export default async function ProductDetail({params,searchParams}:Props){const {id}=await params;const product=productRepository.getById(id);if(!product)notFound();const raw=(await searchParams).tab;const tab=(Array.isArray(raw)?raw[0]:raw)||'summary';const changeLogs=changeLogRepository.getByEntity('Offering',id);const premium=pricePremiumRate(product.offering.totalOfferingAmount,product.offering.acquisitionPrice);const unknown=unexplainedDifference(product.offering.totalOfferingAmount,product.offering.acquisitionPrice,product.offering.disclosedCosts);const rate=latestAnnualSellThroughRate(product.annualMetrics,product.auctions);return <main id="main-content" className="detail-page"><PageContainer><Breadcrumb items={[{label:'홈',href:'/'},{label:'청약 상품',href:'/products'},{label:product.offering.title}]}/><header className="product-detail-header"><div className="detail-image"><Image src={product.artwork.imageUrl??'/demo-art/art-1.svg'} alt={`${product.artwork.title} ${product.offering.isDemo?"데모 이미지":"원본 이미지 미저장 placeholder"}`} fill priority sizes="(max-width: 720px) 100vw, 420px"/><DataModeBadge isDemo={product.offering.isDemo}/></div><div><span className="status-label">{statusLabels[product.offering.status]}</span><h1>{product.artwork.title}</h1><p className="detail-entities"><Link href={`/artists/${product.artist.id}`}>{product.artist.nameKo}</Link><span>·</span><Link href={`/platforms/${product.platform.id}`}>{product.platform.name}</Link></p><dl className="header-facts"><div><dt>제작연도</dt><dd>{product.artwork.productionYear??'-'}</dd></div><div><dt>재료</dt><dd>{product.artwork.medium??'-'}</dd></div><div><dt>크기</dt><dd>{product.artwork.width} × {product.artwork.height}cm</dd></div><div><dt>에디션</dt><dd>{product.artwork.edition??'원화'}</dd></div><div><dt>법적 발행사</dt><dd>{product.issuer.legalName}</dd></div><div><dt>플랫폼</dt><dd>{product.platform.name}</dd></div><div><dt>청약 기간</dt><dd>{product.offering.subscriptionStart} ~ {product.offering.subscriptionEnd}</dd></div><div><dt>데이터 기준일</dt><dd>{product.offering.asOfDate}</dd></div></dl><div className="header-amounts"><div><span>총 공모금액</span><strong>{formatKrw(product.offering.totalOfferingAmount)}</strong></div><div><span>최소 투자금</span><strong>{formatKrw(product.offering.minimumInvestment)}</strong></div></div><CompareButton productId={product.offering.id}/></div></header>
+<nav className="detail-tabs" aria-label="상품 상세 분석 탭">{tabs.map(([key,label])=><Link key={key} className={tab===key?'active':''} aria-current={tab===key?'page':undefined} href={`/products/${id}?tab=${key}`}>{label}</Link>)}</nav>
+{tab==='summary'?<div className="tab-panel"><AiJudgmentPanel analysis={product.analysis}/><section><div className="section-heading-art"><div><p className="section-kicker">ANALYSIS AXES</p><h2>네 개 분석축의 결론</h2></div></div><div className="axis-grid">{[['공모가격',product.analysis.priceInsight,'price'],['작가 시장성',product.analysis.artistInsight,'artist'],['회수 가능성',product.analysis.exitInsight,'exit'],['발행사·플랫폼 이력',product.analysis.platformInsight,'platform']].map(([name,s,key])=>{const sec=s as typeof product.analysis.priceInsight;return <article key={String(name)}><h3>{String(name)}</h3><p>{sec.conclusion}</p><Link href={`/products/${id}?tab=${key}`}>상세 분석 보기 →</Link></article>})}</div></section><AiQuestionPanel productId={id}/></div>:null}
+{tab==='price'?<div className="tab-panel"><div className="metric-grid-art"><MetricCard label="작품 취득가" value={formatKrw(product.offering.acquisitionPrice)}/><MetricCard label="감정가" value={formatKrw(product.offering.appraisalValue)} note="취득가와 별도 관리"/><MetricCard label="총 공모금액" value={formatKrw(product.offering.totalOfferingAmount)}/><MetricCard label="공개 비용 합계" value={formatKrw(sumDisclosedCosts(product.offering.disclosedCosts))}/><MetricCard label="설명되지 않는 차액" value={formatKrw(unknown)}/><MetricCard label="공모가 차이율" value={formatPercent(premium)}/><MetricCard label="유사 거래 중위값" value={formatKrw(medianAuctionPrice(product.comparables.map(c=>c.auction)))}/></div><div className="chart-grid"><PriceBridgeChart product={product}/><ComparablePriceChart product={product}/></div><Insight section={product.analysis.priceInsight}/></div>:null}
+{tab==='comparables'?<div className="tab-panel"><div className="chart-grid"><ComparablePriceChart product={product}/><AuctionResultChart product={product}/></div><Insight section={product.analysis.artistInsight}/><ComparableSalesTable product={product}/></div>:null}
+{tab==='artist'?<div className="tab-panel"><div className="metric-grid-art"><MetricCard label="최근 경매 표본" value={`${product.auctions.length}건`}/><MetricCard label="낙찰률" value={formatPercent(rate)}/><MetricCard label="유찰률" value={formatPercent(rate==null?null:100-rate)}/><MetricCard label="동일 시리즈" value={`${product.comparables.filter(c=>c.sameSeries).length}건`}/></div><div className="chart-grid"><AuctionVolumeChart product={product}/><PriceTrendChart product={product}/></div><Insight section={product.analysis.artistInsight}/><details className="career-toggle"><summary>작가 경력 보기</summary><ul>{product.artist.officialCareer.map(c=><li key={`${c.year}-${c.title}`}>{c.year} · {c.title}</li>)}</ul><p>경력은 실제 거래가격 상승의 직접 근거로 사용하지 않았습니다.</p></details></div>:null}
+{tab==='exit'?<div className="tab-panel"><div className="metric-grid-art"><MetricCard label="목표 보유기간" value={product.offering.targetHoldingMonths==null?"공개되지 않음":`${product.offering.targetHoldingMonths}개월`}/><MetricCard label="중도 양도" value={product.offering.midTermTransferAvailable==null?'공개되지 않음':product.offering.midTermTransferAvailable?'가능':'불가'}/><MetricCard label="연결 플랫폼" value={product.platform.name}/><MetricCard label="낙찰률" value={formatPercent(rate)}/></div><div className="chart-grid"><ExpectedActualChart product={product}/><ExitTimelineChart product={product}/></div><Insight section={product.analysis.exitInsight}/></div>:null}
+{tab==='platform'?<div className="tab-panel"><div className="metric-grid-art"><MetricCard label="전체 과거 상품" value={`${product.trackRecords.length}개`}/><MetricCard label="매각 완료" value={`${product.trackRecords.filter(t=>t.status==='sold').length}개`} note="청산 완료와 별도"/><MetricCard label="청산 완료" value={`${product.trackRecords.filter(t=>t.status==='liquidated'||t.status==='delayed').length}개`}/><MetricCard label="기간 내 청산" value={`${product.trackRecords.filter(t=>t.status==='liquidated').length}개`}/><MetricCard label="지연 청산" value={`${product.trackRecords.filter(t=>t.status==='delayed').length}개`}/></div><div className="chart-grid"><PlatformOutcomeChart product={product}/><ExpectedActualChart product={product}/></div><Insight section={product.analysis.platformInsight}/><TrackRecordTable product={product}/></div>:null}
+{tab==='evidence'?<div className="tab-panel"><section className="evidence-intro"><p className="section-kicker">EVIDENCE</p><h2>원문 출처와 계산식</h2><p>긴 근거는 기본적으로 접혀 있습니다. 외부 원문은 새 탭에서 안전하게 엽니다.</p></section>{product.analysis.conflicts.length?<section className="conflict-box"><strong>자료 충돌</strong>{product.analysis.conflicts.map(x=><p key={x}>{x}</p>)}</section>:null}<EvidenceAccordion evidence={product.evidence}/><section className="content-section"><h2>변경 이력</h2><ChangeLogTable items={changeLogs}/></section></div>:null}</PageContainer></main>}
+function Insight({section}:{section:{conclusion:string;quantitativeFindings:string[];qualitativeFindings:string[]}}){return <section className="insight-box"><p className="section-kicker">AI INSIGHT</p><h2>{section.conclusion}</h2><ul>{[...section.quantitativeFindings,...section.qualitativeFindings].map(x=><li key={x}>{x}</li>)}</ul></section>}

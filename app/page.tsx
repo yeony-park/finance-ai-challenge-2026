@@ -1,47 +1,10 @@
 import Link from "next/link";
-import { SearchForm } from "@/components/search-form";
-import { catalogAsOf, products, trackRecordsAsOf } from "@/lib/catalog";
-
-export default function Home() {
-  const realEstateCount = products.filter((product) => product.category === "부동산").length;
-  const artCount = products.filter((product) => product.category === "미술품").length;
-
-  return (
-    <main className="catalog-main">
-      <section className="catalog-hero">
-        <div className="shell catalog-hero-content">
-          <p className="hero-kicker">JEOMJEOM · LOCAL EVIDENCE CATALOG</p>
-          <h1>조각투자 정보를<br /><span>근거와 함께 찾습니다.</span></h1>
-          <p>
-            로컬 저장본에 있는 상품의 상태, 기준일, 원문 출처를 검색합니다. 이 화면은 투자 권유나 가격 적정성 판단을 제공하지 않습니다.
-          </p>
-          <SearchForm action="/search" label="상품 통합 검색" placeholder="상품명, 발행 관련 기관, 자산 유형으로 검색" buttonLabel="상품 검색" />
-          <div className="catalog-stats" aria-label="저장본 범위">
-            <span>상품 {products.length}개</span>
-            <span>부동산 {realEstateCount}개 · 미술품 {artCount}개</span>
-            <span>상품 저장본 기준일 : {catalogAsOf}</span>
-          </div>
-        </div>
-      </section>
-
-      <section className="shell overview-links" aria-labelledby="overview-title">
-        <div className="section-intro">
-          <p className="section-label">SEARCH ENTRY</p>
-          <h2 id="overview-title">필요한 데이터베이스로 이동</h2>
-          <p>검색어를 입력한 뒤 결과를 확인합니다. 초기 진입 화면에는 전체 상품이나 전체 이력 목록을 표시하지 않습니다.</p>
-        </div>
-        <div className="overview-link-grid">
-          <Link href="/search" className="overview-link-card">
-            <span>01</span><h3>상품 통합 검색</h3><p>{products.length}개 로컬 상품 저장본을 상품명·기관·상태·자산 유형으로 찾습니다.</p><strong>검색 열기 →</strong>
-          </Link>
-          <Link href="/track-records" className="overview-link-card">
-            <span>02</span><h3>플랫폼 기록 검색</h3><p>아트앤가이드·아트투게더·TESSA 자체 게시 이력 저장본을 작가·작품·상태·식별자로 찾습니다.</p><strong>기준 시각 : {trackRecordsAsOf.slice(0, 10)} →</strong>
-          </Link>
-          <Link href="/suitability" className="overview-link-card">
-            <span>03</span><h3>자료 확인 문항</h3><p>중립적 확인 문항으로 자료 검토 전 유의사항을 점검합니다.</p><strong>문항 보기 →</strong>
-          </Link>
-        </div>
-      </section>
-    </main>
-  );
-}
+import { NaturalLanguageSearch } from "@/components/art/natural-search";
+import { PageContainer, ProductCard } from "@/components/art/ui";
+import { productRepository } from "@/lib/repositories/art-repositories";
+export default function Home(){const all=productRepository.getList();const legacy=all.filter(p=>!p.offering.isDemo);const active=all.filter(p=>p.offering.status==="upcoming"||p.offering.status==="open");const complete=all.flatMap(p=>p.trackRecords.filter(t=>t.status==="liquidated"||t.status==="delayed").slice(0,1).map(t=>({p,t}))).slice(0,3);return <main id="main-content" className="art-home"><section className="home-art-hero"><PageContainer><span className="real-data-badge">기존 DB 연결 · 데모 병행</span><p className="section-kicker">ART FRACTIONAL INVESTMENT · PRE-SUBSCRIPTION AI</p><h1>그림 조각투자,<br/><span>청약 전에 AI 판단부터 확인하세요.</span></h1><p className="hero-copy">공모가, 작가 경매 기록, 유사 작품 가격,<br/>발행사 청산 이력을 AI가 함께 분석합니다.</p><NaturalLanguageSearch/><div className="quick-links" aria-label="빠른 진입">{[["청약 예정","status=upcoming"],["청약 중","status=open"],["해볼 만함","verdict=worth_considering"],["조건부 해볼 만함","verdict=conditional"],["주의","verdict=caution"],["위험","verdict=danger"]].map(([label,q])=><Link key={label} href={`/products?${q}`}>{label}</Link>)}</div></PageContainer></section>
+<section className="home-section"><PageContainer><div className="section-heading-art"><div><p className="section-kicker">NOW ANALYZING</p><h2>청약 예정·진행 상품</h2></div><Link href="/products">전체 상품 보기 →</Link></div><div className="product-grid-art">{active.map(p=><ProductCard key={p.offering.id} product={p}/>)}</div></PageContainer></section>
+<section className="home-section legacy-home-section"><PageContainer><div className="section-heading-art"><div><p className="section-kicker">CONNECTED DATABASE</p><h2>기존 DB 분석 상품</h2><p>기존 공시·플랫폼 저장본 5개를 새 분석 구조로 연결했습니다.</p></div><Link href="/products?status=unverified">전체 보기 →</Link></div><div className="product-grid-art">{legacy.map(p=><ProductCard key={p.offering.id} product={p} compact/>)}</div></PageContainer></section>
+<section className="home-section soft"><PageContainer><div className="section-heading-art"><div><p className="section-kicker">FOUR LENSES</p><h2>AI가 보는 네 가지</h2></div></div><div className="four-lenses">{[["01","공모가","작품 취득가와 총 공모금액의 차이를 분석합니다."],["02","작가 시장","실제 경매 거래와 유찰 기록을 분석합니다."],["03","회수 가능성","유사 작품 거래와 예상 보유기간을 분석합니다."],["04","플랫폼 이력","과거 배당·매각·청산 지연을 분석합니다."]].map(x=><article key={x[0]}><span>{x[0]}</span><h3>{x[1]}</h3><p>{x[2]}</p></article>)}</div></PageContainer></section>
+<section className="home-section"><PageContainer><div className="section-heading-art"><div><p className="section-kicker">TRACK RECORD</p><h2>과거 완료 상품</h2></div><Link href="/platforms">플랫폼 이력 보기 →</Link></div><div className="completed-list">{complete.map(({p,t})=><article key={t.id}><span>{p.platform.name}</span><h3>{t.productName}</h3><dl><div><dt>목표 / 실제</dt><dd>{t.targetHoldingMonths}개월 / {t.actualHoldingMonths}개월</dd></div><div><dt>최종 상태</dt><dd>{t.status==="liquidated"?"기간 내 청산":"지연 청산"}</dd></div><div><dt>매각금액</dt><dd>{t.exitAmount?.toLocaleString()}원</dd></div></dl></article>)}</div></PageContainer></section>
+<section className="principles"><PageContainer><h2>서비스 원칙</h2><div><p>AI가 자료를 찾아 비교합니다.</p><p>정량·정성 분석 결과를 함께 설명합니다.</p><p>모든 핵심 판단에 원문 근거를 연결합니다.</p></div></PageContainer></section></main>}

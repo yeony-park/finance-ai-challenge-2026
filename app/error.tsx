@@ -1,0 +1,1 @@
+"use client";export default function ErrorPage({reset}:{error:Error&{digest?:string};reset:()=>void}){return <main id="main-content" className="state-panel state-large"><strong>분석 화면을 불러오지 못했습니다.</strong><p>저장된 분석을 표시하는 중 오류가 발생했습니다. 페이지 전체 대신 이 오류 상태를 표시합니다.</p><button className="button button-primary" onClick={reset}>다시 시도</button></main>}
