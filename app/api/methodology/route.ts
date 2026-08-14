@@ -1,0 +1,1 @@
+import { NextResponse } from "next/server";export async function GET(){return NextResponse.json({methodologyVersion:"art-mvp-v1.0",axes:["price","artist","exit","platform"],verdicts:["worth_considering","conditional","caution","danger"],sourcePriority:["법정 공시","공공기관","공식 공모 문서","경매사 기록","작가·기관 공식 자료","신뢰 가능한 제3자"]})}

@@ -1,0 +1,1 @@
+import { NextResponse } from "next/server";import { productRepository } from "@/lib/repositories/art-repositories";export async function GET(){return NextResponse.json({items:productRepository.getList(),mode:"mixed"})}
