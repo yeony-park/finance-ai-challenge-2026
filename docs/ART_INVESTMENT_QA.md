@@ -2,7 +2,7 @@
 
 - 문서 상태: **CURRENT · CANONICAL**
 - 방법론 버전: `art-mvp-v1.0`
-- 최종 회귀 상태: **FINAL_VALIDATED_WITH_DATABASE_CONTINUITY** (2026-08-15 00:17 KST) — 2026-08-14의 demo-only `FINAL_VALIDATED` 기록은 철회·대체
+- 최종 회귀 상태: **FINAL_VALIDATED_WITH_DATABASE_CONTINUITY_AND_HISTORICAL_DISCOVERY** — 홈 단순화·청약 예정 DEMO·체크박스 필터 후속 수정 및 재검증 완료
 - 상태 표기: `완료`(검증 증거 있음) · `부분` · `미구현` · `미검증` · `해당 없음`
 - 원칙: 코드가 있다는 이유만으로 완료로 표시하지 않는다. 명령 결과·URL·스크린샷·테스트 이름 등 재현 가능한 증거를 기록한다.
 
@@ -328,9 +328,9 @@
 | 원본 | normalized 연결 | 검증 결과 |
 |---|---:|---|
 | `data/products.json` | 미술품 5개 | 전체 상품 9개 중 real 5, demo 4; 부동산 3개 제외 |
-| `data/artnguide_track_records.json` | 187건 | `sold` 150 (`TRANSFER` 138 + 원문 display상 매각완료인 `RETURNED_PRODUCT` 12), `exit_in_progress` 37 |
+| `data/artnguide_track_records.json` | 187건 | `sold` 138 (`TRANSFER`), `returned` 12 (`RETURNED_PRODUCT`, 원문 `status_label=매각완료` 충돌을 별도 보존), `exit_in_progress` 37 |
 | `data/artnguide_due_diligence.json` | 같은 187건 enrichment | record evidence 187와 artist track evidence 187을 각 track payload에 연결; 실적에 중복 합산하지 않음 |
-| `data/weshareart_research.json` | 145건 | 별도 `아트투게더` 플랫폼; `operating` 93, 자체 게시 `liquidated` 52; 통화 미기재 금액의 KRW 표기 0건 |
+| `data/weshareart_research.json` | 145건 | canonical `아트투게더` 플랫폼; 현재 실상품 5건과 같은 플랫폼 탐색 경로에 연결하되 과거 레코드의 법적 발행사 identity는 미검증; `operating` 93, 자체 게시 `liquidated` 52; 통화 미기재 금액의 KRW 표기 0건 |
 | `data/tessa_sale_records.json` | 6건 | `liquidated` 3, `loss_confirmed` 3; HKD 임의 환산 없음 |
 | 플랫폼 legacy history 합계 | 338건 | 187 + 145 + 6; due-diligence를 별도 history로 더하지 않음 |
 
@@ -340,7 +340,7 @@
 - 5개 기존 상품의 현재 lifecycle은 `상태 미확인`; `operating`으로 추정하지 않는다.
 - 실상품 Evidence는 원본 product payload와 source URL을 제공하고, source의 `publisher`/`collected_at`이 null이면 `publisher 미기재`/null로 유지한다.
 - 실상품 중위 낙찰가가 없으면 평균·총액을 대체하지 않고 빈 상태를 표시한다.
-- `투게더아트` 현재 상품 5개와 동일 호스트에서 수집한 `아트투게더` 145건은 명칭·법적 관계 확정 전 별도 Platform으로 유지한다.
+- 현재 상품 5개와 과거 `아트투게더` 145건은 사용자 탐색용 canonical `platform-arttogether` 하나로 연결한다. 단, 이 연결을 과거 레코드별 법적 발행사 identity 확인으로 해석하지 않으며 해당 FK는 `null`을 유지한다.
 - 모든 real 상품은 `기존 DB · 공개자료 저장본`, demo 상품은 `DEMO · 데모 데이터` badge를 사용한다.
 
 ### 최종 명령 결과
@@ -363,4 +363,55 @@
 
 ### 최종 판정
 
-기존 DB 파일 보존 여부뿐 아니라 새 Repository, 상품·작가·플랫폼 UI, pagination/search, API payload, 실데이터 badge, 결측·통화·상태 경계를 검증했다. **FINAL_VALIDATED_WITH_DATABASE_CONTINUITY**.
+기존 DB 파일 보존 여부뿐 아니라 새 Repository, 상품·작가·플랫폼 UI, pagination/search, API payload, 실데이터 badge, 결측·통화·상태 경계를 검증했다. `FINAL_VALIDATED_WITH_DATABASE_CONTINUITY` 기록은 Opus 독립 검수 결과로 철회되었고, 이후 수정·Fable 재검수·후속 차단 수정의 최종 판정은 14절이 대체한다.
+
+
+## 14. 2026-08-15 과거 338건 탐색·독립 재검수 최종 판정
+
+### 최종 데이터 계약
+
+- 통합 카탈로그: **347건** = 과거 338 + 현재 실상품 5 + DEMO 4.
+- 원본별 과거 이력: ArtNGuide 187, 아트투게더 145, TESSA 6.
+- ArtNGuide: `sold` 138, `returned` 12, `exit_in_progress` 37. `RETURNED_PRODUCT` 12건은 `sold`나 `unsold`로 단정하지 않고 `returned`로 표시하며, 원문 `status_label=매각완료` 충돌과 `soldMoney`·`soldTime`·`profit`을 함께 보존한다.
+- 아트투게더: `operating` 93, `liquidated` 52. 금액 통화가 없으므로 KRW로 추정하지 않는다.
+- TESSA: `liquidated` 3, `loss_confirmed` 3. 초기 금액 KRW와 매각 통화 HKD를 분리하고 환산하지 않는다. `source_reported_return_pct`는 **플랫폼 기재 수익률**, `calculated_settlement_return_pct`는 **DAKER 계산 수익률**로 별도 표시한다.
+- 플랫폼: 실데이터는 canonical `아트투게더` 1개(현재 5/과거 145), ArtNGuide(0/187), TESSA(0/6). DEMO 플랫폼 4개는 별도 badge와 상세 경로를 유지한다.
+- 작가: 전체 정규화 entity 103명(과거·현재 실데이터·DEMO 포함). 과거 검색 결과는 이우환 41, 박서보 17, 김환기 12, 야요이 쿠사마 39.
+
+### 재현 검증
+
+| 명령/검사 | 최종 결과 |
+|---|---|
+| `npm run lint` | exit 0, 오류 0; 기존 비차단 warning 7건 |
+| `npm run typecheck` | exit 0 |
+| `npm run test:art` | production build와 실제 standalone HTTP API/page 검증 포함 **26/26** 통과 |
+| `npm run test:js` | calculations/API fallback/track records/restructure 4개 통과 |
+| `npm run build` | Next.js production build, 135개 static page generation 과정 통과 |
+| 통합 pagination | 347개 ID를 중복 없이 모두 도달; 플랫폼별 187/145/6 전체 도달 |
+| 실데이터 우선 | 현재 실상품 5건이 DEMO 4건보다 먼저 정렬되고 null은 마지막 |
+| 동적 상세 | ArtNGuide·아트투게더·TESSA 표본 상세 200; 콜론 포함 TESSA ID decode 검증 |
+| 플랫폼 상세 | 실데이터 3개와 DEMO 4개 상세/API 200; canonical 아트투게더 중복 없음 |
+| 원본 필드 | ArtNGuide/아트투게더/TESSA 필수 구조화 필드와 전체 `sourcePayload` 노출 |
+
+### 독립 검수와 후속 수정
+
+Fable read-only 독립 diff 검수는 338건 노출, 수량, artist 정규화, pagination, raw field, 통화, 실데이터 우선 정렬을 통과로 확인하고 두 차단점을 발견했다. 후속 수정으로 (1) `RETURNED_PRODUCT`를 반환과 원문 상태 충돌로 표현하며 매각 기재값을 보존했고, (2) TESSA 플랫폼 기재 수익률과 DAKER 계산 수익률을 분리했다. 추가로 DEMO 플랫폼 4개 링크의 not-found 회귀와 홈 작가 수 caption을 수정했다. Luna가 실제 HTTP 회귀로 이를 재검증했다.
+
+### 제외·프로세스 기록
+
+Chrome 1440/390 screenshot, 실제 OpenAI key 호출, 외부 재수집, commit/push/deploy는 제외했다. 최종 수동 검증에서는 responsive CSS와 HTTP markup만 확인했다. **변경형 Git 명령은 실행하지 않았으나**, Orca 작업자 두 명이 명시적 금지에도 read-only `git diff`/`git diff --check`를 실행한 프로세스 이탈이 있었다. 파일 상태를 변경하는 Git 동작은 없었고 이후 모든 통합·검증은 프로젝트 명령과 직접 파일 검사로 수행했다.
+
+### 최종 판정
+
+**FINAL_VALIDATED_WITH_DATABASE_CONTINUITY_AND_HISTORICAL_DISCOVERY**
+
+
+## 15. 2026-08-15 홈·DEMO·상품 필터 후속 수정
+
+사용자 화면 검토에 따라 홈의 `REPOSITORY SNAPSHOT` 카드 영역을 제거했다. 판단 체계가 `해볼 만함 / 조건부 해볼 만함 / 주의 / 위험`의 4단계이므로 3개가 아니라 **등급별 1개씩 4개 DEMO**를 모두 `청약 예정` 작품으로 표시한다.
+
+상품 목록의 링크 나열식 필터는 체크박스 form으로 교체했다. 현재 상품 상태, 과거 진행 상태, 원본 플랫폼, 식별 근거를 정렬된 그룹으로 제공하고 여러 항목을 동시에 선택할 수 있다. 768px 이하에서는 같은 form을 접이식 모바일 필터로 제공한다.
+
+이 과정에서 빈 수익률 입력이 숫자 `0`으로 변환되어 `/products?scope=historical` 화면이 338건이 아니라 93건만 보여주던 결함도 발견해 수정했다. 반복 query parameter와 쉼표 구분 parameter를 페이지와 `/api/products`가 모두 처리하도록 통일했다.
+
+최종 결과: lint 오류 0(기존 warning 7), typecheck 통과, `test:art` production build·HTTP 통합 테스트 포함 **27/27**, `test:js` 전체 통과, build 135개 static page generation 과정 통과.

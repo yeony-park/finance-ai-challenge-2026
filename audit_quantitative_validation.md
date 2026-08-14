@@ -1,3 +1,5 @@
+> **SUPERSEDED (2026-08-15):** 이 감사는 338건 역사 Offering 연결 전 상태를 기록한다. 현재 정본은 `docs/ART_INVESTMENT_QA.md` 14절이며, 아래의 Offering 0건·sold 150·필드 미매핑 지적은 해결된 과거 기록이다.
+
 # DAKER_1 Finance-AI-Challenge 정량 감사 리포트
 
 ## 요약
