@@ -6,10 +6,10 @@
     "rcpNo": "20260806000159",
     "submittedOn": "2026-08-06"
   },
-  "generatedAt": "2026-08-14T05:36:57.401Z",
-  "mode": "fake",
+  "generatedAt": "2026-08-14T05:52:59.028Z",
+  "mode": "live",
   "sources": [
-    "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+    "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
     "축산물등급판정정보 소도체 등급별 경락가격 (축산물품질평가원 · data.go.kr 15058822) — 월 집계 사전 수집본"
   ],
   "summary": {
@@ -237,9 +237,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●52",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.345Z",
           "field": "이력번호",
           "claimed": "21●●●●●52",
           "observed": "41●●●●●●●●●●●52 등록 (출생 20251211)",
@@ -279,9 +279,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●52",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.345Z",
           "field": "품종",
           "claimed": "한우",
           "observed": "한우",
@@ -321,9 +321,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●52",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.345Z",
           "field": "성별",
           "claimed": "수",
           "observed": "수",
@@ -363,9 +363,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●52",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.345Z",
           "field": "취득시기",
           "claimed": "2026-07-14",
           "observed": "양수 등록 20260730",
@@ -405,9 +405,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●52",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.345Z",
           "field": "보관장소",
           "claimed": "강원 ○○군",
           "observed": "강원 ○○군",
@@ -448,9 +448,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●54",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.353Z",
           "field": "이력번호",
           "claimed": "21●●●●●54",
           "observed": "41●●●●●●●●●●●54 등록 (출생 20251209)",
@@ -490,9 +490,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●54",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.353Z",
           "field": "품종",
           "claimed": "한우",
           "observed": "한우",
@@ -532,9 +532,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●54",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.353Z",
           "field": "성별",
           "claimed": "수",
           "observed": "수",
@@ -574,9 +574,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●54",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.353Z",
           "field": "취득시기",
           "claimed": "2026-07-14",
           "observed": "양수 등록 20260730",
@@ -616,9 +616,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●54",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.353Z",
           "field": "보관장소",
           "claimed": "강원 ○○군",
           "observed": "강원 ○○군",
@@ -659,9 +659,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●67",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.374Z",
           "field": "이력번호",
           "claimed": "21●●●●●67",
           "observed": "41●●●●●●●●●●●67 등록 (출생 20251024)",
@@ -701,9 +701,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●67",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.374Z",
           "field": "품종",
           "claimed": "한우",
           "observed": "한우",
@@ -743,9 +743,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●67",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.374Z",
           "field": "성별",
           "claimed": "수",
           "observed": "수",
@@ -785,9 +785,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●67",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.374Z",
           "field": "취득시기",
           "claimed": "2026-07-14",
           "observed": "양수 등록 20260730",
@@ -827,9 +827,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●67",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.374Z",
           "field": "보관장소",
           "claimed": "강원 ○○군",
           "observed": "강원 ○○군",
@@ -870,9 +870,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●95",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.360Z",
           "field": "이력번호",
           "claimed": "21●●●●●95",
           "observed": "41●●●●●●●●●●●95 등록 (출생 20260111)",
@@ -912,9 +912,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●95",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.360Z",
           "field": "품종",
           "claimed": "한우",
           "observed": "한우",
@@ -954,9 +954,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●95",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.360Z",
           "field": "성별",
           "claimed": "수",
           "observed": "수",
@@ -996,9 +996,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●95",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.360Z",
           "field": "취득시기",
           "claimed": "2026-07-21",
           "observed": "양수 등록 20260730",
@@ -1038,9 +1038,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●95",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.360Z",
           "field": "보관장소",
           "claimed": "강원 ○○군",
           "observed": "강원 ○○군",
@@ -1081,9 +1081,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●10",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.424Z",
           "field": "이력번호",
           "claimed": "21●●●●●10",
           "observed": "41●●●●●●●●●●●10 등록 (출생 20251231)",
@@ -1123,9 +1123,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●10",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.424Z",
           "field": "품종",
           "claimed": "한우",
           "observed": "한우",
@@ -1165,9 +1165,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●10",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.424Z",
           "field": "성별",
           "claimed": "수",
           "observed": "수",
@@ -1207,9 +1207,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●10",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.424Z",
           "field": "취득시기",
           "claimed": "2026-07-21",
           "observed": "양수 등록 20260730",
@@ -1249,9 +1249,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●10",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.424Z",
           "field": "보관장소",
           "claimed": "강원 ○○군",
           "observed": "강원 ○○군",
@@ -1292,9 +1292,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●13",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.388Z",
           "field": "이력번호",
           "claimed": "21●●●●●13",
           "observed": "41●●●●●●●●●●●13 등록 (출생 20251224)",
@@ -1334,9 +1334,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●13",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.388Z",
           "field": "품종",
           "claimed": "한우",
           "observed": "한우",
@@ -1376,9 +1376,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●13",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.388Z",
           "field": "성별",
           "claimed": "수",
           "observed": "수",
@@ -1418,9 +1418,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●13",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.388Z",
           "field": "취득시기",
           "claimed": "2026-07-21",
           "observed": "양수 등록 20260730",
@@ -1460,9 +1460,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●13",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.388Z",
           "field": "보관장소",
           "claimed": "강원 ○○군",
           "observed": "강원 ○○군",
@@ -1503,9 +1503,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●22",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.393Z",
           "field": "이력번호",
           "claimed": "21●●●●●22",
           "observed": "41●●●●●●●●●●●22 등록 (출생 20251221)",
@@ -1545,9 +1545,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●22",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.393Z",
           "field": "품종",
           "claimed": "한우",
           "observed": "한우",
@@ -1587,9 +1587,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●22",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.393Z",
           "field": "성별",
           "claimed": "수",
           "observed": "수",
@@ -1629,9 +1629,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●22",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.393Z",
           "field": "취득시기",
           "claimed": "2026-07-21",
           "observed": "양수 등록 20260730",
@@ -1671,9 +1671,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●22",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.393Z",
           "field": "보관장소",
           "claimed": "강원 ○○군",
           "observed": "강원 ○○군",
@@ -1714,9 +1714,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●61",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:59.019Z",
           "field": "이력번호",
           "claimed": "21●●●●●61",
           "observed": "41●●●●●●●●●●●61 등록 (출생 20250908)",
@@ -1756,9 +1756,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●61",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:59.019Z",
           "field": "품종",
           "claimed": "한우",
           "observed": "한우",
@@ -1798,9 +1798,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●61",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:59.019Z",
           "field": "성별",
           "claimed": "수",
           "observed": "수",
@@ -1840,9 +1840,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●61",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:59.019Z",
           "field": "취득시기",
           "claimed": "2026-07-21",
           "observed": "양수 등록 20260730",
@@ -1882,9 +1882,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●61",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:59.019Z",
           "field": "보관장소",
           "claimed": "강원 ○○군",
           "observed": "강원 ○○군",
@@ -1925,9 +1925,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●11",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.421Z",
           "field": "이력번호",
           "claimed": "21●●●●●11",
           "observed": "41●●●●●●●●●●●11 등록 (출생 20251204)",
@@ -1967,9 +1967,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●11",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.421Z",
           "field": "품종",
           "claimed": "한우",
           "observed": "한우",
@@ -2009,9 +2009,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●11",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.421Z",
           "field": "성별",
           "claimed": "수",
           "observed": "수",
@@ -2051,9 +2051,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●11",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.421Z",
           "field": "취득시기",
           "claimed": "2026-07-22",
           "observed": "양수 등록 20260730",
@@ -2093,9 +2093,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●11",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.421Z",
           "field": "보관장소",
           "claimed": "강원 ○○군",
           "observed": "강원 ○○군",
@@ -2136,9 +2136,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●60",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.423Z",
           "field": "이력번호",
           "claimed": "21●●●●●60",
           "observed": "41●●●●●●●●●●●60 등록 (출생 20251214)",
@@ -2178,9 +2178,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●60",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.423Z",
           "field": "품종",
           "claimed": "한우",
           "observed": "한우",
@@ -2220,9 +2220,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●60",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.423Z",
           "field": "성별",
           "claimed": "수",
           "observed": "수",
@@ -2262,9 +2262,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●60",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.423Z",
           "field": "취득시기",
           "claimed": "2026-07-22",
           "observed": "양수 등록 20260730",
@@ -2304,9 +2304,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●60",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.423Z",
           "field": "보관장소",
           "claimed": "강원 ○○군",
           "observed": "강원 ○○군",
@@ -2347,9 +2347,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●34",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.441Z",
           "field": "이력번호",
           "claimed": "21●●●●●34",
           "observed": "41●●●●●●●●●●●34 등록 (출생 20251216)",
@@ -2389,9 +2389,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●34",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.441Z",
           "field": "품종",
           "claimed": "한우",
           "observed": "한우",
@@ -2431,9 +2431,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●34",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.441Z",
           "field": "성별",
           "claimed": "수",
           "observed": "수",
@@ -2473,9 +2473,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●34",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.441Z",
           "field": "취득시기",
           "claimed": "2026-07-22",
           "observed": "양수 등록 20260730",
@@ -2515,9 +2515,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●34",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.441Z",
           "field": "보관장소",
           "claimed": "강원 ○○군",
           "observed": "강원 ○○군",
@@ -2558,9 +2558,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●30",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.445Z",
           "field": "이력번호",
           "claimed": "21●●●●●30",
           "observed": "41●●●●●●●●●●●30 등록 (출생 20251205)",
@@ -2600,9 +2600,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●30",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.445Z",
           "field": "품종",
           "claimed": "한우",
           "observed": "한우",
@@ -2642,9 +2642,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●30",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.445Z",
           "field": "성별",
           "claimed": "수",
           "observed": "수",
@@ -2684,9 +2684,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●30",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.445Z",
           "field": "취득시기",
           "claimed": "2026-07-23",
           "observed": "양수 등록 20260730",
@@ -2726,9 +2726,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●30",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.445Z",
           "field": "보관장소",
           "claimed": "강원 ○○군",
           "observed": "강원 ○○군",
@@ -2769,9 +2769,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●27",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.466Z",
           "field": "이력번호",
           "claimed": "21●●●●●27",
           "observed": "41●●●●●●●●●●●27 등록 (출생 20251029)",
@@ -2811,9 +2811,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●27",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.466Z",
           "field": "품종",
           "claimed": "한우",
           "observed": "한우",
@@ -2853,9 +2853,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●27",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.466Z",
           "field": "성별",
           "claimed": "수",
           "observed": "수",
@@ -2895,9 +2895,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●27",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.466Z",
           "field": "취득시기",
           "claimed": "2026-07-23",
           "observed": "양수 등록 20260730",
@@ -2937,9 +2937,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●27",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.466Z",
           "field": "보관장소",
           "claimed": "강원 ○○군",
           "observed": "강원 ○○군",
@@ -2980,9 +2980,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●76",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.463Z",
           "field": "이력번호",
           "claimed": "21●●●●●76",
           "observed": "41●●●●●●●●●●●76 등록 (출생 20251016)",
@@ -3022,9 +3022,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●76",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.463Z",
           "field": "품종",
           "claimed": "한우",
           "observed": "한우",
@@ -3064,9 +3064,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●76",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.463Z",
           "field": "성별",
           "claimed": "수",
           "observed": "수",
@@ -3106,9 +3106,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●76",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.463Z",
           "field": "취득시기",
           "claimed": "2026-07-23",
           "observed": "양수 등록 20260730",
@@ -3148,9 +3148,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●76",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.463Z",
           "field": "보관장소",
           "claimed": "강원 ○○군",
           "observed": "강원 ○○군",
@@ -3191,9 +3191,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●68",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.465Z",
           "field": "이력번호",
           "claimed": "21●●●●●68",
           "observed": "41●●●●●●●●●●●68 등록 (출생 20260106)",
@@ -3233,9 +3233,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●68",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.465Z",
           "field": "품종",
           "claimed": "한우",
           "observed": "한우",
@@ -3275,9 +3275,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●68",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.465Z",
           "field": "성별",
           "claimed": "수",
           "observed": "수",
@@ -3317,9 +3317,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●68",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.465Z",
           "field": "취득시기",
           "claimed": "2026-07-24",
           "observed": "양수 등록 20260730",
@@ -3359,9 +3359,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●68",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.465Z",
           "field": "보관장소",
           "claimed": "강원 ○○군",
           "observed": "강원 ○○군",
@@ -3402,9 +3402,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●01",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.482Z",
           "field": "이력번호",
           "claimed": "21●●●●●01",
           "observed": "41●●●●●●●●●●●01 등록 (출생 20251229)",
@@ -3444,9 +3444,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●01",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.482Z",
           "field": "품종",
           "claimed": "한우",
           "observed": "한우",
@@ -3486,9 +3486,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●01",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.482Z",
           "field": "성별",
           "claimed": "수",
           "observed": "수",
@@ -3528,9 +3528,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●01",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.482Z",
           "field": "취득시기",
           "claimed": "2026-07-24",
           "observed": "양수 등록 20260730",
@@ -3570,9 +3570,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●01",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.482Z",
           "field": "보관장소",
           "claimed": "강원 ○○군",
           "observed": "강원 ○○군",
@@ -3613,9 +3613,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●22",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.501Z",
           "field": "이력번호",
           "claimed": "21●●●●●22",
           "observed": "41●●●●●●●●●●●22 등록 (출생 20251224)",
@@ -3655,9 +3655,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●22",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.501Z",
           "field": "품종",
           "claimed": "한우",
           "observed": "한우",
@@ -3697,9 +3697,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●22",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.501Z",
           "field": "성별",
           "claimed": "수",
           "observed": "수",
@@ -3739,9 +3739,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●22",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.501Z",
           "field": "취득시기",
           "claimed": "2026-07-24",
           "observed": "양수 등록 20260730",
@@ -3781,9 +3781,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●22",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.501Z",
           "field": "보관장소",
           "claimed": "강원 ○○군",
           "observed": "강원 ○○군",
@@ -3824,9 +3824,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●84",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.487Z",
           "field": "이력번호",
           "claimed": "21●●●●●84",
           "observed": "41●●●●●●●●●●●84 등록 (출생 20251224)",
@@ -3866,9 +3866,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●84",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.487Z",
           "field": "품종",
           "claimed": "한우",
           "observed": "한우",
@@ -3908,9 +3908,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●84",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.487Z",
           "field": "성별",
           "claimed": "수",
           "observed": "수",
@@ -3950,9 +3950,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●84",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.487Z",
           "field": "취득시기",
           "claimed": "2026-07-27",
           "observed": "양수 등록 20260730",
@@ -3992,9 +3992,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●84",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.487Z",
           "field": "보관장소",
           "claimed": "강원 ○○군",
           "observed": "강원 ○○군",
@@ -4035,9 +4035,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●87",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.506Z",
           "field": "이력번호",
           "claimed": "21●●●●●87",
           "observed": "41●●●●●●●●●●●87 등록 (출생 20251231)",
@@ -4077,9 +4077,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●87",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.506Z",
           "field": "품종",
           "claimed": "한우",
           "observed": "한우",
@@ -4119,9 +4119,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●87",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.506Z",
           "field": "성별",
           "claimed": "수",
           "observed": "수",
@@ -4161,9 +4161,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●87",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.506Z",
           "field": "취득시기",
           "claimed": "2026-07-27",
           "observed": "양수 등록 20260730",
@@ -4203,9 +4203,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●87",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.506Z",
           "field": "보관장소",
           "claimed": "강원 ○○군",
           "observed": "강원 ○○군",
@@ -4246,9 +4246,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●18",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.509Z",
           "field": "이력번호",
           "claimed": "21●●●●●18",
           "observed": "41●●●●●●●●●●●18 등록 (출생 20251120)",
@@ -4288,9 +4288,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●18",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.509Z",
           "field": "품종",
           "claimed": "한우",
           "observed": "한우",
@@ -4330,9 +4330,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●18",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.509Z",
           "field": "성별",
           "claimed": "수",
           "observed": "수",
@@ -4372,9 +4372,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●18",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.509Z",
           "field": "취득시기",
           "claimed": "2026-07-27",
           "observed": "양수 등록 20260730",
@@ -4414,9 +4414,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●18",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.509Z",
           "field": "보관장소",
           "claimed": "강원 ○○군",
           "observed": "강원 ○○군",
@@ -4457,9 +4457,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●66",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.621Z",
           "field": "이력번호",
           "claimed": "21●●●●●66",
           "observed": "41●●●●●●●●●●●66 등록 (출생 20251031)",
@@ -4499,9 +4499,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●66",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.621Z",
           "field": "품종",
           "claimed": "한우",
           "observed": "한우",
@@ -4541,9 +4541,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●66",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.621Z",
           "field": "성별",
           "claimed": "수",
           "observed": "수",
@@ -4583,9 +4583,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●66",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.621Z",
           "field": "취득시기",
           "claimed": "2026-07-27",
           "observed": "양수 등록 20260730",
@@ -4625,9 +4625,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●66",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.621Z",
           "field": "보관장소",
           "claimed": "강원 ○○군",
           "observed": "강원 ○○군",
@@ -4668,9 +4668,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●39",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.622Z",
           "field": "이력번호",
           "claimed": "21●●●●●39",
           "observed": "41●●●●●●●●●●●39 등록 (출생 20260126)",
@@ -4710,9 +4710,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●39",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.622Z",
           "field": "품종",
           "claimed": "한우",
           "observed": "한우",
@@ -4752,9 +4752,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●39",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.622Z",
           "field": "성별",
           "claimed": "수",
           "observed": "수",
@@ -4794,9 +4794,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●39",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.622Z",
           "field": "취득시기",
           "claimed": "2026-07-28",
           "observed": "양수 등록 20260730",
@@ -4836,9 +4836,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●39",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.622Z",
           "field": "보관장소",
           "claimed": "강원 ○○군",
           "observed": "강원 ○○군",
@@ -4879,9 +4879,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●64",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.620Z",
           "field": "이력번호",
           "claimed": "21●●●●●64",
           "observed": "41●●●●●●●●●●●64 등록 (출생 20260106)",
@@ -4921,9 +4921,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●64",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.620Z",
           "field": "품종",
           "claimed": "한우",
           "observed": "한우",
@@ -4963,9 +4963,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●64",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.620Z",
           "field": "성별",
           "claimed": "수",
           "observed": "수",
@@ -5005,9 +5005,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●64",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.620Z",
           "field": "취득시기",
           "claimed": "2026-07-28",
           "observed": "양수 등록 20260730",
@@ -5047,9 +5047,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●64",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.620Z",
           "field": "보관장소",
           "claimed": "강원 ○○군",
           "observed": "강원 ○○군",
@@ -5090,9 +5090,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●79",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.647Z",
           "field": "이력번호",
           "claimed": "21●●●●●79",
           "observed": "41●●●●●●●●●●●79 등록 (출생 20260105)",
@@ -5132,9 +5132,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●79",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.647Z",
           "field": "품종",
           "claimed": "한우",
           "observed": "한우",
@@ -5174,9 +5174,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●79",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.647Z",
           "field": "성별",
           "claimed": "수",
           "observed": "수",
@@ -5216,9 +5216,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●79",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.647Z",
           "field": "취득시기",
           "claimed": "2026-07-28",
           "observed": "현 사육지 등록일 20260105 (전산등록)",
@@ -5258,9 +5258,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●79",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.647Z",
           "field": "보관장소",
           "claimed": "강원 ○○군",
           "observed": "경북 ○○시",
@@ -5301,9 +5301,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●12",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.646Z",
           "field": "이력번호",
           "claimed": "21●●●●●12",
           "observed": "41●●●●●●●●●●●12 등록 (출생 20251227)",
@@ -5343,9 +5343,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●12",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.646Z",
           "field": "품종",
           "claimed": "한우",
           "observed": "한우",
@@ -5385,9 +5385,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●12",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.646Z",
           "field": "성별",
           "claimed": "수",
           "observed": "수",
@@ -5427,9 +5427,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●12",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.646Z",
           "field": "취득시기",
           "claimed": "2026-07-28",
           "observed": "양수 등록 20260730",
@@ -5469,9 +5469,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●12",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.646Z",
           "field": "보관장소",
           "claimed": "강원 ○○군",
           "observed": "강원 ○○군",
@@ -5512,9 +5512,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●03",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.725Z",
           "field": "이력번호",
           "claimed": "21●●●●●03",
           "observed": "41●●●●●●●●●●●03 등록 (출생 20251220)",
@@ -5554,9 +5554,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●03",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.725Z",
           "field": "품종",
           "claimed": "한우",
           "observed": "한우",
@@ -5596,9 +5596,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●03",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.725Z",
           "field": "성별",
           "claimed": "수",
           "observed": "수",
@@ -5638,9 +5638,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●03",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.725Z",
           "field": "취득시기",
           "claimed": "2026-07-28",
           "observed": "양수 등록 20260730",
@@ -5680,9 +5680,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●03",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.725Z",
           "field": "보관장소",
           "claimed": "강원 ○○군",
           "observed": "강원 ○○군",
@@ -5723,9 +5723,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●20",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.723Z",
           "field": "이력번호",
           "claimed": "21●●●●●20",
           "observed": "41●●●●●●●●●●●20 등록 (출생 20251205)",
@@ -5765,9 +5765,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●20",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.723Z",
           "field": "품종",
           "claimed": "한우",
           "observed": "한우",
@@ -5807,9 +5807,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●20",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.723Z",
           "field": "성별",
           "claimed": "수",
           "observed": "수",
@@ -5849,9 +5849,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●20",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.723Z",
           "field": "취득시기",
           "claimed": "2026-07-28",
           "observed": "양수 등록 20260730",
@@ -5891,9 +5891,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●20",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.723Z",
           "field": "보관장소",
           "claimed": "강원 ○○군",
           "observed": "강원 ○○군",
@@ -5934,9 +5934,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●71",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.724Z",
           "field": "이력번호",
           "claimed": "21●●●●●71",
           "observed": "41●●●●●●●●●●●71 등록 (출생 20251203)",
@@ -5976,9 +5976,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●71",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.724Z",
           "field": "품종",
           "claimed": "한우",
           "observed": "한우",
@@ -6018,9 +6018,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●71",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.724Z",
           "field": "성별",
           "claimed": "수",
           "observed": "수",
@@ -6060,9 +6060,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●71",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.724Z",
           "field": "취득시기",
           "claimed": "2026-07-28",
           "observed": "양수 등록 20260730",
@@ -6102,9 +6102,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●71",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.724Z",
           "field": "보관장소",
           "claimed": "강원 ○○군",
           "observed": "강원 ○○군",
@@ -6145,9 +6145,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●72",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.793Z",
           "field": "이력번호",
           "claimed": "22●●●●●72",
           "observed": "41●●●●●●●●●●●72 등록 (출생 20251115)",
@@ -6187,9 +6187,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●72",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.793Z",
           "field": "품종",
           "claimed": "한우",
           "observed": "한우",
@@ -6229,9 +6229,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●72",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.793Z",
           "field": "성별",
           "claimed": "수",
           "observed": "수",
@@ -6271,9 +6271,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●72",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.793Z",
           "field": "취득시기",
           "claimed": "2026-07-28",
           "observed": "양수 등록 20260730",
@@ -6313,9 +6313,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●72",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.793Z",
           "field": "보관장소",
           "claimed": "강원 ○○군",
           "observed": "강원 ○○군",
@@ -6356,9 +6356,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●70",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.792Z",
           "field": "이력번호",
           "claimed": "21●●●●●70",
           "observed": "41●●●●●●●●●●●70 등록 (출생 20251114)",
@@ -6398,9 +6398,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●70",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.792Z",
           "field": "품종",
           "claimed": "한우",
           "observed": "한우",
@@ -6440,9 +6440,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●70",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.792Z",
           "field": "성별",
           "claimed": "수",
           "observed": "수",
@@ -6482,9 +6482,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●70",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.792Z",
           "field": "취득시기",
           "claimed": "2026-07-28",
           "observed": "양수 등록 20260730",
@@ -6524,9 +6524,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●70",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.792Z",
           "field": "보관장소",
           "claimed": "강원 ○○군",
           "observed": "강원 ○○군",
@@ -6567,9 +6567,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●69",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.794Z",
           "field": "이력번호",
           "claimed": "21●●●●●69",
           "observed": "41●●●●●●●●●●●69 등록 (출생 20251030)",
@@ -6609,9 +6609,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●69",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.794Z",
           "field": "품종",
           "claimed": "한우",
           "observed": "한우",
@@ -6651,9 +6651,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●69",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.794Z",
           "field": "성별",
           "claimed": "수",
           "observed": "수",
@@ -6693,9 +6693,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●69",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.794Z",
           "field": "취득시기",
           "claimed": "2026-07-28",
           "observed": "양수 등록 20260730",
@@ -6735,9 +6735,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●69",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.794Z",
           "field": "보관장소",
           "claimed": "강원 ○○군",
           "observed": "강원 ○○군",
@@ -6778,9 +6778,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●85",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.919Z",
           "field": "이력번호",
           "claimed": "21●●●●●85",
           "observed": "41●●●●●●●●●●●85 등록 (출생 20251015)",
@@ -6820,9 +6820,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●85",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.919Z",
           "field": "품종",
           "claimed": "한우",
           "observed": "한우",
@@ -6862,9 +6862,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●85",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.919Z",
           "field": "성별",
           "claimed": "수",
           "observed": "수",
@@ -6904,9 +6904,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●85",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.919Z",
           "field": "취득시기",
           "claimed": "2026-07-28",
           "observed": "양수 등록 20260730",
@@ -6946,9 +6946,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●85",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.919Z",
           "field": "보관장소",
           "claimed": "강원 ○○군",
           "observed": "강원 ○○군",
@@ -6989,9 +6989,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●82",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.917Z",
           "field": "이력번호",
           "claimed": "21●●●●●82",
           "observed": "41●●●●●●●●●●●82 등록 (출생 20260123)",
@@ -7031,9 +7031,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●82",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.917Z",
           "field": "품종",
           "claimed": "한우",
           "observed": "한우",
@@ -7073,9 +7073,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●82",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.917Z",
           "field": "성별",
           "claimed": "수",
           "observed": "수",
@@ -7115,9 +7115,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●82",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.917Z",
           "field": "취득시기",
           "claimed": "2026-07-28",
           "observed": "양수 등록 20260730",
@@ -7157,9 +7157,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●82",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.917Z",
           "field": "보관장소",
           "claimed": "강원 ○○군",
           "observed": "강원 ○○군",
@@ -7200,9 +7200,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●77",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.918Z",
           "field": "이력번호",
           "claimed": "21●●●●●77",
           "observed": "41●●●●●●●●●●●77 등록 (출생 20251220)",
@@ -7242,9 +7242,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●77",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.918Z",
           "field": "품종",
           "claimed": "한우",
           "observed": "한우",
@@ -7284,9 +7284,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●77",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.918Z",
           "field": "성별",
           "claimed": "수",
           "observed": "수",
@@ -7326,9 +7326,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●77",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.918Z",
           "field": "취득시기",
           "claimed": "2026-07-28",
           "observed": "양수 등록 20260730",
@@ -7368,9 +7368,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●77",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.918Z",
           "field": "보관장소",
           "claimed": "강원 ○○군",
           "observed": "강원 ○○군",
@@ -7411,9 +7411,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●79",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.937Z",
           "field": "이력번호",
           "claimed": "21●●●●●79",
           "observed": "41●●●●●●●●●●●79 등록 (출생 20251128)",
@@ -7453,9 +7453,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●79",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.937Z",
           "field": "품종",
           "claimed": "한우",
           "observed": "한우",
@@ -7495,9 +7495,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●79",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.937Z",
           "field": "성별",
           "claimed": "수",
           "observed": "수",
@@ -7537,9 +7537,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●79",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.937Z",
           "field": "취득시기",
           "claimed": "2026-07-28",
           "observed": "양수 등록 20260730",
@@ -7579,9 +7579,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●79",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.937Z",
           "field": "보관장소",
           "claimed": "강원 ○○군",
           "observed": "강원 ○○군",
@@ -7622,9 +7622,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●64",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.939Z",
           "field": "이력번호",
           "claimed": "21●●●●●64",
           "observed": "41●●●●●●●●●●●64 등록 (출생 20251111)",
@@ -7664,9 +7664,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●64",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.939Z",
           "field": "품종",
           "claimed": "한우",
           "observed": "한우",
@@ -7706,9 +7706,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●64",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.939Z",
           "field": "성별",
           "claimed": "수",
           "observed": "수",
@@ -7748,9 +7748,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●64",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.939Z",
           "field": "취득시기",
           "claimed": "2026-07-28",
           "observed": "양수 등록 20260730",
@@ -7790,9 +7790,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●64",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.939Z",
           "field": "보관장소",
           "claimed": "강원 ○○군",
           "observed": "강원 ○○군",
@@ -7833,9 +7833,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●75",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.939Z",
           "field": "이력번호",
           "claimed": "21●●●●●75",
           "observed": "41●●●●●●●●●●●75 등록 (출생 20251109)",
@@ -7875,9 +7875,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●75",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.939Z",
           "field": "품종",
           "claimed": "한우",
           "observed": "한우",
@@ -7917,9 +7917,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●75",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.939Z",
           "field": "성별",
           "claimed": "수",
           "observed": "수",
@@ -7959,9 +7959,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●75",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.939Z",
           "field": "취득시기",
           "claimed": "2026-07-28",
           "observed": "양수 등록 20260730",
@@ -8001,9 +8001,9 @@
       "evidence": [
         {
           "sourceId": "livestock-trace",
-          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923) — 2026-08-10 실측 스냅샷 재생",
+          "sourceName": "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
           "url": "http://data.ekape.or.kr/openapi-data/service/user/animalTrace/traceNoSearch?traceNo=00●●●●●●●●75",
-          "observedAt": "2026-08-09T16:40:38.382Z",
+          "observedAt": "2026-08-14T05:52:58.939Z",
           "field": "보관장소",
           "claimed": "강원 ○○군",
           "observed": "강원 ○○군",
@@ -11185,6 +11185,6 @@
   "notes": [
     "추출 모드: cross-check",
     "규칙 기반 추출 claim 222건 · LLM 추출 claim 185건",
-    "규칙·LLM 교차검증(추출기 fake) — 양쪽 일치 185건 · 규칙 단독 37건 · LLM 단독 0건 · 값 상충 강등 0건"
+    "규칙·LLM 교차검증(추출기 ai-sdk:openai:gpt-4.1-mini) — 양쪽 일치 185건 · 규칙 단독 37건 · LLM 단독 0건 · 값 상충 강등 0건"
   ]
 }

@@ -131,8 +131,19 @@ const main = async (): Promise<void> => {
     extractionMode: options.extractionMode,
     extractor,
   });
-  const internal = await writeReport(report, options.dataDir);
-  const published = await writePublicReport(report, options.dataDir);
+  const isFakeRun = report.mode === "fake";
+  const allowPublish = process.argv.includes("--publish");
+  const effectiveDataDir =
+    isFakeRun && options.dataDir === "data" && !allowPublish
+      ? path.join("data", "scratch-fake")
+      : options.dataDir;
+  if (effectiveDataDir !== options.dataDir) {
+    console.log(
+      "fake 모드 산출물은 data/scratch-fake/에 저장됩니다 — data/public/ 최신본을 fake로 덮으려면 --publish를 명시하세요.",
+    );
+  }
+  const internal = await writeReport(report, effectiveDataDir);
+  const published = await writePublicReport(report, effectiveDataDir);
   printSummary(report, { internal, published });
 };
 
