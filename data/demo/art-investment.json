@@ -1,0 +1,3295 @@
+{
+  "offerings": [
+    {
+      "id": "demo-art-001",
+      "slug": "demo-art-001",
+      "artworkId": "demo-artwork-001",
+      "artistId": "demo-artist-001",
+      "platformId": "demo-platform-001",
+      "issuerId": "demo-issuer-001",
+      "title": "DEMO 작가 A 〈빛의 층위 01〉 조각투자",
+      "status": "upcoming",
+      "subscriptionStart": "2026-09-09",
+      "subscriptionEnd": "2026-09-16",
+      "unitPrice": 10000,
+      "minimumInvestment": 50000,
+      "numberOfUnits": 13000,
+      "totalOfferingAmount": 130000000,
+      "acquisitionPrice": 120000000,
+      "appraisalValue": 132000000,
+      "targetHoldingMonths": 24,
+      "actualHoldingMonths": null,
+      "distributionTerms": "작품 매각 및 비용 정산 후 잔여금 분배",
+      "exitMethod": "플랫폼 주관 공개 매각 또는 경매",
+      "midTermTransferAvailable": true,
+      "disclosedCosts": [
+        {
+          "category": "issuance",
+          "label": "발행비용",
+          "amount": 3600000
+        },
+        {
+          "category": "platform",
+          "label": "플랫폼 수수료",
+          "amount": 2200000
+        },
+        {
+          "category": "storage",
+          "label": "보관비",
+          "amount": 1400000
+        },
+        {
+          "category": "insurance",
+          "label": "보험료",
+          "amount": 1100000
+        },
+        {
+          "category": "management",
+          "label": "관리비",
+          "amount": 700000
+        }
+      ],
+      "actualDistributionAmount": null,
+      "actualExitAmount": null,
+      "asOfDate": "2026-08-15",
+      "updatedAt": "2026-08-15T09:00:00+09:00",
+      "sourceIds": [
+        "ev-demo-art-001-document",
+        "ev-demo-art-001-auction",
+        "ev-demo-art-001-platform"
+      ],
+      "isDemo": true
+    },
+    {
+      "id": "demo-art-002",
+      "slug": "demo-art-002",
+      "artworkId": "demo-artwork-002",
+      "artistId": "demo-artist-002",
+      "platformId": "demo-platform-002",
+      "issuerId": "demo-issuer-002",
+      "title": "DEMO 작가 B 〈고요한 궤적 02〉 조각투자",
+      "status": "open",
+      "subscriptionStart": "2026-09-10",
+      "subscriptionEnd": "2026-09-17",
+      "unitPrice": 10000,
+      "minimumInvestment": 100000,
+      "numberOfUnits": 11500,
+      "totalOfferingAmount": 115000000,
+      "acquisitionPrice": 100000000,
+      "appraisalValue": 112000000,
+      "targetHoldingMonths": 24,
+      "actualHoldingMonths": null,
+      "distributionTerms": "작품 매각 및 비용 정산 후 잔여금 분배",
+      "exitMethod": "플랫폼 주관 공개 매각 또는 경매",
+      "midTermTransferAvailable": true,
+      "disclosedCosts": [
+        {
+          "category": "issuance",
+          "label": "발행비용",
+          "amount": 4800000
+        },
+        {
+          "category": "platform",
+          "label": "플랫폼 수수료",
+          "amount": 3000000
+        },
+        {
+          "category": "storage",
+          "label": "보관비",
+          "amount": 1800000
+        },
+        {
+          "category": "insurance",
+          "label": "보험료",
+          "amount": 1400000
+        },
+        {
+          "category": "management",
+          "label": "관리비",
+          "amount": 1000000
+        }
+      ],
+      "actualDistributionAmount": null,
+      "actualExitAmount": null,
+      "asOfDate": "2026-08-15",
+      "updatedAt": "2026-08-15T09:00:00+09:00",
+      "sourceIds": [
+        "ev-demo-art-002-document",
+        "ev-demo-art-002-auction",
+        "ev-demo-art-002-platform"
+      ],
+      "isDemo": true
+    },
+    {
+      "id": "demo-art-003",
+      "slug": "demo-art-003",
+      "artworkId": "demo-artwork-003",
+      "artistId": "demo-artist-003",
+      "platformId": "demo-platform-003",
+      "issuerId": "demo-issuer-003",
+      "title": "DEMO 작가 C 〈경계의 리듬 03〉 조각투자",
+      "status": "open",
+      "subscriptionStart": "2026-09-11",
+      "subscriptionEnd": "2026-09-18",
+      "unitPrice": 10000,
+      "minimumInvestment": 150000,
+      "numberOfUnits": 11800,
+      "totalOfferingAmount": 118000000,
+      "acquisitionPrice": 90000000,
+      "appraisalValue": 102000000,
+      "targetHoldingMonths": 24,
+      "actualHoldingMonths": null,
+      "distributionTerms": "작품 매각 및 비용 정산 후 잔여금 분배",
+      "exitMethod": "플랫폼 주관 공개 매각 또는 경매",
+      "midTermTransferAvailable": false,
+      "disclosedCosts": [
+        {
+          "category": "issuance",
+          "label": "발행비용",
+          "amount": 4000000
+        },
+        {
+          "category": "platform",
+          "label": "플랫폼 수수료",
+          "amount": 2500000
+        },
+        {
+          "category": "storage",
+          "label": "보관비",
+          "amount": 1500000
+        },
+        {
+          "category": "insurance",
+          "label": "보험료",
+          "amount": 1200000
+        },
+        {
+          "category": "management",
+          "label": "관리비",
+          "amount": 800000
+        }
+      ],
+      "actualDistributionAmount": null,
+      "actualExitAmount": null,
+      "asOfDate": "2026-08-15",
+      "updatedAt": "2026-08-15T09:00:00+09:00",
+      "sourceIds": [
+        "ev-demo-art-003-document",
+        "ev-demo-art-003-auction",
+        "ev-demo-art-003-platform"
+      ],
+      "isDemo": true
+    },
+    {
+      "id": "demo-art-004",
+      "slug": "demo-art-004",
+      "artworkId": "demo-artwork-004",
+      "artistId": "demo-artist-004",
+      "platformId": "demo-platform-004",
+      "issuerId": "demo-issuer-004",
+      "title": "DEMO 작가 D 〈불확실한 장면 04〉 조각투자",
+      "status": "upcoming",
+      "subscriptionStart": "2026-09-12",
+      "subscriptionEnd": "2026-09-19",
+      "unitPrice": 10000,
+      "minimumInvestment": 200000,
+      "numberOfUnits": 16500,
+      "totalOfferingAmount": 165000000,
+      "acquisitionPrice": null,
+      "appraisalValue": 140000000,
+      "targetHoldingMonths": 24,
+      "actualHoldingMonths": null,
+      "distributionTerms": "작품 매각 및 비용 정산 후 잔여금 분배",
+      "exitMethod": "플랫폼 주관 공개 매각 또는 경매",
+      "midTermTransferAvailable": false,
+      "disclosedCosts": [
+        {
+          "category": "issuance",
+          "label": "발행비용(일부 공개)",
+          "amount": 5000000
+        },
+        {
+          "category": "storage",
+          "label": "보관·보험료(합산 공개)",
+          "amount": 3000000
+        }
+      ],
+      "actualDistributionAmount": null,
+      "actualExitAmount": null,
+      "asOfDate": "2026-08-15",
+      "updatedAt": "2026-08-15T09:00:00+09:00",
+      "sourceIds": [
+        "ev-demo-art-004-document",
+        "ev-demo-art-004-auction",
+        "ev-demo-art-004-platform"
+      ],
+      "isDemo": true
+    }
+  ],
+  "artworks": [
+    {
+      "id": "demo-artwork-001",
+      "artistId": "demo-artist-001",
+      "title": "빛의 층위 01",
+      "productionYear": 2021,
+      "medium": "캔버스에 혼합재료",
+      "width": 96,
+      "height": 120,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 시리즈 A",
+      "provenance": "DEMO 갤러리 가상 취득",
+      "condition": "양호 (데모)",
+      "imageUrl": "/demo-art/art-1.svg",
+      "sourceIds": [
+        "ev-demo-art-001-document"
+      ]
+    },
+    {
+      "id": "demo-artwork-002",
+      "artistId": "demo-artist-002",
+      "title": "고요한 궤적 02",
+      "productionYear": 2020,
+      "medium": "캔버스에 혼합재료",
+      "width": 101,
+      "height": 124,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 시리즈 B",
+      "provenance": "DEMO 갤러리 가상 취득",
+      "condition": "양호 (데모)",
+      "imageUrl": "/demo-art/art-2.svg",
+      "sourceIds": [
+        "ev-demo-art-002-document"
+      ]
+    },
+    {
+      "id": "demo-artwork-003",
+      "artistId": "demo-artist-003",
+      "title": "경계의 리듬 03",
+      "productionYear": 2019,
+      "medium": "캔버스에 혼합재료",
+      "width": 106,
+      "height": 128,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 시리즈 C",
+      "provenance": "DEMO 갤러리 가상 취득",
+      "condition": "양호 (데모)",
+      "imageUrl": "/demo-art/art-3.svg",
+      "sourceIds": [
+        "ev-demo-art-003-document"
+      ]
+    },
+    {
+      "id": "demo-artwork-004",
+      "artistId": "demo-artist-004",
+      "title": "불확실한 장면 04",
+      "productionYear": 2018,
+      "medium": "캔버스에 혼합재료",
+      "width": 111,
+      "height": 132,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 시리즈 D",
+      "provenance": "DEMO 갤러리 가상 취득",
+      "condition": "양호 (데모)",
+      "imageUrl": "/demo-art/art-4.svg",
+      "sourceIds": [
+        "ev-demo-art-004-document"
+      ]
+    }
+  ],
+  "artists": [
+    {
+      "id": "demo-artist-001",
+      "nameKo": "DEMO 작가 A",
+      "nameEn": "Layered Light A",
+      "birthYear": 1973,
+      "deathYear": null,
+      "nationality": "대한민국 (가상)",
+      "biography": "공모전 기능 검증을 위해 만든 가상 작가입니다. 실존 인물과 관련이 없습니다.",
+      "officialCareer": [
+        {
+          "type": "solo",
+          "title": "DEMO 개인전 1",
+          "year": 2023,
+          "sourceId": "ev-demo-art-001-career"
+        },
+        {
+          "type": "collection",
+          "title": "DEMO 시립미술관 가상 소장",
+          "year": 2024,
+          "sourceId": "ev-demo-art-001-career"
+        }
+      ],
+      "imageUrl": "/demo-art/art-1.svg",
+      "sourceIds": [
+        "ev-demo-art-001-career"
+      ]
+    },
+    {
+      "id": "demo-artist-002",
+      "nameKo": "DEMO 작가 B",
+      "nameEn": "Silent Orbit B",
+      "birthYear": 1976,
+      "deathYear": null,
+      "nationality": "대한민국 (가상)",
+      "biography": "공모전 기능 검증을 위해 만든 가상 작가입니다. 실존 인물과 관련이 없습니다.",
+      "officialCareer": [
+        {
+          "type": "solo",
+          "title": "DEMO 개인전 2",
+          "year": 2023,
+          "sourceId": "ev-demo-art-002-career"
+        },
+        {
+          "type": "collection",
+          "title": "DEMO 시립미술관 가상 소장",
+          "year": 2024,
+          "sourceId": "ev-demo-art-002-career"
+        }
+      ],
+      "imageUrl": "/demo-art/art-2.svg",
+      "sourceIds": [
+        "ev-demo-art-002-career"
+      ]
+    },
+    {
+      "id": "demo-artist-003",
+      "nameKo": "DEMO 작가 C",
+      "nameEn": "Boundary Rhythm C",
+      "birthYear": 1979,
+      "deathYear": null,
+      "nationality": "대한민국 (가상)",
+      "biography": "공모전 기능 검증을 위해 만든 가상 작가입니다. 실존 인물과 관련이 없습니다.",
+      "officialCareer": [
+        {
+          "type": "solo",
+          "title": "DEMO 개인전 3",
+          "year": 2023,
+          "sourceId": "ev-demo-art-003-career"
+        },
+        {
+          "type": "collection",
+          "title": "DEMO 시립미술관 가상 소장",
+          "year": 2024,
+          "sourceId": "ev-demo-art-003-career"
+        }
+      ],
+      "imageUrl": "/demo-art/art-3.svg",
+      "sourceIds": [
+        "ev-demo-art-003-career"
+      ]
+    },
+    {
+      "id": "demo-artist-004",
+      "nameKo": "DEMO 작가 D",
+      "nameEn": "Uncertain Scene D",
+      "birthYear": 1982,
+      "deathYear": null,
+      "nationality": "대한민국 (가상)",
+      "biography": "공모전 기능 검증을 위해 만든 가상 작가입니다. 실존 인물과 관련이 없습니다.",
+      "officialCareer": [
+        {
+          "type": "solo",
+          "title": "DEMO 개인전 4",
+          "year": 2023,
+          "sourceId": "ev-demo-art-004-career"
+        },
+        {
+          "type": "collection",
+          "title": "DEMO 시립미술관 가상 소장",
+          "year": 2024,
+          "sourceId": "ev-demo-art-004-career"
+        }
+      ],
+      "imageUrl": "/demo-art/art-4.svg",
+      "sourceIds": [
+        "ev-demo-art-004-career"
+      ]
+    }
+  ],
+  "auctions": [
+    {
+      "id": "auction-1-01",
+      "artistId": "demo-artist-001",
+      "artworkTitle": "DEMO 시리즈 A #1",
+      "auctionDate": "2024-01-01",
+      "auctionHouse": "DEMO 경매사 1",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-1-1",
+      "productionYear": 2018,
+      "medium": "종이에 혼합재료",
+      "width": 88,
+      "height": 110,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 시리즈 A",
+      "estimateLow": 69360000,
+      "estimateHigh": 89760000,
+      "hammerPrice": 76704000,
+      "realizedPrice": 81600000,
+      "currency": "KRW",
+      "normalizedPriceKRW": 81600000,
+      "result": "sold",
+      "sourceIds": [
+        "ev-demo-art-001-auction"
+      ]
+    },
+    {
+      "id": "auction-1-02",
+      "artistId": "demo-artist-001",
+      "artworkTitle": "DEMO 시리즈 A #2",
+      "auctionDate": "2025-03-04",
+      "auctionHouse": "DEMO 경매사 2",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-1-2",
+      "productionYear": 2019,
+      "medium": "캔버스에 혼합재료",
+      "width": 90,
+      "height": 113,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 시리즈 A",
+      "estimateLow": 74970000,
+      "estimateHigh": 97020000,
+      "hammerPrice": 82908000,
+      "realizedPrice": 88200000,
+      "currency": "KRW",
+      "normalizedPriceKRW": 88200000,
+      "result": "sold",
+      "sourceIds": [
+        "ev-demo-art-001-auction"
+      ]
+    },
+    {
+      "id": "auction-1-03",
+      "artistId": "demo-artist-001",
+      "artworkTitle": "DEMO 시리즈 A #3",
+      "auctionDate": "2026-05-07",
+      "auctionHouse": "DEMO 경매사 3",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-1-3",
+      "productionYear": 2020,
+      "medium": "캔버스에 혼합재료",
+      "width": 92,
+      "height": 116,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 시리즈 A",
+      "estimateLow": 80580000,
+      "estimateHigh": 104280000,
+      "hammerPrice": 89112000,
+      "realizedPrice": 94800000,
+      "currency": "KRW",
+      "normalizedPriceKRW": 94800000,
+      "result": "sold",
+      "sourceIds": [
+        "ev-demo-art-001-auction"
+      ]
+    },
+    {
+      "id": "auction-1-04",
+      "artistId": "demo-artist-001",
+      "artworkTitle": "DEMO 시리즈 A #4",
+      "auctionDate": "2024-07-10",
+      "auctionHouse": "DEMO 경매사 1",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-1-4",
+      "productionYear": 2021,
+      "medium": "캔버스에 혼합재료",
+      "width": 94,
+      "height": 119,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 시리즈 A",
+      "estimateLow": 86190000,
+      "estimateHigh": 111540000,
+      "hammerPrice": 95316000,
+      "realizedPrice": 101400000,
+      "currency": "KRW",
+      "normalizedPriceKRW": 101400000,
+      "result": "sold",
+      "sourceIds": [
+        "ev-demo-art-001-auction"
+      ]
+    },
+    {
+      "id": "auction-1-05",
+      "artistId": "demo-artist-001",
+      "artworkTitle": "DEMO 시리즈 A #5",
+      "auctionDate": "2025-09-13",
+      "auctionHouse": "DEMO 경매사 2",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-1-5",
+      "productionYear": 2022,
+      "medium": "종이에 혼합재료",
+      "width": 96,
+      "height": 122,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 시리즈 A",
+      "estimateLow": 91800000,
+      "estimateHigh": 118800000,
+      "hammerPrice": 101520000,
+      "realizedPrice": 108000000,
+      "currency": "KRW",
+      "normalizedPriceKRW": 108000000,
+      "result": "sold",
+      "sourceIds": [
+        "ev-demo-art-001-auction"
+      ]
+    },
+    {
+      "id": "auction-1-06",
+      "artistId": "demo-artist-001",
+      "artworkTitle": "DEMO 시리즈 A #6",
+      "auctionDate": "2026-11-16",
+      "auctionHouse": "DEMO 경매사 3",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-1-6",
+      "productionYear": 2018,
+      "medium": "캔버스에 혼합재료",
+      "width": 98,
+      "height": 125,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 시리즈 A",
+      "estimateLow": 97410000,
+      "estimateHigh": 126060000,
+      "hammerPrice": 107724000,
+      "realizedPrice": 114600000,
+      "currency": "KRW",
+      "normalizedPriceKRW": 114600000,
+      "result": "sold",
+      "sourceIds": [
+        "ev-demo-art-001-auction"
+      ]
+    },
+    {
+      "id": "auction-1-07",
+      "artistId": "demo-artist-001",
+      "artworkTitle": "DEMO 시리즈 A #7",
+      "auctionDate": "2024-01-19",
+      "auctionHouse": "DEMO 경매사 1",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-1-7",
+      "productionYear": 2019,
+      "medium": "캔버스에 혼합재료",
+      "width": 100,
+      "height": 128,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 시리즈 A",
+      "estimateLow": 103020000,
+      "estimateHigh": 133320000,
+      "hammerPrice": 113928000,
+      "realizedPrice": 121200000,
+      "currency": "KRW",
+      "normalizedPriceKRW": 121200000,
+      "result": "sold",
+      "sourceIds": [
+        "ev-demo-art-001-auction"
+      ]
+    },
+    {
+      "id": "auction-1-08",
+      "artistId": "demo-artist-001",
+      "artworkTitle": "DEMO 시리즈 A #8",
+      "auctionDate": "2025-03-22",
+      "auctionHouse": "DEMO 경매사 2",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-1-8",
+      "productionYear": 2020,
+      "medium": "캔버스에 혼합재료",
+      "width": 102,
+      "height": 131,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 시리즈 A",
+      "estimateLow": 108630000,
+      "estimateHigh": 140580000,
+      "hammerPrice": 120132000,
+      "realizedPrice": 127800000,
+      "currency": "KRW",
+      "normalizedPriceKRW": 127800000,
+      "result": "sold",
+      "sourceIds": [
+        "ev-demo-art-001-auction"
+      ]
+    },
+    {
+      "id": "auction-1-09",
+      "artistId": "demo-artist-001",
+      "artworkTitle": "DEMO 시리즈 A #9",
+      "auctionDate": "2026-05-25",
+      "auctionHouse": "DEMO 경매사 3",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-1-9",
+      "productionYear": 2021,
+      "medium": "종이에 혼합재료",
+      "width": 104,
+      "height": 134,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 시리즈 A",
+      "estimateLow": 114240000,
+      "estimateHigh": 147840000,
+      "hammerPrice": 126336000,
+      "realizedPrice": 134400000,
+      "currency": "KRW",
+      "normalizedPriceKRW": 134400000,
+      "result": "sold",
+      "sourceIds": [
+        "ev-demo-art-001-auction"
+      ]
+    },
+    {
+      "id": "auction-1-10",
+      "artistId": "demo-artist-001",
+      "artworkTitle": "DEMO 시리즈 A #10",
+      "auctionDate": "2024-07-01",
+      "auctionHouse": "DEMO 경매사 1",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-1-10",
+      "productionYear": 2022,
+      "medium": "캔버스에 혼합재료",
+      "width": 106,
+      "height": 137,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 시리즈 A",
+      "estimateLow": 119850000,
+      "estimateHigh": 155100000,
+      "hammerPrice": 132539999,
+      "realizedPrice": 141000000,
+      "currency": "KRW",
+      "normalizedPriceKRW": 141000000,
+      "result": "sold",
+      "sourceIds": [
+        "ev-demo-art-001-auction"
+      ]
+    },
+    {
+      "id": "auction-1-11",
+      "artistId": "demo-artist-001",
+      "artworkTitle": "DEMO 시리즈 A #11",
+      "auctionDate": "2025-09-04",
+      "auctionHouse": "DEMO 경매사 2",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-1-11",
+      "productionYear": 2018,
+      "medium": "캔버스에 혼합재료",
+      "width": 108,
+      "height": 140,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 시리즈 A",
+      "estimateLow": 40000000,
+      "estimateHigh": 70000000,
+      "hammerPrice": null,
+      "realizedPrice": null,
+      "currency": "KRW",
+      "normalizedPriceKRW": null,
+      "result": "unsold",
+      "sourceIds": [
+        "ev-demo-art-001-auction"
+      ]
+    },
+    {
+      "id": "auction-1-12",
+      "artistId": "demo-artist-001",
+      "artworkTitle": "DEMO 기타 시리즈 #12",
+      "auctionDate": "2026-11-07",
+      "auctionHouse": "DEMO 경매사 3",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-1-12",
+      "productionYear": 2019,
+      "medium": "캔버스에 혼합재료",
+      "width": 110,
+      "height": 143,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 기타 시리즈",
+      "estimateLow": 40000000,
+      "estimateHigh": 70000000,
+      "hammerPrice": null,
+      "realizedPrice": null,
+      "currency": "KRW",
+      "normalizedPriceKRW": null,
+      "result": "unsold",
+      "sourceIds": [
+        "ev-demo-art-001-auction"
+      ]
+    },
+    {
+      "id": "auction-2-01",
+      "artistId": "demo-artist-002",
+      "artworkTitle": "DEMO 시리즈 B #1",
+      "auctionDate": "2024-01-01",
+      "auctionHouse": "DEMO 경매사 1",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-2-1",
+      "productionYear": 2018,
+      "medium": "종이에 혼합재료",
+      "width": 88,
+      "height": 110,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 시리즈 B",
+      "estimateLow": 57800000,
+      "estimateHigh": 74800000,
+      "hammerPrice": 63920000,
+      "realizedPrice": 68000000,
+      "currency": "KRW",
+      "normalizedPriceKRW": 68000000,
+      "result": "sold",
+      "sourceIds": [
+        "ev-demo-art-002-auction"
+      ]
+    },
+    {
+      "id": "auction-2-02",
+      "artistId": "demo-artist-002",
+      "artworkTitle": "DEMO 시리즈 B #2",
+      "auctionDate": "2025-03-04",
+      "auctionHouse": "DEMO 경매사 2",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-2-2",
+      "productionYear": 2019,
+      "medium": "캔버스에 혼합재료",
+      "width": 90,
+      "height": 113,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 시리즈 B",
+      "estimateLow": 62475000,
+      "estimateHigh": 80850000,
+      "hammerPrice": 69090000,
+      "realizedPrice": 73500000,
+      "currency": "KRW",
+      "normalizedPriceKRW": 73500000,
+      "result": "sold",
+      "sourceIds": [
+        "ev-demo-art-002-auction"
+      ]
+    },
+    {
+      "id": "auction-2-03",
+      "artistId": "demo-artist-002",
+      "artworkTitle": "DEMO 시리즈 B #3",
+      "auctionDate": "2026-05-07",
+      "auctionHouse": "DEMO 경매사 3",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-2-3",
+      "productionYear": 2020,
+      "medium": "캔버스에 혼합재료",
+      "width": 92,
+      "height": 116,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 시리즈 B",
+      "estimateLow": 67150000,
+      "estimateHigh": 86900000,
+      "hammerPrice": 74260000,
+      "realizedPrice": 79000000,
+      "currency": "KRW",
+      "normalizedPriceKRW": 79000000,
+      "result": "sold",
+      "sourceIds": [
+        "ev-demo-art-002-auction"
+      ]
+    },
+    {
+      "id": "auction-2-04",
+      "artistId": "demo-artist-002",
+      "artworkTitle": "DEMO 시리즈 B #4",
+      "auctionDate": "2024-07-10",
+      "auctionHouse": "DEMO 경매사 1",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-2-4",
+      "productionYear": 2021,
+      "medium": "캔버스에 혼합재료",
+      "width": 94,
+      "height": 119,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 시리즈 B",
+      "estimateLow": 71825000,
+      "estimateHigh": 92950000,
+      "hammerPrice": 79430000,
+      "realizedPrice": 84500000,
+      "currency": "KRW",
+      "normalizedPriceKRW": 84500000,
+      "result": "sold",
+      "sourceIds": [
+        "ev-demo-art-002-auction"
+      ]
+    },
+    {
+      "id": "auction-2-05",
+      "artistId": "demo-artist-002",
+      "artworkTitle": "DEMO 시리즈 B #5",
+      "auctionDate": "2025-09-13",
+      "auctionHouse": "DEMO 경매사 2",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-2-5",
+      "productionYear": 2022,
+      "medium": "종이에 혼합재료",
+      "width": 96,
+      "height": 122,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 시리즈 B",
+      "estimateLow": 76500000,
+      "estimateHigh": 99000000,
+      "hammerPrice": 84600000,
+      "realizedPrice": 90000000,
+      "currency": "KRW",
+      "normalizedPriceKRW": 90000000,
+      "result": "sold",
+      "sourceIds": [
+        "ev-demo-art-002-auction"
+      ]
+    },
+    {
+      "id": "auction-2-06",
+      "artistId": "demo-artist-002",
+      "artworkTitle": "DEMO 기타 시리즈 #6",
+      "auctionDate": "2026-11-16",
+      "auctionHouse": "DEMO 경매사 3",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-2-6",
+      "productionYear": 2018,
+      "medium": "캔버스에 혼합재료",
+      "width": 98,
+      "height": 125,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 기타 시리즈",
+      "estimateLow": 81175000,
+      "estimateHigh": 105050000,
+      "hammerPrice": 89770000,
+      "realizedPrice": 95500000,
+      "currency": "KRW",
+      "normalizedPriceKRW": 95500000,
+      "result": "sold",
+      "sourceIds": [
+        "ev-demo-art-002-auction"
+      ]
+    },
+    {
+      "id": "auction-2-07",
+      "artistId": "demo-artist-002",
+      "artworkTitle": "DEMO 기타 시리즈 #7",
+      "auctionDate": "2024-01-19",
+      "auctionHouse": "DEMO 경매사 1",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-2-7",
+      "productionYear": 2019,
+      "medium": "캔버스에 혼합재료",
+      "width": 100,
+      "height": 128,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 기타 시리즈",
+      "estimateLow": 85850000,
+      "estimateHigh": 111100000,
+      "hammerPrice": 94940000,
+      "realizedPrice": 101000000,
+      "currency": "KRW",
+      "normalizedPriceKRW": 101000000,
+      "result": "sold",
+      "sourceIds": [
+        "ev-demo-art-002-auction"
+      ]
+    },
+    {
+      "id": "auction-2-08",
+      "artistId": "demo-artist-002",
+      "artworkTitle": "DEMO 기타 시리즈 #8",
+      "auctionDate": "2025-03-22",
+      "auctionHouse": "DEMO 경매사 2",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-2-8",
+      "productionYear": 2020,
+      "medium": "캔버스에 혼합재료",
+      "width": 102,
+      "height": 131,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 기타 시리즈",
+      "estimateLow": 90525000,
+      "estimateHigh": 117150000,
+      "hammerPrice": 100110000,
+      "realizedPrice": 106500000,
+      "currency": "KRW",
+      "normalizedPriceKRW": 106500000,
+      "result": "sold",
+      "sourceIds": [
+        "ev-demo-art-002-auction"
+      ]
+    },
+    {
+      "id": "auction-2-09",
+      "artistId": "demo-artist-002",
+      "artworkTitle": "DEMO 기타 시리즈 #9",
+      "auctionDate": "2026-05-25",
+      "auctionHouse": "DEMO 경매사 3",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-2-9",
+      "productionYear": 2021,
+      "medium": "종이에 혼합재료",
+      "width": 104,
+      "height": 134,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 기타 시리즈",
+      "estimateLow": 95200000,
+      "estimateHigh": 123200000,
+      "hammerPrice": 105280000,
+      "realizedPrice": 112000000,
+      "currency": "KRW",
+      "normalizedPriceKRW": 112000000,
+      "result": "sold",
+      "sourceIds": [
+        "ev-demo-art-002-auction"
+      ]
+    },
+    {
+      "id": "auction-2-10",
+      "artistId": "demo-artist-002",
+      "artworkTitle": "DEMO 기타 시리즈 #10",
+      "auctionDate": "2024-07-01",
+      "auctionHouse": "DEMO 경매사 1",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-2-10",
+      "productionYear": 2022,
+      "medium": "캔버스에 혼합재료",
+      "width": 106,
+      "height": 137,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 기타 시리즈",
+      "estimateLow": 40000000,
+      "estimateHigh": 70000000,
+      "hammerPrice": null,
+      "realizedPrice": null,
+      "currency": "KRW",
+      "normalizedPriceKRW": null,
+      "result": "unsold",
+      "sourceIds": [
+        "ev-demo-art-002-auction"
+      ]
+    },
+    {
+      "id": "auction-2-11",
+      "artistId": "demo-artist-002",
+      "artworkTitle": "DEMO 기타 시리즈 #11",
+      "auctionDate": "2025-09-04",
+      "auctionHouse": "DEMO 경매사 2",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-2-11",
+      "productionYear": 2018,
+      "medium": "캔버스에 혼합재료",
+      "width": 108,
+      "height": 140,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 기타 시리즈",
+      "estimateLow": 40000000,
+      "estimateHigh": 70000000,
+      "hammerPrice": null,
+      "realizedPrice": null,
+      "currency": "KRW",
+      "normalizedPriceKRW": null,
+      "result": "unsold",
+      "sourceIds": [
+        "ev-demo-art-002-auction"
+      ]
+    },
+    {
+      "id": "auction-2-12",
+      "artistId": "demo-artist-002",
+      "artworkTitle": "DEMO 기타 시리즈 #12",
+      "auctionDate": "2026-11-07",
+      "auctionHouse": "DEMO 경매사 3",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-2-12",
+      "productionYear": 2019,
+      "medium": "캔버스에 혼합재료",
+      "width": 110,
+      "height": 143,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 기타 시리즈",
+      "estimateLow": 40000000,
+      "estimateHigh": 70000000,
+      "hammerPrice": null,
+      "realizedPrice": null,
+      "currency": "KRW",
+      "normalizedPriceKRW": null,
+      "result": "unsold",
+      "sourceIds": [
+        "ev-demo-art-002-auction"
+      ]
+    },
+    {
+      "id": "auction-3-01",
+      "artistId": "demo-artist-003",
+      "artworkTitle": "DEMO 시리즈 C #1",
+      "auctionDate": "2024-01-01",
+      "auctionHouse": "DEMO 경매사 1",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-3-1",
+      "productionYear": 2018,
+      "medium": "종이에 혼합재료",
+      "width": 88,
+      "height": 110,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 시리즈 C",
+      "estimateLow": 46818000,
+      "estimateHigh": 60588000,
+      "hammerPrice": 51775200,
+      "realizedPrice": 55080000,
+      "currency": "KRW",
+      "normalizedPriceKRW": 55080000,
+      "result": "sold",
+      "sourceIds": [
+        "ev-demo-art-003-auction"
+      ]
+    },
+    {
+      "id": "auction-3-02",
+      "artistId": "demo-artist-003",
+      "artworkTitle": "DEMO 시리즈 C #2",
+      "auctionDate": "2025-03-04",
+      "auctionHouse": "DEMO 경매사 2",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-3-2",
+      "productionYear": 2019,
+      "medium": "캔버스에 혼합재료",
+      "width": 90,
+      "height": 113,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 시리즈 C",
+      "estimateLow": 50604750,
+      "estimateHigh": 65488500,
+      "hammerPrice": 55962900,
+      "realizedPrice": 59535000,
+      "currency": "KRW",
+      "normalizedPriceKRW": 59535000,
+      "result": "sold",
+      "sourceIds": [
+        "ev-demo-art-003-auction"
+      ]
+    },
+    {
+      "id": "auction-3-03",
+      "artistId": "demo-artist-003",
+      "artworkTitle": "DEMO 시리즈 C #3",
+      "auctionDate": "2026-05-07",
+      "auctionHouse": "DEMO 경매사 3",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-3-3",
+      "productionYear": 2020,
+      "medium": "캔버스에 혼합재료",
+      "width": 92,
+      "height": 116,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 시리즈 C",
+      "estimateLow": 54391500,
+      "estimateHigh": 70389000,
+      "hammerPrice": 60150600,
+      "realizedPrice": 63990000,
+      "currency": "KRW",
+      "normalizedPriceKRW": 63990000,
+      "result": "sold",
+      "sourceIds": [
+        "ev-demo-art-003-auction"
+      ]
+    },
+    {
+      "id": "auction-3-04",
+      "artistId": "demo-artist-003",
+      "artworkTitle": "DEMO 기타 시리즈 #4",
+      "auctionDate": "2024-07-10",
+      "auctionHouse": "DEMO 경매사 1",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-3-4",
+      "productionYear": 2021,
+      "medium": "캔버스에 혼합재료",
+      "width": 94,
+      "height": 119,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 기타 시리즈",
+      "estimateLow": 58178250,
+      "estimateHigh": 75289500,
+      "hammerPrice": 64338300,
+      "realizedPrice": 68445000,
+      "currency": "KRW",
+      "normalizedPriceKRW": 68445000,
+      "result": "sold",
+      "sourceIds": [
+        "ev-demo-art-003-auction"
+      ]
+    },
+    {
+      "id": "auction-3-05",
+      "artistId": "demo-artist-003",
+      "artworkTitle": "DEMO 기타 시리즈 #5",
+      "auctionDate": "2025-09-13",
+      "auctionHouse": "DEMO 경매사 2",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-3-5",
+      "productionYear": 2022,
+      "medium": "종이에 혼합재료",
+      "width": 96,
+      "height": 122,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 기타 시리즈",
+      "estimateLow": 61965000,
+      "estimateHigh": 80190000,
+      "hammerPrice": 68526000,
+      "realizedPrice": 72900000,
+      "currency": "KRW",
+      "normalizedPriceKRW": 72900000,
+      "result": "sold",
+      "sourceIds": [
+        "ev-demo-art-003-auction"
+      ]
+    },
+    {
+      "id": "auction-3-06",
+      "artistId": "demo-artist-003",
+      "artworkTitle": "DEMO 기타 시리즈 #6",
+      "auctionDate": "2026-11-16",
+      "auctionHouse": "DEMO 경매사 3",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-3-6",
+      "productionYear": 2018,
+      "medium": "캔버스에 혼합재료",
+      "width": 98,
+      "height": 125,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 기타 시리즈",
+      "estimateLow": 65751750,
+      "estimateHigh": 85090500,
+      "hammerPrice": 72713700,
+      "realizedPrice": 77355000,
+      "currency": "KRW",
+      "normalizedPriceKRW": 77355000,
+      "result": "sold",
+      "sourceIds": [
+        "ev-demo-art-003-auction"
+      ]
+    },
+    {
+      "id": "auction-3-07",
+      "artistId": "demo-artist-003",
+      "artworkTitle": "DEMO 기타 시리즈 #7",
+      "auctionDate": "2024-01-19",
+      "auctionHouse": "DEMO 경매사 1",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-3-7",
+      "productionYear": 2019,
+      "medium": "캔버스에 혼합재료",
+      "width": 100,
+      "height": 128,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 기타 시리즈",
+      "estimateLow": 69538500,
+      "estimateHigh": 89991000,
+      "hammerPrice": 76901400,
+      "realizedPrice": 81810000,
+      "currency": "KRW",
+      "normalizedPriceKRW": 81810000,
+      "result": "sold",
+      "sourceIds": [
+        "ev-demo-art-003-auction"
+      ]
+    },
+    {
+      "id": "auction-3-08",
+      "artistId": "demo-artist-003",
+      "artworkTitle": "DEMO 기타 시리즈 #8",
+      "auctionDate": "2025-03-22",
+      "auctionHouse": "DEMO 경매사 2",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-3-8",
+      "productionYear": 2020,
+      "medium": "캔버스에 혼합재료",
+      "width": 102,
+      "height": 131,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 기타 시리즈",
+      "estimateLow": 40000000,
+      "estimateHigh": 70000000,
+      "hammerPrice": null,
+      "realizedPrice": null,
+      "currency": "KRW",
+      "normalizedPriceKRW": null,
+      "result": "unsold",
+      "sourceIds": [
+        "ev-demo-art-003-auction"
+      ]
+    },
+    {
+      "id": "auction-3-09",
+      "artistId": "demo-artist-003",
+      "artworkTitle": "DEMO 기타 시리즈 #9",
+      "auctionDate": "2026-05-25",
+      "auctionHouse": "DEMO 경매사 3",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-3-9",
+      "productionYear": 2021,
+      "medium": "종이에 혼합재료",
+      "width": 104,
+      "height": 134,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 기타 시리즈",
+      "estimateLow": 40000000,
+      "estimateHigh": 70000000,
+      "hammerPrice": null,
+      "realizedPrice": null,
+      "currency": "KRW",
+      "normalizedPriceKRW": null,
+      "result": "unsold",
+      "sourceIds": [
+        "ev-demo-art-003-auction"
+      ]
+    },
+    {
+      "id": "auction-3-10",
+      "artistId": "demo-artist-003",
+      "artworkTitle": "DEMO 기타 시리즈 #10",
+      "auctionDate": "2024-07-01",
+      "auctionHouse": "DEMO 경매사 1",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-3-10",
+      "productionYear": 2022,
+      "medium": "캔버스에 혼합재료",
+      "width": 106,
+      "height": 137,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 기타 시리즈",
+      "estimateLow": 40000000,
+      "estimateHigh": 70000000,
+      "hammerPrice": null,
+      "realizedPrice": null,
+      "currency": "KRW",
+      "normalizedPriceKRW": null,
+      "result": "unsold",
+      "sourceIds": [
+        "ev-demo-art-003-auction"
+      ]
+    },
+    {
+      "id": "auction-3-11",
+      "artistId": "demo-artist-003",
+      "artworkTitle": "DEMO 기타 시리즈 #11",
+      "auctionDate": "2025-09-04",
+      "auctionHouse": "DEMO 경매사 2",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-3-11",
+      "productionYear": 2018,
+      "medium": "캔버스에 혼합재료",
+      "width": 108,
+      "height": 140,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 기타 시리즈",
+      "estimateLow": 40000000,
+      "estimateHigh": 70000000,
+      "hammerPrice": null,
+      "realizedPrice": null,
+      "currency": "KRW",
+      "normalizedPriceKRW": null,
+      "result": "unsold",
+      "sourceIds": [
+        "ev-demo-art-003-auction"
+      ]
+    },
+    {
+      "id": "auction-3-12",
+      "artistId": "demo-artist-003",
+      "artworkTitle": "DEMO 기타 시리즈 #12",
+      "auctionDate": "2026-11-07",
+      "auctionHouse": "DEMO 경매사 3",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-3-12",
+      "productionYear": 2019,
+      "medium": "캔버스에 혼합재료",
+      "width": 110,
+      "height": 143,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 기타 시리즈",
+      "estimateLow": 40000000,
+      "estimateHigh": 70000000,
+      "hammerPrice": null,
+      "realizedPrice": null,
+      "currency": "KRW",
+      "normalizedPriceKRW": null,
+      "result": "unsold",
+      "sourceIds": [
+        "ev-demo-art-003-auction"
+      ]
+    },
+    {
+      "id": "auction-4-01",
+      "artistId": "demo-artist-004",
+      "artworkTitle": "DEMO 시리즈 D #1",
+      "auctionDate": "2024-01-01",
+      "auctionHouse": "DEMO 경매사 1",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-4-1",
+      "productionYear": 2018,
+      "medium": "종이에 혼합재료",
+      "width": 88,
+      "height": 110,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 시리즈 D",
+      "estimateLow": 57222000,
+      "estimateHigh": 74052000,
+      "hammerPrice": 63280800,
+      "realizedPrice": 67320000,
+      "currency": "KRW",
+      "normalizedPriceKRW": 67320000,
+      "result": "sold",
+      "sourceIds": [
+        "ev-demo-art-004-auction"
+      ]
+    },
+    {
+      "id": "auction-4-02",
+      "artistId": "demo-artist-004",
+      "artworkTitle": "DEMO 기타 시리즈 #2",
+      "auctionDate": "2025-03-04",
+      "auctionHouse": "DEMO 경매사 2",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-4-2",
+      "productionYear": 2019,
+      "medium": "캔버스에 혼합재료",
+      "width": 90,
+      "height": 113,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 기타 시리즈",
+      "estimateLow": 61850250,
+      "estimateHigh": 80041500,
+      "hammerPrice": 68399100,
+      "realizedPrice": 72765000,
+      "currency": "KRW",
+      "normalizedPriceKRW": 72765000,
+      "result": "sold",
+      "sourceIds": [
+        "ev-demo-art-004-auction"
+      ]
+    },
+    {
+      "id": "auction-4-03",
+      "artistId": "demo-artist-004",
+      "artworkTitle": "DEMO 기타 시리즈 #3",
+      "auctionDate": "2026-05-07",
+      "auctionHouse": "DEMO 경매사 3",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-4-3",
+      "productionYear": 2020,
+      "medium": "캔버스에 혼합재료",
+      "width": 92,
+      "height": 116,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 기타 시리즈",
+      "estimateLow": 66478500,
+      "estimateHigh": 86031000,
+      "hammerPrice": 73517400,
+      "realizedPrice": 78210000,
+      "currency": "KRW",
+      "normalizedPriceKRW": 78210000,
+      "result": "sold",
+      "sourceIds": [
+        "ev-demo-art-004-auction"
+      ]
+    },
+    {
+      "id": "auction-4-04",
+      "artistId": "demo-artist-004",
+      "artworkTitle": "DEMO 기타 시리즈 #4",
+      "auctionDate": "2024-07-10",
+      "auctionHouse": "DEMO 경매사 1",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-4-4",
+      "productionYear": 2021,
+      "medium": "캔버스에 혼합재료",
+      "width": 94,
+      "height": 119,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 기타 시리즈",
+      "estimateLow": 40000000,
+      "estimateHigh": 70000000,
+      "hammerPrice": null,
+      "realizedPrice": null,
+      "currency": "KRW",
+      "normalizedPriceKRW": null,
+      "result": "unsold",
+      "sourceIds": [
+        "ev-demo-art-004-auction"
+      ]
+    },
+    {
+      "id": "auction-4-05",
+      "artistId": "demo-artist-004",
+      "artworkTitle": "DEMO 기타 시리즈 #5",
+      "auctionDate": "2025-09-13",
+      "auctionHouse": "DEMO 경매사 2",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-4-5",
+      "productionYear": 2022,
+      "medium": "종이에 혼합재료",
+      "width": 96,
+      "height": 122,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 기타 시리즈",
+      "estimateLow": 40000000,
+      "estimateHigh": 70000000,
+      "hammerPrice": null,
+      "realizedPrice": null,
+      "currency": "KRW",
+      "normalizedPriceKRW": null,
+      "result": "unsold",
+      "sourceIds": [
+        "ev-demo-art-004-auction"
+      ]
+    },
+    {
+      "id": "auction-4-06",
+      "artistId": "demo-artist-004",
+      "artworkTitle": "DEMO 기타 시리즈 #6",
+      "auctionDate": "2026-11-16",
+      "auctionHouse": "DEMO 경매사 3",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-4-6",
+      "productionYear": 2018,
+      "medium": "캔버스에 혼합재료",
+      "width": 98,
+      "height": 125,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 기타 시리즈",
+      "estimateLow": 40000000,
+      "estimateHigh": 70000000,
+      "hammerPrice": null,
+      "realizedPrice": null,
+      "currency": "KRW",
+      "normalizedPriceKRW": null,
+      "result": "unsold",
+      "sourceIds": [
+        "ev-demo-art-004-auction"
+      ]
+    },
+    {
+      "id": "auction-4-07",
+      "artistId": "demo-artist-004",
+      "artworkTitle": "DEMO 기타 시리즈 #7",
+      "auctionDate": "2024-01-19",
+      "auctionHouse": "DEMO 경매사 1",
+      "country": "대한민국 (가상)",
+      "lotNumber": "D-4-7",
+      "productionYear": 2019,
+      "medium": "캔버스에 혼합재료",
+      "width": 100,
+      "height": 128,
+      "depth": null,
+      "edition": null,
+      "series": "DEMO 기타 시리즈",
+      "estimateLow": 40000000,
+      "estimateHigh": 70000000,
+      "hammerPrice": null,
+      "realizedPrice": null,
+      "currency": "KRW",
+      "normalizedPriceKRW": null,
+      "result": "unsold",
+      "sourceIds": [
+        "ev-demo-art-004-auction"
+      ]
+    }
+  ],
+  "comparables": [
+    {
+      "id": "comp-1-1",
+      "offeringId": "demo-art-001",
+      "auctionRecordId": "auction-1-01",
+      "sameSeries": true,
+      "sameMedium": false,
+      "similarSize": true,
+      "similarYear": false,
+      "similarityScore": 0.94,
+      "comparisonReason": "동일 시리즈·유사 재료·크기"
+    },
+    {
+      "id": "comp-1-2",
+      "offeringId": "demo-art-001",
+      "auctionRecordId": "auction-1-02",
+      "sameSeries": true,
+      "sameMedium": true,
+      "similarSize": true,
+      "similarYear": true,
+      "similarityScore": 0.8999999999999999,
+      "comparisonReason": "동일 시리즈·유사 재료·크기"
+    },
+    {
+      "id": "comp-1-3",
+      "offeringId": "demo-art-001",
+      "auctionRecordId": "auction-1-03",
+      "sameSeries": true,
+      "sameMedium": true,
+      "similarSize": true,
+      "similarYear": true,
+      "similarityScore": 0.86,
+      "comparisonReason": "동일 시리즈·유사 재료·크기"
+    },
+    {
+      "id": "comp-1-4",
+      "offeringId": "demo-art-001",
+      "auctionRecordId": "auction-1-04",
+      "sameSeries": true,
+      "sameMedium": true,
+      "similarSize": true,
+      "similarYear": false,
+      "similarityScore": 0.82,
+      "comparisonReason": "동일 시리즈·유사 재료·크기"
+    },
+    {
+      "id": "comp-1-5",
+      "offeringId": "demo-art-001",
+      "auctionRecordId": "auction-1-05",
+      "sameSeries": true,
+      "sameMedium": false,
+      "similarSize": true,
+      "similarYear": true,
+      "similarityScore": 0.7799999999999999,
+      "comparisonReason": "동일 시리즈·유사 재료·크기"
+    },
+    {
+      "id": "comp-1-6",
+      "offeringId": "demo-art-001",
+      "auctionRecordId": "auction-1-06",
+      "sameSeries": true,
+      "sameMedium": true,
+      "similarSize": true,
+      "similarYear": true,
+      "similarityScore": 0.74,
+      "comparisonReason": "동일 시리즈·유사 재료·크기"
+    },
+    {
+      "id": "comp-1-7",
+      "offeringId": "demo-art-001",
+      "auctionRecordId": "auction-1-07",
+      "sameSeries": true,
+      "sameMedium": true,
+      "similarSize": true,
+      "similarYear": false,
+      "similarityScore": 0.7,
+      "comparisonReason": "동일 시리즈·유사 재료·크기"
+    },
+    {
+      "id": "comp-1-8",
+      "offeringId": "demo-art-001",
+      "auctionRecordId": "auction-1-08",
+      "sameSeries": true,
+      "sameMedium": true,
+      "similarSize": true,
+      "similarYear": true,
+      "similarityScore": 0.6599999999999999,
+      "comparisonReason": "동일 시리즈·유사 재료·크기"
+    },
+    {
+      "id": "comp-1-9",
+      "offeringId": "demo-art-001",
+      "auctionRecordId": "auction-1-09",
+      "sameSeries": true,
+      "sameMedium": false,
+      "similarSize": false,
+      "similarYear": true,
+      "similarityScore": 0.6199999999999999,
+      "comparisonReason": "동일 시리즈·유사 재료·크기"
+    },
+    {
+      "id": "comp-1-10",
+      "offeringId": "demo-art-001",
+      "auctionRecordId": "auction-1-10",
+      "sameSeries": true,
+      "sameMedium": true,
+      "similarSize": false,
+      "similarYear": false,
+      "similarityScore": 0.58,
+      "comparisonReason": "동일 시리즈·유사 재료·크기"
+    },
+    {
+      "id": "comp-1-11",
+      "offeringId": "demo-art-001",
+      "auctionRecordId": "auction-1-11",
+      "sameSeries": true,
+      "sameMedium": true,
+      "similarSize": false,
+      "similarYear": true,
+      "similarityScore": 0.5399999999999999,
+      "comparisonReason": "동일 시리즈·유사 재료·크기"
+    },
+    {
+      "id": "comp-2-1",
+      "offeringId": "demo-art-002",
+      "auctionRecordId": "auction-2-01",
+      "sameSeries": true,
+      "sameMedium": false,
+      "similarSize": true,
+      "similarYear": false,
+      "similarityScore": 0.94,
+      "comparisonReason": "동일 시리즈·유사 재료·크기"
+    },
+    {
+      "id": "comp-2-2",
+      "offeringId": "demo-art-002",
+      "auctionRecordId": "auction-2-02",
+      "sameSeries": true,
+      "sameMedium": true,
+      "similarSize": true,
+      "similarYear": true,
+      "similarityScore": 0.8999999999999999,
+      "comparisonReason": "동일 시리즈·유사 재료·크기"
+    },
+    {
+      "id": "comp-2-3",
+      "offeringId": "demo-art-002",
+      "auctionRecordId": "auction-2-03",
+      "sameSeries": true,
+      "sameMedium": true,
+      "similarSize": true,
+      "similarYear": true,
+      "similarityScore": 0.86,
+      "comparisonReason": "동일 시리즈·유사 재료·크기"
+    },
+    {
+      "id": "comp-2-4",
+      "offeringId": "demo-art-002",
+      "auctionRecordId": "auction-2-04",
+      "sameSeries": true,
+      "sameMedium": true,
+      "similarSize": true,
+      "similarYear": false,
+      "similarityScore": 0.82,
+      "comparisonReason": "동일 시리즈·유사 재료·크기"
+    },
+    {
+      "id": "comp-2-5",
+      "offeringId": "demo-art-002",
+      "auctionRecordId": "auction-2-05",
+      "sameSeries": true,
+      "sameMedium": false,
+      "similarSize": true,
+      "similarYear": true,
+      "similarityScore": 0.7799999999999999,
+      "comparisonReason": "동일 시리즈·유사 재료·크기"
+    },
+    {
+      "id": "comp-3-1",
+      "offeringId": "demo-art-003",
+      "auctionRecordId": "auction-3-01",
+      "sameSeries": true,
+      "sameMedium": false,
+      "similarSize": true,
+      "similarYear": false,
+      "similarityScore": 0.94,
+      "comparisonReason": "동일 시리즈·유사 재료·크기"
+    },
+    {
+      "id": "comp-3-2",
+      "offeringId": "demo-art-003",
+      "auctionRecordId": "auction-3-02",
+      "sameSeries": true,
+      "sameMedium": true,
+      "similarSize": true,
+      "similarYear": true,
+      "similarityScore": 0.8999999999999999,
+      "comparisonReason": "동일 시리즈·유사 재료·크기"
+    },
+    {
+      "id": "comp-3-3",
+      "offeringId": "demo-art-003",
+      "auctionRecordId": "auction-3-03",
+      "sameSeries": true,
+      "sameMedium": true,
+      "similarSize": true,
+      "similarYear": true,
+      "similarityScore": 0.86,
+      "comparisonReason": "동일 시리즈·유사 재료·크기"
+    },
+    {
+      "id": "comp-4-1",
+      "offeringId": "demo-art-004",
+      "auctionRecordId": "auction-4-01",
+      "sameSeries": true,
+      "sameMedium": false,
+      "similarSize": true,
+      "similarYear": false,
+      "similarityScore": 0.94,
+      "comparisonReason": "동일 시리즈·유사 재료·크기"
+    },
+    {
+      "id": "comp-4-2",
+      "offeringId": "demo-art-004",
+      "auctionRecordId": "auction-4-02",
+      "sameSeries": false,
+      "sameMedium": true,
+      "similarSize": true,
+      "similarYear": true,
+      "similarityScore": 0.52,
+      "comparisonReason": "동일 작가이나 다른 시리즈"
+    },
+    {
+      "id": "comp-4-3",
+      "offeringId": "demo-art-004",
+      "auctionRecordId": "auction-4-03",
+      "sameSeries": false,
+      "sameMedium": true,
+      "similarSize": true,
+      "similarYear": true,
+      "similarityScore": 0.52,
+      "comparisonReason": "동일 작가이나 다른 시리즈"
+    }
+  ],
+  "platforms": [
+    {
+      "id": "demo-platform-001",
+      "name": "DEMO 플랫폼 알파",
+      "operatorName": "DEMO 운영사 A",
+      "website": null,
+      "issuerIds": [
+        "demo-issuer-001"
+      ],
+      "sourceIds": [
+        "ev-demo-art-001-platform"
+      ]
+    },
+    {
+      "id": "demo-platform-002",
+      "name": "DEMO 플랫폼 베타",
+      "operatorName": "DEMO 운영사 B",
+      "website": null,
+      "issuerIds": [
+        "demo-issuer-002"
+      ],
+      "sourceIds": [
+        "ev-demo-art-002-platform"
+      ]
+    },
+    {
+      "id": "demo-platform-003",
+      "name": "DEMO 플랫폼 감마",
+      "operatorName": "DEMO 운영사 C",
+      "website": null,
+      "issuerIds": [
+        "demo-issuer-003"
+      ],
+      "sourceIds": [
+        "ev-demo-art-003-platform"
+      ]
+    },
+    {
+      "id": "demo-platform-004",
+      "name": "DEMO 플랫폼 델타",
+      "operatorName": "DEMO 운영사 D",
+      "website": null,
+      "issuerIds": [
+        "demo-issuer-004"
+      ],
+      "sourceIds": [
+        "ev-demo-art-004-platform"
+      ]
+    }
+  ],
+  "issuers": [
+    {
+      "id": "demo-issuer-001",
+      "legalName": "DEMO 발행사 알파",
+      "registrationNumber": null,
+      "platformIds": [
+        "demo-platform-001"
+      ],
+      "sourceIds": [
+        "ev-demo-art-001-document"
+      ]
+    },
+    {
+      "id": "demo-issuer-002",
+      "legalName": "DEMO 발행사 베타",
+      "registrationNumber": null,
+      "platformIds": [
+        "demo-platform-002"
+      ],
+      "sourceIds": [
+        "ev-demo-art-002-document"
+      ]
+    },
+    {
+      "id": "demo-issuer-003",
+      "legalName": "DEMO 발행사 감마",
+      "registrationNumber": null,
+      "platformIds": [
+        "demo-platform-003"
+      ],
+      "sourceIds": [
+        "ev-demo-art-003-document"
+      ]
+    },
+    {
+      "id": "demo-issuer-004",
+      "legalName": "DEMO 발행사 델타",
+      "registrationNumber": null,
+      "platformIds": [
+        "demo-platform-004"
+      ],
+      "sourceIds": [
+        "ev-demo-art-004-document"
+      ]
+    }
+  ],
+  "trackRecords": [
+    {
+      "id": "track-1-1",
+      "platformId": "demo-platform-001",
+      "issuerId": "demo-issuer-001",
+      "offeringId": "history-1-1",
+      "productName": "DEMO 플랫폼 알파 과거 상품 01",
+      "artworkTitle": "DEMO 과거 작품 1-1",
+      "artistName": "DEMO 과거 작가 1-1",
+      "offeringAmount": 70000000,
+      "targetHoldingMonths": 24,
+      "actualHoldingMonths": 20,
+      "totalDistribution": 2000000,
+      "exitAmount": 80000000,
+      "finalReturn": 4.5,
+      "status": "liquidated",
+      "delayDays": 0,
+      "soldAt": "2025-01-15",
+      "liquidatedAt": "2025-02-10",
+      "sourceIds": [
+        "ev-demo-art-001-platform"
+      ]
+    },
+    {
+      "id": "track-1-2",
+      "platformId": "demo-platform-001",
+      "issuerId": "demo-issuer-001",
+      "offeringId": "history-1-2",
+      "productName": "DEMO 플랫폼 알파 과거 상품 02",
+      "artworkTitle": "DEMO 과거 작품 1-2",
+      "artistName": "DEMO 과거 작가 1-2",
+      "offeringAmount": 75000000,
+      "targetHoldingMonths": 24,
+      "actualHoldingMonths": 23,
+      "totalDistribution": 2200000,
+      "exitAmount": 85200000,
+      "finalReturn": 4.9,
+      "status": "liquidated",
+      "delayDays": 0,
+      "soldAt": "2025-02-15",
+      "liquidatedAt": "2025-03-10",
+      "sourceIds": [
+        "ev-demo-art-001-platform"
+      ]
+    },
+    {
+      "id": "track-1-3",
+      "platformId": "demo-platform-001",
+      "issuerId": "demo-issuer-001",
+      "offeringId": "history-1-3",
+      "productName": "DEMO 플랫폼 알파 과거 상품 03",
+      "artworkTitle": "DEMO 과거 작품 1-3",
+      "artistName": "DEMO 과거 작가 1-3",
+      "offeringAmount": 80000000,
+      "targetHoldingMonths": 24,
+      "actualHoldingMonths": 26,
+      "totalDistribution": 2400000,
+      "exitAmount": 90400000,
+      "finalReturn": 5.3,
+      "status": "liquidated",
+      "delayDays": 0,
+      "soldAt": "2025-03-15",
+      "liquidatedAt": "2025-04-10",
+      "sourceIds": [
+        "ev-demo-art-001-platform"
+      ]
+    },
+    {
+      "id": "track-1-4",
+      "platformId": "demo-platform-001",
+      "issuerId": "demo-issuer-001",
+      "offeringId": "history-1-4",
+      "productName": "DEMO 플랫폼 알파 과거 상품 04",
+      "artworkTitle": "DEMO 과거 작품 1-4",
+      "artistName": "DEMO 과거 작가 1-1",
+      "offeringAmount": 85000000,
+      "targetHoldingMonths": 24,
+      "actualHoldingMonths": 29,
+      "totalDistribution": 2600000,
+      "exitAmount": 95600000,
+      "finalReturn": 5.7,
+      "status": "liquidated",
+      "delayDays": 0,
+      "soldAt": "2025-04-15",
+      "liquidatedAt": "2025-05-10",
+      "sourceIds": [
+        "ev-demo-art-001-platform"
+      ]
+    },
+    {
+      "id": "track-1-5",
+      "platformId": "demo-platform-001",
+      "issuerId": "demo-issuer-001",
+      "offeringId": "history-1-5",
+      "productName": "DEMO 플랫폼 알파 과거 상품 05",
+      "artworkTitle": "DEMO 과거 작품 1-5",
+      "artistName": "DEMO 과거 작가 1-2",
+      "offeringAmount": 90000000,
+      "targetHoldingMonths": 24,
+      "actualHoldingMonths": 20,
+      "totalDistribution": 2800000,
+      "exitAmount": 100800000,
+      "finalReturn": 6.1,
+      "status": "liquidated",
+      "delayDays": 0,
+      "soldAt": "2025-05-15",
+      "liquidatedAt": "2025-06-10",
+      "sourceIds": [
+        "ev-demo-art-001-platform"
+      ]
+    },
+    {
+      "id": "track-1-6",
+      "platformId": "demo-platform-001",
+      "issuerId": "demo-issuer-001",
+      "offeringId": "history-1-6",
+      "productName": "DEMO 플랫폼 알파 과거 상품 06",
+      "artworkTitle": "DEMO 과거 작품 1-6",
+      "artistName": "DEMO 과거 작가 1-3",
+      "offeringAmount": 95000000,
+      "targetHoldingMonths": 24,
+      "actualHoldingMonths": 23,
+      "totalDistribution": 3000000,
+      "exitAmount": 106000000,
+      "finalReturn": 6.5,
+      "status": "liquidated",
+      "delayDays": 0,
+      "soldAt": "2025-06-15",
+      "liquidatedAt": "2025-07-10",
+      "sourceIds": [
+        "ev-demo-art-001-platform"
+      ]
+    },
+    {
+      "id": "track-1-7",
+      "platformId": "demo-platform-001",
+      "issuerId": "demo-issuer-001",
+      "offeringId": "history-1-7",
+      "productName": "DEMO 플랫폼 알파 과거 상품 07",
+      "artworkTitle": "DEMO 과거 작품 1-7",
+      "artistName": "DEMO 과거 작가 1-1",
+      "offeringAmount": 100000000,
+      "targetHoldingMonths": 24,
+      "actualHoldingMonths": 26,
+      "totalDistribution": 3200000,
+      "exitAmount": 111200000,
+      "finalReturn": 6.9,
+      "status": "liquidated",
+      "delayDays": 0,
+      "soldAt": "2025-07-15",
+      "liquidatedAt": "2025-08-10",
+      "sourceIds": [
+        "ev-demo-art-001-platform"
+      ]
+    },
+    {
+      "id": "track-1-8",
+      "platformId": "demo-platform-001",
+      "issuerId": "demo-issuer-001",
+      "offeringId": "history-1-8",
+      "productName": "DEMO 플랫폼 알파 과거 상품 08",
+      "artworkTitle": "DEMO 과거 작품 1-8",
+      "artistName": "DEMO 과거 작가 1-2",
+      "offeringAmount": 105000000,
+      "targetHoldingMonths": 24,
+      "actualHoldingMonths": 36,
+      "totalDistribution": 3400000,
+      "exitAmount": 116400000,
+      "finalReturn": 7.300000000000001,
+      "status": "delayed",
+      "delayDays": 210,
+      "soldAt": "2025-08-15",
+      "liquidatedAt": "2025-09-10",
+      "sourceIds": [
+        "ev-demo-art-001-platform"
+      ]
+    },
+    {
+      "id": "track-1-9",
+      "platformId": "demo-platform-001",
+      "issuerId": "demo-issuer-001",
+      "offeringId": "history-1-9",
+      "productName": "DEMO 플랫폼 알파 과거 상품 09",
+      "artworkTitle": "DEMO 과거 작품 1-9",
+      "artistName": "DEMO 과거 작가 1-3",
+      "offeringAmount": 110000000,
+      "targetHoldingMonths": 24,
+      "actualHoldingMonths": null,
+      "totalDistribution": null,
+      "exitAmount": null,
+      "finalReturn": null,
+      "status": "operating",
+      "delayDays": null,
+      "soldAt": null,
+      "liquidatedAt": null,
+      "sourceIds": [
+        "ev-demo-art-001-platform"
+      ]
+    },
+    {
+      "id": "track-1-10",
+      "platformId": "demo-platform-001",
+      "issuerId": "demo-issuer-001",
+      "offeringId": "history-1-10",
+      "productName": "DEMO 플랫폼 알파 과거 상품 10",
+      "artworkTitle": "DEMO 과거 작품 1-10",
+      "artistName": "DEMO 과거 작가 1-1",
+      "offeringAmount": 115000000,
+      "targetHoldingMonths": 24,
+      "actualHoldingMonths": null,
+      "totalDistribution": null,
+      "exitAmount": null,
+      "finalReturn": null,
+      "status": "operating",
+      "delayDays": null,
+      "soldAt": null,
+      "liquidatedAt": null,
+      "sourceIds": [
+        "ev-demo-art-001-platform"
+      ]
+    },
+    {
+      "id": "track-2-1",
+      "platformId": "demo-platform-002",
+      "issuerId": "demo-issuer-002",
+      "offeringId": "history-2-1",
+      "productName": "DEMO 플랫폼 베타 과거 상품 01",
+      "artworkTitle": "DEMO 과거 작품 2-1",
+      "artistName": "DEMO 과거 작가 2-1",
+      "offeringAmount": 70000000,
+      "targetHoldingMonths": 24,
+      "actualHoldingMonths": 20,
+      "totalDistribution": 2000000,
+      "exitAmount": 80000000,
+      "finalReturn": 4.5,
+      "status": "liquidated",
+      "delayDays": 0,
+      "soldAt": "2025-01-15",
+      "liquidatedAt": "2025-02-10",
+      "sourceIds": [
+        "ev-demo-art-002-platform"
+      ]
+    },
+    {
+      "id": "track-2-2",
+      "platformId": "demo-platform-002",
+      "issuerId": "demo-issuer-002",
+      "offeringId": "history-2-2",
+      "productName": "DEMO 플랫폼 베타 과거 상품 02",
+      "artworkTitle": "DEMO 과거 작품 2-2",
+      "artistName": "DEMO 과거 작가 2-2",
+      "offeringAmount": 75000000,
+      "targetHoldingMonths": 24,
+      "actualHoldingMonths": 23,
+      "totalDistribution": 2200000,
+      "exitAmount": 85200000,
+      "finalReturn": 4.9,
+      "status": "liquidated",
+      "delayDays": 0,
+      "soldAt": "2025-02-15",
+      "liquidatedAt": "2025-03-10",
+      "sourceIds": [
+        "ev-demo-art-002-platform"
+      ]
+    },
+    {
+      "id": "track-2-3",
+      "platformId": "demo-platform-002",
+      "issuerId": "demo-issuer-002",
+      "offeringId": "history-2-3",
+      "productName": "DEMO 플랫폼 베타 과거 상품 03",
+      "artworkTitle": "DEMO 과거 작품 2-3",
+      "artistName": "DEMO 과거 작가 2-3",
+      "offeringAmount": 80000000,
+      "targetHoldingMonths": 24,
+      "actualHoldingMonths": 26,
+      "totalDistribution": 2400000,
+      "exitAmount": 90400000,
+      "finalReturn": 5.3,
+      "status": "liquidated",
+      "delayDays": 0,
+      "soldAt": "2025-03-15",
+      "liquidatedAt": "2025-04-10",
+      "sourceIds": [
+        "ev-demo-art-002-platform"
+      ]
+    },
+    {
+      "id": "track-2-4",
+      "platformId": "demo-platform-002",
+      "issuerId": "demo-issuer-002",
+      "offeringId": "history-2-4",
+      "productName": "DEMO 플랫폼 베타 과거 상품 04",
+      "artworkTitle": "DEMO 과거 작품 2-4",
+      "artistName": "DEMO 과거 작가 2-1",
+      "offeringAmount": 85000000,
+      "targetHoldingMonths": 24,
+      "actualHoldingMonths": 28,
+      "totalDistribution": 2600000,
+      "exitAmount": 95600000,
+      "finalReturn": 5.7,
+      "status": "delayed",
+      "delayDays": 120,
+      "soldAt": "2025-04-15",
+      "liquidatedAt": "2025-05-10",
+      "sourceIds": [
+        "ev-demo-art-002-platform"
+      ]
+    },
+    {
+      "id": "track-2-5",
+      "platformId": "demo-platform-002",
+      "issuerId": "demo-issuer-002",
+      "offeringId": "history-2-5",
+      "productName": "DEMO 플랫폼 베타 과거 상품 05",
+      "artworkTitle": "DEMO 과거 작품 2-5",
+      "artistName": "DEMO 과거 작가 2-2",
+      "offeringAmount": 90000000,
+      "targetHoldingMonths": 24,
+      "actualHoldingMonths": 28,
+      "totalDistribution": 2800000,
+      "exitAmount": 100800000,
+      "finalReturn": 6.1,
+      "status": "delayed",
+      "delayDays": 120,
+      "soldAt": "2025-05-15",
+      "liquidatedAt": "2025-06-10",
+      "sourceIds": [
+        "ev-demo-art-002-platform"
+      ]
+    },
+    {
+      "id": "track-2-6",
+      "platformId": "demo-platform-002",
+      "issuerId": "demo-issuer-002",
+      "offeringId": "history-2-6",
+      "productName": "DEMO 플랫폼 베타 과거 상품 06",
+      "artworkTitle": "DEMO 과거 작품 2-6",
+      "artistName": "DEMO 과거 작가 2-3",
+      "offeringAmount": 95000000,
+      "targetHoldingMonths": 24,
+      "actualHoldingMonths": 28,
+      "totalDistribution": 3000000,
+      "exitAmount": 106000000,
+      "finalReturn": 6.5,
+      "status": "delayed",
+      "delayDays": 120,
+      "soldAt": "2025-06-15",
+      "liquidatedAt": "2025-07-10",
+      "sourceIds": [
+        "ev-demo-art-002-platform"
+      ]
+    },
+    {
+      "id": "track-2-7",
+      "platformId": "demo-platform-002",
+      "issuerId": "demo-issuer-002",
+      "offeringId": "history-2-7",
+      "productName": "DEMO 플랫폼 베타 과거 상품 07",
+      "artworkTitle": "DEMO 과거 작품 2-7",
+      "artistName": "DEMO 과거 작가 2-1",
+      "offeringAmount": 100000000,
+      "targetHoldingMonths": 24,
+      "actualHoldingMonths": null,
+      "totalDistribution": null,
+      "exitAmount": null,
+      "finalReturn": null,
+      "status": "operating",
+      "delayDays": null,
+      "soldAt": null,
+      "liquidatedAt": null,
+      "sourceIds": [
+        "ev-demo-art-002-platform"
+      ]
+    },
+    {
+      "id": "track-2-8",
+      "platformId": "demo-platform-002",
+      "issuerId": "demo-issuer-002",
+      "offeringId": "history-2-8",
+      "productName": "DEMO 플랫폼 베타 과거 상품 08",
+      "artworkTitle": "DEMO 과거 작품 2-8",
+      "artistName": "DEMO 과거 작가 2-2",
+      "offeringAmount": 105000000,
+      "targetHoldingMonths": 24,
+      "actualHoldingMonths": null,
+      "totalDistribution": null,
+      "exitAmount": null,
+      "finalReturn": null,
+      "status": "operating",
+      "delayDays": null,
+      "soldAt": null,
+      "liquidatedAt": null,
+      "sourceIds": [
+        "ev-demo-art-002-platform"
+      ]
+    },
+    {
+      "id": "track-3-1",
+      "platformId": "demo-platform-003",
+      "issuerId": "demo-issuer-003",
+      "offeringId": "history-3-1",
+      "productName": "DEMO 플랫폼 감마 과거 상품 01",
+      "artworkTitle": "DEMO 과거 작품 3-1",
+      "artistName": "DEMO 과거 작가 3-1",
+      "offeringAmount": 70000000,
+      "targetHoldingMonths": 24,
+      "actualHoldingMonths": 31,
+      "totalDistribution": 2000000,
+      "exitAmount": 80000000,
+      "finalReturn": 4.5,
+      "status": "delayed",
+      "delayDays": 210,
+      "soldAt": "2025-01-15",
+      "liquidatedAt": "2025-02-10",
+      "sourceIds": [
+        "ev-demo-art-003-platform"
+      ]
+    },
+    {
+      "id": "track-3-2",
+      "platformId": "demo-platform-003",
+      "issuerId": "demo-issuer-003",
+      "offeringId": "history-3-2",
+      "productName": "DEMO 플랫폼 감마 과거 상품 02",
+      "artworkTitle": "DEMO 과거 작품 3-2",
+      "artistName": "DEMO 과거 작가 3-2",
+      "offeringAmount": 75000000,
+      "targetHoldingMonths": 24,
+      "actualHoldingMonths": 31,
+      "totalDistribution": 2200000,
+      "exitAmount": 85200000,
+      "finalReturn": 4.9,
+      "status": "delayed",
+      "delayDays": 210,
+      "soldAt": "2025-02-15",
+      "liquidatedAt": "2025-03-10",
+      "sourceIds": [
+        "ev-demo-art-003-platform"
+      ]
+    },
+    {
+      "id": "track-3-3",
+      "platformId": "demo-platform-003",
+      "issuerId": "demo-issuer-003",
+      "offeringId": "history-3-3",
+      "productName": "DEMO 플랫폼 감마 과거 상품 03",
+      "artworkTitle": "DEMO 과거 작품 3-3",
+      "artistName": "DEMO 과거 작가 3-3",
+      "offeringAmount": 80000000,
+      "targetHoldingMonths": 24,
+      "actualHoldingMonths": null,
+      "totalDistribution": null,
+      "exitAmount": null,
+      "finalReturn": null,
+      "status": "operating",
+      "delayDays": null,
+      "soldAt": null,
+      "liquidatedAt": null,
+      "sourceIds": [
+        "ev-demo-art-003-platform"
+      ]
+    },
+    {
+      "id": "track-3-4",
+      "platformId": "demo-platform-003",
+      "issuerId": "demo-issuer-003",
+      "offeringId": "history-3-4",
+      "productName": "DEMO 플랫폼 감마 과거 상품 04",
+      "artworkTitle": "DEMO 과거 작품 3-4",
+      "artistName": "DEMO 과거 작가 3-1",
+      "offeringAmount": 85000000,
+      "targetHoldingMonths": 24,
+      "actualHoldingMonths": null,
+      "totalDistribution": null,
+      "exitAmount": null,
+      "finalReturn": null,
+      "status": "operating",
+      "delayDays": null,
+      "soldAt": null,
+      "liquidatedAt": null,
+      "sourceIds": [
+        "ev-demo-art-003-platform"
+      ]
+    },
+    {
+      "id": "track-3-5",
+      "platformId": "demo-platform-003",
+      "issuerId": "demo-issuer-003",
+      "offeringId": "history-3-5",
+      "productName": "DEMO 플랫폼 감마 과거 상품 05",
+      "artworkTitle": "DEMO 과거 작품 3-5",
+      "artistName": "DEMO 과거 작가 3-2",
+      "offeringAmount": 90000000,
+      "targetHoldingMonths": 24,
+      "actualHoldingMonths": null,
+      "totalDistribution": null,
+      "exitAmount": null,
+      "finalReturn": null,
+      "status": "operating",
+      "delayDays": null,
+      "soldAt": null,
+      "liquidatedAt": null,
+      "sourceIds": [
+        "ev-demo-art-003-platform"
+      ]
+    },
+    {
+      "id": "track-4-1",
+      "platformId": "demo-platform-004",
+      "issuerId": "demo-issuer-004",
+      "offeringId": "history-4-1",
+      "productName": "DEMO 플랫폼 델타 과거 상품 01",
+      "artworkTitle": "DEMO 과거 작품 4-1",
+      "artistName": "DEMO 과거 작가 4-1",
+      "offeringAmount": 70000000,
+      "targetHoldingMonths": 24,
+      "actualHoldingMonths": 24,
+      "totalDistribution": 2000000,
+      "exitAmount": 80000000,
+      "finalReturn": 4.5,
+      "status": "delayed",
+      "delayDays": 120,
+      "soldAt": "2025-01-15",
+      "liquidatedAt": "2025-02-10",
+      "sourceIds": [
+        "ev-demo-art-004-platform"
+      ]
+    },
+    {
+      "id": "track-4-2",
+      "platformId": "demo-platform-004",
+      "issuerId": "demo-issuer-004",
+      "offeringId": "history-4-2",
+      "productName": "DEMO 플랫폼 델타 과거 상품 02",
+      "artworkTitle": "DEMO 과거 작품 4-2",
+      "artistName": "DEMO 과거 작가 4-2",
+      "offeringAmount": 75000000,
+      "targetHoldingMonths": 24,
+      "actualHoldingMonths": 30,
+      "totalDistribution": 2200000,
+      "exitAmount": 85200000,
+      "finalReturn": 4.9,
+      "status": "delayed",
+      "delayDays": 210,
+      "soldAt": "2025-02-15",
+      "liquidatedAt": "2025-03-10",
+      "sourceIds": [
+        "ev-demo-art-004-platform"
+      ]
+    },
+    {
+      "id": "track-4-3",
+      "platformId": "demo-platform-004",
+      "issuerId": "demo-issuer-004",
+      "offeringId": "history-4-3",
+      "productName": "DEMO 플랫폼 델타 과거 상품 03",
+      "artworkTitle": "DEMO 과거 작품 4-3",
+      "artistName": "DEMO 과거 작가 4-3",
+      "offeringAmount": 80000000,
+      "targetHoldingMonths": 24,
+      "actualHoldingMonths": 36,
+      "totalDistribution": 2400000,
+      "exitAmount": 90400000,
+      "finalReturn": 5.3,
+      "status": "delayed",
+      "delayDays": 300,
+      "soldAt": "2025-03-15",
+      "liquidatedAt": "2025-04-10",
+      "sourceIds": [
+        "ev-demo-art-004-platform"
+      ]
+    },
+    {
+      "id": "track-4-4",
+      "platformId": "demo-platform-004",
+      "issuerId": "demo-issuer-004",
+      "offeringId": "history-4-4",
+      "productName": "DEMO 플랫폼 델타 과거 상품 04",
+      "artworkTitle": "DEMO 과거 작품 4-4",
+      "artistName": "DEMO 과거 작가 4-1",
+      "offeringAmount": 85000000,
+      "targetHoldingMonths": 24,
+      "actualHoldingMonths": null,
+      "totalDistribution": null,
+      "exitAmount": null,
+      "finalReturn": null,
+      "status": "operating",
+      "delayDays": null,
+      "soldAt": null,
+      "liquidatedAt": null,
+      "sourceIds": [
+        "ev-demo-art-004-platform"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "ev-demo-art-001-document",
+      "entityType": "Offering",
+      "entityId": "demo-art-001",
+      "fieldPath": "pricing",
+      "claim": "취득가·공모금액·공개 비용 구성",
+      "value": {
+        "acquisitionPrice": 120000000,
+        "totalOfferingAmount": 130000000,
+        "disclosedCosts": 9000000
+      },
+      "sourceTitle": "demo-art-001 DEMO 투자설명서",
+      "sourcePublisher": "DEMO 발행사 알파",
+      "sourceUrl": "/methodology#demo-sources",
+      "sourceType": "demo_offering_document",
+      "asOfDate": "2026-08-15",
+      "collectedAt": "2026-08-15T09:00:00+09:00",
+      "formula": "설명되지 않는 차액 = 총 공모금액 - 작품 취득가 - 공개 비용 합계",
+      "notes": "가상 문서. 실제 청약에 사용할 수 없음."
+    },
+    {
+      "id": "ev-demo-art-001-auction",
+      "entityType": "Artist",
+      "entityId": "demo-artist-001",
+      "fieldPath": "auctionRecords",
+      "claim": "최근 5년 출품·낙찰·유찰 및 비교 거래",
+      "value": {
+        "recent3YearVolume": 42,
+        "sellThroughRate": 81.0,
+        "sameSeries": 11
+      },
+      "sourceTitle": "DEMO 작가 A DEMO 경매 기록",
+      "sourcePublisher": "DEMO 경매 데이터 협회",
+      "sourceUrl": "/artists/demo-artist-001",
+      "sourceType": "demo_auction_records",
+      "asOfDate": "2026-08-15",
+      "collectedAt": "2026-08-15T09:00:00+09:00",
+      "formula": "낙찰률 = 낙찰 건수 / (낙찰 + 유찰) × 100",
+      "notes": "가상 거래 기록."
+    },
+    {
+      "id": "ev-demo-art-001-platform",
+      "entityType": "Platform",
+      "entityId": "demo-platform-001",
+      "fieldPath": "trackRecords",
+      "claim": "과거 상품 매각·청산·지연 이력",
+      "value": {
+        "total": 10,
+        "liquidated": 8,
+        "onTime": 7
+      },
+      "sourceTitle": "DEMO 플랫폼 알파 DEMO 운용보고서",
+      "sourcePublisher": "DEMO 플랫폼 알파",
+      "sourceUrl": "/platforms/demo-platform-001",
+      "sourceType": "demo_platform_disclosure",
+      "asOfDate": "2026-08-15",
+      "collectedAt": "2026-08-15T09:00:00+09:00",
+      "formula": "기간 내 청산률 = 기간 내 청산 수 / 청산 완료 수 × 100",
+      "notes": "가상 플랫폼 이력."
+    },
+    {
+      "id": "ev-demo-art-002-document",
+      "entityType": "Offering",
+      "entityId": "demo-art-002",
+      "fieldPath": "pricing",
+      "claim": "취득가·공모금액·공개 비용 구성",
+      "value": {
+        "acquisitionPrice": 100000000,
+        "totalOfferingAmount": 115000000,
+        "disclosedCosts": 12000000
+      },
+      "sourceTitle": "demo-art-002 DEMO 투자설명서",
+      "sourcePublisher": "DEMO 발행사 베타",
+      "sourceUrl": "/methodology#demo-sources",
+      "sourceType": "demo_offering_document",
+      "asOfDate": "2026-08-15",
+      "collectedAt": "2026-08-15T09:00:00+09:00",
+      "formula": "설명되지 않는 차액 = 총 공모금액 - 작품 취득가 - 공개 비용 합계",
+      "notes": "가상 문서. 실제 청약에 사용할 수 없음."
+    },
+    {
+      "id": "ev-demo-art-002-auction",
+      "entityType": "Artist",
+      "entityId": "demo-artist-002",
+      "fieldPath": "auctionRecords",
+      "claim": "최근 5년 출품·낙찰·유찰 및 비교 거래",
+      "value": {
+        "recent3YearVolume": 26,
+        "sellThroughRate": 72.0,
+        "sameSeries": 5
+      },
+      "sourceTitle": "DEMO 작가 B DEMO 경매 기록",
+      "sourcePublisher": "DEMO 경매 데이터 협회",
+      "sourceUrl": "/artists/demo-artist-002",
+      "sourceType": "demo_auction_records",
+      "asOfDate": "2026-08-15",
+      "collectedAt": "2026-08-15T09:00:00+09:00",
+      "formula": "낙찰률 = 낙찰 건수 / (낙찰 + 유찰) × 100",
+      "notes": "가상 거래 기록."
+    },
+    {
+      "id": "ev-demo-art-002-platform",
+      "entityType": "Platform",
+      "entityId": "demo-platform-002",
+      "fieldPath": "trackRecords",
+      "claim": "과거 상품 매각·청산·지연 이력",
+      "value": {
+        "total": 8,
+        "liquidated": 6,
+        "onTime": 3
+      },
+      "sourceTitle": "DEMO 플랫폼 베타 DEMO 운용보고서",
+      "sourcePublisher": "DEMO 플랫폼 베타",
+      "sourceUrl": "/platforms/demo-platform-002",
+      "sourceType": "demo_platform_disclosure",
+      "asOfDate": "2026-08-15",
+      "collectedAt": "2026-08-15T09:00:00+09:00",
+      "formula": "기간 내 청산률 = 기간 내 청산 수 / 청산 완료 수 × 100",
+      "notes": "가상 플랫폼 이력."
+    },
+    {
+      "id": "ev-demo-art-003-document",
+      "entityType": "Offering",
+      "entityId": "demo-art-003",
+      "fieldPath": "pricing",
+      "claim": "취득가·공모금액·공개 비용 구성",
+      "value": {
+        "acquisitionPrice": 90000000,
+        "totalOfferingAmount": 118000000,
+        "disclosedCosts": 10000000
+      },
+      "sourceTitle": "demo-art-003 DEMO 투자설명서",
+      "sourcePublisher": "DEMO 발행사 감마",
+      "sourceUrl": "/methodology#demo-sources",
+      "sourceType": "demo_offering_document",
+      "asOfDate": "2026-08-15",
+      "collectedAt": "2026-08-15T09:00:00+09:00",
+      "formula": "설명되지 않는 차액 = 총 공모금액 - 작품 취득가 - 공개 비용 합계",
+      "notes": "가상 문서. 실제 청약에 사용할 수 없음."
+    },
+    {
+      "id": "ev-demo-art-003-auction",
+      "entityType": "Artist",
+      "entityId": "demo-artist-003",
+      "fieldPath": "auctionRecords",
+      "claim": "최근 5년 출품·낙찰·유찰 및 비교 거래",
+      "value": {
+        "recent3YearVolume": 12,
+        "sellThroughRate": 61.0,
+        "sameSeries": 3
+      },
+      "sourceTitle": "DEMO 작가 C DEMO 경매 기록",
+      "sourcePublisher": "DEMO 경매 데이터 협회",
+      "sourceUrl": "/artists/demo-artist-003",
+      "sourceType": "demo_auction_records",
+      "asOfDate": "2026-08-15",
+      "collectedAt": "2026-08-15T09:00:00+09:00",
+      "formula": "낙찰률 = 낙찰 건수 / (낙찰 + 유찰) × 100",
+      "notes": "가상 거래 기록."
+    },
+    {
+      "id": "ev-demo-art-003-platform",
+      "entityType": "Platform",
+      "entityId": "demo-platform-003",
+      "fieldPath": "trackRecords",
+      "claim": "과거 상품 매각·청산·지연 이력",
+      "value": {
+        "total": 5,
+        "liquidated": 2,
+        "onTime": 0
+      },
+      "sourceTitle": "DEMO 플랫폼 감마 DEMO 운용보고서",
+      "sourcePublisher": "DEMO 플랫폼 감마",
+      "sourceUrl": "/platforms/demo-platform-003",
+      "sourceType": "demo_platform_disclosure",
+      "asOfDate": "2026-08-15",
+      "collectedAt": "2026-08-15T09:00:00+09:00",
+      "formula": "기간 내 청산률 = 기간 내 청산 수 / 청산 완료 수 × 100",
+      "notes": "가상 플랫폼 이력."
+    },
+    {
+      "id": "ev-demo-art-004-document",
+      "entityType": "Offering",
+      "entityId": "demo-art-004",
+      "fieldPath": "pricing",
+      "claim": "취득가·공모금액·공개 비용 구성",
+      "value": {
+        "acquisitionPrice": null,
+        "totalOfferingAmount": 165000000,
+        "disclosedCosts": 8000000
+      },
+      "sourceTitle": "demo-art-004 DEMO 투자설명서",
+      "sourcePublisher": "DEMO 발행사 델타",
+      "sourceUrl": "/methodology#demo-sources",
+      "sourceType": "demo_offering_document",
+      "asOfDate": "2026-08-15",
+      "collectedAt": "2026-08-15T09:00:00+09:00",
+      "formula": "설명되지 않는 차액 = 총 공모금액 - 작품 취득가 - 공개 비용 합계",
+      "notes": "가상 문서. 실제 청약에 사용할 수 없음."
+    },
+    {
+      "id": "ev-demo-art-004-auction",
+      "entityType": "Artist",
+      "entityId": "demo-artist-004",
+      "fieldPath": "auctionRecords",
+      "claim": "최근 5년 출품·낙찰·유찰 및 비교 거래",
+      "value": {
+        "recent3YearVolume": 7,
+        "sellThroughRate": 43.0,
+        "sameSeries": 1
+      },
+      "sourceTitle": "DEMO 작가 D DEMO 경매 기록",
+      "sourcePublisher": "DEMO 경매 데이터 협회",
+      "sourceUrl": "/artists/demo-artist-004",
+      "sourceType": "demo_auction_records",
+      "asOfDate": "2026-08-15",
+      "collectedAt": "2026-08-15T09:00:00+09:00",
+      "formula": "낙찰률 = 낙찰 건수 / (낙찰 + 유찰) × 100",
+      "notes": "가상 거래 기록."
+    },
+    {
+      "id": "ev-demo-art-004-platform",
+      "entityType": "Platform",
+      "entityId": "demo-platform-004",
+      "fieldPath": "trackRecords",
+      "claim": "과거 상품 매각·청산·지연 이력",
+      "value": {
+        "total": 4,
+        "liquidated": 0,
+        "onTime": 0
+      },
+      "sourceTitle": "DEMO 플랫폼 델타 DEMO 운용보고서",
+      "sourcePublisher": "DEMO 플랫폼 델타",
+      "sourceUrl": "/platforms/demo-platform-004",
+      "sourceType": "demo_platform_disclosure",
+      "asOfDate": "2026-08-15",
+      "collectedAt": "2026-08-15T09:00:00+09:00",
+      "formula": "기간 내 청산률 = 기간 내 청산 수 / 청산 완료 수 × 100",
+      "notes": "가상 플랫폼 이력."
+    }
+  ],
+  "analyses": [
+    {
+      "offeringId": "demo-art-001",
+      "methodologyVersion": "art-mvp-v1.0",
+      "verdict": "worth_considering",
+      "verdictLabel": "해볼 만함",
+      "headline": "가격 차이 대부분이 공개 비용으로 설명되고 회수 기록도 비교적 충분합니다.",
+      "summary": "취득가 대비 공모금액 차이는 8.3%이며 이 가운데 900만원이 공개 비용으로 설명됩니다. 설명되지 않는 차액은 100만원으로 총 공모금액의 0.8%입니다. 최근 3년 거래 42건과 동일 시리즈 11건, 81.0% 낙찰률은 목표 24개월 안의 매각 기회를 뒷받침합니다. 과거 10개 상품 중 8개가 청산됐고 7개는 기간 안에 끝나 현재 데이터에서 중대한 가격·회수 위험이 두드러지지 않습니다.",
+      "keyReasons": [
+        {
+          "title": "공모가격 구조",
+          "finding": "취득가 대비 차이 8.3%, 미설명 차액 100만원",
+          "implication": "공개 비용으로 가격 차이의 대부분이 설명됩니다.",
+          "evidenceIds": [
+            "ev-demo-art-001-document"
+          ]
+        },
+        {
+          "title": "작가 시장",
+          "finding": "최근 3년 42건, 낙찰률 81.0%, 동일 시리즈 11건",
+          "implication": "목표 보유기간 안의 매각 기회를 지지합니다.",
+          "evidenceIds": [
+            "ev-demo-art-001-auction"
+          ]
+        },
+        {
+          "title": "플랫폼 회수 이력",
+          "finding": "과거 10개 중 청산 8개, 기간 내 7개",
+          "implication": "청산 실행과 일정 준수 기록이 모두 확인됩니다.",
+          "evidenceIds": [
+            "ev-demo-art-001-platform"
+          ]
+        }
+      ],
+      "priceInsight": {
+        "conclusion": "공개 비용으로 가격 차이의 대부분이 설명됩니다.",
+        "quantitativeFindings": [
+          "취득가 대비 차이 8.3%, 미설명 차액 100만원",
+          "공개 비용 합계 900만원"
+        ],
+        "qualitativeFindings": [
+          "감정가는 취득가와 별도 값으로 관리했습니다."
+        ],
+        "evidenceIds": [
+          "ev-demo-art-001-document"
+        ]
+      },
+      "artistInsight": {
+        "conclusion": "목표 보유기간 안의 매각 기회를 지지합니다.",
+        "quantitativeFindings": [
+          "최근 3년 42건, 낙찰률 81.0%, 동일 시리즈 11건"
+        ],
+        "qualitativeFindings": [
+          "작가 전체와 동일 시리즈 거래를 분리했습니다."
+        ],
+        "evidenceIds": [
+          "ev-demo-art-001-auction"
+        ]
+      },
+      "exitInsight": {
+        "conclusion": "목표기간 내 매각 표본이 비교적 충분합니다.",
+        "quantitativeFindings": [
+          "동일 시리즈 11건",
+          "플랫폼 목표 보유기간 24개월"
+        ],
+        "qualitativeFindings": [
+          "거래 빈도·유찰·유사성·보유기간을 함께 반영했습니다."
+        ],
+        "evidenceIds": [
+          "ev-demo-art-001-auction",
+          "ev-demo-art-001-platform"
+        ]
+      },
+      "platformInsight": {
+        "conclusion": "청산 실행과 일정 준수 기록이 모두 확인됩니다.",
+        "quantitativeFindings": [
+          "과거 10개 중 청산 8개, 기간 내 7개"
+        ],
+        "qualitativeFindings": [
+          "매각 완료와 청산 완료, 기간 내 청산을 구분했습니다."
+        ],
+        "evidenceIds": [
+          "ev-demo-art-001-platform"
+        ]
+      },
+      "missingInformationRisks": [],
+      "conflicts": [],
+      "evidenceIds": [
+        "ev-demo-art-001-document",
+        "ev-demo-art-001-auction",
+        "ev-demo-art-001-platform"
+      ],
+      "updatedAt": "2026-08-15T09:00:00+09:00"
+    },
+    {
+      "offeringId": "demo-art-002",
+      "methodologyVersion": "art-mvp-v1.0",
+      "verdict": "conditional",
+      "verdictLabel": "조건부 해볼 만함",
+      "headline": "가격 근거는 양호하지만 동일 시리즈 표본과 평균 4개월 지연을 함께 봐야 합니다.",
+      "summary": "취득가 대비 공모금액 차이 15.0% 중 1,200만원이 공개 비용으로 설명돼 미설명 차액은 300만원입니다. 최근 3년 거래 26건과 72.0% 낙찰률로 시장 거래는 유지됐지만 동일 시리즈는 5건에 그칩니다. 플랫폼은 청산 경험이 있으나 완료 상품 일부가 목표보다 평균 약 4개월 늦었습니다. 가격 근거보다 회수 시점의 불확실성이 커 조건부 해볼 만함으로 판단했습니다.",
+      "keyReasons": [
+        {
+          "title": "공모가격 구조",
+          "finding": "취득가 대비 차이 15.0%, 미설명 차액 300만원",
+          "implication": "공개 비용으로 가격 차이의 대부분이 설명됩니다.",
+          "evidenceIds": [
+            "ev-demo-art-002-document"
+          ]
+        },
+        {
+          "title": "작가 시장",
+          "finding": "최근 3년 26건, 낙찰률 72.0%, 동일 시리즈 5건",
+          "implication": "작가 전체 거래와 현재 시리즈의 유동성을 구분해야 합니다.",
+          "evidenceIds": [
+            "ev-demo-art-002-auction"
+          ]
+        },
+        {
+          "title": "플랫폼 회수 이력",
+          "finding": "과거 8개 중 청산 6개, 기간 내 3개",
+          "implication": "완료 건수만으로 회수 시점의 안정성을 단정하기 어렵습니다.",
+          "evidenceIds": [
+            "ev-demo-art-002-platform"
+          ]
+        }
+      ],
+      "priceInsight": {
+        "conclusion": "공개 비용으로 가격 차이의 대부분이 설명됩니다.",
+        "quantitativeFindings": [
+          "취득가 대비 차이 15.0%, 미설명 차액 300만원",
+          "공개 비용 합계 1,200만원"
+        ],
+        "qualitativeFindings": [
+          "감정가는 취득가와 별도 값으로 관리했습니다."
+        ],
+        "evidenceIds": [
+          "ev-demo-art-002-document"
+        ]
+      },
+      "artistInsight": {
+        "conclusion": "작가 전체 거래와 현재 시리즈의 유동성을 구분해야 합니다.",
+        "quantitativeFindings": [
+          "최근 3년 26건, 낙찰률 72.0%, 동일 시리즈 5건"
+        ],
+        "qualitativeFindings": [
+          "작가 전체와 동일 시리즈 거래를 분리했습니다."
+        ],
+        "evidenceIds": [
+          "ev-demo-art-002-auction"
+        ]
+      },
+      "exitInsight": {
+        "conclusion": "목표 24개월 내 회수를 보수적으로 봐야 합니다.",
+        "quantitativeFindings": [
+          "동일 시리즈 5건",
+          "플랫폼 목표 보유기간 24개월"
+        ],
+        "qualitativeFindings": [
+          "거래 빈도·유찰·유사성·보유기간을 함께 반영했습니다."
+        ],
+        "evidenceIds": [
+          "ev-demo-art-002-auction",
+          "ev-demo-art-002-platform"
+        ]
+      },
+      "platformInsight": {
+        "conclusion": "완료 건수만으로 회수 시점의 안정성을 단정하기 어렵습니다.",
+        "quantitativeFindings": [
+          "과거 8개 중 청산 6개, 기간 내 3개"
+        ],
+        "qualitativeFindings": [
+          "매각 완료와 청산 완료, 기간 내 청산을 구분했습니다."
+        ],
+        "evidenceIds": [
+          "ev-demo-art-002-platform"
+        ]
+      },
+      "missingInformationRisks": [
+        "동일 시리즈 표본이 제한적"
+      ],
+      "conflicts": [],
+      "evidenceIds": [
+        "ev-demo-art-002-document",
+        "ev-demo-art-002-auction",
+        "ev-demo-art-002-platform"
+      ],
+      "updatedAt": "2026-08-15T09:00:00+09:00"
+    },
+    {
+      "offeringId": "demo-art-003",
+      "methodologyVersion": "art-mvp-v1.0",
+      "verdict": "caution",
+      "verdictLabel": "주의",
+      "headline": "1,800만원의 미설명 차액과 약한 동일 시리즈 거래가 동시에 확인됩니다.",
+      "summary": "총 공모금액과 취득가의 차이는 2,800만원이며 공개 비용 1,000만원을 제외해도 1,800만원이 설명되지 않습니다. 최근 3년 거래는 12건, 동일 시리즈는 3건이고 낙찰률은 61.0%로 원하는 가격에 바로 팔릴 표본이 강하지 않습니다. 플랫폼 청산 완료도 2건뿐이며 평균 약 7개월 지연됐습니다. 가격 부담과 회수 지연 위험이 한꺼번에 있어 주의로 판단했습니다.",
+      "keyReasons": [
+        {
+          "title": "공모가격 구조",
+          "finding": "취득가 대비 차이 31.1%, 미설명 차액 1,800만원",
+          "implication": "공모가격의 실제 매입가 대비 부담을 검증하기 어렵습니다.",
+          "evidenceIds": [
+            "ev-demo-art-003-document"
+          ]
+        },
+        {
+          "title": "작가 시장",
+          "finding": "최근 3년 12건, 낙찰률 61.0%, 동일 시리즈 3건",
+          "implication": "작가 전체 거래와 현재 시리즈의 유동성을 구분해야 합니다.",
+          "evidenceIds": [
+            "ev-demo-art-003-auction"
+          ]
+        },
+        {
+          "title": "플랫폼 회수 이력",
+          "finding": "과거 5개 중 청산 2개, 기간 내 0개",
+          "implication": "완료 건수만으로 회수 시점의 안정성을 단정하기 어렵습니다.",
+          "evidenceIds": [
+            "ev-demo-art-003-platform"
+          ]
+        }
+      ],
+      "priceInsight": {
+        "conclusion": "공모가격의 실제 매입가 대비 부담을 검증하기 어렵습니다.",
+        "quantitativeFindings": [
+          "취득가 대비 차이 31.1%, 미설명 차액 1,800만원",
+          "공개 비용 합계 1,000만원"
+        ],
+        "qualitativeFindings": [
+          "감정가는 취득가와 별도 값으로 관리했습니다."
+        ],
+        "evidenceIds": [
+          "ev-demo-art-003-document"
+        ]
+      },
+      "artistInsight": {
+        "conclusion": "작가 전체 거래와 현재 시리즈의 유동성을 구분해야 합니다.",
+        "quantitativeFindings": [
+          "최근 3년 12건, 낙찰률 61.0%, 동일 시리즈 3건"
+        ],
+        "qualitativeFindings": [
+          "작가 전체와 동일 시리즈 거래를 분리했습니다."
+        ],
+        "evidenceIds": [
+          "ev-demo-art-003-auction"
+        ]
+      },
+      "exitInsight": {
+        "conclusion": "목표 24개월 내 회수를 보수적으로 봐야 합니다.",
+        "quantitativeFindings": [
+          "동일 시리즈 3건",
+          "플랫폼 목표 보유기간 24개월"
+        ],
+        "qualitativeFindings": [
+          "거래 빈도·유찰·유사성·보유기간을 함께 반영했습니다."
+        ],
+        "evidenceIds": [
+          "ev-demo-art-003-auction",
+          "ev-demo-art-003-platform"
+        ]
+      },
+      "platformInsight": {
+        "conclusion": "완료 건수만으로 회수 시점의 안정성을 단정하기 어렵습니다.",
+        "quantitativeFindings": [
+          "과거 5개 중 청산 2개, 기간 내 0개"
+        ],
+        "qualitativeFindings": [
+          "매각 완료와 청산 완료, 기간 내 청산을 구분했습니다."
+        ],
+        "evidenceIds": [
+          "ev-demo-art-003-platform"
+        ]
+      },
+      "missingInformationRisks": [
+        "동일 시리즈 표본이 제한적"
+      ],
+      "conflicts": [
+        "DEMO 감정 문서의 평가 기준일 표기 불일치"
+      ],
+      "evidenceIds": [
+        "ev-demo-art-003-document",
+        "ev-demo-art-003-auction",
+        "ev-demo-art-003-platform"
+      ],
+      "updatedAt": "2026-08-15T09:00:00+09:00"
+    },
+    {
+      "offeringId": "demo-art-004",
+      "methodologyVersion": "art-mvp-v1.0",
+      "verdict": "danger",
+      "verdictLabel": "위험",
+      "headline": "취득가·주요 비용·청산 완료 이력이 부족해 공모가격과 회수 경로를 검증하기 어렵습니다.",
+      "summary": "작품 취득가가 공개되지 않아 감정가 1억4,000만원을 취득가로 대체하지 않았고 공모가 차이율도 계산하지 않았습니다. 최근 3년 거래는 7건, 동일 시리즈 1건, 낙찰률 43.0%로 목표 24개월 안의 매각 가능성을 뒷받침하는 표본이 매우 약합니다. 플랫폼은 청산 완료 사례가 없고 지연 상품 3건이 있으며 매각 의사결정 방식도 불명확합니다. 핵심 가격 정보 비공개와 회수 이력 부재가 겹쳐 위험으로 판단했습니다.",
+      "keyReasons": [
+        {
+          "title": "공모가격 구조",
+          "finding": "작품 취득가 비공개, 감정가만 공개",
+          "implication": "공모가격의 실제 매입가 대비 부담을 검증하기 어렵습니다.",
+          "evidenceIds": [
+            "ev-demo-art-004-document"
+          ]
+        },
+        {
+          "title": "작가 시장",
+          "finding": "최근 3년 7건, 낙찰률 43.0%, 동일 시리즈 1건",
+          "implication": "작가 전체 거래와 현재 시리즈의 유동성을 구분해야 합니다.",
+          "evidenceIds": [
+            "ev-demo-art-004-auction"
+          ]
+        },
+        {
+          "title": "플랫폼 회수 이력",
+          "finding": "과거 4개 중 청산 0개, 기간 내 0개",
+          "implication": "완료 건수만으로 회수 시점의 안정성을 단정하기 어렵습니다.",
+          "evidenceIds": [
+            "ev-demo-art-004-platform"
+          ]
+        }
+      ],
+      "priceInsight": {
+        "conclusion": "공모가격의 실제 매입가 대비 부담을 검증하기 어렵습니다.",
+        "quantitativeFindings": [
+          "작품 취득가 비공개, 감정가만 공개",
+          "공개 비용 합계 800만원"
+        ],
+        "qualitativeFindings": [
+          "감정가는 취득가와 별도 값으로 관리했습니다."
+        ],
+        "evidenceIds": [
+          "ev-demo-art-004-document"
+        ]
+      },
+      "artistInsight": {
+        "conclusion": "작가 전체 거래와 현재 시리즈의 유동성을 구분해야 합니다.",
+        "quantitativeFindings": [
+          "최근 3년 7건, 낙찰률 43.0%, 동일 시리즈 1건"
+        ],
+        "qualitativeFindings": [
+          "작가 전체와 동일 시리즈 거래를 분리했습니다."
+        ],
+        "evidenceIds": [
+          "ev-demo-art-004-auction"
+        ]
+      },
+      "exitInsight": {
+        "conclusion": "목표 24개월 내 회수를 보수적으로 봐야 합니다.",
+        "quantitativeFindings": [
+          "동일 시리즈 1건",
+          "플랫폼 목표 보유기간 24개월"
+        ],
+        "qualitativeFindings": [
+          "거래 빈도·유찰·유사성·보유기간을 함께 반영했습니다."
+        ],
+        "evidenceIds": [
+          "ev-demo-art-004-auction",
+          "ev-demo-art-004-platform"
+        ]
+      },
+      "platformInsight": {
+        "conclusion": "완료 건수만으로 회수 시점의 안정성을 단정하기 어렵습니다.",
+        "quantitativeFindings": [
+          "과거 4개 중 청산 0개, 기간 내 0개"
+        ],
+        "qualitativeFindings": [
+          "매각 완료와 청산 완료, 기간 내 청산을 구분했습니다."
+        ],
+        "evidenceIds": [
+          "ev-demo-art-004-platform"
+        ]
+      },
+      "missingInformationRisks": [
+        "작품 취득가 비공개",
+        "주요 비용 내역 불완전",
+        "매각 의사결정 방식 불명확"
+      ],
+      "conflicts": [],
+      "evidenceIds": [
+        "ev-demo-art-004-document",
+        "ev-demo-art-004-auction",
+        "ev-demo-art-004-platform"
+      ],
+      "updatedAt": "2026-08-15T09:00:00+09:00"
+    }
+  ],
+  "annualMetrics": {
+    "demo-artist-001": [
+      {
+        "year": 2022,
+        "offered": 8,
+        "sold": 6,
+        "medianPrice": 57000000,
+        "unsold": 2
+      },
+      {
+        "year": 2023,
+        "offered": 9,
+        "sold": 7,
+        "medianPrice": 59280000,
+        "unsold": 2
+      },
+      {
+        "year": 2024,
+        "offered": 12,
+        "sold": 10,
+        "medianPrice": 61560000,
+        "unsold": 2
+      },
+      {
+        "year": 2025,
+        "offered": 14,
+        "sold": 11,
+        "medianPrice": 63840000,
+        "unsold": 3
+      },
+      {
+        "year": 2026,
+        "offered": 16,
+        "sold": 13,
+        "medianPrice": 66119999,
+        "unsold": 3
+      }
+    ],
+    "demo-artist-002": [
+      {
+        "year": 2022,
+        "offered": 5,
+        "sold": 4,
+        "medianPrice": 69000000,
+        "unsold": 1
+      },
+      {
+        "year": 2023,
+        "offered": 6,
+        "sold": 4,
+        "medianPrice": 71760000,
+        "unsold": 2
+      },
+      {
+        "year": 2024,
+        "offered": 7,
+        "sold": 5,
+        "medianPrice": 74520000,
+        "unsold": 2
+      },
+      {
+        "year": 2025,
+        "offered": 9,
+        "sold": 6,
+        "medianPrice": 77280000,
+        "unsold": 3
+      },
+      {
+        "year": 2026,
+        "offered": 10,
+        "sold": 7,
+        "medianPrice": 80040000,
+        "unsold": 3
+      }
+    ],
+    "demo-artist-003": [
+      {
+        "year": 2022,
+        "offered": 2,
+        "sold": 1,
+        "medianPrice": 81000000,
+        "unsold": 1
+      },
+      {
+        "year": 2023,
+        "offered": 3,
+        "sold": 2,
+        "medianPrice": 79785000,
+        "unsold": 1
+      },
+      {
+        "year": 2024,
+        "offered": 3,
+        "sold": 2,
+        "medianPrice": 78570000,
+        "unsold": 1
+      },
+      {
+        "year": 2025,
+        "offered": 4,
+        "sold": 2,
+        "medianPrice": 77355000,
+        "unsold": 2
+      },
+      {
+        "year": 2026,
+        "offered": 5,
+        "sold": 3,
+        "medianPrice": 76140000,
+        "unsold": 2
+      }
+    ],
+    "demo-artist-004": [
+      {
+        "year": 2022,
+        "offered": 1,
+        "sold": 0,
+        "medianPrice": 93000000,
+        "unsold": 1
+      },
+      {
+        "year": 2023,
+        "offered": 2,
+        "sold": 1,
+        "medianPrice": 88350000,
+        "unsold": 1
+      },
+      {
+        "year": 2024,
+        "offered": 2,
+        "sold": 1,
+        "medianPrice": 83700000,
+        "unsold": 1
+      },
+      {
+        "year": 2025,
+        "offered": 2,
+        "sold": 1,
+        "medianPrice": 79050000,
+        "unsold": 1
+      },
+      {
+        "year": 2026,
+        "offered": 3,
+        "sold": 1,
+        "medianPrice": 74400000,
+        "unsold": 2
+      }
+    ]
+  },
+  "changeLogs": [
+    {
+      "id": "change-1",
+      "entityType": "Offering",
+      "entityId": "demo-art-001",
+      "fieldPath": "totalOfferingAmount",
+      "previousValue": 129000000,
+      "newValue": 130000000,
+      "changedAt": "2026-08-15T09:00:00+09:00",
+      "sourceIds": [
+        "ev-demo-art-001-document"
+      ]
+    },
+    {
+      "id": "change-2",
+      "entityType": "Offering",
+      "entityId": "demo-art-002",
+      "fieldPath": "totalOfferingAmount",
+      "previousValue": 114000000,
+      "newValue": 115000000,
+      "changedAt": "2026-08-15T09:00:00+09:00",
+      "sourceIds": [
+        "ev-demo-art-002-document"
+      ]
+    },
+    {
+      "id": "change-3",
+      "entityType": "Offering",
+      "entityId": "demo-art-003",
+      "fieldPath": "totalOfferingAmount",
+      "previousValue": 117000000,
+      "newValue": 118000000,
+      "changedAt": "2026-08-15T09:00:00+09:00",
+      "sourceIds": [
+        "ev-demo-art-003-document"
+      ]
+    },
+    {
+      "id": "change-4",
+      "entityType": "Offering",
+      "entityId": "demo-art-004",
+      "fieldPath": "totalOfferingAmount",
+      "previousValue": 164000000,
+      "newValue": 165000000,
+      "changedAt": "2026-08-15T09:00:00+09:00",
+      "sourceIds": [
+        "ev-demo-art-004-document"
+      ]
+    }
+  ]
+}

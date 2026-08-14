@@ -15,7 +15,9 @@
     "check:weshareart-data": "python3 scripts/build_weshareart_research.py --check",
     "build:live": "python3 scripts/build_live_static.py",
     "check:live": "python3 scripts/build_live_static.py --check",
-    "test:js": "node tests/test_calculations.mjs && node tests/test_api.mjs && node tests/test_track_records.mjs && node tests/test_restructure.mjs"
+    "test:js": "node tests/test_calculations.mjs && node tests/test_api.mjs && node tests/test_track_records.mjs && node tests/test_restructure.mjs",
+    "test:art": "node --experimental-strip-types --test tests/art-calculations.test.ts tests/art-search.test.ts tests/art-schema.test.ts tests/art-regression.test.ts tests/legacy-data-connection.test.ts",
+    "test": "npm run test:art"
   },
   "dependencies": {
     "next": "16.3.0",
