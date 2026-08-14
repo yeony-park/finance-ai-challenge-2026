@@ -78,6 +78,17 @@ const filingSchema = z.object({
   isRechecked: z.boolean(),
   correctionReason: z.string(),
   correctionItems: z.array(z.string()),
+  correctionDetails: z
+    .array(
+      z.object({
+        label: z.string(),
+        isOrderRelated: z.boolean(),
+        before: z.string(),
+        after: z.string(),
+        isExcerpt: z.boolean(),
+      }),
+    )
+    .optional(),
   correctionNotes: z.array(z.string()),
 });
 

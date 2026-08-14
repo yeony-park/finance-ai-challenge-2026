@@ -21,6 +21,14 @@ export interface SyntheticReplayDiffArtifact extends ReplayDiffCommon {
 
 export type FilingRole = "base" | "amendment";
 
+export interface CorrectionDetailRecord {
+  readonly label: string;
+  readonly isOrderRelated: boolean;
+  readonly before: string;
+  readonly after: string;
+  readonly isExcerpt: boolean;
+}
+
 export interface ReplayFilingRecord {
   readonly rcpNo: string;
   readonly receivedOn: string;
@@ -29,6 +37,7 @@ export interface ReplayFilingRecord {
   readonly isRechecked: boolean;
   readonly correctionReason: string;
   readonly correctionItems: readonly string[];
+  readonly correctionDetails?: readonly CorrectionDetailRecord[];
   readonly correctionNotes: readonly string[];
 }
 

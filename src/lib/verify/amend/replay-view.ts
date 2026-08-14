@@ -9,10 +9,17 @@ import type {
   SyntheticReplayDiffArtifact,
 } from "./replay-fixture";
 
+export interface ReplayRowDiffView {
+  readonly before: string;
+  readonly after: string;
+  readonly sourceNote: string;
+}
+
 export interface ReplayRowView {
   readonly id: string;
   readonly label: string;
   readonly detail: string;
+  readonly diff?: ReplayRowDiffView;
 }
 
 export interface ReplayStageView {
@@ -138,6 +145,22 @@ const headRowDetail = (filing: ReplayFilingRecord): string => {
   return note ?? `${filing.reportLabel} 접수`;
 };
 
+const EXCERPT_SOURCE_NOTE = "발행사 정정신고서 원문 발췌 · 익명화 적용";
+
+const rowDiffOf = (
+  filing: ReplayFilingRecord,
+  index: number,
+): ReplayRowDiffView | undefined => {
+  const detail = filing.correctionDetails?.[index];
+  if (!detail) return undefined;
+  if (detail.before.length === 0 && detail.after.length === 0) return undefined;
+  return {
+    before: detail.before,
+    after: detail.after,
+    sourceNote: EXCERPT_SOURCE_NOTE,
+  };
+};
+
 const filingRows = (
   artifact: ActualReplayDiffArtifact,
 ): readonly ReplayRowView[] =>
@@ -151,11 +174,15 @@ const filingRows = (
           label: head,
           detail: headRowDetail(filing),
         },
-        ...filing.correctionItems.map((item, index) => ({
-          id: `${filing.rcpNo}-${index}`,
-          label: `정정 항목 ${index + 1}`,
-          detail: item,
-        })),
+        ...filing.correctionItems.map((item, index) => {
+          const diff = rowDiffOf(filing, index);
+          return {
+            id: `${filing.rcpNo}-${index}`,
+            label: `정정 항목 ${index + 1}`,
+            detail: item,
+            ...(diff === undefined ? {} : { diff }),
+          };
+        }),
       ];
     });
 

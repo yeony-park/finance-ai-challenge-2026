@@ -76,7 +76,33 @@ export function AmendmentReplay({ replay }: AmendmentReplayProps) {
               {stage.rows.map((row) => (
                 <div key={row.id} className={s.stageRow}>
                   <dt className={s.stageRowLabel}>{row.label}</dt>
-                  <dd className={s.stageRowDetail}>{row.detail}</dd>
+                  <dd className={s.stageRowDetail}>
+                    {row.detail}
+                    {row.diff ? (
+                      <details className={s.rowDiff}>
+                        <summary className={s.rowDiffSummary}>
+                          정정 전 → 후 발췌 보기
+                        </summary>
+                        <div className={s.rowDiffBody}>
+                          <div className={s.rowDiffCol}>
+                            <span className={s.rowDiffTag}>정정 전</span>
+                            <p className={s.rowDiffText}>
+                              {row.diff.before.length > 0 ? row.diff.before : "—"}
+                            </p>
+                          </div>
+                          <div className={s.rowDiffCol}>
+                            <span className={`${s.rowDiffTag} ${s.rowDiffTagAfter}`}>
+                              정정 후
+                            </span>
+                            <p className={s.rowDiffText}>
+                              {row.diff.after.length > 0 ? row.diff.after : "—"}
+                            </p>
+                          </div>
+                          <p className={s.rowDiffSource}>{row.diff.sourceNote}</p>
+                        </div>
+                      </details>
+                    ) : null}
+                  </dd>
                 </div>
               ))}
             </dl>

@@ -19,8 +19,10 @@ import { maskFreeText } from "../report/mask";
 import { toPublicReport, writePublicReport } from "../report/public-report";
 import type { VerifyReport } from "../types";
 import {
+  correctionDetailOf,
   correctionItemLabel,
   correctionReasonText,
+  focusExcerptPair,
   readCorrectionNotice,
   toIsoDate,
 } from "./correction-notice";
@@ -34,6 +36,13 @@ const DEFAULT_OFFER_ID = "livestock-7";
 
 const RAW_MISSING_NOTE =
   "원문을 수집하지 않아 이 신고서의 정정 항목 표는 읽지 못했습니다.";
+
+const EXCERPT_LIMIT = 600;
+
+const truncateExcerpt = (text: string): string =>
+  text.length > EXCERPT_LIMIT
+    ? `${text.slice(0, EXCERPT_LIMIT).trimEnd()} … (이하 생략)`
+    : text;
 
 const NOTICE_MISSING_NOTE =
   "이 신고서에서 정정사항 표를 찾지 못했습니다 — 서식이 다를 수 있습니다.";
@@ -123,6 +132,20 @@ const filingRecord = async (
     correctionItems: notice.items.map((item) =>
       maskFreeText(correctionItemLabel(item)),
     ),
+    correctionDetails: notice.items.map((item) => {
+      const detail = correctionDetailOf(notice, item);
+      const focused = focusExcerptPair(detail.before, detail.after);
+      return {
+        label: maskFreeText(correctionItemLabel(item)),
+        isOrderRelated: item.isOrderRelated,
+        before: maskFreeText(truncateExcerpt(focused.before)),
+        after: maskFreeText(truncateExcerpt(focused.after)),
+        isExcerpt:
+          detail.isExcerpt ||
+          focused.before.length > EXCERPT_LIMIT ||
+          focused.after.length > EXCERPT_LIMIT,
+      };
+    }),
     correctionNotes: [],
   };
 };

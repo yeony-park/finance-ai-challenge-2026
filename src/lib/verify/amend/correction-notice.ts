@@ -23,6 +23,20 @@ export interface CorrectionItem {
   readonly item: string;
   readonly isOrderRelated: boolean;
   readonly reason: string;
+  readonly beforeCell: string;
+  readonly afterCell: string;
+}
+
+export interface CorrectionExcerpt {
+  readonly ref: string;
+  readonly before: string;
+  readonly after: string;
+}
+
+export interface CorrectionDetail {
+  readonly before: string;
+  readonly after: string;
+  readonly isExcerpt: boolean;
 }
 
 export interface CorrectionNotice {
@@ -31,6 +45,7 @@ export interface CorrectionNotice {
   readonly firstSubmittedOnText: string;
   readonly guidance: readonly string[];
   readonly items: readonly CorrectionItem[];
+  readonly excerpts: readonly CorrectionExcerpt[];
 }
 
 const flatten = (text: string): string => text.replace(/\s+/g, " ").trim();
@@ -123,10 +138,105 @@ const scanItems = (grid: Grid): ItemScan => {
       item: flatten(row[0] ?? ""),
       isOrderRelated: ORDER_RELATED_PATTERN.test(compact(row[1] ?? "")),
       reason: flatten(row[2] ?? ""),
+      beforeCell: flatten(row[3] ?? ""),
+      afterCell: flatten(row[4] ?? ""),
     });
   }
 
   return { items, guidance };
+};
+
+const EXCERPT_MARKER_PATTERN = /\(주\s*(\d+)\)\s*정\s*정\s*(전|후)/g;
+
+const NOTE_REF_PATTERN = /^\(주\s*(\d+)\)$/;
+
+const plainTextOf = (slice: string): string =>
+  slice
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&(?:amp|lt|gt|quot|#\d+|[a-z]+);/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+const readExcerpts = (slice: string): readonly CorrectionExcerpt[] => {
+  const text = plainTextOf(slice);
+  const markers: { ref: string; side: "전" | "후"; end: number; start: number }[] =
+    [];
+  for (const matched of text.matchAll(EXCERPT_MARKER_PATTERN)) {
+    const [whole, no, side] = matched;
+    if (matched.index === undefined) continue;
+    if (no === undefined || (side !== "전" && side !== "후")) continue;
+    markers.push({
+      ref: `주${no}`,
+      side,
+      start: matched.index,
+      end: matched.index + whole.length,
+    });
+  }
+
+  const byRef = new Map<string, { before: string; after: string }>();
+  markers.forEach((marker, index) => {
+    const next = markers[index + 1];
+    const body = text.slice(marker.end, next?.start ?? text.length).trim();
+    const bucket = byRef.get(marker.ref) ?? { before: "", after: "" };
+    if (marker.side === "전") bucket.before = body;
+    else bucket.after = body;
+    byRef.set(marker.ref, bucket);
+  });
+
+  return [...byRef.entries()].map(([ref, bucket]) => ({ ref, ...bucket }));
+};
+
+const EXCERPT_CONTEXT_CHARS = 80;
+
+export const focusExcerptPair = (
+  before: string,
+  after: string,
+): { readonly before: string; readonly after: string } => {
+  if (before.length === 0 || after.length === 0) return { before, after };
+  const max = Math.min(before.length, after.length);
+  let prefix = 0;
+  while (prefix < max && before[prefix] === after[prefix]) prefix += 1;
+  if (prefix <= EXCERPT_CONTEXT_CHARS) return { before, after };
+  const start = prefix - EXCERPT_CONTEXT_CHARS;
+  return {
+    before: `… ${before.slice(start)}`,
+    after: `… ${after.slice(start)}`,
+  };
+};
+
+const EMPTY_DETAIL: CorrectionDetail = { before: "", after: "", isExcerpt: false };
+
+export const correctionDetailOf = (
+  notice: CorrectionNotice,
+  item: CorrectionItem | undefined,
+): CorrectionDetail => {
+  if (!item) return EMPTY_DETAIL;
+
+  const refOf = (cell: string): string | undefined => {
+    const matched = NOTE_REF_PATTERN.exec(compact(cell));
+    return matched ? `주${matched[1]}` : undefined;
+  };
+
+  const beforeRef = refOf(item.beforeCell);
+  const afterRef = refOf(item.afterCell);
+  if (beforeRef === undefined && afterRef === undefined) {
+    return {
+      before: item.beforeCell,
+      after: item.afterCell,
+      isExcerpt: false,
+    };
+  }
+
+  const excerptFor = (ref: string | undefined) =>
+    ref === undefined
+      ? undefined
+      : notice.excerpts.find((excerpt) => excerpt.ref === ref);
+
+  return {
+    before: excerptFor(beforeRef)?.before ?? item.beforeCell,
+    after: excerptFor(afterRef)?.after ?? item.afterCell,
+    isExcerpt: true,
+  };
 };
 
 export const readCorrectionNotice = (
@@ -147,6 +257,7 @@ export const readCorrectionNotice = (
     firstSubmittedOnText: valueByLabel(grids, FIRST_SUBMISSION_LABEL),
     guidance: scanned.guidance,
     items: scanned.items,
+    excerpts: readExcerpts(slice),
   };
 };
 

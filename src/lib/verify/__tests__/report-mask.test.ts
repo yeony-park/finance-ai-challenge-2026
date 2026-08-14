@@ -82,3 +82,15 @@ describe("마스킹 멱등성 — 이미 마스킹된 값에 재적용해도 불
     expect(maskFreeText("양수 등록 20260730")).toBe("양수 등록 20260730");
   });
 });
+
+describe("maskFreeText — 발행사·플랫폼 브랜드는 노출하지 않는다", () => {
+  test("법인 접두어를 포함한 발행사명을 발행사로 치환한다", () => {
+    expect(maskFreeText("기타 사항은 ㈜스탁키퍼가 정합니다")).toBe(
+      "기타 사항은 발행사가 정합니다",
+    );
+    expect(maskFreeText("주식회사 스탁키퍼(뱅카우 운영)")).toBe(
+      "발행사(발행사 운영)",
+    );
+    expect(maskFreeText("Bancow 앱에서 청약")).toBe("발행사 앱에서 청약");
+  });
+});

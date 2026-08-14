@@ -118,3 +118,100 @@ describe("toAmendmentReplayView — 실제 정정은 합성 시연과 다르게 
     }
   });
 });
+
+describe("정정 전·후 발췌 — correctionDetails가 행 diff로 실린다", () => {
+  const DOC = { offerId: "livestock-7", rcpNo: "20260203000427", submittedOn: "2026-02-03" };
+  const EMPTY_DIFF = {
+    from: DOC,
+    to: { ...DOC, rcpNo: "20260225002022", submittedOn: "2026-02-25" },
+    changedClaims: [],
+    verdictChanges: [],
+    summary: {
+      changedClaims: 0,
+      verdictMaintained: 0,
+      verdictChanged: 0,
+      verdictUnknown: 0,
+      notJudged: 0,
+    },
+    notes: [],
+  };
+
+  const artifactWith = (
+    details: readonly {
+      label: string;
+      isOrderRelated: boolean;
+      before: string;
+      after: string;
+      isExcerpt: boolean;
+    }[] | undefined,
+  ): ActualReplayDiffArtifact => ({
+    kind: "actual-amendment-diff",
+    offerId: "livestock-7",
+    generatedAt: "2026-08-15T00:00:00.000Z",
+    disclosure: "고지",
+    sourceName: "출처",
+    facts: [],
+    diff: EMPTY_DIFF,
+    filings: [
+      {
+        rcpNo: "20260203000427",
+        receivedOn: "2026-02-03",
+        role: "base",
+        reportLabel: "증권신고서",
+        isRechecked: true,
+        correctionReason: "",
+        correctionItems: [],
+        correctionNotes: [],
+      },
+      {
+        rcpNo: "20260225002022",
+        receivedOn: "2026-02-25",
+        role: "amendment",
+        reportLabel: "[기재정정]증권신고서",
+        isRechecked: true,
+        correctionReason: "요구 정정",
+        correctionItems: ["4. 모집 일정"],
+        ...(details === undefined ? {} : { correctionDetails: details }),
+        correctionNotes: [],
+      },
+    ],
+  });
+
+  test("전·후 발췌가 있으면 행에 diff가 붙는다", () => {
+    const view = toAmendmentReplayView(
+      artifactWith([
+        {
+          label: "4. 모집 일정",
+          isOrderRelated: false,
+          before: "청약기일 2026년 2월 20일",
+          after: "청약기일 2026년 3월 5일",
+          isExcerpt: true,
+        },
+      ]),
+    );
+
+    const itemRow = view.stages[0]?.rows.find((row) => row.diff !== undefined);
+    expect(itemRow?.diff?.before).toContain("2월 20일");
+    expect(itemRow?.diff?.after).toContain("3월 5일");
+    expect(itemRow?.diff?.sourceNote).toContain("원문 발췌");
+  });
+
+  test("구버전 자료(correctionDetails 없음)는 diff 없이 항목만 나열한다", () => {
+    const view = toAmendmentReplayView(artifactWith(undefined));
+
+    const rows = view.stages[0]?.rows ?? [];
+    expect(rows.length).toBeGreaterThan(0);
+    expect(rows.every((row) => row.diff === undefined)).toBe(true);
+  });
+
+  test("전·후가 모두 빈 항목에는 diff를 붙이지 않는다", () => {
+    const view = toAmendmentReplayView(
+      artifactWith([
+        { label: "4. 모집 일정", isOrderRelated: false, before: "", after: "", isExcerpt: false },
+      ]),
+    );
+
+    const rows = view.stages[0]?.rows ?? [];
+    expect(rows.every((row) => row.diff === undefined)).toBe(true);
+  });
+});

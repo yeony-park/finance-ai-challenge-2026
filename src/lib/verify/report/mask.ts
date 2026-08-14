@@ -1,6 +1,29 @@
+import { DOCUMENT_PROFILES } from "../parse/profiles";
+
 const VISIBLE_DIGITS = 2;
 const MASK_CHAR = "●";
 const REGION_MASK = "○○";
+const BRAND_MASK = "발행사";
+
+const CORP_PREFIX = "(?:주식회사\\s*|㈜\\s*|\\(주\\)\\s*)?";
+
+const EXTRA_BRAND_TOKENS: readonly string[] = ["bancow", "stockeeper"];
+
+const brandTokensOf = (): readonly string[] => [
+  ...new Set(
+    DOCUMENT_PROFILES.flatMap((profile) =>
+      [...profile.issuer.matchAll(/[가-힣]{3,}|[A-Za-z]{4,}/g)].map(
+        (matched) => matched[0],
+      ),
+    ).filter((token) => token !== "주식회사"),
+  ),
+  ...EXTRA_BRAND_TOKENS,
+];
+
+const BRAND_TOKEN_PATTERN = new RegExp(
+  `${CORP_PREFIX}(?:${brandTokensOf().join("|")})`,
+  "gi",
+);
 
 export const maskTraceNo = (raw: string): string => {
   if (raw.includes(MASK_CHAR)) return raw;
@@ -54,6 +77,7 @@ const NON_REGION_TOKENS: ReadonlySet<string> = new Set([
 
 export const maskFreeText = (raw: string): string =>
   raw
+    .replace(BRAND_TOKEN_PATTERN, BRAND_MASK)
     .replace(LONG_DIGITS_PATTERN, (digits) => maskTraceNo(digits))
     .replace(REGION_TOKEN_PATTERN, (match: string, suffix: string) =>
       NON_REGION_TOKENS.has(match) ? match : `${REGION_MASK}${suffix}`,
