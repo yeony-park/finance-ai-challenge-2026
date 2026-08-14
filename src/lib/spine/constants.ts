@@ -11,7 +11,7 @@ export const SYSTEM_PROMPT_CANARY = "FSPINE-7C1A";
 export const DEFAULT_MAIN_MODEL = "anthropic/claude-sonnet-5";
 
 export const ASSISTIVE_NOTICE =
-  "이 서비스의 안내는 AI가 생성한 보조 정보입니다. 최종 확인·결정은 반드시 공식 기관을 통해 진행하세요.";
+  "이 설명은 AI가 생성한 보조 정보입니다. 수치와 근거는 DART 원문 등 공개 자료에서 직접 확인하세요.";
 
-export const LEGAL_DISCLAIMER =
-  "본 분석은 법률 자문이 아니며, 표시된 등급은 확정 판정이 아닌 근거 기반 가능성 표시입니다. 계약 관련 최종 판단은 해당 보험회사·금융감독원 등 공식 채널로 확인하세요.";
+export const VERIFICATION_DISCLAIMER =
+  "이 서비스는 공시된 내용과 공개 원장을 대조해 일치·원장 미확인·대조 불가로 표시할 뿐, 가치나 가격 적정성을 판단하지 않고 매수·청약을 권유하지 않습니다. 확인되지 않았다는 표시는 부정 판정이 아닙니다.";

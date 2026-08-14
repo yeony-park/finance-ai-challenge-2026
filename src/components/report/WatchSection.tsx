@@ -1,30 +1,22 @@
-"use client";
-
-import { m } from "motion/react";
-import { useEffect, useRef, useState } from "react";
-
 import { Reveal } from "@/components/motion/Reveal";
-import { MOTION_DURATION, MOTION_EASE } from "@/components/motion/tokens";
-import { useReducedMotionSafe } from "@/components/motion/useReducedMotionSafe";
+import type { AmendmentReplayView } from "@/lib/verify/amend/replay-view";
 import type { WatchStatusView } from "@/lib/verify/amend/watch-view";
 import type { DemoView } from "@/lib/verify/report/view-model";
 
 import { METHODOLOGY_ANCHOR } from "@/app/methodology/anchors";
 
-import { IconBell, IconInfo, IconPlay } from "./icons";
+import { AmendmentReplay } from "./AmendmentReplay";
+import { IconInfo } from "./icons";
 import { WATCH_HEADING_ID } from "./ids";
 import { MethodologyLink } from "./MethodologyLink";
+import { PipelineReplay } from "./PipelineReplay";
 import s from "./report.module.css";
 
-const REPLAY_STEP_DELAY_MS = 650;
-const REPLAY_PUSH_DELAY_MS = 250;
-const STEP_DIM = 0.32;
-
 const UNCONNECTED_WATCH_TEXT =
-  "이 공모의 정정 접수 여부는 아직 조회되지 않았습니다 — 위 리플레이는 실제 대조 실행 기록이며, 마지막 알림 화면은 미리보기입니다.";
+  "이 공모의 정정 접수 여부는 아직 조회되지 않았습니다.";
 
 const NOTIFY_CHANNEL_TEXT =
-  "알림 발송 채널은 아직 연결되지 않았습니다 — 마지막 알림 화면은 미리보기입니다.";
+  "관심 등록은 이 브라우저에만 저장되고, 알림 발송 채널은 아직 연결되지 않았습니다.";
 
 const watchStatusText = (watch: WatchStatusView): string => {
   const filings = watch.amendments
@@ -37,40 +29,10 @@ const watchStatusText = (watch: WatchStatusView): string => {
 interface WatchSectionProps {
   readonly view: DemoView;
   readonly watch?: WatchStatusView | null;
+  readonly replay?: AmendmentReplayView | null;
 }
 
-export function WatchSection({ view, watch }: WatchSectionProps) {
-  const isReduced = useReducedMotionSafe();
-  const [litCount, setLitCount] = useState(0);
-  const [isPushShown, setIsPushShown] = useState(false);
-  const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
-  const steps = view.replay.steps;
-
-  useEffect(() => () => timersRef.current.forEach(clearTimeout), []);
-
-  const handleReplay = () => {
-    timersRef.current.forEach(clearTimeout);
-    timersRef.current = [];
-    setLitCount(0);
-    setIsPushShown(false);
-
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const stepDelay = prefersReduced ? 0 : REPLAY_STEP_DELAY_MS;
-
-    steps.forEach((_, i) => {
-      timersRef.current.push(
-        setTimeout(() => {
-          setLitCount(i + 1);
-          if (i === steps.length - 1) {
-            timersRef.current.push(
-              setTimeout(() => setIsPushShown(true), prefersReduced ? 0 : REPLAY_PUSH_DELAY_MS),
-            );
-          }
-        }, stepDelay * (i + 1)),
-      );
-    });
-  };
-
+export function WatchSection({ view, watch, replay }: WatchSectionProps) {
   return (
     <section
       className={`${s.section} ${s.sectionMuted}`}
@@ -91,83 +53,20 @@ export function WatchSection({ view, watch }: WatchSectionProps) {
           />
         </header>
 
-        {watch ? (
-          <div className={s.honesty}>
-            <IconInfo className={s.ic} />
-            <span>{watchStatusText(watch)}</span>
-          </div>
-        ) : null}
-
-        <div className={s.replayCard}>
-          <h3 className={s.replayTitle}>{view.replay.heading}</h3>
-          <p className={s.replayLead}>{view.replay.lead}</p>
-
-          <m.button
-            type="button"
-            className={s.replayButton}
-            onClick={handleReplay}
-            whileHover={isReduced ? undefined : { scale: 1.02 }}
-            whileTap={isReduced ? undefined : { scale: 0.97 }}
-            transition={{ duration: MOTION_DURATION.fast, ease: MOTION_EASE }}
-          >
-            <IconPlay className={s.ic} />
-            리플레이 재생
-          </m.button>
-
-          <div className={s.timeline}>
-            {steps.map((step, i) => {
-              const isLit = litCount > i;
-              const isLast = i === steps.length - 1;
-              return (
-                <m.div
-                  key={step.id}
-                  className={step.isWarned ? `${s.step} ${s.stepWarned}` : s.step}
-                  initial={false}
-                  animate={{ opacity: isLit ? 1 : STEP_DIM }}
-                  transition={{ duration: MOTION_DURATION.slow, ease: MOTION_EASE }}
-                >
-                  <div className={s.stepRail}>
-                    <div className={s.stepDot} />
-                    {!isLast && <div className={s.stepLine} />}
-                  </div>
-                  <div className={s.stepBody}>
-                    <p className={s.stepDate}>{step.date}</p>
-                    <p
-                      className={
-                        step.isWarned ? `${s.stepTitle} ${s.stepTitleWarn}` : s.stepTitle
-                      }
-                    >
-                      {step.title}
-                    </p>
-                    {step.detail ? <p className={s.stepDetail}>{step.detail}</p> : null}
-                    {isLast && (
-                      <m.div
-                        className={s.push}
-                        initial={false}
-                        animate={{ opacity: isPushShown ? 1 : 0 }}
-                        transition={{ duration: MOTION_DURATION.slow, ease: MOTION_EASE }}
-                        aria-hidden={!isPushShown}
-                      >
-                        <span className={s.pushIcon}>
-                          <IconBell className={s.ic} />
-                        </span>
-                        <span className={s.pushBody}>
-                          <b className={s.pushTitle}>{view.replay.push.title}</b>
-                          {view.replay.push.body}
-                          <span className={s.pushMeta}>{view.replay.push.meta}</span>
-                        </span>
-                      </m.div>
-                    )}
-                  </div>
-                </m.div>
-              );
-            })}
-          </div>
+        <div className={s.honesty}>
+          <IconInfo className={s.ic} />
+          <span>{watch ? watchStatusText(watch) : UNCONNECTED_WATCH_TEXT}</span>
         </div>
+
+        {replay ? (
+          <AmendmentReplay replay={replay} />
+        ) : (
+          <PipelineReplay replay={view.replay} />
+        )}
 
         <div className={s.honesty}>
           <IconInfo className={s.ic} />
-          <span>{watch ? NOTIFY_CHANNEL_TEXT : UNCONNECTED_WATCH_TEXT}</span>
+          <span>{NOTIFY_CHANNEL_TEXT}</span>
         </div>
       </Reveal>
     </section>

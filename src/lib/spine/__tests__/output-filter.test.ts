@@ -20,13 +20,14 @@ describe("출력 필터", () => {
   });
 
   test("blocks guaranteed-return claims", () => {
-    const result = filterOutput("이 상품은 원금 보장에 무조건 수익이 납니다.");
+    const result = filterOutput("이 공모는 원금 보장에 무조건 수익이 납니다.");
     expect(result.ok).toBe(false);
     expect(result.violations).toContain("guaranteed-return");
   });
 
   test("passes clean response untouched", () => {
-    const clean = "지급정지는 송금 은행 콜센터 또는 112에서 요청할 수 있습니다.";
+    const clean =
+      "공시된 개체 37두 중 36두가 축산물이력제 원장과 일치했습니다.";
     const result = filterOutput(clean);
     expect(result.ok).toBe(true);
     expect(result.text).toBe(clean);

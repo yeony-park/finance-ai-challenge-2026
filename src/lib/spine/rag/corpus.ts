@@ -2,60 +2,67 @@ import type { Citation, CorpusDoc } from "../types";
 
 export const SAMPLE_CORPUS: readonly CorpusDoc[] = [
   {
-    id: "counterscam-112",
-    title: "전기통신금융사기 통합신고대응센터 안내",
-    url: "https://www.counterscam112.go.kr",
-    issuer: "경찰청·금융감독원·KISA",
-    content:
-      "보이스피싱 피해 발생 시 112로 신고하면 경찰·금감원·KISA·통신3사가 합동으로 초동 대응한다. 지급정지는 송금 금융회사 콜센터 또는 112를 통해 요청할 수 있다.",
-  },
-  {
-    id: "fss-remedy-procedure",
-    title: "전기통신금융사기 피해금 환급 절차",
-    url: "https://www.fss.or.kr",
+    id: "dart-viewer",
+    kind: "public_record",
+    title: "전자공시시스템 DART — 증권신고서·정정신고서 원문",
+    url: "https://dart.fss.or.kr",
     issuer: "금융감독원",
     content:
-      "지급정지 요청 후 3영업일 이내에 경찰서 발급 사건사고사실확인원 등 서류를 갖춰 금융회사에 서면으로 피해구제를 신청해야 한다. 이후 약 2개월의 채권소멸 공고를 거쳐 피해금 환급이 진행된다.",
+      "투자계약증권 공모의 증권신고서와 정정신고서 원문을 열람할 수 있다. 발행사가 제시한 기초자산 명세·공모 조건·수익 배분 구조는 모두 이 원문이 기준이며, 대조 결과에 붙는 좌표(문서 위치)도 이 원문을 가리킨다.",
   },
   {
-    id: "finlife-products",
-    title: "금융상품통합비교공시(금융상품한눈에)",
-    url: "https://finlife.fss.or.kr",
+    id: "opendart-filings",
+    kind: "public_record",
+    title: "OpenDART 공시검색 API (list.json · document.xml)",
+    url: "https://opendart.fss.or.kr",
     issuer: "금융감독원",
     content:
-      "전 금융권의 정기예금·적금·주택담보대출·전세자금대출·개인신용대출 상품 조건과 금리를 비교 공시한다. 오픈API로 동일 데이터를 제공한다.",
+      "공시 목록 조회(list.json)와 원문 문서 조회(document.xml)를 제공한다. 투자계약증권은 구조화 API 대상이 아니라 목록 조회 후 원문을 직접 파싱해야 한다. 정정신고서는 같은 공모의 후속 접수 건으로 조회되며, 정정 계보 추적과 재검증의 입력이 된다.",
   },
   {
-    id: "std-disease-injury",
-    title: "질병·상해보험 표준약관 (보험업감독업무시행세칙 별표15)",
-    url: "https://law.go.kr/행정규칙/보험업감독업무시행세칙",
-    issuer: "금융감독원",
+    id: "livestock-trace",
+    kind: "public_record",
+    title: "축산물이력제 개체정보 (이력번호 조회)",
+    url: "https://www.mtrace.go.kr",
+    issuer: "농림축산식품부 · 축산물품질평가원",
     content:
-      "보험상품 표준약관은 보험업감독업무시행세칙 제5-13조 별표15로 관리된다. 표준약관은 해지권 행사 기간(안 날부터 1개월), 면책 사유의 한정 열거, 계약자 의사표시에 의한 갱신 등 소비자 보호 기준선을 정한다.",
+      "개체 이력번호로 출생일·품종·성별·사육 농장 등록 이력을 조회한다. 오픈API는 data.go.kr 15058923으로 제공된다. 신고서에 적힌 개체가 공적 원장에 실재하는지 대조하는 근거이며, 원장에서 확인되지 않는 경우 '원장 미확인'으로 표시할 뿐 허위로 단정하지 않는다.",
   },
   {
-    id: "act-terms-regulation",
-    title: "약관의 규제에 관한 법률 제6~14조 (무효 조항 유형)",
-    url: "https://law.go.kr/법령/약관의규제에관한법률",
-    issuer: "법제처 국가법령정보센터",
+    id: "ekape-auction-price",
+    kind: "public_record",
+    title: "축산물등급판정정보 — 소도체 등급별 경락가격",
+    url: "https://www.ekapepia.com",
+    issuer: "축산물품질평가원",
     content:
-      "신의성실 위반(6조), 부당 면책(7조), 과중한 손해배상 예정(8조), 해지권 제한·확대(9조), 급부의 일방 결정(10조), 고객 권익 침해(11조), 의사표시 의제(12조), 대리인 책임 가중(13조), 소제기 제한(14조) 유형의 약관 조항은 무효가 될 수 있다.",
+      "품종·성별·등급·월별 소도체 경락가격을 제공한다. 오픈API는 data.go.kr 15058822이며 개발계정 호출 한도 때문에 월 집계를 사전 수집해 캐시로 사용한다. 발행사 제시 가격이 같은 조건 분포의 어느 위치(백분위)에 있는지 표시하는 데 쓰이며, 위치 제시일 뿐 가격 적정성 판단이 아니다.",
   },
   {
-    id: "ftc-decisions",
-    title: "공정거래위원회 결정문 (불공정약관 심결례)",
-    url: "https://case.ftc.go.kr",
-    issuer: "공정거래위원회",
+    id: "molit-rtms-nrg-trade",
+    kind: "public_record",
+    title: "국토교통부 상업업무용 부동산 매매 실거래가",
+    url: "https://rt.molit.go.kr",
+    issuer: "국토교통부",
     content:
-      "2008년 이후 공개된 의결서·시정권고 등 결정문에서 불공정약관 시정 사례를 조회할 수 있다. 유형별 심결례는 약관규제법 조문 체계로 분류돼 있다.",
+      "상업업무용 부동산의 신고된 매매 실거래 내역을 제공한다. 오픈API는 data.go.kr RTMSDataSvcNrgTrade다. 동일 지역·용도 비교군의 단가 분포에서 공모가·매각가의 백분위 위치를 계산하며, 비교군 표본이 얇으면 '대조 불가'로 표시한다.",
   },
   {
-    id: "fss-dispute-cases",
-    title: "금융감독원 분쟁조정 사례",
-    url: "https://www.fss.or.kr",
-    issuer: "금융감독원",
+    id: "capital-markets-decree-2026",
+    kind: "regulation",
+    title: "자본시장과 금융투자업에 관한 법률 시행령 (2026-07-28 시행 개정)",
+    url: "https://law.go.kr/법령/자본시장과금융투자업에관한법률시행령",
+    issuer: "금융위원회 · 법제처 국가법령정보센터",
     content:
-      "보험 약관 조항 유형이 실제 분쟁으로 이어진 조정 사례를 통합검색으로 조회할 수 있다.",
+      "소액공모 한도를 10억원에서 30억원으로 확대하면서 조각투자증권은 특례에서 배제해, 공모금액과 무관하게 증권신고서 제출을 의무화했다. 금융위가 밝힌 취지는 기초자산 가치평가와 투자위험을 충실히 알리게 하는 것이다. 이 개정으로 대조 가능한 공시 원문이 전수 확보된다.",
+  },
+  {
+    id: "verification-methodology",
+    kind: "service_doc",
+    title: "본 서비스 검증 방법론 (/methodology)",
+    url: "/methodology",
+    issuer: "조각투자 공시 대조 검증 (본 서비스)",
+    content:
+      "claim 추출 → 검증가능성 판별 → 공개 원장 대조 → 판정의 4단계로 동작한다. 판정은 일치·원장 미확인·대조 불가 3값이고, 근거가 0건이면 판정을 내지 않는다. 자료 부족 자체는 부정 판정 사유가 아니며, 중대성 등급은 부여하지 않는다. 투자 권유·자문·가치 판단은 제공 범위 밖이다.",
   },
 ];
 
@@ -66,7 +73,7 @@ export const findDoc = (id: string): CorpusDoc | undefined => byId.get(id);
 export const isRegisteredSource = (id: string): boolean => byId.has(id);
 
 export const officialChannels = (): readonly Citation[] =>
-  SAMPLE_CORPUS.map((doc) => ({
+  SAMPLE_CORPUS.filter((doc) => doc.kind !== "service_doc").map((doc) => ({
     sourceId: doc.id,
     title: doc.title,
     url: doc.url,

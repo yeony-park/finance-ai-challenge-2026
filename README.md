@@ -31,7 +31,7 @@ LLM의 자리는 **비정형 신고서에서 검증 가능한 주장(claim)을 �
 - ✅ **PRD v1.2** — 문제 정의를 "감시 공백" 축으로 재구성, 정정 재검증(중대성 등급 없음) 편입 ([`.claude/prds/disclosure-verification.prd.md`](.claude/prds/disclosure-verification.prd.md))
 - ✅ **데모 목업 v4** — 조각투자 핀테크 프로덕트 룩 전면 재구성 (뮤직카우·프랩 실물 레퍼런스 실측 기반)
 - ⏳ **Phase 1 본작업 (8/11~8/18)** — DART 수집기·파서·어댑터 구현 (어댑터 구현 계약 10건은 실호출 문서에 확정, 플랜: [`.claude/plans/disclosure-verification.plan.md`](.claude/plans/disclosure-verification.plan.md))
-- ⏳ 스파인 도메인 레이어(코퍼스·레드팀 시나리오·고지 문구)는 아직 약관 주제 기준 — Phase 2에서 교체
+- ✅ **스파인 도메인 교체 (S3)** — 코퍼스 레지스트리·가드레일 규칙·레드팀 시나리오·고지 문구를 조각투자 공시 검증 기준으로 재작성. 레드팀 24건 전건 통과 ([리포트](docs/redteam/report.md)). 자유 대화형 챗봇은 PRD Out of scope라 `/api/chat` 제거
 
 **데모 2축**: 뱅카우 한우 9호(청약 8/27~9/10, 심사 기간과 겹침) 라이브 검증 + 카사 10개 건물 사후 검증
 
@@ -64,7 +64,7 @@ npm run reference:collect   # 실키 전용 · 호출 수 = 월 수 × 성별 �
 | 경로 | 내용 |
 |---|---|
 | `src/lib/spine/` | 신뢰 스파인: 인젝션 가드레일 · 출처 강제 RAG · HITL · 레이트리밋 · 레드팀 러너 ([README](src/lib/spine/README.md)) |
-| `src/app/` | Next.js App Router — `/api/chat`, `/api/health` |
+| `src/app/` | Next.js App Router — 서비스 화면 + `/api/health`, `/api/verify/[id]`, `/api/cron/monitor` |
 | `docs/competition/` | 대회 규정·양식 분석 |
 | `docs/research/` | 리서치 스트림 1~4 + 종합 보고서 (주제 무관) |
 | `docs/planning/` | 주제 정의, 페이즈 계획, IDI 로그, council 평결, 팀 회의 패키지 |

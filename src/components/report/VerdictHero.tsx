@@ -5,12 +5,17 @@ import { AnimatePresence, m } from "motion/react";
 import { MOTION_DURATION, MOTION_EASE } from "@/components/motion/tokens";
 import { useReducedMotionSafe } from "@/components/motion/useReducedMotionSafe";
 import { RichText } from "@/components/site/RichText";
+import {
+  isEmptyNarrativeLevel,
+  type NarrativeLevel,
+} from "@/lib/verify/narrative/types";
 import type { DemoView, ExplainLevel, TallyView } from "@/lib/verify/report/view-model";
 
 import { METHODOLOGY_ANCHOR } from "@/app/methodology/anchors";
 
 import { VERDICT_HEADING_ID } from "./ids";
 import { MethodologyLink } from "./MethodologyLink";
+import { VerdictNarrative } from "./VerdictNarrative";
 import s from "./report.module.css";
 
 const TONE_CLASS: Record<TallyView["tone"], string> = {
@@ -27,13 +32,18 @@ const LEVELS: ReadonlyArray<{ id: ExplainLevel; label: string }> = [
 export function VerdictHero({
   view,
   level,
+  narrative,
   onLevelChange,
 }: {
   readonly view: DemoView;
   readonly level: ExplainLevel;
+  readonly narrative: Readonly<Record<ExplainLevel, NarrativeLevel>> | null;
   readonly onLevelChange: (level: ExplainLevel) => void;
 }) {
   const isReduced = useReducedMotionSafe();
+  const narrativeLevel = narrative?.[level];
+  const hasNarrative =
+    narrativeLevel !== undefined && !isEmptyNarrativeLevel(narrativeLevel);
 
   return (
     <section className={`${s.section} ${s.hero}`} aria-labelledby={VERDICT_HEADING_ID}>
@@ -63,9 +73,8 @@ export function VerdictHero({
         <MethodologyLink anchor={METHODOLOGY_ANCHOR.verdicts} />
 
         <AnimatePresence mode="wait" initial={false}>
-          <m.p
+          <m.div
             key={level}
-            className={s.oneLiner}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -74,8 +83,17 @@ export function VerdictHero({
               ease: MOTION_EASE,
             }}
           >
-            <RichText parts={view.verdict.oneLiner[level]} strongClassName={s.oneLinerStrong} />
-          </m.p>
+            {hasNarrative ? (
+              <VerdictNarrative level={narrativeLevel} />
+            ) : (
+              <p className={s.oneLiner}>
+                <RichText
+                  parts={view.verdict.oneLiner[level]}
+                  strongClassName={s.oneLinerStrong}
+                />
+              </p>
+            )}
+          </m.div>
         </AnimatePresence>
 
         <div className={s.levelRow}>

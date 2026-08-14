@@ -14,9 +14,9 @@ describe("HITL 액션 게이트", () => {
   test("executes handler only after explicit confirmation", async () => {
     let executed = false;
     const action = createPendingAction(
-      "finalize-doc",
-      "피해구제신청서 초안 확정",
-      { docId: "d-1" },
+      "finalize-report",
+      "재검증 리포트 공개본 확정",
+      { reportId: "r-1" },
       async () => {
         executed = true;
         return "확정 완료";

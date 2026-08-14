@@ -10,6 +10,7 @@
     "test:watch": "vitest",
     "redteam": "tsx src/lib/spine/redteam/cli.ts",
     "verify": "tsx src/lib/verify/cli.ts",
+    "narrative": "tsx --env-file-if-exists=.env src/lib/verify/narrative/cli.ts",
     "verify:live": "tsx --env-file-if-exists=.env src/lib/verify/cli.ts",
     "verify:collect": "tsx --env-file-if-exists=.env src/lib/verify/dart/collect-cli.ts",
     "verify:realestate": "tsx src/lib/verify/real-estate-cli.ts",

@@ -1,6 +1,7 @@
 import { HeroSection } from "@/components/landing/HeroSection";
 import { OfferListSection } from "@/components/landing/OfferListSection";
 import { OFFERS, TOTAL_2026_OFFER_COUNT } from "@/components/site/offers";
+import { loadLatestWatchState } from "@/lib/verify/amend/watch-state";
 import { loadLatestReport } from "@/lib/verify/report/load";
 import { buildOfferCard, type OfferCardView } from "@/lib/verify/report/view-model";
 
@@ -27,9 +28,13 @@ export default async function Home() {
   const now = new Date();
 
   const cards = await Promise.all(
-    OFFERS.map(async (offer) =>
-      buildOfferCard({ offer, now, ...(await loadLatestReport(offer.id)) }),
-    ),
+    OFFERS.map(async (offer) => {
+      const [loaded, watch] = await Promise.all([
+        loadLatestReport(offer.id),
+        loadLatestWatchState(offer.id),
+      ]);
+      return buildOfferCard({ offer, now, ...loaded, watch: watch ?? null });
+    }),
   );
 
   const open = cards.filter((card) => card.schedule.phase === "open").toSorted(byCloseAsc);

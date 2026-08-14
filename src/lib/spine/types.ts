@@ -20,8 +20,11 @@ export interface Citation {
   readonly quote?: string;
 }
 
+export type CorpusDocKind = "public_record" | "regulation" | "service_doc";
+
 export interface CorpusDoc {
   readonly id: string;
+  readonly kind: CorpusDocKind;
   readonly title: string;
   readonly url: string;
   readonly issuer: string;

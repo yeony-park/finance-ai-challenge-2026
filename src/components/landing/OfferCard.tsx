@@ -5,6 +5,8 @@ import type { OfferCardView } from "@/lib/verify/report/view-model";
 import type { TallyView } from "@/lib/verify/report/view-model";
 
 import s from "./landing.module.css";
+import { OfferWatchControl } from "./OfferWatchControl";
+import { OfferWatchFlag } from "./OfferWatchFlag";
 
 const TONE_CLASS: Record<TallyView["tone"], string> = {
   good: s.toneGood,
@@ -21,8 +23,11 @@ export function OfferCard({ card }: { readonly card: OfferCardView }) {
       <article className={s.offerCard} aria-labelledby={titleId}>
         <div className={s.offerTop}>
           <p className={s.offerAsset}>{card.assetLabel}</p>
-          <span className={isOpen ? `${s.dday} ${s.ddayOpen}` : s.dday}>
-            {card.schedule.badge}
+          <span className={s.offerFlags}>
+            <OfferWatchFlag offerId={card.id} />
+            <span className={isOpen ? `${s.dday} ${s.ddayOpen}` : s.dday}>
+              {card.schedule.badge}
+            </span>
           </span>
         </div>
 
@@ -44,11 +49,14 @@ export function OfferCard({ card }: { readonly card: OfferCardView }) {
           ))}
         </ul>
 
-        <p className={s.offerMeta}>
-          {card.lastVerifiedAt}
-          <br />
-          {card.amendment}
-        </p>
+        <p className={s.offerMeta}>{card.lastVerifiedAt}</p>
+
+        <OfferWatchControl
+          offerId={card.id}
+          offerTitle={card.title}
+          statusText={card.amendment}
+          isAlert={card.hasAmendment}
+        />
 
         <Link href={card.href} className={s.offerLink}>
           리포트 열기

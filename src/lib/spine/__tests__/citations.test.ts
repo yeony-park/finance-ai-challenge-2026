@@ -1,19 +1,20 @@
 import { describe, expect, test } from "vitest";
 import { enforceCitations } from "../rag/citations";
+import { officialChannels } from "../rag/corpus";
 
 describe("출처 강제", () => {
   test("returns answer with citations for registered sources", () => {
     const draft = {
-      text: "지급정지 후 3영업일 내 서면 피해구제를 신청해야 합니다.",
-      sourceIds: ["fss-remedy-procedure"],
+      text: "개체 이력번호를 축산물이력제 조회 결과와 대조합니다.",
+      sourceIds: ["livestock-trace"],
     };
 
     const answer = enforceCitations(draft);
 
     expect(answer.kind).toBe("answer");
     if (answer.kind === "answer") {
-      expect(answer.citations[0].sourceId).toBe("fss-remedy-procedure");
-      expect(answer.citations[0].url).toContain("fss.or.kr");
+      expect(answer.citations[0].sourceId).toBe("livestock-trace");
+      expect(answer.citations[0].url).toContain("mtrace.go.kr");
     }
   });
 
@@ -24,8 +25,8 @@ describe("출처 강제", () => {
 
   test("demotes to abstain when any source is unregistered (poisoning defense)", () => {
     const answer = enforceCitations({
-      text: "위조 문서 기반 답변",
-      sourceIds: ["fss-remedy-procedure", "fake-internal-doc"],
+      text: "발행사 내부 자료 기반 답변",
+      sourceIds: ["livestock-trace", "issuer-internal-doc"],
     });
     expect(answer.kind).toBe("abstain");
   });
@@ -37,5 +38,11 @@ describe("출처 강제", () => {
     } else {
       throw new Error("expected abstain");
     }
+  });
+
+  test("official channels exclude the service's own methodology page", () => {
+    const ids = officialChannels().map((channel) => channel.sourceId);
+    expect(ids).not.toContain("verification-methodology");
+    expect(ids).toContain("dart-viewer");
   });
 });

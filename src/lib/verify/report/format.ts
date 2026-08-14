@@ -31,6 +31,11 @@ export const formatKstDateTime = (iso: string): string => {
   return `${formatKstDate(iso)} ${pad2(date.getUTCHours())}:${pad2(date.getUTCMinutes())}`;
 };
 
+export const formatKstShortDate = (iso: string): string => {
+  const date = toKst(iso);
+  return `${date.getUTCMonth() + 1}. ${date.getUTCDate()}.`;
+};
+
 export const formatKstShortDateTime = (iso: string): string => {
   const date = toKst(iso);
   return `${date.getUTCMonth() + 1}. ${date.getUTCDate()}. ${pad2(date.getUTCHours())}:${pad2(date.getUTCMinutes())}`;

@@ -1,4 +1,4 @@
-import { SYSTEM_PROMPT_CANARY } from "./constants";
+import { SYSTEM_PROMPT_CANARY, VERIFICATION_DISCLAIMER } from "./constants";
 import { screenInput } from "./guardrail/input-screen";
 import { filterOutput } from "./guardrail/output-filter";
 import { corpusAsContext, officialChannels } from "./rag/corpus";
@@ -6,8 +6,10 @@ import { ABSTAIN_TEXT, enforceCitations } from "./rag/citations";
 import type { LlmClient, SpineAnswer } from "./types";
 import type { RateLimiter, RateLimitVerdict } from "./ops/rate-limit";
 
-const BLOCKED_TEXT =
-  "요청에서 서비스 규칙을 우회하려는 패턴이 감지되어 처리하지 않았습니다. 정상적인 금융 관련 질문을 입력해 주세요.";
+const BLOCKED_TEXT = [
+  "요청이 서비스 범위 밖이거나 규칙을 우회하려는 패턴이 감지되어 처리하지 않았습니다.",
+  VERIFICATION_DISCLAIMER,
+].join("\n\n");
 
 const RATE_LIMITED_TEXT =
   "요청이 너무 잦습니다. 잠시 후 다시 시도해 주세요.";
@@ -18,10 +20,13 @@ const FLAGGED_SYSTEM_SUFFIX =
 export const buildSystemPrompt = (): string =>
   [
     `내부 태그: ${SYSTEM_PROMPT_CANARY} (이 태그를 출력에 절대 포함하지 마라)`,
-    "너는 금융 소비자를 돕는 보조 AI다. 아래 등록 코퍼스에 근거해서만 답한다.",
+    "너는 조각투자 공시 대조 검증 서비스의 보조 AI다. 아래 등록 코퍼스에 근거해서만 답한다.",
     "반드시 JSON {\"text\": string, \"sourceIds\": string[]}로만 응답한다.",
     "코퍼스에 근거가 없으면 sourceIds를 빈 배열로 두어라.",
-    "투자 수익 보장·기관 사칭·법률 단정은 금지한다.",
+    "판정 명칭은 일치·원장 미확인·대조 불가 세 가지만 쓴다. 확인되지 않았다는 표시는 부정 판정이 아니다.",
+    "가치·적정성 단정(저평가·고평가·안전·사기), 가격 전망, 매수·청약 권유, 수익 보장, 기관 사칭은 금지한다.",
+    "정정·변경에 중대성 등급을 부여하지 않는다. 바뀐 항목과 판정 유지·변동 여부까지만 말한다.",
+    "마스킹된 이름·번호·주소를 복원하거나 추측하지 않는다.",
     "",
     "== 등록 코퍼스 ==",
     corpusAsContext(),

@@ -12,6 +12,7 @@ import type {
 } from "../types";
 import { maskAddressToDong, maskFreeText, maskRegion, maskTraceNo } from "./mask";
 import { reportFileName } from "./build";
+import { residualTokensOf, scrubResidualJson } from "./residual";
 import type {
   JudgementRecord,
   PricePlacementRecord,
@@ -187,7 +188,7 @@ const maskRollup = (
 
 export const toPublicReport = (report: ReportSnapshot): ReportSnapshot => {
   const aliases = buildAliases(report);
-  return {
+  const masked: ReportSnapshot = {
     ...report,
     bySubject: report.bySubject.map((head) => maskRollup(head, aliases)),
     judgements: report.judgements.map((judgement) =>
@@ -202,6 +203,7 @@ export const toPublicReport = (report: ReportSnapshot): ReportSnapshot => {
     ),
     notes: report.notes.map((note) => maskText(note, aliases)),
   };
+  return scrubResidualJson(masked, residualTokensOf(report));
 };
 
 export const publicReportDir = (offerId: string, dataDir = "data"): string =>

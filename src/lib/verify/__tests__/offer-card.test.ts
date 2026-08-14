@@ -8,8 +8,21 @@ import {
   type OfferEntry,
 } from "@/components/site/offers";
 
+import type { WatchState } from "../amend/watch-state";
 import { loadLatestReport } from "../report/load";
 import { buildOfferCard } from "../report/view-model/offer-card";
+
+const WATCH: WatchState = {
+  offerId: "livestock-9",
+  checkedAt: "2026-08-13T17:45:24.412Z",
+  baseRcpNo: "20260806000159",
+  checkedThrough: "20260814",
+  amendmentCount: 0,
+  amendments: [],
+  sourceName: "OpenDART 공시검색 (금융감독원 · opendart.fss.or.kr)",
+  detectionFailed: false,
+  notes: [],
+};
 
 const ENTRY: OfferEntry = {
   id: "livestock-9",
@@ -126,5 +139,50 @@ describe("buildOfferCard — 카드 값은 레지스트리와 리포트에서만
     const text = [card.verdictLine, card.lastVerifiedAt, card.amendment].join(" ");
 
     expect(text).not.toContain("불일치");
+  });
+});
+
+describe("buildOfferCard — 정정 감시 라인은 감시 기록의 함수다", () => {
+  const buildCard = async (watch: WatchState | null) =>
+    buildOfferCard({
+      offer: ENTRY,
+      now: kst("2026-08-14T09:00:00"),
+      watch,
+      ...(await loadLatestReport(ENTRY.id)),
+    });
+
+  test("감시 기록이 없으면 미조회 문구를 유지한다", async () => {
+    const card = await buildCard(null);
+
+    expect(card.amendment).toContain("정정 접수 감시 미연결");
+    expect(card.hasAmendment).toBe(false);
+  });
+
+  test("접수 0건이면 건수와 최근 확인 날짜를 적는다", async () => {
+    const card = await buildCard(WATCH);
+
+    expect(card.amendment).toBe("정정 0건 · 최근 확인 8. 14.");
+    expect(card.hasAmendment).toBe(false);
+  });
+
+  test("접수가 있으면 건수를 그대로 적는다", async () => {
+    const card = await buildCard({
+      ...WATCH,
+      amendmentCount: 2,
+      amendments: [
+        { rcpNo: "20260901000001", receivedOn: "20260901", reportName: "정정신고서" },
+        { rcpNo: "20260902000002", receivedOn: "20260902", reportName: "정정신고서" },
+      ],
+    });
+
+    expect(card.amendment).toBe("정정 2건 접수 · 최근 확인 8. 14.");
+    expect(card.hasAmendment).toBe(true);
+  });
+
+  test("조회가 실패한 기록은 건수를 지어내지 않는다", async () => {
+    const card = await buildCard({ ...WATCH, detectionFailed: true });
+
+    expect(card.amendment).toBe("정정 접수 여부 미확인 · 최근 조회 8. 14.");
+    expect(card.hasAmendment).toBe(false);
   });
 });

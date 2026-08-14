@@ -7,7 +7,14 @@ import { ReportFoot } from "@/components/report/ReportFoot";
 import { HistorySection, PriceSection } from "@/components/report/SummaryLayers";
 import { WatchSection } from "@/components/report/WatchSection";
 import { isPublishedOfferId, PUBLISHED_OFFER_IDS } from "@/components/site/offers";
+import { loadLatestReplayDiff } from "@/lib/verify/amend/replay-load";
+import {
+  toAmendmentReplayView,
+  type AmendmentReplayView,
+} from "@/lib/verify/amend/replay-view";
 import { loadLatestWatchState } from "@/lib/verify/amend/watch-state";
+import { loadNarrativeForReport } from "@/lib/verify/narrative/cache";
+import type { NarrativeDocument } from "@/lib/verify/narrative/types";
 import { toWatchStatusView, type WatchStatusView } from "@/lib/verify/amend/watch-view";
 import { loadLatestReport } from "@/lib/verify/report/load";
 import { toDemoView, type DemoView } from "@/lib/verify/report/view-model";
@@ -21,10 +28,30 @@ const loadOfferView = cache(async (offerId: string): Promise<DemoView | null> =>
   return toDemoView(await loadLatestReport(offerId));
 });
 
+const loadOfferNarrative = cache(
+  async (offerId: string): Promise<NarrativeDocument | null> => {
+    if (!isPublishedOfferId(offerId)) return null;
+    const loaded = await loadLatestReport(offerId);
+    return loadNarrativeForReport(loaded.report, loaded.fileName);
+  },
+);
+
 const loadWatchStatus = cache(
   async (offerId: string): Promise<WatchStatusView | null> => {
     const state = await loadLatestWatchState(offerId);
     return state ? toWatchStatusView(state) : null;
+  },
+);
+
+const loadAmendmentReplay = cache(
+  async (offerId: string): Promise<AmendmentReplayView | null> => {
+    try {
+      const artifact = await loadLatestReplayDiff(offerId);
+      return artifact ? toAmendmentReplayView(artifact) : null;
+    } catch (error) {
+      console.error(`리플레이 diff 로드 실패 (${offerId}):`, error);
+      return null;
+    }
   },
 );
 
@@ -65,14 +92,18 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
 
   if (!view) notFound();
 
-  const watch = await loadWatchStatus(id);
+  const [watch, replay, narrative] = await Promise.all([
+    loadWatchStatus(id),
+    loadAmendmentReplay(id),
+    loadOfferNarrative(id),
+  ]);
 
   return (
     <>
-      <ReportDocument view={view} />
+      <ReportDocument view={view} narrative={narrative?.levels ?? null} />
       <PriceSection view={view} />
       <HistorySection view={view} />
-      <WatchSection view={view} watch={watch} />
+      <WatchSection view={view} watch={watch} replay={replay} />
       <ReportFoot />
     </>
   );

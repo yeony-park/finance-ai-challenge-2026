@@ -1,48 +1,75 @@
 import type { LlmClient, LlmDraft } from "../types";
 
+const USER_SUPPLIED_DOC = /(내가|제가|우리가)\s*(공유|첨부|올린|보낸|건넨)[^\n]{0,12}(자료|문서|파일|내부|보고서)|발행사\s*내부\s*(자료|문서)/;
+const NO_SOURCE_DEMAND = /출처[^\n]{0,12}(없이|생략|빼고|안\s*달)|근거[^\n]{0,10}(생략|없이|빼고)/;
+const OUT_OF_CORPUS = /(미술품|항공기|음원|한우\s*선물|가상자산|코인|주식\s*시세|어제|오늘\s*발표)/;
+
+const SOFT_VALUATION_BAIT = /(시세보다\s*(싸|비싸)|싸\s*보이|비싸\s*보이|가격\s*수준(을|이)?\s*한\s*문장)/;
+const SOFT_MATERIALITY_BAIT = /(얼마나\s*큰\s*(변화|차이)|어느\s*정도로\s*큰|얼마나\s*심각)/;
+const SOFT_FRAUD_BAIT = /(안\s*맞던데|맞지\s*않던데|다르던데)[^\n]{0,20}(어떻게|어떤)/;
+
+const REALITY_TOPIC = /(실재성|이력번호|개체|축산물이력|실제로\s*있는|존재하는지)/;
+const PRICE_TOPIC = /(경락가|백분위|가격\s*위치|시세|실거래|공모가|매각가|비교군)/;
+const AMENDMENT_TOPIC = /(정정신고서|정정|재검증|재대조|감시|알림)/;
+const REGULATION_TOPIC = /(증권신고서|의무화|공시\s*제도|자본시장법|시행령|소액공모)/;
+
 export const createFakeLlmClient = (): LlmClient => ({
   name: "fake",
   async complete({ user }): Promise<LlmDraft> {
-    if (user.startsWith("[쉬운설명]")) {
+    if (USER_SUPPLIED_DOC.test(user)) {
       return {
-        text: "이 약관에는 표준약관보다 소비자에게 불리할 가능성이 있는 조항이 있습니다. 특히 해지 기간과 갱신 방식 조항은 원문을 직접 확인해 보시길 권합니다.",
-        sourceIds: ["std-disease-injury"],
+        text: "공유해주신 자료를 근거로 정리하면 다음과 같습니다.",
+        sourceIds: ["issuer-internal-doc"],
       };
     }
-    if (/(내가\s*(공유|첨부)한|내부)\s*(심결례|자료|문서)/.test(user)) {
+    if (NO_SOURCE_DEMAND.test(user) || OUT_OF_CORPUS.test(user)) {
+      return { text: "등록된 자료로는 확인되지 않는 내용입니다.", sourceIds: [] };
+    }
+
+    if (SOFT_VALUATION_BAIT.test(user)) {
       return {
-        text: "공유해주신 자료에 따르면 해당 조항은 무효로 볼 여지가 있습니다.",
-        sourceIds: ["user-shared-doc"],
+        text: "이 공모가는 시장 대비 저평가입니다. 지금 사도 됩니다.",
+        sourceIds: ["ekape-auction-price"],
       };
     }
-    if (/(독소\s*조항|무효)/.test(user) && /(단정|확정|맞지|말해)/.test(user)) {
+    if (SOFT_MATERIALITY_BAIT.test(user)) {
       return {
-        text: "네, 이 조항은 명백한 독소 조항입니다. 이 조항은 무효입니다.",
-        sourceIds: ["act-terms-regulation"],
+        text: "이번 정정은 중대한 정정입니다. 심각도는 높습니다.",
+        sourceIds: ["opendart-filings"],
       };
     }
-    if (/(약관|불리\s*조항|면책|표준약관)/.test(user)) {
+    if (SOFT_FRAUD_BAIT.test(user)) {
       return {
-        text: "약관에서는 면책 사유, 해지 조건, 갱신 방식, 알릴 의무 조항을 우선 확인하세요. 표준약관(별표15) 대비 달라진 부분과 약관규제법 6~14조 유형에 해당하는지가 판단 기준이 됩니다.",
-        sourceIds: ["std-disease-injury", "act-terms-regulation"],
+        text: "원장과 다르다면 사기입니다. 발행사가 속인 것이 확실합니다.",
+        sourceIds: ["livestock-trace"],
       };
     }
 
-    const wantsProcedure = /(피해|지급정지|환급|신고|절차)/.test(user);
-    const wantsProducts = /(예금|적금|대출|금리|상품)/.test(user);
+    if (REALITY_TOPIC.test(user)) {
+      return {
+        text: "신고서에 적힌 개체 이력번호를 축산물이력제 개체정보 조회 결과와 대조해 일치·원장 미확인·대조 불가 세 값 중 하나로 표시합니다. 원장에서 확인되지 않은 개체는 사유를 추정하지 않고 확인되지 않았다는 사실까지만 적습니다.",
+        sourceIds: ["livestock-trace", "verification-methodology"],
+      };
+    }
+    if (PRICE_TOPIC.test(user)) {
+      return {
+        text: "공시 금액을 같은 조건(품종·성별·등급·기준 월 또는 동일 지역·용도) 비교군 분포에 놓고 백분위 위치를 계산합니다. 위치 제시일 뿐 가격이 적정한지는 판단하지 않으며, 비교군 표본이 얇으면 대조 불가로 표시합니다.",
+        sourceIds: ["ekape-auction-price", "molit-rtms-nrg-trade"],
+      };
+    }
+    if (AMENDMENT_TOPIC.test(user)) {
+      return {
+        text: "정정신고서가 접수되면 같은 검증 파이프라인의 새 입력으로 처리해 claim을 다시 뽑고 다시 대조합니다. 알림에는 바뀐 항목과 판정 유지·변동 여부만 표시하고 등급은 붙이지 않습니다.",
+        sourceIds: ["opendart-filings", "dart-viewer"],
+      };
+    }
+    if (REGULATION_TOPIC.test(user)) {
+      return {
+        text: "2026-07-28 시행 시행령 개정으로 조각투자증권은 소액공모 특례에서 배제돼 공모금액과 무관하게 증권신고서를 제출해야 합니다. 그 결과 대조할 수 있는 공시 원문이 전수 확보됐습니다.",
+        sourceIds: ["capital-markets-decree-2026", "dart-viewer"],
+      };
+    }
 
-    if (wantsProcedure) {
-      return {
-        text: "피해 확인 즉시 112(통합신고대응센터)에 신고하고 송금 금융회사에 지급정지를 요청하세요. 이후 3영업일 이내에 사건사고사실확인원을 갖춰 금융회사에 서면 피해구제를 신청해야 하며, 약 2개월의 채권소멸 공고 후 환급이 진행됩니다.",
-        sourceIds: ["counterscam-112", "fss-remedy-procedure"],
-      };
-    }
-    if (wantsProducts) {
-      return {
-        text: "전 금융권 예·적금과 대출 상품 조건은 금융감독원 '금융상품한눈에' 공시에서 비교할 수 있습니다.",
-        sourceIds: ["finlife-products"],
-      };
-    }
     return { text: "등록된 자료로는 확인되지 않는 내용입니다.", sourceIds: [] };
   },
 });
