@@ -1,1 +1,55 @@
-import Link from "next/link";import { DataModeBadge, PageContainer } from "@/components/art/ui";import { formatKrw, latestAnnualSellThroughRate, medianAuctionPrice } from "@/lib/domain/calculations";import { artistRepository, productRepository } from "@/lib/repositories/art-repositories";export default function ArtistsPage(){const products=productRepository.getList();return <main id="main-content" className="listing-page"><PageContainer><header className="page-title"><p className="section-kicker">ARTISTS</p><h1>작가 시장 기록</h1><p>최근 거래량, 낙찰률, 동일 시리즈 표본과 관련 청약 상품을 함께 봅니다.</p></header><form className="simple-search" role="search"><label htmlFor="artist">작가명 검색</label><input id="artist" name="q" placeholder="작가명"/><button className="button button-primary">검색</button></form><div className="artist-grid">{artistRepository.getList().map(a=>{const auctions=artistRepository.getAuctions(a.id),metrics=artistRepository.getAnnualMetrics(a.id),recent3=metrics.slice(-3).reduce((sum,m)=>sum+m.offered,0),rate=latestAnnualSellThroughRate(metrics,auctions),related=products.filter(p=>p.artist.id===a.id);return <Link className="artist-card" href={`/artists/${a.id}`} key={a.id}><div className="avatar-art" aria-hidden="true">{a.nameKo.slice(-1)}</div><div><DataModeBadge isDemo={related[0]?.offering.isDemo??false}/><h2>{a.nameKo}</h2>{a.nameEn?<p>{a.nameEn}</p>:null}<dl><div><dt>{metrics.length>=3?"최근 3년 출품":"연결 연도 출품"}</dt><dd>{recent3}건</dd></div><div><dt>낙찰률</dt><dd>{rate==null?"공개되지 않음":`${rate.toFixed(1)}%`}</dd></div><div><dt>중위 낙찰가</dt><dd>{formatKrw(medianAuctionPrice(auctions))}</dd></div><div><dt>관련 상품</dt><dd>{related.length}개</dd></div></dl><strong>{related[0]?.analysis.artistInsight.conclusion??"관련 상품 분석이 없는 플랫폼 기록 작가입니다."}</strong></div></Link>})}</div></PageContainer></main>}
+import Link from "next/link";
+import { DataModeBadge, PageContainer } from "@/components/art/ui";
+import { formatKrw, latestAnnualSellThroughRate, medianAuctionPrice } from "@/lib/domain/calculations";
+import { artistRepository } from "@/lib/repositories/art-repositories";
+
+type Props = { searchParams: Promise<{ q?: string | string[] }> };
+
+const value = (raw: string | string[] | undefined) => Array.isArray(raw) ? raw[0] ?? "" : raw ?? "";
+const normalized = (raw: string) => raw.normalize("NFKC").replace(/\s+/g, " ").trim().toLowerCase();
+
+export default async function ArtistsPage({ searchParams }: Props) {
+  const raw = await searchParams;
+  const query = value(raw.q);
+  const needle = normalized(query);
+  const allArtists = artistRepository.getList();
+  const artists = allArtists.filter((artist) => !needle || normalized(`${artist.nameKo} ${artist.nameEn ?? ""}`).includes(needle));
+  const totalHistory = allArtists.reduce((sum, artist) => sum + artistRepository.getHistoricalProducts(artist.id).length, 0);
+
+  return <main id="main-content" className="listing-page"><PageContainer>
+    <header className="page-title"><p className="section-kicker">NORMALIZED ARTISTS</p><h1>작가별 연결 기록</h1><p>공백·괄호 표기만 정규화한 작가명으로 현재 상품과 과거 플랫폼 기록을 함께 찾습니다. 이름 alias는 자동으로 합치지 않았습니다.</p></header>
+    <div className="entity-summary-row"><span>정규화 작가 {allArtists.length}명</span><span>과거 연결 기록 {totalHistory}건</span><span>검색 결과 {artists.length}명</span></div>
+    <form className="simple-search" role="search"><label htmlFor="artist">작가명 검색</label><input id="artist" name="q" defaultValue={query} placeholder="예 : 김환기" /><button className="button button-primary">검색</button></form>
+    <div className="artist-grid">{artists.map((artist) => {
+      const current = artistRepository.getCurrentProducts(artist.id);
+      const history = artistRepository.getHistoricalProducts(artist.id);
+      const operating = history.filter((item) => item.lifecycle === "operating" || item.lifecycle === "exit_in_progress");
+      const platformReportedReturn = history.filter((item) => item.trackRecord.sourceReportedReturnPct != null);
+      const calculatedSettlementReturn = history.filter((item) => item.trackRecord.calculatedSettlementReturnPct != null);
+      const auctions = artistRepository.getAuctions(artist.id);
+      const metrics = artistRepository.getAnnualMetrics(artist.id);
+      const rate = latestAnnualSellThroughRate(metrics, auctions);
+      const platforms = [...new Set([...current.map((product) => product.platform.name), ...history.map((item) => item.platform.name)])];
+      const isDemo = current.length > 0 && current.every((product) => product.offering.isDemo);
+      return <Link className="artist-card artist-card-expanded" href={`/artists/${artist.id}`} key={artist.id}>
+        <div className="avatar-art" aria-hidden="true">{artist.nameKo.slice(-1)}</div>
+        <div>
+          <DataModeBadge isDemo={isDemo} />
+          <h2>{artist.nameKo}</h2>
+          {artist.nameEn ? <p>{artist.nameEn}</p> : null}
+          <dl>
+            <div><dt>현재 상품</dt><dd>{current.length}건</dd></div>
+            <div><dt>운용·매각 진행</dt><dd>{operating.length}건</dd></div>
+            <div><dt>과거 기록</dt><dd>{history.length}건</dd></div>
+            <div><dt>플랫폼 기재 수익률</dt><dd>{platformReportedReturn.length}건</dd></div>
+            <div><dt>DAKER 계산 수익률</dt><dd>{calculatedSettlementReturn.length}건</dd></div>
+            <div><dt>낙찰률</dt><dd>{rate == null ? "미기재" : `${rate.toFixed(1)}%`}</dd></div>
+            <div><dt>중위 낙찰가</dt><dd>{formatKrw(medianAuctionPrice(auctions))}</dd></div>
+          </dl>
+          <p className="entity-platforms">연결 플랫폼 : {platforms.length ? platforms.join(" · ") : "미기재"}</p>
+        </div>
+      </Link>;
+    })}</div>
+    {artists.length === 0 ? <p className="state-panel">검색어와 일치하는 정규화 작가가 없습니다.</p> : null}
+  </PageContainer></main>;
+}

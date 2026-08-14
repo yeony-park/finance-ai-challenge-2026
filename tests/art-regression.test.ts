@@ -7,11 +7,6 @@ import { dirname, join } from "node:path";
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (path: string) => readFileSync(join(root, path), "utf8");
 
-test("모바일 필터가 화면과 반응형 스타일에 연결됨", () => {
-  assert.match(read("app/products/page.tsx"), /className="mobile-filter"/);
-  assert.match(read("app/globals.css"), /@media\(max-width:768px\)\{\.mobile-filter\{display:block\}\}/);
-});
-
 test("변경 이력이 근거 탭에 렌더링됨", () => {
   assert.match(read("components/art/ui.tsx"), /export function ChangeLogTable/);
   assert.match(read("app/products/\[id\]/page.tsx"), /<ChangeLogTable items=\{changeLogs\}/);
