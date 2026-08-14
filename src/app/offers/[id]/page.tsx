@@ -121,10 +121,11 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
 
   return (
     <>
-      <ReportDocument view={view} narrative={narrative?.levels ?? null} />
+      <ReportDocument view={view} narrative={narrative?.levels ?? null}>
+        <WatchSection view={view} watch={watch} replay={replay} />
+        <HistorySection view={view} trackRecord={trackRecord} />
+      </ReportDocument>
       <PriceSection view={view} />
-      <HistorySection view={view} trackRecord={trackRecord} />
-      <WatchSection view={view} watch={watch} replay={replay} />
       <ReportFoot />
     </>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import type { NarrativeLevel } from "@/lib/verify/narrative/types";
 import type { DemoView, ExplainLevel } from "@/lib/verify/report/view-model";
 
@@ -10,9 +10,11 @@ import { VerdictHero } from "./VerdictHero";
 export function ReportDocument({
   view,
   narrative = null,
+  children,
 }: {
   readonly view: DemoView;
   readonly narrative?: Readonly<Record<ExplainLevel, NarrativeLevel>> | null;
+  readonly children?: ReactNode;
 }) {
   const [level, setLevel] = useState<ExplainLevel>("easy");
 
@@ -24,6 +26,7 @@ export function ReportDocument({
         narrative={narrative}
         onLevelChange={setLevel}
       />
+      {children}
       <RealitySection view={view} level={level} />
     </>
   );

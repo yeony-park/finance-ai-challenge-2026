@@ -18,7 +18,7 @@ export function PriceSection({ view }: { readonly view: DemoView }) {
     >
       <Reveal className={s.wrap}>
         <header className={s.layerHead}>
-          <span className={s.layerNo}>② 가격 위치</span>
+          <span className={s.layerNo}>가격 위치</span>
           <h2 id={PRICE_HEADING_ID} className={s.layerTitle}>
             {view.price.heading}
           </h2>
@@ -47,7 +47,7 @@ export function HistorySection({ view, trackRecord }: HistorySectionProps) {
     <section className={s.section} aria-labelledby={HISTORY_HEADING_ID}>
       <Reveal className={s.wrap}>
         <header className={s.layerHead}>
-          <span className={s.layerNo}>③ 이행 이력</span>
+          <span className={s.layerNo}>이행 이력 · 발행사 트랙레코드</span>
           <h2 id={HISTORY_HEADING_ID} className={s.layerTitle}>
             {view.history.heading}
           </h2>

@@ -295,6 +295,31 @@
   box-shadow: var(--ds-shadow-md);
 }
 
+.appendix {
+  margin-top: var(--ds-space-4);
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-surface);
+}
+.appendixSummary {
+  padding: var(--ds-space-3) var(--ds-space-4);
+  color: var(--ds-ink-muted);
+  font-size: var(--ds-text-sm);
+  font-weight: var(--ds-weight-medium);
+  word-break: keep-all;
+  cursor: pointer;
+  transition: color var(--ds-duration-fast) var(--ds-ease);
+}
+.appendixSummary:hover {
+  color: var(--ds-ink);
+}
+.appendix[open] .appendixSummary {
+  border-bottom: 1px solid var(--ds-line);
+}
+.appendixBody {
+  padding: var(--ds-space-4);
+}
+
 .evidence {
   margin-top: var(--ds-space-5);
   border: 1px solid var(--ds-line);

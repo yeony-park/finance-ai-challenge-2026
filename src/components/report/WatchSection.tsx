@@ -40,7 +40,7 @@ export function WatchSection({ view, watch, replay }: WatchSectionProps) {
     >
       <Reveal className={s.wrap}>
         <header className={s.layerHead}>
-          <span className={s.layerNo}>정정 재검증 · 알림</span>
+          <span className={s.layerNo}>정정 계보 · 재검증</span>
           <h2 id={WATCH_HEADING_ID} className={s.layerTitle}>
             이 공모의 정정 접수와 재대조 기록
           </h2>
