@@ -9,8 +9,11 @@ import { useReducedMotionSafe } from "@/components/motion/useReducedMotionSafe";
 import type { WatchStatusView } from "@/lib/verify/amend/watch-view";
 import type { DemoView } from "@/lib/verify/report/view-model";
 
+import { METHODOLOGY_ANCHOR } from "@/app/methodology/anchors";
+
 import { IconBell, IconInfo, IconPlay } from "./icons";
 import { WATCH_HEADING_ID } from "./ids";
+import { MethodologyLink } from "./MethodologyLink";
 import s from "./report.module.css";
 
 const REPLAY_STEP_DELAY_MS = 650;
@@ -82,6 +85,10 @@ export function WatchSection({ view, watch }: WatchSectionProps) {
           <span className={s.layerSource}>
             정정신고서가 접수되거나 판정이 달라지면 이 공모는 같은 파이프라인으로 다시 대조됩니다
           </span>
+          <MethodologyLink
+            anchor={METHODOLOGY_ANCHOR.amendment}
+            label="정정은 어떻게 다시 대조되나요?"
+          />
         </header>
 
         {watch ? (

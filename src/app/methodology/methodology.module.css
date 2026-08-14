@@ -1,8 +1,3 @@
-/*
- * 검증 방법 — 읽는 문서에 가까운 지면.
- * 랜딩보다 좁은 단, 넉넉한 행간, 좌측 규칙선으로 절(節)을 나눈다.
- */
-
 .wrap {
   width: 100%;
   max-width: var(--ds-maxw-narrow);
@@ -76,7 +71,6 @@
   font-weight: var(--ds-weight-bold);
 }
 
-/* 층위 목록 — 번호가 순서를 말하게 둔다 */
 .layerList {
   display: grid;
   gap: var(--ds-space-5);
@@ -114,7 +108,6 @@
   line-height: 1.7;
 }
 
-/* 데이터 출처 표 — 좁은 화면에서는 가로 스크롤을 자기 상자 안에서 처리한다 */
 .tableScroll {
   overflow-x: auto;
   border: 1px solid var(--ds-line);
@@ -156,7 +149,6 @@
   color: var(--ds-ink-muted);
 }
 
-/* 판정 3값 정의 */
 .verdictList {
   display: grid;
   gap: var(--ds-space-3);
@@ -193,7 +185,6 @@
   word-break: keep-all;
 }
 
-/* 원칙·한계 목록 */
 .ruleList {
   display: grid;
   gap: var(--ds-space-4);
@@ -213,6 +204,67 @@
   font-size: var(--ds-text-sm);
   line-height: var(--ds-leading-relaxed);
   word-break: keep-all;
+}
+
+.statGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: var(--ds-space-4);
+  max-width: var(--ds-maxw-narrow);
+}
+
+.stat {
+  display: grid;
+  gap: var(--ds-space-2);
+  align-content: start;
+  padding: var(--ds-space-5);
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-surface);
+}
+
+.statValue {
+  order: -1;
+  margin: 0;
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-numeral);
+  font-weight: var(--ds-weight-medium);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.statLabel {
+  font-size: var(--ds-text-xs);
+  color: var(--ds-ink-muted);
+  line-height: var(--ds-leading-snug);
+  word-break: keep-all;
+}
+
+.statSource {
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  color: var(--ds-ink-faint);
+  line-height: 1.7;
+}
+
+.pullQuote {
+  max-width: var(--ds-maxw-prose);
+  padding-left: var(--ds-space-5);
+  border-left: 3px solid var(--ds-accent);
+  font-family: var(--ds-font-serif);
+  font-size: var(--ds-text-lg);
+  line-height: var(--ds-leading-relaxed);
+  color: var(--ds-ink);
+  word-break: keep-all;
+}
+
+.pullQuoteSource {
+  display: block;
+  margin-top: var(--ds-space-2);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  color: var(--ds-ink-faint);
 }
 
 .callout {

@@ -1,9 +1,3 @@
-/*
- * 앱 셸 — 헤더/푸터. 화이트 지면 위에 얇은 선 하나로만 층을 나눈다.
- * 색·간격·형태는 전부 src/styles/tokens.css의 --ds-* 토큰에서 온다.
- */
-
-/* ------------------------------------------------------------------ 공통 */
 .inner {
   width: 100%;
   max-width: var(--ds-maxw);
@@ -11,7 +5,6 @@
   padding-inline: var(--ds-gutter);
 }
 
-/* 키보드 사용자가 헤더 내비를 건너뛸 수 있게 — 평소엔 화면 밖 */
 .skipLink {
   position: absolute;
   left: var(--ds-space-4);
@@ -30,13 +23,11 @@
   transform: translateY(0);
 }
 
-/* 본문 랜드마크 — 푸터를 항상 지면 아래로 밀어 두기 위해 남는 높이를 먹는다 */
 .main {
   flex: 1 0 auto;
   width: 100%;
 }
 
-/* ------------------------------------------------------------------ 헤더 */
 .header {
   position: sticky;
   top: 0;
@@ -54,7 +45,6 @@
   min-height: var(--ds-header-h);
 }
 
-/* 워드마크 — 서비스명이 아직 가칭이라 로고 이미지 없이 텍스트로만 세운다 */
 .wordmark {
   display: inline-flex;
   align-items: baseline;
@@ -63,9 +53,7 @@
   color: inherit;
   border-radius: var(--ds-radius-sm);
 }
-/* 옐로 밑줄은 배경 그라디언트로 깔아 텍스트 뒤에 둔다(z-index 싸움 없음).
-   호버하면 밑줄이 워드마크 전체로 자란다 — 옐로는 브랜드 액센트로만 쓰고
-   판정 의미(일치/원장 미확인/대조 불가)와는 절대 섞지 않는다. */
+
 .wordmarkName {
   font-size: var(--ds-text-lg);
   font-weight: var(--ds-weight-black);
@@ -88,7 +76,7 @@
   letter-spacing: var(--ds-tracking-normal);
   white-space: nowrap;
 }
-/* 320px에서는 역할 문구를 접는다 — 워드마크가 내비를 밀어내면 안 된다 */
+
 @media (max-width: 460px) {
   .wordmarkRole {
     display: none;
@@ -132,7 +120,6 @@
   background: var(--ds-ink);
 }
 
-/* ------------------------------------------------------------------ 푸터 */
 .footer {
   margin-top: auto;
   border-top: 1px solid var(--ds-line);
@@ -208,7 +195,6 @@
   border-color: var(--ds-ink);
 }
 
-/* 고지 — 서비스의 성격을 못 박는 문단이라 시각적으로도 분리한다 */
 .disclaimer {
   margin-top: var(--ds-space-7);
   padding-top: var(--ds-space-5);

@@ -1,8 +1,3 @@
-/*
- * 상태 화면(로딩·404·오류) 공통 지면.
- * 서비스 톤을 유지한다 — 실패도 단정하지 않고, 무엇이 확인되지 않았는지만 적는다.
- */
-
 .wrap {
   width: 100%;
   max-width: var(--ds-maxw-narrow);
@@ -92,7 +87,6 @@
   border-color: var(--ds-ink);
 }
 
-/* ------------------------------------------------------------- 로딩 뼈대 */
 .skeletonStack {
   display: grid;
   gap: var(--ds-space-4);
