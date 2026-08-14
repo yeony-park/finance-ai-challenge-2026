@@ -3,12 +3,541 @@
   "month": "2026-01",
   "lawdCd": "11650",
   "sigunguName": "서울 서초구",
-  "collectedAt": "2026-08-13T17:51:14.040Z",
+  "collectedAt": "2026-08-14T04:34:44.706Z",
   "sourceId": "molit-rtms-nrg-trade",
   "sourceName": "국토교통부 상업업무용 부동산 매매 신고 자료 (국토교통부 · data.go.kr 실거래가 오픈API)",
   "endpoint": "https://apis.data.go.kr/1613000/RTMSDataSvcNrgTrade/getRTMSDataSvcNrgTrade",
-  "status": "failed",
-  "reason": "HTTP 403 · 실거래 API가 요청을 거부했습니다 — SERVICE_KEY_IS_NOT_REGISTERED_ERROR · 등록되지 않은 서비스키 · returnReasonCode=30",
-  "cancelledCount": 0,
-  "trades": []
+  "status": "ok",
+  "cancelledCount": 4,
+  "trades": [
+    {
+      "dong": "방배동",
+      "buildingType": "일반",
+      "buildingUse": "업무",
+      "dealOn": "2026-01-27",
+      "amountWon": 19000000000,
+      "buildingAreaSqm": 2328.17,
+      "landAreaSqm": 562.5,
+      "buildYear": 1989
+    },
+    {
+      "dong": "서초동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2026-01-30",
+      "amountWon": 70000000,
+      "buildingAreaSqm": 12.1,
+      "buildYear": 1997
+    },
+    {
+      "dong": "서초동",
+      "buildingType": "집합",
+      "buildingUse": "제1종근린생활",
+      "dealOn": "2026-01-27",
+      "amountWon": 590000000,
+      "buildingAreaSqm": 85.35,
+      "buildYear": 1984
+    },
+    {
+      "dong": "서초동",
+      "buildingType": "일반",
+      "buildingUse": "교육연구",
+      "dealOn": "2026-01-30",
+      "amountWon": 17500000000,
+      "buildingAreaSqm": 1732.34,
+      "landAreaSqm": 265.1,
+      "buildYear": 2004
+    },
+    {
+      "dong": "방배동",
+      "buildingType": "일반",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2026-01-23",
+      "amountWon": 9575000000,
+      "buildingAreaSqm": 99.45,
+      "landAreaSqm": 336.2,
+      "buildYear": 1999
+    },
+    {
+      "dong": "서초동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2026-01-28",
+      "amountWon": 95000000,
+      "buildingAreaSqm": 11.49,
+      "buildYear": 1997
+    },
+    {
+      "dong": "양재동",
+      "buildingType": "일반",
+      "buildingUse": "제1종근린생활",
+      "dealOn": "2026-01-19",
+      "amountWon": 6600000000,
+      "buildingAreaSqm": 931.94,
+      "landAreaSqm": 312.7,
+      "buildYear": 1989
+    },
+    {
+      "dong": "잠원동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2026-01-31",
+      "amountWon": 1930000000,
+      "floor": 4,
+      "buildingAreaSqm": 63.51
+    },
+    {
+      "dong": "서초동",
+      "buildingType": "집합",
+      "buildingUse": "업무",
+      "dealOn": "2026-01-20",
+      "amountWon": 279000000,
+      "buildingAreaSqm": 33.12,
+      "buildYear": 1989
+    },
+    {
+      "dong": "잠원동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2026-01-22",
+      "amountWon": 504000000,
+      "buildingAreaSqm": 9.8,
+      "buildYear": 1983
+    },
+    {
+      "dong": "방배동",
+      "buildingType": "집합",
+      "buildingUse": "업무",
+      "dealOn": "2026-01-19",
+      "amountWon": 330000000,
+      "buildingAreaSqm": 19.14,
+      "buildYear": 1980
+    },
+    {
+      "dong": "반포동",
+      "buildingType": "집합",
+      "buildingUse": "업무",
+      "dealOn": "2026-01-23",
+      "amountWon": 136000000,
+      "buildingAreaSqm": 9.24,
+      "buildYear": 1997
+    },
+    {
+      "dong": "방배동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2026-01-12",
+      "amountWon": 185000000,
+      "floor": 1,
+      "buildingAreaSqm": 25.39,
+      "buildYear": 2017
+    },
+    {
+      "dong": "서초동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2026-01-26",
+      "amountWon": 80000000,
+      "buildingAreaSqm": 11.27,
+      "buildYear": 1997
+    },
+    {
+      "dong": "서초동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2026-01-26",
+      "amountWon": 80000000,
+      "buildingAreaSqm": 11.27,
+      "buildYear": 1997
+    },
+    {
+      "dong": "양재동",
+      "buildingType": "일반",
+      "buildingUse": "제1종근린생활",
+      "dealOn": "2026-01-24",
+      "amountWon": 3200000000,
+      "buildingAreaSqm": 360.7,
+      "landAreaSqm": 167.9,
+      "buildYear": 1989
+    },
+    {
+      "dong": "서초동",
+      "buildingType": "집합",
+      "buildingUse": "교육연구",
+      "dealOn": "2026-01-24",
+      "amountWon": 385000000,
+      "buildingAreaSqm": 45.46,
+      "buildYear": 1989
+    },
+    {
+      "dong": "서초동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2026-01-06",
+      "amountWon": 74500000,
+      "buildingAreaSqm": 25.03,
+      "buildYear": 2006
+    },
+    {
+      "dong": "서초동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2026-01-06",
+      "amountWon": 74500000,
+      "buildingAreaSqm": 25.8,
+      "buildYear": 2006
+    },
+    {
+      "dong": "방배동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2026-01-21",
+      "amountWon": 250000000,
+      "buildingAreaSqm": 59.35,
+      "buildYear": 1983
+    },
+    {
+      "dong": "양재동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2026-01-14",
+      "amountWon": 120000000,
+      "floor": 2,
+      "buildingAreaSqm": 6.15,
+      "buildYear": 1991
+    },
+    {
+      "dong": "양재동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2026-01-14",
+      "amountWon": 230000000,
+      "buildingAreaSqm": 12.15,
+      "buildYear": 1991
+    },
+    {
+      "dong": "서초동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2026-01-28",
+      "amountWon": 68000000,
+      "buildingAreaSqm": 11.57,
+      "buildYear": 1997
+    },
+    {
+      "dong": "서초동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2026-01-15",
+      "amountWon": 345000000,
+      "floor": 9,
+      "buildingAreaSqm": 32.64
+    },
+    {
+      "dong": "서초동",
+      "buildingType": "일반",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2026-01-20",
+      "amountWon": 8652000000,
+      "buildingAreaSqm": 522.64,
+      "landAreaSqm": 297.5,
+      "buildYear": 1984
+    },
+    {
+      "dong": "서초동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2026-01-27",
+      "amountWon": 75000000,
+      "buildingAreaSqm": 12.21,
+      "buildYear": 1997
+    },
+    {
+      "dong": "서초동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2026-01-27",
+      "amountWon": 75000000,
+      "buildingAreaSqm": 12.21,
+      "buildYear": 1997
+    },
+    {
+      "dong": "서초동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2026-01-27",
+      "amountWon": 70000000,
+      "buildingAreaSqm": 11.88,
+      "buildYear": 1997
+    },
+    {
+      "dong": "서초동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2026-01-19",
+      "amountWon": 75000000,
+      "buildingAreaSqm": 11.45,
+      "buildYear": 1997
+    },
+    {
+      "dong": "서초동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2026-01-19",
+      "amountWon": 75000000,
+      "buildingAreaSqm": 12.21,
+      "buildYear": 1997
+    },
+    {
+      "dong": "서초동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2026-01-21",
+      "amountWon": 67000000,
+      "buildingAreaSqm": 11.52,
+      "buildYear": 1997
+    },
+    {
+      "dong": "잠원동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2026-01-19",
+      "amountWon": 820000000,
+      "buildingAreaSqm": 21.42
+    },
+    {
+      "dong": "잠원동",
+      "buildingType": "집합",
+      "buildingUse": "교육연구",
+      "dealOn": "2026-01-20",
+      "amountWon": 696780000,
+      "buildingAreaSqm": 31.35,
+      "buildYear": 1992
+    },
+    {
+      "dong": "잠원동",
+      "buildingType": "집합",
+      "buildingUse": "교육연구",
+      "dealOn": "2026-01-20",
+      "amountWon": 633570000,
+      "buildingAreaSqm": 28.5,
+      "buildYear": 1992
+    },
+    {
+      "dong": "잠원동",
+      "buildingType": "집합",
+      "buildingUse": "교육연구",
+      "dealOn": "2026-01-15",
+      "amountWon": 1457060000,
+      "buildingAreaSqm": 65.1,
+      "buildYear": 1992
+    },
+    {
+      "dong": "우면동",
+      "buildingType": "집합",
+      "buildingUse": "제1종근린생활",
+      "dealOn": "2026-01-20",
+      "amountWon": 582200000,
+      "floor": 1,
+      "buildingAreaSqm": 32,
+      "buildYear": 2013
+    },
+    {
+      "dong": "양재동",
+      "buildingType": "집합",
+      "buildingUse": "업무",
+      "dealOn": "2026-01-20",
+      "amountWon": 315000000,
+      "floor": 20,
+      "buildingAreaSqm": 82.08,
+      "buildYear": 1991
+    },
+    {
+      "dong": "방배동",
+      "buildingType": "집합",
+      "buildingUse": "제1종근린생활",
+      "dealOn": "2026-01-20",
+      "amountWon": 340000000,
+      "buildingAreaSqm": 6.9,
+      "buildYear": 1992
+    },
+    {
+      "dong": "서초동",
+      "buildingType": "집합",
+      "buildingUse": "제1종근린생활",
+      "dealOn": "2026-01-12",
+      "amountWon": 376000000,
+      "buildingAreaSqm": 42.86,
+      "buildYear": 1988
+    },
+    {
+      "dong": "서초동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2026-01-08",
+      "amountWon": 65000000,
+      "buildingAreaSqm": 12,
+      "buildYear": 1997
+    },
+    {
+      "dong": "서초동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2026-01-13",
+      "amountWon": 70000000,
+      "buildingAreaSqm": 11.34,
+      "buildYear": 1997
+    },
+    {
+      "dong": "서초동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2026-01-13",
+      "amountWon": 80000000,
+      "buildingAreaSqm": 11.37,
+      "buildYear": 1997
+    },
+    {
+      "dong": "서초동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2026-01-13",
+      "amountWon": 80000000,
+      "buildingAreaSqm": 11.37,
+      "buildYear": 1997
+    },
+    {
+      "dong": "방배동",
+      "buildingType": "집합",
+      "buildingUse": "제1종근린생활",
+      "dealOn": "2026-01-15",
+      "amountWon": 421000000,
+      "buildingAreaSqm": 64.63,
+      "buildYear": 2015
+    },
+    {
+      "dong": "양재동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2026-01-13",
+      "amountWon": 30000000,
+      "buildingAreaSqm": 29.61,
+      "buildYear": 2005
+    },
+    {
+      "dong": "서초동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2026-01-10",
+      "amountWon": 74000000,
+      "buildingAreaSqm": 11.89,
+      "buildYear": 1997
+    },
+    {
+      "dong": "방배동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2026-01-07",
+      "amountWon": 420000000,
+      "floor": 2,
+      "buildingAreaSqm": 65.8,
+      "buildYear": 2007
+    },
+    {
+      "dong": "서초동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2026-01-08",
+      "amountWon": 70000000,
+      "buildingAreaSqm": 11.88,
+      "buildYear": 1997
+    },
+    {
+      "dong": "서초동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2026-01-08",
+      "amountWon": 70000000,
+      "buildingAreaSqm": 12.12,
+      "buildYear": 1997
+    },
+    {
+      "dong": "서초동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2026-01-08",
+      "amountWon": 70000000,
+      "buildingAreaSqm": 12.04,
+      "buildYear": 1997
+    },
+    {
+      "dong": "반포동",
+      "buildingType": "일반",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2026-01-09",
+      "amountWon": 5011390000,
+      "buildingAreaSqm": 1392.39,
+      "landAreaSqm": 369,
+      "buildYear": 2003
+    },
+    {
+      "dong": "서초동",
+      "buildingType": "집합",
+      "buildingUse": "제1종근린생활",
+      "dealOn": "2026-01-08",
+      "amountWon": 100000000,
+      "buildingAreaSqm": 15.95,
+      "buildYear": 1994
+    },
+    {
+      "dong": "서초동",
+      "buildingType": "집합",
+      "buildingUse": "업무",
+      "dealOn": "2026-01-06",
+      "amountWon": 49000000,
+      "floor": 9,
+      "buildingAreaSqm": 10.15,
+      "buildYear": 2005
+    },
+    {
+      "dong": "서초동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2026-01-08",
+      "amountWon": 689400000,
+      "floor": 2,
+      "buildingAreaSqm": 45.92,
+      "buildYear": 2021
+    },
+    {
+      "dong": "서초동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2026-01-08",
+      "amountWon": 543050000,
+      "floor": 3,
+      "buildingAreaSqm": 41.82,
+      "buildYear": 2021
+    },
+    {
+      "dong": "서초동",
+      "buildingType": "집합",
+      "buildingUse": "업무",
+      "dealOn": "2026-01-05",
+      "amountWon": 50000000,
+      "floor": 5,
+      "buildingAreaSqm": 10.15,
+      "buildYear": 2005
+    },
+    {
+      "dong": "서초동",
+      "buildingType": "집합",
+      "buildingUse": "제1종근린생활",
+      "dealOn": "2026-01-07",
+      "amountWon": 842800000,
+      "floor": 1,
+      "buildingAreaSqm": 23.01,
+      "buildYear": 2021
+    }
+  ]
 }
