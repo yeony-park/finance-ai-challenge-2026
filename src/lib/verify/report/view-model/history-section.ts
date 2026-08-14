@@ -26,8 +26,8 @@ export const buildHistorySection = (ctx: ReportContext): DemoView["history"] => 
     {
       id: "amendment-watch",
       tone: "warn",
-      title: "정정신고서 감시는 아직 연결되지 않았습니다",
-      meta: "정정 접수 시 자동 재검증·알림은 다음 단계 범위입니다",
+      title: "정정 접수 감시와 재대조는 주 2회 자동 실행되고, 알림 발송 채널은 아직 연결되지 않았습니다",
+      meta: "정정 접수 조회 · 재대조는 자동 실행 · 알림 발송은 다음 단계 범위입니다",
     },
   ],
 });

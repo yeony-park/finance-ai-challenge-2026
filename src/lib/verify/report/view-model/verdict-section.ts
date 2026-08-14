@@ -1,5 +1,5 @@
 import type { ReportContext } from "./context";
-import { b, t, VERDICT_LABEL } from "./labels";
+import { b, mismatchFieldLabel, t, VERDICT_LABEL } from "./labels";
 import { realEstateOneLiner } from "./real-estate";
 import type { DemoView, TallyView } from "./types";
 
@@ -84,14 +84,16 @@ export const buildVerdictSection = (ctx: ReportContext): DemoView["verdict"] => 
         t(
           `공시된 개체 ${ctx.headCount}두 중 ${ctx.matched}두가 공공 데이터와 일치합니다. `,
         ),
-        b(`${ctx.mismatched}두는 국가 이력 원장에서 확인되지 않습니다.`),
+        b(
+          `${ctx.mismatched}두는 ${mismatchFieldLabel(ctx.report)} 기재가 국가 이력 원장에서 확인되지 않습니다.`,
+        ),
         t(priceSentence(ctx)),
       ],
       pro: [
         t(
           `개체 ${ctx.headCount}두 중 ${ctx.matched}두 전 항목 일치 · 항목 ${summary.total}건 대조 결과 일치 ${summary.match} · 원장 미확인 ${summary.mismatch} · 대조 불가 ${summary.unverifiable}. 미확인 개체의 사유는 `,
         ),
-        b("보관장소(사육지) 미확인"),
+        b(`${mismatchFieldLabel(ctx.report)} 미확인`),
         t(
           `입니다.${priceSentence(ctx)} 근거 카드에 원문 위치와 조회 응답이 함께 붙어 있습니다.`,
         ),

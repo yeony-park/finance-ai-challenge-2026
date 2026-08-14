@@ -8,6 +8,7 @@ import {
 } from "./claims/llm-client";
 import { DEFAULT_EXTRACTION_MODE, type ExtractionMode } from "./claims/extract";
 import { listRawDocuments, rawDocumentDir } from "./dart/fetch-document";
+import { scheduleNotes } from "./offer-notes";
 import { assertRcpNo } from "./paths";
 import { runVerification } from "./pipeline";
 import { writeReport } from "./report/build";
@@ -130,6 +131,7 @@ const main = async (): Promise<void> => {
     auction,
     extractionMode: options.extractionMode,
     extractor,
+    notes: scheduleNotes(options.rcpNo, new Date()),
   });
   const isFakeRun = report.mode === "fake";
   const allowPublish = process.argv.includes("--publish");

@@ -13,6 +13,7 @@
     "narrative": "tsx --env-file-if-exists=.env src/lib/verify/narrative/cli.ts",
     "verify:live": "tsx --env-file-if-exists=.env src/lib/verify/cli.ts",
     "verify:collect": "tsx --env-file-if-exists=.env src/lib/verify/dart/collect-cli.ts",
+    "replay:actual": "tsx --env-file-if-exists=.env src/lib/verify/amend/actual-replay-cli.ts",
     "verify:realestate": "tsx src/lib/verify/real-estate-cli.ts",
     "reference:collect": "tsx --env-file-if-exists=.env src/lib/verify/reference/auction-collect-cli.ts",
     "reference:rtms": "tsx --env-file-if-exists=.env src/lib/verify/reference/rtms-collect-cli.ts",

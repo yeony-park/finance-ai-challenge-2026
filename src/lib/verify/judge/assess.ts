@@ -69,6 +69,25 @@ const assessSimpleField = (
       };
 };
 
+const MALE_SEX = "수";
+
+const CASTRATED_SEX = "거세";
+
+const CASTRATION_NOTE =
+  "원장의 '거세'는 출생 등록 뒤 거세 처리된 수컷을 뜻합니다 — 신고서 기재 시점과 원장 조회 시점 사이의 상태 변화일 수 있습니다.";
+
+const assessSex = (
+  claimed: string,
+  observed: string | undefined,
+): Assessment => {
+  const assessment = assessSimpleField("성별", claimed, observed);
+  const isCastration =
+    assessment.verdict === "mismatch" &&
+    claimed === MALE_SEX &&
+    observed === CASTRATED_SEX;
+  return isCastration ? { ...assessment, note: CASTRATION_NOTE } : assessment;
+};
+
 const assessCustody = (
   claimed: string,
   record: LivestockTraceRecord,
@@ -169,7 +188,7 @@ export const assess = (
     case "livestock_breed":
       return assessSimpleField("품종", claim.value, record.breedName);
     case "livestock_sex":
-      return assessSimpleField("성별", claim.value, record.sexName);
+      return assessSex(claim.value, record.sexName);
     case "custody_location":
       return assessCustody(claim.value, record);
     case "acquisition_date":

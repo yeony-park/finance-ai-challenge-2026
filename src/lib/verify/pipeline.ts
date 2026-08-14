@@ -14,6 +14,9 @@ import type { AuctionPriceAdapter } from "./adapters/auction-price";
 import type { RtmsTradeAdapter } from "./adapters/rtms-trade";
 
 const OFFER_REGISTRY: Readonly<Record<string, string>> = {
+  "20260203000427": "livestock-7",
+  "20260210000785": "livestock-7",
+  "20260225002022": "livestock-7",
   "20260806000159": "livestock-9",
 };
 
@@ -37,6 +40,7 @@ export interface VerifyInput {
   readonly generatedAt?: string;
   readonly extractionMode?: ExtractionMode;
   readonly extractor?: ClaimExtractionClient;
+  readonly notes?: readonly string[];
 }
 
 export const runVerification = async (
@@ -70,7 +74,12 @@ export const runVerification = async (
     judgements: outcome.judgements,
     unjudged: outcome.unjudged,
     pricePlacements: outcome.pricePlacements,
-    notes: [`추출 모드: ${extraction.mode}`, ...extraction.notes, ...demotionNotes],
+    notes: [
+      ...(input.notes ?? []),
+      `추출 모드: ${extraction.mode}`,
+      ...extraction.notes,
+      ...demotionNotes,
+    ],
   });
 };
 

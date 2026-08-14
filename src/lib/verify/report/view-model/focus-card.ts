@@ -80,8 +80,15 @@ const collectFacts = (
 };
 
 const buildClaimRows = (facts: SubjectFacts): readonly EvidenceRowView[] => {
-  const { trace, acquired, custody, price, placement } = facts;
+  const { trace, sex, acquired, custody, price, placement } = facts;
   const rows: EvidenceRowView[] = [];
+  if (sex && sex.verdict !== "match") {
+    rows.push({
+      label: "성별",
+      value: maskFreeText(sex.claim.value),
+      isAlert: false,
+    });
+  }
   if (trace) {
     rows.push({
       label: "이력번호",
@@ -143,6 +150,15 @@ const buildLedgerRows = (facts: SubjectFacts): readonly EvidenceRowView[] => {
     });
   }
 
+  if (sex && sex.verdict !== "match") {
+    rows.push({
+      label: "원장 성별",
+      value: maskFreeText(sex.evidence[0]?.observed ?? VERDICT_LABEL[sex.verdict]),
+      isAlert: true,
+      note: maskFreeText(sex.evidence[0]?.note ?? sex.rationale),
+    });
+  }
+
   if (acquired) {
     const transferred = (acquired.evidence[0]?.observed ?? "").match(
       TRANSFER_PATTERN,
@@ -183,29 +199,67 @@ const buildLedgerRows = (facts: SubjectFacts): readonly EvidenceRowView[] => {
   return rows;
 };
 
+const OTHER_CAUSE_TEXT =
+  "등록 지연·오기, 기재 시점 이후의 상태 변화 등 다른 원인일 수 있으므로 이 기록만으로 문제가 있다고 단정할 수 없습니다.";
+
+const alertOrder = (facts: SubjectFacts): readonly (JudgementRecord | undefined)[] => [
+  facts.custody,
+  facts.sex,
+  facts.breed,
+  facts.acquired,
+  facts.trace,
+];
+
+const alertJudgements = (
+  facts: SubjectFacts,
+): readonly JudgementRecord[] =>
+  alertOrder(facts).filter(
+    (judgement): judgement is JudgementRecord =>
+      judgement !== undefined && judgement.verdict !== "match",
+  );
+
+const custodyEasyText = (
+  facts: SubjectFacts,
+  custody: JudgementRecord,
+): RichText => {
+  const claimRegion = maskRegion(custody.claim.value);
+  const observedRegion = maskRegion(custody.evidence[0]?.observed ?? "");
+  const acquiredOn = facts.acquired
+    ? formatIsoDate(facts.acquired.claim.value)
+    : "기재일";
+
+  return [
+    t(`신고서에는 이 개체를 ${acquiredOn}에 취득해 ${claimRegion} 농가에서 사육 중이라고 기재되어 있습니다. 그러나 국가 원장의 최종 사육지는 `),
+    b(`${observedRegion}의 다른 농장`),
+    t(`이어서, 기재된 보관 장소가 확인되지 않았습니다. ${OTHER_CAUSE_TEXT}`),
+  ];
+};
+
+const fieldEasyText = (alert: JudgementRecord): RichText => [
+  t(`신고서에는 이 개체의 ${alert.claim.field}이(가) "${maskFreeText(alert.claim.value)}"로 기재되어 있습니다. 국가 원장의 값은 `),
+  b(maskFreeText(alert.evidence[0]?.observed ?? "확인 불가")),
+  t(`입니다. ${OTHER_CAUSE_TEXT}`),
+];
+
 const buildFootnote = (facts: SubjectFacts): Record<ExplainLevel, RichText> => {
-  const { acquired, custody, peer } = facts;
-  const claimRegion = custody ? maskRegion(custody.claim.value) : "기재 지역";
-  const observedRegion = custody
-    ? maskRegion(custody.evidence[0]?.observed ?? "")
-    : "다른 지역";
-  const acquiredOn = acquired ? formatIsoDate(acquired.claim.value) : "기재일";
+  const { custody, peer } = facts;
+  const alerts = alertJudgements(facts);
+  const primary = alerts[0];
+
+  const easy =
+    custody && custody.verdict !== "match"
+      ? custodyEasyText(facts, custody)
+      : primary
+        ? fieldEasyText(primary)
+        : [t(`이 개체에서 원장과 값이 다른 항목은 없습니다. ${OTHER_CAUSE_TEXT}`)];
 
   return {
-    easy: [
-      t(`신고서에는 이 개체를 ${acquiredOn}에 취득해 ${claimRegion} 농가에서 사육 중이라고 기재되어 있습니다. 그러나 국가 원장의 최종 사육지는 `),
-      b(`${observedRegion}의 다른 농장`),
-      t(
-        "이어서, 기재된 보관 장소가 확인되지 않았습니다. 등록 지연·오기 등 다른 원인일 수 있으므로 이 기록만으로 문제가 있다고 단정할 수 없습니다.",
-      ),
-    ],
+    easy,
     pro: [
-      ...(custody
-        ? [b(`${custody.claim.field} — ${maskFreeText(custody.rationale)}`), t(" ")]
-        : []),
-      ...(acquired && acquired.verdict !== "match"
-        ? [t(`${acquired.claim.field} — ${maskFreeText(acquired.rationale)} `)]
-        : []),
+      ...alerts.flatMap((alert): RichText => [
+        b(`${alert.claim.field} — ${maskFreeText(alert.rationale)}`),
+        t(" "),
+      ]),
       ...(peer
         ? [t(`비교군 ${peer.count}두는 ${peer.date} 일괄 양수 등록으로 관측됩니다. `)]
         : []),

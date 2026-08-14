@@ -2,7 +2,7 @@
 
 # data/ 매니페스트
 
-생성 시각: 2026-08-14T05:53:40.474Z
+생성 시각: 2026-08-14T06:27:06.409Z
 
 ## 저장 정책
 
@@ -33,6 +33,9 @@
 
 | 경로 | 바이트 | sha256 |
 |---|---:|---|
+| `data/raw/20260203000427/20260203000427.xml` | 2,528,345 | `04be5f4dcdb9704adcff3b45191a927fa0a140d9c4f0daa477637e012dace21f` |
+| `data/raw/20260210000785/20260210000785.xml` | 2,616,902 | `50af1fda779f314e239001c146801e8bd312c0c9eb5ec6fa8f74b5e044fb9c48` |
+| `data/raw/20260225002022/20260225002022.xml` | 2,617,705 | `ef2f2b978ba8d60fe8c45b7cd5efe29266466cadb98fd64e2442dede46f7b054` |
 | `data/raw/20260806000159/20260806000159.xml` | 2,271,672 | `34b0a80b80b17b92675a6eba29c0ef623d9e6455607756bbfd8dc33235855972` |
 
 ### 2. 실측 스냅샷 (축산물이력제 API 응답)
@@ -53,6 +56,7 @@
 
 | 경로 | 바이트 | sha256 |
 |---|---:|---|
+| `data/reports/livestock-7/report-2026-08-14T06-19-19-348Z.json` | 460,282 | `ada055ff4619b52ce431ca2a1d4c8812898076293cf09d1a662c338fc8c952c0` |
 | `data/reports/livestock-9/report-2026-08-11T16-02-04-683Z.json` | 268,697 | `25f6e34939b356595fde6c3d04254877e9cf2da294d95b6f324725ffdb0fbcf9` |
 | `data/reports/livestock-9/report-2026-08-11T16-04-40-307Z.json` | 261,443 | `d244d8e53faef706a2da24aa0f6405de73b8510ec7c7d32417b12f7e6407c343` |
 | `data/reports/livestock-9/report-2026-08-11T16-06-25-434Z.json` | 268,697 | `fc747f78938bcd2792c03afea57521ce4ab97b7ac117a5e48c59dd8b843859cb` |
@@ -85,6 +89,7 @@
 
 | 경로 | 바이트 | sha256 |
 |---|---:|---|
+| `data/public/livestock-7/report-2026-08-14T06-19-19-348Z.json` | 460,762 | `0b6ed200cf1f119716711d938741e925b550abf0ea7e1883bbba33cc64339306` |
 | `data/public/livestock-9/narrative-20260806000159.json` | 5,240 | `419136eae352711a2e65fefad73a2642e31fedcccb11f2ec59bf46d80273ccb9` |
 | `data/public/livestock-9/report-2026-08-11T16-02-04-683Z.json` | 269,277 | `fdb1945dafffa6fd6b6775f35c3d8c5206eecd49de7b55cb3fe687f89224e1bc` |
 | `data/public/livestock-9/report-2026-08-11T16-04-40-307Z.json` | 262,023 | `5bde24e29d2437cd21f8cc92c427e0c4879c5d6ad26f240214c931a05917a847` |
@@ -107,7 +112,9 @@
 | `data/public/real-estate-a/report-2026-08-14T04-34-57-566Z.json` | 50,960 | `659b739f067591b35ece1f3da4b16e80794c85591b600f01f6e2cb1e301db753` |
 | `data/public/real-estate-a/report-2026-08-14T04-53-03-242Z.json` | 50,960 | `902e90ecea4e77d53e309e350767f985ac8e1d646df1ddf743900e7e0106c25b` |
 | `data/public/real-estate-a/report-2026-08-14T04-54-06-189Z.json` | 51,237 | `fe2b4434b20657a1cb2872bae4622085043c189bf96af2dc01d705a7e338513e` |
+| `data/public/replay/livestock-7/diff-2026-08-14T06-19-19-348Z.json` | 4,440 | `3416ea1773980e87f3b5d9a9fe8ef2bf363b5b58221c65278c515915aa6ab22f` |
 | `data/public/replay/livestock-9/diff-2026-08-13T17-46-58-162Z.json` | 3,453 | `2d47535b23c709247f30905bb5c97c56fdbf04f87c59d921a749d686aea991e2` |
+| `data/public/watch/livestock-7/watch-2026-08-14T06-13-49-913Z.json` | 871 | `c53178b0cb2d21a6ee6d224c482ddc349d387e2322cf564e73efe9bb07c9dcb0` |
 | `data/public/watch/livestock-9/watch-2026-08-13T17-45-24-412Z.json` | 306 | `736ddcedeb167093837493f8cbb9c7b3c48a847cc58a3fb4a245be50f68eaace` |
 
 ### 참조 시장 데이터 (시장 통계 · 커밋 대상)
@@ -118,6 +125,7 @@
 
 | 경로 | 바이트 | sha256 |
 |---|---:|---|
+| `data/reference/auction-price/024001-2026-01.json` | 3,045 | `ad66a2594b1199e42ad9c07175d668228a8f92fc4f2671affa3e33514d03b08d` |
 | `data/reference/auction-price/024001-2026-05.json` | 2,910 | `bd2d6a623fe5d27da5ef5548e8b2d832960ada2aadd116768a64360f1c1966f4` |
 | `data/reference/auction-price/024001-2026-06.json` | 2,910 | `38895fdcd3b41353b8f6fe524156e992b6853c8df29a101de639ca3fe315a126` |
 | `data/reference/auction-price/024001-2026-07.json` | 2,910 | `1cf72fbee49bbc0c077683f56c4ecdeaf5a84d1b498636692f74ee7dbf282707` |

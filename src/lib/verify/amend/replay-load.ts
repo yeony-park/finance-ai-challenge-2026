@@ -47,28 +47,53 @@ const shiftRowSchema = z.object({
   shift: shiftSchema,
 });
 
-const replayDiffSchema = z.object({
-  kind: z.literal("synthetic-amendment-diff"),
+const diffSchema = z.object({
+  from: documentSchema,
+  to: documentSchema,
+  changedClaims: z.array(changeRowSchema),
+  verdictChanges: z.array(shiftRowSchema),
+  summary: z.object({
+    changedClaims: z.number(),
+    verdictMaintained: z.number(),
+    verdictChanged: z.number(),
+    verdictUnknown: z.number(),
+    notJudged: z.number(),
+  }),
+  notes: z.array(z.string()),
+});
+
+const commonShape = {
   offerId: z.string(),
   generatedAt: z.string(),
   disclosure: z.string(),
-  editLabels: z.array(z.string()),
   facts: z.array(z.string()),
-  diff: z.object({
-    from: documentSchema,
-    to: documentSchema,
-    changedClaims: z.array(changeRowSchema),
-    verdictChanges: z.array(shiftRowSchema),
-    summary: z.object({
-      changedClaims: z.number(),
-      verdictMaintained: z.number(),
-      verdictChanged: z.number(),
-      verdictUnknown: z.number(),
-      notJudged: z.number(),
-    }),
-    notes: z.array(z.string()),
-  }),
+  diff: diffSchema,
+};
+
+const filingSchema = z.object({
+  rcpNo: z.string(),
+  receivedOn: z.string(),
+  role: z.enum(["base", "amendment"]),
+  reportLabel: z.string(),
+  isRechecked: z.boolean(),
+  correctionReason: z.string(),
+  correctionItems: z.array(z.string()),
+  correctionNotes: z.array(z.string()),
 });
+
+const replayDiffSchema = z.discriminatedUnion("kind", [
+  z.object({
+    ...commonShape,
+    kind: z.literal("synthetic-amendment-diff"),
+    editLabels: z.array(z.string()),
+  }),
+  z.object({
+    ...commonShape,
+    kind: z.literal("actual-amendment-diff"),
+    sourceName: z.string(),
+    filings: z.array(filingSchema),
+  }),
+]);
 
 export const parseReplayDiff = (raw: unknown): ReplayDiffArtifact => {
   const parsed = replayDiffSchema.safeParse(raw);

@@ -6,15 +6,41 @@ import type { VersionDiff } from "./diff";
 
 const REPLAY_SECTION = "replay";
 
-export interface ReplayDiffArtifact {
-  readonly kind: "synthetic-amendment-diff";
+export interface ReplayDiffCommon {
   readonly offerId: string;
   readonly generatedAt: string;
   readonly disclosure: string;
-  readonly editLabels: readonly string[];
   readonly facts: readonly string[];
   readonly diff: VersionDiff;
 }
+
+export interface SyntheticReplayDiffArtifact extends ReplayDiffCommon {
+  readonly kind: "synthetic-amendment-diff";
+  readonly editLabels: readonly string[];
+}
+
+export type FilingRole = "base" | "amendment";
+
+export interface ReplayFilingRecord {
+  readonly rcpNo: string;
+  readonly receivedOn: string;
+  readonly role: FilingRole;
+  readonly reportLabel: string;
+  readonly isRechecked: boolean;
+  readonly correctionReason: string;
+  readonly correctionItems: readonly string[];
+  readonly correctionNotes: readonly string[];
+}
+
+export interface ActualReplayDiffArtifact extends ReplayDiffCommon {
+  readonly kind: "actual-amendment-diff";
+  readonly sourceName: string;
+  readonly filings: readonly ReplayFilingRecord[];
+}
+
+export type ReplayDiffArtifact =
+  | SyntheticReplayDiffArtifact
+  | ActualReplayDiffArtifact;
 
 export const replayDiffDir = (offerId: string, dataDir = "data"): string =>
   path.resolve(dataDir, "public", REPLAY_SECTION, assertOfferId(offerId));

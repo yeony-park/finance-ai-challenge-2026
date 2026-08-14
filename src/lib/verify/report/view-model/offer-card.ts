@@ -4,6 +4,7 @@ import type { WatchState } from "../../amend/watch-state";
 import type { AssetKind } from "../../types";
 import { formatKstShortDate, formatKstShortDateTime } from "../format";
 import { buildReportContext, type ReportContext } from "./context";
+import { mismatchFieldLabel } from "./labels";
 import { realEstateVerdictLine } from "./real-estate";
 import type { DemoViewInput, TallyView } from "./types";
 import { buildVerdictSection } from "./verdict-section";
@@ -29,7 +30,7 @@ export interface OfferCardInput extends DemoViewInput {
 
 const livestockLine = (ctx: ReportContext): string => {
   if (ctx.mismatched > 0) {
-    return `이 공모의 개체 ${ctx.headCount}두 중 ${ctx.mismatched}두가 국가 원장에서 확인되지 않습니다.`;
+    return `이 공모의 개체 ${ctx.headCount}두 가운데 ${ctx.mismatched}두는 ${mismatchFieldLabel(ctx.report)} 기재가 국가 원장에서 확인되지 않습니다.`;
   }
   if (ctx.unverifiable > 0) {
     return `이 공모의 개체 ${ctx.headCount}두 중 ${ctx.unverifiable}두는 대조할 공공 데이터가 없습니다.`;
