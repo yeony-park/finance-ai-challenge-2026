@@ -28,6 +28,16 @@ export const OFFERS: readonly OfferEntry[] = [
     },
   },
   {
+    id: "livestock-8",
+    title: "가축 8호",
+    assetLabel: "가축",
+    assetKind: "livestock",
+    subscription: {
+      opensAt: "2026-04-17T10:00:00+09:00",
+      closesAt: "2026-06-10T16:00:00+09:00",
+    },
+  },
+  {
     id: "livestock-9",
     title: "가축 9호",
     assetLabel: "가축",

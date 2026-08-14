@@ -1,3 +1,4 @@
+import { OFFERS } from "../../../../components/site/offers";
 import { formatIsoDate, formatIsoDateShort, formatKstDateTime } from "../format";
 import type { ReportSnapshot } from "../snapshot";
 import type { AssetKind, ClaimKind, Verdict } from "../../types";
@@ -13,6 +14,11 @@ const claimValueOfKind = (
 ): string | undefined =>
   report.judgements.find((item) => item.claim.kind === kind)?.claim.value ??
   report.unjudged.find((item) => item.claim.kind === kind)?.claim.value;
+
+const FALLBACK_OFFER_TITLE = "공모 A";
+
+const registryTitle = (offerId: string): string =>
+  OFFERS.find((offer) => offer.id === offerId)?.title ?? FALLBACK_OFFER_TITLE;
 
 const realEstateRegionLabel = (report: ReportSnapshot): string =>
   report.realEstatePlacements[0]?.regionLabel ??
@@ -94,7 +100,7 @@ export const buildReportContext = (input: DemoViewInput): ReportContext => {
     offerTitle:
       assetKind === "real-estate"
         ? `${assetLabel} · ${regionLabel} 상업업무용 부동산`
-        : `공모 A · ${breed} 사육 투자계약증권`,
+        : `${registryTitle(report.offerId)} · ${breed} 사육 투자계약증권`,
     claimTotal: report.judgements.length + report.unjudged.length,
     unjudgedCount: report.unjudged.length,
     pricePlacementCount: report.pricePlacements.length,

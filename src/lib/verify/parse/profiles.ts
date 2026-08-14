@@ -19,7 +19,7 @@ export interface DocumentProfile {
 const BANKCOW_PROFILE: DocumentProfile = {
   id: "stockeeper-livestock",
   issuer: "주식회사 스탁키퍼 (뱅카우)",
-  offerIds: ["livestock-7", "livestock-9"],
+  offerIds: ["livestock-7", "livestock-8", "livestock-9"],
   headerSignature: ["고유명칭", "이력번호", "취득시기", "보관장소"],
   tableName: "기초자산 개체 명세표",
   sectionFallback: "8. 기초자산 취득에 관한 사항",

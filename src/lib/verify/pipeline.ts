@@ -17,6 +17,8 @@ const OFFER_REGISTRY: Readonly<Record<string, string>> = {
   "20260203000427": "livestock-7",
   "20260210000785": "livestock-7",
   "20260225002022": "livestock-7",
+  "20260326001272": "livestock-8",
+  "20260414002068": "livestock-8",
   "20260806000159": "livestock-9",
 };
 
