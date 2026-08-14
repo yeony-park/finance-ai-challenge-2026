@@ -47,7 +47,7 @@ const SYNTHETIC_LEAD =
   "정정신고서가 접수되면 이 공모는 접수 · 재추출 · 재대조 · 판정 비교 4단계로 다시 대조됩니다. 아래는 실제 정정이 아닌 합성 시연입니다.";
 
 const ACTUAL_LEAD =
-  "정정신고서가 접수되면 이 공모는 접수 · 재추출 · 재대조 · 판정 비교 4단계로 다시 대조됩니다. 아래는 실제 접수된 정정신고서를 그대로 다시 대조한 기록입니다.";
+  "실제 접수된 정정신고서의 계보와, 정정본을 같은 절차로 다시 대조한 결과의 기록입니다.";
 
 const SYNTHETIC_EXTRACT_TITLE = "정정본에서 값이 달라진 항목";
 
@@ -266,7 +266,7 @@ export const toAmendmentReplayView = (
   const isActual = artifact.kind === "actual-amendment-diff";
 
   return {
-    heading: "정정 재검증 리플레이",
+    heading: isActual ? "정정 이력과 재대조 기록" : "정정 재검증 리플레이",
     lead: isActual ? ACTUAL_LEAD : SYNTHETIC_LEAD,
     badge: isActual ? ACTUAL_REPLAY_BADGE : SYNTHETIC_REPLAY_BADGE,
     disclosure: artifact.disclosure,

@@ -53,9 +53,10 @@ const loadAmendmentReplay = cache(
   async (offerId: string): Promise<AmendmentReplayView | null> => {
     try {
       const artifact = await loadLatestReplayDiff(offerId);
-      return artifact ? toAmendmentReplayView(artifact) : null;
+      if (!artifact || artifact.kind !== "actual-amendment-diff") return null;
+      return toAmendmentReplayView(artifact);
     } catch (error) {
-      console.error(`리플레이 diff 로드 실패 (${offerId}):`, error);
+      console.error(`정정 기록 로드 실패 (${offerId}):`, error);
       return null;
     }
   },
@@ -122,7 +123,7 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
   return (
     <>
       <ReportDocument view={view} narrative={narrative?.levels ?? null}>
-        <WatchSection view={view} watch={watch} replay={replay} />
+        <WatchSection watch={watch} replay={replay} />
         <HistorySection view={view} trackRecord={trackRecord} />
       </ReportDocument>
       <PriceSection view={view} />

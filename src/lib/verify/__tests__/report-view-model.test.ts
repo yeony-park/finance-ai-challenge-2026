@@ -160,22 +160,6 @@ describe("toDemoView — 문서 버전·리플레이", () => {
     expect(text).toContain(loaded.report.notes[0] ?? "");
   });
 
-  test("리플레이 4단계 중 3단계가 경고 단계다", async () => {
-    const view = await buildView();
-
-    expect(view.replay.steps).toHaveLength(4);
-    expect(view.replay.steps.filter((s) => s.isWarned).map((s) => s.title)).toEqual([
-      "개체 24호 · 원장 불일치",
-    ]);
-  });
-
-  test("경고 단계의 설명은 원장 불일치 판정 사유(사육지)에서 나온다", async () => {
-    const view = await buildView();
-    const warned = view.replay.steps.find((s) => s.isWarned);
-
-    expect(warned?.detail).toContain("사육지");
-    expect(warned?.detail).not.toContain("횡성");
-  });
 });
 
 describe("toDemoView — 익명화 (목업 v4 수준 유지)", () => {

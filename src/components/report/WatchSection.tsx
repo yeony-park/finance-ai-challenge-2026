@@ -1,7 +1,6 @@
 import { Reveal } from "@/components/motion/Reveal";
 import type { AmendmentReplayView } from "@/lib/verify/amend/replay-view";
 import type { WatchStatusView } from "@/lib/verify/amend/watch-view";
-import type { DemoView } from "@/lib/verify/report/view-model";
 
 import { METHODOLOGY_ANCHOR } from "@/app/methodology/anchors";
 
@@ -9,7 +8,6 @@ import { AmendmentReplay } from "./AmendmentReplay";
 import { IconInfo } from "./icons";
 import { WATCH_HEADING_ID } from "./ids";
 import { MethodologyLink } from "./MethodologyLink";
-import { PipelineReplay } from "./PipelineReplay";
 import s from "./report.module.css";
 
 const UNCONNECTED_WATCH_TEXT =
@@ -26,13 +24,17 @@ const watchStatusText = (watch: WatchStatusView): string => {
   return `${watch.headline}${listing} ${watch.detail}.`;
 };
 
+const pendingText = (watch: WatchStatusView | null | undefined): string =>
+  watch && watch.amendments.length > 0
+    ? "접수가 확인된 정정신고서의 원문이 아직 공개되지 않아 재대조 전입니다 — 원문이 공개되는 대로 같은 절차로 다시 대조한 기록이 이 자리에 남습니다."
+    : "정정신고서가 접수되면 같은 절차로 다시 대조한 기록이 이 자리에 남습니다. 정정 접수 여부는 자동으로 조회됩니다.";
+
 interface WatchSectionProps {
-  readonly view: DemoView;
   readonly watch?: WatchStatusView | null;
   readonly replay?: AmendmentReplayView | null;
 }
 
-export function WatchSection({ view, watch, replay }: WatchSectionProps) {
+export function WatchSection({ watch, replay }: WatchSectionProps) {
   return (
     <section
       className={`${s.section} ${s.sectionMuted}`}
@@ -45,7 +47,7 @@ export function WatchSection({ view, watch, replay }: WatchSectionProps) {
             이 공모의 정정 접수와 재대조 기록
           </h2>
           <span className={s.layerSource}>
-            정정신고서가 접수되거나 판정이 달라지면 이 공모는 같은 파이프라인으로 다시 대조됩니다
+            정정신고서가 접수되면 이 공모는 같은 파이프라인으로 다시 대조됩니다
           </span>
           <MethodologyLink
             anchor={METHODOLOGY_ANCHOR.amendment}
@@ -61,7 +63,7 @@ export function WatchSection({ view, watch, replay }: WatchSectionProps) {
         {replay ? (
           <AmendmentReplay replay={replay} />
         ) : (
-          <PipelineReplay replay={view.replay} />
+          <p className={s.watchPending}>{pendingText(watch)}</p>
         )}
 
         <div className={s.honesty}>

@@ -1,7 +1,6 @@
 import { buildReportContext } from "./context";
 import { buildHistorySection } from "./history-section";
 import { buildPriceSection } from "./price-section";
-import { buildReplaySection } from "./replay-section";
 import { buildRealitySection } from "./subjects-section";
 import {
   buildMetaSection,
@@ -20,7 +19,6 @@ export type {
   ExplainLevel,
   FocusView,
   NoteItemView,
-  ReplayStepView,
   RichSegment,
   RichText,
   SubjectCardView,
@@ -37,6 +35,5 @@ export const toDemoView = (input: DemoViewInput): DemoView => {
     reality: buildRealitySection(ctx),
     price: buildPriceSection(ctx),
     history: buildHistorySection(ctx),
-    replay: buildReplaySection(ctx),
   };
 };

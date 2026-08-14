@@ -51,14 +51,6 @@ export interface NoteItemView {
   readonly meta: string;
 }
 
-export interface ReplayStepView {
-  readonly id: string;
-  readonly date: string;
-  readonly title: string;
-  readonly detail: string | null;
-  readonly isWarned: boolean;
-}
-
 export interface DemoView {
   readonly meta: { readonly badge: string; readonly items: readonly string[] };
   readonly offer: {
@@ -91,16 +83,6 @@ export interface DemoView {
     readonly heading: string;
     readonly source: string;
     readonly items: readonly NoteItemView[];
-  };
-  readonly replay: {
-    readonly heading: string;
-    readonly lead: string;
-    readonly steps: readonly ReplayStepView[];
-    readonly push: {
-      readonly title: string;
-      readonly body: string;
-      readonly meta: string;
-    };
   };
 }
 

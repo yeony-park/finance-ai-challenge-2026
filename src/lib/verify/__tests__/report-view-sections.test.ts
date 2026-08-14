@@ -3,7 +3,6 @@ import { loadLatestReport } from "../report/load";
 import { buildReportContext } from "../report/view-model/context";
 import { buildHistorySection } from "../report/view-model/history-section";
 import { buildPriceSection } from "../report/view-model/price-section";
-import { buildReplaySection } from "../report/view-model/replay-section";
 import { assignSubjectNos } from "../report/view-model/subject-cards";
 import type { ReportContext } from "../report/view-model/context";
 
@@ -58,13 +57,4 @@ describe("목록 항목은 안정 id를 갖는다 (자유 텍스트를 key로 �
     );
   });
 
-  test("리플레이 단계 id가 유일하고 경고 단계는 개체 번호로 구분된다", async () => {
-    const ctx = await buildContext();
-    const steps = buildReplaySection(ctx).steps;
-
-    expect(new Set(steps.map((step) => step.id)).size).toBe(steps.length);
-    expect(steps.filter((step) => step.isWarned).map((step) => step.id)).toEqual(
-      ctx.focuses.map((focus) => `focus-${focus.no}`),
-    );
-  });
 });
