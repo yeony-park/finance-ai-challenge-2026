@@ -83,7 +83,7 @@ describe("파이프라인 E2E (fake LLM)", () => {
 
   test("system prompt carries the 3-value verdict and no-solicitation rules", () => {
     const prompt = buildSystemPrompt();
-    expect(prompt).toContain("일치·원장 미확인·대조 불가");
+    expect(prompt).toContain("일치·원장 불일치·대조 불가");
     expect(prompt).toContain("중대성 등급");
     expect(prompt).toContain("livestock-trace");
   });

@@ -129,7 +129,7 @@ describe("buildOfferCard — 카드 값은 레지스트리와 리포트에서만
 
     expect(card.tallies.map((tally) => tally.label)).toEqual([
       "일치",
-      "원장 미확인",
+      "원장 불일치",
       "대조 불가",
     ]);
   });

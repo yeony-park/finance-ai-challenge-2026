@@ -4,7 +4,7 @@ import type { RichSegment } from "./types";
 
 export const VERDICT_LABEL: Record<Verdict, string> = {
   match: "일치",
-  mismatch: "원장 미확인",
+  mismatch: "원장 불일치",
   unverifiable: "대조 불가",
 };
 

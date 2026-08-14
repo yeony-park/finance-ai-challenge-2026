@@ -33,7 +33,7 @@ const printSummary = (
   console.log(`\n■ ${report.offerId} (자산군 ${report.assetKind}, 공시 기준일 ${report.document.submittedOn})`);
   console.log(`  대조 모드: ${report.mode} · 출처: ${report.sources.join(", ") || "-"}`);
   console.log(
-    `  항목 판정 ${report.summary.total}건 — 일치 ${report.summary.match} · 불일치 ${report.summary.mismatch} · 원장 미확인 ${report.summary.unverifiable} · 대조 불가 ${report.unjudged.length}`,
+    `  항목 판정 ${report.summary.total}건 — 일치 ${report.summary.match} · 원장 불일치 ${report.summary.mismatch} · 대조 불가 ${report.summary.unverifiable} · 미판정 ${report.unjudged.length}`,
   );
 
   for (const judgement of report.judgements) {
@@ -41,7 +41,7 @@ const printSummary = (
       judgement.verdict === "match"
         ? "일치"
         : judgement.verdict === "mismatch"
-          ? "원장 미확인"
+          ? "원장 불일치"
           : "대조 불가";
     console.log(`  · [${mark}] ${judgement.claim.field} — ${judgement.rationale}`);
     console.log(`      근거: ${judgement.evidence[0].observed}`);

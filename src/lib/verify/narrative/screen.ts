@@ -39,8 +39,8 @@ const FORBIDDEN: readonly { readonly id: string; readonly pattern: RegExp }[] = 
       /(체계적(으로|인)|충실(히|하게)|철저(히|한)|꼼꼼(히|하게)|정밀(하게|한\s*검증)|신뢰도(가)?\s*높|투명(하게)?\s*관리)/,
   },
   {
-    id: "internal-verdict-name",
-    pattern: /(불일치|일치하지\s*않|합치하지\s*않|어긋(납니다|난|나는))/,
+    id: "non-official-verdict-name",
+    pattern: /((?<!원장\s)불일치|일치하지\s*않|합치하지\s*않|어긋(납니다|난|나는))/,
   },
   { id: "unmasked-identifier", pattern: LONG_DIGITS_PATTERN },
 ];

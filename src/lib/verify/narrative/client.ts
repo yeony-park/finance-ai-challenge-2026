@@ -38,7 +38,7 @@ const realityDraft = (digest: NarrativeDigest, level: "easy" | "pro") => {
   const item = digest.reality.itemLevel;
   const asset = assetWord(digest);
   const unit = unitWord(digest);
-  const unmatched = subject["원장 미확인"] + subject["대조 불가"];
+  const unmatched = subject["원장 불일치"] + subject["대조 불가"];
 
   if (level === "easy") {
     return [
@@ -50,8 +50,8 @@ const realityDraft = (digest: NarrativeDigest, level: "easy" | "pro") => {
         tag: "fact" as const,
         text:
           unmatched > 0
-            ? `나머지 ${josa(`${unmatched}${unit}`, "은", "는")} 원장 미확인 또는 대조 불가로 남아 있습니다.`
-            : `원장 미확인이나 대조 불가로 남은 ${asset}는 없습니다.`,
+            ? `나머지 ${josa(`${unmatched}${unit}`, "은", "는")} 원장 불일치 또는 대조 불가로 남아 있습니다.`
+            : `원장 불일치나 대조 불가로 남은 ${asset}는 없습니다.`,
       },
     ];
   }
@@ -59,7 +59,7 @@ const realityDraft = (digest: NarrativeDigest, level: "easy" | "pro") => {
   return [
     {
       tag: "calc" as const,
-      text: `항목 판정 ${item.합계}건 — 일치 ${item.일치} · 원장 미확인 ${item["원장 미확인"]} · 대조 불가 ${item["대조 불가"]}.`,
+      text: `항목 판정 ${item.합계}건 — 일치 ${item.일치} · 원장 불일치 ${item["원장 불일치"]} · 대조 불가 ${item["대조 불가"]}.`,
     },
     {
       tag: "fact" as const,
@@ -147,7 +147,7 @@ const overallDraft = (digest: NarrativeDigest, level: "easy" | "pro") => {
     return [
       {
         tag: "calc" as const,
-        text: `${asset} ${subject.합계}${unit} 중 ${josa(`${subject.일치}${unit}`, "이", "가")} 원장과 일치하고, ${josa(`${subject["원장 미확인"]}${unit}`, "은", "는")} 원장 미확인입니다.`,
+        text: `${asset} ${subject.합계}${unit} 중 ${josa(`${subject.일치}${unit}`, "이", "가")} 원장과 일치하고, ${josa(`${subject["원장 불일치"]}${unit}`, "은", "는")} 원장 불일치입니다.`,
       },
     ];
   }
@@ -155,13 +155,13 @@ const overallDraft = (digest: NarrativeDigest, level: "easy" | "pro") => {
   return [
     {
       tag: "calc" as const,
-      text: `${asset} 단위 ${subject.합계}${unit}(일치 ${subject.일치} · 원장 미확인 ${subject["원장 미확인"]} · 대조 불가 ${subject["대조 불가"]}), 항목 단위 ${item.합계}건 기준 집계입니다.`,
+      text: `${asset} 단위 ${subject.합계}${unit}(일치 ${subject.일치} · 원장 불일치 ${subject["원장 불일치"]} · 대조 불가 ${subject["대조 불가"]}), 항목 단위 ${item.합계}건 기준 집계입니다.`,
     },
   ];
 };
 
 const CLOSING = {
-  easy: "원장 미확인과 대조 불가는 자료가 없다는 표시이며, 그 자체로 부정적인 판정을 뜻하지 않습니다.",
+  easy: "원장 불일치는 값이 다르다는 표시, 대조 불가는 자료가 없다는 표시이며, 그 자체로 부정적인 판정을 뜻하지 않습니다.",
   pro: "세 층위는 서로 다른 질문에 답하며, 가격 위치는 판정이 아니라 위치 표시로만 읽어야 합니다.",
 } as const;
 

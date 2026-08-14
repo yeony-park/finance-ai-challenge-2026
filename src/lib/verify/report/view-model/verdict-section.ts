@@ -68,7 +68,7 @@ export const buildVerdictSection = (ctx: ReportContext): DemoView["verdict"] => 
       title: ctx.offerTitle,
       when: `매각 공시 ${ctx.submittedOn} · 대조 실행 ${ctx.generatedAt}`,
       tallies: talliesOf(ctx),
-      itemLine: `항목 단위 집계 · 항목 판정 ${summary.total}건 — 일치 ${summary.match} · 원장 미확인 ${summary.mismatch} · 대조 불가 ${summary.unverifiable + ctx.unjudgedCount} · 가격 위치 제시 ${ctx.realEstatePlacementCount}`,
+      itemLine: `항목 단위 집계 · 항목 판정 ${summary.total}건 — 일치 ${summary.match} · 원장 불일치 ${summary.mismatch} · 대조 불가 ${summary.unverifiable + ctx.unjudgedCount} · 가격 위치 제시 ${ctx.realEstatePlacementCount}`,
       oneLiner: realEstateOneLiner(ctx),
     };
   }
@@ -78,26 +78,35 @@ export const buildVerdictSection = (ctx: ReportContext): DemoView["verdict"] => 
     title: ctx.offerTitle,
     when: `신고서 제출 ${ctx.submittedOn} · 대조 실행 ${ctx.generatedAt}`,
     tallies: talliesOf(ctx),
-    itemLine: `개체 단위 집계 · 항목 판정 ${summary.total}건 — 일치 ${summary.match} · 원장 미확인 ${summary.mismatch} · 대조 불가 ${summary.unverifiable} · 미판정 ${ctx.unjudgedCount} · 가격 위치 제시 ${ctx.pricePlacementCount}`,
+    itemLine: `개체 단위 집계 · 항목 판정 ${summary.total}건 — 일치 ${summary.match} · 원장 불일치 ${summary.mismatch} · 대조 불가 ${summary.unverifiable} · 미판정 ${ctx.unjudgedCount} · 가격 위치 제시 ${ctx.pricePlacementCount}`,
     oneLiner: {
       easy: [
         t(
           `공시된 개체 ${ctx.headCount}두 중 ${ctx.matched}두가 공공 데이터와 일치합니다. `,
         ),
-        b(
-          `${ctx.mismatched}두는 ${mismatchFieldLabel(ctx.report)} 기재가 국가 이력 원장에서 확인되지 않습니다.`,
-        ),
+        ctx.mismatched > 0
+          ? b(
+              `${ctx.mismatched}두는 ${mismatchFieldLabel(ctx.report)} 기재가 국가 이력 원장과 다릅니다.`,
+            )
+          : b("원장과 다르게 기재된 개체는 없습니다."),
         t(priceSentence(ctx)),
       ],
-      pro: [
-        t(
-          `개체 ${ctx.headCount}두 중 ${ctx.matched}두 전 항목 일치 · 항목 ${summary.total}건 대조 결과 일치 ${summary.match} · 원장 미확인 ${summary.mismatch} · 대조 불가 ${summary.unverifiable}. 미확인 개체의 사유는 `,
-        ),
-        b(`${mismatchFieldLabel(ctx.report)} 미확인`),
-        t(
-          `입니다.${priceSentence(ctx)} 근거 카드에 원문 위치와 조회 응답이 함께 붙어 있습니다.`,
-        ),
-      ],
+      pro:
+        ctx.mismatched > 0
+          ? [
+              t(
+                `개체 ${ctx.headCount}두 중 ${ctx.matched}두 전 항목 일치 · 항목 ${summary.total}건 대조 결과 일치 ${summary.match} · 원장 불일치 ${summary.mismatch} · 대조 불가 ${summary.unverifiable}. 불일치 개체의 사유는 `,
+              ),
+              b(`${mismatchFieldLabel(ctx.report)} 불일치`),
+              t(
+                `입니다.${priceSentence(ctx)} 근거 카드에 원문 위치와 조회 응답이 함께 붙어 있습니다.`,
+              ),
+            ]
+          : [
+              t(
+                `개체 ${ctx.headCount}두 중 ${ctx.matched}두 전 항목 일치 · 항목 ${summary.total}건 대조 결과 일치 ${summary.match} · 원장 불일치 0 · 대조 불가 ${summary.unverifiable}.${priceSentence(ctx)} 근거 카드에 원문 위치와 조회 응답이 함께 붙어 있습니다.`,
+              ),
+            ],
     },
   };
 };

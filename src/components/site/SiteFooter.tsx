@@ -5,8 +5,8 @@ import s from "./shell.module.css";
 
 const VERDICT_TERMS: readonly string[] = [
   "일치 — 공시 내용이 공공 데이터에서 확인됩니다",
-  "원장 미확인 — 공공 데이터에서 확인되지 않습니다",
-  "대조 불가 — 대조할 공공 데이터가 없거나 아직 연결되지 않았습니다",
+  "원장 불일치 — 공시 기재와 공공 데이터의 값이 서로 다릅니다",
+  "대조 불가 — 대조할 공공 데이터가 없거나 조회해도 확인되지 않습니다",
 ];
 
 export function SiteFooter() {
@@ -60,8 +60,8 @@ export function SiteFooter() {
             않습니다. 제공하는 것은 공시 내용과 공공 데이터의 대조 결과뿐입니다.
           </p>
           <p>
-            대조 결과가 &ldquo;원장 미확인&rdquo;이라는 것은 해당 시점의 공개 기록에서
-            확인되지 않았다는 사실만을 뜻하며, 그 원인을 단정하지 않습니다.{" "}
+            대조 결과가 &ldquo;원장 불일치&rdquo;라는 것은 해당 시점의 공개 기록과 값이
+            다르다는 사실만을 뜻하며, 그 원인이나 의도를 단정하지 않습니다.{" "}
             <span className={s.disclaimerStrong}>자료가 부족하다는 사실 자체는 부정적 판단의
             근거가 아닙니다.</span> 판정 기준과 한계는{" "}
             <Link href="/methodology" className={s.footerLink}>

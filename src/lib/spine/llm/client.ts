@@ -47,7 +47,7 @@ export const createFakeLlmClient = (): LlmClient => ({
 
     if (REALITY_TOPIC.test(user)) {
       return {
-        text: "신고서에 적힌 개체 이력번호를 축산물이력제 개체정보 조회 결과와 대조해 일치·원장 미확인·대조 불가 세 값 중 하나로 표시합니다. 원장에서 확인되지 않은 개체는 사유를 추정하지 않고 확인되지 않았다는 사실까지만 적습니다.",
+        text: "신고서에 적힌 개체 이력번호를 축산물이력제 개체정보 조회 결과와 대조해 일치·원장 불일치·대조 불가 세 값 중 하나로 표시합니다. 원장과 값이 다른 개체는 사유를 추정하지 않고 다르다는 사실까지만 적습니다.",
         sourceIds: ["livestock-trace", "verification-methodology"],
       };
     }

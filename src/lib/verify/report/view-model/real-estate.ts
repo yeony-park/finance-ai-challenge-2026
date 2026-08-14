@@ -87,7 +87,7 @@ export const realEstateOneLiner = (
     easy: [t(ledgerSentence), b(gapSentence), t(realEstatePriceSentence(ctx))],
     pro: [
       t(
-        `항목 ${summary.total}건 대조 결과 일치 ${summary.match} · 원장 미확인 ${summary.mismatch} · 대조 불가 ${ctx.unjudgedCount}. `,
+        `항목 ${summary.total}건 대조 결과 일치 ${summary.match} · 원장 불일치 ${summary.mismatch} · 대조 불가 ${ctx.unjudgedCount}. `,
       ),
       b(gapSentence),
       t(

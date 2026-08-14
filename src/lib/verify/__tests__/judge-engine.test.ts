@@ -96,6 +96,40 @@ describe("판정 엔진", () => {
     ]);
   });
 
+  test("성별 수→거세는 예상된 상태 전이라 match로 판정한다", async () => {
+    const outcome = await judgeClaims(
+      [claim("livestock_trace_no", "212786152"), claim("livestock_sex", "수")],
+      { trace: stubAdapter(record({ sexName: "거세" })) },
+    );
+
+    const sex = outcome.judgements.find((j) => j.claim.kind === "livestock_sex");
+    expect(sex?.verdict).toBe("match");
+    expect(sex?.evidence[0].stance).toBe("supports");
+    expect(sex?.evidence[0].note).toContain("거세");
+    expect(sex?.rationale).toContain("거세");
+  });
+
+  test("성별 암→거세 같은 불가능 전이는 mismatch를 유지한다", async () => {
+    const outcome = await judgeClaims(
+      [claim("livestock_trace_no", "212786152"), claim("livestock_sex", "암")],
+      { trace: stubAdapter(record({ sexName: "거세" })) },
+    );
+
+    const sex = outcome.judgements.find((j) => j.claim.kind === "livestock_sex");
+    expect(sex?.verdict).toBe("mismatch");
+    expect(sex?.evidence[0].stance).toBe("contradicts");
+  });
+
+  test("성별 거세→수 역방향 전이는 mismatch를 유지한다", async () => {
+    const outcome = await judgeClaims(
+      [claim("livestock_trace_no", "212786152"), claim("livestock_sex", "거세")],
+      { trace: stubAdapter(record({ sexName: "수" })) },
+    );
+
+    const sex = outcome.judgements.find((j) => j.claim.kind === "livestock_sex");
+    expect(sex?.verdict).toBe("mismatch");
+  });
+
   test("품종이 다르면 mismatch로 판정한다", async () => {
     const outcome = await judgeClaims([claim("livestock_trace_no", "212786152"), claim("livestock_breed", "한우")], {
       trace: stubAdapter(record({ breedName: "육우" })),

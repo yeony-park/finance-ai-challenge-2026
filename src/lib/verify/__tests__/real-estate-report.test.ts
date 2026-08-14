@@ -97,7 +97,7 @@ describe("부동산 claim 추출 — 문서 좌표와 게이트", () => {
   });
 });
 
-describe("실거래 원장 대조 — 일치 / 원장 미확인 / 대조 불가", () => {
+describe("실거래 원장 대조 — 일치 / 원장 불일치 / 대조 불가", () => {
   test("같은 달·같은 금액의 신고가 있으면 매각 내역이 일치로 남는다", async () => {
     const outcome = judgeRealEstate({
       offer: await loadOffer(),
@@ -110,7 +110,7 @@ describe("실거래 원장 대조 — 일치 / 원장 미확인 / 대조 불가"
     expect(outcome.judgements.every((item) => item.evidence.length >= 1)).toBe(true);
   });
 
-  test("금액이 다르면 일치로 넘어가지 않고 원장 미확인으로 남는다", async () => {
+  test("금액이 다르면 일치로 넘어가지 않고 원장 불일치으로 남는다", async () => {
     const offer = await loadOffer();
     const changed: RealEstateOffer = {
       ...offer,
@@ -273,7 +273,7 @@ describe("화면 뷰모델 — 축산 문구가 부동산에 새지 않는다", 
 
     expect(view.verdict.tallies.map((tally) => tally.label)).toEqual([
       "일치",
-      "원장 미확인",
+      "원장 불일치",
       "대조 불가",
     ]);
     expect(view.verdict.tallies.map((tally) => tally.value)).toEqual([2, 0, 1]);

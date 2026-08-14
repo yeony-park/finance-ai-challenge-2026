@@ -126,14 +126,14 @@ export interface NarrativeDigest {
 export interface VerdictTally {
   readonly 합계: number;
   readonly 일치: number;
-  readonly "원장 미확인": number;
+  readonly "원장 불일치": number;
   readonly "대조 불가": number;
 }
 
 const tallyOf = (verdicts: readonly Verdict[]): VerdictTally => ({
   합계: verdicts.length,
   일치: verdicts.filter((verdict) => verdict === "match").length,
-  "원장 미확인": verdicts.filter((verdict) => verdict === "mismatch").length,
+  "원장 불일치": verdicts.filter((verdict) => verdict === "mismatch").length,
   "대조 불가": verdicts.filter((verdict) => verdict === "unverifiable").length,
 });
 

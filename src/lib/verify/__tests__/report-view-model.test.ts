@@ -16,7 +16,7 @@ describe("toDemoView — 판정 집계는 엔진 산출에서만 나온다", () 
 
     expect(view.verdict.tallies.map((t) => [t.label, t.value])).toEqual([
       ["일치", 36],
-      ["원장 미확인", 1],
+      ["원장 불일치", 1],
       ["대조 불가", 0],
     ]);
   });
@@ -26,7 +26,7 @@ describe("toDemoView — 판정 집계는 엔진 산출에서만 나온다", () 
 
     expect(view.verdict.itemLine).toContain("185건");
     expect(view.verdict.itemLine).toContain("일치 183");
-    expect(view.verdict.itemLine).toContain("원장 미확인 1");
+    expect(view.verdict.itemLine).toContain("원장 불일치 1");
     expect(view.verdict.itemLine).toContain("대조 불가 1");
     expect(view.verdict.itemLine).toContain("미판정 1");
     expect(view.verdict.itemLine).toContain("가격 위치 제시 36");
@@ -63,12 +63,12 @@ describe("toDemoView — 개체 카드와 드릴다운", () => {
     expect(view.reality.subjects[36]?.no).toBe(37);
   });
 
-  test("24호만 원장 미확인 뱃지를 갖고 근거 카드로 연결된다", async () => {
+  test("24호만 원장 불일치 뱃지를 갖고 근거 카드로 연결된다", async () => {
     const view = await buildView();
     const flagged = view.reality.subjects.filter((s) => s.verdict !== "match");
 
     expect(flagged.map((s) => s.no)).toEqual([24]);
-    expect(flagged[0]?.badge).toBe("원장 미확인");
+    expect(flagged[0]?.badge).toBe("원장 불일치");
     expect(flagged[0]?.hasFocus).toBe(true);
     expect(view.reality.focuses.map((f) => f.no)).toEqual([24]);
   });
@@ -84,7 +84,7 @@ describe("toDemoView — 개체 카드와 드릴다운", () => {
     expect(rows.get("취득원가")).toBe("4,719,865원");
   });
 
-  test("근거 카드 우열은 원장 관측값이며 원장 미확인 항목이 강조된다", async () => {
+  test("근거 카드 우열은 원장 관측값이며 원장 불일치 항목이 강조된다", async () => {
     const view = await buildView();
     const focus = view.reality.focuses[0];
     const rows = focus?.ledgerRows ?? [];
@@ -165,11 +165,11 @@ describe("toDemoView — 문서 버전·리플레이", () => {
 
     expect(view.replay.steps).toHaveLength(4);
     expect(view.replay.steps.filter((s) => s.isWarned).map((s) => s.title)).toEqual([
-      "개체 24호 · 원장 미확인",
+      "개체 24호 · 원장 불일치",
     ]);
   });
 
-  test("경고 단계의 설명은 원장 미확인 판정 사유(사육지)에서 나온다", async () => {
+  test("경고 단계의 설명은 원장 불일치 판정 사유(사육지)에서 나온다", async () => {
     const view = await buildView();
     const warned = view.replay.steps.find((s) => s.isWarned);
 

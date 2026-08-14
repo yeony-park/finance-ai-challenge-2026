@@ -74,18 +74,22 @@ const MALE_SEX = "수";
 const CASTRATED_SEX = "거세";
 
 const CASTRATION_NOTE =
-  "원장의 '거세'는 출생 등록 뒤 거세 처리된 수컷을 뜻합니다 — 신고서 기재 시점과 원장 조회 시점 사이의 상태 변화일 수 있습니다.";
+  "원장의 '거세'는 출생 등록 뒤 거세 처리된 수컷을 뜻합니다 — 한우 수컷의 비육 과정에서 표준적으로 이뤄지는 예상된 상태 전이입니다.";
 
 const assessSex = (
   claimed: string,
   observed: string | undefined,
 ): Assessment => {
-  const assessment = assessSimpleField("성별", claimed, observed);
-  const isCastration =
-    assessment.verdict === "mismatch" &&
-    claimed === MALE_SEX &&
-    observed === CASTRATED_SEX;
-  return isCastration ? { ...assessment, note: CASTRATION_NOTE } : assessment;
+  if (claimed === MALE_SEX && observed === CASTRATED_SEX) {
+    return {
+      verdict: "match",
+      observed,
+      rationale:
+        "신고서 기재 성별(수)과 원장의 '거세'는 모순되지 않습니다 — 출생 시 수컷이 거세 처리된 개체입니다.",
+      note: CASTRATION_NOTE,
+    };
+  }
+  return assessSimpleField("성별", claimed, observed);
 };
 
 const assessCustody = (

@@ -83,10 +83,10 @@ const printSummary = (
   console.log(`\n■ ${report.offerId} (접수번호 ${report.document.rcpNo}, 제출 ${report.document.submittedOn})`);
   console.log(`  대조 모드: ${report.mode} · 출처: ${report.sources.join(", ") || "-"}`);
   console.log(
-    `  개체 ${heads.length}두 — 일치 ${count("match")} · 불일치 ${count("mismatch")} · 원장 미확인 ${count("unverifiable")}`,
+    `  개체 ${heads.length}두 — 일치 ${count("match")} · 원장 불일치 ${count("mismatch")} · 대조 불가 ${count("unverifiable")}`,
   );
   console.log(
-    `  항목 판정 ${report.summary.total}건 — 일치 ${report.summary.match} · 불일치 ${report.summary.mismatch} · 원장 미확인 ${report.summary.unverifiable} · 대조 불가 ${report.unjudged.length}`,
+    `  항목 판정 ${report.summary.total}건 — 일치 ${report.summary.match} · 원장 불일치 ${report.summary.mismatch} · 대조 불가 ${report.summary.unverifiable} · 미판정 ${report.unjudged.length}`,
   );
   const placements = report.pricePlacements;
   console.log(
@@ -98,7 +98,7 @@ const printSummary = (
 
   for (const judgement of report.judgements) {
     if (judgement.verdict === "match") continue;
-    const mark = judgement.verdict === "mismatch" ? "불일치" : "원장 미확인";
+    const mark = judgement.verdict === "mismatch" ? "원장 불일치" : "대조 불가";
     console.log(
       `  · [${mark}] ${judgement.claim.subject} / ${judgement.claim.field} — ${judgement.rationale}`,
     );

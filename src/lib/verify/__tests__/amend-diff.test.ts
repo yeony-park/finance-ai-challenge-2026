@@ -193,7 +193,7 @@ describe("알림 문장", () => {
     expect(text).toContain("값이 달라진 항목 1건");
     expect(text).toContain("개체 1호 취득원가 4574865 → 4900000");
     expect(text).toContain("판정 유지 1건 · 변동 1건");
-    expect(text).toContain("개체 24호 보관장소 일치 → 원장 미확인");
+    expect(text).toContain("개체 24호 보관장소 일치 → 원장 불일치");
     expect(text).not.toMatch(/[A-D]류|중대|경미|위험도|등급/);
   });
 });

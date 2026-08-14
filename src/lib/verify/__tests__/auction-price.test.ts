@@ -325,7 +325,7 @@ describe("② 가격 층위 — 판정이 아니라 위치", () => {
     expect(outcome.pricePlacements[0].statement).toMatch(/얇/);
   });
 
-  test("취득시기가 원장 미확인이면(학산 24호 케이스) 가격도 대조 불가로 남는다", async () => {
+  test("취득시기가 대조 불가면(학산 24호 케이스) 가격도 대조 불가로 남는다", async () => {
 
     const outcome = await judgeClaims(priceClaims, {
       trace: traceStub(
