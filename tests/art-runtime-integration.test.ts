@@ -326,6 +326,25 @@ test("checkbox filters combine selections and blank numeric filters do not hide 
   assert.equal(filteredApi.pagination.total, 231);
 });
 
+test("compare workspace renders selectable products and a two-product comparison", async () => {
+  const emptyResponse = await fetch(`${baseUrl}/compare`);
+  const emptyHtml = await emptyResponse.text();
+  assert.equal(emptyResponse.ok, true);
+  assert.ok(emptyHtml.includes("비교할 상품 선택"));
+  assert.equal((emptyHtml.match(/class="compare-choice /g) ?? []).length, 9);
+  assert.ok(emptyHtml.includes("최소 2개"));
+
+  const comparedResponse = await fetch(`${baseUrl}/compare?ids=demo-art-001,demo-art-004`);
+  const comparedHtml = await comparedResponse.text();
+  assert.equal(comparedResponse.ok, true);
+  assert.ok(comparedHtml.replace(/<!--.*?-->/g, "").includes("선택 상품 2개 비교"));
+  assert.ok(comparedHtml.includes("DEMO 작가 A"));
+  assert.ok(comparedHtml.includes("DEMO 작가 D"));
+  assert.ok(comparedHtml.includes("비교에서 제외"));
+  assert.ok(comparedHtml.includes("설명되지 않는 차액"));
+  assert.ok(comparedHtml.includes("플랫폼 청산 이력"));
+});
+
 test("home shows four upcoming verdict demos without the removed repository snapshot", async () => {
   const home = await fetch(`${baseUrl}/`).then((response) => response.text());
   assert.equal(home.includes("REPOSITORY SNAPSHOT"), false);
