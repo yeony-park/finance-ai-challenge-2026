@@ -301,6 +301,11 @@ export const judgeRealEstate = (
   const ledgerBlocked =
     lookup.window.missingMonths.includes(lookup.month) ||
     lookup.window.collectedAt === "";
+  if (!ledgerBlocked && !lookup.sameAmount) {
+    notes.push(
+      "매각금액·매각일이 실거래 원장에서 확인되지 않은 원인은 단정할 수 없습니다 — 신탁 구조의 소유권 이전은 매매 신고와 다른 형태로 이뤄질 수 있고, 신고 지연·거래 유형 차이도 가능한 원인입니다.",
+    );
+  }
 
   for (const claim of claims) {
     if (claim.verifiability !== "verifiable") {

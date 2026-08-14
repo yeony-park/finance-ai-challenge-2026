@@ -2,7 +2,7 @@
 
 # data/ 매니페스트
 
-생성 시각: 2026-08-14T04:35:35.827Z
+생성 시각: 2026-08-14T04:55:34.289Z
 
 ## 저장 정책
 
@@ -67,8 +67,11 @@
 | `data/reports/livestock-9/report-2026-08-13T16-52-15-452Z.json` | 417,294 | `dae154d8681f4f5493dbb4cbbf3a848f95bc40c5290712c44942b5edff2e46a6` |
 | `data/reports/livestock-9/report-2026-08-13T18-00-33-047Z.json` | 417,352 | `51c93bfe9281811eed749cad0e53ce43b2174337591e358c27025a5353cd2a57` |
 | `data/reports/livestock-9/report-2026-08-13T18-07-15-350Z.json` | 417,352 | `c2b738d747084290f593561d83ddaf3b6cedb3d8ce5cd4f8465679d57da8bf62` |
+| `data/reports/livestock-9/report-2026-08-14T04-55-13-053Z.json` | 410,120 | `ea6990887a1ead56de86c29ecb2614527adabc97fc7be3b832d2ed82f76446c6` |
 | `data/reports/real-estate-a/report-2026-08-13T17-53-03-085Z.json` | 15,338 | `3e56f7ba7748e0b27777c3be1b673046db9456a69dd8e0359888e732ab0914f5` |
 | `data/reports/real-estate-a/report-2026-08-14T04-34-57-566Z.json` | 51,130 | `5b3728ffb6b9c5a6ed8111d3014a9dbb5b8056093cbc1531914102e6805fb331` |
+| `data/reports/real-estate-a/report-2026-08-14T04-53-03-242Z.json` | 51,130 | `a53672da11e84ed49418ee912a58116f2f5465e677b8790a5ff8ca393d1957f1` |
+| `data/reports/real-estate-a/report-2026-08-14T04-54-06-189Z.json` | 51,407 | `0d92aac2ae11e475ea1a08087eb4345edc4a8c4c7d503e36ba1ebdea100d0b10` |
 
 ## 커밋 대상 산출물
 
@@ -94,8 +97,11 @@
 | `data/public/livestock-9/report-2026-08-13T16-52-15-452Z.json` | 417,874 | `ed67011a93c0ddda7ff62274f80900504fd0b99e883cd5230d9e34e5b6c533fb` |
 | `data/public/livestock-9/report-2026-08-13T18-00-33-047Z.json` | 417,932 | `37ea41e6027b843363b280df57be190dbfdf530ee22227147bb1adc8608fbfaf` |
 | `data/public/livestock-9/report-2026-08-13T18-07-15-350Z.json` | 417,932 | `ff280bb47108fa4eb0799de61f11278399ce0d889c30272ef3a637249391c2cf` |
+| `data/public/livestock-9/report-2026-08-14T04-55-13-053Z.json` | 410,700 | `4b5279d95b593ec826665f718e9516cc0bf28275aa796eab71fd6f83122d44e4` |
 | `data/public/real-estate-a/report-2026-08-13T17-53-03-085Z.json` | 15,168 | `931ed4b78f166004a50fc90e7b0b9cf9689170baf76f7091e4cb6f6b629e7387` |
 | `data/public/real-estate-a/report-2026-08-14T04-34-57-566Z.json` | 50,960 | `659b739f067591b35ece1f3da4b16e80794c85591b600f01f6e2cb1e301db753` |
+| `data/public/real-estate-a/report-2026-08-14T04-53-03-242Z.json` | 50,960 | `902e90ecea4e77d53e309e350767f985ac8e1d646df1ddf743900e7e0106c25b` |
+| `data/public/real-estate-a/report-2026-08-14T04-54-06-189Z.json` | 51,237 | `fe2b4434b20657a1cb2872bae4622085043c189bf96af2dc01d705a7e338513e` |
 | `data/public/replay/livestock-9/diff-2026-08-13T17-46-58-162Z.json` | 3,453 | `2d47535b23c709247f30905bb5c97c56fdbf04f87c59d921a749d686aea991e2` |
 | `data/public/watch/livestock-9/watch-2026-08-13T17-45-24-412Z.json` | 306 | `736ddcedeb167093837493f8cbb9c7b3c48a847cc58a3fb4a245be50f68eaace` |
 
@@ -117,6 +123,8 @@
 | `data/reference/rtms/11650-2026-01.json` | 13,589 | `312cf02d8a58959d2c4040f48235e8150138323498b3dee9f7c331cc19d8d00c` |
 | `data/reference/rtms/11650-2026-02.json` | 9,221 | `636ba6121ba621a061fc2c64b080926aafe57a6605f01260d624e5c222e17241` |
 | `data/reference/rtms/11650-2026-03.json` | 12,111 | `7b59e4c2884a0754bfa5011d6cc9994572392a2972f7e6ce0d4b256fa21f793b` |
+| `data/reference/rtms/11650-2026-04.json` | 13,918 | `81529bea3730bfb2d70ee9a9d8ea5cd03930f1fd2083e431522550dfa949918d` |
+| `data/reference/rtms/11650-2026-05.json` | 12,715 | `5f45ff767a77ef9f30fc45306edf742ed9a86a61f4efbce555ee9ae3a95854a0` |
 
 ### 공모 기초자료 (공개 자료 정리 · 커밋 대상)
 
