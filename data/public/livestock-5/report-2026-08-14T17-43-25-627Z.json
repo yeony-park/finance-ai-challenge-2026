@@ -1,0 +1,6798 @@
+{
+  "offerId": "livestock-5",
+  "assetKind": "livestock",
+  "document": {
+    "offerId": "livestock-5",
+    "rcpNo": "20250617000216",
+    "submittedOn": "2025-06-17"
+  },
+  "generatedAt": "2026-08-14T17:43:25.627Z",
+  "mode": "live",
+  "sources": [
+    "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
+    "축산물등급판정정보 소도체 등급별 경락가격 (축산물품질평가원 · data.go.kr 15058822) — 월 집계 사전 수집본"
+  ],
+  "summary": {
+    "total": 0,
+    "match": 0,
+    "mismatch": 0,
+    "unverifiable": 0
+  },
+  "bySubject": [],
+  "judgements": [],
+  "unjudged": [
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 101호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 101호",
+        "field": "이력번호",
+        "value": "22●●●●●●00",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 1,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 101호",
+        "kind": "livestock_breed",
+        "subject": "개체 101호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 1,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 101호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 101호",
+        "kind": "livestock_sex",
+        "subject": "개체 101호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 1,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 101호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 101호",
+        "kind": "acquisition_date",
+        "subject": "개체 101호",
+        "field": "취득시기",
+        "value": "2025-01-21",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 1,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 101호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 101호",
+        "kind": "custody_location",
+        "subject": "개체 101호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 1,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 101호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 102호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 102호",
+        "field": "이력번호",
+        "value": "22●●●●●●52",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 2,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 102호",
+        "kind": "livestock_breed",
+        "subject": "개체 102호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 2,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 102호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 102호",
+        "kind": "livestock_sex",
+        "subject": "개체 102호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 2,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 102호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 102호",
+        "kind": "acquisition_date",
+        "subject": "개체 102호",
+        "field": "취득시기",
+        "value": "2025-01-14",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 2,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 102호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 102호",
+        "kind": "custody_location",
+        "subject": "개체 102호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 2,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 102호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 103호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 103호",
+        "field": "이력번호",
+        "value": "21●●●●●●39",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 3,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 103호",
+        "kind": "livestock_breed",
+        "subject": "개체 103호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 3,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 103호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 103호",
+        "kind": "livestock_sex",
+        "subject": "개체 103호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 3,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 103호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 103호",
+        "kind": "acquisition_date",
+        "subject": "개체 103호",
+        "field": "취득시기",
+        "value": "2025-01-08",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 3,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 103호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 103호",
+        "kind": "custody_location",
+        "subject": "개체 103호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 3,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 103호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 104호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 104호",
+        "field": "이력번호",
+        "value": "22●●●●●●83",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 4,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 104호",
+        "kind": "livestock_breed",
+        "subject": "개체 104호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 4,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 104호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 104호",
+        "kind": "livestock_sex",
+        "subject": "개체 104호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 4,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 104호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 104호",
+        "kind": "acquisition_date",
+        "subject": "개체 104호",
+        "field": "취득시기",
+        "value": "2025-01-13",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 4,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 104호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 104호",
+        "kind": "custody_location",
+        "subject": "개체 104호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 4,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 104호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 105호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 105호",
+        "field": "이력번호",
+        "value": "21●●●●●●67",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 5,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 105호",
+        "kind": "livestock_breed",
+        "subject": "개체 105호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 5,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 105호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 105호",
+        "kind": "livestock_sex",
+        "subject": "개체 105호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 5,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 105호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 105호",
+        "kind": "acquisition_date",
+        "subject": "개체 105호",
+        "field": "취득시기",
+        "value": "2024-12-27",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 5,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 105호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 105호",
+        "kind": "custody_location",
+        "subject": "개체 105호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 5,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 105호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 106호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 106호",
+        "field": "이력번호",
+        "value": "22●●●●●●89",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 6,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 106호",
+        "kind": "livestock_breed",
+        "subject": "개체 106호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 6,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 106호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 106호",
+        "kind": "livestock_sex",
+        "subject": "개체 106호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 6,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 106호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 106호",
+        "kind": "acquisition_date",
+        "subject": "개체 106호",
+        "field": "취득시기",
+        "value": "2025-01-21",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 6,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 106호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 106호",
+        "kind": "custody_location",
+        "subject": "개체 106호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 6,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 106호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 107호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 107호",
+        "field": "이력번호",
+        "value": "21●●●●●●79",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 7,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 107호",
+        "kind": "livestock_breed",
+        "subject": "개체 107호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 7,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 107호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 107호",
+        "kind": "livestock_sex",
+        "subject": "개체 107호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 7,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 107호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 107호",
+        "kind": "acquisition_date",
+        "subject": "개체 107호",
+        "field": "취득시기",
+        "value": "2025-02-03",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 7,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 107호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 107호",
+        "kind": "custody_location",
+        "subject": "개체 107호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 7,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 107호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 108호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 108호",
+        "field": "이력번호",
+        "value": "21●●●●●●35",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 8,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 108호",
+        "kind": "livestock_breed",
+        "subject": "개체 108호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 8,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 108호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 108호",
+        "kind": "livestock_sex",
+        "subject": "개체 108호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 8,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 108호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 108호",
+        "kind": "acquisition_date",
+        "subject": "개체 108호",
+        "field": "취득시기",
+        "value": "2025-01-21",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 8,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 108호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 108호",
+        "kind": "custody_location",
+        "subject": "개체 108호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 8,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 108호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 109호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 109호",
+        "field": "이력번호",
+        "value": "22●●●●●●61",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 9,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 109호",
+        "kind": "livestock_breed",
+        "subject": "개체 109호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 9,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 109호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 109호",
+        "kind": "livestock_sex",
+        "subject": "개체 109호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 9,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 109호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 109호",
+        "kind": "acquisition_date",
+        "subject": "개체 109호",
+        "field": "취득시기",
+        "value": "2025-02-04",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 9,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 109호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 109호",
+        "kind": "custody_location",
+        "subject": "개체 109호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 9,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 109호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 110호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 110호",
+        "field": "이력번호",
+        "value": "22●●●●●●93",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 10,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 110호",
+        "kind": "livestock_breed",
+        "subject": "개체 110호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 10,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 110호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 110호",
+        "kind": "livestock_sex",
+        "subject": "개체 110호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 10,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 110호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 110호",
+        "kind": "acquisition_date",
+        "subject": "개체 110호",
+        "field": "취득시기",
+        "value": "2025-02-10",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 10,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 110호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 110호",
+        "kind": "custody_location",
+        "subject": "개체 110호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 10,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 110호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 111호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 111호",
+        "field": "이력번호",
+        "value": "22●●●●●●62",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 11,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 111호",
+        "kind": "livestock_breed",
+        "subject": "개체 111호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 11,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 111호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 111호",
+        "kind": "livestock_sex",
+        "subject": "개체 111호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 11,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 111호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 111호",
+        "kind": "acquisition_date",
+        "subject": "개체 111호",
+        "field": "취득시기",
+        "value": "2025-01-08",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 11,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 111호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 111호",
+        "kind": "custody_location",
+        "subject": "개체 111호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 11,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 111호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 112호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 112호",
+        "field": "이력번호",
+        "value": "21●●●●●●93",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 12,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 112호",
+        "kind": "livestock_breed",
+        "subject": "개체 112호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 12,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 112호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 112호",
+        "kind": "livestock_sex",
+        "subject": "개체 112호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 12,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 112호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 112호",
+        "kind": "acquisition_date",
+        "subject": "개체 112호",
+        "field": "취득시기",
+        "value": "2025-01-08",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 12,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 112호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 112호",
+        "kind": "custody_location",
+        "subject": "개체 112호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 12,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 112호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 113호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 113호",
+        "field": "이력번호",
+        "value": "21●●●●●●89",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 13,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 113호",
+        "kind": "livestock_breed",
+        "subject": "개체 113호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 13,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 113호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 113호",
+        "kind": "livestock_sex",
+        "subject": "개체 113호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 13,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 113호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 113호",
+        "kind": "acquisition_date",
+        "subject": "개체 113호",
+        "field": "취득시기",
+        "value": "2024-12-27",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 13,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 113호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 113호",
+        "kind": "custody_location",
+        "subject": "개체 113호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 13,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 113호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 114호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 114호",
+        "field": "이력번호",
+        "value": "22●●●●●●58",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 14,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 114호",
+        "kind": "livestock_breed",
+        "subject": "개체 114호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 14,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 114호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 114호",
+        "kind": "livestock_sex",
+        "subject": "개체 114호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 14,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 114호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 114호",
+        "kind": "acquisition_date",
+        "subject": "개체 114호",
+        "field": "취득시기",
+        "value": "2025-02-20",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 14,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 114호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 114호",
+        "kind": "custody_location",
+        "subject": "개체 114호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 14,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 114호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 115호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 115호",
+        "field": "이력번호",
+        "value": "22●●●●●●56",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 15,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 115호",
+        "kind": "livestock_breed",
+        "subject": "개체 115호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 15,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 115호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 115호",
+        "kind": "livestock_sex",
+        "subject": "개체 115호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 15,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 115호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 115호",
+        "kind": "acquisition_date",
+        "subject": "개체 115호",
+        "field": "취득시기",
+        "value": "2025-01-13",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 15,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 115호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 115호",
+        "kind": "custody_location",
+        "subject": "개체 115호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 15,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 115호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 116호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 116호",
+        "field": "이력번호",
+        "value": "22●●●●●●88",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 16,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 116호",
+        "kind": "livestock_breed",
+        "subject": "개체 116호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 16,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 116호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 116호",
+        "kind": "livestock_sex",
+        "subject": "개체 116호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 16,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 116호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 116호",
+        "kind": "acquisition_date",
+        "subject": "개체 116호",
+        "field": "취득시기",
+        "value": "2025-01-21",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 16,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 116호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 116호",
+        "kind": "custody_location",
+        "subject": "개체 116호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 16,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 116호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 117호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 117호",
+        "field": "이력번호",
+        "value": "22●●●●●●56",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 17,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 117호",
+        "kind": "livestock_breed",
+        "subject": "개체 117호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 17,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 117호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 117호",
+        "kind": "livestock_sex",
+        "subject": "개체 117호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 17,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 117호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 117호",
+        "kind": "acquisition_date",
+        "subject": "개체 117호",
+        "field": "취득시기",
+        "value": "2025-02-10",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 17,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 117호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 117호",
+        "kind": "custody_location",
+        "subject": "개체 117호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 17,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 117호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 118호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 118호",
+        "field": "이력번호",
+        "value": "22●●●●●●67",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 18,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 118호",
+        "kind": "livestock_breed",
+        "subject": "개체 118호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 18,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 118호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 118호",
+        "kind": "livestock_sex",
+        "subject": "개체 118호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 18,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 118호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 118호",
+        "kind": "acquisition_date",
+        "subject": "개체 118호",
+        "field": "취득시기",
+        "value": "2025-01-13",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 18,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 118호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 118호",
+        "kind": "custody_location",
+        "subject": "개체 118호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 18,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 118호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 119호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 119호",
+        "field": "이력번호",
+        "value": "21●●●●●●46",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 19,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 119호",
+        "kind": "livestock_breed",
+        "subject": "개체 119호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 19,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 119호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 119호",
+        "kind": "livestock_sex",
+        "subject": "개체 119호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 19,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 119호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 119호",
+        "kind": "acquisition_date",
+        "subject": "개체 119호",
+        "field": "취득시기",
+        "value": "2025-01-13",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 19,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 119호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 119호",
+        "kind": "custody_location",
+        "subject": "개체 119호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 19,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 119호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 120호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 120호",
+        "field": "이력번호",
+        "value": "22●●●●●●39",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 20,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 120호",
+        "kind": "livestock_breed",
+        "subject": "개체 120호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 20,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 120호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 120호",
+        "kind": "livestock_sex",
+        "subject": "개체 120호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 20,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 120호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 120호",
+        "kind": "acquisition_date",
+        "subject": "개체 120호",
+        "field": "취득시기",
+        "value": "2025-02-19",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 20,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 120호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 120호",
+        "kind": "custody_location",
+        "subject": "개체 120호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 20,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 120호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 121호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 121호",
+        "field": "이력번호",
+        "value": "22●●●●●●60",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 21,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 121호",
+        "kind": "livestock_breed",
+        "subject": "개체 121호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 21,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 121호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 121호",
+        "kind": "livestock_sex",
+        "subject": "개체 121호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 21,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 121호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 121호",
+        "kind": "acquisition_date",
+        "subject": "개체 121호",
+        "field": "취득시기",
+        "value": "2025-02-19",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 21,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 121호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 121호",
+        "kind": "custody_location",
+        "subject": "개체 121호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 21,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 121호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 122호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 122호",
+        "field": "이력번호",
+        "value": "22●●●●●●68",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 22,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 122호",
+        "kind": "livestock_breed",
+        "subject": "개체 122호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 22,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 122호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 122호",
+        "kind": "livestock_sex",
+        "subject": "개체 122호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 22,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 122호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 122호",
+        "kind": "acquisition_date",
+        "subject": "개체 122호",
+        "field": "취득시기",
+        "value": "2025-02-14",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 22,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 122호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 122호",
+        "kind": "custody_location",
+        "subject": "개체 122호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 22,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 122호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 123호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 123호",
+        "field": "이력번호",
+        "value": "21●●●●●●39",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 23,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 123호",
+        "kind": "livestock_breed",
+        "subject": "개체 123호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 23,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 123호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 123호",
+        "kind": "livestock_sex",
+        "subject": "개체 123호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 23,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 123호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 123호",
+        "kind": "acquisition_date",
+        "subject": "개체 123호",
+        "field": "취득시기",
+        "value": "2024-12-24",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 23,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 123호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 123호",
+        "kind": "custody_location",
+        "subject": "개체 123호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 23,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 123호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 124호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 124호",
+        "field": "이력번호",
+        "value": "22●●●●●●37",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 24,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 124호",
+        "kind": "livestock_breed",
+        "subject": "개체 124호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 24,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 124호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 124호",
+        "kind": "livestock_sex",
+        "subject": "개체 124호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 24,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 124호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 124호",
+        "kind": "acquisition_date",
+        "subject": "개체 124호",
+        "field": "취득시기",
+        "value": "2024-12-24",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 24,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 124호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 124호",
+        "kind": "custody_location",
+        "subject": "개체 124호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 24,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 124호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 125호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 125호",
+        "field": "이력번호",
+        "value": "21●●●●●●62",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 25,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 125호",
+        "kind": "livestock_breed",
+        "subject": "개체 125호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 25,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 125호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 125호",
+        "kind": "livestock_sex",
+        "subject": "개체 125호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 25,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 125호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 125호",
+        "kind": "acquisition_date",
+        "subject": "개체 125호",
+        "field": "취득시기",
+        "value": "2025-01-24",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 25,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 125호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 125호",
+        "kind": "custody_location",
+        "subject": "개체 125호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 25,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 125호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 126호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 126호",
+        "field": "이력번호",
+        "value": "21●●●●●●91",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 26,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 126호",
+        "kind": "livestock_breed",
+        "subject": "개체 126호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 26,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 126호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 126호",
+        "kind": "livestock_sex",
+        "subject": "개체 126호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 26,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 126호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 126호",
+        "kind": "acquisition_date",
+        "subject": "개체 126호",
+        "field": "취득시기",
+        "value": "2025-01-21",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 26,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 126호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 126호",
+        "kind": "custody_location",
+        "subject": "개체 126호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 26,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 126호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 127호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 127호",
+        "field": "이력번호",
+        "value": "21●●●●●●81",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 27,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 127호",
+        "kind": "livestock_breed",
+        "subject": "개체 127호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 27,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 127호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 127호",
+        "kind": "livestock_sex",
+        "subject": "개체 127호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 27,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 127호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 127호",
+        "kind": "acquisition_date",
+        "subject": "개체 127호",
+        "field": "취득시기",
+        "value": "2025-01-21",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 27,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 127호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 127호",
+        "kind": "custody_location",
+        "subject": "개체 127호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 27,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 127호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 128호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 128호",
+        "field": "이력번호",
+        "value": "22●●●●●●78",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 28,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 128호",
+        "kind": "livestock_breed",
+        "subject": "개체 128호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 28,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 128호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 128호",
+        "kind": "livestock_sex",
+        "subject": "개체 128호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 28,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 128호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 128호",
+        "kind": "acquisition_date",
+        "subject": "개체 128호",
+        "field": "취득시기",
+        "value": "2025-02-04",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 28,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 128호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 128호",
+        "kind": "custody_location",
+        "subject": "개체 128호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 28,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 128호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 129호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 129호",
+        "field": "이력번호",
+        "value": "21●●●●●●23",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 29,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 129호",
+        "kind": "livestock_breed",
+        "subject": "개체 129호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 29,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 129호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 129호",
+        "kind": "livestock_sex",
+        "subject": "개체 129호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 29,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 129호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 129호",
+        "kind": "acquisition_date",
+        "subject": "개체 129호",
+        "field": "취득시기",
+        "value": "2025-01-14",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 29,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 129호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 129호",
+        "kind": "custody_location",
+        "subject": "개체 129호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 29,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 129호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 130호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 130호",
+        "field": "이력번호",
+        "value": "22●●●●●●57",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 30,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 130호",
+        "kind": "livestock_breed",
+        "subject": "개체 130호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 30,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 130호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 130호",
+        "kind": "livestock_sex",
+        "subject": "개체 130호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 30,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 130호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 130호",
+        "kind": "acquisition_date",
+        "subject": "개체 130호",
+        "field": "취득시기",
+        "value": "2025-01-08",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 30,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 130호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 130호",
+        "kind": "custody_location",
+        "subject": "개체 130호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 30,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 130호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 131호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 131호",
+        "field": "이력번호",
+        "value": "21●●●●●●92",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 31,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 131호",
+        "kind": "livestock_breed",
+        "subject": "개체 131호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 31,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 131호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 131호",
+        "kind": "livestock_sex",
+        "subject": "개체 131호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 31,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 131호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 131호",
+        "kind": "acquisition_date",
+        "subject": "개체 131호",
+        "field": "취득시기",
+        "value": "2024-12-27",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 31,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 131호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 131호",
+        "kind": "custody_location",
+        "subject": "개체 131호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 31,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 131호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 132호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 132호",
+        "field": "이력번호",
+        "value": "21●●●●●●76",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 32,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 132호",
+        "kind": "livestock_breed",
+        "subject": "개체 132호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 32,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 132호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 132호",
+        "kind": "livestock_sex",
+        "subject": "개체 132호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 32,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 132호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 132호",
+        "kind": "acquisition_date",
+        "subject": "개체 132호",
+        "field": "취득시기",
+        "value": "2024-12-27",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 32,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 132호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 132호",
+        "kind": "custody_location",
+        "subject": "개체 132호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 32,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 132호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 133호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 133호",
+        "field": "이력번호",
+        "value": "22●●●●●●56",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 33,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 133호",
+        "kind": "livestock_breed",
+        "subject": "개체 133호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 33,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 133호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 133호",
+        "kind": "livestock_sex",
+        "subject": "개체 133호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 33,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 133호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 133호",
+        "kind": "acquisition_date",
+        "subject": "개체 133호",
+        "field": "취득시기",
+        "value": "2025-01-08",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 33,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 133호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 133호",
+        "kind": "custody_location",
+        "subject": "개체 133호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 33,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 133호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 134호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 134호",
+        "field": "이력번호",
+        "value": "22●●●●●●46",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 34,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 134호",
+        "kind": "livestock_breed",
+        "subject": "개체 134호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 34,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 134호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 134호",
+        "kind": "livestock_sex",
+        "subject": "개체 134호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 34,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 134호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 134호",
+        "kind": "acquisition_date",
+        "subject": "개체 134호",
+        "field": "취득시기",
+        "value": "2025-01-21",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 34,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 134호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 134호",
+        "kind": "custody_location",
+        "subject": "개체 134호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 34,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 134호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 135호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 135호",
+        "field": "이력번호",
+        "value": "22●●●●●●01",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 35,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 135호",
+        "kind": "livestock_breed",
+        "subject": "개체 135호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 35,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 135호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 135호",
+        "kind": "livestock_sex",
+        "subject": "개체 135호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 35,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 135호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 135호",
+        "kind": "acquisition_date",
+        "subject": "개체 135호",
+        "field": "취득시기",
+        "value": "2025-02-04",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 35,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 135호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 135호",
+        "kind": "custody_location",
+        "subject": "개체 135호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 35,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 135호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 136호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 136호",
+        "field": "이력번호",
+        "value": "22●●●●●●62",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 36,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 136호",
+        "kind": "livestock_breed",
+        "subject": "개체 136호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 36,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 136호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 136호",
+        "kind": "livestock_sex",
+        "subject": "개체 136호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 36,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 136호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 136호",
+        "kind": "acquisition_date",
+        "subject": "개체 136호",
+        "field": "취득시기",
+        "value": "2025-02-04",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 36,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 136호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 136호",
+        "kind": "custody_location",
+        "subject": "개체 136호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 36,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 136호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 137호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 137호",
+        "field": "이력번호",
+        "value": "22●●●●●●28",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 37,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 137호",
+        "kind": "livestock_breed",
+        "subject": "개체 137호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 37,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 137호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 137호",
+        "kind": "livestock_sex",
+        "subject": "개체 137호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 37,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 137호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 137호",
+        "kind": "acquisition_date",
+        "subject": "개체 137호",
+        "field": "취득시기",
+        "value": "2025-02-04",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 37,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 137호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 137호",
+        "kind": "custody_location",
+        "subject": "개체 137호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 37,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 137호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_trace_no:개체 138호",
+        "kind": "livestock_trace_no",
+        "subject": "개체 138호",
+        "field": "이력번호",
+        "value": "22●●●●●●24",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 38,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "이력번호는 9자리 숫자여야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "원문 값이 스키마를 통과하지 못해 대조 불가로 남깁니다: 이력번호는 9자리 숫자여야 합니다"
+    },
+    {
+      "claim": {
+        "id": "livestock_breed:개체 138호",
+        "kind": "livestock_breed",
+        "subject": "개체 138호",
+        "field": "품종",
+        "value": "한우",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 38,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 138호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "livestock_sex:개체 138호",
+        "kind": "livestock_sex",
+        "subject": "개체 138호",
+        "field": "성별",
+        "value": "수",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 38,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "개체 138호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_date:개체 138호",
+        "kind": "acquisition_date",
+        "subject": "개체 138호",
+        "field": "취득시기",
+        "value": "2025-01-08",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 38,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 138호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "custody_location:개체 138호",
+        "kind": "custody_location",
+        "subject": "개체 138호",
+        "field": "보관장소",
+        "value": "전북 ○○군",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 38,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "개체 138호의 이력번호를 읽을 수 없어 공적 원장과 대조하지 못했습니다."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 101호",
+        "kind": "acquisition_price",
+        "subject": "개체 101호",
+        "field": "취득원가",
+        "value": "3380000",
+        "numericValue": 3380000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 1,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2025-01-21)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 102호",
+        "kind": "acquisition_price",
+        "subject": "개체 102호",
+        "field": "취득원가",
+        "value": "3830000",
+        "numericValue": 3830000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 2,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2025-01-14)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 103호",
+        "kind": "acquisition_price",
+        "subject": "개체 103호",
+        "field": "취득원가",
+        "value": "4010000",
+        "numericValue": 4010000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 3,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2025-01-08)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 104호",
+        "kind": "acquisition_price",
+        "subject": "개체 104호",
+        "field": "취득원가",
+        "value": "3430000",
+        "numericValue": 3430000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 4,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2025-01-13)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 105호",
+        "kind": "acquisition_price",
+        "subject": "개체 105호",
+        "field": "취득원가",
+        "value": "3460000",
+        "numericValue": 3460000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 5,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2024-12-27)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 106호",
+        "kind": "acquisition_price",
+        "subject": "개체 106호",
+        "field": "취득원가",
+        "value": "3680000",
+        "numericValue": 3680000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 6,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2025-01-21)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 107호",
+        "kind": "acquisition_price",
+        "subject": "개체 107호",
+        "field": "취득원가",
+        "value": "3670000",
+        "numericValue": 3670000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 7,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2025-02-03)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 108호",
+        "kind": "acquisition_price",
+        "subject": "개체 108호",
+        "field": "취득원가",
+        "value": "3370000",
+        "numericValue": 3370000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 8,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2025-01-21)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 109호",
+        "kind": "acquisition_price",
+        "subject": "개체 109호",
+        "field": "취득원가",
+        "value": "3480000",
+        "numericValue": 3480000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 9,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2025-02-04)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 110호",
+        "kind": "acquisition_price",
+        "subject": "개체 110호",
+        "field": "취득원가",
+        "value": "3310000",
+        "numericValue": 3310000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 10,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2025-02-10)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 111호",
+        "kind": "acquisition_price",
+        "subject": "개체 111호",
+        "field": "취득원가",
+        "value": "3690000",
+        "numericValue": 3690000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 11,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2025-01-08)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 112호",
+        "kind": "acquisition_price",
+        "subject": "개체 112호",
+        "field": "취득원가",
+        "value": "3820000",
+        "numericValue": 3820000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 12,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2025-01-08)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 113호",
+        "kind": "acquisition_price",
+        "subject": "개체 113호",
+        "field": "취득원가",
+        "value": "3740000",
+        "numericValue": 3740000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 13,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2024-12-27)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 114호",
+        "kind": "acquisition_price",
+        "subject": "개체 114호",
+        "field": "취득원가",
+        "value": "2990000",
+        "numericValue": 2990000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 14,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2025-02-20)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 115호",
+        "kind": "acquisition_price",
+        "subject": "개체 115호",
+        "field": "취득원가",
+        "value": "3670000",
+        "numericValue": 3670000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 15,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2025-01-13)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 116호",
+        "kind": "acquisition_price",
+        "subject": "개체 116호",
+        "field": "취득원가",
+        "value": "3110000",
+        "numericValue": 3110000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 16,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2025-01-21)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 117호",
+        "kind": "acquisition_price",
+        "subject": "개체 117호",
+        "field": "취득원가",
+        "value": "3470000",
+        "numericValue": 3470000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 17,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2025-02-10)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 118호",
+        "kind": "acquisition_price",
+        "subject": "개체 118호",
+        "field": "취득원가",
+        "value": "3720000",
+        "numericValue": 3720000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 18,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2025-01-13)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 119호",
+        "kind": "acquisition_price",
+        "subject": "개체 119호",
+        "field": "취득원가",
+        "value": "3630000",
+        "numericValue": 3630000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 19,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2025-01-13)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 120호",
+        "kind": "acquisition_price",
+        "subject": "개체 120호",
+        "field": "취득원가",
+        "value": "3680000",
+        "numericValue": 3680000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 20,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2025-02-19)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 121호",
+        "kind": "acquisition_price",
+        "subject": "개체 121호",
+        "field": "취득원가",
+        "value": "3490000",
+        "numericValue": 3490000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 21,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2025-02-19)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 122호",
+        "kind": "acquisition_price",
+        "subject": "개체 122호",
+        "field": "취득원가",
+        "value": "3840000",
+        "numericValue": 3840000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 22,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2025-02-14)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 123호",
+        "kind": "acquisition_price",
+        "subject": "개체 123호",
+        "field": "취득원가",
+        "value": "3680000",
+        "numericValue": 3680000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 23,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2024-12-24)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 124호",
+        "kind": "acquisition_price",
+        "subject": "개체 124호",
+        "field": "취득원가",
+        "value": "3240000",
+        "numericValue": 3240000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 24,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2024-12-24)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 125호",
+        "kind": "acquisition_price",
+        "subject": "개체 125호",
+        "field": "취득원가",
+        "value": "3580000",
+        "numericValue": 3580000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 25,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2025-01-24)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 126호",
+        "kind": "acquisition_price",
+        "subject": "개체 126호",
+        "field": "취득원가",
+        "value": "2880000",
+        "numericValue": 2880000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 26,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2025-01-21)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 127호",
+        "kind": "acquisition_price",
+        "subject": "개체 127호",
+        "field": "취득원가",
+        "value": "3820000",
+        "numericValue": 3820000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 27,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2025-01-21)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 128호",
+        "kind": "acquisition_price",
+        "subject": "개체 128호",
+        "field": "취득원가",
+        "value": "3610000",
+        "numericValue": 3610000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 28,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2025-02-04)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 129호",
+        "kind": "acquisition_price",
+        "subject": "개체 129호",
+        "field": "취득원가",
+        "value": "3480000",
+        "numericValue": 3480000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 29,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2025-01-14)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 130호",
+        "kind": "acquisition_price",
+        "subject": "개체 130호",
+        "field": "취득원가",
+        "value": "3830000",
+        "numericValue": 3830000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 30,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2025-01-08)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 131호",
+        "kind": "acquisition_price",
+        "subject": "개체 131호",
+        "field": "취득원가",
+        "value": "3920000",
+        "numericValue": 3920000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 31,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2024-12-27)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 132호",
+        "kind": "acquisition_price",
+        "subject": "개체 132호",
+        "field": "취득원가",
+        "value": "3200000",
+        "numericValue": 3200000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 32,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2024-12-27)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 133호",
+        "kind": "acquisition_price",
+        "subject": "개체 133호",
+        "field": "취득원가",
+        "value": "3130000",
+        "numericValue": 3130000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 33,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2025-01-08)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 134호",
+        "kind": "acquisition_price",
+        "subject": "개체 134호",
+        "field": "취득원가",
+        "value": "3580000",
+        "numericValue": 3580000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 34,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2025-01-21)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 135호",
+        "kind": "acquisition_price",
+        "subject": "개체 135호",
+        "field": "취득원가",
+        "value": "3450000",
+        "numericValue": 3450000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 35,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2025-02-04)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 136호",
+        "kind": "acquisition_price",
+        "subject": "개체 136호",
+        "field": "취득원가",
+        "value": "3130000",
+        "numericValue": 3130000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 36,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2025-02-04)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 137호",
+        "kind": "acquisition_price",
+        "subject": "개체 137호",
+        "field": "취득원가",
+        "value": "4040000",
+        "numericValue": 4040000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 37,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2025-02-04)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "acquisition_price:개체 138호",
+        "kind": "acquisition_price",
+        "subject": "개체 138호",
+        "field": "취득원가",
+        "value": "3380000",
+        "numericValue": 3380000,
+        "unit": "원",
+        "document": {
+          "offerId": "livestock-5",
+          "rcpNo": "20250617000216",
+          "submittedOn": "2025-06-17"
+        },
+        "location": {
+          "section": "8. 기초자산 취득에 관한 사항",
+          "table": "기초자산 개체 명세표",
+          "row": 38,
+          "sectionPath": [
+            "제1부 모집 또는 매출에 관한 사항",
+            "II. 증권의 주요 권리내용",
+            "8. 기초자산 취득에 관한 사항",
+            "가. 기초자산 요약정보"
+          ],
+          "charOffset": 900201
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "both"
+      },
+      "reason": "취득시기(2025-01-08)가 공적 원장으로 확인되지 않아 기준 월을 확정할 수 없습니다(대조 불가)."
+    }
+  ],
+  "pricePlacements": [],
+  "realEstatePlacements": [],
+  "notes": [
+    "사후 대조(청약이 종료된 공모)입니다 — 원장 조회는 대조 실행 시각 기준이라, 청약 당시가 아니라 지금의 개체 상태와 비교한 결과입니다.",
+    "추출 모드: cross-check",
+    "규칙 기반 추출 claim 228건 · LLM 추출 claim 190건",
+    "규칙·LLM 교차검증(추출기 ai-sdk:openai:gpt-4.1-mini) — 양쪽 일치 152건 · 규칙 단독 76건 · LLM 단독 0건 · 값 상충 강등 0건",
+    "개체 명세표 후보가 4건이라 첫 번째 표만 사용했습니다.",
+    "대조 불가 강등: livestock_trace_no:개체 101호 — 이력번호는 9자리 숫자여야 합니다",
+    "대조 불가 강등: livestock_trace_no:개체 102호 — 이력번호는 9자리 숫자여야 합니다",
+    "대조 불가 강등: livestock_trace_no:개체 103호 — 이력번호는 9자리 숫자여야 합니다",
+    "대조 불가 강등: livestock_trace_no:개체 104호 — 이력번호는 9자리 숫자여야 합니다",
+    "대조 불가 강등: livestock_trace_no:개체 105호 — 이력번호는 9자리 숫자여야 합니다",
+    "대조 불가 강등: livestock_trace_no:개체 106호 — 이력번호는 9자리 숫자여야 합니다",
+    "대조 불가 강등: livestock_trace_no:개체 107호 — 이력번호는 9자리 숫자여야 합니다",
+    "대조 불가 강등: livestock_trace_no:개체 108호 — 이력번호는 9자리 숫자여야 합니다",
+    "대조 불가 강등: livestock_trace_no:개체 109호 — 이력번호는 9자리 숫자여야 합니다",
+    "대조 불가 강등: livestock_trace_no:개체 110호 — 이력번호는 9자리 숫자여야 합니다",
+    "대조 불가 강등: livestock_trace_no:개체 111호 — 이력번호는 9자리 숫자여야 합니다",
+    "대조 불가 강등: livestock_trace_no:개체 112호 — 이력번호는 9자리 숫자여야 합니다",
+    "대조 불가 강등: livestock_trace_no:개체 113호 — 이력번호는 9자리 숫자여야 합니다",
+    "대조 불가 강등: livestock_trace_no:개체 114호 — 이력번호는 9자리 숫자여야 합니다",
+    "대조 불가 강등: livestock_trace_no:개체 115호 — 이력번호는 9자리 숫자여야 합니다",
+    "대조 불가 강등: livestock_trace_no:개체 116호 — 이력번호는 9자리 숫자여야 합니다",
+    "대조 불가 강등: livestock_trace_no:개체 117호 — 이력번호는 9자리 숫자여야 합니다",
+    "대조 불가 강등: livestock_trace_no:개체 118호 — 이력번호는 9자리 숫자여야 합니다",
+    "대조 불가 강등: livestock_trace_no:개체 119호 — 이력번호는 9자리 숫자여야 합니다",
+    "대조 불가 강등: livestock_trace_no:개체 120호 — 이력번호는 9자리 숫자여야 합니다",
+    "대조 불가 강등: livestock_trace_no:개체 121호 — 이력번호는 9자리 숫자여야 합니다",
+    "대조 불가 강등: livestock_trace_no:개체 122호 — 이력번호는 9자리 숫자여야 합니다",
+    "대조 불가 강등: livestock_trace_no:개체 123호 — 이력번호는 9자리 숫자여야 합니다",
+    "대조 불가 강등: livestock_trace_no:개체 124호 — 이력번호는 9자리 숫자여야 합니다",
+    "대조 불가 강등: livestock_trace_no:개체 125호 — 이력번호는 9자리 숫자여야 합니다",
+    "대조 불가 강등: livestock_trace_no:개체 126호 — 이력번호는 9자리 숫자여야 합니다",
+    "대조 불가 강등: livestock_trace_no:개체 127호 — 이력번호는 9자리 숫자여야 합니다",
+    "대조 불가 강등: livestock_trace_no:개체 128호 — 이력번호는 9자리 숫자여야 합니다",
+    "대조 불가 강등: livestock_trace_no:개체 129호 — 이력번호는 9자리 숫자여야 합니다",
+    "대조 불가 강등: livestock_trace_no:개체 130호 — 이력번호는 9자리 숫자여야 합니다",
+    "대조 불가 강등: livestock_trace_no:개체 131호 — 이력번호는 9자리 숫자여야 합니다",
+    "대조 불가 강등: livestock_trace_no:개체 132호 — 이력번호는 9자리 숫자여야 합니다",
+    "대조 불가 강등: livestock_trace_no:개체 133호 — 이력번호는 9자리 숫자여야 합니다",
+    "대조 불가 강등: livestock_trace_no:개체 134호 — 이력번호는 9자리 숫자여야 합니다",
+    "대조 불가 강등: livestock_trace_no:개체 135호 — 이력번호는 9자리 숫자여야 합니다",
+    "대조 불가 강등: livestock_trace_no:개체 136호 — 이력번호는 9자리 숫자여야 합니다",
+    "대조 불가 강등: livestock_trace_no:개체 137호 — 이력번호는 9자리 숫자여야 합니다",
+    "대조 불가 강등: livestock_trace_no:개체 138호 — 이력번호는 9자리 숫자여야 합니다"
+  ]
+}
