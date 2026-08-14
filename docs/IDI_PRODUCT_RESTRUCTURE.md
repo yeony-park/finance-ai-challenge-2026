@@ -1,3 +1,6 @@
+STATUS: SUPERSEDED · REFERENCE ONLY
+CURRENT SPEC: docs/ART_INVESTMENT_PRODUCT_SPEC.md
+
 # DAKER 인뎁스 인터뷰 기반 제품 재구조화
 
 - 문서 성격 : 제품 방향과 정보 구조를 합의한 기획 문서. 구현 완료 문서가 아님
