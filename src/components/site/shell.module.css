@@ -1,0 +1,236 @@
+/*
+ * 앱 셸 — 헤더/푸터. 화이트 지면 위에 얇은 선 하나로만 층을 나눈다.
+ * 색·간격·형태는 전부 src/styles/tokens.css의 --ds-* 토큰에서 온다.
+ */
+
+/* ------------------------------------------------------------------ 공통 */
+.inner {
+  width: 100%;
+  max-width: var(--ds-maxw);
+  margin: 0 auto;
+  padding-inline: var(--ds-gutter);
+}
+
+/* 키보드 사용자가 헤더 내비를 건너뛸 수 있게 — 평소엔 화면 밖 */
+.skipLink {
+  position: absolute;
+  left: var(--ds-space-4);
+  top: var(--ds-space-2);
+  z-index: 50;
+  transform: translateY(-200%);
+  padding: var(--ds-space-2) var(--ds-space-4);
+  border-radius: var(--ds-radius-pill);
+  background: var(--ds-ink);
+  color: var(--ds-ink-invert);
+  font-size: var(--ds-text-sm);
+  font-weight: var(--ds-weight-medium);
+  transition: transform var(--ds-duration-base) var(--ds-ease);
+}
+.skipLink:focus-visible {
+  transform: translateY(0);
+}
+
+/* 본문 랜드마크 — 푸터를 항상 지면 아래로 밀어 두기 위해 남는 높이를 먹는다 */
+.main {
+  flex: 1 0 auto;
+  width: 100%;
+}
+
+/* ------------------------------------------------------------------ 헤더 */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: color-mix(in srgb, var(--ds-bg) 88%, transparent);
+  backdrop-filter: saturate(1.4) blur(10px);
+  border-bottom: 1px solid var(--ds-line);
+}
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-4);
+  min-height: var(--ds-header-h);
+}
+
+/* 워드마크 — 서비스명이 아직 가칭이라 로고 이미지 없이 텍스트로만 세운다 */
+.wordmark {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--ds-space-3);
+  text-decoration: none;
+  color: inherit;
+  border-radius: var(--ds-radius-sm);
+}
+/* 옐로 밑줄은 배경 그라디언트로 깔아 텍스트 뒤에 둔다(z-index 싸움 없음).
+   호버하면 밑줄이 워드마크 전체로 자란다 — 옐로는 브랜드 액센트로만 쓰고
+   판정 의미(일치/원장 미확인/대조 불가)와는 절대 섞지 않는다. */
+.wordmarkName {
+  font-size: var(--ds-text-lg);
+  font-weight: var(--ds-weight-black);
+  letter-spacing: var(--ds-tracking-tight);
+  white-space: nowrap;
+  background-image: linear-gradient(var(--ds-accent), var(--ds-accent));
+  background-repeat: no-repeat;
+  background-position: 0 92%;
+  background-size: 42% 0.32em;
+  transition: background-size var(--ds-duration-slow) var(--ds-ease);
+}
+.wordmark:hover .wordmarkName,
+.wordmark:focus-visible .wordmarkName {
+  background-size: 100% 0.32em;
+}
+.wordmarkRole {
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  color: var(--ds-ink-faint);
+  letter-spacing: var(--ds-tracking-normal);
+  white-space: nowrap;
+}
+/* 320px에서는 역할 문구를 접는다 — 워드마크가 내비를 밀어내면 안 된다 */
+@media (max-width: 460px) {
+  .wordmarkRole {
+    display: none;
+  }
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.25rem, 1.6vw, 0.75rem);
+}
+.navLink {
+  position: relative;
+  padding: var(--ds-space-2) var(--ds-space-3);
+  border-radius: var(--ds-radius-pill);
+  color: var(--ds-ink-muted);
+  font-size: var(--ds-text-sm);
+  font-weight: var(--ds-weight-medium);
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    color var(--ds-duration-base) var(--ds-ease),
+    background-color var(--ds-duration-base) var(--ds-ease);
+}
+.navLink:hover {
+  color: var(--ds-ink);
+  background: var(--ds-bg-sunken);
+}
+.navLink[aria-current="page"] {
+  color: var(--ds-ink);
+  font-weight: var(--ds-weight-bold);
+}
+.navLink[aria-current="page"]::after {
+  content: "";
+  position: absolute;
+  left: var(--ds-space-3);
+  right: var(--ds-space-3);
+  bottom: 2px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--ds-ink);
+}
+
+/* ------------------------------------------------------------------ 푸터 */
+.footer {
+  margin-top: auto;
+  border-top: 1px solid var(--ds-line);
+  background: var(--ds-bg-muted);
+  padding-block: var(--ds-section-y-tight) var(--ds-space-7);
+}
+
+.footerGrid {
+  display: grid;
+  gap: var(--ds-space-7);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 768px) {
+  .footerGrid {
+    grid-template-columns: 1.1fr 1fr 1fr;
+    gap: var(--ds-space-6);
+  }
+}
+
+.footerBrand {
+  font-size: var(--ds-text-md);
+  font-weight: var(--ds-weight-black);
+  letter-spacing: var(--ds-tracking-tight);
+}
+.footerTagline {
+  margin-top: var(--ds-space-2);
+  max-width: 30ch;
+  color: var(--ds-ink-muted);
+  font-size: var(--ds-text-sm);
+  line-height: var(--ds-leading-relaxed);
+}
+
+.footerHeading {
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  letter-spacing: var(--ds-tracking-wide);
+  text-transform: uppercase;
+  color: var(--ds-ink-faint);
+  margin-bottom: var(--ds-space-3);
+}
+
+.footerList {
+  display: grid;
+  gap: var(--ds-space-2);
+  font-size: var(--ds-text-sm);
+  color: var(--ds-ink-muted);
+  line-height: var(--ds-leading-snug);
+}
+.footerList li {
+  display: flex;
+  gap: var(--ds-space-2);
+}
+.footerListMark {
+  color: var(--ds-ink-faint);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  line-height: 1.7;
+}
+.footerListNote {
+  display: block;
+  color: var(--ds-ink-faint);
+  font-size: var(--ds-text-xs);
+}
+
+.footerLink {
+  color: var(--ds-ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--ds-line-strong);
+  padding-bottom: 1px;
+  transition: border-color var(--ds-duration-base) var(--ds-ease);
+}
+.footerLink:hover {
+  border-color: var(--ds-ink);
+}
+
+/* 고지 — 서비스의 성격을 못 박는 문단이라 시각적으로도 분리한다 */
+.disclaimer {
+  margin-top: var(--ds-space-7);
+  padding-top: var(--ds-space-5);
+  border-top: 1px solid var(--ds-line);
+  display: grid;
+  gap: var(--ds-space-3);
+  color: var(--ds-ink-muted);
+  font-size: var(--ds-text-xs);
+  line-height: var(--ds-leading-relaxed);
+  max-width: 92ch;
+}
+.disclaimerStrong {
+  color: var(--ds-ink);
+  font-weight: var(--ds-weight-bold);
+}
+
+.colophon {
+  margin-top: var(--ds-space-5);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-2) var(--ds-space-4);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  color: var(--ds-ink-faint);
+}
