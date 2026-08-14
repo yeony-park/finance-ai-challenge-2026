@@ -90,9 +90,13 @@ describe("레지스트리 — 목록의 원천은 한 곳뿐이다", () => {
     expect(PUBLISHED_OFFER_IDS).toEqual(OFFERS.map((offer) => offer.id));
   });
 
-  test("커버리지 분자는 분모를 넘지 않는다", () => {
+  test("커버리지 분자(2026 코호트)는 분모를 넘지 않는다", () => {
+    const cohort2026 = OFFERS.filter(
+      (offer) => new Date(offer.subscription.closesAt).getFullYear() === 2026,
+    );
     expect(OFFERS.length).toBeGreaterThan(0);
-    expect(OFFERS.length).toBeLessThanOrEqual(TOTAL_2026_OFFER_COUNT);
+    expect(cohort2026.length).toBeGreaterThan(0);
+    expect(cohort2026.length).toBeLessThanOrEqual(TOTAL_2026_OFFER_COUNT);
   });
 });
 

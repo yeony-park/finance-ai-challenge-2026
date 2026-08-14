@@ -18,6 +18,72 @@ export interface OfferEntry {
 
 export const OFFERS: readonly OfferEntry[] = [
   {
+    id: "livestock-1",
+    title: "가축 1호",
+    assetLabel: "가축",
+    assetKind: "livestock",
+    subscription: {
+      opensAt: "2024-06-20T00:00:00+09:00",
+      closesAt: "2024-07-02T23:59:00+09:00",
+      precision: "day",
+    },
+  },
+  {
+    id: "livestock-2",
+    title: "가축 2호",
+    assetLabel: "가축",
+    assetKind: "livestock",
+    subscription: {
+      opensAt: "2024-09-13T00:00:00+09:00",
+      closesAt: "2024-10-30T23:59:00+09:00",
+      precision: "day",
+    },
+  },
+  {
+    id: "livestock-3",
+    title: "가축 3호",
+    assetLabel: "가축",
+    assetKind: "livestock",
+    subscription: {
+      opensAt: "2024-12-24T00:00:00+09:00",
+      closesAt: "2025-01-06T23:59:00+09:00",
+      precision: "day",
+    },
+  },
+  {
+    id: "livestock-4",
+    title: "가축 4호",
+    assetLabel: "가축",
+    assetKind: "livestock",
+    subscription: {
+      opensAt: "2025-04-22T00:00:00+09:00",
+      closesAt: "2025-05-02T23:59:00+09:00",
+      precision: "day",
+    },
+  },
+  {
+    id: "livestock-5",
+    title: "가축 5호",
+    assetLabel: "가축",
+    assetKind: "livestock",
+    subscription: {
+      opensAt: "2025-06-19T00:00:00+09:00",
+      closesAt: "2025-07-02T23:59:00+09:00",
+      precision: "day",
+    },
+  },
+  {
+    id: "livestock-6",
+    title: "가축 6호",
+    assetLabel: "가축",
+    assetKind: "livestock",
+    subscription: {
+      opensAt: "2025-11-22T00:00:00+09:00",
+      closesAt: "2025-12-08T23:59:00+09:00",
+      precision: "day",
+    },
+  },
+  {
     id: "livestock-7",
     title: "가축 7호",
     assetLabel: "가축",

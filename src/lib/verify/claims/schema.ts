@@ -1,9 +1,20 @@
 import { z } from "zod";
 
+const CATTLE_TRACE_PREFIX = "002";
+
 export const traceNo9Schema = z
   .string()
   .trim()
-  .regex(/^\d{9}$/, "이력번호는 9자리 숫자여야 합니다");
+  .regex(/^\d{9,12}$/, "이력번호는 9자리 숫자여야 합니다")
+  .refine(
+    (raw) =>
+      raw.length === 9 ||
+      raw.padStart(12, "0").startsWith(CATTLE_TRACE_PREFIX),
+    "이력번호를 12자리로 복원해도 소 이력번호 체계(002)와 맞지 않습니다",
+  )
+  .transform((raw) =>
+    raw.length === 9 ? raw : raw.padStart(12, "0").slice(3),
+  );
 
 export const breedSchema = z
   .string()
@@ -20,7 +31,8 @@ export const sexSchema = z
 export const custodyLocationSchema = z
   .string()
   .trim()
-  .min(2, "보관장소가 비어 있습니다");
+  .transform((raw) => raw.replace(/\s+/g, " "))
+  .refine((value) => value.length >= 2, "보관장소가 비어 있습니다");
 
 const isoDateSchema = (label: string) =>
   z

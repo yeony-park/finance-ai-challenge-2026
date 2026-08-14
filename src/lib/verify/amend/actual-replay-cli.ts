@@ -206,12 +206,27 @@ const main = async (): Promise<void> => {
   }
 
   const lineage = await fetchAmendmentLineage(baseRcpNo, apiKey);
-  const last = lineage.amendments.at(-1);
-  if (!last) {
+  if (lineage.amendments.length === 0) {
     throw new Error(
       `공모 ${options.offerId}에는 접수된 정정신고서가 없습니다 — 실제 정정 리플레이를 만들 수 없습니다`,
     );
   }
+
+  const withRaw = await Promise.all(
+    lineage.amendments.map(async (amendment) => ({
+      amendment,
+      hasRaw: (await loadRawXml(amendment.rcpNo, options.dataDir)) !== undefined,
+    })),
+  );
+  const last = withRaw.filter((entry) => entry.hasRaw).at(-1)?.amendment;
+  if (!last) {
+    throw new Error(
+      `공모 ${options.offerId}의 정정신고서 원문이 하나도 수집되지 않았습니다 — npm run verify:collect 후 다시 실행하세요`,
+    );
+  }
+  const skippedTail = lineage.amendments.slice(
+    lineage.amendments.findIndex((amendment) => amendment.rcpNo === last.rcpNo) + 1,
+  );
 
   console.log(`■ ${options.offerId} 정정 계보 (${lineage.sourceName})`);
   console.log(`  원 신고서 ${lineage.baseRcpNo} · ${lineage.baseReceivedOn} 접수`);
@@ -272,6 +287,11 @@ const main = async (): Promise<void> => {
     ...(skipped > 0
       ? [
           `정정신고서 ${lineage.amendments.length}건 가운데 최종본만 다시 대조했습니다 — 나머지 ${skipped}건은 접수 사실과 정정 항목만 읽었습니다.`,
+        ]
+      : []),
+    ...(skippedTail.length > 0
+      ? [
+          `최종 정정본(${skippedTail.map((amendment) => amendment.reportName).join(", ")})은 DART가 원문 파일을 제공하지 않아, 원문이 있는 직전 정정본을 다시 대조했습니다.`,
         ]
       : []),
     ...(await firstSubmissionNote(lineage, options.dataDir)),

@@ -28,7 +28,8 @@ export interface CrossCheckResult {
   readonly summary: CrossCheckSummary;
 }
 
-const comparable = (value: string): string => value.replace(/\s+/g, " ").trim();
+const comparable = (value: string): string =>
+  value.replace(/[/·]/g, " ").replace(/\s+/g, " ").trim();
 
 const conflictReason = (rules: string, llm: string): string =>
   `규칙 추출값("${rules}")과 LLM 추출값("${llm}")이 달라 확인 불가로 강등했습니다.`;

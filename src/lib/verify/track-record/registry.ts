@@ -1,4 +1,10 @@
 const ISSUER_KEY_BY_OFFER: Readonly<Record<string, string>> = {
+  "livestock-1": "issuer-a",
+  "livestock-2": "issuer-a",
+  "livestock-3": "issuer-a",
+  "livestock-4": "issuer-a",
+  "livestock-5": "issuer-a",
+  "livestock-6": "issuer-a",
   "livestock-7": "issuer-a",
   "livestock-8": "issuer-a",
   "livestock-9": "issuer-a",
