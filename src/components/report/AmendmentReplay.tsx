@@ -1,10 +1,38 @@
-import type { AmendmentReplayView } from "@/lib/verify/amend/replay-view";
+import type {
+  AmendmentReplayView,
+  DiffTextSegment,
+} from "@/lib/verify/amend/replay-view";
 
 import { IconAlert } from "./icons";
 import s from "./report.module.css";
 
 interface AmendmentReplayProps {
   readonly replay: AmendmentReplayView;
+}
+
+function DiffText({
+  segments,
+  fallback,
+  markClass,
+}: {
+  readonly segments: readonly DiffTextSegment[];
+  readonly fallback: string;
+  readonly markClass: string;
+}) {
+  if (segments.length === 0) return <>{fallback}</>;
+  return (
+    <>
+      {segments.map((segment, index) =>
+        segment.isChanged ? (
+          <mark key={index} className={markClass}>
+            {segment.text}
+          </mark>
+        ) : (
+          <span key={index}>{segment.text}</span>
+        ),
+      )}
+    </>
+  );
 }
 
 export function AmendmentReplay({ replay }: AmendmentReplayProps) {
@@ -44,7 +72,11 @@ export function AmendmentReplay({ replay }: AmendmentReplayProps) {
                             <div className={s.rowDiffCol}>
                               <span className={s.rowDiffTag}>정정 전</span>
                               <p className={s.rowDiffText}>
-                                {row.diff.before.length > 0 ? row.diff.before : "—"}
+                                <DiffText
+                                  segments={row.diff.beforeSegments}
+                                  fallback="—"
+                                  markClass={s.rowDiffMarkBefore}
+                                />
                               </p>
                             </div>
                             <div className={s.rowDiffCol}>
@@ -54,7 +86,11 @@ export function AmendmentReplay({ replay }: AmendmentReplayProps) {
                                 정정 후
                               </span>
                               <p className={s.rowDiffText}>
-                                {row.diff.after.length > 0 ? row.diff.after : "—"}
+                                <DiffText
+                                  segments={row.diff.afterSegments}
+                                  fallback="—"
+                                  markClass={s.rowDiffMarkAfter}
+                                />
                               </p>
                             </div>
                             <p className={s.rowDiffSource}>{row.diff.sourceNote}</p>

@@ -71,6 +71,44 @@
   font-weight: var(--ds-weight-bold);
 }
 
+.stepList {
+  display: grid;
+  gap: var(--ds-space-3);
+  max-width: var(--ds-maxw-prose);
+  counter-reset: step;
+  list-style: none;
+}
+.stepItem {
+  position: relative;
+  padding-left: var(--ds-space-6);
+  color: var(--ds-ink-muted);
+  font-size: var(--ds-text-md);
+  line-height: var(--ds-leading-relaxed);
+  word-break: keep-all;
+}
+.stepItem strong {
+  color: var(--ds-ink);
+  font-weight: var(--ds-weight-bold);
+}
+.stepItem::before {
+  counter-increment: step;
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0.15em;
+  width: 1.35rem;
+  height: 1.35rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--ds-line-strong);
+  border-radius: 50%;
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  font-weight: var(--ds-weight-bold);
+  color: var(--ds-ink);
+}
+
 .layerList {
   display: grid;
   gap: var(--ds-space-5);

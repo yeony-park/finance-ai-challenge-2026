@@ -4,6 +4,7 @@ import { loadLatestReplayDiff, parseReplayDiff } from "../amend/replay-load";
 import type { ActualReplayDiffArtifact } from "../amend/replay-fixture";
 import {
   ACTUAL_REPLAY_BADGE,
+  highlightSegments,
   SYNTHETIC_REPLAY_BADGE,
   toAmendmentReplayView,
 } from "../amend/replay-view";
@@ -213,5 +214,81 @@ describe("정정 전·후 발췌 — correctionDetails가 행 diff로 실린다"
 
     const rows = view.stages[0]?.rows ?? [];
     expect(rows.every((row) => row.diff === undefined)).toBe(true);
+  });
+});
+
+describe("highlightSegments — 전·후 발췌에서 달라진 구간만 표시한다", () => {
+  test("공통 접두·접미부 사이의 변경 구간을 표시한다", () => {
+    const before = "청약기일은 2026년 2월 20일까지입니다.";
+    const after = "청약기일은 2026년 3월 5일까지입니다.";
+
+    const segs = highlightSegments(before, after);
+    const changed = segs.filter((seg) => seg.isChanged).map((seg) => seg.text);
+    expect(changed.join("")).toContain("2월 20");
+    expect(segs.map((seg) => seg.text).join("")).toBe(before);
+  });
+
+  test("공통부가 거의 없으면(신설 등) 전체를 강조하지 않는다", () => {
+    const segs = highlightSegments("(신설)", "완전히 새로 들어간 위험 조항 본문");
+    expect(segs).toEqual([{ text: "(신설)", isChanged: false }]);
+  });
+
+  test("한쪽이 비어 있으면 그대로 둔다", () => {
+    expect(highlightSegments("", "본문")).toEqual([]);
+    expect(highlightSegments("본문", "")).toEqual([
+      { text: "본문", isChanged: false },
+    ]);
+  });
+
+  test("행 diff에 세그먼트가 함께 실린다", () => {
+    const view = toAmendmentReplayView(
+      {
+        kind: "actual-amendment-diff",
+        offerId: "livestock-7",
+        generatedAt: "2026-08-15T00:00:00.000Z",
+        disclosure: "고지",
+        sourceName: "출처",
+        facts: [],
+        diff: {
+          from: { offerId: "livestock-7", rcpNo: "20260203000427", submittedOn: "2026-02-03" },
+          to: { offerId: "livestock-7", rcpNo: "20260225002022", submittedOn: "2026-02-25" },
+          changedClaims: [],
+          verdictChanges: [],
+          summary: {
+            changedClaims: 0,
+            verdictMaintained: 0,
+            verdictChanged: 0,
+            verdictUnknown: 0,
+            notJudged: 0,
+          },
+          notes: [],
+        },
+        filings: [
+          {
+            rcpNo: "20260225002022",
+            receivedOn: "2026-02-25",
+            role: "amendment",
+            reportLabel: "[기재정정]증권신고서",
+            isRechecked: true,
+            correctionReason: "요구 정정",
+            correctionItems: ["일정"],
+            correctionDetails: [
+              {
+                label: "일정",
+                isOrderRelated: false,
+                before: "청약기일은 2월 20일입니다",
+                after: "청약기일은 3월 5일입니다",
+                isExcerpt: true,
+              },
+            ],
+            correctionNotes: [],
+          },
+        ],
+      },
+    );
+
+    const row = view.stages[0]?.rows.find((item) => item.diff !== undefined);
+    expect(row?.diff?.beforeSegments.some((seg) => seg.isChanged)).toBe(true);
+    expect(row?.diff?.afterSegments.some((seg) => seg.isChanged)).toBe(true);
   });
 });

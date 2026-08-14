@@ -9,9 +9,50 @@ import type {
   SyntheticReplayDiffArtifact,
 } from "./replay-fixture";
 
+export interface DiffTextSegment {
+  readonly text: string;
+  readonly isChanged: boolean;
+}
+
+const MIN_SHARED_AFFIX = 4;
+
+export const highlightSegments = (
+  own: string,
+  other: string,
+): readonly DiffTextSegment[] => {
+  if (own.length === 0) return [];
+  const plain: readonly DiffTextSegment[] = [{ text: own, isChanged: false }];
+  if (other.length === 0) return plain;
+
+  const max = Math.min(own.length, other.length);
+  let prefix = 0;
+  while (prefix < max && own[prefix] === other[prefix]) prefix += 1;
+  let suffix = 0;
+  while (
+    suffix < max - prefix &&
+    own[own.length - 1 - suffix] === other[other.length - 1 - suffix]
+  ) {
+    suffix += 1;
+  }
+
+  if (prefix + suffix < MIN_SHARED_AFFIX) return plain;
+  const changed = own.slice(prefix, own.length - suffix);
+  if (changed.length === 0) return plain;
+
+  return [
+    ...(prefix > 0 ? [{ text: own.slice(0, prefix), isChanged: false }] : []),
+    { text: changed, isChanged: true },
+    ...(suffix > 0
+      ? [{ text: own.slice(own.length - suffix), isChanged: false }]
+      : []),
+  ];
+};
+
 export interface ReplayRowDiffView {
   readonly before: string;
   readonly after: string;
+  readonly beforeSegments: readonly DiffTextSegment[];
+  readonly afterSegments: readonly DiffTextSegment[];
   readonly sourceNote: string;
 }
 
@@ -157,6 +198,8 @@ const rowDiffOf = (
   return {
     before: detail.before,
     after: detail.after,
+    beforeSegments: highlightSegments(detail.before, detail.after),
+    afterSegments: highlightSegments(detail.after, detail.before),
     sourceNote: EXCERPT_SOURCE_NOTE,
   };
 };

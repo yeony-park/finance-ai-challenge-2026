@@ -57,3 +57,15 @@ body {
     opacity: 1;
   }
 }
+
+html {
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+[id^="report-"] {
+  scroll-margin-top: calc(var(--ds-header-h) + 3.5rem);
+}

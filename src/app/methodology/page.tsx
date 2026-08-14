@@ -140,12 +140,22 @@ export default function MethodologyPage() {
           <h2 id={METHODOLOGY_ANCHOR.pipeline} className={s.sectionTitle}>
             대조는 네 단계로 진행됩니다
           </h2>
-          <p className={s.paragraph}>
-            <strong>주장 추출</strong> — 증권신고서에서 검증할 수 있는 주장을 항목 단위로 뽑아냅니다.{" "}
-            <strong>검증 가능성 판별</strong> — 그중 공공 데이터로 확인할 수 있는 항목을 가려냅니다.{" "}
-            <strong>대조</strong> — 해당 공공 데이터를 조회해 값을 맞춰 봅니다.{" "}
-            <strong>판정</strong> — 결과를 세 값 중 하나로 적고 근거를 붙입니다.
-          </p>
+          <ol className={s.stepList}>
+            <li className={s.stepItem}>
+              <strong>주장 추출</strong> — 증권신고서에서 검증할 수 있는 주장을 항목 단위로
+              뽑아냅니다.
+            </li>
+            <li className={s.stepItem}>
+              <strong>검증 가능성 판별</strong> — 그중 공공 데이터로 확인할 수 있는 항목을
+              가려냅니다.
+            </li>
+            <li className={s.stepItem}>
+              <strong>대조</strong> — 해당 공공 데이터를 조회해 값을 맞춰 봅니다.
+            </li>
+            <li className={s.stepItem}>
+              <strong>판정</strong> — 결과를 세 값 중 하나로 적고 근거를 붙입니다.
+            </li>
+          </ol>
           <p className={s.callout}>
             판정 단계는 결정론적 대조입니다. 언어 모델은 주장을 뽑고 설명 문장을 고르는 데까지만
             쓰이며, <strong>판정 값 자체에는 관여하지 않습니다.</strong> 모델이 틀려도 판정이

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 
+import { ReportChapterNav } from "@/components/report/ReportChapterNav";
 import { ReportDocument } from "@/components/report/ReportDocument";
 import { ReportFoot } from "@/components/report/ReportFoot";
 import { HistorySection, PriceSection } from "@/components/report/SummaryLayers";
@@ -123,6 +124,7 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
   return (
     <>
       <ReportDocument view={view} narrative={narrative?.levels ?? null}>
+        <ReportChapterNav />
         <WatchSection watch={watch} replay={replay} />
         <HistorySection view={view} trackRecord={trackRecord} />
       </ReportDocument>

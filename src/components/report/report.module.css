@@ -295,6 +295,42 @@
   box-shadow: var(--ds-shadow-md);
 }
 
+.chapterNav {
+  position: sticky;
+  top: var(--ds-header-h);
+  z-index: 30;
+  border-bottom: 1px solid var(--ds-line);
+  background: color-mix(in srgb, var(--ds-bg) 92%, transparent);
+  backdrop-filter: saturate(1.4) blur(10px);
+}
+.chapterNavRow {
+  display: flex;
+  gap: var(--ds-space-2);
+  max-width: var(--ds-maxw);
+  margin: 0 auto;
+  padding: var(--ds-space-2) var(--ds-space-5);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.chapterLink {
+  flex: none;
+  padding: 0.3rem 0.75rem;
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius-pill);
+  color: var(--ds-ink-muted);
+  font-size: var(--ds-text-xs);
+  font-weight: var(--ds-weight-medium);
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    color var(--ds-duration-fast) var(--ds-ease),
+    border-color var(--ds-duration-fast) var(--ds-ease);
+}
+.chapterLink:hover {
+  color: var(--ds-ink);
+  border-color: var(--ds-line-strong);
+}
+
 .appendix {
   margin-top: var(--ds-space-4);
   border: 1px solid var(--ds-line);
@@ -762,6 +798,22 @@
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-2xs);
   color: var(--ds-ink-faint);
+}
+.rowDiffMarkBefore,
+.rowDiffMarkAfter {
+  padding: 0 0.15em;
+  border-radius: var(--ds-radius-sm);
+  font-weight: var(--ds-weight-bold);
+}
+.rowDiffMarkBefore {
+  background: var(--ds-verdict-miss-soft);
+  color: var(--ds-verdict-miss);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+.rowDiffMarkAfter {
+  background: var(--ds-verdict-match-soft);
+  color: var(--ds-verdict-match);
 }
 .stageEmpty {
   margin-top: var(--ds-space-4);
