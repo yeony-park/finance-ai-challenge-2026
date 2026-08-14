@@ -2,7 +2,7 @@
 
 # data/ 매니페스트
 
-생성 시각: 2026-08-14T07:13:01.151Z
+생성 시각: 2026-08-14T15:45:18.586Z
 
 ## 저장 정책
 
@@ -84,7 +84,11 @@
 | 경로 | 바이트 | sha256 |
 |---|---:|---|
 | `data/reports/livestock-7/report-2026-08-14T06-19-19-348Z.json` | 460,282 | `ada055ff4619b52ce431ca2a1d4c8812898076293cf09d1a662c338fc8c952c0` |
+| `data/reports/livestock-7/report-2026-08-14T15-26-28-272Z.json` | 464,149 | `9090cfeb6ca5db1c0ee2df3f6f1f526408bec7f1b2e56e9a201d4b7be58ec230` |
+| `data/reports/livestock-7/report-2026-08-14T15-35-45-701Z.json` | 464,121 | `22ecb96f6c5e9b2a520dcf96696cbec66807820e6572220870486b8e7783e6b3` |
 | `data/reports/livestock-8/report-2026-08-14T06-37-40-268Z.json` | 754,531 | `4e1c398c0e1c97057b4f00f7d93a3b07d0a6769b2309280c6146b25dc35b6edb` |
+| `data/reports/livestock-8/report-2026-08-14T15-29-10-613Z.json` | 758,621 | `18889f9750bab582382a59c4367c3ffade072ffc9f6b2a8c37fbdbf3effa94ba` |
+| `data/reports/livestock-8/report-2026-08-14T15-41-05-021Z.json` | 758,424 | `b53d59272402ba720bf5c8202a4f4b1c67bfd4a6f52df176df4ee8fb2dc399fa` |
 | `data/reports/livestock-9/report-2026-08-11T16-02-04-683Z.json` | 268,697 | `25f6e34939b356595fde6c3d04254877e9cf2da294d95b6f324725ffdb0fbcf9` |
 | `data/reports/livestock-9/report-2026-08-11T16-04-40-307Z.json` | 261,443 | `d244d8e53faef706a2da24aa0f6405de73b8510ec7c7d32417b12f7e6407c343` |
 | `data/reports/livestock-9/report-2026-08-11T16-06-25-434Z.json` | 268,697 | `fc747f78938bcd2792c03afea57521ce4ab97b7ac117a5e48c59dd8b843859cb` |
@@ -102,6 +106,7 @@
 | `data/reports/livestock-9/report-2026-08-14T04-55-13-053Z.json` | 410,120 | `ea6990887a1ead56de86c29ecb2614527adabc97fc7be3b832d2ed82f76446c6` |
 | `data/reports/livestock-9/report-2026-08-14T05-36-57-401Z.json` | 417,352 | `bd46727e85663ab65c169a2e9521fb2375e89e282ebb7b2276d84eaa018f9319` |
 | `data/reports/livestock-9/report-2026-08-14T05-52-59-028Z.json` | 410,120 | `755134d0368495f657fa73c8660fd1d811b02c496a74ee3b24712685f7cc601b` |
+| `data/reports/livestock-9/report-2026-08-14T15-30-30-662Z.json` | 412,280 | `9ee0dfa4b5709251a7db9f6efc9eaa0c9942bc67a68eabbd99bbd3ecda6d1054` |
 | `data/reports/real-estate-a/report-2026-08-13T17-53-03-085Z.json` | 15,338 | `3e56f7ba7748e0b27777c3be1b673046db9456a69dd8e0359888e732ab0914f5` |
 | `data/reports/real-estate-a/report-2026-08-14T04-34-57-566Z.json` | 51,130 | `5b3728ffb6b9c5a6ed8111d3014a9dbb5b8056093cbc1531914102e6805fb331` |
 | `data/reports/real-estate-a/report-2026-08-14T04-53-03-242Z.json` | 51,130 | `a53672da11e84ed49418ee912a58116f2f5465e677b8790a5ff8ca393d1957f1` |
@@ -117,9 +122,15 @@
 
 | 경로 | 바이트 | sha256 |
 |---|---:|---|
+| `data/public/livestock-7/narrative-20260225002022.json` | 4,537 | `7baece92a67a5ad6451e2680e0ed2f8d8d6cb700650dbc2b2d2f0d7afeaaff65` |
 | `data/public/livestock-7/report-2026-08-14T06-19-19-348Z.json` | 460,762 | `0b6ed200cf1f119716711d938741e925b550abf0ea7e1883bbba33cc64339306` |
+| `data/public/livestock-7/report-2026-08-14T15-26-28-272Z.json` | 464,629 | `aa744a373cbc003334dfbc1183d6dedf4bd23f6965aac9a6a738ef2672d958e2` |
+| `data/public/livestock-7/report-2026-08-14T15-35-45-701Z.json` | 464,601 | `04bf6c12ffa441cefed8b84ebdc176a1f5c63c1abfc24a0b38d0c2d8f781ae7f` |
+| `data/public/livestock-8/narrative-20260414002068.json` | 4,040 | `c74797e9a564deafcfd07c6a49cf9806b43dffba6684f9996931316eb1bd2584` |
 | `data/public/livestock-8/report-2026-08-14T06-37-40-268Z.json` | 755,587 | `1f8368bc644e028234c1df8cba6c5b1e49f6f9624a87de13875990c4549a7023` |
-| `data/public/livestock-9/narrative-20260806000159.json` | 5,240 | `419136eae352711a2e65fefad73a2642e31fedcccb11f2ec59bf46d80273ccb9` |
+| `data/public/livestock-8/report-2026-08-14T15-29-10-613Z.json` | 759,677 | `67d2bf596532b7b8db7196e3f28bc5a2fde27c4431c0b8ae6d9beba4dae4189f` |
+| `data/public/livestock-8/report-2026-08-14T15-41-05-021Z.json` | 759,480 | `b6fb51b3fcc85255d71f35b1265ad01312747018346162f8844ee1c9702fa525` |
+| `data/public/livestock-9/narrative-20260806000159.json` | 5,277 | `f16a4eab1d653f256e31a701ec9c02aa90941c8cc6cfc12f274444dffab204df` |
 | `data/public/livestock-9/report-2026-08-11T16-02-04-683Z.json` | 269,277 | `fdb1945dafffa6fd6b6775f35c3d8c5206eecd49de7b55cb3fe687f89224e1bc` |
 | `data/public/livestock-9/report-2026-08-11T16-04-40-307Z.json` | 262,023 | `5bde24e29d2437cd21f8cc92c427e0c4879c5d6ad26f240214c931a05917a847` |
 | `data/public/livestock-9/report-2026-08-11T16-06-25-434Z.json` | 269,277 | `f34264dd31b48b2fcebf40d08e8b55739c8997b8bb7072b1ca9a6803eda59e79` |
@@ -136,18 +147,25 @@
 | `data/public/livestock-9/report-2026-08-13T18-07-15-350Z.json` | 417,932 | `ff280bb47108fa4eb0799de61f11278399ce0d889c30272ef3a637249391c2cf` |
 | `data/public/livestock-9/report-2026-08-14T04-55-13-053Z.json` | 410,700 | `4b5279d95b593ec826665f718e9516cc0bf28275aa796eab71fd6f83122d44e4` |
 | `data/public/livestock-9/report-2026-08-14T05-52-59-028Z.json` | 410,700 | `5391ed8bbf1455f3af56dfc9fb78c9dcc04b87ecf6bf9b98098ef019b812819d` |
-| `data/public/real-estate-a/narrative-latest.json` | 4,209 | `3d6722030d8a3a4a4ccd37d2cf269158f0215637821546e648583156599dba7d` |
+| `data/public/livestock-9/report-2026-08-14T15-30-30-662Z.json` | 412,860 | `c80032207a70e8a3b7d060cc6938bad29de130e477ac220e683c99a6c61a79d1` |
+| `data/public/real-estate-a/narrative-latest.json` | 4,040 | `47b697b36416193a46e45a95adce2c5c088874791c8793f4f9590702bbf9442c` |
 | `data/public/real-estate-a/report-2026-08-13T17-53-03-085Z.json` | 15,168 | `931ed4b78f166004a50fc90e7b0b9cf9689170baf76f7091e4cb6f6b629e7387` |
 | `data/public/real-estate-a/report-2026-08-14T04-34-57-566Z.json` | 50,960 | `659b739f067591b35ece1f3da4b16e80794c85591b600f01f6e2cb1e301db753` |
 | `data/public/real-estate-a/report-2026-08-14T04-53-03-242Z.json` | 50,960 | `902e90ecea4e77d53e309e350767f985ac8e1d646df1ddf743900e7e0106c25b` |
 | `data/public/real-estate-a/report-2026-08-14T04-54-06-189Z.json` | 51,237 | `fe2b4434b20657a1cb2872bae4622085043c189bf96af2dc01d705a7e338513e` |
 | `data/public/replay/livestock-7/diff-2026-08-14T06-19-19-348Z.json` | 4,440 | `3416ea1773980e87f3b5d9a9fe8ef2bf363b5b58221c65278c515915aa6ab22f` |
+| `data/public/replay/livestock-7/diff-2026-08-14T15-35-45-701Z.json` | 4,440 | `a7a931f7851382e95301a2069e822a1941f3aee6eba94824d14fffd56426a82d` |
 | `data/public/replay/livestock-8/diff-2026-08-14T06-37-40-268Z.json` | 2,819 | `780f77f1ee878913553564035c029603891c6fc413771387dd8ea1848623fe12` |
+| `data/public/replay/livestock-8/diff-2026-08-14T15-41-05-021Z.json` | 2,819 | `6ccf5186534f7c3c552458e516b3359a548484f5d3b66ecefa8d2c712e02bcb7` |
 | `data/public/replay/livestock-9/diff-2026-08-13T17-46-58-162Z.json` | 3,453 | `2d47535b23c709247f30905bb5c97c56fdbf04f87c59d921a749d686aea991e2` |
-| `data/public/track-record/issuer-a.json` | 1,200 | `2027a2e8f499040a06ba9be8cf1cd514b91d0837c49675425fc922e8c10189ee` |
+| `data/public/track-record/issuer-a.json` | 1,200 | `3a2e5953945903ba81a8baa8687dda87d468cc1ea4960fc12ed47fbacf89da0a` |
 | `data/public/watch/livestock-7/watch-2026-08-14T06-13-49-913Z.json` | 871 | `c53178b0cb2d21a6ee6d224c482ddc349d387e2322cf564e73efe9bb07c9dcb0` |
+| `data/public/watch/livestock-7/watch-2026-08-14T15-45-06-801Z.json` | 871 | `858c0d3864d0ea134bc6f754cd6f9d3557ecb6feddc7a9aad98c699a80af01d9` |
 | `data/public/watch/livestock-8/watch-2026-08-14T06-42-10-127Z.json` | 721 | `834eed88a3ce60f16975cd4c91d5c2a346d227eb1f1eccebc0029b0428012da7` |
+| `data/public/watch/livestock-8/watch-2026-08-14T15-45-06-801Z.json` | 721 | `1cc81588f0f10c552a5723825a1cbe0856bf1fe0726d4f768ba7dd6a6566deba` |
 | `data/public/watch/livestock-9/watch-2026-08-13T17-45-24-412Z.json` | 306 | `736ddcedeb167093837493f8cbb9c7b3c48a847cc58a3fb4a245be50f68eaace` |
+| `data/public/watch/livestock-9/watch-2026-08-14T15-45-06-801Z.json` | 586 | `d3b20117631a19394b2de153303630c2ba07fc9da4da557c9f8fa6877c4d7500` |
+| `data/public/watch/real-estate-a/watch-2026-08-14T15-45-06-801Z.json` | 368 | `6a7a5b800aa85d36c3ff94aec9a39ff40d016da01ee309179e0c1540f54f2049` |
 
 ### 참조 시장 데이터 (시장 통계 · 커밋 대상)
 

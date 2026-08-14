@@ -1,10 +1,10 @@
 {
   "kind": "issuer-track-record",
   "issuerKey": "issuer-a",
-  "collectedAt": "2026-08-14T07:10:15.383Z",
+  "collectedAt": "2026-08-14T15:44:55.967Z",
   "window": {
     "fromYmd": "20240101",
-    "throughYmd": "20260814"
+    "throughYmd": "20260815"
   },
   "sourceName": "OpenDART 공시검색 (금융감독원 · opendart.fss.or.kr)",
   "aggregation": {
@@ -15,7 +15,7 @@
   },
   "counts": {
     "offeringFilings": 9,
-    "offeringAmendments": 15,
+    "offeringAmendments": 16,
     "withdrawalFilings": 1,
     "resultReports": 8,
     "resultAmendments": 11,
