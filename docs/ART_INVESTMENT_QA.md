@@ -2,7 +2,7 @@
 
 - 문서 상태: **CURRENT · CANONICAL**
 - 방법론 버전: `art-mvp-v1.0`
-- 최종 회귀 상태: **FINAL_VALIDATED_WITH_DATABASE_CONTINUITY_AND_HISTORICAL_DISCOVERY** — 홈 단순화·청약 예정 DEMO·체크박스 필터 후속 수정 및 재검증 완료
+- 최종 회귀 상태: **FINAL_VALIDATED_WITH_DATABASE_CONTINUITY_AND_HISTORICAL_DISCOVERY** — 비교함 전체 기능까지 구현·재검증 완료
 - 상태 표기: `완료`(검증 증거 있음) · `부분` · `미구현` · `미검증` · `해당 없음`
 - 원칙: 코드가 있다는 이유만으로 완료로 표시하지 않는다. 명령 결과·URL·스크린샷·테스트 이름 등 재현 가능한 증거를 기록한다.
 
@@ -415,3 +415,22 @@ Chrome 1440/390 screenshot, 실제 OpenAI key 호출, 외부 재수집, commit/p
 이 과정에서 빈 수익률 입력이 숫자 `0`으로 변환되어 `/products?scope=historical` 화면이 338건이 아니라 93건만 보여주던 결함도 발견해 수정했다. 반복 query parameter와 쉼표 구분 parameter를 페이지와 `/api/products`가 모두 처리하도록 통일했다.
 
 최종 결과: lint 오류 0(기존 warning 7), typecheck 통과, `test:art` production build·HTTP 통합 테스트 포함 **27/27**, `test:js` 전체 통과, build 135개 static page generation 과정 통과.
+
+
+## 16. 2026-08-15 비교함 전체 기능 후속 구현
+
+기존 비교 기능은 카드 버튼, localStorage ID 저장, 단순 비교표만 존재해 직접 `/compare`로 진입하면 선택 UI가 없고 최대 개수 초과 시 가장 오래된 항목을 조용히 삭제하는 불완전한 상태였다.
+
+후속 구현으로 다음을 완료했다.
+
+- 상품 카드에서 비교함 추가/제외 상태를 즉시 표시한다.
+- localStorage에 최대 3개를 유지하고, 초과 선택은 기존 상품을 삭제하지 않고 안내한다.
+- 전역 비교 tray에 `선택 수/3`, 최소 2개 안내, 비교 이동, 전체 비우기를 제공한다.
+- 헤더의 상품 비교 링크가 저장된 선택 ID와 개수를 유지한다.
+- `/compare`에서 현재 상품 9개를 체크박스로 직접 선택하며, DEMO 청약 예정 작품을 먼저 보여준다.
+- 2~3개를 선택해야 비교표가 열리고, URL `ids` query로 공유·새로고침할 수 있다.
+- 비교표에서 각 상품 상세로 이동하거나 개별 상품을 제외할 수 있다.
+- 공모금액, 취득가, 감정가, 공모가 차이율, 미설명 차액, 유사작 중위값, 출품 수, 낙찰률, 동일 시리즈, 회수 분석, 플랫폼 이력, 목표 보유기간을 동일 기준으로 비교한다.
+- 저장된 DEMO 분석 판단을 비교한 결과임을 문구로 명시한다.
+
+최종 검증은 lint 오류 0(기존 warning 7), typecheck, production build, 실제 HTTP 비교 페이지 검증을 포함한 `test:art` **28/28**, `test:js` 전체 통과다.
