@@ -18,6 +18,12 @@ import type { NarrativeDocument } from "@/lib/verify/narrative/types";
 import { toWatchStatusView, type WatchStatusView } from "@/lib/verify/amend/watch-view";
 import { loadLatestReport } from "@/lib/verify/report/load";
 import { toDemoView, type DemoView } from "@/lib/verify/report/view-model";
+import { issuerKeyForOffer } from "@/lib/verify/track-record/registry";
+import { loadTrackRecord } from "@/lib/verify/track-record/store";
+import {
+  toTrackRecordView,
+  type TrackRecordCardView,
+} from "@/lib/verify/track-record/view";
 
 interface OfferPageProps {
   readonly params: Promise<{ readonly id: string }>;
@@ -50,6 +56,20 @@ const loadAmendmentReplay = cache(
       return artifact ? toAmendmentReplayView(artifact) : null;
     } catch (error) {
       console.error(`리플레이 diff 로드 실패 (${offerId}):`, error);
+      return null;
+    }
+  },
+);
+
+const loadTrackRecordCard = cache(
+  async (offerId: string): Promise<TrackRecordCardView | null> => {
+    const issuerKey = issuerKeyForOffer(offerId);
+    if (!issuerKey) return null;
+    try {
+      const record = await loadTrackRecord(issuerKey);
+      return record ? toTrackRecordView(record) : null;
+    } catch (error) {
+      console.error(`발행사 트랙레코드 로드 실패 (${offerId}):`, error);
       return null;
     }
   },
@@ -92,17 +112,18 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
 
   if (!view) notFound();
 
-  const [watch, replay, narrative] = await Promise.all([
+  const [watch, replay, narrative, trackRecord] = await Promise.all([
     loadWatchStatus(id),
     loadAmendmentReplay(id),
     loadOfferNarrative(id),
+    loadTrackRecordCard(id),
   ]);
 
   return (
     <>
       <ReportDocument view={view} narrative={narrative?.levels ?? null} />
       <PriceSection view={view} />
-      <HistorySection view={view} />
+      <HistorySection view={view} trackRecord={trackRecord} />
       <WatchSection view={view} watch={watch} replay={replay} />
       <ReportFoot />
     </>

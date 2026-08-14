@@ -482,6 +482,65 @@
   word-break: keep-all;
 }
 
+.trackCard {
+  margin-top: var(--ds-space-5);
+  padding: var(--ds-space-5);
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-surface);
+}
+.trackHead {
+  padding-bottom: var(--ds-space-4);
+  border-bottom: 1px solid var(--ds-line);
+}
+.trackTitle {
+  font-size: var(--ds-title-sm);
+  font-weight: var(--ds-weight-bold);
+  line-height: var(--ds-leading-snug);
+  word-break: keep-all;
+}
+.trackLead {
+  margin-top: var(--ds-space-2);
+  font-size: var(--ds-text-sm);
+  line-height: var(--ds-leading-relaxed);
+  color: var(--ds-ink-muted);
+  word-break: keep-all;
+}
+.trackFacts {
+  display: grid;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.trackFact {
+  padding: var(--ds-space-4) 0;
+}
+.trackFact + .trackFact {
+  border-top: 1px dashed var(--ds-line-dashed);
+}
+.trackFactText {
+  font-size: var(--ds-text-sm);
+  line-height: var(--ds-leading-relaxed);
+  font-variant-numeric: tabular-nums;
+  word-break: keep-all;
+}
+.trackFactSource {
+  margin-top: var(--ds-space-2);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  line-height: 1.7;
+  color: var(--ds-ink-faint);
+  word-break: break-all;
+}
+.trackMeta {
+  padding-top: var(--ds-space-3);
+  border-top: 1px solid var(--ds-line);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  color: var(--ds-ink-faint);
+  word-break: keep-all;
+}
+
 .replayCard {
   padding: clamp(1.125rem, 0.9rem + 1.2vw, 1.75rem);
   border: 1px solid var(--ds-line);

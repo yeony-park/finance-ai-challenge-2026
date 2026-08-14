@@ -1,0 +1,45 @@
+{
+  "kind": "issuer-track-record",
+  "issuerKey": "issuer-a",
+  "collectedAt": "2026-08-14T07:10:15.383Z",
+  "window": {
+    "fromYmd": "20240101",
+    "throughYmd": "20260814"
+  },
+  "sourceName": "OpenDART 공시검색 (금융감독원 · opendart.fss.or.kr)",
+  "aggregation": {
+    "unit": "legal-issuer",
+    "issuerCount": 1,
+    "brandsAggregated": false,
+    "platformsAggregated": false
+  },
+  "counts": {
+    "offeringFilings": 9,
+    "offeringAmendments": 15,
+    "withdrawalFilings": 1,
+    "resultReports": 8,
+    "resultAmendments": 11,
+    "seriesChecked": 19,
+    "underSubscribedSeries": 1,
+    "operatorTookUnallocatedSeries": 1
+  },
+  "flaggedSeries": [
+    {
+      "seriesLabel": "8-2",
+      "generalInitialUnits": 27492,
+      "generalSubscribedUnits": 20112,
+      "generalSubscriptionRatePercent": 73,
+      "operatorInitialUnits": 3055,
+      "operatorFinalUnits": 10435,
+      "operatorFinalAmountKrw": 208700000,
+      "isUnderSubscribed": true,
+      "operatorTookUnallocated": true,
+      "source": {
+        "rcpNo": "20260611000015",
+        "reportName": "[기재정정]증권발행실적보고서",
+        "receivedOn": "20260611"
+      }
+    }
+  ],
+  "notes": []
+}

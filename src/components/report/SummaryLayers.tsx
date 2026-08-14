@@ -1,5 +1,6 @@
 import { Reveal } from "@/components/motion/Reveal";
 import type { DemoView } from "@/lib/verify/report/view-model";
+import type { TrackRecordCardView } from "@/lib/verify/track-record/view";
 
 import { METHODOLOGY_ANCHOR } from "@/app/methodology/anchors";
 
@@ -7,6 +8,7 @@ import { HISTORY_HEADING_ID, PRICE_HEADING_ID } from "./ids";
 import { MethodologyLink } from "./MethodologyLink";
 import { NoteList } from "./NoteList";
 import s from "./report.module.css";
+import { TrackRecordCard } from "./TrackRecordCard";
 
 export function PriceSection({ view }: { readonly view: DemoView }) {
   return (
@@ -35,7 +37,12 @@ export function PriceSection({ view }: { readonly view: DemoView }) {
   );
 }
 
-export function HistorySection({ view }: { readonly view: DemoView }) {
+interface HistorySectionProps {
+  readonly view: DemoView;
+  readonly trackRecord?: TrackRecordCardView | null;
+}
+
+export function HistorySection({ view, trackRecord }: HistorySectionProps) {
   return (
     <section className={s.section} aria-labelledby={HISTORY_HEADING_ID}>
       <Reveal className={s.wrap}>
@@ -49,6 +56,7 @@ export function HistorySection({ view }: { readonly view: DemoView }) {
         </header>
 
         <NoteList items={view.history.items} />
+        {trackRecord ? <TrackRecordCard card={trackRecord} /> : null}
       </Reveal>
     </section>
   );

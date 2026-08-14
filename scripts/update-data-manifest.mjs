@@ -132,6 +132,7 @@ const render = (groups, publicGroups, generatedAt) =>
     "| 실측 스냅샷 | `data/snapshots/` | 제외(.gitignore) |",
     "| 내부 리포트 | `data/reports/{offerId}/` | 제외(.gitignore) |",
     "| 공개 리포트 | `data/public/{offerId}/` | **커밋** |",
+    "| 발행사 트랙레코드 | `data/public/track-record/{issuerKey}.json` | **커밋**(공시 집계 — 발행사명·corp_code 미포함) |",
     "| 경락가 월 집계 | `data/reference/auction-price/` | **커밋**(시장 통계 — 개인정보 없음) |",
     "| 실거래 월 신고 | `data/reference/rtms/` | **커밋**(시장 통계 — 개인정보 없음) |",
     "| 공모 기초자료 | `data/offers/{offerId}.json` | **커밋**(공개 자료 정리 — 개인정보 없음) |",

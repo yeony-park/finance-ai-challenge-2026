@@ -54,6 +54,12 @@ npm run verify    # 검증 파이프라인 완주 (fake 모드 — 키 없이 �
 npm run reference:collect   # 실키 전용 · 호출 수 = 월 수 × 성별 수 (기본 4×3 = 12건)
 ```
 
+발행사 트랙레코드도 **사전 수집 후 커밋**한다 — 화면은 캐시(`data/public/track-record/{issuerKey}.json`)만 읽는다.
+
+```bash
+npm run track-record   # 실키 전용 · DART 공시검색 2회 + 증권발행실적보고서 원문 (계보상 최신본만)
+```
+
 실모델 연결은 `.env.example` 참조 (`AI_GATEWAY_API_KEY` 권장).
 
 > `npm run dev`는 서비스 화면을 띄운다 — 랜딩(`/`), 검증 방법(`/methodology`), 검증 리포트 상세(`/offers/[id]`).
