@@ -109,8 +109,8 @@ export const OFFERS: readonly OfferEntry[] = [
     assetLabel: "가축",
     assetKind: "livestock",
     subscription: {
-      opensAt: "2026-08-27T10:00:00+09:00",
-      closesAt: "2026-09-10T16:00:00+09:00",
+      opensAt: "2026-09-08T10:00:00+09:00",
+      closesAt: "2026-09-22T16:00:00+09:00",
     },
   },
   {

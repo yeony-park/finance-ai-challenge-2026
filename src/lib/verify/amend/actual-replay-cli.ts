@@ -1,6 +1,11 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 
+import {
+  buildOfferSchedule,
+  OFFERS,
+  type SubscriptionPhase,
+} from "../../../components/site/offers";
 import { resolveAuctionPriceAdapter } from "../adapters/auction-price-fake";
 import { resolveLivestockTraceAdapter } from "../adapters/livestock-trace-fake";
 import {
@@ -31,6 +36,7 @@ import {
   writeReplayDiff,
   type ReplayFilingRecord,
 } from "./replay-fixture";
+import { replayDisclosureOf, replayRunNoteOf } from "./replay-notes";
 
 const DEFAULT_OFFER_ID = "livestock-7";
 
@@ -186,14 +192,15 @@ const runOnce = async (
   return runVerification({ rcpNo, xml, trace, auction, extractor, notes });
 };
 
-const disclosureOf = (amendmentCount: number): string =>
-  `청약이 종료된 공모를 사후에 대조한 기록입니다 — 실제 접수된 정정신고서 ${amendmentCount}건 가운데 최종 정정본을 원 신고서와 같은 절차로 각각 다시 대조했고, 개체 원장 조회는 대조 실행 시각 기준입니다.`;
-
-const POST_CLOSE_RUN_NOTE =
-  "청약이 종료된 공모라 두 버전 모두 지금 시점의 원장과 대조했습니다 — 청약 당시의 원장 상태와는 다를 수 있습니다.";
+const subscriptionPhaseOf = (offerId: string): SubscriptionPhase => {
+  const offer = OFFERS.find((entry) => entry.id === offerId);
+  return offer ? buildOfferSchedule(offer, new Date()).phase : "open";
+};
 
 const main = async (): Promise<void> => {
   const options = parseArgs(process.argv.slice(2));
+  const phase = subscriptionPhaseOf(options.offerId);
+  const runNote = replayRunNoteOf(phase);
 
   const apiKey = process.env.DART_API_KEY;
   if (!apiKey) {
@@ -240,13 +247,13 @@ const main = async (): Promise<void> => {
     baseRcpNo,
     options.dataDir,
     options.forceFake,
-    [POST_CLOSE_RUN_NOTE],
+    [runNote],
   );
   const after = await runOnce(
     last.rcpNo,
     options.dataDir,
     options.forceFake,
-    [POST_CLOSE_RUN_NOTE],
+    [runNote],
   );
 
   const isFakeRun = after.mode === "fake";
@@ -283,7 +290,7 @@ const main = async (): Promise<void> => {
 
   const skipped = lineage.amendments.length - 1;
   const extraNotes = [
-    POST_CLOSE_RUN_NOTE,
+    runNote,
     ...(skipped > 0
       ? [
           `정정신고서 ${lineage.amendments.length}건 가운데 최종본만 다시 대조했습니다 — 나머지 ${skipped}건은 접수 사실과 정정 항목만 읽었습니다.`,
@@ -318,7 +325,7 @@ const main = async (): Promise<void> => {
       kind: "actual-amendment-diff",
       offerId: options.offerId,
       generatedAt: after.generatedAt,
-      disclosure: disclosureOf(lineage.amendments.length),
+      disclosure: replayDisclosureOf(lineage.amendments.length, phase),
       sourceName: lineage.sourceName,
       filings,
       facts,

@@ -38,6 +38,7 @@ const OFFER_REGISTRY: Readonly<Record<string, string>> = {
   "20260326001272": "livestock-8",
   "20260414002068": "livestock-8",
   "20260806000159": "livestock-9",
+  "20260814003572": "livestock-9",
 };
 
 export const resolveOfferId = (rcpNo: string): string =>

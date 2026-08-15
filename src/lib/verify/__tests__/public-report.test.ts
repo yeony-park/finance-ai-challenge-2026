@@ -66,6 +66,62 @@ describe("공개 리포트 — 개인정보 부재 (구조 검사)", () => {
   });
 });
 
+const REPLAY_DIR = "data/public/replay/livestock-9";
+
+const readReplayDiffs = (): readonly { name: string; raw: string }[] =>
+  readdirSync(REPLAY_DIR)
+    .filter((name) => /^diff-.*\.json$/.test(name))
+    .map((name) => ({
+      name,
+      raw: readFileSync(`${REPLAY_DIR}/${name}`, "utf8"),
+    }));
+
+const collectRcpNos = (value: unknown, found: Set<string>): Set<string> => {
+  if (Array.isArray(value)) {
+    for (const item of value) collectRcpNos(item, found);
+    return found;
+  }
+  if (value !== null && typeof value === "object") {
+    for (const [key, child] of Object.entries(value)) {
+      if (key === "rcpNo" && typeof child === "string") found.add(child);
+      collectRcpNos(child, found);
+    }
+  }
+  return found;
+};
+
+describe("공개 정정 리플레이 — 개인정보 부재 (정정 발췌 포함 구조 검사)", () => {
+  test("커밋된 정정 diff가 최소 1건 있다", () => {
+    expect(readReplayDiffs().length).toBeGreaterThan(0);
+  });
+
+  test("9자리 이상 숫자 연속은 계보의 공시 접수번호 외에 존재하지 않는다", () => {
+    for (const { name, raw } of readReplayDiffs()) {
+      const allowed = collectRcpNos(JSON.parse(raw), new Set());
+      const longDigits = new Set(raw.match(/\d{9,}/g) ?? []);
+      expect(
+        [...longDigits].filter((digits) => !allowed.has(digits)),
+        `${name}: 이력번호·농장 식별자로 보이는 숫자열이 남아 있습니다`,
+      ).toEqual([]);
+    }
+  });
+
+  test("정정 발췌에 도로명 상세주소·번지·농장번호·행정구역 원문이 남지 않는다", () => {
+    for (const { name, raw } of readReplayDiffs()) {
+      for (const pattern of [
+        /[가-힣]+로\d+번길/,
+        /번지/,
+        /농장번호\s*\d/,
+        /[가-힣]{2,}(시|군|구|읍|면|동)(?![가-힣])/,
+      ]) {
+        expect(pattern.test(raw), `${name}: ${pattern} 가 남아 있습니다`).toBe(
+          false,
+        );
+      }
+    }
+  });
+});
+
 describe("toPublicReport — 순수 변환 계약", () => {
   const synthetic: ReportSnapshot = {
     offerId: "livestock-9",

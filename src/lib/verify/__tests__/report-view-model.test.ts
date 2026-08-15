@@ -155,7 +155,7 @@ describe("toDemoView — 문서 버전·리플레이", () => {
     const view = toDemoView(loaded);
     const text = view.history.items.map((i) => `${i.title} ${i.meta}`).join(" ");
 
-    expect(text).toContain("2026. 8. 6.");
+    expect(text).toContain("2026. 8. 14.");
     expect(text).toContain(`${loaded.versionCount}건`);
     expect(text).toContain(loaded.report.notes[0] ?? "");
   });
