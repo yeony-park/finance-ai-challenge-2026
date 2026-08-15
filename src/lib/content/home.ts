@@ -1,7 +1,20 @@
 import { DEPOSIT_PROTECTION_NOTICE } from "@/lib/verify/contract/notices";
 import type { PublicSourceRef } from "./checklist";
 
-export const HOME_HERO_TITLE = "조각투자, 뭘 확인해야 할까요?";
+export interface HeroTitlePart {
+  readonly text: string;
+  readonly isMark?: boolean;
+}
+
+export const HOME_HERO_TITLE_PARTS: readonly HeroTitlePart[] = [
+  { text: "조각투자, " },
+  { text: "뭘 확인해야", isMark: true },
+  { text: " 할까요?" },
+];
+
+export const HOME_HERO_TITLE = HOME_HERO_TITLE_PARTS.map(
+  (part) => part.text,
+).join("");
 
 export const HOME_HERO_LEAD =
   "등급도 추천도 없습니다. 증권신고서와 국가 공공데이터를 대조한 실측으로 확인 항목에 답하고, 근거가 없으면 “대조 불가”라고 말합니다.";

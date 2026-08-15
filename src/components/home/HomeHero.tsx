@@ -7,7 +7,7 @@ import {
   CATEGORY_ENTRIES,
   EXAMPLE_QUESTIONS,
   HOME_HERO_LEAD,
-  HOME_HERO_TITLE,
+  HOME_HERO_TITLE_PARTS,
   INTRO_CARDS,
   SCAFFOLD_NOTICE,
   SEARCH_PLACEHOLDER,
@@ -132,7 +132,15 @@ export function HomeHero() {
     <section className={`${s.section} ${s.hero}`} aria-labelledby="home-hero-title">
       <div className={s.wrap}>
         <h1 id="home-hero-title" className={s.heroTitle}>
-          {HOME_HERO_TITLE}
+          {HOME_HERO_TITLE_PARTS.map((part) =>
+            part.isMark ? (
+              <em key={part.text} className={s.mark}>
+                {part.text}
+              </em>
+            ) : (
+              <span key={part.text}>{part.text}</span>
+            ),
+          )}
         </h1>
         <p className={s.heroLead}>{HOME_HERO_LEAD}</p>
 

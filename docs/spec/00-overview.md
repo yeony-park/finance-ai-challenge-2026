@@ -61,7 +61,7 @@ M1은 **기존 파일 무수정·순수 추가**만 한다. 기존 `adapters/`·
 | 이의제기 접수 주소·처리 기한 | 팀 공용 이메일 · 접수 확인 2영업일 · 1차 회신 7영업일 | `04-expression-rules.md` |
 | AI 모델 접근 단일화 | 스파인 LLM 경계로 수렴 (직결은 어댑터로 흡수) | `06-ai-guardrails.md` §7 |
 | 의존성 제로 검증 하니스 도입 | 제출 전 게이트로 도입 | `07-asset-map.md` yeonjeong 계보 |
-| 홈/레이아웃/globals.css 3벌 해소 | M2 신규 작성 (main 디자인 시스템 기준) | `07-asset-map.md` 이중화 표 |
+| 홈/레이아웃/globals.css 3벌 해소 | M2 신규 작성 — **검증 리포트 계보(`--ds-*`) 기준 통일** (2026-08-16 오너 결정으로 main 블루 기준에서 변경, 근거 `docs/design/design-system.md`) | `07-asset-map.md` 이중화 표 |
 | 대화 입력 로그 보존 기간 | 30일 | `05-data-policy.md` §4 |
 | 미술품 작가명의 외부 AI 모델 전송 | 전송 불가 (화면 표기만 허용) | `05-data-policy.md` §1 |
 
