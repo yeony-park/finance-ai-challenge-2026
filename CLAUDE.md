@@ -12,6 +12,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 발행사가 DART에 공시한 내용(증권신고서)을 공공 원장(축산물이력제·국토부 실거래가·축평원 경락가)과
 대조해 실재성·가격 적정성·이행을 판정한다. LLM의 역할은 비정형 신고서에서 검증 가능한
 claim을 추출하는 것으로 한정된다. 현황·계획: `README.md`, `docs/planning/페이즈-계획.md`.
+팀 통합 공통 명세(카테고리 계약·어휘·표현 규칙·데이터 정책): `docs/spec/00-overview.md` (v1-draft).
 
 ## 명령어
 
@@ -46,8 +47,11 @@ npm run data:manifest                  # data/MANIFEST.md 재생성 (직접 수�
   `claims/`(LLM 추출 + 규칙 교차검증) → `adapters/`(축산물이력제·RTMS·경락가) → `judge/`(3값 판정)
   → `report/`(build → mask → public) → `narrative/`(눈높이 서술). `amend/`(정정 감시·리플레이),
   `track-record/`, `goldset/`은 부속 축. 각 CLI가 npm 스크립트의 진입점
-- `src/app/` — App Router 화면(`/`, `/methodology`, `/offers/[id]`) + API
+- `src/app/` — App Router 화면(`/` 입문자 홈, `/offers` 목록, `/offers/[id]` 리포트,
+  `/cattle`·`/pig`·`/art`·`/real-estate` 카테고리 착지, `/methodology`) + API
   (`/api/health`, `/api/verify/[id]`, `/api/cron/monitor` — vercel.json cron 주 2회)
+- `src/lib/content/` — 홈·체크리스트 문안의 단일 진실. 신규 사용자 대면 문안은 이 모듈에 두고
+  출력 필터 감사 테스트(`content/__tests__/home-copy.test.ts`)를 통과해야 한다
 - **화면은 캐시만 읽는다** — 모든 수치·문구는 `data/public/{offerId}/report-*.json` 등
   사전 생성 산출물에서 파생. 외부 API를 렌더 경로에서 직접 호출하지 않는다
   (예외: `POST /api/verify/[id]` 라이브 재검증, 실패 시 mode:"snapshot" 정직 폴백)
@@ -68,8 +72,10 @@ npm run data:manifest                  # data/MANIFEST.md 재생성 (직접 수�
 
 - **판정 어휘**: match="일치", mismatch="원장 불일치", unverifiable="대조 불가"("미확인"은
   unverifiable 전용). 근거 0건이면 판정하지 않는다. 성별 수→거세는 예상된 상태 전이로 match
-- **UI 자기보고형 금지**: 화면 문장의 주어는 공모·자산이지 서비스가 아니다. 설득 서사는
-  `/methodology`와 기획서 담당
+- **UI 자기보고형 금지 (리포트 표면 한정)**: 검증 리포트·공모 목록 화면 문장의 주어는
+  공모·자산이지 서비스가 아니다. 설득 서사는 `/methodology`와 기획서 담당. 홈·입문·카테고리
+  표면의 서비스 서술은 `docs/spec/04-expression-rules.md`(시작 촉구·집계 점수 금지, 검증 범위
+  한정, 고정 고지 세트)를 따른다
 - **산문 주석 금지**: 코드 주석은 기능성 프래그마만 허용. 서브에이전트 위임 시 프롬프트에 명시
 - **에이전트 위임 시 `git restore`/`git checkout` 금지** 조항 필수(미커밋 작업 파괴 사고 이력).
   CSS·시각 검증 없이 스타일 파일 대량 수정을 완료 처리하지 말 것(0바이트 module.css도 빌드는 통과)
