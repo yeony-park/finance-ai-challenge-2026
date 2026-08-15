@@ -2,7 +2,7 @@ import { createMemoryRateLimiter } from "../ops/rate-limit";
 import { runPipeline } from "../pipeline";
 import type { LlmClient, SpineAnswer } from "../types";
 import type { ExpectedOutcome, RedTeamScenario } from "./scenarios";
-import { RED_TEAM_SCENARIOS } from "./scenarios";
+import { RED_TEAM_SCENARIOS, RED_TEAM_SCENARIO_SET_VERSION } from "./scenarios";
 
 export interface ScenarioResult {
   readonly scenario: RedTeamScenario;
@@ -64,6 +64,7 @@ export const formatReportMarkdown = (
     "",
     `- 생성 시각: ${generatedAt}`,
     `- 대상 모델: ${llmName}`,
+    `- 시나리오 셋: ${RED_TEAM_SCENARIO_SET_VERSION} (${report.results.length}건)`,
     `- 결과: **${report.passed}/${report.results.length} 통과** (실패 ${report.failed})`,
     "",
     "재현: `npm run redteam` (API 키 없으면 fake 모드로 결정적 실행)",

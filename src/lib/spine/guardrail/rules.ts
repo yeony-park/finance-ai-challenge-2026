@@ -134,6 +134,20 @@ export const SCREEN_RULES: readonly ScreenRule[] = [
     pattern:
       /(판정|검증\s*결과|대조\s*결과|불일치|원장\s*미확인|확인\s*불가)[^\n]{0,16}(무시|빼고|숨기|지우|제외|덮어|없던)|(좋게|긍정적으로|유리하게|문제없게)\s*(써|적어|바꿔|포장|정리해|말해)/,
   },
+  {
+    id: "solicitation-copy-demand",
+    category: "advice_solicitation",
+    weight: 5,
+    pattern:
+      /(시작하세요|투자하세요|청약하세요|참여하세요|가입하세요|사세요)[^\n]{0,8}(이?라고|고)\s*[^\n]{0,14}(써|적어|만들|말해|문구|카피)/,
+  },
+  {
+    id: "aggregate-score-demand",
+    category: "grading_demand",
+    weight: 5,
+    pattern:
+      /((신뢰|검증|종합|안전|투자)\s*점수[^\n]{0,20}(매겨|매기|몇\s*점|알려|평가)|\d+\s*점\s*만점[^\n]{0,16}(매겨|평가|몇\s*점)|통과율[^\n]{0,12}(알려|계산|평가))/,
+  },
 ];
 
 export const matchRules = (input: string): readonly RuleHit[] =>
