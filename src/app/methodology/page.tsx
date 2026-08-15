@@ -308,7 +308,7 @@ export default function MethodologyPage() {
           </p>
         </section>
 
-        <Link href="/" className={s.backLink}>
+        <Link href="/offers" className={s.backLink}>
           <span aria-hidden="true">←</span>
           공모 목록으로 돌아가기
         </Link>

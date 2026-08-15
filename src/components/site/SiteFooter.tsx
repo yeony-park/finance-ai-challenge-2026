@@ -1,7 +1,17 @@
 import Link from "next/link";
 
+import { FIXED_NOTICES } from "@/lib/verify/contract/notices";
 import { DATA_SOURCES, SERVICE_NAME, SERVICE_ROLE } from "./service";
 import s from "./shell.module.css";
+
+const FOOTER_NAV: readonly { href: string; label: string }[] = [
+  { href: "/cattle", label: "한우" },
+  { href: "/pig", label: "돼지" },
+  { href: "/art", label: "미술품" },
+  { href: "/real-estate", label: "부동산" },
+  { href: "/offers", label: "검증 리포트" },
+  { href: "/methodology", label: "검증 방법" },
+];
 
 const VERDICT_TERMS: readonly string[] = [
   "일치 — 공시 내용이 공공 데이터에서 확인됩니다",
@@ -19,6 +29,15 @@ export function SiteFooter() {
             <p className={s.footerTagline}>
               {SERVICE_ROLE} · 증권신고서와 국가 공공데이터 대조
             </p>
+            <ul className={s.footerNavList}>
+              {FOOTER_NAV.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href} className={s.footerLink}>
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
 
           <div>
@@ -54,11 +73,15 @@ export function SiteFooter() {
         </div>
 
         <div className={s.disclaimer}>
-          <p>
-            <span className={s.disclaimerStrong}>본 서비스는 투자 권유·자문이 아닙니다.</span>{" "}
-            특정 공모의 청약을 권유하거나 만류하지 않으며, 수익률이나 투자 위험의 크기를 예측하지
-            않습니다. 제공하는 것은 공시 내용과 공공 데이터의 대조 결과뿐입니다.
-          </p>
+          {FIXED_NOTICES.map((notice, index) => (
+            <p key={notice}>
+              {index === 0 ? (
+                <span className={s.disclaimerStrong}>{notice}</span>
+              ) : (
+                notice
+              )}
+            </p>
+          ))}
           <p>
             대조 결과가 &ldquo;원장 불일치&rdquo;라는 것은 해당 시점의 공개 기록과 값이
             다르다는 사실만을 뜻하며, 그 원인이나 의도를 단정하지 않습니다.{" "}
@@ -70,8 +93,7 @@ export function SiteFooter() {
             에서 확인할 수 있습니다.
           </p>
           <p>
-            화면에 표시되는 발행사명·이력번호·소재지는 익명화 처리된 상태입니다. 최종 판단과 그
-            결과에 대한 책임은 이용자 본인에게 있습니다.
+            화면에 표시되는 발행사명·이력번호·소재지는 익명화 처리된 상태입니다.
           </p>
         </div>
 

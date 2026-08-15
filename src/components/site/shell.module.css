@@ -220,3 +220,23 @@
   font-size: var(--ds-text-2xs);
   color: var(--ds-ink-faint);
 }
+
+@media (max-width: 720px) {
+  .nav {
+    overflow-x: auto;
+    max-width: 60vw;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .nav::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.footerNavList {
+  margin-top: var(--ds-space-4);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-2) var(--ds-space-4);
+  font-size: var(--ds-text-sm);
+}

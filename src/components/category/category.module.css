@@ -1,0 +1,124 @@
+.slot {
+  margin-top: var(--ds-space-7);
+}
+
+.slotTitle {
+  font-size: var(--jj-type-subtitle-size);
+  line-height: var(--jj-type-subtitle-line);
+  font-weight: var(--jj-type-heading-weight);
+  color: var(--jj-ink);
+  word-break: keep-all;
+}
+
+.slotLead {
+  margin-top: var(--ds-space-2);
+  font-size: var(--jj-type-sub-size);
+  line-height: var(--jj-type-sub-line);
+  color: var(--jj-graphite);
+  max-width: 70ch;
+  word-break: keep-all;
+}
+
+.layerTable {
+  margin-top: var(--ds-space-4);
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--jj-type-main-size);
+}
+.layerTable th,
+.layerTable td {
+  text-align: left;
+  vertical-align: top;
+  padding: var(--ds-space-3) var(--ds-space-4) var(--ds-space-3) 0;
+  border-bottom: 1px solid var(--jj-fog);
+}
+.layerTable th {
+  font-weight: 500;
+  color: var(--jj-graphite);
+  font-size: var(--jj-type-sub-size);
+}
+
+.layerName {
+  font-weight: 500;
+  color: var(--jj-ink);
+  white-space: nowrap;
+}
+
+.layerLevel {
+  white-space: nowrap;
+  color: var(--jj-primary-deep);
+  font-size: var(--jj-type-sub-size);
+  font-weight: 500;
+}
+.layerLevelPending {
+  color: var(--jj-graphite);
+}
+
+.layerBasis {
+  color: var(--jj-charcoal);
+  line-height: 1.5;
+}
+
+.tally {
+  margin-top: var(--ds-space-4);
+  padding: var(--ds-space-4) var(--ds-space-5);
+  border-left: 3px solid var(--jj-primary);
+  background: var(--jj-cloud);
+  font-size: var(--jj-type-main-size);
+  color: var(--jj-ink);
+}
+
+.tallyMeta {
+  margin-top: var(--ds-space-2);
+  font-size: var(--jj-type-sub-size);
+  color: var(--jj-graphite);
+}
+
+.offerRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--ds-space-2) var(--ds-space-4);
+  padding-block: var(--ds-space-3);
+  border-bottom: 1px solid var(--jj-fog);
+}
+
+.offerName {
+  font-size: var(--jj-type-main-size);
+  font-weight: 500;
+  color: var(--jj-ink);
+  text-decoration: none;
+}
+.offerName:hover {
+  color: var(--jj-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.offerCounts {
+  font-size: var(--jj-type-sub-size);
+  color: var(--jj-charcoal);
+}
+
+.offerMeta {
+  font-size: var(--jj-type-sub-size);
+  color: var(--jj-graphite);
+}
+
+.emptyNote {
+  margin-top: var(--ds-space-4);
+  padding: var(--ds-space-4) var(--ds-space-5);
+  border: 1px dashed var(--jj-fog);
+  border-radius: var(--jj-radius-card);
+  font-size: var(--jj-type-main-size);
+  color: var(--jj-graphite);
+}
+
+.questionList {
+  margin-top: var(--ds-space-4);
+  display: grid;
+  gap: var(--ds-space-2);
+  font-size: var(--jj-type-main-size);
+  line-height: 1.6;
+  color: var(--jj-charcoal);
+}

@@ -1,57 +1,29 @@
-import { HeroSection } from "@/components/landing/HeroSection";
-import { OfferListSection } from "@/components/landing/OfferListSection";
+import { CategoryGrid } from "@/components/home/CategoryGrid";
+import { ChecklistBand } from "@/components/home/ChecklistBand";
+import { HomeHero } from "@/components/home/HomeHero";
+import { IntroBand } from "@/components/home/IntroBand";
+import { MethodBand } from "@/components/home/MethodBand";
 import { OFFERS, TOTAL_2026_OFFER_COUNT } from "@/components/site/offers";
-import { loadLatestWatchState } from "@/lib/verify/amend/watch-state";
-import { loadLatestReport } from "@/lib/verify/report/load";
-import { buildOfferCard, type OfferCardView } from "@/lib/verify/report/view-model";
-
-const byCloseAsc = (a: OfferCardView, b: OfferCardView): number =>
-  Date.parse(a.schedule.closesAt) - Date.parse(b.schedule.closesAt);
-
-const coverageText = (cohort2026: number, pastClosed: number) => [
-  { text: `2026년 투자계약증권 공모 ${TOTAL_2026_OFFER_COUNT}건 중 ` },
-  { text: `${cohort2026}건`, isStrong: true },
-  { text: "이 국가 공공데이터 대조를 거쳤습니다." },
-  ...(pastClosed > 0
-    ? [
-        { text: " 종료된 공모 " },
-        { text: `${pastClosed}건`, isStrong: true },
-        { text: "의 사후 검증 리포트가 함께 공개돼 있습니다." },
-      ]
-    : []),
-];
+import { coverageSentence } from "@/lib/content/home";
 
 const isCohort2026 = (closesAt: string): boolean =>
   new Date(closesAt).getFullYear() === 2026;
 
-export default async function Home() {
-  const now = new Date();
-
-  const cards = await Promise.all(
-    OFFERS.map(async (offer) => {
-      const [loaded, watch] = await Promise.all([
-        loadLatestReport(offer.id),
-        loadLatestWatchState(offer.id),
-      ]);
-      return buildOfferCard({ offer, now, ...loaded, watch: watch ?? null });
-    }),
-  );
-
-  const open = cards.filter((card) => card.schedule.phase === "open").toSorted(byCloseAsc);
-  const closed = cards
-    .filter((card) => card.schedule.phase === "closed")
-    .toSorted((a, b) => byCloseAsc(b, a));
+export default function Home() {
+  const cohort2026 = OFFERS.filter((offer) =>
+    isCohort2026(offer.subscription.closesAt),
+  ).length;
+  const pastClosed = OFFERS.length - cohort2026;
 
   return (
     <>
-      <HeroSection
-        coverage={coverageText(
-          OFFERS.filter((offer) => isCohort2026(offer.subscription.closesAt)).length,
-          OFFERS.filter((offer) => !isCohort2026(offer.subscription.closesAt)).length,
-        )}
+      <HomeHero />
+      <IntroBand />
+      <CategoryGrid />
+      <MethodBand
+        coverage={coverageSentence(cohort2026, TOTAL_2026_OFFER_COUNT, pastClosed)}
       />
-      <OfferListSection id="open-offers" title="청약 진행 중" cards={open} isMuted />
-      <OfferListSection id="closed-offers" title="청약 종료 · 사후 검증" cards={closed} />
+      <ChecklistBand />
     </>
   );
 }

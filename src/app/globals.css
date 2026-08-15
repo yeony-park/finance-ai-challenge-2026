@@ -69,3 +69,35 @@ html {
 [id^="report-"] {
   scroll-margin-top: calc(var(--ds-header-h) + 3.5rem);
 }
+
+:root {
+  --jj-primary: #024ad8;
+  --jj-primary-bright: #296ef9;
+  --jj-primary-deep: #0e3191;
+  --jj-primary-soft: #c9e0fc;
+  --jj-canvas: #ffffff;
+  --jj-cloud: #f7f7f7;
+  --jj-fog: #e8e8e8;
+  --jj-ink: #1a1a1a;
+  --jj-charcoal: #3d3d3d;
+  --jj-graphite: #636363;
+
+  --jj-type-display-size: clamp(2.5rem, 1.36rem + 4.75vw, 4.5rem);
+  --jj-type-display-line: 1;
+  --jj-type-title-size: clamp(2.25rem, 2.11rem + 0.6vw, 2.75rem);
+  --jj-type-title-line: 1;
+  --jj-type-subtitle-size: 1.5rem;
+  --jj-type-subtitle-line: 1.17;
+  --jj-type-main-size: 1rem;
+  --jj-type-main-line: 1.4;
+  --jj-type-sub-size: 0.875rem;
+  --jj-type-sub-line: 1.5;
+  --jj-type-heading-weight: 500;
+
+  --jj-radius-card: 16px;
+  --jj-radius-button: 4px;
+  --jj-shadow-soft: 0 8px 24px rgba(26, 26, 26, 0.08);
+
+  --jj-section-y: clamp(3rem, 2.1rem + 3.75vw, 5rem);
+  --jj-maxw: 1366px;
+}

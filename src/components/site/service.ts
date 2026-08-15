@@ -1,4 +1,4 @@
-export const SERVICE_NAME = "공시대조";
+export const SERVICE_NAME = "JeomJeom";
 
 export const SERVICE_ROLE = "조각투자 공시 대조 검증";
 

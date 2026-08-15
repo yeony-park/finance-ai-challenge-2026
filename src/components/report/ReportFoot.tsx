@@ -46,7 +46,7 @@ export function ReportFoot() {
         </div>
 
         <div className={s.footLinks}>
-          <Link href="/" className={s.buttonGhost}>
+          <Link href="/offers" className={s.buttonGhost}>
             <span aria-hidden="true">←</span>
             공모 목록으로 돌아가기
           </Link>

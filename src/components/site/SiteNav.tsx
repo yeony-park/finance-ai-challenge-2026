@@ -12,9 +12,16 @@ interface NavItem {
 }
 
 const NAV_ITEMS: readonly NavItem[] = [
-  { href: "/#reports", label: "검증 리포트", match: "/" },
+  { href: "/cattle", label: "한우", match: "/cattle" },
+  { href: "/pig", label: "돼지", match: "/pig" },
+  { href: "/art", label: "미술품", match: "/art" },
+  { href: "/real-estate", label: "부동산", match: "/real-estate" },
+  { href: "/offers", label: "검증 리포트", match: "/offers" },
   { href: "/methodology", label: "검증 방법", match: "/methodology" },
 ];
+
+const isCurrent = (pathname: string, match: string): boolean =>
+  pathname === match || pathname.startsWith(`${match}/`);
 
 export function SiteNav() {
   const pathname = usePathname();
@@ -26,7 +33,7 @@ export function SiteNav() {
           key={item.href}
           href={item.href}
           className={s.navLink}
-          aria-current={pathname === item.match ? "page" : undefined}
+          aria-current={isCurrent(pathname, item.match) ? "page" : undefined}
         >
           {item.label}
         </Link>
