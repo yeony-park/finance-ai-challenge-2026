@@ -125,3 +125,24 @@ M3(AI 연결) 범위.
 
 **알려진 한계** — 서브셋 파이프라인(fonttools 등)을 도입하면 셀프호스팅과 성능을 양립할 수
 있다 — M3+ 검토 항목으로 남김. 제출 동결 직전 재배포 리허설에서 빌드 재검증 필요.
+
+## 배포 + 프로젝트명 도메인 (2026-08-16)
+
+**결정과 근거** — M2 구현 v1 + 9호 실정정 데이터를 프로덕션에 배포했다(오너 직접 실행,
+dpl_Eqgy…UEb). 배포 전 `.vercelignore`에 `data/scratch-fake`(미마스킹 내부 리포트 포함)
+차단을 추가하고 `deploy --dry` 매니페스트로 실측 — 업로드 목록에 공개 데이터만 포함
+(raw/reports/snapshots/scratch-fake/.env/docs 0건). 프로젝트명 도메인은 `jeomjeom.vercel.app`이
+제3자 선점(무관 상용 사이트)이라 `jeom-jeom.vercel.app`으로 확보 — CLI `domains add`는
+vercel.app 서브도메인을 거부하고, 수동 `alias set`은 Standard Deployment Protection 때문에
+SSO 302가 걸린다는 것을 실측으로 확인, 대시보드 Settings→Domains 등록(오너 수행)으로 공개
+프로덕션 도메인화. 구 도메인 병행 유지 — 심사 기간 무중단 요건에 영향 없음.
+
+**트레이드오프** — 프로젝트 개명(기존 URL 폐기) 대신 도메인 추가를 택해 URL이 2개가 됐다 —
+대외 안내는 jeom-jeom으로 단일화하되 구 URL 링크가 어딘가 남아도 깨지지 않는다. 하이픈
+표기(jeom-jeom)는 원명(jeomjeom) 선점에 따른 차선.
+
+**eval 영향** — 배포 검증 절차 기록: 신 도메인 9라우트 200 + 핵심 문구 3종(새 홈 타이틀·
+층별 선언·실제 정정 배지), 구 도메인 200 유지.
+
+**알려진 한계** — 두 도메인의 검색엔진 중복 인덱싱 가능(canonical 미설정). 기획서·기능명세서
+전사(M7) 시 제출 URL을 jeom-jeom으로 확정 표기해야 한다.

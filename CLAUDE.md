@@ -88,4 +88,7 @@ npm run data:manifest                  # data/MANIFEST.md 재생성 (직접 수�
 Vercel CLI 수동 배포 — git 연동 없음(푸시는 배포를 트리거하지 않는다):
 `npx -y vercel@58.9.2 deploy --prod` (58.9.4는 "Not authorized" 회귀).
 Vercel CLI는 gitignore를 무시하므로 `.vercelignore`가 PII·env 차단을 담당한다 — 수정 시 dry-run 검증.
-프로덕션: https://finance-hackathon-black.vercel.app
+프로덕션: https://jeom-jeom.vercel.app + 구 도메인 https://finance-hackathon-black.vercel.app 병행
+(둘 다 프로젝트 프로덕션 도메인 — 배포마다 자동 갱신. `jeomjeom.vercel.app`은 제3자 선점으로 사용 불가.
+Standard Deployment Protection이 켜져 있어 수동 `vercel alias`는 SSO 벽에 막힌다 — 도메인 추가는
+대시보드 Settings→Domains에서만).

@@ -47,7 +47,7 @@ LLM은 비정형 신고서에서 검증 가능한 주장(claim)을 추출하는 
 - 가축 9호 기재정정(8/14 접수, rcpNo 20260814003572)이 감시 파이프라인에 포착됨. 실제 정정본 기준 재검증·리플레이 반영은 미완.
 - S4: 외부 사용성 테스트, 골드셋 F1 측정, 기획서·기능명세서 전사, 9/5 제출.
 
-배포: https://finance-hackathon-black.vercel.app (Vercel CLI 수동 배포, git 연동 없음). 원천 데이터는 로컬 전용이며 마스킹된 공개 산출물(`data/public/`)만 커밋·배포한다 ([`data/MANIFEST.md`](data/MANIFEST.md)).
+배포: https://jeom-jeom.vercel.app (구 https://finance-hackathon-black.vercel.app 병행 유지 — 두 도메인 모두 같은 프로덕션, Vercel CLI 수동 배포·git 연동 없음). 원천 데이터는 로컬 전용이며 마스킹된 공개 산출물(`data/public/`)만 커밋·배포한다 ([`data/MANIFEST.md`](data/MANIFEST.md)).
 
 데모 2축: 가축 9호(뱅카우 한우, 청약 9/8~9/22 — 8/14 기재정정으로 변경, 심사 기간 내 청약 진행) 라이브 검증 + 종료 공모 7건 사후 검증.
 
