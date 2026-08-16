@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { IBM_Plex_Mono, Noto_Sans_KR, Noto_Serif_KR } from "next/font/google";
 
 import { MotionProvider } from "@/components/motion/MotionProvider";
+import { OnboardingDialog } from "@/components/home/OnboardingDialog";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SERVICE_DEFINITION, SERVICE_NAME, SERVICE_ROLE } from "@/components/site/service";
@@ -67,6 +68,7 @@ export default function RootLayout({
             {children}
           </main>
           <SiteFooter />
+          <OnboardingDialog />
         </MotionProvider>
       </body>
     </html>

@@ -31,17 +31,15 @@ import {
 } from "../market-context";
 import {
   AI_ROLE_SENTENCE,
-  coverageSentence,
   EXAMPLE_QUESTIONS,
   FOLLOW_UP_LABEL,
   followUpQuestions,
   HOME_HERO_LEAD,
   HOME_HERO_TITLE,
   INTRO_CARDS,
-  METHOD_LAYERS,
+  METHOD_STEP_TITLE,
   SCAFFOLD_NOTICE,
   SEARCH_PLACEHOLDER,
-  VERDICT_SENTENCE,
   type FollowUpKey,
 } from "../home";
 import {
@@ -73,10 +71,8 @@ const ALL_COPY: readonly string[] = [
   SCAFFOLD_NOTICE,
   AI_ROLE_SENTENCE,
   SEARCH_PLACEHOLDER,
-  VERDICT_SENTENCE,
+  METHOD_STEP_TITLE,
   CHECKLIST_NOTICE,
-  coverageSentence(3, 8, 7),
-  coverageSentence(1, 8, 0),
   ...EXAMPLE_QUESTIONS.map((question) => question.label),
   ...INTRO_CARDS.flatMap((card) => [card.title, ...card.body]),
   ...INTRO_CARDS.flatMap((card) => card.sources.map((source) => source.label)),
@@ -102,7 +98,6 @@ const ALL_COPY: readonly string[] = [
   TIMELINE_REVERIFIED,
   TIMELINE_REVERIFY_PENDING,
   TIMELINE_REPORT_LINK,
-  ...METHOD_LAYERS.flatMap((layer) => [layer.name, layer.detail]),
   ...TRUST_CHECKLIST.flatMap((item) => [
     item.title,
     item.question,

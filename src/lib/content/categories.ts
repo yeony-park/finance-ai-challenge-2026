@@ -23,7 +23,7 @@ export const CATEGORY_REGISTRY: readonly CategoryInfo[] = [
     id: "pig",
     href: "/pig",
     label: "한돈",
-    subLabel: "국산 돼지",
+    subLabel: null,
     note: "국산 돼지 공모 — 착지 준비 중, 공통 검증 기반 연결 대기",
     preview: [
       "대상 공모: 한돈 투자계약증권 3건 — 증권신고서 원문 확보",

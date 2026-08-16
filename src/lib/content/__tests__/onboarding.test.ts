@@ -16,9 +16,11 @@ import {
   LEVEL_OPTIONS,
   LEVEL_QUESTION,
   levelShort,
+  ONBOARDING_DONE_LABEL,
   ONBOARDING_LEAD,
+  ONBOARDING_OPEN_LABEL,
+  ONBOARDING_SKIP_LABEL,
   ONBOARDING_TITLE,
-  PROFILE_RESET_LABEL,
   STORAGE_NOTE,
 } from "../onboarding";
 
@@ -35,7 +37,9 @@ const ALL_COPY: readonly string[] = [
   CHECK_ORDER_NOTE,
   INTEREST_TAG,
   CATEGORY_ORDER_NOTE,
-  PROFILE_RESET_LABEL,
+  ONBOARDING_SKIP_LABEL,
+  ONBOARDING_DONE_LABEL,
+  ONBOARDING_OPEN_LABEL,
   ...LEVEL_OPTIONS.flatMap((option) => [option.label, option.short]),
   ...CONCERN_OPTIONS.flatMap((option) => [option.label, option.short]),
 ];

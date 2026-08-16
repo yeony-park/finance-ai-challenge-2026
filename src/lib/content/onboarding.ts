@@ -52,7 +52,13 @@ export const INTEREST_TAG = "내 관심";
 export const CATEGORY_ORDER_NOTE =
   "내 관심 카테고리가 앞에 있습니다 — 네 카테고리는 그대로입니다.";
 
-export const PROFILE_RESET_LABEL = "초기화";
+export const ONBOARDING_SKIP_LABEL = "건너뛰고 둘러보기";
+
+export const ONBOARDING_DONE_LABEL = "이대로 시작하기";
+
+export const ONBOARDING_OPEN_LABEL = "나의 확인 목록 설정";
+
+export const ONBOARDING_OPEN_EVENT = "jeomjeom:onboarding-open";
 
 export const levelShort = (level: ProfileLevel): string =>
   LEVEL_OPTIONS.find((option) => option.level === level)?.short ?? level;

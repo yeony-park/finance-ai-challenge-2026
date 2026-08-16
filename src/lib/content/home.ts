@@ -156,37 +156,5 @@ export const INTRO_CARDS: readonly IntroCard[] = [
   },
 ];
 
-export interface MethodLayer {
-  readonly name: string;
-  readonly detail: string;
-}
 
-export const METHOD_LAYERS: readonly MethodLayer[] = [
-  {
-    name: "실재성",
-    detail: "공시된 기초자산을 공적 원장에서 단위별로 대조합니다.",
-  },
-  {
-    name: "가격",
-    detail: "공모가의 시장 통계 내 위치와 비교군 수를 함께 표시합니다.",
-  },
-  {
-    name: "이행",
-    detail: "정정 접수를 감시하고, 정정 전후를 같은 절차로 다시 대조합니다.",
-  },
-];
-
-export const VERDICT_SENTENCE =
-  "판정은 세 값뿐입니다 — 일치 · 원장 불일치 · 대조 불가. 근거가 없으면 판정하지 않습니다.";
-
-export const coverageSentence = (
-  cohort2026: number,
-  totalCohortCount: number,
-  pastClosed: number,
-): string =>
-  [
-    `2026년 투자계약증권 공모 ${totalCohortCount}건 중 ${cohort2026}건이 국가 공공데이터 대조를 거쳤습니다.`,
-    ...(pastClosed > 0
-      ? [`종료된 공모 ${pastClosed}건의 사후 검증 리포트가 함께 공개돼 있습니다.`]
-      : []),
-  ].join(" ");
+export const METHOD_STEP_TITLE = "어떻게 대조하는지";

@@ -1,9 +1,11 @@
 "use client";
 
+import { usePathname } from "next/navigation";
+import { useCallback, useEffect, useRef, useState } from "react";
+
 import {
   isProfileEmpty,
   patchProfile,
-  resetProfile,
   useProfile,
   type CategoryId,
   type ProfileConcern,
@@ -11,22 +13,39 @@ import {
 } from "@/components/site/profile";
 import { CATEGORY_REGISTRY, categoryDisplayLabel } from "@/lib/content/categories";
 import {
-  CHECKLIST_LINK_LABEL,
   CONCERN_OPTIONS,
   CONCERN_QUESTION,
-  concernShort,
   INTEREST_HINT,
   INTEREST_QUESTION,
   LEVEL_OPTIONS,
   LEVEL_QUESTION,
-  levelShort,
+  ONBOARDING_DONE_LABEL,
   ONBOARDING_LEAD,
+  ONBOARDING_OPEN_EVENT,
+  ONBOARDING_SKIP_LABEL,
   ONBOARDING_TITLE,
-  PROFILE_RESET_LABEL,
   STORAGE_NOTE,
 } from "@/lib/content/onboarding";
 
 import s from "./home.module.css";
+
+const SEEN_KEY = "jeomjeom.onboarding.v1";
+
+const readSeen = (): boolean => {
+  try {
+    return window.localStorage.getItem(SEEN_KEY) !== null;
+  } catch {
+    return true;
+  }
+};
+
+const markSeen = (): void => {
+  try {
+    window.localStorage.setItem(SEEN_KEY, "seen");
+  } catch {
+    return;
+  }
+};
 
 const toggleLevel = (current: ProfileLevel | null, next: ProfileLevel): void =>
   patchProfile({ level: current === next ? null : next });
@@ -46,26 +65,59 @@ const toggleInterest = (
       : [...current, id],
   });
 
-export function OnboardingBand() {
+export function OnboardingDialog() {
   const profile = useProfile();
+  const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(false);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const attemptedRef = useRef(false);
 
-  const summaryParts = [
-    profile.level ? `눈높이 ${levelShort(profile.level)}` : null,
-    profile.concern ? `걱정 ${concernShort(profile.concern)}` : null,
-    profile.interests.length > 0
-      ? `관심 ${profile.interests
-          .map((id) => CATEGORY_REGISTRY.find((entry) => entry.id === id)?.label ?? id)
-          .join("·")}`
-      : null,
-  ].filter((part): part is string => part !== null);
+  const close = useCallback(() => {
+    markSeen();
+    setIsOpen(false);
+  }, []);
+
+  useEffect(() => {
+    if (attemptedRef.current || pathname !== "/") return;
+    if (readSeen() || !isProfileEmpty(profile)) return;
+    const id = window.setTimeout(() => {
+      attemptedRef.current = true;
+      setIsOpen(true);
+    }, 300);
+    return () => window.clearTimeout(id);
+  }, [pathname, profile]);
+
+  useEffect(() => {
+    const open = () => setIsOpen(true);
+    window.addEventListener(ONBOARDING_OPEN_EVENT, open);
+    return () => window.removeEventListener(ONBOARDING_OPEN_EVENT, open);
+  }, []);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    closeRef.current?.focus();
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") close();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [isOpen, close]);
+
+  if (!isOpen) return null;
 
   return (
-    <section id="start" className={s.section} aria-labelledby="onboarding-title">
-      <div className={s.wrap}>
-        <h2 id="onboarding-title" className={s.sectionTitle}>
+    <div className={s.obOverlay} onClick={close} role="presentation">
+      <div
+        className={s.obDialog}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="onboarding-dialog-title"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <h2 id="onboarding-dialog-title" className={s.obDialogTitle}>
           {ONBOARDING_TITLE}
         </h2>
-        <p className={s.sectionLead}>{ONBOARDING_LEAD}</p>
+        <p className={s.obDialogLead}>{ONBOARDING_LEAD}</p>
 
         <div className={s.obGroup} role="group" aria-label={LEVEL_QUESTION}>
           <p className={s.obQuestion}>{LEVEL_QUESTION}</p>
@@ -119,23 +171,18 @@ export function OnboardingBand() {
           </div>
         </div>
 
-        <div className={s.obFoot}>
-          <a href="#checklist" className={s.bandLink}>
-            {CHECKLIST_LINK_LABEL}
-          </a>
-          {summaryParts.length > 0 ? (
-            <span className={s.obSummary} aria-live="polite">
-              적용됨: {summaryParts.join(" · ")}
-            </span>
-          ) : null}
-          {!isProfileEmpty(profile) ? (
-            <button type="button" className={s.chip} onClick={resetProfile}>
-              {PROFILE_RESET_LABEL}
-            </button>
-          ) : null}
+        <div className={s.obDialogFoot}>
+          <button
+            ref={closeRef}
+            type="button"
+            className={s.obDone}
+            onClick={close}
+          >
+            {isProfileEmpty(profile) ? ONBOARDING_SKIP_LABEL : ONBOARDING_DONE_LABEL}
+          </button>
         </div>
         <p className={s.obStorage}>{STORAGE_NOTE}</p>
       </div>
-    </section>
+    </div>
   );
 }

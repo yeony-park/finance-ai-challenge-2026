@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { CATEGORY_REGISTRY } from "@/lib/content/categories";
 import { FIXED_NOTICES } from "@/lib/verify/contract/notices";
+import { OnboardingOpenButton } from "./OnboardingOpenButton";
 import { DATA_SOURCES, SERVICE_NAME, SERVICE_ROLE } from "./service";
 import s from "./shell.module.css";
 
@@ -36,6 +37,7 @@ export function SiteFooter() {
                 </li>
               ))}
             </ul>
+            <OnboardingOpenButton className={s.footerAction} />
           </div>
 
           <div>
