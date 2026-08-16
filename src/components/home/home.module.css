@@ -38,10 +38,10 @@
 
 .heroLead {
   margin-top: var(--ds-space-5);
-  font-size: var(--ds-text-lg);
-  line-height: var(--ds-leading-relaxed);
+  font-size: clamp(1.25rem, 1.02rem + 1.15vw, 1.75rem);
+  line-height: 1.62;
   color: var(--ds-ink-muted);
-  max-width: 52ch;
+  max-width: 44ch;
   word-break: keep-all;
 }
 
@@ -502,7 +502,7 @@
 }
 
 .roadmap {
-  margin: 0;
+  margin: var(--ds-space-8, 3rem) 0 0;
   padding: 0;
   list-style: none;
   display: grid;
