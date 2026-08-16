@@ -113,24 +113,20 @@ export const INTRO_CARDS: readonly IntroCard[] = [
 ];
 
 export interface MethodLayer {
-  readonly layer: "existence" | "price" | "performance";
   readonly name: string;
   readonly detail: string;
 }
 
 export const METHOD_LAYERS: readonly MethodLayer[] = [
   {
-    layer: "existence",
     name: "실재성",
     detail: "공시된 기초자산을 공적 원장에서 단위별로 대조합니다.",
   },
   {
-    layer: "price",
     name: "가격",
     detail: "공모가의 시장 통계 내 위치와 비교군 수를 함께 표시합니다.",
   },
   {
-    layer: "performance",
     name: "이행",
     detail: "정정 접수를 감시하고, 정정 전후를 같은 절차로 다시 대조합니다.",
   },

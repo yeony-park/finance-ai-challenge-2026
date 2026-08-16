@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { IBM_Plex_Mono, Noto_Sans_KR, Noto_Serif_KR } from "next/font/google";
 
 import { MotionProvider } from "@/components/motion/MotionProvider";
-import { ProfileBar } from "@/components/site/ProfileBar";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SERVICE_DEFINITION, SERVICE_NAME, SERVICE_ROLE } from "@/components/site/service";
@@ -64,7 +63,6 @@ export default function RootLayout({
             본문으로 건너뛰기
           </a>
           <SiteHeader />
-          <ProfileBar />
           <main id="content" className={s.main}>
             {children}
           </main>

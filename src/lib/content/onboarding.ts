@@ -47,8 +47,6 @@ export const CONCERN_TAG = "내 걱정";
 export const CHECK_ORDER_NOTE =
   "내 걱정 항목이 맨 위에 있습니다 — 전체 8문항은 그대로입니다.";
 
-export const PROFILE_BAR_LABEL = "개인화 상태";
-export const PROFILE_CHANGE_LABEL = "변경";
 export const PROFILE_RESET_LABEL = "초기화";
 
 export const levelShort = (level: ProfileLevel): string =>

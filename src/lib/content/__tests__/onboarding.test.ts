@@ -16,8 +16,6 @@ import {
   levelShort,
   ONBOARDING_LEAD,
   ONBOARDING_TITLE,
-  PROFILE_BAR_LABEL,
-  PROFILE_CHANGE_LABEL,
   PROFILE_RESET_LABEL,
   STORAGE_NOTE,
 } from "../onboarding";
@@ -33,8 +31,6 @@ const ALL_COPY: readonly string[] = [
   CHECKLIST_LINK_LABEL,
   CONCERN_TAG,
   CHECK_ORDER_NOTE,
-  PROFILE_BAR_LABEL,
-  PROFILE_CHANGE_LABEL,
   PROFILE_RESET_LABEL,
   ...LEVEL_OPTIONS.flatMap((option) => [option.label, option.short]),
   ...CONCERN_OPTIONS.flatMap((option) => [option.label, option.short]),

@@ -1,4 +1,3 @@
-import { GuideIcon } from "@/components/site/icons";
 import { INTRO_CARDS } from "@/lib/content/home";
 
 import s from "./home.module.css";
@@ -20,9 +19,6 @@ export function IntroBand() {
         <div className={s.cardGrid}>
           {INTRO_CARDS.map((card) => (
             <article key={card.id} id={`guide-${card.id}`} className={s.card}>
-              <span className={s.cardIcon}>
-                <GuideIcon target={card.id} />
-              </span>
               <h3 className={s.cardTitle}>{card.title}</h3>
               <div className={s.cardBody}>
                 {card.body.map((line) => (

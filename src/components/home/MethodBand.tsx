@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-import { LayerIcon } from "@/components/site/icons";
 import { AI_ROLE_SENTENCE, METHOD_LAYERS, VERDICT_SENTENCE } from "@/lib/content/home";
 
 import s from "./home.module.css";
@@ -22,9 +21,6 @@ export function MethodBand({ coverage }: { readonly coverage: string }) {
         <div className={s.methodGrid}>
           {METHOD_LAYERS.map((layer) => (
             <div key={layer.name} className={s.card}>
-              <span className={s.cardIcon}>
-                <LayerIcon layer={layer.layer} />
-              </span>
               <h3 className={s.methodName}>{layer.name}</h3>
               <p className={s.methodDetail}>{layer.detail}</p>
             </div>

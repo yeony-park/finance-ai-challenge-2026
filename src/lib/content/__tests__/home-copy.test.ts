@@ -4,6 +4,15 @@ import { filterOutput } from "@/lib/spine/guardrail/output-filter";
 import { CATEGORY_REGISTRY } from "../categories";
 import { CHECKLIST_NOTICE, TRUST_CHECKLIST } from "../checklist";
 import {
+  TIMELINE_AMENDED,
+  TIMELINE_FILED,
+  TIMELINE_LEAD,
+  TIMELINE_REPORT_LINK,
+  TIMELINE_REVERIFIED,
+  TIMELINE_REVERIFY_PENDING,
+  TIMELINE_TITLE_SUFFIX,
+} from "../event-timeline";
+import {
   MARKET_DISCLAIMER,
   MARKET_GAP_NOTE,
   MARKET_LEGEND_AVG,
@@ -55,6 +64,13 @@ const ALL_COPY: readonly string[] = [
   MARKET_DISCLAIMER,
   MARKET_GAP_NOTE,
   MARKET_TABLE_TOGGLE,
+  TIMELINE_TITLE_SUFFIX,
+  TIMELINE_LEAD,
+  TIMELINE_FILED,
+  TIMELINE_AMENDED,
+  TIMELINE_REVERIFIED,
+  TIMELINE_REVERIFY_PENDING,
+  TIMELINE_REPORT_LINK,
   ...METHOD_LAYERS.flatMap((layer) => [layer.name, layer.detail]),
   ...TRUST_CHECKLIST.flatMap((item) => [
     item.title,

@@ -5,7 +5,19 @@ import { CategoryMotif } from "@/components/site/icons";
 import type { OfferEntry } from "@/components/site/offers";
 import { buildOfferSchedule } from "@/components/site/offers";
 import type { CategoryId } from "@/lib/content/categories";
-import { loadLatestWatchState } from "@/lib/verify/amend/watch-state";
+import {
+  TIMELINE_AMENDED,
+  TIMELINE_FILED,
+  TIMELINE_LEAD,
+  TIMELINE_REPORT_LINK,
+  TIMELINE_REVERIFIED,
+  TIMELINE_REVERIFY_PENDING,
+  TIMELINE_TITLE_SUFFIX,
+} from "@/lib/content/event-timeline";
+import {
+  loadLatestWatchState,
+  type WatchState,
+} from "@/lib/verify/amend/watch-state";
 import {
   LAYER_LABELS,
   LAYER_SUPPORT_LABELS,
@@ -39,8 +51,7 @@ export interface CategoryLandingProps {
 interface OfferEvidence {
   readonly offer: OfferEntry;
   readonly loaded: LoadedReport;
-  readonly amendmentCount: number | null;
-  readonly amendmentLatest: string | null;
+  readonly watch: WatchState | null;
 }
 
 const countsSentence = (
@@ -49,6 +60,15 @@ const countsSentence = (
   unverifiable: number,
 ): string =>
   `${VERDICT_LABEL.match} ${match}건 · ${VERDICT_LABEL.mismatch} ${mismatch}건 · ${VERDICT_LABEL.unverifiable} ${unverifiable}건`;
+
+const amendmentLine = (watch: WatchState | null): string => {
+  if (watch === null) return "감시 기록 없음";
+  if (watch.amendmentCount === 0) return "접수된 정정신고서 없음";
+  const latest = watch.amendments.at(-1)?.receivedOn;
+  return `정정신고서 ${watch.amendmentCount}건 접수${
+    latest ? ` (최근 ${formatYmd8(latest)})` : ""
+  }`;
+};
 
 const loadEvidence = async (
   offers: readonly OfferEntry[],
@@ -59,12 +79,7 @@ const loadEvidence = async (
         loadLatestReport(offer.id),
         loadLatestWatchState(offer.id),
       ]);
-      return {
-        offer,
-        loaded,
-        amendmentCount: watch?.amendmentCount ?? null,
-        amendmentLatest: watch?.amendments.at(-1)?.receivedOn ?? null,
-      };
+      return { offer, loaded, watch: watch ?? null };
     }),
   );
 
@@ -82,6 +97,27 @@ export async function CategoryLanding({
       Date.parse(a.subscription.opensAt) - Date.parse(b.subscription.opensAt),
   );
   const evidence = await loadEvidence(byOpenAsc);
+
+  const amended = evidence.filter(
+    (entry) => (entry.watch?.amendmentCount ?? 0) > 0,
+  );
+  const featured = [...amended].sort((a, b) =>
+    (b.watch?.amendments.at(-1)?.receivedOn ?? "").localeCompare(
+      a.watch?.amendments.at(-1)?.receivedOn ?? "",
+    ),
+  )[0];
+  const timelineEntry =
+    featured && featured.watch
+      ? {
+          offer: featured.offer,
+          watch: featured.watch,
+          report: featured.loaded.report,
+        }
+      : null;
+  const isReverified =
+    timelineEntry !== null &&
+    timelineEntry.watch.amendments.at(-1)?.rcpNo ===
+      timelineEntry.report.document.rcpNo;
 
   const totals = evidence.reduce(
     (sum, entry) => ({
@@ -223,24 +259,66 @@ export async function CategoryLanding({
             보여줍니다 — 선별·추천 정렬이 아닙니다.
           </p>
           {evidence.length > 0 ? (
-            <div>
-              {evidence.map((entry) => (
-                <div key={entry.offer.id} className={s.offerRow}>
-                  <Link href={`/offers/${entry.offer.id}`} className={s.offerName}>
-                    {entry.offer.title}
+            <div className={s.offerGrid}>
+              {evidence.map((entry) => {
+                const schedule = buildOfferSchedule(entry.offer, new Date());
+                const { summary } = entry.loaded.report;
+                return (
+                  <Link
+                    key={entry.offer.id}
+                    href={`/offers/${entry.offer.id}`}
+                    className={s.offerCard}
+                  >
+                    <span className={s.offerCardHead}>
+                      <span className={s.offerCardName}>{entry.offer.title}</span>
+                      <span
+                        className={
+                          schedule.phase === "open"
+                            ? s.offerBadgeOpen
+                            : s.offerBadge
+                        }
+                      >
+                        {schedule.badge}
+                      </span>
+                    </span>
+                    <span className={s.offerCardStats}>
+                      <span className={s.offerStat}>
+                        <span className={s.offerStatLabel}>
+                          <span className={`${s.tileMark} ${s.tileMarkMatch}`} />
+                          {VERDICT_LABEL.match}
+                        </span>
+                        <span className={s.offerStatNum}>
+                          {summary.match.toLocaleString("ko-KR")}
+                        </span>
+                      </span>
+                      <span className={s.offerStat}>
+                        <span className={s.offerStatLabel}>
+                          <span className={`${s.tileMark} ${s.tileMarkMiss}`} />
+                          {VERDICT_LABEL.mismatch}
+                        </span>
+                        <span className={s.offerStatNum}>
+                          {summary.mismatch.toLocaleString("ko-KR")}
+                        </span>
+                      </span>
+                      <span className={s.offerStat}>
+                        <span className={s.offerStatLabel}>
+                          <span
+                            className={`${s.tileMark} ${s.tileMarkUnknown}`}
+                          />
+                          {VERDICT_LABEL.unverifiable}
+                        </span>
+                        <span className={s.offerStatNum}>
+                          {summary.unverifiable.toLocaleString("ko-KR")}
+                        </span>
+                      </span>
+                    </span>
+                    <span className={s.offerCardMeta}>
+                      {amendmentLine(entry.watch)}
+                    </span>
+                    <span className={s.offerCardMeta}>청약 {schedule.label}</span>
                   </Link>
-                  <span className={s.offerCounts}>
-                    {countsSentence(
-                      entry.loaded.report.summary.match,
-                      entry.loaded.report.summary.mismatch,
-                      entry.loaded.report.summary.unverifiable,
-                    )}
-                  </span>
-                  <span className={s.offerMeta}>
-                    청약 {buildOfferSchedule(entry.offer, new Date()).label}
-                  </span>
-                </div>
-              ))}
+                );
+              })}
             </div>
           ) : preview ? (
             <ul className={s.previewList}>
@@ -255,37 +333,63 @@ export async function CategoryLanding({
           )}
         </section>
 
-        <section className={s.slot} aria-labelledby={`${title}-events`}>
-          <h2 id={`${title}-events`} className={s.slotTitle}>
-            정정 접수 현황
-          </h2>
-          <p className={s.slotLead}>
-            정정신고서 접수는 상품 화면에 귀속해 표시합니다 — 접수되면 정정
-            전후를 같은 절차로 다시 대조합니다.
-          </p>
-          {evidence.length > 0 ? (
-            <div>
-              {evidence.map((entry) => (
-                <div key={entry.offer.id} className={s.offerRow}>
-                  <span className={s.offerName}>{entry.offer.title}</span>
-                  <span className={s.offerCounts}>
-                    {entry.amendmentCount === null
-                      ? "감시 기록 없음"
-                      : entry.amendmentCount === 0
-                        ? "접수된 정정신고서 없음"
-                        : `정정신고서 ${entry.amendmentCount}건 접수 (최근 ${
-                            entry.amendmentLatest
-                              ? formatYmd8(entry.amendmentLatest)
-                              : "—"
-                          })`}
+        {timelineEntry ? (
+          <section className={s.slot} aria-labelledby={`${title}-events`}>
+            <h2 id={`${title}-events`} className={s.slotTitle}>
+              {timelineEntry.offer.title} — {TIMELINE_TITLE_SUFFIX}
+            </h2>
+            <p className={s.slotLead}>{TIMELINE_LEAD}</p>
+            <div className={s.timeline}>
+              <div className={s.timelineEvent}>
+                <span className={s.timelineDate}>
+                  {formatYmd8(timelineEntry.watch.baseRcpNo.slice(0, 8))}
+                  <span className={s.timelineRcp}>
+                    rcpNo {timelineEntry.watch.baseRcpNo}
                   </span>
+                </span>
+                <span className={s.timelineName}>{TIMELINE_FILED}</span>
+              </div>
+              {timelineEntry.watch.amendments.map((amendment) => (
+                <div
+                  key={amendment.rcpNo}
+                  className={`${s.timelineEvent} ${s.timelineEventAmend}`}
+                >
+                  <span className={s.timelineDate}>
+                    {formatYmd8(amendment.receivedOn)}
+                    <span className={s.timelineRcp}>rcpNo {amendment.rcpNo}</span>
+                  </span>
+                  <span className={s.timelineName}>{TIMELINE_AMENDED}</span>
+                  <span className={s.timelineDetail}>{amendment.reportName}</span>
                 </div>
               ))}
+              <div className={s.timelineEvent}>
+                <span className={s.timelineDate}>
+                  {isReverified
+                    ? formatKstDateTime(timelineEntry.report.generatedAt)
+                    : formatKstDateTime(timelineEntry.watch.checkedAt)}
+                </span>
+                <span className={s.timelineName}>
+                  {isReverified ? TIMELINE_REVERIFIED : TIMELINE_REVERIFY_PENDING}
+                </span>
+                {isReverified ? (
+                  <span className={s.timelineDetail}>
+                    {countsSentence(
+                      timelineEntry.report.summary.match,
+                      timelineEntry.report.summary.mismatch,
+                      timelineEntry.report.summary.unverifiable,
+                    )}
+                  </span>
+                ) : null}
+              </div>
             </div>
-          ) : (
-            <p className={s.emptyNote}>감시 대상 공모가 아직 없습니다.</p>
-          )}
-        </section>
+            <Link
+              href={`/offers/${timelineEntry.offer.id}`}
+              className={home.bandLink}
+            >
+              {TIMELINE_REPORT_LINK}
+            </Link>
+          </section>
+        ) : null}
 
         <section className={s.slot} aria-labelledby={`${title}-questions`}>
           <h2 id={`${title}-questions`} className={s.slotTitle}>
