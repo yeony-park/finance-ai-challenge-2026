@@ -1,6 +1,8 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 
+import { CountUp } from "@/components/motion/CountUp";
+import { Reveal } from "@/components/motion/Reveal";
 import { CategoryMotif } from "@/components/site/icons";
 import type { OfferEntry, OfferSchedule } from "@/components/site/offers";
 import { buildOfferSchedule } from "@/components/site/offers";
@@ -262,185 +264,195 @@ export async function CategoryLanding({
         <p className={home.sectionLead}>{lead}</p>
 
         <section className={s.slot} aria-labelledby={`${title}-evidence`}>
-          <h2 id={`${title}-evidence`} className={s.slotTitle}>
-            {OFFERS_SECTION_TITLE}
-          </h2>
-          <p className={s.slotLead}>{OFFERS_SECTION_LEAD}</p>
-          {evidence.length > 0 ? (
-            <>
-              <h3 className={s.groupTitle}>{ACTIVE_GROUP_TITLE}</h3>
-              {active.length > 0 ? (
-                <>
-                  <div className={s.offerGrid}>
+          <Reveal>
+            <h2 id={`${title}-evidence`} className={s.slotTitle}>
+              {OFFERS_SECTION_TITLE}
+            </h2>
+            <p className={s.slotLead}>{OFFERS_SECTION_LEAD}</p>
+            {evidence.length > 0 ? (
+              <>
+                <h3 className={s.groupTitle}>{ACTIVE_GROUP_TITLE}</h3>
+                {active.length > 0 ? (
+                  <>
+                    <div className={s.offerGrid}>
+                      {active.map((entry) => (
+                        <OfferEvidenceCard key={entry.offer.id} entry={entry} />
+                      ))}
+                    </div>
                     {active.map((entry) => (
+                      <OfferTimeline key={entry.offer.id} entry={entry} />
+                    ))}
+                  </>
+                ) : (
+                  <p className={s.emptyNote}>{ACTIVE_GROUP_EMPTY}</p>
+                )}
+                <h3 className={s.groupTitle}>{CLOSED_GROUP_TITLE}</h3>
+                {closed.length > 0 ? (
+                  <div className={s.offerGrid}>
+                    {closed.map((entry) => (
                       <OfferEvidenceCard key={entry.offer.id} entry={entry} />
                     ))}
                   </div>
-                  {active.map((entry) => (
-                    <OfferTimeline key={entry.offer.id} entry={entry} />
-                  ))}
-                </>
-              ) : (
-                <p className={s.emptyNote}>{ACTIVE_GROUP_EMPTY}</p>
-              )}
-              <h3 className={s.groupTitle}>{CLOSED_GROUP_TITLE}</h3>
-              {closed.length > 0 ? (
-                <div className={s.offerGrid}>
-                  {closed.map((entry) => (
-                    <OfferEvidenceCard key={entry.offer.id} entry={entry} />
-                  ))}
-                </div>
-              ) : (
-                <p className={s.emptyNote}>
-                  이 카테고리에는 아직 청약이 종료된 공모가 없습니다.
-                </p>
-              )}
-            </>
-          ) : preview ? (
-            <ul className={s.previewList}>
-              {preview.map((line) => (
-                <li key={line}>{line}</li>
-              ))}
-            </ul>
-          ) : (
-            <p className={s.emptyNote}>
-              이 카테고리에는 아직 공개 리포트가 없습니다.
-            </p>
-          )}
+                ) : (
+                  <p className={s.emptyNote}>
+                    이 카테고리에는 아직 청약이 종료된 공모가 없습니다.
+                  </p>
+                )}
+              </>
+            ) : preview ? (
+              <ul className={s.previewList}>
+                {preview.map((line) => (
+                  <li key={line}>{line}</li>
+                ))}
+              </ul>
+            ) : (
+              <p className={s.emptyNote}>
+                이 카테고리에는 아직 공개 리포트가 없습니다.
+              </p>
+            )}
+          </Reveal>
         </section>
 
         <section className={s.slot} aria-labelledby={`${title}-verdicts`}>
-          <h2 id={`${title}-verdicts`} className={s.slotTitle}>
-            {VERDICT_SECTION_TITLE}
-          </h2>
-          {evidence.length > 0 ? (
-            <div>
-              <p className={s.slotLead}>
-                {verdictTotalsLead(evidence.length, totalItems)}
-              </p>
-              <div className={s.tileRow}>
-                <div className={s.tile}>
-                  <span className={s.tileLabel}>
-                    <span className={`${s.tileMark} ${s.tileMarkMatch}`} />
-                    {VERDICT_LABEL.match}
-                  </span>
-                  <span className={s.tileNum}>
-                    {totals.match.toLocaleString("ko-KR")}
-                    <small>건</small>
-                  </span>
-                  <span className={s.tileCaption}>{VERDICT_CAPTIONS.match}</span>
+          <Reveal>
+            <h2 id={`${title}-verdicts`} className={s.slotTitle}>
+              {VERDICT_SECTION_TITLE}
+            </h2>
+            {evidence.length > 0 ? (
+              <div>
+                <p className={s.slotLead}>
+                  {verdictTotalsLead(evidence.length, totalItems)}
+                </p>
+                <div className={s.tileRow}>
+                  <div className={s.tile}>
+                    <span className={s.tileLabel}>
+                      <span className={`${s.tileMark} ${s.tileMarkMatch}`} />
+                      {VERDICT_LABEL.match}
+                    </span>
+                    <span className={s.tileNum}>
+                      <CountUp value={totals.match} />
+                      <small>건</small>
+                    </span>
+                    <span className={s.tileCaption}>{VERDICT_CAPTIONS.match}</span>
+                  </div>
+                  <div className={s.tile}>
+                    <span className={s.tileLabel}>
+                      <span className={`${s.tileMark} ${s.tileMarkMiss}`} />
+                      {VERDICT_LABEL.mismatch}
+                    </span>
+                    <span className={s.tileNum}>
+                      <CountUp value={totals.mismatch} />
+                      <small>건</small>
+                    </span>
+                    <span className={s.tileCaption}>
+                      {VERDICT_CAPTIONS.mismatch}
+                    </span>
+                  </div>
+                  <div className={s.tile}>
+                    <span className={s.tileLabel}>
+                      <span className={`${s.tileMark} ${s.tileMarkUnknown}`} />
+                      {VERDICT_LABEL.unverifiable}
+                    </span>
+                    <span className={s.tileNum}>
+                      <CountUp value={totals.unverifiable} />
+                      <small>건</small>
+                    </span>
+                    <span className={s.tileCaption}>
+                      {VERDICT_CAPTIONS.unverifiable}
+                    </span>
+                  </div>
                 </div>
-                <div className={s.tile}>
-                  <span className={s.tileLabel}>
-                    <span className={`${s.tileMark} ${s.tileMarkMiss}`} />
-                    {VERDICT_LABEL.mismatch}
-                  </span>
-                  <span className={s.tileNum}>
-                    {totals.mismatch.toLocaleString("ko-KR")}
-                    <small>건</small>
-                  </span>
-                  <span className={s.tileCaption}>
-                    {VERDICT_CAPTIONS.mismatch}
-                  </span>
-                </div>
-                <div className={s.tile}>
-                  <span className={s.tileLabel}>
-                    <span className={`${s.tileMark} ${s.tileMarkUnknown}`} />
-                    {VERDICT_LABEL.unverifiable}
-                  </span>
-                  <span className={s.tileNum}>
-                    {totals.unverifiable.toLocaleString("ko-KR")}
-                    <small>건</small>
-                  </span>
-                  <span className={s.tileCaption}>
-                    {VERDICT_CAPTIONS.unverifiable}
-                  </span>
-                </div>
+                <p className={s.tallyMeta}>
+                  공개 리포트 {evidence.length}건 합산 · 최근 대조{" "}
+                  {latestGeneratedAt ? formatKstDateTime(latestGeneratedAt) : "—"}
+                </p>
               </div>
-              <p className={s.tallyMeta}>
-                공개 리포트 {evidence.length}건 합산 · 최근 대조{" "}
-                {latestGeneratedAt ? formatKstDateTime(latestGeneratedAt) : "—"}
+            ) : (
+              <p className={s.emptyNote}>
+                공개된 대조 결과가 아직 없습니다 — 검증 경로가 연결되면 같은
+                형식으로 표시됩니다.
               </p>
-            </div>
-          ) : (
-            <p className={s.emptyNote}>
-              공개된 대조 결과가 아직 없습니다 — 검증 경로가 연결되면 같은
-              형식으로 표시됩니다.
-            </p>
-          )}
+            )}
+          </Reveal>
         </section>
 
         {market}
 
         <section className={s.slot} aria-labelledby={`${title}-layers`}>
-          <h2 id={`${title}-layers`} className={s.slotTitle}>
-            {LAYERS_SECTION_TITLE}
-          </h2>
-          <p className={s.slotLead}>{LAYERS_SECTION_LEAD}</p>
-          <table className={s.layerTable}>
-            <thead>
-              <tr>
-                <th scope="col">확인 질문</th>
-                <th scope="col">지원</th>
-                <th scope="col">근거</th>
-              </tr>
-            </thead>
-            <tbody>
-              {ALL_LAYERS.map((layer) => {
-                const declared = descriptor?.layers.find(
-                  (entry) => entry.layer === layer,
-                );
-                return (
-                  <tr key={layer}>
-                    <td className={s.layerName}>
-                      {LAYER_EASY_QUESTIONS[layer]}
-                      <span className={s.layerSub}>{LAYER_LABELS[layer]} 층</span>
-                    </td>
-                    <td>
-                      <span
-                        className={
-                          declared
-                            ? s.layerLevel
-                            : `${s.layerLevel} ${s.layerLevelPending}`
-                        }
-                      >
+          <Reveal>
+            <h2 id={`${title}-layers`} className={s.slotTitle}>
+              {LAYERS_SECTION_TITLE}
+            </h2>
+            <p className={s.slotLead}>{LAYERS_SECTION_LEAD}</p>
+            <table className={s.layerTable}>
+              <thead>
+                <tr>
+                  <th scope="col">확인 질문</th>
+                  <th scope="col">지원</th>
+                  <th scope="col">근거</th>
+                </tr>
+              </thead>
+              <tbody>
+                {ALL_LAYERS.map((layer) => {
+                  const declared = descriptor?.layers.find(
+                    (entry) => entry.layer === layer,
+                  );
+                  return (
+                    <tr key={layer}>
+                      <td className={s.layerName}>
+                        {LAYER_EASY_QUESTIONS[layer]}
+                        <span className={s.layerSub}>{LAYER_LABELS[layer]} 층</span>
+                      </td>
+                      <td>
+                        <span
+                          className={
+                            declared
+                              ? s.layerLevel
+                              : `${s.layerLevel} ${s.layerLevelPending}`
+                          }
+                        >
+                          {declared
+                            ? LAYER_SUPPORT_LABELS[declared.level]
+                            : "선언 대기"}
+                        </span>
+                      </td>
+                      <td className={s.layerBasis}>
                         {declared
-                          ? LAYER_SUPPORT_LABELS[declared.level]
-                          : "선언 대기"}
-                      </span>
-                    </td>
-                    <td className={s.layerBasis}>
-                      {declared
-                        ? declared.basis
-                        : "담당 구현에서 확정됩니다 — 확정 전에는 대조를 제공하지 않습니다."}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-          {descriptor ? (
-            <p className={s.slotLead}>
-              현재성 기준: {descriptor.freshnessNote}.
-            </p>
-          ) : null}
+                          ? declared.basis
+                          : "담당 구현에서 확정됩니다 — 확정 전에는 대조를 제공하지 않습니다."}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+            {descriptor ? (
+              <p className={s.slotLead}>
+                현재성 기준: {descriptor.freshnessNote}.
+              </p>
+            ) : null}
+          </Reveal>
         </section>
 
         <section className={s.slot} aria-labelledby={`${title}-questions`}>
-          <h2 id={`${title}-questions`} className={s.slotTitle}>
-            확인 질문
-          </h2>
-          <CategoryQuestions bridgeOffer={byOpenAsc.at(-1) ?? null} />
+          <Reveal>
+            <h2 id={`${title}-questions`} className={s.slotTitle}>
+              확인 질문
+            </h2>
+            <CategoryQuestions bridgeOffer={byOpenAsc.at(-1) ?? null} />
+          </Reveal>
         </section>
 
         <section className={s.slot} aria-labelledby={`${title}-custom`}>
-          <h2 id={`${title}-custom`} className={s.slotTitle}>
-            카테고리 특화 영역
-          </h2>
-          <p className={s.emptyNote}>
-            카테고리 담당 구현이 들어오는 자리입니다 — 공통 계약(층별 선언·판정
-            어휘·데이터 정책)을 유지한 채 확장됩니다.
-          </p>
+          <Reveal>
+            <h2 id={`${title}-custom`} className={s.slotTitle}>
+              카테고리 특화 영역
+            </h2>
+            <p className={s.emptyNote}>
+              카테고리 담당 구현이 들어오는 자리입니다 — 공통 계약(층별 선언·판정
+              어휘·데이터 정책)을 유지한 채 확장됩니다.
+            </p>
+          </Reveal>
         </section>
       </div>
     </div>

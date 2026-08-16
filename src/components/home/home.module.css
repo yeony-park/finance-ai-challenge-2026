@@ -597,3 +597,116 @@
 .roadBody > a {
   justify-self: start;
 }
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  min-height: min(88dvh, 56rem);
+}
+.heroWrap {
+  position: relative;
+}
+.heroArtWrap {
+  position: absolute;
+  right: var(--ds-gutter);
+  top: 50%;
+  transform: translateY(-56%);
+  width: clamp(280px, 30vw, 440px);
+  color: var(--ds-line-strong);
+  pointer-events: none;
+  z-index: 0;
+}
+.heroArt {
+  width: 100%;
+  height: auto;
+}
+@media (max-width: 68rem) {
+  .heroArtWrap {
+    display: none;
+  }
+}
+.heroTitle,
+.heroLead,
+.scaffold {
+  position: relative;
+  z-index: 1;
+}
+
+.draw,
+.hl {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: dsDraw 0.9s var(--ds-ease, ease-out) forwards;
+}
+.hl {
+  stroke: var(--ds-accent);
+  stroke-width: 9;
+  opacity: 0.55;
+  animation-duration: 0.6s;
+}
+.d1 { animation-delay: 0.1s; }
+.d2 { animation-delay: 0.35s; }
+.d3 { animation-delay: 0.6s; }
+.d4 { animation-delay: 0.9s; }
+.d5 { animation-delay: 1.15s; }
+.d6 { animation-delay: 1.4s; }
+@keyframes dsDraw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.heroIn {
+  animation: dsRise 0.55s var(--ds-ease, ease-out) both;
+}
+.heroIn2 { animation-delay: 0.08s; }
+.heroIn3 { animation-delay: 0.16s; }
+@keyframes dsRise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.scrollCue {
+  margin-top: clamp(2.5rem, 6vh, 4.5rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--ds-space-2);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  letter-spacing: 0.18em;
+  color: var(--ds-ink-faint);
+}
+.scrollCueArrow {
+  display: inline-block;
+  animation: dsCue 1.8s ease-in-out infinite;
+}
+@keyframes dsCue {
+  0%, 100% { transform: translateY(-2px); }
+  50% { transform: translateY(3px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .draw,
+  .hl,
+  .heroIn,
+  .scrollCueArrow {
+    animation: none;
+  }
+  .draw,
+  .hl {
+    stroke-dashoffset: 0;
+  }
+  .heroIn {
+    opacity: 1;
+    transform: none;
+  }
+}

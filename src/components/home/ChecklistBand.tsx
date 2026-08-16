@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 
+import { Reveal } from "@/components/motion/Reveal";
 import { latestOfferEntry, OFFERS } from "@/components/site/offers";
 import { orderByConcern, useProfile } from "@/components/site/profile";
 import {
@@ -32,6 +33,7 @@ export function ChecklistBand() {
         {profile.concern ? (
           <p className={s.checkOrderNote}>{CHECK_ORDER_NOTE}</p>
         ) : null}
+        <Reveal>
         <div>
           {items.map((item) => (
             <details key={item.id} className={s.checkItem}>
@@ -72,6 +74,7 @@ export function ChecklistBand() {
             </details>
           ))}
         </div>
+        </Reveal>
         {bridgeOffer ? (
           <p className={s.checkNotice}>{CHECKLIST_BRIDGE_NOTE}</p>
         ) : null}

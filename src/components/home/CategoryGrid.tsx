@@ -3,6 +3,7 @@
 import Link from "next/link";
 
 import { CategoryMotif } from "@/components/site/icons";
+import { Reveal } from "@/components/motion/Reveal";
 import { orderByInterests, useProfile } from "@/components/site/profile";
 import { CATEGORY_REGISTRY } from "@/lib/content/categories";
 import { CATEGORY_ORDER_NOTE, INTEREST_TAG } from "@/lib/content/onboarding";
@@ -26,6 +27,7 @@ export function CategoryGrid() {
         {profile.interests.length > 0 ? (
           <p className={s.checkOrderNote}>{CATEGORY_ORDER_NOTE}</p>
         ) : null}
+        <Reveal>
         <div className={s.categoryGrid}>
           {entries.map((entry) => (
             <Link key={entry.id} href={entry.href} className={s.categoryCard}>
@@ -48,6 +50,7 @@ export function CategoryGrid() {
         <Link href="/offers" className={s.bandLink}>
           전체 검증 리포트 보기 →
         </Link>
+        </Reveal>
       </div>
     </section>
   );

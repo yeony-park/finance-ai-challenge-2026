@@ -13,24 +13,44 @@ interface RevealProps {
   readonly children: ReactNode;
   readonly className?: string;
   readonly delay?: number;
+  readonly as?: "div" | "li";
+  readonly id?: string;
 }
 
-export function Reveal({ children, className, delay = 0 }: RevealProps) {
+export function Reveal({
+  children,
+  className,
+  delay = 0,
+  as = "div",
+  id,
+}: RevealProps) {
   const isReduced = useReducedMotionSafe();
   const isHydrated = useIsHydrated();
+  const Tag = as;
+  const MotionTag = as === "li" ? m.li : m.div;
 
   if (!isHydrated) {
     return (
-      <div className={className ? `${className} ${PENDING_CLASS}` : PENDING_CLASS}>{children}</div>
+      <Tag
+        id={id}
+        className={className ? `${className} ${PENDING_CLASS}` : PENDING_CLASS}
+      >
+        {children}
+      </Tag>
     );
   }
 
   if (isReduced) {
-    return <div className={className}>{children}</div>;
+    return (
+      <Tag id={id} className={className}>
+        {children}
+      </Tag>
+    );
   }
 
   return (
-    <m.div
+    <MotionTag
+      id={id}
       className={className}
       initial={{ opacity: 0, y: MOTION_RISE }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -38,6 +58,6 @@ export function Reveal({ children, className, delay = 0 }: RevealProps) {
       transition={{ duration: MOTION_DURATION.slow, ease: MOTION_EASE, delay }}
     >
       {children}
-    </m.div>
+    </MotionTag>
   );
 }

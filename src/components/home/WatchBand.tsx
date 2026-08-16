@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 
+import { Reveal } from "@/components/motion/Reveal";
 import { useWatchedIds } from "@/components/landing/watchlist";
 import { WATCH_HEADING_ID } from "@/components/report/ids";
 import {
@@ -31,6 +32,7 @@ export function WatchBand({
           {WATCH_BAND_TITLE}
         </h2>
         <p className={s.sectionLead}>{WATCH_BAND_LEAD}</p>
+        <Reveal>
         <ul className={s.watchList}>
           {watched.map((entry) => (
             <li key={entry.id} className={s.watchRow}>
@@ -51,6 +53,7 @@ export function WatchBand({
             </li>
           ))}
         </ul>
+        </Reveal>
       </div>
     </section>
   );

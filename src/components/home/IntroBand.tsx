@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { Reveal } from "@/components/motion/Reveal";
 import { AI_ROLE_SENTENCE, INTRO_CARDS, METHOD_STEP_TITLE } from "@/lib/content/home";
 
 import s from "./home.module.css";
@@ -22,7 +23,12 @@ export function IntroBand() {
         </p>
         <ol className={s.roadmap}>
           {INTRO_CARDS.map((card, index) => (
-            <li key={card.id} id={`guide-${card.id}`} className={s.roadStep}>
+            <Reveal
+              key={card.id}
+              as="li"
+              id={`guide-${card.id}`}
+              className={s.roadStep}
+            >
               <span className={s.roadNo} aria-hidden="true">
                 {stepNo(index)}
               </span>
@@ -49,9 +55,9 @@ export function IntroBand() {
                   </a>
                 ) : null}
               </div>
-            </li>
+            </Reveal>
           ))}
-          <li className={s.roadStep}>
+          <Reveal as="li" className={s.roadStep}>
             <span className={s.roadNo} aria-hidden="true">
               {stepNo(INTRO_CARDS.length)}
             </span>
@@ -64,7 +70,7 @@ export function IntroBand() {
                 판정 기준과 한계 전체 보기 →
               </Link>
             </div>
-          </li>
+          </Reveal>
         </ol>
       </div>
     </section>
