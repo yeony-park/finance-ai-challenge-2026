@@ -1,6 +1,6 @@
 # 카테고리 계약 (Category Contract)
 
-> **상태: v1-draft (팀 리뷰 요청)** · 타입 단일 진실: `src/lib/verify/contract/category.ts` · 실증 예시: `src/lib/verify/contract/cattle.ts` · 착수 드라이런(돼지 시점)으로 검증·개정됨 (2026-08-15)
+> **상태: v1-draft (팀 리뷰 요청)** · 타입 단일 진실: `src/lib/verify/contract/category.ts` · 실증 예시: `src/lib/verify/contract/cattle.ts` · 착수 드라이런(한돈 시점)으로 검증·개정됨 (2026-08-15)
 
 ## 착수 가이드 (담당자용 — 첫 세션 반나절 기준)
 
@@ -19,7 +19,7 @@
 | 카테고리 | id | 담당 | 기존 자산 (07-asset-map 참조) |
 |---|---|---|---|
 | 한우 | `cattle` | 원준 | 검증 완결 (엔진 livestock 축, 공모 9건 실측) — 실증 예시로 선등록 |
-| 돼지 | `pig` | 연정 | 데이터젠 1~3호 DART 실데이터 + 경락가 CSV 파서 |
+| 한돈 | `pig` | 연정 | 데이터젠 1~3호 DART 실데이터 + 경락가 CSV 파서 |
 | 미술품 | `art` | 현석 | 실데이터 338건 + 레포지토리 계층 |
 | 부동산 | `real-estate` | 문수 | 엔진 real-estate 축(RTMS) + 국토부 API 클라이언트 포팅 후보 |
 
@@ -39,7 +39,7 @@
 
 - 어댑터·층 선언이 인용하는 `sourceId`는 스파인 출처 레지스트리(`src/lib/spine/rag/corpus.ts`) 등록분이거나 `proposedSources` 선언분이어야 한다 — 계약 테스트 `unknownSourceIds()`가 기계 검증한다.
 - **코퍼스 등록·서술 보강은 M2+에서 오너가 일괄 반영한다** (proposedClaimKinds와 동일 문형 — 담당자는 등록하지 않고 선언만 한다. 기존 파일 무수정 원칙).
-- 기존 등록 id의 **재사용 조건**: 같은 운영 기관·데이터셋 계열이면 재사용 가능하되, 등록 서술이 자기 카테고리에 맞지 않으면(예: "소도체 경락가" 서술을 돼지가 인용) `proposedSources`에 같은 id + `amendsExisting: true`로 서술 보강을 선언한다 — LLM 컨텍스트에 틀린 설명이 주입되는 것을 막는 장치다.
+- 기존 등록 id의 **재사용 조건**: 같은 운영 기관·데이터셋 계열이면 재사용 가능하되, 등록 서술이 자기 카테고리에 맞지 않으면(예: "소도체 경락가" 서술을 한돈이 인용) `proposedSources`에 같은 id + `amendsExisting: true`로 서술 보강을 선언한다 — LLM 컨텍스트에 틀린 설명이 주입되는 것을 막는 장치다.
 - `license` 필드가 신호등 분류의 기록 위치다 (green/yellow/red — `05` §2).
 
 ### 3) claim kinds
@@ -51,7 +51,7 @@
 
 | 층 | 질문 | 예 |
 |---|---|---|
-| `existence` 실재성 | 공시된 자산이 실제로 존재하는가 | 한우: 개체 대조 = supported / 돼지: 개체 특정 불가, 농장 단위 = partial |
+| `existence` 실재성 | 공시된 자산이 실제로 존재하는가 | 한우: 개체 대조 = supported / 한돈: 개체 특정 불가, 농장 단위 = partial |
 | `price` 가격 | 공모가가 시장 어디에 위치하는가 | 부동산: RTMS 실거래 = supported(키 상태 확인 중) |
 | `performance` 이행 | 약속 이행·정정·사건이 추적되는가 | 전 카테고리: DART 정정 계보·발행실적 = supported |
 

@@ -40,7 +40,7 @@ export const TRUST_CHECKLIST: readonly ChecklistItem[] = [
       {
         label: "축산물이력제 (축산물품질평가원)",
         url: "https://www.mtrace.go.kr",
-        note: "이력번호로 개체 조회 — 한우·돼지 계열",
+        note: "이력번호로 개체 조회 — 한우·한돈 계열",
       },
       {
         label: "금융감독원 보도자료 — 조각투자 모범규준 (2024-07)",

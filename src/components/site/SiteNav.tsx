@@ -13,7 +13,7 @@ interface NavItem {
 
 const NAV_ITEMS: readonly NavItem[] = [
   { href: "/cattle", label: "한우", match: "/cattle" },
-  { href: "/pig", label: "돼지", match: "/pig" },
+  { href: "/pig", label: "한돈", match: "/pig" },
   { href: "/art", label: "미술품", match: "/art" },
   { href: "/real-estate", label: "부동산", match: "/real-estate" },
   { href: "/offers", label: "검증 리포트", match: "/offers" },

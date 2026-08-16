@@ -6,6 +6,7 @@ describe("matchScaffold — 결정적 키워드 안내", () => {
   test.each([
     ["한우 공모가 궁금해요", "cattle"],
     ["돼지 조각투자는 어때요", "pig"],
+    ["한돈 상품이 궁금해요", "pig"],
     ["미술품 검증도 되나요", "art"],
     ["부동산 건물 공모", "real-estate"],
   ] as const)("카테고리 매칭: %s → %s", (input, categoryId) => {

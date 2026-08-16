@@ -6,7 +6,7 @@ import s from "./shell.module.css";
 
 const FOOTER_NAV: readonly { href: string; label: string }[] = [
   { href: "/cattle", label: "한우" },
-  { href: "/pig", label: "돼지" },
+  { href: "/pig", label: "한돈" },
   { href: "/art", label: "미술품" },
   { href: "/real-estate", label: "부동산" },
   { href: "/offers", label: "검증 리포트" },
