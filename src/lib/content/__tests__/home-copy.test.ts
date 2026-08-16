@@ -4,6 +4,17 @@ import { filterOutput } from "@/lib/spine/guardrail/output-filter";
 import { CATEGORY_REGISTRY } from "../categories";
 import { CHECKLIST_NOTICE, TRUST_CHECKLIST } from "../checklist";
 import {
+  MARKET_DISCLAIMER,
+  MARKET_GAP_NOTE,
+  MARKET_LEGEND_AVG,
+  MARKET_LEGEND_BAND,
+  MARKET_LEGEND_EDGE,
+  MARKET_SECTION_LEAD,
+  MARKET_SECTION_TITLE,
+  MARKET_SOURCE_LINE,
+  MARKET_TABLE_TOGGLE,
+} from "../market-context";
+import {
   AI_ROLE_SENTENCE,
   coverageSentence,
   EXAMPLE_QUESTIONS,
@@ -35,6 +46,15 @@ const ALL_COPY: readonly string[] = [
     entry.note,
     ...(entry.preview ?? []),
   ]),
+  MARKET_SECTION_TITLE,
+  MARKET_SECTION_LEAD,
+  MARKET_LEGEND_AVG,
+  MARKET_LEGEND_EDGE,
+  MARKET_LEGEND_BAND,
+  MARKET_SOURCE_LINE,
+  MARKET_DISCLAIMER,
+  MARKET_GAP_NOTE,
+  MARKET_TABLE_TOGGLE,
   ...METHOD_LAYERS.flatMap((layer) => [layer.name, layer.detail]),
   ...TRUST_CHECKLIST.flatMap((item) => [
     item.title,

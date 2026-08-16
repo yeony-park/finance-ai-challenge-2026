@@ -1,7 +1,10 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 
+import { CategoryMotif } from "@/components/site/icons";
 import type { OfferEntry } from "@/components/site/offers";
 import { buildOfferSchedule } from "@/components/site/offers";
+import type { CategoryId } from "@/lib/content/categories";
 import { loadLatestWatchState } from "@/lib/verify/amend/watch-state";
 import {
   LAYER_LABELS,
@@ -24,11 +27,13 @@ const ALL_LAYERS: readonly VerificationLayer[] = [
 ];
 
 export interface CategoryLandingProps {
+  readonly categoryId: CategoryId;
   readonly title: string;
   readonly lead: string;
   readonly descriptor: CategoryDescriptor | null;
   readonly offers: readonly OfferEntry[];
   readonly preview?: readonly string[] | null;
+  readonly market?: ReactNode;
 }
 
 interface OfferEvidence {
@@ -64,11 +69,13 @@ const loadEvidence = async (
   );
 
 export async function CategoryLanding({
+  categoryId,
   title,
   lead,
   descriptor,
   offers,
   preview = null,
+  market = null,
 }: CategoryLandingProps) {
   const byOpenAsc = [...offers].sort(
     (a, b) =>
@@ -92,7 +99,12 @@ export async function CategoryLanding({
   return (
     <div className={home.section}>
       <div className={home.wrap}>
-        <h1 className={home.sectionTitle}>{title}</h1>
+        <div className={s.titleRow}>
+          <span className={s.titleMotif}>
+            <CategoryMotif id={categoryId} />
+          </span>
+          <h1 className={home.sectionTitle}>{title}</h1>
+        </div>
         <p className={home.sectionLead}>{lead}</p>
 
         <section className={s.slot} aria-labelledby={`${title}-layers`}>
@@ -154,8 +166,39 @@ export async function CategoryLanding({
             판정 현황
           </h2>
           {evidence.length > 0 ? (
-            <div className={s.tally}>
-              {countsSentence(totals.match, totals.mismatch, totals.unverifiable)}
+            <div>
+              <div className={s.tileRow}>
+                <div className={s.tile}>
+                  <span className={s.tileLabel}>
+                    <span className={`${s.tileMark} ${s.tileMarkMatch}`} />
+                    {VERDICT_LABEL.match}
+                  </span>
+                  <span className={s.tileNum}>
+                    {totals.match.toLocaleString("ko-KR")}
+                    <small>건</small>
+                  </span>
+                </div>
+                <div className={s.tile}>
+                  <span className={s.tileLabel}>
+                    <span className={`${s.tileMark} ${s.tileMarkMiss}`} />
+                    {VERDICT_LABEL.mismatch}
+                  </span>
+                  <span className={s.tileNum}>
+                    {totals.mismatch.toLocaleString("ko-KR")}
+                    <small>건</small>
+                  </span>
+                </div>
+                <div className={s.tile}>
+                  <span className={s.tileLabel}>
+                    <span className={`${s.tileMark} ${s.tileMarkUnknown}`} />
+                    {VERDICT_LABEL.unverifiable}
+                  </span>
+                  <span className={s.tileNum}>
+                    {totals.unverifiable.toLocaleString("ko-KR")}
+                    <small>건</small>
+                  </span>
+                </div>
+              </div>
               <p className={s.tallyMeta}>
                 공개 리포트 {evidence.length}건 합산 · 최근 대조{" "}
                 {latestGeneratedAt ? formatKstDateTime(latestGeneratedAt) : "—"}
@@ -168,6 +211,8 @@ export async function CategoryLanding({
             </p>
           )}
         </section>
+
+        {market}
 
         <section className={s.slot} aria-labelledby={`${title}-evidence`}>
           <h2 id={`${title}-evidence`} className={s.slotTitle}>
