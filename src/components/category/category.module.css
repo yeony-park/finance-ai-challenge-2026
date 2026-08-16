@@ -205,6 +205,38 @@ span.offerName {
   gap: var(--ds-space-1);
 }
 
+.groupTitle {
+  margin-top: var(--ds-space-5);
+  margin-bottom: var(--ds-space-3);
+  font-size: var(--ds-text-sm);
+  font-weight: var(--ds-weight-bold);
+  letter-spacing: 0.02em;
+  color: var(--ds-ink-muted);
+}
+
+.timelineBlock {
+  margin-top: var(--ds-space-4);
+  padding: var(--ds-space-4);
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-surface);
+}
+.timelineTitle {
+  margin: 0 0 var(--ds-space-2);
+  font-size: var(--ds-text-md);
+  font-weight: var(--ds-weight-bold);
+  word-break: keep-all;
+}
+
+.layerSub {
+  display: block;
+  margin-top: 0.15rem;
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  font-weight: var(--ds-weight-regular, 400);
+  color: var(--ds-ink-faint);
+}
+
 .tileCaption {
   max-width: 16rem;
   font-size: var(--ds-text-2xs);

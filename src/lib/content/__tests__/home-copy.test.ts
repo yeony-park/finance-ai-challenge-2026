@@ -45,6 +45,18 @@ import {
   type FollowUpKey,
 } from "../home";
 import {
+  ACTIVE_GROUP_EMPTY,
+  ACTIVE_GROUP_TITLE,
+  CLOSED_GROUP_TITLE,
+  LAYER_EASY_QUESTIONS,
+  LAYERS_SECTION_LEAD,
+  LAYERS_SECTION_TITLE,
+  OFFERS_SECTION_LEAD,
+  OFFERS_SECTION_TITLE,
+  VERDICT_SECTION_TITLE,
+  verdictTotalsLead,
+} from "../category-landing";
+import {
   WATCH_BAND_LEAD,
   WATCH_BAND_TITLE,
   WATCH_DETECTION_FAILED,
@@ -113,6 +125,16 @@ const ALL_COPY: readonly string[] = [
   watchAmendmentLine(2, "2026. 8. 14."),
   watchAmendmentLine(1, null),
   watchCheckedLine("2026. 8. 16. 00:52"),
+  OFFERS_SECTION_TITLE,
+  OFFERS_SECTION_LEAD,
+  ACTIVE_GROUP_TITLE,
+  CLOSED_GROUP_TITLE,
+  ACTIVE_GROUP_EMPTY,
+  VERDICT_SECTION_TITLE,
+  verdictTotalsLead(9, 2090),
+  LAYERS_SECTION_TITLE,
+  LAYERS_SECTION_LEAD,
+  ...Object.values(LAYER_EASY_QUESTIONS),
 ];
 
 describe("홈·체크리스트 카피 — 출력 필터 전건 통과", () => {
@@ -223,6 +245,27 @@ describe("후속 질문 칩 — 커리큘럼 불변식", () => {
     for (const question of followUpQuestions(key)) {
       expect(question.target, `${key} → ${question.label}`).not.toBe(key);
     }
+  });
+});
+
+describe("카테고리 착지 — 입문 어휘 정합", () => {
+  test("층 3종 전부에 쉬운 확인 질문이 있고 질문 형식이다", () => {
+    const questions = Object.values(LAYER_EASY_QUESTIONS);
+    expect(questions).toHaveLength(3);
+    for (const question of questions) {
+      expect(question.endsWith("가"), question).toBe(true);
+    }
+  });
+
+  test("대조 결과 리드는 공모·기재 건수를 그대로 병기한다", () => {
+    const leadText = verdictTotalsLead(9, 2090);
+    expect(leadText).toContain("9건");
+    expect(leadText).toContain("2,090건");
+  });
+
+  test("청약 그룹 어휘는 /offers 목록과 동일하다", () => {
+    expect(ACTIVE_GROUP_TITLE).toBe("청약 예정·진행 중");
+    expect(CLOSED_GROUP_TITLE).toBe("청약 종료 · 사후 검증");
   });
 });
 

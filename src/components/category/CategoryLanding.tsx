@@ -2,9 +2,21 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { CategoryMotif } from "@/components/site/icons";
-import type { OfferEntry } from "@/components/site/offers";
+import type { OfferEntry, OfferSchedule } from "@/components/site/offers";
 import { buildOfferSchedule } from "@/components/site/offers";
 import type { CategoryId } from "@/lib/content/categories";
+import {
+  ACTIVE_GROUP_EMPTY,
+  ACTIVE_GROUP_TITLE,
+  CLOSED_GROUP_TITLE,
+  LAYER_EASY_QUESTIONS,
+  LAYERS_SECTION_LEAD,
+  LAYERS_SECTION_TITLE,
+  OFFERS_SECTION_LEAD,
+  OFFERS_SECTION_TITLE,
+  VERDICT_SECTION_TITLE,
+  verdictTotalsLead,
+} from "@/lib/content/category-landing";
 import {
   TIMELINE_AMENDED,
   TIMELINE_FILED,
@@ -14,6 +26,12 @@ import {
   TIMELINE_REVERIFY_PENDING,
   TIMELINE_TITLE_SUFFIX,
 } from "@/lib/content/event-timeline";
+import { VERDICT_CAPTIONS } from "@/lib/content/verdict-captions";
+import {
+  WATCH_NO_AMENDMENTS,
+  WATCH_NO_RECORD,
+  watchAmendmentLine,
+} from "@/lib/content/watch-band";
 import {
   loadLatestWatchState,
   type WatchState,
@@ -24,12 +42,6 @@ import {
   type CategoryDescriptor,
   type VerificationLayer,
 } from "@/lib/verify/contract/category";
-import { VERDICT_CAPTIONS } from "@/lib/content/verdict-captions";
-import {
-  WATCH_NO_AMENDMENTS,
-  WATCH_NO_RECORD,
-  watchAmendmentLine,
-} from "@/lib/content/watch-band";
 import { loadLatestReport, type LoadedReport } from "@/lib/verify/report/load";
 import { VERDICT_LABEL } from "@/lib/verify/report/view-model/labels";
 import { formatKstDateTime, formatYmd8 } from "@/lib/verify/report/format";
@@ -58,6 +70,7 @@ interface OfferEvidence {
   readonly offer: OfferEntry;
   readonly loaded: LoadedReport;
   readonly watch: WatchState | null;
+  readonly schedule: OfferSchedule;
 }
 
 const countsSentence = (
@@ -79,6 +92,7 @@ const amendmentLine = (watch: WatchState | null): string => {
 
 const loadEvidence = async (
   offers: readonly OfferEntry[],
+  now: Date,
 ): Promise<readonly OfferEvidence[]> =>
   Promise.all(
     offers.map(async (offer) => {
@@ -86,9 +100,123 @@ const loadEvidence = async (
         loadLatestReport(offer.id),
         loadLatestWatchState(offer.id),
       ]);
-      return { offer, loaded, watch: watch ?? null };
+      return {
+        offer,
+        loaded,
+        watch: watch ?? null,
+        schedule: buildOfferSchedule(offer, now),
+      };
     }),
   );
+
+function OfferEvidenceCard({ entry }: { readonly entry: OfferEvidence }) {
+  const { summary } = entry.loaded.report;
+  return (
+    <Link href={`/offers/${entry.offer.id}`} className={s.offerCard}>
+      <span className={s.offerCardHead}>
+        <span className={s.offerCardName}>{entry.offer.title}</span>
+        <span
+          className={
+            entry.schedule.phase === "open" ? s.offerBadgeOpen : s.offerBadge
+          }
+        >
+          {entry.schedule.badge}
+        </span>
+      </span>
+      <span className={s.offerCardStats}>
+        <span className={s.offerStat}>
+          <span className={s.offerStatLabel}>
+            <span className={`${s.tileMark} ${s.tileMarkMatch}`} />
+            {VERDICT_LABEL.match}
+          </span>
+          <span className={s.offerStatNum}>
+            {summary.match.toLocaleString("ko-KR")}
+          </span>
+        </span>
+        <span className={s.offerStat}>
+          <span className={s.offerStatLabel}>
+            <span className={`${s.tileMark} ${s.tileMarkMiss}`} />
+            {VERDICT_LABEL.mismatch}
+          </span>
+          <span className={s.offerStatNum}>
+            {summary.mismatch.toLocaleString("ko-KR")}
+          </span>
+        </span>
+        <span className={s.offerStat}>
+          <span className={s.offerStatLabel}>
+            <span className={`${s.tileMark} ${s.tileMarkUnknown}`} />
+            {VERDICT_LABEL.unverifiable}
+          </span>
+          <span className={s.offerStatNum}>
+            {summary.unverifiable.toLocaleString("ko-KR")}
+          </span>
+        </span>
+      </span>
+      <span className={s.offerCardMeta}>{amendmentLine(entry.watch)}</span>
+      <span className={s.offerCardMeta}>청약 {entry.schedule.label}</span>
+    </Link>
+  );
+}
+
+function OfferTimeline({ entry }: { readonly entry: OfferEvidence }) {
+  if (!entry.watch || entry.watch.amendmentCount === 0) return null;
+  const { watch } = entry;
+  const isReverified =
+    watch.amendments.at(-1)?.rcpNo === entry.loaded.report.document.rcpNo;
+
+  return (
+    <div className={s.timelineBlock}>
+      <h4 className={s.timelineTitle}>
+        {entry.offer.title} — {TIMELINE_TITLE_SUFFIX}
+      </h4>
+      <p className={s.slotLead}>{TIMELINE_LEAD}</p>
+      <div className={s.timeline}>
+        <div className={s.timelineEvent}>
+          <span className={s.timelineDate}>
+            {formatYmd8(watch.baseRcpNo.slice(0, 8))}
+            <span className={s.timelineRcp}>rcpNo {watch.baseRcpNo}</span>
+          </span>
+          <span className={s.timelineName}>{TIMELINE_FILED}</span>
+        </div>
+        {watch.amendments.map((amendment) => (
+          <div
+            key={amendment.rcpNo}
+            className={`${s.timelineEvent} ${s.timelineEventAmend}`}
+          >
+            <span className={s.timelineDate}>
+              {formatYmd8(amendment.receivedOn)}
+              <span className={s.timelineRcp}>rcpNo {amendment.rcpNo}</span>
+            </span>
+            <span className={s.timelineName}>{TIMELINE_AMENDED}</span>
+            <span className={s.timelineDetail}>{amendment.reportName}</span>
+          </div>
+        ))}
+        <div className={s.timelineEvent}>
+          <span className={s.timelineDate}>
+            {isReverified
+              ? formatKstDateTime(entry.loaded.report.generatedAt)
+              : formatKstDateTime(watch.checkedAt)}
+          </span>
+          <span className={s.timelineName}>
+            {isReverified ? TIMELINE_REVERIFIED : TIMELINE_REVERIFY_PENDING}
+          </span>
+          {isReverified ? (
+            <span className={s.timelineDetail}>
+              {countsSentence(
+                entry.loaded.report.summary.match,
+                entry.loaded.report.summary.mismatch,
+                entry.loaded.report.summary.unverifiable,
+              )}
+            </span>
+          ) : null}
+        </div>
+      </div>
+      <Link href={`/offers/${entry.offer.id}`} className={home.bandLink}>
+        {TIMELINE_REPORT_LINK}
+      </Link>
+    </div>
+  );
+}
 
 export async function CategoryLanding({
   categoryId,
@@ -103,28 +231,10 @@ export async function CategoryLanding({
     (a, b) =>
       Date.parse(a.subscription.opensAt) - Date.parse(b.subscription.opensAt),
   );
-  const evidence = await loadEvidence(byOpenAsc);
+  const evidence = await loadEvidence(byOpenAsc, new Date());
 
-  const amended = evidence.filter(
-    (entry) => (entry.watch?.amendmentCount ?? 0) > 0,
-  );
-  const featured = [...amended].sort((a, b) =>
-    (b.watch?.amendments.at(-1)?.receivedOn ?? "").localeCompare(
-      a.watch?.amendments.at(-1)?.receivedOn ?? "",
-    ),
-  )[0];
-  const timelineEntry =
-    featured && featured.watch
-      ? {
-          offer: featured.offer,
-          watch: featured.watch,
-          report: featured.loaded.report,
-        }
-      : null;
-  const isReverified =
-    timelineEntry !== null &&
-    timelineEntry.watch.amendments.at(-1)?.rcpNo ===
-      timelineEntry.report.document.rcpNo;
+  const active = evidence.filter((entry) => entry.schedule.phase !== "closed");
+  const closed = evidence.filter((entry) => entry.schedule.phase === "closed");
 
   const totals = evidence.reduce(
     (sum, entry) => ({
@@ -134,6 +244,7 @@ export async function CategoryLanding({
     }),
     { match: 0, mismatch: 0, unverifiable: 0 },
   );
+  const totalItems = totals.match + totals.mismatch + totals.unverifiable;
   const latestGeneratedAt = evidence
     .map((entry) => entry.loaded.report.generatedAt)
     .sort()
@@ -150,66 +261,63 @@ export async function CategoryLanding({
         </div>
         <p className={home.sectionLead}>{lead}</p>
 
-        <section className={s.slot} aria-labelledby={`${title}-layers`}>
-          <h2 id={`${title}-layers`} className={s.slotTitle}>
-            층별 지원 선언
+        <section className={s.slot} aria-labelledby={`${title}-evidence`}>
+          <h2 id={`${title}-evidence`} className={s.slotTitle}>
+            {OFFERS_SECTION_TITLE}
           </h2>
-          <p className={s.slotLead}>
-            데이터 깊이의 차이를 숨기지 않습니다 — 층마다 어떤 공공 데이터로
-            어디까지 대조하는지 그대로 적습니다.
-          </p>
-          <table className={s.layerTable}>
-            <thead>
-              <tr>
-                <th scope="col">층</th>
-                <th scope="col">지원</th>
-                <th scope="col">근거</th>
-              </tr>
-            </thead>
-            <tbody>
-              {ALL_LAYERS.map((layer) => {
-                const declared = descriptor?.layers.find(
-                  (entry) => entry.layer === layer,
-                );
-                return (
-                  <tr key={layer}>
-                    <td className={s.layerName}>{LAYER_LABELS[layer]}</td>
-                    <td>
-                      <span
-                        className={
-                          declared
-                            ? s.layerLevel
-                            : `${s.layerLevel} ${s.layerLevelPending}`
-                        }
-                      >
-                        {declared
-                          ? LAYER_SUPPORT_LABELS[declared.level]
-                          : "선언 대기"}
-                      </span>
-                    </td>
-                    <td className={s.layerBasis}>
-                      {declared
-                        ? declared.basis
-                        : "담당 구현에서 확정됩니다 — 확정 전에는 대조를 제공하지 않습니다."}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-          {descriptor ? (
-            <p className={s.slotLead}>
-              현재성 기준: {descriptor.freshnessNote}.
+          <p className={s.slotLead}>{OFFERS_SECTION_LEAD}</p>
+          {evidence.length > 0 ? (
+            <>
+              <h3 className={s.groupTitle}>{ACTIVE_GROUP_TITLE}</h3>
+              {active.length > 0 ? (
+                <>
+                  <div className={s.offerGrid}>
+                    {active.map((entry) => (
+                      <OfferEvidenceCard key={entry.offer.id} entry={entry} />
+                    ))}
+                  </div>
+                  {active.map((entry) => (
+                    <OfferTimeline key={entry.offer.id} entry={entry} />
+                  ))}
+                </>
+              ) : (
+                <p className={s.emptyNote}>{ACTIVE_GROUP_EMPTY}</p>
+              )}
+              <h3 className={s.groupTitle}>{CLOSED_GROUP_TITLE}</h3>
+              {closed.length > 0 ? (
+                <div className={s.offerGrid}>
+                  {closed.map((entry) => (
+                    <OfferEvidenceCard key={entry.offer.id} entry={entry} />
+                  ))}
+                </div>
+              ) : (
+                <p className={s.emptyNote}>
+                  이 카테고리에는 아직 청약이 종료된 공모가 없습니다.
+                </p>
+              )}
+            </>
+          ) : preview ? (
+            <ul className={s.previewList}>
+              {preview.map((line) => (
+                <li key={line}>{line}</li>
+              ))}
+            </ul>
+          ) : (
+            <p className={s.emptyNote}>
+              이 카테고리에는 아직 공개 리포트가 없습니다.
             </p>
-          ) : null}
+          )}
         </section>
 
         <section className={s.slot} aria-labelledby={`${title}-verdicts`}>
           <h2 id={`${title}-verdicts`} className={s.slotTitle}>
-            판정 현황
+            {VERDICT_SECTION_TITLE}
           </h2>
           {evidence.length > 0 ? (
             <div>
+              <p className={s.slotLead}>
+                {verdictTotalsLead(evidence.length, totalItems)}
+              </p>
               <div className={s.tileRow}>
                 <div className={s.tile}>
                   <span className={s.tileLabel}>
@@ -264,146 +372,59 @@ export async function CategoryLanding({
 
         {market}
 
-        <section className={s.slot} aria-labelledby={`${title}-evidence`}>
-          <h2 id={`${title}-evidence`} className={s.slotTitle}>
-            공모별 확인 현황
+        <section className={s.slot} aria-labelledby={`${title}-layers`}>
+          <h2 id={`${title}-layers`} className={s.slotTitle}>
+            {LAYERS_SECTION_TITLE}
           </h2>
-          <p className={s.slotLead}>
-            검증 가능한 공개 데이터가 있는 공모 전수를 공시 접수일순으로
-            보여줍니다 — 선별·추천 정렬이 아닙니다.
-          </p>
-          {evidence.length > 0 ? (
-            <div className={s.offerGrid}>
-              {evidence.map((entry) => {
-                const schedule = buildOfferSchedule(entry.offer, new Date());
-                const { summary } = entry.loaded.report;
+          <p className={s.slotLead}>{LAYERS_SECTION_LEAD}</p>
+          <table className={s.layerTable}>
+            <thead>
+              <tr>
+                <th scope="col">확인 질문</th>
+                <th scope="col">지원</th>
+                <th scope="col">근거</th>
+              </tr>
+            </thead>
+            <tbody>
+              {ALL_LAYERS.map((layer) => {
+                const declared = descriptor?.layers.find(
+                  (entry) => entry.layer === layer,
+                );
                 return (
-                  <Link
-                    key={entry.offer.id}
-                    href={`/offers/${entry.offer.id}`}
-                    className={s.offerCard}
-                  >
-                    <span className={s.offerCardHead}>
-                      <span className={s.offerCardName}>{entry.offer.title}</span>
+                  <tr key={layer}>
+                    <td className={s.layerName}>
+                      {LAYER_EASY_QUESTIONS[layer]}
+                      <span className={s.layerSub}>{LAYER_LABELS[layer]} 층</span>
+                    </td>
+                    <td>
                       <span
                         className={
-                          schedule.phase === "open"
-                            ? s.offerBadgeOpen
-                            : s.offerBadge
+                          declared
+                            ? s.layerLevel
+                            : `${s.layerLevel} ${s.layerLevelPending}`
                         }
                       >
-                        {schedule.badge}
+                        {declared
+                          ? LAYER_SUPPORT_LABELS[declared.level]
+                          : "선언 대기"}
                       </span>
-                    </span>
-                    <span className={s.offerCardStats}>
-                      <span className={s.offerStat}>
-                        <span className={s.offerStatLabel}>
-                          <span className={`${s.tileMark} ${s.tileMarkMatch}`} />
-                          {VERDICT_LABEL.match}
-                        </span>
-                        <span className={s.offerStatNum}>
-                          {summary.match.toLocaleString("ko-KR")}
-                        </span>
-                      </span>
-                      <span className={s.offerStat}>
-                        <span className={s.offerStatLabel}>
-                          <span className={`${s.tileMark} ${s.tileMarkMiss}`} />
-                          {VERDICT_LABEL.mismatch}
-                        </span>
-                        <span className={s.offerStatNum}>
-                          {summary.mismatch.toLocaleString("ko-KR")}
-                        </span>
-                      </span>
-                      <span className={s.offerStat}>
-                        <span className={s.offerStatLabel}>
-                          <span
-                            className={`${s.tileMark} ${s.tileMarkUnknown}`}
-                          />
-                          {VERDICT_LABEL.unverifiable}
-                        </span>
-                        <span className={s.offerStatNum}>
-                          {summary.unverifiable.toLocaleString("ko-KR")}
-                        </span>
-                      </span>
-                    </span>
-                    <span className={s.offerCardMeta}>
-                      {amendmentLine(entry.watch)}
-                    </span>
-                    <span className={s.offerCardMeta}>청약 {schedule.label}</span>
-                  </Link>
+                    </td>
+                    <td className={s.layerBasis}>
+                      {declared
+                        ? declared.basis
+                        : "담당 구현에서 확정됩니다 — 확정 전에는 대조를 제공하지 않습니다."}
+                    </td>
+                  </tr>
                 );
               })}
-            </div>
-          ) : preview ? (
-            <ul className={s.previewList}>
-              {preview.map((line) => (
-                <li key={line}>{line}</li>
-              ))}
-            </ul>
-          ) : (
-            <p className={s.emptyNote}>
-              이 카테고리에는 아직 공개 리포트가 없습니다.
+            </tbody>
+          </table>
+          {descriptor ? (
+            <p className={s.slotLead}>
+              현재성 기준: {descriptor.freshnessNote}.
             </p>
-          )}
+          ) : null}
         </section>
-
-        {timelineEntry ? (
-          <section className={s.slot} aria-labelledby={`${title}-events`}>
-            <h2 id={`${title}-events`} className={s.slotTitle}>
-              {timelineEntry.offer.title} — {TIMELINE_TITLE_SUFFIX}
-            </h2>
-            <p className={s.slotLead}>{TIMELINE_LEAD}</p>
-            <div className={s.timeline}>
-              <div className={s.timelineEvent}>
-                <span className={s.timelineDate}>
-                  {formatYmd8(timelineEntry.watch.baseRcpNo.slice(0, 8))}
-                  <span className={s.timelineRcp}>
-                    rcpNo {timelineEntry.watch.baseRcpNo}
-                  </span>
-                </span>
-                <span className={s.timelineName}>{TIMELINE_FILED}</span>
-              </div>
-              {timelineEntry.watch.amendments.map((amendment) => (
-                <div
-                  key={amendment.rcpNo}
-                  className={`${s.timelineEvent} ${s.timelineEventAmend}`}
-                >
-                  <span className={s.timelineDate}>
-                    {formatYmd8(amendment.receivedOn)}
-                    <span className={s.timelineRcp}>rcpNo {amendment.rcpNo}</span>
-                  </span>
-                  <span className={s.timelineName}>{TIMELINE_AMENDED}</span>
-                  <span className={s.timelineDetail}>{amendment.reportName}</span>
-                </div>
-              ))}
-              <div className={s.timelineEvent}>
-                <span className={s.timelineDate}>
-                  {isReverified
-                    ? formatKstDateTime(timelineEntry.report.generatedAt)
-                    : formatKstDateTime(timelineEntry.watch.checkedAt)}
-                </span>
-                <span className={s.timelineName}>
-                  {isReverified ? TIMELINE_REVERIFIED : TIMELINE_REVERIFY_PENDING}
-                </span>
-                {isReverified ? (
-                  <span className={s.timelineDetail}>
-                    {countsSentence(
-                      timelineEntry.report.summary.match,
-                      timelineEntry.report.summary.mismatch,
-                      timelineEntry.report.summary.unverifiable,
-                    )}
-                  </span>
-                ) : null}
-              </div>
-            </div>
-            <Link
-              href={`/offers/${timelineEntry.offer.id}`}
-              className={home.bandLink}
-            >
-              {TIMELINE_REPORT_LINK}
-            </Link>
-          </section>
-        ) : null}
 
         <section className={s.slot} aria-labelledby={`${title}-questions`}>
           <h2 id={`${title}-questions`} className={s.slotTitle}>
