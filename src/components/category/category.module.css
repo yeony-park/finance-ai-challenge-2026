@@ -15,7 +15,7 @@
   font-size: var(--ds-text-sm);
   line-height: var(--ds-leading-relaxed);
   color: var(--ds-ink-muted);
-  max-width: 70ch;
+  max-width: 52rem;
   word-break: keep-all;
 }
 

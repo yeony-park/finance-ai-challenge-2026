@@ -11,7 +11,7 @@ import {
   checklistBridgeLabel,
   TRUST_CHECKLIST,
 } from "@/lib/content/checklist";
-import { CHECK_ORDER_NOTE, CONCERN_TAG } from "@/lib/content/onboarding";
+import { CONCERN_TAG } from "@/lib/content/onboarding";
 
 import s from "./home.module.css";
 
@@ -30,9 +30,6 @@ export function ChecklistBand() {
           무엇을 봐야 할지 모르겠다면 여기서부터 — 각 질문은 공적 출처에서 직접
           확인할 수 있고, 일부는 이 서비스의 대조 실측이 답을 대신합니다.
         </p>
-        {profile.concern ? (
-          <p className={s.checkOrderNote}>{CHECK_ORDER_NOTE}</p>
-        ) : null}
         <Reveal>
         <div>
           {items.map((item) => (

@@ -3,8 +3,6 @@ import { describe, expect, test } from "vitest";
 import { PROFILE_CONCERNS, PROFILE_LEVELS } from "@/components/site/profile";
 import { filterOutput } from "@/lib/spine/guardrail/output-filter";
 import {
-  CATEGORY_ORDER_NOTE,
-  CHECK_ORDER_NOTE,
   CHECKLIST_LINK_LABEL,
   CONCERN_OPTIONS,
   CONCERN_QUESTION,
@@ -34,9 +32,7 @@ const ALL_COPY: readonly string[] = [
   STORAGE_NOTE,
   CHECKLIST_LINK_LABEL,
   CONCERN_TAG,
-  CHECK_ORDER_NOTE,
   INTEREST_TAG,
-  CATEGORY_ORDER_NOTE,
   ONBOARDING_SKIP_LABEL,
   ONBOARDING_DONE_LABEL,
   ONBOARDING_OPEN_LABEL,
