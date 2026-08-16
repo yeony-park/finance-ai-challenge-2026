@@ -20,7 +20,10 @@ export const HOME_HERO_LEAD =
   "등급도 추천도 없습니다. 증권신고서와 국가 공공데이터를 대조한 실측으로 확인 항목에 답하고, 근거가 없으면 “대조 불가”라고 말합니다.";
 
 export const SCAFFOLD_NOTICE =
-  "AI 대화 응답은 준비 중입니다 — 지금은 입력한 내용을 준비된 안내로 연결합니다.";
+  "질문을 확인 항목과 준비된 안내로 연결합니다.";
+
+export const AI_ROLE_SENTENCE =
+  "AI가 신고서에서 검증 가능한 주장을 추출하고, 규칙 엔진이 같은 원문을 독립적으로 읽어 교차검증합니다 — 두 경로가 일치할 때만 판정이 성립합니다.";
 
 export const SEARCH_PLACEHOLDER = "궁금한 것을 적어 보세요 — 예: 예금자보호가 되나요?";
 

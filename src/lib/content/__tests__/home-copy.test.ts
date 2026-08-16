@@ -3,6 +3,7 @@ import { describe, expect, test } from "vitest";
 import { filterOutput } from "@/lib/spine/guardrail/output-filter";
 import { CHECKLIST_NOTICE, TRUST_CHECKLIST } from "../checklist";
 import {
+  AI_ROLE_SENTENCE,
   CATEGORY_ENTRIES,
   coverageSentence,
   EXAMPLE_QUESTIONS,
@@ -19,6 +20,7 @@ const ALL_COPY: readonly string[] = [
   HOME_HERO_TITLE,
   HOME_HERO_LEAD,
   SCAFFOLD_NOTICE,
+  AI_ROLE_SENTENCE,
   SEARCH_PLACEHOLDER,
   VERDICT_SENTENCE,
   CHECKLIST_NOTICE,

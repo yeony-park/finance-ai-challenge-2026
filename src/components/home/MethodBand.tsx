@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { METHOD_LAYERS, VERDICT_SENTENCE } from "@/lib/content/home";
+import { AI_ROLE_SENTENCE, METHOD_LAYERS, VERDICT_SENTENCE } from "@/lib/content/home";
 
 import s from "./home.module.css";
 
@@ -26,6 +26,7 @@ export function MethodBand({ coverage }: { readonly coverage: string }) {
             </div>
           ))}
         </div>
+        <p className={s.sectionLead}>{AI_ROLE_SENTENCE}</p>
         <p className={s.verdictLine}>{VERDICT_SENTENCE}</p>
         <p className={s.coverage}>{coverage}</p>
         <Link href="/methodology" className={s.bandLink}>
