@@ -50,6 +50,9 @@ export function ReportFoot() {
             <span aria-hidden="true">←</span>
             공모 목록으로 돌아가기
           </Link>
+          <Link href="/#checklist" className={s.buttonGhost}>
+            확인 질문 8가지 보기
+          </Link>
         </div>
       </Reveal>
     </section>

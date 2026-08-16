@@ -25,6 +25,11 @@ import {
   type VerificationLayer,
 } from "@/lib/verify/contract/category";
 import { VERDICT_CAPTIONS } from "@/lib/content/verdict-captions";
+import {
+  WATCH_NO_AMENDMENTS,
+  WATCH_NO_RECORD,
+  watchAmendmentLine,
+} from "@/lib/content/watch-band";
 import { loadLatestReport, type LoadedReport } from "@/lib/verify/report/load";
 import { VERDICT_LABEL } from "@/lib/verify/report/view-model/labels";
 import { formatKstDateTime, formatYmd8 } from "@/lib/verify/report/format";
@@ -63,12 +68,13 @@ const countsSentence = (
   `${VERDICT_LABEL.match} ${match}건 · ${VERDICT_LABEL.mismatch} ${mismatch}건 · ${VERDICT_LABEL.unverifiable} ${unverifiable}건`;
 
 const amendmentLine = (watch: WatchState | null): string => {
-  if (watch === null) return "감시 기록 없음";
-  if (watch.amendmentCount === 0) return "접수된 정정신고서 없음";
+  if (watch === null) return WATCH_NO_RECORD;
+  if (watch.amendmentCount === 0) return WATCH_NO_AMENDMENTS;
   const latest = watch.amendments.at(-1)?.receivedOn;
-  return `정정신고서 ${watch.amendmentCount}건 접수${
-    latest ? ` (최근 ${formatYmd8(latest)})` : ""
-  }`;
+  return watchAmendmentLine(
+    watch.amendmentCount,
+    latest ? formatYmd8(latest) : null,
+  );
 };
 
 const loadEvidence = async (

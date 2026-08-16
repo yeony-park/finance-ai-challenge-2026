@@ -47,6 +47,11 @@ export const CONCERN_TAG = "내 걱정";
 export const CHECK_ORDER_NOTE =
   "내 걱정 항목이 맨 위에 있습니다 — 전체 8문항은 그대로입니다.";
 
+export const INTEREST_TAG = "내 관심";
+
+export const CATEGORY_ORDER_NOTE =
+  "내 관심 카테고리가 앞에 있습니다 — 네 카테고리는 그대로입니다.";
+
 export const PROFILE_RESET_LABEL = "초기화";
 
 export const levelShort = (level: ProfileLevel): string =>

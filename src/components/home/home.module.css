@@ -246,6 +246,57 @@
   word-break: keep-all;
 }
 
+.watchList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.watchRow {
+  display: grid;
+  gap: var(--ds-space-1);
+  justify-items: start;
+  padding-block: var(--ds-space-4);
+  border-bottom: 1px solid var(--ds-line);
+}
+.watchName {
+  font-size: var(--ds-text-md);
+  font-weight: var(--ds-weight-bold);
+  color: var(--ds-ink);
+}
+.watchMeta {
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  line-height: 1.75;
+  color: var(--ds-ink-faint);
+}
+.watchLink {
+  margin-top: var(--ds-space-1);
+  font-size: var(--ds-text-sm);
+  font-weight: var(--ds-weight-bold);
+  color: var(--ds-ink);
+  text-decoration: none;
+  border-bottom: 2px solid var(--ds-accent);
+  padding-bottom: 1px;
+  transition: border-color var(--ds-duration-base) var(--ds-ease);
+}
+.watchLink:hover {
+  border-color: var(--ds-ink);
+}
+
+.followRow {
+  margin-top: var(--ds-space-4);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-2);
+}
+.followLabel {
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  color: var(--ds-ink-faint);
+  letter-spacing: 0.04em;
+}
+
 .checkBridge {
   margin: 0;
 }

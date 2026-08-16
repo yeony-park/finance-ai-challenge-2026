@@ -33,6 +33,8 @@ import {
   AI_ROLE_SENTENCE,
   coverageSentence,
   EXAMPLE_QUESTIONS,
+  FOLLOW_UP_LABEL,
+  followUpQuestions,
   HOME_HERO_LEAD,
   HOME_HERO_TITLE,
   INTRO_CARDS,
@@ -40,7 +42,18 @@ import {
   SCAFFOLD_NOTICE,
   SEARCH_PLACEHOLDER,
   VERDICT_SENTENCE,
+  type FollowUpKey,
 } from "../home";
+import {
+  WATCH_BAND_LEAD,
+  WATCH_BAND_TITLE,
+  WATCH_DETECTION_FAILED,
+  WATCH_NO_AMENDMENTS,
+  WATCH_NO_RECORD,
+  WATCH_REPORT_LINK_LABEL,
+  watchAmendmentLine,
+  watchCheckedLine,
+} from "../watch-band";
 
 const ALL_COPY: readonly string[] = [
   HOME_HERO_TITLE,
@@ -90,6 +103,16 @@ const ALL_COPY: readonly string[] = [
     checklistBridgeLabel("가축 9호", item.reportChapter?.label ?? ""),
   ),
   ...Object.values(VERDICT_CAPTIONS),
+  FOLLOW_UP_LABEL,
+  WATCH_BAND_TITLE,
+  WATCH_BAND_LEAD,
+  WATCH_NO_RECORD,
+  WATCH_NO_AMENDMENTS,
+  WATCH_DETECTION_FAILED,
+  WATCH_REPORT_LINK_LABEL,
+  watchAmendmentLine(2, "2026. 8. 14."),
+  watchAmendmentLine(1, null),
+  watchCheckedLine("2026. 8. 16. 00:52"),
 ];
 
 describe("홈·체크리스트 카피 — 출력 필터 전건 통과", () => {
@@ -188,5 +211,48 @@ describe("판정어 쉬운 병기 캡션", () => {
 
   test("대조 불가 캡션은 실패가 아님을 밝힌다", () => {
     expect(VERDICT_CAPTIONS.unverifiable).toContain("틀렸다는 뜻이 아니라");
+  });
+});
+
+describe("후속 질문 칩 — 커리큘럼 불변식", () => {
+  const KEYS: readonly FollowUpKey[] = [
+    "intro",
+    "protection",
+    "lifecycle",
+    "checklist",
+    "reports",
+    "category",
+  ];
+
+  test.each(KEYS)("%s: 후속 질문이 비어 있지 않다", (key) => {
+    expect(followUpQuestions(key).length).toBeGreaterThan(0);
+  });
+
+  test.each(KEYS)("%s: 후속 질문은 전부 예시 질문 레지스트리의 원소다", (key) => {
+    for (const question of followUpQuestions(key)) {
+      expect(EXAMPLE_QUESTIONS).toContain(question);
+    }
+  });
+
+  test.each(KEYS)("%s: 같은 목적지로 되돌아가는 후속 질문이 없다", (key) => {
+    for (const question of followUpQuestions(key)) {
+      expect(question.target, `${key} → ${question.label}`).not.toBe(key);
+    }
+  });
+});
+
+describe("정정 감시 밴드 — 상태 문안 정직성", () => {
+  test("기록 없음·정정 없음·감시 실패가 서로 구분되는 문장이다", () => {
+    const states = [WATCH_NO_RECORD, WATCH_NO_AMENDMENTS, WATCH_DETECTION_FAILED];
+    expect(new Set(states).size).toBe(3);
+  });
+
+  test("정정 접수 문안은 건수를 그대로 병기한다", () => {
+    expect(watchAmendmentLine(3, "2026. 8. 14.")).toContain("3건");
+    expect(watchAmendmentLine(1, null)).not.toContain("최근");
+  });
+
+  test("밴드 리드는 로컬 저장 사실을 밝힌다", () => {
+    expect(WATCH_BAND_LEAD).toContain("이 브라우저");
   });
 });

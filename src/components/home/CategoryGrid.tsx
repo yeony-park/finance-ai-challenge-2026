@@ -5,6 +5,7 @@ import Link from "next/link";
 import { CategoryMotif } from "@/components/site/icons";
 import { orderByInterests, useProfile } from "@/components/site/profile";
 import { CATEGORY_REGISTRY } from "@/lib/content/categories";
+import { CATEGORY_ORDER_NOTE, INTEREST_TAG } from "@/lib/content/onboarding";
 
 import s from "./home.module.css";
 
@@ -22,6 +23,9 @@ export function CategoryGrid() {
           네 카테고리를 같은 기준으로 다룹니다. 데이터 깊이의 차이는 각 페이지의
           층별 지원 선언으로 그대로 표시합니다.
         </p>
+        {profile.interests.length > 0 ? (
+          <p className={s.checkOrderNote}>{CATEGORY_ORDER_NOTE}</p>
+        ) : null}
         <div className={s.categoryGrid}>
           {entries.map((entry) => (
             <Link key={entry.id} href={entry.href} className={s.categoryCard}>
@@ -32,6 +36,9 @@ export function CategoryGrid() {
                 {entry.label}
                 {entry.subLabel ? (
                   <span className={s.categorySub}>({entry.subLabel})</span>
+                ) : null}
+                {profile.interests.includes(entry.id) ? (
+                  <span className={s.checkTag}>{INTEREST_TAG}</span>
                 ) : null}
               </span>
               <p className={s.categoryNote}>{entry.note}</p>

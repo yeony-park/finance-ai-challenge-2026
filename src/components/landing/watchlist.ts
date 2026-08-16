@@ -73,3 +73,8 @@ export const useIsWatched = (offerId: string): boolean =>
     () => readIds().includes(offerId),
     () => false,
   );
+
+const EMPTY_IDS: readonly string[] = [];
+
+export const useWatchedIds = (): readonly string[] =>
+  useSyncExternalStore(subscribe, readIds, () => EMPTY_IDS);

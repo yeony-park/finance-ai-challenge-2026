@@ -3,6 +3,7 @@ import { describe, expect, test } from "vitest";
 import { PROFILE_CONCERNS, PROFILE_LEVELS } from "@/components/site/profile";
 import { filterOutput } from "@/lib/spine/guardrail/output-filter";
 import {
+  CATEGORY_ORDER_NOTE,
   CHECK_ORDER_NOTE,
   CHECKLIST_LINK_LABEL,
   CONCERN_OPTIONS,
@@ -11,6 +12,7 @@ import {
   concernShort,
   INTEREST_HINT,
   INTEREST_QUESTION,
+  INTEREST_TAG,
   LEVEL_OPTIONS,
   LEVEL_QUESTION,
   levelShort,
@@ -31,6 +33,8 @@ const ALL_COPY: readonly string[] = [
   CHECKLIST_LINK_LABEL,
   CONCERN_TAG,
   CHECK_ORDER_NOTE,
+  INTEREST_TAG,
+  CATEGORY_ORDER_NOTE,
   PROFILE_RESET_LABEL,
   ...LEVEL_OPTIONS.flatMap((option) => [option.label, option.short]),
   ...CONCERN_OPTIONS.flatMap((option) => [option.label, option.short]),

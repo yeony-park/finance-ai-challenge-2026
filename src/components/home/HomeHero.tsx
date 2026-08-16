@@ -6,11 +6,14 @@ import { useState, type FormEvent } from "react";
 import { CATEGORY_REGISTRY } from "@/lib/content/categories";
 import {
   EXAMPLE_QUESTIONS,
+  FOLLOW_UP_LABEL,
+  followUpQuestions,
   HOME_HERO_LEAD,
   HOME_HERO_TITLE_PARTS,
   INTRO_CARDS,
   SCAFFOLD_NOTICE,
   SEARCH_PLACEHOLDER,
+  type FollowUpKey,
   type GuideTarget,
 } from "@/lib/content/home";
 import { matchScaffold, type ScaffoldMatch } from "@/lib/content/scaffold-match";
@@ -19,6 +22,13 @@ import s from "./home.module.css";
 
 const guideCard = (target: GuideTarget) =>
   INTRO_CARDS.find((card) => card.id === target);
+
+const followUpKeyOf = (match: ScaffoldMatch): FollowUpKey | null => {
+  if (match.kind === "guide") return match.target;
+  if (match.kind === "reports") return "reports";
+  if (match.kind === "category") return "category";
+  return null;
+};
 
 const categoryEntry = (categoryId: string) =>
   CATEGORY_REGISTRY.find((entry) => entry.id === categoryId);
@@ -180,6 +190,30 @@ export function HomeHero() {
 
           <div aria-live="polite">
             {match ? <ScaffoldPanel match={match} /> : null}
+            {(() => {
+              const key = match ? followUpKeyOf(match) : null;
+              const followUps = key
+                ? followUpQuestions(key).filter(
+                    (question) => question.label !== activeChip,
+                  )
+                : [];
+              if (followUps.length === 0) return null;
+              return (
+                <div className={s.followRow} role="group" aria-label={FOLLOW_UP_LABEL}>
+                  <span className={s.followLabel}>{FOLLOW_UP_LABEL}</span>
+                  {followUps.map((question) => (
+                    <button
+                      key={question.label}
+                      type="button"
+                      className={s.chip}
+                      onClick={() => handleChip(question.label, question.target)}
+                    >
+                      {question.label}
+                    </button>
+                  ))}
+                </div>
+              );
+            })()}
           </div>
         </div>
       </div>
