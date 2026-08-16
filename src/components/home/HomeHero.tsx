@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
 
@@ -117,34 +118,6 @@ function ScaffoldPanel({ match }: { readonly match: ScaffoldMatch }) {
   );
 }
 
-function HeroContrastArt() {
-  return (
-    <svg
-      viewBox="0 0 340 260"
-      aria-hidden="true"
-      className={s.heroArt}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path className={`${s.hl} ${s.d3}`} d="M30 108h94" pathLength="1" />
-      <rect className={`${s.draw} ${s.d1}`} x="16" y="24" width="120" height="168" rx="6" pathLength="1" />
-      <path className={`${s.draw} ${s.d2}`} d="M32 56h64" pathLength="1" strokeWidth="2.4" />
-      <path className={`${s.draw} ${s.d2}`} d="M32 84h88M32 108h88M32 132h72M32 156h80" pathLength="1" />
-      <path className={`${s.hl} ${s.d4}`} d="M218 124h94" pathLength="1" />
-      <rect className={`${s.draw} ${s.d2}`} x="204" y="40" width="120" height="168" rx="6" pathLength="1" />
-      <path className={`${s.draw} ${s.d3}`} d="M220 72h56" pathLength="1" strokeWidth="2.4" />
-      <path className={`${s.draw} ${s.d3}`} d="M220 100h88M220 124h88M220 148h76M220 172h84" pathLength="1" />
-      <path className={`${s.draw} ${s.d4}`} d="M144 112h52M150 106l-6 6 6 6M190 106l6 6-6 6" pathLength="1" />
-      <circle className={`${s.draw} ${s.d5}`} cx="276" cy="230" r="24" pathLength="1" />
-      <circle className={`${s.draw} ${s.d5}`} cx="276" cy="230" r="17" pathLength="1" />
-      <path className={`${s.draw} ${s.d6}`} d="M267 230l7 7 12-14" pathLength="1" strokeWidth="2" />
-    </svg>
-  );
-}
-
 export function HomeHero() {
   const [query, setQuery] = useState("");
   const [match, setMatch] = useState<ScaffoldMatch | null>(null);
@@ -168,10 +141,17 @@ export function HomeHero() {
 
   return (
     <section className={`${s.section} ${s.hero}`} aria-labelledby="home-hero-title">
+      <div className={s.heroPhoto} aria-hidden="true">
+        <Image
+          src="/hero-dossier.jpg"
+          alt=""
+          fill
+          priority
+          sizes="(max-width: 1088px) 1px, 60vw"
+          className={s.heroPhotoImg}
+          />
+      </div>
       <div className={`${s.wrap} ${s.heroWrap}`}>
-        <div className={s.heroArtWrap} aria-hidden="true">
-          <HeroContrastArt />
-        </div>
         <h1 id="home-hero-title" className={`${s.heroTitle} ${s.heroIn}`}>
           {HOME_HERO_TITLE_PARTS.map((part) =>
             part.isMark ? (

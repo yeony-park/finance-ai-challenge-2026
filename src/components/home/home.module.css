@@ -608,22 +608,29 @@
 .heroWrap {
   position: relative;
 }
-.heroArtWrap {
+.heroPhoto {
   position: absolute;
-  right: var(--ds-gutter);
-  top: 50%;
-  transform: translateY(-56%);
-  width: clamp(280px, 30vw, 440px);
-  color: var(--ds-line-strong);
-  pointer-events: none;
+  inset: 0;
   z-index: 0;
+  pointer-events: none;
+  mask-image:
+    linear-gradient(to right, transparent 36%, black 68%, black 88%, transparent 100%),
+    linear-gradient(to bottom, transparent 2%, black 26%, black 64%, transparent 95%);
+  mask-composite: intersect;
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 36%, black 68%, black 88%, transparent 100%),
+    linear-gradient(to bottom, transparent 2%, black 26%, black 64%, transparent 95%);
+  -webkit-mask-composite: source-in;
 }
-.heroArt {
-  width: 100%;
-  height: auto;
+.heroPhotoImg {
+  object-fit: cover;
+  object-position: center 62%;
+  opacity: 0.38;
+  mix-blend-mode: multiply;
+  filter: saturate(0.55) contrast(1.02) blur(1px);
 }
 @media (max-width: 68rem) {
-  .heroArtWrap {
+  .heroPhoto {
     display: none;
   }
 }
@@ -634,29 +641,6 @@
   z-index: 1;
 }
 
-.draw,
-.hl {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  animation: dsDraw 0.9s var(--ds-ease, ease-out) forwards;
-}
-.hl {
-  stroke: var(--ds-accent);
-  stroke-width: 9;
-  opacity: 0.55;
-  animation-duration: 0.6s;
-}
-.d1 { animation-delay: 0.1s; }
-.d2 { animation-delay: 0.35s; }
-.d3 { animation-delay: 0.6s; }
-.d4 { animation-delay: 0.9s; }
-.d5 { animation-delay: 1.15s; }
-.d6 { animation-delay: 1.4s; }
-@keyframes dsDraw {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
 
 .heroIn {
   animation: dsRise 0.55s var(--ds-ease, ease-out) both;
@@ -695,15 +679,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .draw,
-  .hl,
   .heroIn,
   .scrollCueArrow {
     animation: none;
-  }
-  .draw,
-  .hl {
-    stroke-dashoffset: 0;
   }
   .heroIn {
     opacity: 1;
