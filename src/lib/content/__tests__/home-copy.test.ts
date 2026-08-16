@@ -2,7 +2,13 @@ import { describe, expect, test } from "vitest";
 
 import { filterOutput } from "@/lib/spine/guardrail/output-filter";
 import { CATEGORY_REGISTRY } from "../categories";
-import { CHECKLIST_NOTICE, TRUST_CHECKLIST } from "../checklist";
+import {
+  CHECKLIST_BRIDGE_NOTE,
+  CHECKLIST_NOTICE,
+  checklistBridgeLabel,
+  TRUST_CHECKLIST,
+} from "../checklist";
+import { VERDICT_CAPTIONS } from "../verdict-captions";
 import {
   TIMELINE_AMENDED,
   TIMELINE_FILED,
@@ -79,6 +85,11 @@ const ALL_COPY: readonly string[] = [
     item.engineNote,
     ...item.sources.flatMap((source) => [source.label, source.note ?? ""]),
   ]),
+  CHECKLIST_BRIDGE_NOTE,
+  ...TRUST_CHECKLIST.filter((item) => item.reportChapter !== null).map((item) =>
+    checklistBridgeLabel("가축 9호", item.reportChapter?.label ?? ""),
+  ),
+  ...Object.values(VERDICT_CAPTIONS),
 ];
 
 describe("홈·체크리스트 카피 — 출력 필터 전건 통과", () => {
@@ -121,5 +132,61 @@ describe("확인 체크리스트 v1 — 항목별 공적 출처 의무", () => {
     for (const item of TRUST_CHECKLIST) {
       expect(item.question.endsWith("?"), item.id).toBe(true);
     }
+  });
+});
+
+describe("확인 질문 → 리포트 챕터 다리", () => {
+  const BRIDGED_IDS = [
+    "filing-exists",
+    "asset-existence",
+    "amendment-history",
+    "price-position",
+    "return-structure",
+    "issuer-track-record",
+  ];
+  const UNBRIDGED_IDS = ["protection-scope", "exit-structure"];
+
+  test("리포트에 실측 챕터가 있는 항목만 다리를 가진다", () => {
+    for (const item of TRUST_CHECKLIST) {
+      if (BRIDGED_IDS.includes(item.id)) {
+        expect(item.reportChapter, item.id).not.toBeNull();
+      } else {
+        expect(UNBRIDGED_IDS, item.id).toContain(item.id);
+        expect(item.reportChapter, item.id).toBeNull();
+      }
+    }
+  });
+
+  test("다리의 앵커는 리포트 헤딩 id 형식이며 라벨이 비어 있지 않다", () => {
+    for (const item of TRUST_CHECKLIST) {
+      if (item.reportChapter === null) continue;
+      expect(item.reportChapter.headingId, item.id).toMatch(/^report-.+-heading$/);
+      expect(item.reportChapter.label.length, item.id).toBeGreaterThan(0);
+    }
+  });
+
+  test("다리 문안은 공모명·챕터명을 그대로 병기한다", () => {
+    const label = checklistBridgeLabel("가축 9호", "실재 확인");
+    expect(label).toContain("가축 9호");
+    expect(label).toContain("실재 확인");
+  });
+
+  test("다리 규칙 고지는 선별·추천이 아님을 밝힌다", () => {
+    expect(CHECKLIST_BRIDGE_NOTE).toContain("선별·추천이 아닙니다");
+  });
+});
+
+describe("판정어 쉬운 병기 캡션", () => {
+  test("판정 3값 전부에 캡션이 있고 등급·권유 어휘가 없다", () => {
+    const captions = Object.values(VERDICT_CAPTIONS);
+    expect(captions).toHaveLength(3);
+    for (const caption of captions) {
+      expect(caption.length).toBeGreaterThan(0);
+      expect(caption).not.toMatch(/추천|안전|위험합니다|등급|점수/);
+    }
+  });
+
+  test("대조 불가 캡션은 실패가 아님을 밝힌다", () => {
+    expect(VERDICT_CAPTIONS.unverifiable).toContain("틀렸다는 뜻이 아니라");
   });
 });

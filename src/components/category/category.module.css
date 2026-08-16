@@ -147,6 +147,21 @@ span.offerName {
   word-break: keep-all;
 }
 
+.questionBridge {
+  display: inline-block;
+  margin-left: var(--ds-space-2);
+  font-size: var(--ds-text-xs);
+  font-weight: var(--ds-weight-bold);
+  color: var(--ds-ink);
+  text-decoration: none;
+  border-bottom: 2px solid var(--ds-accent);
+  padding-bottom: 1px;
+  transition: border-color var(--ds-duration-base) var(--ds-ease);
+}
+.questionBridge:hover {
+  border-color: var(--ds-ink);
+}
+
 .previewList {
   margin: 0;
   padding-left: 1.1rem;
@@ -188,6 +203,14 @@ span.offerName {
   display: flex;
   flex-direction: column;
   gap: var(--ds-space-1);
+}
+
+.tileCaption {
+  max-width: 16rem;
+  font-size: var(--ds-text-2xs);
+  line-height: 1.5;
+  color: var(--ds-ink-faint);
+  word-break: keep-all;
 }
 
 .tileLabel {

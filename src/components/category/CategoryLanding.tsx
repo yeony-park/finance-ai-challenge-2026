@@ -24,6 +24,7 @@ import {
   type CategoryDescriptor,
   type VerificationLayer,
 } from "@/lib/verify/contract/category";
+import { VERDICT_CAPTIONS } from "@/lib/content/verdict-captions";
 import { loadLatestReport, type LoadedReport } from "@/lib/verify/report/load";
 import { VERDICT_LABEL } from "@/lib/verify/report/view-model/labels";
 import { formatKstDateTime, formatYmd8 } from "@/lib/verify/report/format";
@@ -213,6 +214,7 @@ export async function CategoryLanding({
                     {totals.match.toLocaleString("ko-KR")}
                     <small>건</small>
                   </span>
+                  <span className={s.tileCaption}>{VERDICT_CAPTIONS.match}</span>
                 </div>
                 <div className={s.tile}>
                   <span className={s.tileLabel}>
@@ -223,6 +225,9 @@ export async function CategoryLanding({
                     {totals.mismatch.toLocaleString("ko-KR")}
                     <small>건</small>
                   </span>
+                  <span className={s.tileCaption}>
+                    {VERDICT_CAPTIONS.mismatch}
+                  </span>
                 </div>
                 <div className={s.tile}>
                   <span className={s.tileLabel}>
@@ -232,6 +237,9 @@ export async function CategoryLanding({
                   <span className={s.tileNum}>
                     {totals.unverifiable.toLocaleString("ko-KR")}
                     <small>건</small>
+                  </span>
+                  <span className={s.tileCaption}>
+                    {VERDICT_CAPTIONS.unverifiable}
                   </span>
                 </div>
               </div>
@@ -395,7 +403,7 @@ export async function CategoryLanding({
           <h2 id={`${title}-questions`} className={s.slotTitle}>
             확인 질문
           </h2>
-          <CategoryQuestions />
+          <CategoryQuestions bridgeOffer={byOpenAsc.at(-1) ?? null} />
         </section>
 
         <section className={s.slot} aria-labelledby={`${title}-custom`}>

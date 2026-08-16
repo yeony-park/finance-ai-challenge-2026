@@ -1,7 +1,15 @@
 "use client";
 
+import Link from "next/link";
+
+import { latestOfferEntry, OFFERS } from "@/components/site/offers";
 import { orderByConcern, useProfile } from "@/components/site/profile";
-import { CHECKLIST_NOTICE, TRUST_CHECKLIST } from "@/lib/content/checklist";
+import {
+  CHECKLIST_BRIDGE_NOTE,
+  CHECKLIST_NOTICE,
+  checklistBridgeLabel,
+  TRUST_CHECKLIST,
+} from "@/lib/content/checklist";
 import { CHECK_ORDER_NOTE, CONCERN_TAG } from "@/lib/content/onboarding";
 
 import s from "./home.module.css";
@@ -9,6 +17,7 @@ import s from "./home.module.css";
 export function ChecklistBand() {
   const profile = useProfile();
   const items = orderByConcern(TRUST_CHECKLIST, profile.concern);
+  const bridgeOffer = latestOfferEntry(OFFERS);
 
   return (
     <section id="checklist" className={s.section} aria-labelledby="checklist-title">
@@ -36,6 +45,18 @@ export function ChecklistBand() {
                 <p>{item.question}</p>
                 <p>{item.why}</p>
                 <p>{item.engineNote}</p>
+                {item.reportChapter && bridgeOffer ? (
+                  <p className={s.checkBridge}>
+                    <Link
+                      href={`/offers/${bridgeOffer.id}#${item.reportChapter.headingId}`}
+                    >
+                      {checklistBridgeLabel(
+                        bridgeOffer.title,
+                        item.reportChapter.label,
+                      )}
+                    </Link>
+                  </p>
+                ) : null}
                 <ul className={s.sourceList}>
                   {item.sources.map((source) => (
                     <li key={`${item.id}-${source.url}`}>
@@ -51,6 +72,9 @@ export function ChecklistBand() {
             </details>
           ))}
         </div>
+        {bridgeOffer ? (
+          <p className={s.checkNotice}>{CHECKLIST_BRIDGE_NOTE}</p>
+        ) : null}
         <p className={s.checkNotice}>{CHECKLIST_NOTICE}</p>
       </div>
     </section>

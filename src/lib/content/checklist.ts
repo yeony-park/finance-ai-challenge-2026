@@ -1,7 +1,21 @@
+import {
+  HISTORY_HEADING_ID,
+  PRICE_HEADING_ID,
+  REALITY_HEADING_ID,
+  TRACK_RECORD_HEADING_ID,
+  VERDICT_HEADING_ID,
+  WATCH_HEADING_ID,
+} from "@/components/report/ids";
+
 export interface PublicSourceRef {
   readonly label: string;
   readonly url: string;
   readonly note?: string;
+}
+
+export interface ReportChapterRef {
+  readonly headingId: string;
+  readonly label: string;
 }
 
 export interface ChecklistItem {
@@ -11,10 +25,19 @@ export interface ChecklistItem {
   readonly why: string;
   readonly sources: readonly PublicSourceRef[];
   readonly engineNote: string;
+  readonly reportChapter: ReportChapterRef | null;
 }
 
 export const CHECKLIST_NOTICE =
   "이 체크리스트는 확인 절차 안내이며 투자판단이 아닙니다. 각 항목은 공적 출처에서 직접 확인할 수 있습니다.";
+
+export const CHECKLIST_BRIDGE_NOTE =
+  "실측 링크는 가장 최근 공시가 접수된 공모의 리포트로 연결됩니다 — 선별·추천이 아닙니다.";
+
+export const checklistBridgeLabel = (
+  offerTitle: string,
+  chapterLabel: string,
+): string => `${offerTitle} 리포트 '${chapterLabel}'에서 실측 보기 →`;
 
 export const TRUST_CHECKLIST: readonly ChecklistItem[] = [
   {
@@ -30,6 +53,7 @@ export const TRUST_CHECKLIST: readonly ChecklistItem[] = [
       },
     ],
     engineNote: "이 서비스의 검증 리포트는 DART 원문을 입력으로 시작합니다.",
+    reportChapter: { headingId: VERDICT_HEADING_ID, label: "요약" },
   },
   {
     id: "asset-existence",
@@ -50,6 +74,7 @@ export const TRUST_CHECKLIST: readonly ChecklistItem[] = [
     ],
     engineNote:
       "실재성 층 — 공시 개체를 원장과 이력번호 단위로 대조한 결과를 리포트로 공개합니다.",
+    reportChapter: { headingId: REALITY_HEADING_ID, label: "실재 확인" },
   },
   {
     id: "amendment-history",
@@ -65,6 +90,7 @@ export const TRUST_CHECKLIST: readonly ChecklistItem[] = [
     ],
     engineNote:
       "이행 층 — 정정 접수를 주 2회 감시하고, 정정 전후를 같은 절차로 다시 대조한 기록을 공개합니다.",
+    reportChapter: { headingId: WATCH_HEADING_ID, label: "정정 이력" },
   },
   {
     id: "price-position",
@@ -84,6 +110,7 @@ export const TRUST_CHECKLIST: readonly ChecklistItem[] = [
       },
     ],
     engineNote: "가격 층 — 공모가의 시장 통계 내 위치와 비교군 수를 함께 표시합니다.",
+    reportChapter: { headingId: PRICE_HEADING_ID, label: "가격 위치" },
   },
   {
     id: "return-structure",
@@ -103,6 +130,7 @@ export const TRUST_CHECKLIST: readonly ChecklistItem[] = [
     ],
     engineNote:
       "이행 층 — 발행실적 보고와 정산 관련 공시가 접수되면 같은 절차로 대조합니다.",
+    reportChapter: { headingId: HISTORY_HEADING_ID, label: "이행 이력" },
   },
   {
     id: "issuer-track-record",
@@ -118,6 +146,7 @@ export const TRUST_CHECKLIST: readonly ChecklistItem[] = [
     ],
     engineNote:
       "발행사 트랙레코드 카드 — 과거 공모의 청약 결과·정정 횟수를 원문 실측으로 요약합니다.",
+    reportChapter: { headingId: TRACK_RECORD_HEADING_ID, label: "발행사 기록" },
   },
   {
     id: "protection-scope",
@@ -138,6 +167,7 @@ export const TRUST_CHECKLIST: readonly ChecklistItem[] = [
     ],
     engineNote:
       "입문 안내 — 예금자보호 서술은 항상 3요소(비대상·예탁금 한도 보호·보호장치의 성격)를 함께 제시합니다.",
+    reportChapter: null,
   },
   {
     id: "exit-structure",
@@ -157,5 +187,6 @@ export const TRUST_CHECKLIST: readonly ChecklistItem[] = [
     ],
     engineNote:
       "입문 안내 — 청약·보유·매각의 단계별 확인 항목을 상품 공시 기준으로 안내합니다.",
+    reportChapter: null,
   },
 ];

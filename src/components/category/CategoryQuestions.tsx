@@ -3,7 +3,7 @@
 import Link from "next/link";
 
 import { orderByConcern, useProfile } from "@/components/site/profile";
-import { TRUST_CHECKLIST } from "@/lib/content/checklist";
+import { checklistBridgeLabel, TRUST_CHECKLIST } from "@/lib/content/checklist";
 import { CONCERN_TAG } from "@/lib/content/onboarding";
 
 import home from "@/components/home/home.module.css";
@@ -11,7 +11,16 @@ import s from "./category.module.css";
 
 const QUESTION_COUNT = 3;
 
-export function CategoryQuestions() {
+export interface BridgeOfferRef {
+  readonly id: string;
+  readonly title: string;
+}
+
+export function CategoryQuestions({
+  bridgeOffer = null,
+}: {
+  readonly bridgeOffer?: BridgeOfferRef | null;
+}) {
   const profile = useProfile();
   const items = orderByConcern(TRUST_CHECKLIST, profile.concern).slice(
     0,
@@ -26,6 +35,14 @@ export function CategoryQuestions() {
             · {item.question}
             {item.id === profile.concern ? (
               <span className={home.checkTag}>{CONCERN_TAG}</span>
+            ) : null}
+            {item.reportChapter && bridgeOffer ? (
+              <Link
+                href={`/offers/${bridgeOffer.id}#${item.reportChapter.headingId}`}
+                className={s.questionBridge}
+              >
+                {checklistBridgeLabel(bridgeOffer.title, item.reportChapter.label)}
+              </Link>
             ) : null}
           </p>
         ))}

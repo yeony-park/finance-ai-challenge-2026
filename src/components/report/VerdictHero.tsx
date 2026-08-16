@@ -5,11 +5,13 @@ import { AnimatePresence, m } from "motion/react";
 import { MOTION_DURATION, MOTION_EASE } from "@/components/motion/tokens";
 import { useReducedMotionSafe } from "@/components/motion/useReducedMotionSafe";
 import { RichText } from "@/components/site/RichText";
+import { VERDICT_CAPTIONS } from "@/lib/content/verdict-captions";
 import {
   isEmptyNarrativeLevel,
   type NarrativeLevel,
 } from "@/lib/verify/narrative/types";
 import type { DemoView, ExplainLevel, TallyView } from "@/lib/verify/report/view-model";
+import type { Verdict } from "@/lib/verify/types";
 
 import { METHODOLOGY_ANCHOR } from "@/app/methodology/anchors";
 
@@ -22,6 +24,12 @@ const TONE_CLASS: Record<TallyView["tone"], string> = {
   good: s.toneGood,
   warn: s.toneWarn,
   unk: s.toneUnk,
+};
+
+const TONE_VERDICT: Record<TallyView["tone"], Verdict> = {
+  good: "match",
+  warn: "mismatch",
+  unk: "unverifiable",
 };
 
 const LEVELS: ReadonlyArray<{ id: ExplainLevel; label: string }> = [
@@ -65,6 +73,11 @@ export function VerdictHero({
             <div key={tally.label} className={s.tally}>
               <dt className={s.tallyLabel}>{tally.label}</dt>
               <dd className={`${s.tallyValue} ${TONE_CLASS[tally.tone]}`}>{tally.value}</dd>
+              {level === "easy" ? (
+                <dd className={s.tallyCaption}>
+                  {VERDICT_CAPTIONS[TONE_VERDICT[tally.tone]]}
+                </dd>
+              ) : null}
             </div>
           ))}
         </dl>

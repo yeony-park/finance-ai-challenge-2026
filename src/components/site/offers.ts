@@ -128,6 +128,19 @@ export const OFFERS: readonly OfferEntry[] = [
 
 export const PUBLISHED_OFFER_IDS: readonly string[] = OFFERS.map((offer) => offer.id);
 
+export const latestOfferEntry = (
+  offers: readonly OfferEntry[],
+): OfferEntry | null =>
+  offers.reduce<OfferEntry | null>(
+    (latest, entry) =>
+      latest === null ||
+      Date.parse(entry.subscription.opensAt) >
+        Date.parse(latest.subscription.opensAt)
+        ? entry
+        : latest,
+    null,
+  );
+
 export const isPublishedOfferId = (offerId: string): boolean =>
   PUBLISHED_OFFER_IDS.includes(offerId);
 

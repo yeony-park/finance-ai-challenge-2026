@@ -89,6 +89,14 @@
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.02em;
 }
+.tallyCaption {
+  margin: 0;
+  font-size: var(--ds-text-2xs);
+  line-height: 1.5;
+  color: var(--ds-ink-faint);
+  word-break: keep-all;
+}
+
 .tallyLabel {
   font-size: var(--ds-text-2xs);
   line-height: 1.4;
