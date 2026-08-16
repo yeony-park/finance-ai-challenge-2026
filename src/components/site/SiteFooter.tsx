@@ -1,14 +1,12 @@
 import Link from "next/link";
 
+import { CATEGORY_REGISTRY } from "@/lib/content/categories";
 import { FIXED_NOTICES } from "@/lib/verify/contract/notices";
 import { DATA_SOURCES, SERVICE_NAME, SERVICE_ROLE } from "./service";
 import s from "./shell.module.css";
 
 const FOOTER_NAV: readonly { href: string; label: string }[] = [
-  { href: "/cattle", label: "한우" },
-  { href: "/pig", label: "한돈" },
-  { href: "/art", label: "미술품" },
-  { href: "/real-estate", label: "부동산" },
+  ...CATEGORY_REGISTRY.map((entry) => ({ href: entry.href, label: entry.label })),
   { href: "/offers", label: "검증 리포트" },
   { href: "/methodology", label: "검증 방법" },
 ];

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
+import { useProfile } from "@/components/site/profile";
 import type { NarrativeLevel } from "@/lib/verify/narrative/types";
 import type { DemoView, ExplainLevel } from "@/lib/verify/report/view-model";
 
@@ -16,7 +17,9 @@ export function ReportDocument({
   readonly narrative?: Readonly<Record<ExplainLevel, NarrativeLevel>> | null;
   readonly children?: ReactNode;
 }) {
-  const [level, setLevel] = useState<ExplainLevel>("easy");
+  const profile = useProfile();
+  const [levelOverride, setLevelOverride] = useState<ExplainLevel | null>(null);
+  const level: ExplainLevel = levelOverride ?? profile.level ?? "easy";
 
   return (
     <>
@@ -24,7 +27,7 @@ export function ReportDocument({
         view={view}
         level={level}
         narrative={narrative}
-        onLevelChange={setLevel}
+        onLevelChange={setLevelOverride}
       />
       {children}
       <RealitySection view={view} level={level} />

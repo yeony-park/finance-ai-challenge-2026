@@ -3,6 +3,7 @@ import { ChecklistBand } from "@/components/home/ChecklistBand";
 import { HomeHero } from "@/components/home/HomeHero";
 import { IntroBand } from "@/components/home/IntroBand";
 import { MethodBand } from "@/components/home/MethodBand";
+import { OnboardingBand } from "@/components/home/OnboardingBand";
 import { OFFERS, TOTAL_2026_OFFER_COUNT } from "@/components/site/offers";
 import { coverageSentence } from "@/lib/content/home";
 
@@ -18,6 +19,7 @@ export default function Home() {
   return (
     <>
       <HomeHero />
+      <OnboardingBand />
       <IntroBand />
       <CategoryGrid />
       <MethodBand

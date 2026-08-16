@@ -1,8 +1,15 @@
+"use client";
+
+import { orderByConcern, useProfile } from "@/components/site/profile";
 import { CHECKLIST_NOTICE, TRUST_CHECKLIST } from "@/lib/content/checklist";
+import { CHECK_ORDER_NOTE, CONCERN_TAG } from "@/lib/content/onboarding";
 
 import s from "./home.module.css";
 
 export function ChecklistBand() {
+  const profile = useProfile();
+  const items = orderByConcern(TRUST_CHECKLIST, profile.concern);
+
   return (
     <section id="checklist" className={s.section} aria-labelledby="checklist-title">
       <div className={s.wrap}>
@@ -13,10 +20,18 @@ export function ChecklistBand() {
           무엇을 봐야 할지 모르겠다면 여기서부터 — 각 질문은 공적 출처에서 직접
           확인할 수 있고, 일부는 이 서비스의 대조 실측이 답을 대신합니다.
         </p>
+        {profile.concern ? (
+          <p className={s.checkOrderNote}>{CHECK_ORDER_NOTE}</p>
+        ) : null}
         <div>
-          {TRUST_CHECKLIST.map((item) => (
+          {items.map((item) => (
             <details key={item.id} className={s.checkItem}>
-              <summary>{item.title}</summary>
+              <summary>
+                {item.title}
+                {item.id === profile.concern ? (
+                  <span className={s.checkTag}>{CONCERN_TAG}</span>
+                ) : null}
+              </summary>
               <div className={s.checkDetail}>
                 <p>{item.question}</p>
                 <p>{item.why}</p>

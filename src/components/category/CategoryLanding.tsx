@@ -2,7 +2,6 @@ import Link from "next/link";
 
 import type { OfferEntry } from "@/components/site/offers";
 import { buildOfferSchedule } from "@/components/site/offers";
-import { TRUST_CHECKLIST } from "@/lib/content/checklist";
 import { loadLatestWatchState } from "@/lib/verify/amend/watch-state";
 import {
   LAYER_LABELS,
@@ -15,6 +14,7 @@ import { VERDICT_LABEL } from "@/lib/verify/report/view-model/labels";
 import { formatKstDateTime, formatYmd8 } from "@/lib/verify/report/format";
 
 import home from "@/components/home/home.module.css";
+import { CategoryQuestions } from "./CategoryQuestions";
 import s from "./category.module.css";
 
 const ALL_LAYERS: readonly VerificationLayer[] = [
@@ -23,13 +23,12 @@ const ALL_LAYERS: readonly VerificationLayer[] = [
   "performance",
 ];
 
-const REVIEW_QUESTION_COUNT = 3;
-
 export interface CategoryLandingProps {
   readonly title: string;
   readonly lead: string;
   readonly descriptor: CategoryDescriptor | null;
   readonly offers: readonly OfferEntry[];
+  readonly preview?: readonly string[] | null;
 }
 
 interface OfferEvidence {
@@ -69,6 +68,7 @@ export async function CategoryLanding({
   lead,
   descriptor,
   offers,
+  preview = null,
 }: CategoryLandingProps) {
   const byOpenAsc = [...offers].sort(
     (a, b) =>
@@ -197,6 +197,12 @@ export async function CategoryLanding({
                 </div>
               ))}
             </div>
+          ) : preview ? (
+            <ul className={s.previewList}>
+              {preview.map((line) => (
+                <li key={line}>{line}</li>
+              ))}
+            </ul>
           ) : (
             <p className={s.emptyNote}>
               이 카테고리에는 아직 공개 리포트가 없습니다.
@@ -240,14 +246,7 @@ export async function CategoryLanding({
           <h2 id={`${title}-questions`} className={s.slotTitle}>
             확인 질문
           </h2>
-          <div className={s.questionList}>
-            {TRUST_CHECKLIST.slice(0, REVIEW_QUESTION_COUNT).map((item) => (
-              <p key={item.id}>· {item.question}</p>
-            ))}
-          </div>
-          <Link href="/#checklist" className={home.bandLink}>
-            확인 질문 8가지 전체 보기 →
-          </Link>
+          <CategoryQuestions />
         </section>
 
         <section className={s.slot} aria-labelledby={`${title}-custom`}>

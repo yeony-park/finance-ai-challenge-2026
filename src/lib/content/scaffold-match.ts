@@ -1,7 +1,8 @@
+import type { CategoryId } from "./categories";
 import type { GuideTarget } from "./home";
 
 export type ScaffoldMatch =
-  | { readonly kind: "category"; readonly categoryId: "cattle" | "pig" | "art" | "real-estate" }
+  | { readonly kind: "category"; readonly categoryId: CategoryId }
   | { readonly kind: "guide"; readonly target: GuideTarget }
   | { readonly kind: "reports" }
   | { readonly kind: "none" };

@@ -1,10 +1,16 @@
+"use client";
+
 import Link from "next/link";
 
-import { CATEGORY_ENTRIES } from "@/lib/content/home";
+import { orderByInterests, useProfile } from "@/components/site/profile";
+import { CATEGORY_REGISTRY } from "@/lib/content/categories";
 
 import s from "./home.module.css";
 
 export function CategoryGrid() {
+  const profile = useProfile();
+  const entries = orderByInterests(CATEGORY_REGISTRY, profile.interests);
+
   return (
     <section className={s.section} aria-labelledby="category-grid-title">
       <div className={s.wrap}>
@@ -16,9 +22,14 @@ export function CategoryGrid() {
           층별 지원 선언으로 그대로 표시합니다.
         </p>
         <div className={s.categoryGrid}>
-          {CATEGORY_ENTRIES.map((entry) => (
+          {entries.map((entry) => (
             <Link key={entry.id} href={entry.href} className={s.categoryCard}>
-              <span className={s.categoryLabel}>{entry.label}</span>
+              <span className={s.categoryLabel}>
+                {entry.label}
+                {entry.subLabel ? (
+                  <span className={s.categorySub}>({entry.subLabel})</span>
+                ) : null}
+              </span>
               <p className={s.categoryNote}>{entry.note}</p>
             </Link>
           ))}

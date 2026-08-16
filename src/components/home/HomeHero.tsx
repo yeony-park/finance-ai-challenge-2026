@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
 
+import { CATEGORY_REGISTRY } from "@/lib/content/categories";
 import {
-  CATEGORY_ENTRIES,
   EXAMPLE_QUESTIONS,
   HOME_HERO_LEAD,
   HOME_HERO_TITLE_PARTS,
@@ -21,7 +21,7 @@ const guideCard = (target: GuideTarget) =>
   INTRO_CARDS.find((card) => card.id === target);
 
 const categoryEntry = (categoryId: string) =>
-  CATEGORY_ENTRIES.find((entry) => entry.id === categoryId);
+  CATEGORY_REGISTRY.find((entry) => entry.id === categoryId);
 
 function ScaffoldPanel({ match }: { readonly match: ScaffoldMatch }) {
   if (match.kind === "guide") {
@@ -91,7 +91,7 @@ function ScaffoldPanel({ match }: { readonly match: ScaffoldMatch }) {
         <p>입력한 내용과 연결되는 안내를 찾지 못했습니다. 아래에서 골라 볼 수 있습니다.</p>
       </div>
       <div className={s.panelLinkList}>
-        {CATEGORY_ENTRIES.map((entry) => (
+        {CATEGORY_REGISTRY.map((entry) => (
           <Link key={entry.id} href={entry.href} className={s.chip}>
             {entry.label}
           </Link>

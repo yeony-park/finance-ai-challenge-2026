@@ -146,3 +146,14 @@ span.offerName {
   color: var(--ds-ink-muted);
   word-break: keep-all;
 }
+
+.previewList {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.previewList li {
+  margin-bottom: var(--ds-space-2);
+  font-size: var(--ds-text-sm);
+  color: var(--ds-ink-muted);
+}

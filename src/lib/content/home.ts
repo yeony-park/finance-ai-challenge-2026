@@ -112,40 +112,6 @@ export const INTRO_CARDS: readonly IntroCard[] = [
   },
 ];
 
-export interface CategoryEntry {
-  readonly id: "cattle" | "pig" | "art" | "real-estate";
-  readonly href: string;
-  readonly label: string;
-  readonly note: string;
-}
-
-export const CATEGORY_ENTRIES: readonly CategoryEntry[] = [
-  {
-    id: "cattle",
-    href: "/cattle",
-    label: "한우",
-    note: "공시-원장 대조 리포트 공개 중",
-  },
-  {
-    id: "pig",
-    href: "/pig",
-    label: "한돈",
-    note: "국산 돼지 공모 — 착지 준비 중, 공통 검증 기반 연결 대기",
-  },
-  {
-    id: "art",
-    href: "/art",
-    label: "미술품",
-    note: "카테고리 착지 준비 중 — 공통 검증 기반 연결 대기",
-  },
-  {
-    id: "real-estate",
-    href: "/real-estate",
-    label: "부동산",
-    note: "사후 검증 리포트 공개 중",
-  },
-];
-
 export interface MethodLayer {
   readonly name: string;
   readonly detail: string;

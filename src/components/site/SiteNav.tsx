@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { CATEGORY_REGISTRY } from "@/lib/content/categories";
+
 import s from "./shell.module.css";
 
 interface NavItem {
@@ -11,13 +13,18 @@ interface NavItem {
   readonly match: string;
 }
 
-const NAV_ITEMS: readonly NavItem[] = [
-  { href: "/cattle", label: "한우", match: "/cattle" },
-  { href: "/pig", label: "한돈", match: "/pig" },
-  { href: "/art", label: "미술품", match: "/art" },
-  { href: "/real-estate", label: "부동산", match: "/real-estate" },
+const UTILITY_ITEMS: readonly NavItem[] = [
   { href: "/offers", label: "검증 리포트", match: "/offers" },
   { href: "/methodology", label: "검증 방법", match: "/methodology" },
+];
+
+const NAV_ITEMS: readonly NavItem[] = [
+  ...CATEGORY_REGISTRY.map((entry) => ({
+    href: entry.href,
+    label: entry.label,
+    match: entry.href,
+  })),
+  ...UTILITY_ITEMS,
 ];
 
 const isCurrent = (pathname: string, match: string): boolean =>

@@ -1,10 +1,10 @@
 import { describe, expect, test } from "vitest";
 
 import { filterOutput } from "@/lib/spine/guardrail/output-filter";
+import { CATEGORY_REGISTRY } from "../categories";
 import { CHECKLIST_NOTICE, TRUST_CHECKLIST } from "../checklist";
 import {
   AI_ROLE_SENTENCE,
-  CATEGORY_ENTRIES,
   coverageSentence,
   EXAMPLE_QUESTIONS,
   HOME_HERO_LEAD,
@@ -29,7 +29,12 @@ const ALL_COPY: readonly string[] = [
   ...EXAMPLE_QUESTIONS.map((question) => question.label),
   ...INTRO_CARDS.flatMap((card) => [card.title, ...card.body]),
   ...INTRO_CARDS.flatMap((card) => card.sources.map((source) => source.label)),
-  ...CATEGORY_ENTRIES.flatMap((entry) => [entry.label, entry.note]),
+  ...CATEGORY_REGISTRY.flatMap((entry) => [
+    entry.label,
+    entry.subLabel ?? "",
+    entry.note,
+    ...(entry.preview ?? []),
+  ]),
   ...METHOD_LAYERS.flatMap((layer) => [layer.name, layer.detail]),
   ...TRUST_CHECKLIST.flatMap((item) => [
     item.title,

@@ -424,3 +424,69 @@
   line-height: 1.75;
   color: var(--ds-ink-faint);
 }
+
+.categorySub {
+  margin-left: 0.2em;
+  font-size: var(--ds-text-xs);
+  font-weight: var(--ds-weight-regular);
+  color: var(--ds-ink-muted);
+}
+
+.obGroup {
+  margin-top: var(--ds-space-5);
+}
+
+.obQuestion {
+  margin: 0;
+  font-size: var(--ds-text-md);
+  font-weight: var(--ds-weight-bold);
+  letter-spacing: var(--ds-tracking-snug);
+}
+
+.obHint {
+  margin: var(--ds-space-1) 0 0;
+  font-size: var(--ds-text-xs);
+  color: var(--ds-ink-faint);
+}
+
+.obFoot {
+  margin-top: var(--ds-space-6);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-3) var(--ds-space-5);
+}
+
+.obSummary {
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  color: var(--ds-ink-muted);
+}
+
+.obStorage {
+  margin: var(--ds-space-4) 0 0;
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  color: var(--ds-ink-faint);
+}
+
+.checkTag {
+  display: inline-block;
+  margin-left: var(--ds-space-2);
+  padding: 0.05rem 0.5rem;
+  border: 1px solid var(--ds-accent-line);
+  border-radius: var(--ds-radius-pill);
+  background: var(--ds-accent-soft);
+  color: var(--ds-accent-ink);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  letter-spacing: 0.04em;
+  vertical-align: middle;
+}
+
+.checkOrderNote {
+  margin: 0 0 var(--ds-space-4);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  color: var(--ds-ink-faint);
+}

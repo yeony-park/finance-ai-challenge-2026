@@ -2,6 +2,10 @@
 
 import { useSyncExternalStore } from "react";
 
+import { CATEGORY_IDS, type CategoryId } from "@/lib/content/categories";
+
+export type { CategoryId };
+
 export const PROFILE_STORAGE_KEY = "jeomjeom.profile.v1";
 
 export const PROFILE_LEVELS = ["easy", "pro"] as const;
@@ -15,19 +19,11 @@ export const PROFILE_CONCERNS = [
 ] as const;
 export type ProfileConcern = (typeof PROFILE_CONCERNS)[number];
 
-export const PROFILE_CATEGORY_IDS = [
-  "cattle",
-  "pig",
-  "art",
-  "real-estate",
-] as const;
-export type ProfileCategoryId = (typeof PROFILE_CATEGORY_IDS)[number];
-
 export interface BeginnerProfile {
   readonly version: 1;
   readonly level: ProfileLevel | null;
   readonly concern: ProfileConcern | null;
-  readonly interests: readonly ProfileCategoryId[];
+  readonly interests: readonly CategoryId[];
 }
 
 export const EMPTY_PROFILE: BeginnerProfile = {
@@ -43,8 +39,8 @@ const isLevel = (value: unknown): value is ProfileLevel =>
 const isConcern = (value: unknown): value is ProfileConcern =>
   PROFILE_CONCERNS.includes(value as ProfileConcern);
 
-const isCategoryId = (value: unknown): value is ProfileCategoryId =>
-  PROFILE_CATEGORY_IDS.includes(value as ProfileCategoryId);
+const isCategoryId = (value: unknown): value is CategoryId =>
+  CATEGORY_IDS.includes(value as CategoryId);
 
 export const parseProfile = (raw: string | null): BeginnerProfile => {
   if (!raw) return EMPTY_PROFILE;
