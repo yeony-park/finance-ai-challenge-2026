@@ -1,4 +1,5 @@
 import {
+  FILING_HEADING_ID,
   HISTORY_HEADING_ID,
   PRICE_HEADING_ID,
   REALITY_HEADING_ID,
@@ -166,8 +167,8 @@ export const TRUST_CHECKLIST: readonly ChecklistItem[] = [
       },
     ],
     engineNote:
-      "입문 안내 — 예금자보호 서술은 항상 3요소(비대상·예탁금 한도 보호·보호장치의 성격)를 함께 제시합니다.",
-    reportChapter: null,
+      "입문 안내 — 예금자보호 서술은 항상 3요소(비대상·예탁금 한도 보호·보호장치의 성격)를 함께 제시합니다. 상품별 보호기금 구조는 신고서 구조 정보에 옮겨 적습니다.",
+    reportChapter: { headingId: FILING_HEADING_ID, label: "신고서 정보" },
   },
   {
     id: "exit-structure",
@@ -186,7 +187,7 @@ export const TRUST_CHECKLIST: readonly ChecklistItem[] = [
       },
     ],
     engineNote:
-      "입문 안내 — 청약·보유·매각의 단계별 확인 항목을 상품 공시 기준으로 안내합니다.",
-    reportChapter: null,
+      "입문 안내 — 청약·보유·매각의 단계별 확인 항목을 상품 공시 기준으로 안내합니다. 예상 사업기간·매각 결정 구조는 신고서 구조 정보에 옮겨 적습니다.",
+    reportChapter: { headingId: FILING_HEADING_ID, label: "신고서 정보" },
   },
 ];

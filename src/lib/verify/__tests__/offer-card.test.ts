@@ -44,7 +44,7 @@ describe("buildOfferSchedule — D-day는 기준 시각의 함수다", () => {
 
     const schedule = buildOfferSchedule(ENTRY, now);
 
-    expect(schedule.phase).toBe("open");
+    expect(schedule.phase).toBe("upcoming");
     expect(schedule.dday).toBe(14);
     expect(schedule.badge).toBe("청약 D-14");
   });
@@ -53,6 +53,12 @@ describe("buildOfferSchedule — D-day는 기준 시각의 함수다", () => {
     const schedule = buildOfferSchedule(ENTRY, kst("2026-08-13T23:59:00"));
 
     expect(schedule.dday).toBe(14);
+  });
+
+  test("청약 개시 전은 upcoming 단계로 구분한다", () => {
+    const schedule = buildOfferSchedule(ENTRY, kst("2026-08-20T09:00:00"));
+
+    expect(schedule.phase).toBe("upcoming");
   });
 
   test("청약 개시 당일 개시 시각 전에는 D-DAY로 적는다", () => {

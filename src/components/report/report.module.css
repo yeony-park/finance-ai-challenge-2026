@@ -220,6 +220,108 @@
   letter-spacing: var(--ds-tracking-normal);
 }
 
+.lifecycle {
+  padding-block: var(--ds-space-5);
+  background: var(--ds-bg-muted);
+  border-block: 1px solid var(--ds-line);
+}
+.lcRow {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-3) var(--ds-space-5);
+}
+.lcStage {
+  display: grid;
+  gap: 0.15rem;
+  justify-items: start;
+  position: relative;
+}
+.lcStage + .lcStage::before {
+  content: "→";
+  position: absolute;
+  left: calc(-1 * var(--ds-space-4) - 0.15rem);
+  top: 0.1rem;
+  color: var(--ds-ink-faint);
+  font-size: var(--ds-text-xs);
+}
+.lcLabel {
+  font-size: var(--ds-text-sm);
+  font-weight: var(--ds-weight-bold);
+  color: var(--ds-ink-faint);
+  word-break: keep-all;
+}
+.lcNote {
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  color: var(--ds-ink-faint);
+}
+.lcCurrent .lcLabel {
+  color: var(--ds-ink);
+  background-image: linear-gradient(var(--ds-accent), var(--ds-accent));
+  background-repeat: no-repeat;
+  background-position: 0 92%;
+  background-size: 100% 0.28em;
+}
+.lcDone .lcLabel {
+  color: var(--ds-ink-muted);
+}
+.lcPending .lcLabel {
+  color: var(--ds-ink-faint);
+}
+.lcFootnote {
+  margin-top: var(--ds-space-3);
+  font-size: var(--ds-text-xs);
+  line-height: 1.7;
+  color: var(--ds-ink-muted);
+  word-break: keep-all;
+}
+
+.filingLead {
+  margin: 0;
+  font-size: var(--ds-text-base);
+  line-height: var(--ds-leading-relaxed);
+  color: var(--ds-ink-muted);
+  word-break: keep-all;
+}
+.filingList {
+  margin: 0;
+  display: grid;
+  gap: var(--ds-space-4);
+}
+.filingItem {
+  display: grid;
+  gap: var(--ds-space-1);
+  padding-bottom: var(--ds-space-4);
+  border-bottom: 1px solid var(--ds-line);
+}
+.filingLabel {
+  font-size: var(--ds-text-sm);
+  font-weight: var(--ds-weight-bold);
+  color: var(--ds-ink);
+}
+.filingValue {
+  margin: 0;
+  font-size: var(--ds-text-base);
+  line-height: var(--ds-leading-relaxed);
+  color: var(--ds-ink-muted);
+  word-break: keep-all;
+}
+.filingSection {
+  margin: 0;
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  color: var(--ds-ink-faint);
+}
+.filingSource {
+  margin-top: var(--ds-space-4);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  color: var(--ds-ink-faint);
+}
+
 .layerHead {
   display: grid;
   gap: var(--ds-space-2);

@@ -159,24 +159,9 @@ describe("확인 체크리스트 v1 — 항목별 공적 출처 의무", () => {
 });
 
 describe("확인 질문 → 리포트 챕터 다리", () => {
-  const BRIDGED_IDS = [
-    "filing-exists",
-    "asset-existence",
-    "amendment-history",
-    "price-position",
-    "return-structure",
-    "issuer-track-record",
-  ];
-  const UNBRIDGED_IDS = ["protection-scope", "exit-structure"];
-
-  test("리포트에 실측 챕터가 있는 항목만 다리를 가진다", () => {
+  test("8개 항목 전부가 리포트 챕터 다리를 가진다 (신고서 정보 챕터 신설 후)", () => {
     for (const item of TRUST_CHECKLIST) {
-      if (BRIDGED_IDS.includes(item.id)) {
-        expect(item.reportChapter, item.id).not.toBeNull();
-      } else {
-        expect(UNBRIDGED_IDS, item.id).toContain(item.id);
-        expect(item.reportChapter, item.id).toBeNull();
-      }
+      expect(item.reportChapter, item.id).not.toBeNull();
     }
   });
 

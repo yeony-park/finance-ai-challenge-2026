@@ -2,12 +2,20 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 
+import { FilingFactsSection } from "@/components/report/FilingFactsSection";
+import { LifecycleStrip } from "@/components/report/LifecycleStrip";
 import { ReportChapterNav } from "@/components/report/ReportChapterNav";
 import { ReportDocument } from "@/components/report/ReportDocument";
 import { ReportFoot } from "@/components/report/ReportFoot";
 import { HistorySection, PriceSection } from "@/components/report/SummaryLayers";
 import { WatchSection } from "@/components/report/WatchSection";
-import { isPublishedOfferId, PUBLISHED_OFFER_IDS } from "@/components/site/offers";
+import {
+  buildOfferSchedule,
+  isPublishedOfferId,
+  OFFERS,
+  PUBLISHED_OFFER_IDS,
+} from "@/components/site/offers";
+import { loadFilingFacts } from "@/lib/verify/report/filing-facts";
 import { loadLatestReplayDiff } from "@/lib/verify/amend/replay-load";
 import {
   toAmendmentReplayView,
@@ -114,17 +122,28 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
 
   if (!view) notFound();
 
-  const [watch, replay, narrative, trackRecord] = await Promise.all([
+  const [watch, replay, narrative, trackRecord, filingFacts] = await Promise.all([
     loadWatchStatus(id),
     loadAmendmentReplay(id),
     loadOfferNarrative(id),
     loadTrackRecordCard(id),
+    loadFilingFacts(id),
   ]);
+
+  const offerEntry = OFFERS.find((offer) => offer.id === id) ?? null;
 
   return (
     <>
       <ReportDocument view={view} narrative={narrative?.levels ?? null}>
-        <ReportChapterNav />
+        <ReportChapterNav hasFilingFacts={filingFacts !== null} />
+        {offerEntry ? (
+          <LifecycleStrip
+            schedule={buildOfferSchedule(offerEntry, new Date())}
+            assetKind={offerEntry.assetKind}
+            isExitVerified={offerEntry.assetKind === "real-estate"}
+          />
+        ) : null}
+        {filingFacts ? <FilingFactsSection facts={filingFacts} /> : null}
         <WatchSection watch={watch} replay={replay} />
         <HistorySection view={view} trackRecord={trackRecord} />
       </ReportDocument>

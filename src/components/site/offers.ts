@@ -146,7 +146,7 @@ export const isPublishedOfferId = (offerId: string): boolean =>
 
 export const TOTAL_2026_OFFER_COUNT = 8;
 
-export type SubscriptionPhase = "open" | "closed";
+export type SubscriptionPhase = "upcoming" | "open" | "closed";
 
 export interface OfferSchedule {
   readonly phase: SubscriptionPhase;
@@ -203,7 +203,7 @@ export const buildOfferSchedule = (entry: OfferEntry, now: Date): OfferSchedule 
     const dday = kstDayIndex(opensMs) - kstDayIndex(nowMs);
     return {
       ...base,
-      phase: "open",
+      phase: "upcoming",
       dday,
       badge: dday === 0 ? "청약 D-DAY" : `청약 D-${dday}`,
     };

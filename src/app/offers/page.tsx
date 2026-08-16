@@ -44,7 +44,9 @@ export default async function OffersPage() {
     }),
   );
 
-  const open = cards.filter((card) => card.schedule.phase === "open").toSorted(byCloseAsc);
+  const open = cards
+    .filter((card) => card.schedule.phase !== "closed")
+    .toSorted(byCloseAsc);
   const closed = cards
     .filter((card) => card.schedule.phase === "closed")
     .toSorted((a, b) => byCloseAsc(b, a));
@@ -57,7 +59,7 @@ export default async function OffersPage() {
           OFFERS.filter((offer) => !isCohort2026(offer.subscription.closesAt)).length,
         )}
       />
-      <OfferListSection id="open-offers" title="청약 진행 중" cards={open} isMuted />
+      <OfferListSection id="open-offers" title="청약 예정·진행 중" cards={open} isMuted />
       <OfferListSection id="closed-offers" title="청약 종료 · 사후 검증" cards={closed} />
     </>
   );
