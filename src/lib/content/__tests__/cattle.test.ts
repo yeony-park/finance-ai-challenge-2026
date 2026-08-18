@@ -14,7 +14,7 @@ import {
   CATTLE_TERMS,
   CATTLE_TERMS_TITLE,
 } from "../cattle";
-import { MARKET_MARKER_NOTE } from "../market-context";
+import { MARKET_DISCLAIMER, MARKET_MARKER_NOTE } from "../market-context";
 
 const ALL_COPY: readonly string[] = [
   CATTLE_FLOW_TITLE,
@@ -51,7 +51,8 @@ describe("한우 검증 흐름 — 계약", () => {
     }
   });
 
-  test("마커 고지는 가격 판단이 아님을 밝힌다", () => {
-    expect(MARKET_MARKER_NOTE).toContain("가격 판단이 아닙니다");
+  test("마커 고지는 시점 표기임을, 차트 고지는 가격 비판정 경계를 밝힌다", () => {
+    expect(MARKET_MARKER_NOTE).toContain("청약 개시 월");
+    expect(MARKET_DISCLAIMER).toContain("가격 판정이 아닙니다");
   });
 });

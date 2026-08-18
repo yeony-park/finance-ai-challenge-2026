@@ -196,8 +196,8 @@ describe("확인 질문 → 리포트 챕터 다리", () => {
     expect(label).toContain("실재 확인");
   });
 
-  test("다리 규칙 고지는 선별·추천이 아님을 밝힌다", () => {
-    expect(CHECKLIST_BRIDGE_NOTE).toContain("선별·추천이 아닙니다");
+  test("다리 규칙 고지는 기계 선정 규칙을 밝힌다", () => {
+    expect(CHECKLIST_BRIDGE_NOTE).toContain("가장 최근 공시가 접수된 공모");
   });
 });
 
@@ -211,8 +211,8 @@ describe("판정어 쉬운 병기 캡션", () => {
     }
   });
 
-  test("대조 불가 캡션은 실패가 아님을 밝힌다", () => {
-    expect(VERDICT_CAPTIONS.unverifiable).toContain("틀렸다는 뜻이 아니라");
+  test("대조 불가 캡션은 자료 부재를 밝힌다", () => {
+    expect(VERDICT_CAPTIONS.unverifiable).toContain("자료가 아직 없었다");
   });
 });
 

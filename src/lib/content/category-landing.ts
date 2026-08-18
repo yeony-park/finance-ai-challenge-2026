@@ -3,7 +3,7 @@ import type { VerificationLayer } from "@/lib/verify/contract/category";
 export const OFFERS_SECTION_TITLE = "공모별 확인 현황";
 
 export const OFFERS_SECTION_LEAD =
-  "검증 가능한 공개 데이터가 있는 공모 전수를 공시 접수일순으로 보여줍니다 — 선별·추천 정렬이 아닙니다.";
+  "검증 가능한 공개 데이터가 있는 공모 전수를 공시 접수일순 그대로 보여줍니다.";
 
 export const ACTIVE_GROUP_TITLE = "청약 예정·진행 중";
 
@@ -23,7 +23,7 @@ export const verdictTotalsLead = (
 export const LAYERS_SECTION_TITLE = "무엇을 어디까지 대조하나";
 
 export const LAYERS_SECTION_LEAD =
-  "데이터 깊이의 차이를 숨기지 않습니다 — 확인 질문마다 어떤 공공 데이터로 어디까지 대조하는지 그대로 적습니다.";
+  "확인 질문마다 어떤 공공 데이터로 어디까지 대조하는지, 데이터 깊이의 차이까지 그대로 적습니다.";
 
 export const LAYER_EASY_QUESTIONS: Readonly<Record<VerificationLayer, string>> = {
   existence: "실물이 정말 있는가",

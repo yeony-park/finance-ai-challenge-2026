@@ -538,7 +538,7 @@ export async function CategoryLanding({
                       <td className={s.layerBasis}>
                         {declared
                           ? declared.basis
-                          : "담당 구현에서 확정됩니다 — 확정 전에는 대조를 제공하지 않습니다."}
+                          : "담당 구현에서 확정되면 그때부터 대조를 제공합니다."}
                       </td>
                     </tr>
                   );

@@ -33,7 +33,7 @@ export const CHECKLIST_NOTICE =
   "이 체크리스트는 확인 절차 안내이며 투자판단이 아닙니다. 각 항목은 공적 출처에서 직접 확인할 수 있습니다.";
 
 export const CHECKLIST_BRIDGE_NOTE =
-  "실측 링크는 가장 최근 공시가 접수된 공모의 리포트로 연결됩니다 — 선별·추천이 아닙니다.";
+  "실측 링크는 가장 최근 공시가 접수된 공모의 리포트로 연결됩니다.";
 
 export const checklistBridgeLabel = (
   offerTitle: string,
@@ -81,7 +81,7 @@ export const TRUST_CHECKLIST: readonly ChecklistItem[] = [
     id: "amendment-history",
     title: "정정 이력이 있는가",
     question: "제출 후 정정신고서가 접수됐나요? 무엇이 바뀌었나요?",
-    why: "공시는 제출로 끝나지 않습니다 — 정정으로 일정·조건이 바뀔 수 있고, 바뀐 내용이 판단 재료입니다.",
+    why: "공시는 정정으로 일정과 조건이 바뀔 수 있습니다 — 바뀐 내용이 곧 판단 재료입니다.",
     sources: [
       {
         label: "DART 공시검색 — 정정신고서",
@@ -97,7 +97,7 @@ export const TRUST_CHECKLIST: readonly ChecklistItem[] = [
     id: "price-position",
     title: "가격이 시장 어디쯤인가",
     question: "공모가가 같은 조건의 시장 통계 대비 어느 위치인가요?",
-    why: "적정한지 판정하는 것이 아니라, 공적 시장 통계 속 위치를 아는 것이 출발점입니다.",
+    why: "공모가가 공적 시장 통계 속 어디에 있는지 아는 것이 확인의 출발점입니다.",
     sources: [
       {
         label: "축산물 등급판정·경락 정보 (축산물품질평가원)",
@@ -153,7 +153,7 @@ export const TRUST_CHECKLIST: readonly ChecklistItem[] = [
     id: "protection-scope",
     title: "보호장치의 정확한 범위를 아는가",
     question: "예금자보호가 되나요? 어떤 보호장치가 어디까지 작동하나요?",
-    why: "보호장치는 존재하지만 손실 보전 장치가 아닙니다 — 범위를 정확히 아는 것이 확인의 핵심입니다.",
+    why: "보호장치마다 지켜주는 범위가 다릅니다 — 어디까지 작동하는지 정확히 아는 것이 확인의 핵심입니다.",
     sources: [
       {
         label: "금융위원회 주요정책 문답 (2025-07-22)",
