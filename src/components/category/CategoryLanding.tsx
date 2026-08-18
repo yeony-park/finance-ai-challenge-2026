@@ -1,8 +1,12 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
+import { OfferWatchControl } from "@/components/landing/OfferWatchControl";
 import { CountUp } from "@/components/motion/CountUp";
 import { Reveal } from "@/components/motion/Reveal";
+import { FILING_HEADING_ID, REALITY_HEADING_ID, WATCH_HEADING_ID } from "@/components/report/ids";
+import { TrackRecordCard } from "@/components/report/TrackRecordCard";
 import { CategoryMotif } from "@/components/site/icons";
 import type { OfferEntry, OfferSchedule } from "@/components/site/offers";
 import { buildOfferSchedule } from "@/components/site/offers";
@@ -11,6 +15,10 @@ import {
   ACTIVE_GROUP_EMPTY,
   ACTIVE_GROUP_TITLE,
   CLOSED_GROUP_TITLE,
+  FACT_STRIP_LINK,
+  FACT_STRIP_TITLE,
+  ISSUER_SLOT_TITLE,
+  REPORT_OPEN_LABEL,
   LAYER_EASY_QUESTIONS,
   LAYERS_SECTION_LEAD,
   LAYERS_SECTION_TITLE,
@@ -44,7 +52,11 @@ import {
   type CategoryDescriptor,
   type VerificationLayer,
 } from "@/lib/verify/contract/category";
+import { loadFilingFacts, type FilingFacts } from "@/lib/verify/report/filing-facts";
 import { loadLatestReport, type LoadedReport } from "@/lib/verify/report/load";
+import { issuerKeyForOffer } from "@/lib/verify/track-record/registry";
+import { loadTrackRecord } from "@/lib/verify/track-record/store";
+import { toTrackRecordView } from "@/lib/verify/track-record/view";
 import { VERDICT_LABEL } from "@/lib/verify/report/view-model/labels";
 import { formatKstDateTime, formatYmd8 } from "@/lib/verify/report/format";
 
@@ -66,6 +78,9 @@ export interface CategoryLandingProps {
   readonly offers: readonly OfferEntry[];
   readonly preview?: readonly string[] | null;
   readonly market?: ReactNode;
+  readonly heroImage?: string | null;
+  readonly custom?: ReactNode;
+  readonly customTitle?: string;
 }
 
 interface OfferEvidence {
@@ -73,6 +88,7 @@ interface OfferEvidence {
   readonly loaded: LoadedReport;
   readonly watch: WatchState | null;
   readonly schedule: OfferSchedule;
+  readonly filingFacts: FilingFacts | null;
 }
 
 const countsSentence = (
@@ -98,25 +114,41 @@ const loadEvidence = async (
 ): Promise<readonly OfferEvidence[]> =>
   Promise.all(
     offers.map(async (offer) => {
-      const [loaded, watch] = await Promise.all([
+      const [loaded, watch, filingFacts] = await Promise.all([
         loadLatestReport(offer.id),
         loadLatestWatchState(offer.id),
+        loadFilingFacts(offer.id),
       ]);
       return {
         offer,
         loaded,
         watch: watch ?? null,
         schedule: buildOfferSchedule(offer, now),
+        filingFacts,
       };
     }),
   );
 
-function OfferEvidenceCard({ entry }: { readonly entry: OfferEvidence }) {
+const ACTIVE_CHAPTERS: readonly { readonly id: string; readonly label: string }[] = [
+  { id: REALITY_HEADING_ID, label: "실재 확인" },
+  { id: WATCH_HEADING_ID, label: "정정 이력" },
+  { id: FILING_HEADING_ID, label: "신고서 정보" },
+];
+
+function OfferEvidenceCard({
+  entry,
+  showChapterLinks = false,
+}: {
+  readonly entry: OfferEvidence;
+  readonly showChapterLinks?: boolean;
+}) {
   const { summary } = entry.loaded.report;
   return (
-    <Link href={`/offers/${entry.offer.id}`} className={s.offerCard}>
+    <article className={s.offerCard}>
       <span className={s.offerCardHead}>
-        <span className={s.offerCardName}>{entry.offer.title}</span>
+        <Link href={`/offers/${entry.offer.id}`} className={s.offerCardName}>
+          {entry.offer.title}
+        </Link>
         <span
           className={
             entry.schedule.phase === "open" ? s.offerBadgeOpen : s.offerBadge
@@ -154,9 +186,57 @@ function OfferEvidenceCard({ entry }: { readonly entry: OfferEvidence }) {
           </span>
         </span>
       </span>
-      <span className={s.offerCardMeta}>{amendmentLine(entry.watch)}</span>
       <span className={s.offerCardMeta}>청약 {entry.schedule.label}</span>
-    </Link>
+      {showChapterLinks ? (
+        <span className={s.chapterLinks}>
+          {ACTIVE_CHAPTERS.filter(
+            (chapter) =>
+              chapter.id !== FILING_HEADING_ID || entry.filingFacts !== null,
+          ).map((chapter) => (
+            <Link
+              key={chapter.id}
+              href={`/offers/${entry.offer.id}#${chapter.id}`}
+              className={s.questionBridge}
+            >
+              {chapter.label} →
+            </Link>
+          ))}
+        </span>
+      ) : null}
+      <OfferWatchControl
+        offerId={entry.offer.id}
+        offerTitle={entry.offer.title}
+        statusText={amendmentLine(entry.watch)}
+        isAlert={(entry.watch?.amendmentCount ?? 0) > 0}
+      />
+      <Link href={`/offers/${entry.offer.id}`} className={s.questionBridge}>
+        {REPORT_OPEN_LABEL}
+      </Link>
+    </article>
+  );
+}
+
+function FactStrip({ entry }: { readonly entry: OfferEvidence }) {
+  if (!entry.filingFacts) return null;
+  const shorts = entry.filingFacts.facts.filter((fact) => fact.short);
+  if (shorts.length === 0) return null;
+  return (
+    <div className={s.factStrip}>
+      <span className={s.factStripTitle}>
+        {entry.offer.title} {FACT_STRIP_TITLE}
+      </span>
+      {shorts.slice(0, 4).map((fact) => (
+        <span key={fact.id} className={s.factStripItem}>
+          {fact.short}
+        </span>
+      ))}
+      <Link
+        href={`/offers/${entry.offer.id}#${FILING_HEADING_ID}`}
+        className={s.questionBridge}
+      >
+        {FACT_STRIP_LINK}
+      </Link>
+    </div>
   );
 }
 
@@ -228,12 +308,22 @@ export async function CategoryLanding({
   offers,
   preview = null,
   market = null,
+  heroImage = null,
+  custom = null,
+  customTitle = "카테고리 특화 영역",
 }: CategoryLandingProps) {
   const byOpenAsc = [...offers].sort(
     (a, b) =>
       Date.parse(a.subscription.opensAt) - Date.parse(b.subscription.opensAt),
   );
   const evidence = await loadEvidence(byOpenAsc, new Date());
+
+  const issuerKey = byOpenAsc[0] ? issuerKeyForOffer(byOpenAsc[0].id) : undefined;
+  const trackRecord = issuerKey
+    ? await loadTrackRecord(issuerKey)
+        .then((record) => (record ? toTrackRecordView(record) : null))
+        .catch(() => null)
+    : null;
 
   const active = evidence.filter((entry) => entry.schedule.phase !== "closed");
   const closed = evidence.filter((entry) => entry.schedule.phase === "closed");
@@ -254,14 +344,28 @@ export async function CategoryLanding({
 
   return (
     <div className={home.section}>
-      <div className={home.wrap}>
-        <div className={s.titleRow}>
-          <span className={s.titleMotif}>
-            <CategoryMotif id={categoryId} />
-          </span>
-          <h1 className={home.sectionTitle}>{title}</h1>
+      <div className={`${home.wrap} ${s.landingHero}`}>
+        {heroImage ? (
+          <div className={s.landingHeroPhoto} aria-hidden="true">
+            <Image
+              src={heroImage}
+              alt=""
+              fill
+              priority
+              sizes="(max-width: 1088px) 1px, 55vw"
+              className={s.landingHeroImg}
+            />
+          </div>
+        ) : null}
+        <div className={s.landingHeroBody}>
+          <div className={s.titleRow}>
+            <span className={s.titleMotif}>
+              <CategoryMotif id={categoryId} />
+            </span>
+            <h1 className={home.sectionTitle}>{title}</h1>
+          </div>
+          <p className={home.sectionLead}>{lead}</p>
         </div>
-        <p className={home.sectionLead}>{lead}</p>
 
         <section className={s.slot} aria-labelledby={`${title}-evidence`}>
           <Reveal>
@@ -276,9 +380,16 @@ export async function CategoryLanding({
                   <>
                     <div className={s.offerGrid}>
                       {active.map((entry) => (
-                        <OfferEvidenceCard key={entry.offer.id} entry={entry} />
+                        <OfferEvidenceCard
+                          key={entry.offer.id}
+                          entry={entry}
+                          showChapterLinks
+                        />
                       ))}
                     </div>
+                    {active.map((entry) => (
+                      <FactStrip key={`facts-${entry.offer.id}`} entry={entry} />
+                    ))}
                     {active.map((entry) => (
                       <OfferTimeline key={entry.offer.id} entry={entry} />
                     ))}
@@ -376,6 +487,14 @@ export async function CategoryLanding({
           </Reveal>
         </section>
 
+        {trackRecord ? (
+          <section className={s.slot} aria-label={ISSUER_SLOT_TITLE}>
+            <Reveal>
+              <TrackRecordCard card={trackRecord} />
+            </Reveal>
+          </section>
+        ) : null}
+
         {market}
 
         <section className={s.slot} aria-labelledby={`${title}-layers`}>
@@ -446,12 +565,14 @@ export async function CategoryLanding({
         <section className={s.slot} aria-labelledby={`${title}-custom`}>
           <Reveal>
             <h2 id={`${title}-custom`} className={s.slotTitle}>
-              카테고리 특화 영역
+              {customTitle}
             </h2>
-            <p className={s.emptyNote}>
-              카테고리 담당 구현이 들어오는 자리입니다 — 공통 계약(층별 선언·판정
-              어휘·데이터 정책)을 유지한 채 확장됩니다.
-            </p>
+            {custom ?? (
+              <p className={s.emptyNote}>
+                카테고리 담당 구현이 들어오는 자리입니다 — 공통 계약(층별 선언·판정
+                어휘·데이터 정책)을 유지한 채 확장됩니다.
+              </p>
+            )}
           </Reveal>
         </section>
       </div>

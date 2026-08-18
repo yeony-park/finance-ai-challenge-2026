@@ -9,6 +9,7 @@ const filingFactSchema = z.object({
   label: z.string().min(1),
   value: z.string().min(1),
   section: z.string().min(1),
+  short: z.string().min(1).optional(),
 });
 
 const filingFactsSchema = z.object({

@@ -26,3 +26,6 @@ export const MARKET_TABLE_HEADERS = [
   "3",
   "경락 두수",
 ] as const;
+
+export const MARKET_MARKER_NOTE =
+  "세로 눈금은 각 공모의 청약 개시 월입니다 — 시점 표기이며 가격 판단이 아닙니다.";

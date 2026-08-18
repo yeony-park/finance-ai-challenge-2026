@@ -30,3 +30,11 @@ export const LAYER_EASY_QUESTIONS: Readonly<Record<VerificationLayer, string>> =
   price: "가격이 시장 어디쯤인가",
   performance: "공시한 대로 진행되고 있는가",
 };
+
+export const FACT_STRIP_TITLE = "신고서 요약";
+
+export const FACT_STRIP_LINK = "신고서 정보 전체 보기 →";
+
+export const ISSUER_SLOT_TITLE = "발행사의 과거 기록";
+
+export const REPORT_OPEN_LABEL = "리포트 열기 →";

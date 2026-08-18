@@ -17,6 +17,7 @@ export default function ArtPage() {
       title={INFO.label}
       lead="카테고리 착지 준비 중입니다 — 담당 구현이 층별 지원 선언을 확정하면, 같은 공통 검증 기반 위에서 확인 현황이 여기에 표시됩니다."
       descriptor={null}
+      heroImage="/category-art.jpg"
       offers={[]}
       preview={INFO.preview}
     />

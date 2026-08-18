@@ -9,6 +9,7 @@ import {
   MARKET_LEGEND_AVG,
   MARKET_LEGEND_BAND,
   MARKET_LEGEND_EDGE,
+  MARKET_MARKER_NOTE,
   MARKET_SECTION_LEAD,
   MARKET_SECTION_TITLE,
   MARKET_SOURCE_LINE,
@@ -54,10 +55,17 @@ const buildSegments = (
   return segments;
 };
 
+export interface MarketMarker {
+  readonly month: string;
+  readonly label: string;
+}
+
 export function AuctionMarketSection({
   series,
+  markers = [],
 }: {
   readonly series: readonly AuctionSeriesPoint[];
+  readonly markers?: readonly MarketMarker[];
 }) {
   const svgRef = useRef<SVGSVGElement | null>(null);
   const [hovered, setHovered] = useState<AuctionSeriesPoint | null>(null);
@@ -109,6 +117,11 @@ export function AuctionMarketSection({
   }
   const xTicks = series.filter(
     (point) => point.month.endsWith("-01") || point.month.endsWith("-07"),
+  );
+  const visibleMarkers = markers.filter(
+    (marker) =>
+      monthOrdinal(marker.month) >= firstOrdinal &&
+      monthOrdinal(marker.month) <= monthOrdinal(last.month),
   );
 
   const handleMove = (clientX: number): void => {
@@ -179,6 +192,25 @@ export function AuctionMarketSection({
                   textAnchor="end"
                 >
                   {fmt(tick)}
+                </text>
+              </g>
+            ))}
+            {visibleMarkers.map((marker) => (
+              <g key={`${marker.month}-${marker.label}`}>
+                <line
+                  className={s.chartMarkerLine}
+                  x1={x(marker.month)}
+                  x2={x(marker.month)}
+                  y1={PAD_TOP + 14}
+                  y2={PAD_TOP + INNER_H}
+                />
+                <text
+                  className={s.chartMarkerText}
+                  x={x(marker.month)}
+                  y={PAD_TOP + 8}
+                  textAnchor="middle"
+                >
+                  {marker.label}
                 </text>
               </g>
             ))}
@@ -268,6 +300,7 @@ export function AuctionMarketSection({
           <span>
             {MARKET_SOURCE_LINE} · {MARKET_GAP_NOTE}
           </span>
+          {visibleMarkers.length > 0 ? <span>{MARKET_MARKER_NOTE}</span> : null}
           <span>{MARKET_DISCLAIMER}</span>
         </div>
         <details className={s.chartRaw}>
