@@ -33,18 +33,18 @@
   --ds-font-serif: var(--font-serif-kr), "Apple SD Gothic Neo", serif;
   --ds-font-mono: var(--font-plex-mono), ui-monospace, Consolas, monospace;
 
-  --ds-text-2xs: 0.6875rem;
-  --ds-text-xs: 0.75rem;
-  --ds-text-sm: 0.8125rem;
-  --ds-text-base: 0.9375rem;
-  --ds-text-md: 1rem;
-  --ds-text-lg: 1.125rem;
-  --ds-text-xl: 1.375rem;
+  --ds-text-2xs: 0.75rem;
+  --ds-text-xs: 0.8125rem;
+  --ds-text-sm: 0.9375rem;
+  --ds-text-base: 1.0625rem;
+  --ds-text-md: 1.125rem;
+  --ds-text-lg: 1.1875rem;
+  --ds-text-xl: 1.5rem;
 
-  --ds-title-sm: clamp(1.125rem, 0.95rem + 0.8vw, 1.375rem);
-  --ds-title-md: clamp(1.375rem, 1.1rem + 1.2vw, 1.875rem);
-  --ds-title-lg: clamp(1.75rem, 1.3rem + 2vw, 2.75rem);
-  --ds-display: clamp(1.9375rem, 1.05rem + 4.4vw, 4.25rem);
+  --ds-title-sm: clamp(1.1875rem, 1.08rem + 0.55vw, 1.5rem);
+  --ds-title-md: clamp(1.5rem, 1.28rem + 1.1vw, 2rem);
+  --ds-title-lg: clamp(1.75rem, 1.4rem + 1.75vw, 2.5rem);
+  --ds-display: clamp(2rem, 1.4rem + 3vw, 3.75rem);
   --ds-numeral: clamp(1.875rem, 1.4rem + 1.9vw, 2.75rem);
   --ds-numeral-sm: clamp(1.25rem, 1.05rem + 0.8vw, 1.625rem);
 
@@ -53,8 +53,8 @@
   --ds-weight-bold: 700;
   --ds-weight-black: 900;
 
-  --ds-leading-tight: 1.18;
-  --ds-leading-snug: 1.38;
+  --ds-leading-tight: 1.22;
+  --ds-leading-snug: 1.42;
   --ds-leading-normal: 1.62;
   --ds-leading-relaxed: 1.78;
 
@@ -99,7 +99,12 @@
   --ds-duration-slow: 380ms;
   --ds-ease: cubic-bezier(0.2, 0.7, 0.3, 1);
 
-  --ds-header-h: 60px;
+  --ds-header-h: 64px;
+
+  --ds-tap-min: 2.75rem;
+  --ds-control-h-sm: 2.5rem;
+  --ds-control-h-md: 3rem;
+  --ds-control-h-lg: 3.5rem;
 
   --ds-chart-band: #f0efe9;
   --ds-chart-edge: #b7b3a8;

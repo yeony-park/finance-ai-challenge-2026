@@ -208,6 +208,7 @@ function OfferEvidenceCard({
         offerTitle={entry.offer.title}
         statusText={amendmentLine(entry.watch)}
         isAlert={(entry.watch?.amendmentCount ?? 0) > 0}
+        className={s.offerCardWatch}
       />
       <Link href={`/offers/${entry.offer.id}`} className={s.questionBridge}>
         {REPORT_OPEN_LABEL}

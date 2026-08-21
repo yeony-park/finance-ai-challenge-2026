@@ -90,6 +90,9 @@
 }
 .navLink {
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--ds-tap-min);
   padding: var(--ds-space-2) var(--ds-space-3);
   border-radius: var(--ds-radius-pill);
   color: var(--ds-ink-muted);

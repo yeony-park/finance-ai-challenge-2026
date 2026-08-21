@@ -13,6 +13,7 @@ interface OfferWatchControlProps {
   readonly offerTitle: string;
   readonly statusText: string;
   readonly isAlert: boolean;
+  readonly className?: string;
 }
 
 export function OfferWatchControl({
@@ -20,6 +21,7 @@ export function OfferWatchControl({
   offerTitle,
   statusText,
   isAlert,
+  className,
 }: OfferWatchControlProps) {
   const isReduced = useReducedMotionSafe();
   const isWatched = useIsWatched(offerId);
@@ -33,7 +35,7 @@ export function OfferWatchControl({
     .join(" ");
 
   return (
-    <div className={s.watchRow}>
+    <div className={className ? `${s.watchRow} ${className}` : s.watchRow}>
       <p className={statusClass}>{statusText}</p>
 
       <m.button

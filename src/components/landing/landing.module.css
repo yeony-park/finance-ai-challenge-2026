@@ -99,9 +99,9 @@
 
 .offerCard {
   position: relative;
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: var(--ds-space-4);
-  align-content: start;
   height: 100%;
   padding: clamp(1.125rem, 0.9rem + 1.2vw, 1.75rem);
   border: 1px solid var(--ds-line);
@@ -162,6 +162,7 @@
   letter-spacing: var(--ds-tracking-snug);
   line-height: var(--ds-leading-snug);
   word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 .schedule {
@@ -208,6 +209,7 @@
 }
 
 .offerMeta {
+  margin-top: auto;
   padding-top: var(--ds-space-4);
   border-top: 1px solid var(--ds-line);
   font-family: var(--ds-font-mono);
@@ -245,6 +247,8 @@
 }
 
 .watchStatus {
+  flex: 1 1 10rem;
+  min-width: 0;
   font-family: var(--ds-font-mono);
   font-size: var(--ds-text-2xs);
   color: var(--ds-ink-faint);
@@ -263,7 +267,11 @@
 
 .watchToggle {
   flex: none;
-  padding: 0.35rem 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  margin-left: auto;
+  min-height: var(--ds-control-h-sm);
+  padding: 0.35rem 0.85rem;
   border: 1px solid var(--ds-line-strong);
   border-radius: var(--ds-radius-pill);
   background: var(--ds-surface);
