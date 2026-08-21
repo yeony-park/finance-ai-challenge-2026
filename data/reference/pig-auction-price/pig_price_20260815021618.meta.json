@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "kape-pig-auction-price",
+  "sourceName": "축산물 등급별 경락가격 (돼지) — 축산물품질평가원 · 공공데이터포털 15148902",
+  "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+  "sourceFile": "pig_price_20260815021618.csv",
+  "method": "official_download",
+  "license": {
+    "grade": "Green",
+    "basis": "공공데이터포털 공식 파일 다운로드본 · 이용제한 없음 공표 자료"
+  },
+  "retrievedAt": "2026-08-15 02:16:18 KST",
+  "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d",
+  "filters": {
+    "skinType": "탕박",
+    "sex": "전체",
+    "grade": "등외제외",
+    "region": "전국(제주제외)"
+  },
+  "derivedMonths": ["2026-05", "2026-06", "2026-07"],
+  "note": "화면은 이 CSV를 요청 시점에 읽지 않는다. src/lib/content/pig.ts의 PIG_MARKET 정적 스냅샷(월 3개 포인트)이 이 파일에서 추출된 커밋 산출물이며, sha256으로 원본과 대조 가능하다."
+}

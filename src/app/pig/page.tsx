@@ -1,25 +1,37 @@
 import type { Metadata } from "next";
 
 import { CategoryLanding } from "@/components/category/CategoryLanding";
+import { PigLanding } from "@/components/pig/PigLanding";
 import { categoryById } from "@/lib/content/categories";
+import { getPigProduct } from "@/lib/content/pig";
 
 const INFO = categoryById("pig");
 
 export const metadata: Metadata = {
   title: INFO.label,
-  description: "한돈 공모의 확인 현황 — 카테고리 착지 준비 중",
+  description: "한돈 공모의 확인 현황 — 공시 축은 정리, 원장 축은 대조 불가",
 };
 
-export default function PigPage() {
+interface PigPageProps {
+  readonly searchParams: Promise<{ readonly [key: string]: string | string[] | undefined }>;
+}
+
+export default async function PigPage({ searchParams }: PigPageProps) {
+  const params = await searchParams;
+  const requested = Array.isArray(params.product) ? params.product[0] : params.product;
+  const selected = getPigProduct(requested);
+
   return (
     <CategoryLanding
       categoryId="pig"
       title={INFO.label}
-      lead="한돈 카테고리의 착지가 준비 중입니다 — 담당 구현이 층별 지원 선언을 확정하면, 같은 공통 검증 기반 위에서 확인 현황이 여기에 표시됩니다."
+      lead="발행사가 DART에 공시한 한돈 STO 3개 회차를 공시 축으로 정리했습니다. 개체 이력번호가 없어 공공 원장과의 대조는 아직 열지 못했습니다 — 그 사실을 대조 불가로 그대로 표시합니다."
       descriptor={null}
       heroImage="/category-pig.jpg"
       offers={[]}
       preview={INFO.preview}
+      custom={<PigLanding selectedProductId={selected.id} />}
+      customTitle="한돈 공시 축 — 회차·가격·질병 맥락·발행사 이력"
     />
   );
 }
