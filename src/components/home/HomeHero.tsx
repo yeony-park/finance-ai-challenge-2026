@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
 
@@ -9,6 +8,9 @@ import {
   EXAMPLE_QUESTIONS,
   FOLLOW_UP_LABEL,
   followUpQuestions,
+  HERO_CHIP_LABELS,
+  HERO_EYEBROW,
+  HERO_SOURCES_LINE,
   HOME_HERO_LEAD,
   HOME_HERO_TITLE_PARTS,
   INTRO_CARDS,
@@ -19,6 +21,7 @@ import {
 } from "@/lib/content/home";
 import { matchScaffold, type ScaffoldMatch } from "@/lib/content/scaffold-match";
 
+import { HeroShards } from "./HeroShards";
 import s from "./home.module.css";
 
 const guideCard = (target: GuideTarget) =>
@@ -33,6 +36,12 @@ const followUpKeyOf = (match: ScaffoldMatch): FollowUpKey | null => {
 
 const categoryEntry = (categoryId: string) =>
   CATEGORY_REGISTRY.find((entry) => entry.id === categoryId);
+
+const HERO_CHIPS = HERO_CHIP_LABELS.map((label) =>
+  EXAMPLE_QUESTIONS.find((question) => question.label === label),
+).filter((question): question is (typeof EXAMPLE_QUESTIONS)[number] =>
+  question !== undefined,
+);
 
 function ScaffoldPanel({ match }: { readonly match: ScaffoldMatch }) {
   if (match.kind === "guide") {
@@ -141,92 +150,90 @@ export function HomeHero() {
 
   return (
     <section className={`${s.section} ${s.hero}`} aria-labelledby="home-hero-title">
-      <div className={s.heroPhoto} aria-hidden="true">
-        <Image
-          src="/hero-dossier.jpg"
-          alt=""
-          fill
-          priority
-          sizes="(max-width: 1088px) 1px, 60vw"
-          className={s.heroPhotoImg}
-          />
-      </div>
       <div className={`${s.wrap} ${s.heroWrap}`}>
-        <h1 id="home-hero-title" className={`${s.heroTitle} ${s.heroIn}`}>
-          {HOME_HERO_TITLE_PARTS.map((part) =>
-            part.isMark ? (
-              <em key={part.text} className={s.mark}>
-                {part.text}
-              </em>
-            ) : (
-              <span key={part.text}>{part.text}</span>
-            ),
-          )}
-        </h1>
-        <p className={`${s.heroLead} ${s.heroIn} ${s.heroIn2}`}>{HOME_HERO_LEAD}</p>
+        <div>
+          <p className={`${s.heroEyebrow} ${s.heroIn}`}>{HERO_EYEBROW}</p>
+          <h1 id="home-hero-title" className={`${s.heroTitle} ${s.heroIn}`}>
+            {HOME_HERO_TITLE_PARTS.map((part) =>
+              part.isMark ? (
+                <em key={part.text} className={s.mark}>
+                  {part.text}
+                </em>
+              ) : (
+                <span key={part.text}>{part.text}</span>
+              ),
+            )}
+          </h1>
+          <p className={`${s.heroLead} ${s.heroIn} ${s.heroIn2}`}>{HOME_HERO_LEAD}</p>
 
-        <div className={`${s.scaffold} ${s.heroIn} ${s.heroIn3}`}>
-          <form className={s.searchForm} onSubmit={handleSubmit} role="search">
-            <label htmlFor="home-search" className="sr-only">
-              궁금한 내용 입력
-            </label>
-            <input
-              id="home-search"
-              className={s.searchInput}
-              type="text"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder={SEARCH_PLACEHOLDER}
-              autoComplete="off"
-            />
-            <button type="submit" className={s.searchButton}>
-              안내 찾기
-            </button>
-          </form>
-          <p className={s.scaffoldNote}>{SCAFFOLD_NOTICE}</p>
-
-          <div className={s.chipRow} role="group" aria-label="예시 질문">
-            {EXAMPLE_QUESTIONS.map((question) => (
-              <button
-                key={question.label}
-                type="button"
-                className={s.chip}
-                aria-pressed={activeChip === question.label}
-                onClick={() => handleChip(question.label, question.target)}
-              >
-                {question.label}
+          <div className={`${s.scaffold} ${s.heroIn} ${s.heroIn3}`}>
+            <form className={s.searchForm} onSubmit={handleSubmit} role="search">
+              <label htmlFor="home-search" className="sr-only">
+                궁금한 내용 입력
+              </label>
+              <input
+                id="home-search"
+                className={s.searchInput}
+                type="text"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder={SEARCH_PLACEHOLDER}
+                autoComplete="off"
+              />
+              <button type="submit" className={s.searchButton}>
+                안내 찾기
               </button>
-            ))}
-          </div>
+            </form>
+            <p className={s.scaffoldNote}>{SCAFFOLD_NOTICE}</p>
 
-          <div aria-live="polite">
-            {match ? <ScaffoldPanel match={match} /> : null}
-            {(() => {
-              const key = match ? followUpKeyOf(match) : null;
-              const followUps = key
-                ? followUpQuestions(key).filter(
-                    (question) => question.label !== activeChip,
-                  )
-                : [];
-              if (followUps.length === 0) return null;
-              return (
-                <div className={s.followRow} role="group" aria-label={FOLLOW_UP_LABEL}>
-                  <span className={s.followLabel}>{FOLLOW_UP_LABEL}</span>
-                  {followUps.map((question) => (
-                    <button
-                      key={question.label}
-                      type="button"
-                      className={s.chip}
-                      onClick={() => handleChip(question.label, question.target)}
-                    >
-                      {question.label}
-                    </button>
-                  ))}
-                </div>
-              );
-            })()}
+            <div className={s.chipRow} role="group" aria-label="예시 질문">
+              {HERO_CHIPS.map((question) => (
+                <button
+                  key={question.label}
+                  type="button"
+                  className={s.chip}
+                  aria-pressed={activeChip === question.label}
+                  onClick={() => handleChip(question.label, question.target)}
+                >
+                  {question.label}
+                </button>
+              ))}
+            </div>
+
+            <div aria-live="polite">
+              {match ? <ScaffoldPanel match={match} /> : null}
+              {(() => {
+                const key = match ? followUpKeyOf(match) : null;
+                const followUps = key
+                  ? followUpQuestions(key).filter(
+                      (question) => question.label !== activeChip,
+                    )
+                  : [];
+                if (followUps.length === 0) return null;
+                return (
+                  <div className={s.followRow} role="group" aria-label={FOLLOW_UP_LABEL}>
+                    <span className={s.followLabel}>{FOLLOW_UP_LABEL}</span>
+                    {followUps.map((question) => (
+                      <button
+                        key={question.label}
+                        type="button"
+                        className={s.chip}
+                        onClick={() => handleChip(question.label, question.target)}
+                      >
+                        {question.label}
+                      </button>
+                    ))}
+                  </div>
+                );
+              })()}
+            </div>
+
+            <p className={s.heroSources}>{HERO_SOURCES_LINE}</p>
           </div>
         </div>
+
+        <HeroShards />
+
         <p className={s.scrollCue} aria-hidden="true">
           <span className={s.scrollCueArrow}>↓</span> SCROLL
         </p>

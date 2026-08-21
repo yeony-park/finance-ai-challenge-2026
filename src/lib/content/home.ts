@@ -22,6 +22,20 @@ export const HOME_HERO_LEAD =
 export const SCAFFOLD_NOTICE =
   "질문을 확인 항목과 준비된 안내로 연결합니다.";
 
+export const HERO_EYEBROW = "증권신고서 × 공공 원장 — 대조 실측";
+
+export const HERO_SOURCES_LINE =
+  "공적 출처 — 전자공시(DART) · 축산물이력제 · 축산물품질평가원 경락 정보 · 국토부 실거래가(RTMS)";
+
+export const SHARD_STATUS_LIVE = "리포트 공개 중";
+export const SHARD_STATUS_PREVIEW = "준비 중";
+
+export const HERO_CHIP_LABELS: readonly string[] = [
+  "조각투자가 뭔가요?",
+  "예금자보호가 되나요?",
+  "공시가 실제와 다르면요?",
+];
+
 export const AI_ROLE_SENTENCE =
   "AI가 신고서에서 검증 가능한 주장을 추출하고, 규칙 엔진이 같은 원문을 독립적으로 읽어 교차검증합니다 — 두 경로가 일치할 때만 판정이 성립합니다.";
 

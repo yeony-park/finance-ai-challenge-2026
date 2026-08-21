@@ -7,7 +7,6 @@ import { CountUp } from "@/components/motion/CountUp";
 import { Reveal } from "@/components/motion/Reveal";
 import { FILING_HEADING_ID, REALITY_HEADING_ID, WATCH_HEADING_ID } from "@/components/report/ids";
 import { TrackRecordCard } from "@/components/report/TrackRecordCard";
-import { CategoryMotif } from "@/components/site/icons";
 import type { OfferEntry, OfferSchedule } from "@/components/site/offers";
 import { buildOfferSchedule } from "@/components/site/offers";
 import type { CategoryId } from "@/lib/content/categories";
@@ -302,7 +301,6 @@ function OfferTimeline({ entry }: { readonly entry: OfferEvidence }) {
 }
 
 export async function CategoryLanding({
-  categoryId,
   title,
   lead,
   descriptor,
@@ -359,12 +357,7 @@ export async function CategoryLanding({
           </div>
         ) : null}
         <div className={s.landingHeroBody}>
-          <div className={s.titleRow}>
-            <span className={s.titleMotif}>
-              <CategoryMotif id={categoryId} />
-            </span>
-            <h1 className={home.sectionTitle}>{title}</h1>
-          </div>
+          <h1 className={home.sectionTitle}>{title}</h1>
           <p className={home.sectionLead}>{lead}</p>
         </div>
 

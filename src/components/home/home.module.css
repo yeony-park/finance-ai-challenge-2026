@@ -494,20 +494,6 @@
   color: var(--ds-ink-faint);
 }
 
-.categoryMotif {
-  display: block;
-  width: 26px;
-  height: 26px;
-  margin-bottom: var(--ds-space-3);
-  color: var(--ds-ink-muted);
-}
-
-.categoryMotif svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
 .roadmap {
   margin: var(--ds-space-8, 3rem) 0 0;
   padding: 0;
@@ -610,45 +596,228 @@
 
 .hero {
   position: relative;
-  overflow: hidden;
   display: flex;
   align-items: center;
   min-height: min(88dvh, 56rem);
 }
 .heroWrap {
+  display: grid;
+  grid-template-columns: minmax(0, 11fr) minmax(0, 9fr);
+  gap: clamp(2rem, 4vw, 4rem);
+  align-items: center;
+}
+.heroEyebrow {
+  margin-bottom: var(--ds-space-4);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  letter-spacing: 0.14em;
+  color: var(--ds-ink-muted);
+}
+.heroSources {
+  margin-top: var(--ds-space-6);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  letter-spacing: 0.04em;
+  line-height: 1.9;
+  color: var(--ds-ink-faint);
+}
+
+.cluster {
   position: relative;
+  width: min(540px, 100%);
+  aspect-ratio: 540 / 520;
+  margin-inline: auto;
 }
-.heroPhoto {
+.shard {
   position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  mask-image:
-    linear-gradient(to right, transparent 36%, black 68%, black 88%, transparent 100%),
-    linear-gradient(to bottom, transparent 2%, black 26%, black 64%, transparent 95%);
-  mask-composite: intersect;
-  -webkit-mask-image:
-    linear-gradient(to right, transparent 36%, black 68%, black 88%, transparent 100%),
-    linear-gradient(to bottom, transparent 2%, black 26%, black 64%, transparent 95%);
-  -webkit-mask-composite: source-in;
+  left: var(--sx);
+  top: var(--sy);
+  width: var(--sw);
+  aspect-ratio: 1;
+  display: block;
+  overflow: hidden;
+  text-decoration: none;
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-line-strong);
+  transform: rotate(45deg);
+  box-shadow: 5px 5px 0 0 var(--ds-accent-line);
+  transition:
+    transform var(--ds-duration-slow) var(--ds-ease),
+    box-shadow var(--ds-duration-slow) var(--ds-ease),
+    border-color var(--ds-duration-slow) var(--ds-ease);
+  animation: dsShardIn 0.55s var(--ds-ease) both;
+  animation-delay: calc(var(--si) * 70ms + 120ms);
 }
-.heroPhotoImg {
-  object-fit: cover;
-  object-position: center 62%;
-  opacity: 0.38;
-  mix-blend-mode: multiply;
-  filter: saturate(0.55) contrast(1.02) blur(1px);
+.shard:hover,
+.shard:focus-visible {
+  transform: rotate(45deg) translate(-4px, -4px);
+  box-shadow: 8px 8px 0 0 var(--ds-accent-line);
 }
-@media (max-width: 68rem) {
-  .heroPhoto {
-    display: none;
+.shard:focus-visible {
+  outline: none;
+  box-shadow:
+    8px 8px 0 0 var(--ds-accent-line),
+    0 0 0 2px var(--ds-bg),
+    0 0 0 4px var(--ds-ink);
+}
+.shardPreview {
+  background: var(--ds-bg-muted);
+  border: 1.5px dashed var(--ds-chart-edge);
+  box-shadow: none;
+}
+.shardPreview:hover {
+  box-shadow: none;
+  border-color: var(--ds-ink-muted);
+}
+.shardPreview:focus-visible {
+  box-shadow: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-ink);
+}
+@keyframes dsShardIn {
+  from {
+    opacity: 0;
+    transform: rotate(45deg) translate(10px, 10px);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(45deg);
   }
 }
-.heroTitle,
-.heroLead,
-.scaffold {
-  position: relative;
-  z-index: 1;
+.shardPhoto {
+  position: absolute;
+  inset: -22%;
+  transform: rotate(-45deg);
+}
+.shardPhotoImg {
+  object-fit: cover;
+}
+.shardPhoto::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgb(250 249 246 / 0.55);
+}
+.shardPreview .shardPhoto {
+  filter: grayscale(1);
+}
+.shardPreview .shardPhoto::after {
+  background: rgb(250 249 246 / 0.82);
+}
+.shardIn {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ds-space-2);
+  transform: rotate(-45deg);
+  text-align: center;
+}
+.shardLabel {
+  font-size: 1.6875rem;
+  font-weight: var(--ds-weight-black);
+  letter-spacing: var(--ds-tracking-snug);
+  line-height: 1.1;
+  color: var(--ds-ink-strong);
+}
+.shardCompact .shardLabel {
+  font-size: 1.375rem;
+}
+.shardPreview .shardLabel {
+  color: var(--ds-ink-muted);
+}
+.shardStatus {
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  letter-spacing: 0.08em;
+  color: var(--ds-ink);
+  white-space: nowrap;
+}
+.shardPreview .shardStatus {
+  color: var(--ds-ink-muted);
+}
+.shardDeco {
+  pointer-events: none;
+  overflow: visible;
+  background: var(--ds-accent);
+  border: 1px solid var(--ds-accent-line);
+  box-shadow: none;
+}
+.shardGhost {
+  pointer-events: none;
+  overflow: visible;
+  background: transparent;
+  border: 1.5px dashed var(--ds-chart-edge);
+  box-shadow: none;
+}
+
+@media (max-width: 68rem) {
+  .heroWrap {
+    grid-template-columns: 1fr;
+  }
+  .cluster {
+    width: 100%;
+    aspect-ratio: auto;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--ds-space-3);
+  }
+  .shard {
+    position: relative;
+    left: 0;
+    top: 0;
+    width: auto;
+    transform: none;
+    aspect-ratio: auto;
+    min-height: 6.4rem;
+    border-radius: var(--ds-radius-lg);
+    box-shadow: var(--ds-shadow-sm);
+    animation: none;
+  }
+  .shard:hover,
+  .shard:focus-visible {
+    transform: none;
+    box-shadow: var(--ds-shadow-md);
+  }
+  .shard:focus-visible {
+    box-shadow:
+      var(--ds-shadow-md),
+      0 0 0 2px var(--ds-bg),
+      0 0 0 4px var(--ds-ink);
+  }
+  .shardPreview,
+  .shardPreview:hover {
+    box-shadow: none;
+  }
+  .shardPhoto {
+    inset: 0;
+    transform: none;
+  }
+  .shardPhoto::after {
+    background: rgb(250 249 246 / 0.62);
+  }
+  .shardPreview .shardPhoto::after {
+    background: rgb(250 249 246 / 0.85);
+  }
+  .shardIn {
+    position: relative;
+    inset: auto;
+    height: 100%;
+    padding: var(--ds-space-4);
+    align-items: flex-start;
+    justify-content: flex-end;
+    gap: var(--ds-space-1);
+    transform: none;
+    text-align: left;
+  }
+  .shardLabel,
+  .shardCompact .shardLabel {
+    font-size: var(--ds-text-lg);
+  }
+  .shardDeco,
+  .shardGhost {
+    display: none;
+  }
 }
 
 
@@ -669,7 +838,8 @@
 }
 
 .scrollCue {
-  margin-top: clamp(2.5rem, 6vh, 4.5rem);
+  grid-column: 1 / -1;
+  margin-top: clamp(1.5rem, 4vh, 3rem);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -690,7 +860,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .heroIn,
-  .scrollCueArrow {
+  .scrollCueArrow,
+  .shard {
     animation: none;
   }
   .heroIn {
