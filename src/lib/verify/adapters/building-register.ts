@@ -46,6 +46,8 @@ export interface BuildingRegisterCache {
   readonly schemaVersion: 1;
   readonly sigunguCd: string;
   readonly bjdongCd: string;
+  readonly bun?: string;
+  readonly ji?: string;
   readonly regionName: string;
   readonly status: BuildingRegisterStatus;
   readonly reason?: string;
@@ -316,6 +318,8 @@ const cacheSchema = z.object({
   schemaVersion: z.literal(1),
   sigunguCd: z.string().regex(/^\d{5}$/, "sigunguCd는 5자리여야 합니다"),
   bjdongCd: z.string().regex(/^\d{5}$/, "bjdongCd는 5자리여야 합니다"),
+  bun: z.string().regex(/^\d{4}$/, "bun은 4자리여야 합니다").optional(),
+  ji: z.string().regex(/^\d{4}$/, "ji는 4자리여야 합니다").optional(),
   regionName: z.string(),
   status: z.enum(["ok", "empty", "failed"]),
   reason: z.string().optional(),
@@ -359,13 +363,25 @@ export const assertBjdongCd = (bjdongCd: string): string => {
   return bjdongCd;
 };
 
+export const assertBunJi = (value: string, label: "bun" | "ji"): string => {
+  if (!/^\d{1,4}$/.test(value)) {
+    throw new Error(`${label}(지번 4자리 이하 숫자) 형식이 올바르지 않습니다: ${value}`);
+  }
+  return value.padStart(4, "0");
+};
+
 export const buildingRegisterQueryUrl = (input: {
   readonly sigunguCd: string;
   readonly bjdongCd: string;
   readonly numOfRows: number;
   readonly pageNo: number;
+  readonly bun?: string;
+  readonly ji?: string;
 }): string =>
   `${BLDRGST_ENDPOINT}?sigunguCd=${input.sigunguCd}&bjdongCd=${input.bjdongCd}` +
+  (input.bun === undefined
+    ? ""
+    : `&platGbCd=0&bun=${input.bun}&ji=${input.ji ?? "0000"}`) +
   `&numOfRows=${input.numOfRows}&pageNo=${input.pageNo}&_type=json`;
 
 const compactOf = (value: string): string => value.replace(/\s+/g, "");
@@ -431,6 +447,8 @@ export interface BuildingRegisterCollectOptions {
   readonly serviceKey: string;
   readonly sigunguCd: string;
   readonly bjdongCd: string;
+  readonly bun?: string;
+  readonly ji?: string;
   readonly regionName: string;
   readonly numOfRows?: number;
   readonly timeoutMs?: number;
@@ -450,12 +468,20 @@ export const collectBuildingRegister = async (
   const now = options.now ?? (() => new Date());
   const sigunguCd = assertSigunguCd(options.sigunguCd);
   const bjdongCd = assertBjdongCd(options.bjdongCd);
+  const bun = options.bun === undefined ? undefined : assertBunJi(options.bun, "bun");
+  const ji =
+    options.ji === undefined
+      ? bun === undefined
+        ? undefined
+        : "0000"
+      : assertBunJi(options.ji, "ji");
   const numOfRows = options.numOfRows ?? BLDRGST_ROWS_PER_CALL;
   const timeoutMs = options.timeoutMs ?? BLDRGST_TIMEOUT_MS;
 
   const url = `${buildingRegisterQueryUrl({
     sigunguCd,
     bjdongCd,
+    ...(bun === undefined ? {} : { bun, ji }),
     numOfRows,
     pageNo: 1,
   })}&serviceKey=${options.serviceKey}`;
@@ -464,6 +490,7 @@ export const collectBuildingRegister = async (
     schemaVersion: 1,
     sigunguCd,
     bjdongCd,
+    ...(bun === undefined ? {} : { bun, ji }),
     regionName: options.regionName,
     retrievedAt: now().toISOString(),
     sourceId: BLDRGST_SOURCE_ID,
@@ -534,15 +561,17 @@ export const collectBuildingRegister = async (
 };
 
 export const buildingRegisterCacheFile = (
-  cache: Pick<BuildingRegisterCache, "sigunguCd" | "bjdongCd">,
+  cache: Pick<BuildingRegisterCache, "sigunguCd" | "bjdongCd" | "bun" | "ji">,
   dataDir = "data",
 ): string => {
   assertSigunguCd(cache.sigunguCd);
   assertBjdongCd(cache.bjdongCd);
+  const parcel =
+    cache.bun === undefined ? "" : `-${cache.bun}-${cache.ji ?? "0000"}`;
   return path.join(
     path.resolve(dataDir),
     BLDRGST_CACHE_SUBDIR,
-    `${cache.sigunguCd}-${cache.bjdongCd}.json`,
+    `${cache.sigunguCd}-${cache.bjdongCd}${parcel}.json`,
   );
 };
 

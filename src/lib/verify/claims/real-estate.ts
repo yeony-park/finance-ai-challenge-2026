@@ -30,6 +30,7 @@ const offerFileSchema = z.object({
   asset: z.object({
     address: z.string().min(1),
     lawdCd: z.string().min(1),
+    bjdongCd: z.string().regex(/^\d{5}$/).optional(),
     sigunguName: z.string().min(1),
     dong: z.string().min(1),
     buildingUse: z.string().min(1),
@@ -133,8 +134,6 @@ export const buildRealEstateClaims = (
   );
   const saleDateReason = gateReasonOf(saleDateSchema, offer.sale.dealOn);
 
-  const structuralReason =
-    "실거래 신고 자료는 법정동 단위까지만 공개돼 지번 단위 실재 대조가 구조적으로 불가합니다.";
   const addressGateReason = addressReason ?? lawdReason;
 
   const specs: readonly FieldSpec[] = [
@@ -145,8 +144,10 @@ export const buildRealEstateClaims = (
       section: offer.offer.section,
       table: offer.offer.table,
       row: 1,
-      verifiability: addressGateReason ? "unparsed" : "structurally_impossible",
-      demotionReason: addressGateReason ?? structuralReason,
+      verifiability: addressGateReason ? "unparsed" : "verifiable",
+      ...(addressGateReason === undefined
+        ? {}
+        : { demotionReason: addressGateReason }),
     },
     {
       kind: "offer_amount",

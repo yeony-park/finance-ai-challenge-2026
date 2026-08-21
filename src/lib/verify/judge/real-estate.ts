@@ -1,4 +1,8 @@
 import {
+  type BuildingRegisterAdapter,
+  type BuildingRegisterTitle,
+} from "../adapters/building-register";
+import {
   THIN_COMPARABLE_THRESHOLD,
   monthOf,
   monthsBefore,
@@ -271,7 +275,58 @@ export interface RealEstateJudgeInput {
   readonly offer: RealEstateOffer;
   readonly claims: readonly Claim[];
   readonly trades: RtmsTradeAdapter;
+  readonly register?: BuildingRegisterAdapter;
 }
+
+const REGISTER_MISSING_REASON =
+  "건축물대장 표제부 수집본이 없어 지번 단위 실재 대조를 하지 못했습니다(대조 불가).";
+
+const REGISTER_NO_HIT_REASON =
+  "건축물대장 표제부 수집본에서 해당 지번을 확인하지 못했습니다 — 수집이 부분적일 수 있어 판정하지 않습니다(대조 불가).";
+
+const registerFactsOf = (title: BuildingRegisterTitle): string => {
+  const parts = [
+    title.mainUse === undefined ? "" : `주용도 ${title.mainUse}`,
+    title.grossFloorAreaSqm === undefined
+      ? ""
+      : `연면적 ${title.grossFloorAreaSqm.toLocaleString("ko-KR")}㎡`,
+    title.useApprovedOn === undefined ? "" : `사용승인일 ${title.useApprovedOn}`,
+    title.structure === undefined ? "" : `구조 ${title.structure}`,
+  ].filter((part) => part.length > 0);
+  return parts.length === 0
+    ? "표제부 등재 확인"
+    : `표제부 등재 확인 — ${parts.join(" · ")}`;
+};
+
+const judgeAddress = (
+  claim: Claim,
+  offer: RealEstateOffer,
+  register: BuildingRegisterAdapter,
+): Judgement | UnjudgedClaim => {
+  const lookup = register.lookup({ address: offer.asset.address });
+  if (lookup.titles.length === 0) {
+    return { claim, reason: REGISTER_NO_HIT_REASON };
+  }
+  const title = lookup.titles[0];
+  return createJudgement({
+    claim,
+    verdict: "match",
+    evidence: [
+      {
+        sourceId: register.sourceId,
+        sourceName: register.sourceName,
+        url: register.url,
+        observedAt: lookup.retrievedAt,
+        field: claim.field,
+        claimed: claim.value,
+        observed: registerFactsOf(title),
+        stance: "supports",
+        note: `${register.regionName} 표제부 ${lookup.titles.length}건 대조`,
+      },
+    ],
+    rationale: "공시된 소재지 지번의 건축물대장 표제부가 존재합니다",
+  });
+};
 
 export interface RealEstateJudgeOutcome {
   readonly judgements: readonly Judgement[];
@@ -288,7 +343,7 @@ const missingMonthsReason = (window: RtmsWindow): string | undefined =>
 export const judgeRealEstate = (
   input: RealEstateJudgeInput,
 ): RealEstateJudgeOutcome => {
-  const { offer, claims, trades } = input;
+  const { offer, claims, trades, register } = input;
   const claimOf = (kind: Claim["kind"]): Claim | undefined =>
     claims.find((claim) => claim.kind === kind);
 
@@ -313,6 +368,17 @@ export const judgeRealEstate = (
         claim,
         reason: `${claim.demotionReason ?? "사유 미상"}(대조 불가)`,
       });
+      continue;
+    }
+
+    if (claim.kind === "real_estate_address") {
+      if (register === undefined) {
+        unjudged.push({ claim, reason: REGISTER_MISSING_REASON });
+        continue;
+      }
+      const outcome = judgeAddress(claim, offer, register);
+      if ("verdict" in outcome) judgements.push(outcome);
+      else unjudged.push(outcome);
       continue;
     }
 

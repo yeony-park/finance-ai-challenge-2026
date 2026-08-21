@@ -75,8 +75,8 @@ export const realEstateOneLiner = (
 
   const ledgerSentence =
     summary.mismatch > 0
-      ? `공시된 항목 ${summary.total}건 가운데 ${summary.mismatch}건이 국토부 실거래 원장에서 확인되지 않습니다. `
-      : `공시된 매각 내역 ${summary.match}건이 국토부 실거래 원장에서 확인됩니다. `;
+      ? `공시된 항목 ${summary.total}건 가운데 ${summary.mismatch}건이 공공 원장에서 확인되지 않습니다. `
+      : `공시된 항목 ${summary.match}건이 공공 원장에서 확인됩니다. `;
 
   const gapSentence =
     expected && actual && gap !== undefined
@@ -91,7 +91,13 @@ export const realEstateOneLiner = (
       ),
       b(gapSentence),
       t(
-        `${realEstatePriceSentence(ctx)} 지번 단위 실재 대조는 실거래 신고 자료가 법정동까지만 공개돼 구조적으로 불가합니다.`,
+        `${realEstatePriceSentence(ctx)} ${
+          ctx.report.judgements.some(
+            (item) => item.claim.kind === "real_estate_address",
+          )
+            ? "지번 단위 실재는 건축물대장 표제부와 대조했습니다."
+            : "지번 단위 실재 대조는 건축물대장 표제부 수집 전이라 수행하지 못했습니다."
+        }`,
       ),
     ],
   };

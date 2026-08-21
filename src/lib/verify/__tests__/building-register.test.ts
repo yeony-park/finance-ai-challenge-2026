@@ -2,6 +2,7 @@ import { describe, expect, test } from "vitest";
 
 import {
   assertBjdongCd,
+  assertBunJi,
   assertSigunguCd,
   buildingRegisterCacheFile,
   buildingRegisterQueryUrl,
@@ -408,5 +409,58 @@ describe("픽스처 어댑터", () => {
     expect(
       (await resolveBuildingRegisterAdapter({ forceFake: true })).name,
     ).toBe("fake");
+  });
+});
+
+describe("지번 스코프 수집 (bun/ji)", () => {
+  test("bun/ji는 4자리로 패딩되고 형식 밖은 거부된다", () => {
+    expect(assertBunJi("1678", "bun")).toBe("1678");
+    expect(assertBunJi("4", "ji")).toBe("0004");
+    expect(() => assertBunJi("16785", "bun")).toThrow(/형식이 올바르지 않습니다/);
+    expect(() => assertBunJi("16-7", "ji")).toThrow(/형식이 올바르지 않습니다/);
+  });
+
+  test("bun이 있으면 조회 URL에 대지 구분과 지번이 붙는다", () => {
+    const url = buildingRegisterQueryUrl({
+      sigunguCd: "11650",
+      bjdongCd: "10800",
+      bun: "1678",
+      ji: "0004",
+      numOfRows: 10,
+      pageNo: 1,
+    });
+    expect(url).toContain("&platGbCd=0&bun=1678&ji=0004");
+
+    const wholeDong = buildingRegisterQueryUrl({
+      sigunguCd: "11650",
+      bjdongCd: "10800",
+      numOfRows: 10,
+      pageNo: 1,
+    });
+    expect(wholeDong).not.toContain("platGbCd");
+  });
+
+  test("지번 스코프 캐시는 파일명에 지번이 붙고 스키마를 통과한다", () => {
+    const file = buildingRegisterCacheFile(
+      { sigunguCd: "11650", bjdongCd: "10800", bun: "1678", ji: "0004" },
+      "data",
+    );
+    expect(file.endsWith("11650-10800-1678-0004.json")).toBe(true);
+
+    const cache: BuildingRegisterCache = {
+      schemaVersion: 1,
+      sigunguCd: "11650",
+      bjdongCd: "10800",
+      bun: "1678",
+      ji: "0004",
+      regionName: "서울 서초구 서초동",
+      status: "empty",
+      retrievedAt: "2026-08-22T00:00:00.000Z",
+      sourceId: "molit-bldrgst-title",
+      sourceName: "테스트",
+      endpoint: "https://apis.data.go.kr",
+      titles: [],
+    };
+    expect(() => parseBuildingRegisterCache(cache, "(테스트)")).not.toThrow();
   });
 });

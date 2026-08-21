@@ -11,6 +11,7 @@ import { buildReport } from "./report/build";
 import { submittedOnFromRcpNo, type DocumentRef, type VerifyReport } from "./types";
 import type { LivestockTraceAdapter } from "./adapters/livestock-trace";
 import type { AuctionPriceAdapter } from "./adapters/auction-price";
+import type { BuildingRegisterAdapter } from "./adapters/building-register";
 import type { RtmsTradeAdapter } from "./adapters/rtms-trade";
 
 const OFFER_REGISTRY: Readonly<Record<string, string>> = {
@@ -107,6 +108,7 @@ export const runVerification = async (
 export interface RealEstateVerifyInput {
   readonly offer: RealEstateOffer;
   readonly trades: RtmsTradeAdapter;
+  readonly register?: BuildingRegisterAdapter;
   readonly generatedAt?: string;
 }
 
@@ -115,10 +117,17 @@ export const runRealEstateVerification = (
 ): VerifyReport => {
   const document = realEstateDocumentRef(input.offer);
   const extraction = buildRealEstateClaims(input.offer);
+  const register =
+    input.register === undefined
+      ? undefined
+      : input.register.name === "cache" || input.trades.name === "fake"
+        ? input.register
+        : undefined;
   const outcome = judgeRealEstate({
     offer: input.offer,
     claims: extraction.claims,
     trades: input.trades,
+    ...(register === undefined ? {} : { register }),
   });
 
   const modeNote =
@@ -127,16 +136,25 @@ export const runRealEstateVerification = (
           "국토부 실거래가 API 활용신청이 승인되지 않아 실호출이 거부됐습니다(등록되지 않은 서비스키 · returnReasonCode=30). 이 리포트의 비교군과 원장 대조는 픽스처로 실행한 것이며 실측 데이터가 아닙니다.",
         ]
       : [];
+  const registerNote =
+    register !== undefined && register.name === "fake"
+      ? [
+          "건축물대장 표제부 대조는 픽스처로 실행한 것이며 실측 데이터가 아닙니다.",
+        ]
+      : [];
 
   return buildReport({
     document,
     assetKind: "real-estate",
     generatedAt: input.generatedAt ?? new Date().toISOString(),
     mode: input.trades.name === "fake" ? "fake" : "live",
-    sources: [input.trades.sourceName],
+    sources: [
+      input.trades.sourceName,
+      ...(register === undefined ? [] : [register.sourceName]),
+    ],
     judgements: outcome.judgements,
     unjudged: outcome.unjudged,
     realEstatePlacements: outcome.placements,
-    notes: [...modeNote, ...extraction.notes, ...outcome.notes],
+    notes: [...modeNote, ...registerNote, ...extraction.notes, ...outcome.notes],
   });
 };

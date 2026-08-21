@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "sigunguCd": "11650",
+  "bjdongCd": "10800",
+  "bun": "1678",
+  "ji": "0004",
+  "regionName": "서울 서초구 서초동",
+  "retrievedAt": "2026-08-21T16:57:29.825Z",
+  "sourceId": "molit-bldrgst-title",
+  "sourceName": "국토교통부 건축물대장 표제부 (국토교통부 · data.go.kr 건축HUB 건축물대장정보 서비스)",
+  "endpoint": "https://apis.data.go.kr/1613000/BldRgstHubService/getBrTitleInfo",
+  "status": "failed",
+  "titles": [],
+  "reason": "HTTP 403 · 건축물대장 API가 요청을 거부했습니다 — SERVICE_KEY_IS_NOT_REGISTERED_ERROR · 등록되지 않은 서비스키 · returnReasonCode=30"
+}
