@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "month": "2024-06",
+  "startYmd": "20240601",
+  "endYmd": "20240630",
+  "partial": false,
+  "breedCd": "024001",
+  "breedName": "한우",
+  "qgradeYn": "Y",
+  "defectIncludeYn": "N",
+  "collectedAt": "2026-08-14T17:55:20.927Z",
+  "sourceId": "ekape-auction-price",
+  "sourceName": "축산물등급판정정보 소도체 등급별 경락가격 (축산물품질평가원 · data.go.kr 15058822)",
+  "endpoint": "http://data.ekape.or.kr/openapi-data/service/user/grade/auct/cattle",
+  "entries": [
+    {
+      "sexCd": "025001",
+      "sexName": "암",
+      "status": "ok",
+      "averagePricePerKg": 13136,
+      "sampleSize": 22929,
+      "grades": [
+        {
+          "gradeCd": "0",
+          "gradeName": "1++",
+          "pricePerKg": 18598,
+          "headCount": 2811
+        },
+        {
+          "gradeCd": "1",
+          "gradeName": "1+",
+          "pricePerKg": 14956,
+          "headCount": 4264
+        },
+        {
+          "gradeCd": "2",
+          "gradeName": "1",
+          "pricePerKg": 13319,
+          "headCount": 5789
+        },
+        {
+          "gradeCd": "3",
+          "gradeName": "2",
+          "pricePerKg": 11006,
+          "headCount": 5965
+        },
+        {
+          "gradeCd": "4",
+          "gradeName": "3",
+          "pricePerKg": 9163,
+          "headCount": 3969
+        }
+      ]
+    },
+    {
+      "sexCd": "025002",
+      "sexName": "수",
+      "status": "ok",
+      "averagePricePerKg": 8986,
+      "sampleSize": 162,
+      "grades": [
+        {
+          "gradeCd": "2",
+          "gradeName": "1",
+          "pricePerKg": 12510,
+          "headCount": 3
+        },
+        {
+          "gradeCd": "3",
+          "gradeName": "2",
+          "pricePerKg": 11460,
+          "headCount": 14
+        },
+        {
+          "gradeCd": "4",
+          "gradeName": "3",
+          "pricePerKg": 8642,
+          "headCount": 141
+        }
+      ]
+    },
+    {
+      "sexCd": "025003",
+      "sexName": "거세",
+      "status": "ok",
+      "averagePricePerKg": 16711,
+      "sampleSize": 17673,
+      "grades": [
+        {
+          "gradeCd": "0",
+          "gradeName": "1++",
+          "pricePerKg": 19750,
+          "headCount": 6565
+        },
+        {
+          "gradeCd": "1",
+          "gradeName": "1+",
+          "pricePerKg": 16049,
+          "headCount": 5414
+        },
+        {
+          "gradeCd": "2",
+          "gradeName": "1",
+          "pricePerKg": 14334,
+          "headCount": 3919
+        },
+        {
+          "gradeCd": "3",
+          "gradeName": "2",
+          "pricePerKg": 11829,
+          "headCount": 1544
+        },
+        {
+          "gradeCd": "4",
+          "gradeName": "3",
+          "pricePerKg": 9221,
+          "headCount": 213
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "offerId": "real-estate-a",
+  "subject": "서초 지웰타워 12층",
+  "publicAlias": "부동산 A",
+  "assetKind": "real-estate",
+  "asset": {
+    "address": "서울특별시 서초구 서초동 1678-4",
+    "lawdCd": "11650",
+    "sigunguName": "서울 서초구",
+    "dong": "서초동",
+    "buildingUse": "상업업무용(사무소)",
+    "detail": "지하 5층·지상 15층 건물 중 12층 1개 층"
+  },
+  "offer": {
+    "amountWon": 4000000000,
+    "opensOn": "2021-07-07",
+    "closesOn": "2021-07-15",
+    "listedOn": "2021-07-26",
+    "unitCount": 800000,
+    "unitPriceWon": 5000,
+    "section": "공모 공고 (2021-07)",
+    "table": "공모 개요"
+  },
+  "sale": {
+    "amountWon": 4550000000,
+    "dealOn": "2026-03-11",
+    "section": "매각 공시 (2026-03)",
+    "table": "처분 개요"
+  },
+  "sources": [
+    {
+      "label": "카사 공모 10개 건물 지번 주소·공모금액·매각일 실측표 (kasa.co.kr/building 직접 확인)",
+      "url": "docs/research/조각투자-검증리서치-2026-08-08.md",
+      "retrievedOn": "2026-08-08"
+    },
+    {
+      "label": "카사, 40억대 건물 '서초 지웰타워' 12층 공모 시작 — 공모 기간 7~15일, 80만 DABS × 5,000원",
+      "url": "https://zdnet.co.kr/view/?no=20210706083422",
+      "retrievedOn": "2026-08-14"
+    },
+    {
+      "label": "카사 2호 DABS '서초 지웰타워' 공모 2시간여 만에 완판 · 26일 상장",
+      "url": "https://economist.co.kr/2021/07/07/finance/Financial/20210707170300329.html",
+      "retrievedOn": "2026-08-14"
+    }
+  ],
+  "limits": [
+    "이 공모는 DART 접수번호가 없는 혁신금융서비스 공모입니다. 문서 좌표는 증권신고서가 아니라 공모 공고·매각 공시 기준입니다.",
+    "실거래 신고 자료는 법정동 단위까지만 공개돼 지번 단위의 자산 실재 대조는 구조적으로 불가합니다.",
+    "매각 공시일과 실거래 신고의 계약일이 다를 수 있어 매각 시점 대조는 신고 월 단위로 봅니다.",
+    "대상 층의 전유·계약 면적이 공개 자료에서 확인되지 않아 ㎡ 단가 비교는 하지 않았습니다. 이 리포트의 위치는 거래 총액 기준이며 면적 보정이 없습니다."
+  ]
+}

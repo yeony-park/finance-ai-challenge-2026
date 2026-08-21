@@ -1,0 +1,132 @@
+.wrap {
+  width: 100%;
+  max-width: var(--ds-maxw-narrow);
+  margin: 0 auto;
+  padding-inline: var(--ds-gutter);
+  padding-block: clamp(3.5rem, 2.5rem + 6vw, 8rem);
+  display: grid;
+  gap: var(--ds-space-5);
+  align-content: start;
+}
+
+.code {
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  letter-spacing: var(--ds-tracking-wide);
+  text-transform: uppercase;
+  color: var(--ds-ink-faint);
+}
+
+.title {
+  font-size: var(--ds-title-lg);
+  font-weight: var(--ds-weight-black);
+  letter-spacing: var(--ds-tracking-tight);
+  line-height: var(--ds-leading-tight);
+  word-break: keep-all;
+  max-width: 22ch;
+}
+
+.body {
+  max-width: var(--ds-maxw-prose);
+  color: var(--ds-ink-muted);
+  font-size: var(--ds-text-md);
+  line-height: var(--ds-leading-relaxed);
+  word-break: keep-all;
+}
+
+.detail {
+  padding: var(--ds-space-4) var(--ds-space-5);
+  border: 1px dashed var(--ds-line-dashed);
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-bg-muted);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  color: var(--ds-ink-muted);
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-3);
+  margin-top: var(--ds-space-2);
+}
+
+.actionPrimary,
+.actionGhost {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+  padding: 0.6rem 1.05rem;
+  border-radius: var(--ds-radius-pill);
+  font-size: var(--ds-text-sm);
+  font-weight: var(--ds-weight-bold);
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color var(--ds-duration-base) var(--ds-ease),
+    border-color var(--ds-duration-base) var(--ds-ease);
+}
+.actionPrimary {
+  border: 1px solid var(--ds-ink);
+  background: var(--ds-ink);
+  color: var(--ds-ink-invert);
+}
+.actionPrimary:hover {
+  background: var(--ds-ink-strong);
+}
+.actionGhost {
+  border: 1px solid var(--ds-line-strong);
+  background: transparent;
+  color: var(--ds-ink);
+  font-weight: var(--ds-weight-medium);
+}
+.actionGhost:hover {
+  background: var(--ds-bg-sunken);
+  border-color: var(--ds-ink);
+}
+
+.skeletonStack {
+  display: grid;
+  gap: var(--ds-space-4);
+  margin-top: var(--ds-space-4);
+}
+.skeleton {
+  height: 1rem;
+  border-radius: var(--ds-radius-sm);
+  background: linear-gradient(
+    90deg,
+    var(--ds-bg-sunken) 0%,
+    var(--ds-bg-muted) 50%,
+    var(--ds-bg-sunken) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s var(--ds-ease) infinite;
+}
+.skeletonWide {
+  height: 2.5rem;
+  max-width: 26rem;
+}
+.skeletonMid {
+  max-width: 34rem;
+}
+.skeletonCard {
+  height: 9rem;
+  max-width: 100%;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+  }
+}

@@ -1,21 +1,61 @@
-# Dependencies and Next.js output
-node_modules/
-.next/
-out/
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# Local environment and logs
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+/.playwright-mcp/
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
 .env*
 !.env.example
-*.log
 
-# Editor and operating-system files
-.DS_Store
+# vercel
+.vercel
 
-# Python artifacts from local experiments
+# 개인정보 포함 원천 데이터 — 로컬 전용 (git 커밋 금지)
+#   raw       : DART 신고서 원문 (농장 상세주소·개체 식별자)
+#   snapshots : 이력제 API 실측 응답 (농장주 실명 farmerNm·상세주소 farmAddr)
+#   reports   : 내부 판정 리포트 (농장번호·상세주소)
+# 커밋 대상은 data/MANIFEST.md(재확보 안내)와 data/public/(마스킹 완료 공개 리포트)뿐이다.
+# 재확보: npm run verify:collect -- <rcpNo> · npm run verify -- --rcpNo <rcpNo> (상세는 data/MANIFEST.md)
+data/raw/
+data/snapshots/
+data/reports/
+
+# 골드셋 라벨 (이력번호·사육지 포함) — 로컬 전용. 가이드(data/goldset/README.md)만 커밋한다
+data/goldset/*/
+
+# python
 __pycache__/
 *.py[cod]
 
-# TypeScript cache
+# typescript
 *.tsbuildinfo
-
-AGENTS.md
+next-env.d.ts
+data/scratch-fake/

@@ -1,0 +1,71 @@
+@import "tailwindcss";
+@import "../styles/tokens.css";
+
+@theme inline {
+  --color-bg: var(--ds-bg);
+  --color-bg-muted: var(--ds-bg-muted);
+  --color-surface: var(--ds-surface);
+  --color-line: var(--ds-line);
+  --color-ink: var(--ds-ink);
+  --color-ink-muted: var(--ds-ink-muted);
+  --color-ink-faint: var(--ds-ink-faint);
+  --color-accent: var(--ds-accent);
+  --color-match: var(--ds-verdict-match);
+  --color-miss: var(--ds-verdict-miss);
+  --color-unknown: var(--ds-verdict-unknown);
+  --font-sans: var(--ds-font-sans);
+  --font-serif: var(--ds-font-serif);
+  --font-mono: var(--ds-font-mono);
+}
+
+html {
+  scroll-padding-top: calc(var(--ds-header-h) + var(--ds-space-5));
+}
+
+body {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--ds-bg);
+  color: var(--ds-ink);
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-base);
+  line-height: var(--ds-leading-normal);
+  letter-spacing: var(--ds-tracking-snug);
+  overflow-wrap: break-word;
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--ds-focus-ring);
+  border-radius: var(--ds-radius-sm);
+}
+
+::selection {
+  background: var(--ds-accent);
+  color: var(--ds-ink);
+}
+
+:where(b, strong) {
+  font-weight: var(--ds-weight-bold);
+}
+.ds-reveal-pending {
+  opacity: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ds-reveal-pending {
+    opacity: 1;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+[id^="report-"] {
+  scroll-margin-top: calc(var(--ds-header-h) + 3.5rem);
+}

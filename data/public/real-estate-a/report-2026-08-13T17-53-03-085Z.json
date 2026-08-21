@@ -1,0 +1,426 @@
+{
+  "offerId": "real-estate-a",
+  "assetKind": "real-estate",
+  "document": {
+    "offerId": "real-estate-a",
+    "rcpNo": "",
+    "submittedOn": "2026-03-11"
+  },
+  "generatedAt": "2026-08-13T17:53:03.085Z",
+  "mode": "fake",
+  "sources": [
+    "국토교통부 상업업무용 부동산 매매 신고 자료 (국토교통부 · data.go.kr 실거래가 오픈API) — 픽스처(활용신청 미승인으로 실호출 불가 · 실측 데이터 아님)"
+  ],
+  "summary": {
+    "total": 2,
+    "match": 2,
+    "mismatch": 0,
+    "unverifiable": 0
+  },
+  "bySubject": [
+    {
+      "subject": "부동산 A",
+      "verdict": "match",
+      "judgementCount": 2
+    }
+  ],
+  "judgements": [
+    {
+      "verdict": "match",
+      "claim": {
+        "id": "sale_amount:부동산 A",
+        "kind": "sale_amount",
+        "subject": "부동산 A",
+        "field": "매각금액",
+        "value": "4,550,000,000원",
+        "numericValue": 4550000000,
+        "unit": "원",
+        "document": {
+          "offerId": "real-estate-a",
+          "rcpNo": "",
+          "submittedOn": "2026-03-11"
+        },
+        "location": {
+          "section": "매각 공시 (2026-03)",
+          "table": "처분 개요",
+          "row": 1,
+          "sectionPath": [
+            "매각 공시 (2026-03)",
+            "처분 개요"
+          ]
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "evidence": [
+        {
+          "sourceId": "molit-rtms-nrg-trade",
+          "sourceName": "국토교통부 상업업무용 부동산 매매 신고 자료 (국토교통부 · data.go.kr 실거래가 오픈API) — 픽스처(활용신청 미승인으로 실호출 불가 · 실측 데이터 아님)",
+          "url": "https://apis.data.go.kr/1613000/RTMSDataSvcNrgTrade/getRTMSDataSvcNrgTrade?LAWD_CD=11650&DEAL_YMD=202603&numOfRows=1000&pageNo=1",
+          "observedAt": "2026-08-14T00:00:00.000Z",
+          "field": "매각금액",
+          "claimed": "4,550,000,000원",
+          "observed": "2026-03-11 ○○동 사무소 · 12층 · 418.9㎡ · 45.5억원",
+          "stance": "supports",
+          "note": "서울 ○○구 ○○동 · 2026-03 신고 7건 대조"
+        }
+      ],
+      "rationale": "공시된 매각금액과 같은 금액의 상업업무용 매매 신고가 2026-03 같은 법정동에 있습니다"
+    },
+    {
+      "verdict": "match",
+      "claim": {
+        "id": "sale_date:부동산 A",
+        "kind": "sale_date",
+        "subject": "부동산 A",
+        "field": "매각일",
+        "value": "2026-03-11",
+        "document": {
+          "offerId": "real-estate-a",
+          "rcpNo": "",
+          "submittedOn": "2026-03-11"
+        },
+        "location": {
+          "section": "매각 공시 (2026-03)",
+          "table": "처분 개요",
+          "row": 2,
+          "sectionPath": [
+            "매각 공시 (2026-03)",
+            "처분 개요"
+          ]
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "evidence": [
+        {
+          "sourceId": "molit-rtms-nrg-trade",
+          "sourceName": "국토교통부 상업업무용 부동산 매매 신고 자료 (국토교통부 · data.go.kr 실거래가 오픈API) — 픽스처(활용신청 미승인으로 실호출 불가 · 실측 데이터 아님)",
+          "url": "https://apis.data.go.kr/1613000/RTMSDataSvcNrgTrade/getRTMSDataSvcNrgTrade?LAWD_CD=11650&DEAL_YMD=202603&numOfRows=1000&pageNo=1",
+          "observedAt": "2026-08-14T00:00:00.000Z",
+          "field": "매각일",
+          "claimed": "2026-03-11",
+          "observed": "2026-03-11 ○○동 사무소 · 12층 · 418.9㎡ · 45.5억원",
+          "stance": "supports",
+          "note": "서울 ○○구 ○○동 · 2026-03 신고 7건 대조"
+        }
+      ],
+      "rationale": "공시된 매각일과 실거래 신고의 계약일이 같습니다"
+    }
+  ],
+  "unjudged": [
+    {
+      "claim": {
+        "id": "real_estate_address:부동산 A",
+        "kind": "real_estate_address",
+        "subject": "부동산 A",
+        "field": "소재지",
+        "value": "서울 서초구 ○○동",
+        "document": {
+          "offerId": "real-estate-a",
+          "rcpNo": "",
+          "submittedOn": "2026-03-11"
+        },
+        "location": {
+          "section": "공모 공고 (2021-07)",
+          "table": "공모 개요",
+          "row": 1,
+          "sectionPath": [
+            "공모 공고 (2021-07)",
+            "공모 개요"
+          ]
+        },
+        "verifiability": "structurally_impossible",
+        "demotionReason": "실거래 신고 자료는 법정동 단위까지만 공개돼 지번 단위 실재 대조가 구조적으로 불가합니다.",
+        "extractedBy": "rules"
+      },
+      "reason": "실거래 신고 자료는 법정동 단위까지만 공개돼 지번 단위 실재 대조가 구조적으로 불가합니다.(대조 불가)"
+    }
+  ],
+  "pricePlacements": [],
+  "realEstatePlacements": [
+    {
+      "claim": {
+        "id": "offer_amount:부동산 A",
+        "kind": "offer_amount",
+        "subject": "부동산 A",
+        "field": "공모금액",
+        "value": "4,000,000,000원",
+        "numericValue": 4000000000,
+        "unit": "원",
+        "document": {
+          "offerId": "real-estate-a",
+          "rcpNo": "",
+          "submittedOn": "2026-03-11"
+        },
+        "location": {
+          "section": "공모 공고 (2021-07)",
+          "table": "공모 개요",
+          "row": 2,
+          "sectionPath": [
+            "공모 공고 (2021-07)",
+            "공모 개요"
+          ]
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "label": "공모금액",
+      "origin": "issuer",
+      "originLabel": "발행사 제시(예상값)",
+      "amountWon": 4000000000,
+      "regionLabel": "서울 서초구 ○○동",
+      "windowMonths": [
+        "2021-05",
+        "2021-06",
+        "2021-07"
+      ],
+      "comparableCount": 7,
+      "thinSample": true,
+      "comparables": [
+        {
+          "dealOn": "2021-07-15",
+          "dong": "○○동",
+          "buildingUse": "사무소",
+          "floor": 13,
+          "buildingAreaSqm": 431,
+          "amountWon": 4120000000
+        },
+        {
+          "dealOn": "2021-06-21",
+          "dong": "○○동",
+          "buildingUse": "사무소",
+          "floor": 11,
+          "buildingAreaSqm": 425.3,
+          "amountWon": 3850000000
+        },
+        {
+          "dealOn": "2021-07-29",
+          "dong": "○○동",
+          "buildingUse": "사무소",
+          "floor": 6,
+          "buildingAreaSqm": 372.8,
+          "amountWon": 3180000000
+        },
+        {
+          "dealOn": "2021-05-12",
+          "dong": "○○동",
+          "buildingUse": "사무소",
+          "floor": 4,
+          "buildingAreaSqm": 341.7,
+          "amountWon": 2940000000
+        },
+        {
+          "dealOn": "2021-07-02",
+          "dong": "○○동",
+          "buildingUse": "사무소",
+          "floor": 2,
+          "buildingAreaSqm": 288.9,
+          "amountWon": 2410000000
+        },
+        {
+          "dealOn": "2021-07-23",
+          "dong": "○○동",
+          "buildingUse": "근린생활시설",
+          "floor": 1,
+          "buildingAreaSqm": 102.3,
+          "amountWon": 1450000000
+        },
+        {
+          "dealOn": "2021-06-03",
+          "dong": "○○동",
+          "buildingUse": "근린생활시설",
+          "floor": 1,
+          "buildingAreaSqm": 88.5,
+          "amountWon": 1180000000
+        }
+      ],
+      "evidence": [
+        {
+          "sourceId": "molit-rtms-nrg-trade",
+          "sourceName": "국토교통부 상업업무용 부동산 매매 신고 자료 (국토교통부 · data.go.kr 실거래가 오픈API) — 픽스처(활용신청 미승인으로 실호출 불가 · 실측 데이터 아님)",
+          "url": "https://apis.data.go.kr/1613000/RTMSDataSvcNrgTrade/getRTMSDataSvcNrgTrade?LAWD_CD=11650&DEAL_YMD=202107&numOfRows=1000&pageNo=1",
+          "observedAt": "2026-08-14T00:00:00.000Z",
+          "field": "공모금액",
+          "claimed": "4,000,000,000원",
+          "observed": "2021-05~2021-07 서울 ○○구 ○○동 상업업무용 매매 신고 7건",
+          "stance": "context",
+          "note": "비교군 7건 — 10건 미만이라 백분위 미산출"
+        }
+      ],
+      "statement": "발행사 제시(예상값) 공모금액 40억원 · 같은 법정동·같은 유형(상업업무용) 실거래 신고 비교군 7건(2021-05~2021-07) · 비교군이 10건 미만이라 백분위를 내지 않고 건수만 적습니다. 이 표시는 위치이며 적정성 판단이 아닙니다."
+    },
+    {
+      "claim": {
+        "id": "sale_amount:부동산 A",
+        "kind": "sale_amount",
+        "subject": "부동산 A",
+        "field": "매각금액",
+        "value": "4,550,000,000원",
+        "numericValue": 4550000000,
+        "unit": "원",
+        "document": {
+          "offerId": "real-estate-a",
+          "rcpNo": "",
+          "submittedOn": "2026-03-11"
+        },
+        "location": {
+          "section": "매각 공시 (2026-03)",
+          "table": "처분 개요",
+          "row": 1,
+          "sectionPath": [
+            "매각 공시 (2026-03)",
+            "처분 개요"
+          ]
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "label": "매각금액",
+      "origin": "market",
+      "originLabel": "실거래 확정(실제값)",
+      "amountWon": 4550000000,
+      "regionLabel": "서울 서초구 ○○동",
+      "windowMonths": [
+        "2026-01",
+        "2026-02",
+        "2026-03"
+      ],
+      "comparableCount": 13,
+      "thinSample": false,
+      "medianAmountWon": 3540000000,
+      "minAmountWon": 980000000,
+      "maxAmountWon": 6050000000,
+      "rankFromTop": 3,
+      "topPercent": 23,
+      "comparables": [
+        {
+          "dealOn": "2026-03-20",
+          "dong": "○○동",
+          "buildingUse": "사무소",
+          "floor": 15,
+          "buildingAreaSqm": 468.3,
+          "amountWon": 6050000000
+        },
+        {
+          "dealOn": "2026-02-11",
+          "dong": "○○동",
+          "buildingUse": "사무소",
+          "floor": 14,
+          "buildingAreaSqm": 455.8,
+          "amountWon": 5120000000
+        },
+        {
+          "dealOn": "2026-03-11",
+          "dong": "○○동",
+          "buildingUse": "사무소",
+          "floor": 12,
+          "buildingAreaSqm": 418.9,
+          "amountWon": 4550000000
+        },
+        {
+          "dealOn": "2026-03-04",
+          "dong": "○○동",
+          "buildingUse": "사무소",
+          "floor": 9,
+          "buildingAreaSqm": 402.6,
+          "amountWon": 4180000000
+        },
+        {
+          "dealOn": "2026-01-14",
+          "dong": "○○동",
+          "buildingUse": "사무소",
+          "floor": 8,
+          "buildingAreaSqm": 412.5,
+          "amountWon": 3980000000
+        },
+        {
+          "dealOn": "2026-03-27",
+          "dong": "○○동",
+          "buildingUse": "사무소",
+          "floor": 7,
+          "buildingAreaSqm": 395.5,
+          "amountWon": 3760000000
+        },
+        {
+          "dealOn": "2026-02-24",
+          "dong": "○○동",
+          "buildingUse": "사무소",
+          "floor": 6,
+          "buildingAreaSqm": 388.1,
+          "amountWon": 3540000000
+        },
+        {
+          "dealOn": "2026-03-18",
+          "dong": "○○동",
+          "buildingUse": "사무소",
+          "floor": 5,
+          "buildingAreaSqm": 366.4,
+          "amountWon": 3290000000
+        },
+        {
+          "dealOn": "2026-02-05",
+          "dong": "○○동",
+          "buildingUse": "사무소",
+          "floor": 3,
+          "buildingAreaSqm": 301.2,
+          "amountWon": 2860000000
+        },
+        {
+          "dealOn": "2026-01-27",
+          "dong": "○○동",
+          "buildingUse": "근린생활시설",
+          "floor": 1,
+          "buildingAreaSqm": 128.4,
+          "amountWon": 2150000000
+        },
+        {
+          "dealOn": "2026-02-19",
+          "dong": "○○동",
+          "buildingUse": "근린생활시설",
+          "floor": 2,
+          "buildingAreaSqm": 96.7,
+          "amountWon": 1320000000
+        },
+        {
+          "dealOn": "2026-03-13",
+          "dong": "○○동",
+          "buildingUse": "근린생활시설",
+          "floor": 1,
+          "buildingAreaSqm": 74.2,
+          "amountWon": 1010000000
+        },
+        {
+          "dealOn": "2026-03-25",
+          "dong": "○○동",
+          "buildingUse": "근린생활시설",
+          "floor": -1,
+          "buildingAreaSqm": 152,
+          "amountWon": 980000000
+        }
+      ],
+      "evidence": [
+        {
+          "sourceId": "molit-rtms-nrg-trade",
+          "sourceName": "국토교통부 상업업무용 부동산 매매 신고 자료 (국토교통부 · data.go.kr 실거래가 오픈API) — 픽스처(활용신청 미승인으로 실호출 불가 · 실측 데이터 아님)",
+          "url": "https://apis.data.go.kr/1613000/RTMSDataSvcNrgTrade/getRTMSDataSvcNrgTrade?LAWD_CD=11650&DEAL_YMD=202603&numOfRows=1000&pageNo=1",
+          "observedAt": "2026-08-14T00:00:00.000Z",
+          "field": "매각금액",
+          "claimed": "4,550,000,000원",
+          "observed": "2026-01~2026-03 서울 ○○구 ○○동 상업업무용 매매 신고 13건",
+          "stance": "context",
+          "note": "비교군 13건 · 면적 보정 없는 거래 총액 기준"
+        }
+      ],
+      "statement": "실거래 확정(실제값) 매각금액 45.5억원 · 같은 법정동·같은 유형(상업업무용) 실거래 신고 비교군 13건(2026-01~2026-03) · 금액 기준 위에서 3번째(상위 23%) · 비교군 중위값 35.4억원 · 범위 9.8억원~60.5억원 · 면적 보정 없는 거래 총액 기준. 이 표시는 위치이며 적정성 판단이 아닙니다."
+    }
+  ],
+  "notes": [
+    "국토부 실거래가 API 활용신청이 승인되지 않아 실호출이 거부됐습니다(등록되지 않은 서비스키 · returnReasonCode=30). 이 리포트의 비교군과 원장 대조는 픽스처로 실행한 것이며 실측 데이터가 아닙니다.",
+    "공모 기초자료 4건을 공개 자료에서 옮겨 적었습니다 (출처 3건 · data/offers/real-estate-a.json).",
+    "이 공모는 DART 접수번호가 없는 혁신금융서비스 공모입니다. 문서 좌표는 증권신고서가 아니라 공모 공고·매각 공시 기준입니다.",
+    "실거래 신고 자료는 법정동 단위까지만 공개돼 지번 단위의 자산 실재 대조는 구조적으로 불가합니다.",
+    "매각 공시일과 실거래 신고의 계약일이 다를 수 있어 매각 시점 대조는 신고 월 단위로 봅니다.",
+    "대상 층의 전유·계약 면적이 공개 자료에서 확인되지 않아 ㎡ 단가 비교는 하지 않았습니다. 이 리포트의 위치는 거래 총액 기준이며 면적 보정이 없습니다."
+  ]
+}

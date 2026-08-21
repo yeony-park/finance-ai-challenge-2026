@@ -1,25 +1,51 @@
 {
-  "name": "sto-scope",
+  "name": "finance-ai-challenge",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint .",
-    "typecheck": "tsc --noEmit"
+    "lint": "eslint",
+    "test:watch": "vitest",
+    "redteam": "tsx src/lib/spine/redteam/cli.ts",
+    "verify": "tsx src/lib/verify/cli.ts",
+    "narrative": "tsx --env-file-if-exists=.env src/lib/verify/narrative/cli.ts",
+    "verify:live": "tsx --env-file-if-exists=.env src/lib/verify/cli.ts",
+    "verify:collect": "tsx --env-file-if-exists=.env src/lib/verify/dart/collect-cli.ts",
+    "replay:actual": "tsx --env-file-if-exists=.env src/lib/verify/amend/actual-replay-cli.ts",
+    "verify:realestate": "tsx src/lib/verify/real-estate-cli.ts",
+    "reference:collect": "tsx --env-file-if-exists=.env src/lib/verify/reference/auction-collect-cli.ts",
+    "reference:rtms": "tsx --env-file-if-exists=.env src/lib/verify/reference/rtms-collect-cli.ts",
+    "track-record": "tsx --env-file-if-exists=.env src/lib/verify/track-record/cli.ts",
+    "goldset:prelabel": "tsx src/lib/verify/goldset/cli.ts prelabel",
+    "goldset:score": "tsx src/lib/verify/goldset/cli.ts score",
+    "data:manifest": "node scripts/update-data-manifest.mjs",
+    "test": "vitest run"
   },
   "dependencies": {
-    "next": "16.3.0",
-    "react": "19.2.0",
-    "react-dom": "19.2.0"
+    "@ai-sdk/openai": "^4.0.41",
+    "@vercel/blob": "^2.8.0",
+    "ai": "^7.0.44",
+    "fast-xml-parser": "^5.10.1",
+    "fflate": "^0.8.3",
+    "motion": "^13.1.0",
+    "next": "^16.3.1",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@types/node": "^24.0.0",
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
-    "eslint": "^9.0.0",
-    "eslint-config-next": "16.3.0",
-    "typescript": "^5.9.0"
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.12",
+    "playwright": "^1.62.1",
+    "tailwindcss": "^4",
+    "tsx": "^4.23.1",
+    "typescript": "^5",
+    "vitest": "^4.1.10"
   }
 }

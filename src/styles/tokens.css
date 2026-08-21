@@ -1,0 +1,114 @@
+:root {
+  --ds-bg: #ffffff;
+  --ds-bg-muted: #faf9f6;
+  --ds-bg-sunken: #f4f3ef;
+  --ds-surface: #ffffff;
+  --ds-surface-raised: #ffffff;
+  --ds-line: #e7e5df;
+  --ds-line-strong: #d3d0c8;
+  --ds-line-dashed: #d8d5cc;
+
+  --ds-ink: #14161a;
+  --ds-ink-strong: #000000;
+  --ds-ink-muted: #5b6068;
+  --ds-ink-faint: #8b9099;
+  --ds-ink-invert: #fbfbf9;
+
+  --ds-accent: #ffe14d;
+  --ds-accent-soft: #fff6cc;
+  --ds-accent-line: #f0cf3c;
+  --ds-accent-ink: #4a3d00;
+
+  --ds-verdict-match: #2f7a5b;
+  --ds-verdict-match-soft: #e6f1ec;
+  --ds-verdict-match-line: #bcd9cc;
+  --ds-verdict-miss: #b93a32;
+  --ds-verdict-miss-soft: #f9e9e7;
+  --ds-verdict-miss-line: #ecc7c3;
+  --ds-verdict-unknown: #6b7280;
+  --ds-verdict-unknown-soft: #f1f1ee;
+  --ds-verdict-unknown-line: #dedcd5;
+
+  --ds-font-sans: var(--font-sans-kr), "Apple SD Gothic Neo", system-ui, sans-serif;
+  --ds-font-serif: var(--font-serif-kr), "Apple SD Gothic Neo", serif;
+  --ds-font-mono: var(--font-plex-mono), ui-monospace, Consolas, monospace;
+
+  --ds-text-2xs: 0.6875rem;
+  --ds-text-xs: 0.75rem;
+  --ds-text-sm: 0.8125rem;
+  --ds-text-base: 0.9375rem;
+  --ds-text-md: 1rem;
+  --ds-text-lg: 1.125rem;
+  --ds-text-xl: 1.375rem;
+
+  --ds-title-sm: clamp(1.125rem, 0.95rem + 0.8vw, 1.375rem);
+  --ds-title-md: clamp(1.375rem, 1.1rem + 1.2vw, 1.875rem);
+  --ds-title-lg: clamp(1.75rem, 1.3rem + 2vw, 2.75rem);
+  --ds-display: clamp(1.9375rem, 1.05rem + 4.4vw, 4.25rem);
+  --ds-numeral: clamp(1.875rem, 1.4rem + 1.9vw, 2.75rem);
+  --ds-numeral-sm: clamp(1.25rem, 1.05rem + 0.8vw, 1.625rem);
+
+  --ds-weight-regular: 400;
+  --ds-weight-medium: 500;
+  --ds-weight-bold: 700;
+  --ds-weight-black: 900;
+
+  --ds-leading-tight: 1.18;
+  --ds-leading-snug: 1.38;
+  --ds-leading-normal: 1.62;
+  --ds-leading-relaxed: 1.78;
+
+  --ds-tracking-tight: -0.03em;
+  --ds-tracking-snug: -0.015em;
+  --ds-tracking-normal: 0;
+  --ds-tracking-wide: 0.08em;
+
+  --ds-space-1: 0.25rem;
+  --ds-space-2: 0.5rem;
+  --ds-space-3: 0.75rem;
+  --ds-space-4: 1rem;
+  --ds-space-5: 1.5rem;
+  --ds-space-6: 2rem;
+  --ds-space-7: 2.5rem;
+  --ds-space-8: 3rem;
+  --ds-space-9: 4rem;
+  --ds-space-10: 5.5rem;
+
+  --ds-section-y: clamp(4rem, 3rem + 5vw, 8rem);
+  --ds-section-y-tight: clamp(2.75rem, 2rem + 3vw, 5rem);
+
+  --ds-gutter: clamp(1.125rem, 0.5rem + 2.4vw, 2.5rem);
+  --ds-maxw: 1180px;
+  --ds-maxw-narrow: 880px;
+  --ds-maxw-prose: 62ch;
+
+  --ds-radius-sm: 6px;
+  --ds-radius-md: 12px;
+  --ds-radius-lg: 16px;
+  --ds-radius-xl: 22px;
+  --ds-radius-pill: 999px;
+
+  --ds-shadow-sm: 0 1px 2px rgba(20, 22, 26, 0.04);
+  --ds-shadow-md: 0 1px 2px rgba(20, 22, 26, 0.04), 0 8px 24px rgba(20, 22, 26, 0.05);
+  --ds-shadow-lg: 0 2px 4px rgba(20, 22, 26, 0.04), 0 18px 48px rgba(20, 22, 26, 0.09);
+
+  --ds-focus-ring: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-ink);
+
+  --ds-duration-fast: 120ms;
+  --ds-duration-base: 200ms;
+  --ds-duration-slow: 380ms;
+  --ds-ease: cubic-bezier(0.2, 0.7, 0.3, 1);
+
+  --ds-header-h: 60px;
+
+  --ds-chart-band: #f0efe9;
+  --ds-chart-edge: #b7b3a8;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --ds-duration-fast: 1ms;
+    --ds-duration-base: 1ms;
+    --ds-duration-slow: 1ms;
+  }
+}

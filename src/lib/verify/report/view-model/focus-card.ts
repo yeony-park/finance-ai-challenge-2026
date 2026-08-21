@@ -1,0 +1,313 @@
+import type { ClaimKind, UnjudgedClaim, Verdict } from "../../types";
+import {
+  formatIsoDate,
+  formatKstDateTime,
+  formatKstShortDateTime,
+  formatWon,
+  formatYmd8,
+} from "../format";
+import { maskFreeText, maskRegion, maskTraceNo } from "../mask";
+import type {
+  JudgementRecord,
+  PricePlacementRecord,
+  ReportSnapshot,
+} from "../snapshot";
+import { b, shortSourceName, t, VERDICT_LABEL } from "./labels";
+import type { EvidenceRowView, ExplainLevel, FocusView, RichText } from "./types";
+
+const BIRTH_PATTERN = /출생\s*(\d{8})/;
+const TRANSFER_PATTERN = /양수\s*등록\s*(\d{8})/;
+
+interface PeerTransfer {
+  readonly count: number;
+  readonly date: string;
+}
+
+interface SubjectFacts {
+  readonly trace?: JudgementRecord;
+  readonly breed?: JudgementRecord;
+  readonly sex?: JudgementRecord;
+  readonly acquired?: JudgementRecord;
+  readonly custody?: JudgementRecord;
+  readonly price?: UnjudgedClaim;
+  readonly placement?: PricePlacementRecord;
+  readonly peer?: PeerTransfer;
+}
+
+const findJudgement = (
+  judgements: readonly JudgementRecord[],
+  subject: string,
+  kind: ClaimKind,
+): JudgementRecord | undefined =>
+  judgements.find((j) => j.claim.subject === subject && j.claim.kind === kind);
+
+const peerTransfer = (
+  judgements: readonly JudgementRecord[],
+  exceptSubject: string,
+): PeerTransfer | undefined => {
+  const counts = new Map<string, number>();
+  for (const judgement of judgements) {
+    if (judgement.claim.kind !== "acquisition_date") continue;
+    if (judgement.claim.subject === exceptSubject) continue;
+    const matched = judgement.evidence[0]?.observed.match(TRANSFER_PATTERN);
+    if (!matched?.[1]) continue;
+    counts.set(matched[1], (counts.get(matched[1]) ?? 0) + 1);
+  }
+  const top = [...counts.entries()].sort((a, b2) => b2[1] - a[1])[0];
+  return top ? { count: top[1], date: formatYmd8(top[0]) } : undefined;
+};
+
+const collectFacts = (
+  snapshot: ReportSnapshot,
+  subject: string,
+): SubjectFacts => {
+  const { judgements, unjudged } = snapshot;
+  return {
+    trace: findJudgement(judgements, subject, "livestock_trace_no"),
+    breed: findJudgement(judgements, subject, "livestock_breed"),
+    sex: findJudgement(judgements, subject, "livestock_sex"),
+    acquired: findJudgement(judgements, subject, "acquisition_date"),
+    custody: findJudgement(judgements, subject, "custody_location"),
+    price: unjudged.find(
+      (item) =>
+        item.claim.subject === subject && item.claim.kind === "acquisition_price",
+    ),
+    placement: snapshot.pricePlacements.find(
+      (item) => item.claim.subject === subject,
+    ),
+    peer: peerTransfer(judgements, subject),
+  };
+};
+
+const buildClaimRows = (facts: SubjectFacts): readonly EvidenceRowView[] => {
+  const { trace, sex, acquired, custody, price, placement } = facts;
+  const rows: EvidenceRowView[] = [];
+  if (sex && sex.verdict !== "match") {
+    rows.push({
+      label: "성별",
+      value: maskFreeText(sex.claim.value),
+      isAlert: false,
+    });
+  }
+  if (trace) {
+    rows.push({
+      label: "이력번호",
+      value: maskTraceNo(trace.claim.value),
+      isAlert: false,
+    });
+  }
+  if (acquired) {
+    rows.push({
+      label: "취득시기",
+      value: formatIsoDate(acquired.claim.value),
+      isAlert: false,
+    });
+  }
+  if (custody) {
+    rows.push({
+      label: "보관장소",
+      value: maskRegion(custody.claim.value),
+      isAlert: false,
+    });
+  }
+  if (price?.claim.numericValue !== undefined) {
+    rows.push({
+      label: "취득원가",
+      value: formatWon(price.claim.numericValue),
+      isAlert: false,
+      note: `대조 불가 · ${maskFreeText(price.reason)}`,
+    });
+  } else if (placement) {
+    rows.push({
+      label: "취득원가",
+      value: formatWon(placement.claimedPerHead),
+      isAlert: false,
+      note: `위치 제시 · 기준 ${placement.referenceMonth} ${placement.breedName} ${placement.sexName} 경락가 평균 ${Math.round(placement.averagePricePerKg).toLocaleString("en-US")}원/kg(${placement.sampleSize.toLocaleString("en-US")}두) · 적정성 판단 아님`,
+    });
+  }
+  return rows;
+};
+
+const buildLedgerRows = (facts: SubjectFacts): readonly EvidenceRowView[] => {
+  const { trace, breed, sex, acquired, custody, peer } = facts;
+  const rows: EvidenceRowView[] = [];
+
+  if (trace) {
+    const birth = trace.evidence[0]?.observed.match(BIRTH_PATTERN)?.[1];
+    const traits = [breed?.evidence[0]?.observed, sex?.evidence[0]?.observed]
+      .filter(Boolean)
+      .join(" · ");
+    rows.push({
+      label: "개체 존재",
+      value: [
+        trace.verdict === "match" ? "등록됨" : VERDICT_LABEL[trace.verdict],
+        traits,
+        birth ? `출생 ${formatYmd8(birth)}` : "",
+      ]
+        .filter(Boolean)
+        .join(" · "),
+      isAlert: trace.verdict !== "match",
+    });
+  }
+
+  if (sex && sex.verdict !== "match") {
+    rows.push({
+      label: "원장 성별",
+      value: maskFreeText(sex.evidence[0]?.observed ?? VERDICT_LABEL[sex.verdict]),
+      isAlert: true,
+      note: maskFreeText(sex.evidence[0]?.note ?? sex.rationale),
+    });
+  }
+
+  if (acquired) {
+    const transferred = (acquired.evidence[0]?.observed ?? "").match(
+      TRANSFER_PATTERN,
+    )?.[1];
+    rows.push({
+      label: "취득 시점",
+      value:
+        acquired.verdict === "match" && transferred
+          ? `양수 등록 ${formatYmd8(transferred)}`
+          : VERDICT_LABEL[acquired.verdict],
+      isAlert: acquired.verdict !== "match",
+      note:
+        acquired.verdict === "match" ? undefined : maskFreeText(acquired.rationale),
+    });
+  }
+
+  if (custody) {
+    const observedRegion = maskRegion(custody.evidence[0]?.observed ?? "");
+    rows.push({
+      label: "현재 사육지",
+      value:
+        custody.verdict === "mismatch"
+          ? `${observedRegion} · 다른 농장`
+          : observedRegion,
+      isAlert: custody.verdict !== "match",
+      note: custody.verdict === "match" ? undefined : maskFreeText(custody.rationale),
+    });
+  }
+
+  if (peer) {
+    rows.push({
+      label: "참고",
+      value: `나머지 ${peer.count}두는 ${peer.date} 양수(소유권 이전) 일괄 등록`,
+      isAlert: false,
+    });
+  }
+
+  return rows;
+};
+
+const OTHER_CAUSE_TEXT =
+  "등록 지연·오기, 기재 시점 이후의 상태 변화 등 다른 원인일 수 있으므로 이 기록만으로 문제가 있다고 단정할 수 없습니다.";
+
+const alertOrder = (facts: SubjectFacts): readonly (JudgementRecord | undefined)[] => [
+  facts.custody,
+  facts.sex,
+  facts.breed,
+  facts.acquired,
+  facts.trace,
+];
+
+const alertJudgements = (
+  facts: SubjectFacts,
+): readonly JudgementRecord[] =>
+  alertOrder(facts).filter(
+    (judgement): judgement is JudgementRecord =>
+      judgement !== undefined && judgement.verdict !== "match",
+  );
+
+const custodyEasyText = (
+  facts: SubjectFacts,
+  custody: JudgementRecord,
+): RichText => {
+  const claimRegion = maskRegion(custody.claim.value);
+  const observedRegion = maskRegion(custody.evidence[0]?.observed ?? "");
+  const acquiredOn = facts.acquired
+    ? formatIsoDate(facts.acquired.claim.value)
+    : "기재일";
+
+  return [
+    t(`신고서에는 이 개체를 ${acquiredOn}에 취득해 ${claimRegion} 농가에서 사육 중이라고 기재되어 있습니다. 그러나 국가 원장의 최종 사육지는 `),
+    b(`${observedRegion}의 다른 농장`),
+    t(`이어서, 기재된 보관 장소가 확인되지 않았습니다. ${OTHER_CAUSE_TEXT}`),
+  ];
+};
+
+const fieldEasyText = (alert: JudgementRecord): RichText => [
+  t(`신고서에는 이 개체의 ${alert.claim.field}이(가) "${maskFreeText(alert.claim.value)}"로 기재되어 있습니다. 국가 원장의 값은 `),
+  b(maskFreeText(alert.evidence[0]?.observed ?? "확인 불가")),
+  t(`입니다. ${OTHER_CAUSE_TEXT}`),
+];
+
+const buildFootnote = (facts: SubjectFacts): Record<ExplainLevel, RichText> => {
+  const { custody, peer } = facts;
+  const alerts = alertJudgements(facts);
+  const primary = alerts[0];
+
+  const easy =
+    custody && custody.verdict !== "match"
+      ? custodyEasyText(facts, custody)
+      : primary
+        ? fieldEasyText(primary)
+        : [t(`이 개체에서 원장과 값이 다른 항목은 없습니다. ${OTHER_CAUSE_TEXT}`)];
+
+  return {
+    easy,
+    pro: [
+      ...alerts.flatMap((alert): RichText => [
+        b(`${alert.claim.field} — ${maskFreeText(alert.rationale)}`),
+        t(" "),
+      ]),
+      ...(peer
+        ? [t(`비교군 ${peer.count}두는 ${peer.date} 일괄 양수 등록으로 관측됩니다. `)]
+        : []),
+      t("원인(등록 지연·미인도·오기)은 본 데이터만으로 판정할 수 없습니다."),
+    ],
+  };
+};
+
+const primaryRationale = (
+  judgements: readonly JudgementRecord[],
+  subject: string,
+): string => {
+  const primary =
+    judgements.find((j) => j.claim.subject === subject && j.verdict === "mismatch") ??
+    judgements.find((j) => j.claim.subject === subject && j.verdict !== "match");
+  return primary
+    ? maskFreeText(primary.rationale)
+    : "원장에서 기재 내용이 확인되지 않았습니다";
+};
+
+export const buildFocus = (
+  snapshot: ReportSnapshot,
+  subject: string,
+  no: number,
+  verdict: Verdict,
+): FocusView => {
+  const facts = collectFacts(snapshot, subject);
+  const anchor =
+    facts.custody ??
+    facts.trace ??
+    snapshot.judgements.find((j) => j.claim.subject === subject);
+  const location = anchor?.claim.location;
+  const observedAt = anchor?.evidence[0]?.observedAt ?? snapshot.generatedAt;
+
+  return {
+    no,
+    title: `개체 ${no}호 · ${VERDICT_LABEL[verdict]}`,
+    summary: primaryRationale(snapshot.judgements, subject),
+    claimHeading: location
+      ? `신고서 기재 · ${location.table} ${location.row}행`
+      : "신고서 기재",
+    claimRows: buildClaimRows(facts),
+    ledgerHeading: `국가 이력 원장 · ${formatKstShortDateTime(observedAt)} 조회`,
+    ledgerRows: buildLedgerRows(facts),
+    foot: buildFootnote(facts),
+    sourceDoc: location
+      ? `신고서 원문 · ${location.section} · ${location.table} ${location.row}행`
+      : "신고서 원문",
+    sourceLedger: `${shortSourceName(snapshot.sources)} 조회 · ${formatKstDateTime(observedAt)}`,
+  };
+};
