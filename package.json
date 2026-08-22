@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && node scripts/sanitize-standalone-env.mjs && node scripts/sanitize-standalone-env.mjs --check",
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
@@ -16,8 +16,9 @@
     "build:live": "python3 scripts/build_live_static.py",
     "check:live": "python3 scripts/build_live_static.py --check",
     "test:js": "node tests/test_calculations.mjs && node tests/test_api.mjs && node tests/test_track_records.mjs && node tests/test_restructure.mjs",
-    "test:art": "npm run build && node --experimental-strip-types --test tests/art-calculations.test.ts tests/art-search.test.ts tests/art-schema.test.ts tests/art-regression.test.ts tests/legacy-data-connection.test.ts tests/art-runtime-integration.test.ts",
-    "test": "npm run test:art"
+    "test:art": "npm run build && node --experimental-strip-types --test tests/art-calculations.test.ts tests/art-search.test.ts tests/art-schema.test.ts tests/art-regression.test.ts tests/legacy-data-connection.test.ts tests/art-runtime-integration.test.ts tests/opendart-verification.test.ts",
+    "test": "npm run test:art",
+    "check:standalone-env": "node scripts/sanitize-standalone-env.mjs --check"
   },
   "dependencies": {
     "next": "16.3.0",
