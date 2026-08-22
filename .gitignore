@@ -59,3 +59,5 @@ __pycache__/
 *.tsbuildinfo
 next-env.d.ts
 data/scratch-fake/
+
+HANDOFF.md

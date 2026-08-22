@@ -13,13 +13,13 @@
 
 | 담당 | 페이지 | 기본 작업 파일 |
 | --- | --- | --- |
-| 문수 | 부동산 | `app/real-estate/page.tsx` |
-| 원준 | 가축·한우 | `app/livestock/cattle/page.tsx` |
-| 연정 | 가축·돼지 | `app/livestock/pig/page.tsx` |
-| 현석 | 미술품(보조) | `app/art/page.tsx` |
+| 문수 | 부동산 | `src/app/real-estate/page.tsx` |
+| 원준 | 가축·한우 | `src/app/cattle/page.tsx` |
+| 연정 | 가축·돼지 | `src/app/pig/page.tsx` |
+| 현석 | 미술품(보조) | `src/app/art/page.tsx` |
 
 - 담당 페이지 구현은 해당 `page.tsx`와 그 페이지 전용 파일에 둔다.
-- `components/asset-page.tsx`, `components/site-header.tsx`, `app/globals.css`는 전 페이지에 영향을 주므로 필요한 경우에만 수정한다.
+- `src/components/category/CategoryLanding.tsx`, `src/components/site/SiteHeader.tsx`, `src/app/globals.css`는 전 페이지에 영향을 주므로 필요한 경우에만 수정한다.
 - 실제 데이터가 연결되지 않은 값은 반드시 `샘플`, `미확인`, `연결 대기`처럼 상태를 표시한다.
 - 페이지 문구를 교체할 때 `docs/design-system.md`의 네 가지 타이포 역할과 단일 블루 규칙을 따른다.
 
@@ -38,7 +38,7 @@
 
 ```bash
 npm run lint
-npm run typecheck
+npm exec tsc -- --noEmit
 npm run build
 ```
 
