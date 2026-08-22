@@ -42,7 +42,7 @@ class LiveStaticTest(unittest.TestCase):
                 response = connection.getresponse()
                 body = response.read()
                 self.assertEqual(response.status, 404, path)
-                self.assertNotIn(b"VWORLD_API_KEY", body)
+                self.assertNotIn(b"DART_API_KEY", body)
                 connection.close()
         finally:
             httpd.shutdown()

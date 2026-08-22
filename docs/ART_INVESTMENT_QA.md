@@ -327,7 +327,7 @@
 
 | 원본 | normalized 연결 | 검증 결과 |
 |---|---:|---|
-| `data/products.json` | 미술품 5개 | 전체 상품 9개 중 real 5, demo 4; 부동산 3개 제외 |
+| `data/products.json` | 미술품 5개 | real 5개만 보존하며 demo 4개는 별도 파일에서 연결 |
 | `data/artnguide_track_records.json` | 187건 | `sold` 138 (`TRANSFER`), `returned` 12 (`RETURNED_PRODUCT`, 원문 `status_label=매각완료` 충돌을 별도 보존), `exit_in_progress` 37 |
 | `data/artnguide_due_diligence.json` | 같은 187건 enrichment | record evidence 187와 artist track evidence 187을 각 track payload에 연결; 실적에 중복 합산하지 않음 |
 | `data/weshareart_research.json` | 145건 | canonical `아트투게더` 플랫폼; 현재 실상품 5건과 같은 플랫폼 탐색 경로에 연결하되 과거 레코드의 법적 발행사 identity는 미검증; `operating` 93, 자체 게시 `liquidated` 52; 통화 미기재 금액의 KRW 표기 0건 |

@@ -1,6 +1,6 @@
 # JeomJeom · 미술품 조각투자 검토 서비스
 
-미술품 조각투자 상품의 공모가격, 작가 시장, 회수 조건, 플랫폼 이력을 근거와 함께 검토하는 Next.js 서비스입니다. 현재 사용자 UI는 **미술품 전용**이며 부동산·항공기 엔진·가축·음악 데이터를 노출하지 않습니다.
+미술품 조각투자 상품의 공모가격, 작가 시장, 회수 조건, 플랫폼 이력을 근거와 함께 검토하는 Next.js 서비스입니다. 프로젝트 데이터와 사용자 UI는 **미술품 전용**입니다.
 
 ## 실행
 
@@ -26,9 +26,11 @@ npm run dev
 
 새 Repository는 원본 JSON을 변경하지 않고 `lib/art/legacy-adapter.ts`에서 정규화합니다.
 
+`DART_API_KEY`가 서버 환경에 있으면 실제 미술품 상세와 `/api/products/[id]`는 기존 DART 접수번호별 OpenDART 원문 ZIP 중앙 디렉터리와 비어 있지 않은 XML 항목만 확인합니다. `available`·OpenDART `013`/`014` 결과만 API 키 세대·fetcher별로 최대 24시간 cache하며, 인증·일시 오류·형식 오류는 cache하지 않습니다. 모든 접수번호가 확인될 때만 검증 완료이며, 혼합 결과·접수번호 누락·인증/응답 오류는 각각 구분해 표시합니다. 저장된 금액·작품 정보는 실시간 검증으로 표시하지 않습니다. `npm run build`는 standalone 출력에서 `.env*` 항목을 내용 읽기 없이 제거하고 검사합니다.
+
 | 데이터 | 연결 수 | 처리 원칙 |
 |---|---:|---|
-| `data/products.json` | 미술품 5개 | 부동산 3개 제외, `isDemo=false`, 현재 lifecycle 미확인은 그대로 표시 |
+| `data/products.json` | 미술품 5개 | `isDemo=false`, 현재 lifecycle 미확인은 그대로 표시 |
 | `data/artnguide_track_records.json` | 187건 | 자체 게시 매각 상태, 원문 상태 및 187개 annotation 보존 |
 | `data/artnguide_due_diligence.json` | 같은 187건 enrichment | 중복 실적으로 세지 않고 식별·발행사 검증 상태와 원본 payload 연결 |
 | `data/weshareart_research.json` | 145건 | 아트투게더 별도 플랫폼으로 연결, 통화 미기재 금액은 KRW로 표시하지 않음 |

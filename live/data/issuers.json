@@ -2,68 +2,6 @@
   "as_of": "2026-08-08",
   "issuers": [
     {
-      "id": "lucentblock",
-      "name": "루센트블록",
-      "legal_issuer": {
-        "id": null,
-        "name": null,
-        "display_name": "-",
-        "verification_status": "pending"
-      },
-      "service": {
-        "brand": "SOU",
-        "operator": "루센트블록",
-        "platform": "SOU",
-        "verification_status": "unverified"
-      },
-      "evidence": {
-        "version": "2026-08-10.v1",
-        "source_ids": [
-          "issuer-lucent-notice-146",
-          "issuer-lucent-product-13"
-        ]
-      },
-      "validation": {
-        "pending": true,
-        "reason": "SOU 법적 발행사 원문 확인 필요"
-      },
-      "change_history": [],
-      "records": [
-        {
-          "date": "2026-02-13",
-          "type": "예비인가",
-          "fact": "예비인가 미선정"
-        },
-        {
-          "date": "2026-03-09",
-          "type": "거래 상태",
-          "fact": "SOU 거래 일시 중단"
-        }
-      ],
-      "sources": [
-        {
-          "id": "issuer-lucent-notice-146",
-          "label": "SOU 공지 146",
-          "as_of": "2026-08-08",
-          "url": "https://api.sou.place/api/v1/public/notices/146",
-          "document_name": null,
-          "publisher": null,
-          "collected_at": null,
-          "evidence_grade": null
-        },
-        {
-          "id": "issuer-lucent-product-13",
-          "label": "SOU 상품 13 API",
-          "as_of": "2026-08-08",
-          "url": "https://api.sou.place/api/v1/public/products/product/13",
-          "document_name": null,
-          "publisher": null,
-          "collected_at": null,
-          "evidence_grade": null
-        }
-      ]
-    },
-    {
       "id": "togetherart",
       "name": "투게더아트",
       "legal_issuer": {

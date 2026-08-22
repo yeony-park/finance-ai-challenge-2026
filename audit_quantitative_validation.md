@@ -59,10 +59,9 @@
 ### 1.4 data/products.json
 | 항목 | 값 |
 |------|-----|
-| 총 products | 8 |
+| 총 products | 5 |
 | **Category 분포** | |
-| 미술품 | 5 (62.5%) |
-| 부동산 | 3 (37.5%) |
+| 미술품 | 5 (100%) |
 | **미술품 5건 id** | |
 | - | at-kim-whanki-009-01 |
 | - | at-chonghyun-009-02 |

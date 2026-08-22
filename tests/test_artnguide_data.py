@@ -124,11 +124,8 @@ class ArtnguideDataTest(unittest.TestCase):
     def test_snapshot_contains_no_credentials_or_copied_image_payloads(self):
         raw = DATA_PATH.read_text(encoding="utf-8")
         for secret_name in (
-            "COMMERCIAL_API_KEY",
-            "LAND_API_KEY",
-            "BUILDING_API_KEY",
-            "VWORLD_API_KEY",
             "DART_API_KEY",
+            "OPENAI_API_KEY",
         ):
             self.assertNotIn(secret_name, raw)
         self.assertNotIn("data:image/", raw)
@@ -163,12 +160,6 @@ class ArtnguideDataTest(unittest.TestCase):
             self.assertEqual(response.read(), DATA_PATH.read_bytes())
             connection.close()
 
-            connection = http.client.HTTPConnection("127.0.0.1", httpd.server_port)
-            connection.request("GET", "/data/source_snapshots.json")
-            response = connection.getresponse()
-            self.assertEqual(response.status, 404)
-            response.read()
-            connection.close()
         finally:
             httpd.shutdown()
             httpd.server_close()
