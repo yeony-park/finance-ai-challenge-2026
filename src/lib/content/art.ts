@@ -33,7 +33,7 @@ export const ART_PAGE_DESCRIPTION =
 export const ART_CUSTOM_TITLE = "미술품 공모 확인 현황 (공시 원문 대조)";
 
 export const ART_FACT_LEAD =
-  "발행사가 전자공시(DART)에 낸 증권신고서·정정신고서에서 대조한 공모가 구성 사실입니다. 공시 접수일 순으로 나열했으며, 작가·작품·플랫폼 식별 정보는 이 단계 화면에 올리지 않습니다. 판정은 공시와 공공원장의 대조 결과입니다.";
+  "발행사가 전자공시(DART)에 낸 증권신고서·투자설명서·발행실적보고서에서 대조한 공모가 구성 사실입니다. 공시 접수일 순으로 나열했으며, 작가·작품·플랫폼 식별 정보는 이 단계 화면에 올리지 않습니다. 판정은 공시와 공공원장의 대조 결과입니다.";
 
 export const ART_ABSENCE_NOTE =
   "독립 경매 낙찰·플랫폼 청산 대조 수치는 아직 연결되지 않아, 이 화면에는 경매·회수 관련 차트 대신 공시 원문에서 대조한 사실과 공모금액 구성만 싣습니다. 자료가 없는 항목은 대조 불가 또는 기재 없음으로 정직하게 표기합니다.";
@@ -109,10 +109,16 @@ export const ART_PRODUCT_FACTS: readonly ArtProductFact[] = [
       "플랫폼의 저장 상태 표기는 현재 소유권·보관 상태·미처분을 독립적으로 증명하지 않습니다.",
     sources: [
       {
-        label: "DART 증권신고서",
+        label: "DART 투자설명서",
         rcpNo: "20240116000005",
         asOf: "2024-01-16",
         url: "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20240116000005",
+      },
+      {
+        label: "DART 발행실적보고서",
+        rcpNo: "20240125000013",
+        asOf: "2024-01-25",
+        url: "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20240125000013",
       },
     ],
     sourceNote: null,
@@ -133,10 +139,16 @@ export const ART_PRODUCT_FACTS: readonly ArtProductFact[] = [
       "독립 비교거래가 부족하고 플랫폼 상태 표기만으로 현재 소유·보관·미처분을 확인할 수 없습니다.",
     sources: [
       {
-        label: "DART 증권신고서",
+        label: "DART 투자설명서",
         rcpNo: "20240325000139",
         asOf: "2024-03-25",
         url: "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20240325000139",
+      },
+      {
+        label: "DART 발행실적보고서",
+        rcpNo: "20240403003155",
+        asOf: "2024-04-03",
+        url: "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20240403003155",
       },
     ],
     sourceNote: null,
@@ -161,6 +173,12 @@ export const ART_PRODUCT_FACTS: readonly ArtProductFact[] = [
         rcpNo: "20260512000391",
         asOf: "2026-05-12",
         url: "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260512000391",
+      },
+      {
+        label: "DART 투자설명서",
+        rcpNo: "20260513000002",
+        asOf: "2026-05-13",
+        url: "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260513000002",
       },
       {
         label: "DART 발행실적보고서",
@@ -188,10 +206,22 @@ export const ART_PRODUCT_FACTS: readonly ArtProductFact[] = [
       "작품명이 일반명이고 lot 번호와 소장 이력이 없어 동일 작품이라는 연결을 확정할 수 없습니다.",
     sources: [
       {
-        label: "DART 증권신고서",
+        label: "DART 정정신고서",
+        rcpNo: "20260512000391",
+        asOf: "2026-05-12",
+        url: "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260512000391",
+      },
+      {
+        label: "DART 투자설명서",
         rcpNo: "20260513000002",
         asOf: "2026-05-13",
         url: "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260513000002",
+      },
+      {
+        label: "DART 발행실적보고서",
+        rcpNo: "20260529000528",
+        asOf: "2026-05-29",
+        url: "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260529000528",
       },
     ],
     sourceNote: null,
