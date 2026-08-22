@@ -1,0 +1,136 @@
+{
+  "schemaVersion": "dart-filing-manifest-v1",
+  "generatedFrom": "data/products.json",
+  "policy": {
+    "automaticPublication": false,
+    "note": "문서 역할과 시리즈 연결은 검증 후보이며, 검토 전 상품 사실을 덮어쓰지 않습니다."
+  },
+  "entries": [
+    {
+      "productId": "at-kim-whanki-009-01",
+      "sourceId": "at-kim-dart",
+      "receiptNo": "20260513000002",
+      "declaredRole": "unknown",
+      "sourceLabel": "원문 검증 자료",
+      "expectedSeries": {
+        "artist": "김환기",
+        "artworkTitle": "Untitled"
+      },
+      "supersedesReceiptNo": null,
+      "lineageReviewStatus": "unreviewed",
+      "allowAutomaticPublication": false
+    },
+    {
+      "productId": "at-chonghyun-009-02",
+      "sourceId": "at-ha-dart-final",
+      "receiptNo": "20260513000002",
+      "declaredRole": "final",
+      "sourceLabel": "원문 검증 자료",
+      "expectedSeries": {
+        "artist": "하종현",
+        "artworkTitle": "Conjunction 20-65"
+      },
+      "supersedesReceiptNo": null,
+      "lineageReviewStatus": "unreviewed",
+      "allowAutomaticPublication": false
+    },
+    {
+      "productId": "at-chonghyun-009-02",
+      "sourceId": "at-ha-dart-correction",
+      "receiptNo": "20260512000391",
+      "declaredRole": "correction",
+      "sourceLabel": "원문 검증 자료",
+      "expectedSeries": {
+        "artist": "하종현",
+        "artworkTitle": "Conjunction 20-65"
+      },
+      "supersedesReceiptNo": null,
+      "lineageReviewStatus": "unreviewed",
+      "allowAutomaticPublication": false
+    },
+    {
+      "productId": "at-chonghyun-009-02",
+      "sourceId": "at-ha-dart-result",
+      "receiptNo": "20260529000528",
+      "declaredRole": "result",
+      "sourceLabel": "원문 검증 자료",
+      "expectedSeries": {
+        "artist": "하종현",
+        "artworkTitle": "Conjunction 20-65"
+      },
+      "supersedesReceiptNo": null,
+      "lineageReviewStatus": "unreviewed",
+      "allowAutomaticPublication": false
+    },
+    {
+      "productId": "at-youngkuk-008",
+      "sourceId": "at-yoo-dart-unverified",
+      "receiptNo": "20251022100010",
+      "declaredRole": "unknown",
+      "sourceLabel": "접수번호 오류·원문 미확인",
+      "expectedSeries": {
+        "artist": "유영국",
+        "artworkTitle": "Work"
+      },
+      "supersedesReceiptNo": null,
+      "lineageReviewStatus": "unreviewed",
+      "allowAutomaticPublication": false
+    },
+    {
+      "productId": "at-kusama-001",
+      "sourceId": "at-kusama-dart",
+      "receiptNo": "20240116000005",
+      "declaredRole": "unknown",
+      "sourceLabel": "DART 증권신고서",
+      "expectedSeries": {
+        "artist": "야요이 쿠사마 (Yayoi Kusama)",
+        "artworkTitle": "Pumpkin"
+      },
+      "supersedesReceiptNo": null,
+      "lineageReviewStatus": "unreviewed",
+      "allowAutomaticPublication": false
+    },
+    {
+      "productId": "at-kusama-001",
+      "sourceId": "at-kusama-dart-result",
+      "receiptNo": "20240125000013",
+      "declaredRole": "result",
+      "sourceLabel": "DART 발행실적",
+      "expectedSeries": {
+        "artist": "야요이 쿠사마 (Yayoi Kusama)",
+        "artworkTitle": "Pumpkin"
+      },
+      "supersedesReceiptNo": null,
+      "lineageReviewStatus": "unreviewed",
+      "allowAutomaticPublication": false
+    },
+    {
+      "productId": "at-condo-002",
+      "sourceId": "at-condo-dart",
+      "receiptNo": "20240325000139",
+      "declaredRole": "unknown",
+      "sourceLabel": "DART 증권신고서",
+      "expectedSeries": {
+        "artist": "조지 콘도 (George Condo)",
+        "artworkTitle": "The Horizon of Insanity"
+      },
+      "supersedesReceiptNo": null,
+      "lineageReviewStatus": "unreviewed",
+      "allowAutomaticPublication": false
+    },
+    {
+      "productId": "at-condo-002",
+      "sourceId": "at-condo-dart-result",
+      "receiptNo": "20240403003155",
+      "declaredRole": "result",
+      "sourceLabel": "DART 발행실적",
+      "expectedSeries": {
+        "artist": "조지 콘도 (George Condo)",
+        "artworkTitle": "The Horizon of Insanity"
+      },
+      "supersedesReceiptNo": null,
+      "lineageReviewStatus": "unreviewed",
+      "allowAutomaticPublication": false
+    }
+  ]
+}

@@ -252,6 +252,10 @@
 - [ ] AI 실패 fallback
 - [ ] demo badge/404
 
+## 8.1 2026-08-22 OpenDART AI 경계 변경
+
+기존 웹 전체 조사·저장형 AI 경로는 제거했다. 현재 공시 분석은 상품별 OpenDART manifest와 검증된 ZIP/XML artifact만 사용하며 `candidate_only`, `published: false`다. Q&A는 허용된 전체 fact block을 그대로 선택하고, 근거가 없는 질문에는 빈 answer block과 `insufficient_context`로 답변을 보류한다. Demo 상품에는 공시 실사 패널을 표시하지 않는다. 상세 계약은 `docs/OPENDART_AI_IMPLEMENTATION.md`와 `docs/ART_INVESTMENT_AI_SPEC.md`를 따른다.
+
 ## 9. 최종 테스트 결과 기록
 
 최종 회귀 시각: **2026-08-14 18:41 KST**. 첫 실행에서 `lib/art/ai.ts`의 라이브 조사 JSON Schema 괄호 오류를 발견해 함수 전체를 명확한 구조로 수정했다. HTTP 점검에서는 취득가가 비공개인 DEMO-004에서 공개 비용 상세가 숨는 회귀를 발견해 `PriceBridgeChart`가 비용 항목을 계속 표시하도록 수정했다. 이후 아래 전체 검증을 처음부터 다시 실행했다.
@@ -268,7 +272,7 @@
 | 자연어 검색 API | 완료 | `POST /api/ai/search` HTTP 200, `open`+최근 거래 20건 조건 확인 |
 | 상품 Q&A API | 완료 | `POST /api/ai/ask-product` HTTP 200, 직접 답변·수치·의미·영향·Evidence 확인 |
 | 상품 비교 API | 완료 | `POST /api/ai/compare` HTTP 200, 2개 finding 확인 |
-| 저장 분석 fallback | 완료 | `POST /api/ai/analyze-product` demo HTTP 200, 저장 verdict 확인 |
+| 공시 분석 fallback | 완료 | 실제 상품의 `POST /api/ai/analyze-product`가 demo 모드에서 HTTP 200 candidate-only fallback을 반환; demo 상품 자체는 HTTP 422로 명시적 제외 |
 | 검증 서버 종료 | 완료 | localhost:3100 프로세스 종료 |
 
 ## 10. 남은 문제·이번 회귀 제외 범위

@@ -17,12 +17,16 @@ test("공개 비용 상세가 비용 항목별로 렌더링됨", () => {
   assert.match(read("components/art/ui.tsx"), /className="cost-list"/);
 });
 
-test("라이브 웹 조사는 Responses 웹 검색과 서버 분석 경계에 연결됨", () => {
-  const ai = read("lib/art/ai.ts");
-  assert.match(ai, /export async function researchProductLive/);
-  assert.match(ai, /web_search_preview/);
-  assert.match(read("app/api/ai/analyze-product/route.ts"), /researchProductLive/);
-  assert.doesNotMatch(ai, /NEXT_PUBLIC_OPENAI/);
+test("라이브 공시 분석은 검증된 DART artifact와 grounded AI 경계에 연결됨", () => {
+  const server = read("lib/art/ai/server.ts");
+  const route = read("app/api/ai/analyze-product/route.ts");
+  assert.match(server, /store: false/);
+  assert.match(server, /No tools are supplied/);
+  assert.match(route, /getDartDocumentArtifacts/);
+  assert.match(route, /proposeDartFieldCandidates/);
+  assert.match(route, /published: false/);
+  assert.doesNotMatch(route, /researchProductLive|web_search_preview/);
+  assert.doesNotMatch(server, /NEXT_PUBLIC_OPENAI/);
 });
 
 type DemoData = {

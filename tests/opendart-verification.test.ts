@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { clearDartVerificationCacheForTests, getDartVerification } from "../lib/art/opendart-verification.ts";
+import { createHash } from "node:crypto";
+import { clearDartVerificationCacheForTests, getDartDocumentArtifacts, getDartVerification } from "../lib/art/opendart-verification.ts";
 
 const dartUrl = "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260513000002";
 const otherDartUrl = "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260513000003";
@@ -17,6 +18,16 @@ function realZip(name = "report.xml", payload = new TextEncoder().encode("<?xml 
   const crc = crc32(payload);
   const local = join(le32(0x04034b50), le16(20), le16(0), le16(0), le16(0), le16(0), le32(crc), le32(payload.length), le32(declaredSize), le16(filename.length), le16(0), filename, payload);
   const central = join(le32(0x02014b50), le16(20), le16(20), le16(0), le16(0), le16(0), le16(0), le32(crc), le32(payload.length), le32(declaredSize), le16(filename.length), le16(0), le16(0), le16(0), le16(0), le32(0), le32(0), filename);
+  return join(local, central, le32(0x06054b50), le16(0), le16(0), le16(1), le16(1), le32(central.length), le32(local.length), le16(0));
+}
+
+/** A valid streaming ZIP member, followed by a checked data descriptor. */
+function descriptorZip(name = "report.xml", payload = new TextEncoder().encode("<?xml version=\"1.0\"?><report/>")) {
+  const filename = new TextEncoder().encode(name);
+  const crc = crc32(payload);
+  const flags = 0x0008;
+  const local = join(le32(0x04034b50), le16(20), le16(flags), le16(0), le16(0), le16(0), le32(0), le32(0), le32(0), le16(filename.length), le16(0), filename, payload, le32(0x08074b50), le32(crc), le32(payload.length), le32(payload.length));
+  const central = join(le32(0x02014b50), le16(20), le16(20), le16(flags), le16(0), le16(0), le16(0), le32(crc), le32(payload.length), le32(payload.length), le16(filename.length), le16(0), le16(0), le16(0), le16(0), le32(0), le32(0), filename);
   return join(local, central, le32(0x06054b50), le16(0), le16(0), le16(1), le16(1), le32(central.length), le32(local.length), le16(0));
 }
 
@@ -45,6 +56,19 @@ test("OpenDART reads and validates a complete real ZIP with no Content-Length, t
   assert.deepEqual(first.receipts, [{ receiptNo: "20260513000002", sourceUrl: dartUrl, status: "available", fetchedAt: "2026-08-12T03:04:05.000Z" }]);
   assert.deepEqual(second, first);
   assert.equal(JSON.stringify(first).includes("test-key"), false);
+});
+
+test("OpenDART does not parse status-like elements inside an accepted ZIP as API errors", async () => {
+  const body = realZip("report.xml", new TextEncoder().encode('<?xml version="1.0"?><report><status>013</status></report>'));
+  const fetcher: typeof fetch = async () => zipResponse(body);
+  clearDartVerificationCacheForTests();
+  const artifacts = await getDartDocumentArtifacts(input, { apiKey: "test-key", fetcher });
+  assert.equal(artifacts.length, 1);
+  assert.match(artifacts[0]?.chunks[0]?.text ?? "", /<status>013<\/status>/);
+  clearDartVerificationCacheForTests();
+  const verification = await getDartVerification(input, { apiKey: "test-key", fetcher, now: fixedNow });
+  assert.equal(verification.status, "verified");
+  assert.equal(verification.receipts[0]?.status, "available");
 });
 
 test("OpenDART rejects truncated, XML-less, unsafe, and expanded-oversize archives", async () => {
@@ -143,4 +167,90 @@ test("a missing API key is an auth_error outcome without requests or secret outp
   assert.equal(result.receipts[0]?.status, "auth_error");
   assert.equal(calls, 0);
   assert.equal(JSON.stringify(result).includes("DART_API_KEY"), false);
+});
+
+test("OpenDART document artifacts expose immutable, bounded, decoded XML members without a credential", async () => {
+  const text = `<?xml version="1.0" encoding="UTF-8"?><report>${"a".repeat(16_378)}😀\r\n끝</report>`;
+  const payload = new TextEncoder().encode(text);
+  const body = realZip("nested/report.xml", payload);
+  let calls = 0;
+  const artifacts = await getDartDocumentArtifacts(input, {
+    apiKey: "artifact-test-key",
+    fetcher: async (request) => {
+      calls += 1;
+      assert.equal(new URL(String(request)).searchParams.get("crtfc_key"), "artifact-test-key");
+      return zipResponse(body);
+    },
+    now: fixedNow,
+  });
+  assert.equal(calls, 1);
+  assert.equal(artifacts.length, 1);
+  const artifact = artifacts[0]!;
+  assert.equal(artifact.receiptNo, "20260513000002");
+  assert.equal(artifact.sourceUrl, dartUrl);
+  assert.equal(artifact.fetchedAt, "2026-08-12T03:04:05.000Z");
+  assert.equal(artifact.memberPath, "nested/report.xml");
+  assert.equal(artifact.encoding, "utf-8");
+  assert.equal(artifact.text, text);
+  assert.equal(artifact.documentSha256, createHash("sha256").update(body).digest("hex"));
+  assert.equal(artifact.memberSha256, createHash("sha256").update(payload).digest("hex"));
+  assert.equal(Object.isFrozen(artifacts), true);
+  assert.equal(Object.isFrozen(artifact), true);
+  assert.equal(Object.isFrozen(artifact.chunks), true);
+  assert.equal(artifact.chunks.map((chunk) => chunk.text).join(""), text);
+  for (const [index, chunk] of artifact.chunks.entries()) {
+    assert.equal(Object.isFrozen(chunk), true);
+    assert.equal(chunk.index, index);
+    assert.equal(chunk.text, text.slice(chunk.start, chunk.end));
+    assert.ok(chunk.end - chunk.start <= 16_384);
+    assert.equal(/[\ud800-\udbff]$/.test(chunk.text), false, "a chunk must not end with a high surrogate");
+  }
+  assert.equal(JSON.stringify(artifacts).includes("artifact-test-key"), false);
+});
+
+test("OpenDART document artifacts reject bad CRCs, malformed or over-complex XML, and invalid XML bytes", async () => {
+  const crcCorrupt = realZip();
+  crcCorrupt[30 + "report.xml".length] ^= 1;
+  const invalidUtf8 = realZip("report.xml", Uint8Array.from([...new TextEncoder().encode("<?xml version=\"1.0\"?><report>"), 0xff, ...new TextEncoder().encode("</report>")]));
+  const tooDeep = `<?xml version="1.0"?>${"<n>".repeat(129)}${"</n>".repeat(129)}`;
+  const tooManyAttributes = `<?xml version="1.0"?><report ${Array.from({ length: 129 }, (_, index) => `a${index}="x"`).join(" ")}/>`;
+  const tooManyNodes = `<?xml version="1.0"?><report>${"<n/>".repeat(50_001)}</report>`;
+  const cases = [
+    crcCorrupt,
+    realZip("report.xml", new TextEncoder().encode("<?xml version=\"1.0\"?><report>")),
+    invalidUtf8,
+    realZip("report.xml", new TextEncoder().encode(tooDeep)),
+    realZip("report.xml", new TextEncoder().encode(tooManyAttributes)),
+    realZip("report.xml", new TextEncoder().encode(tooManyNodes)),
+  ];
+  for (const body of cases) {
+    const artifacts = await getDartDocumentArtifacts(input, { apiKey: "test-key", fetcher: async () => zipResponse(body), now: fixedNow });
+    assert.deepEqual(artifacts, []);
+    clearDartVerificationCacheForTests();
+    const verification = await getDartVerification(input, { apiKey: "test-key", fetcher: async () => zipResponse(body), now: fixedNow });
+    assert.equal(verification.receipts[0]?.status, "invalid_response");
+  }
+});
+
+test("OpenDART document artifact retrieval does not request or expose a missing API key", async () => {
+  let calls = 0;
+  const artifacts = await getDartDocumentArtifacts(input, {
+    apiKey: "",
+    fetcher: async () => { calls += 1; return zipResponse(); },
+    now: fixedNow,
+  });
+  assert.deepEqual(artifacts, []);
+  assert.equal(calls, 0);
+  assert.equal(JSON.stringify(artifacts).includes("DART_API_KEY"), false);
+});
+
+test("OpenDART document artifacts validate streaming ZIP data descriptors", async () => {
+  const body = descriptorZip();
+  const artifacts = await getDartDocumentArtifacts(input, { apiKey: "test-key", fetcher: async () => zipResponse(body), now: fixedNow });
+  assert.equal(artifacts.length, 1);
+  const corrupt = body.slice();
+  const descriptorCrcOffset = 30 + "report.xml".length + new TextEncoder().encode("<?xml version=\"1.0\"?><report/>").length + 4;
+  corrupt[descriptorCrcOffset] ^= 1;
+  const rejected = await getDartDocumentArtifacts(input, { apiKey: "test-key", fetcher: async () => zipResponse(corrupt), now: fixedNow });
+  assert.deepEqual(rejected, []);
 });

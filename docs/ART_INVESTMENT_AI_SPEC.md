@@ -6,7 +6,7 @@
 
 ## 1. AI의 역할과 경계
 
-AI는 자연어 의도를 구조화하고, 접근 가능한 공개 자료를 조사·추출하며, 애플리케이션이 계산한 정량 지표와 근거를 바탕으로 정성 분석·최종 판단·질문답변·비교 설명을 생성한다. AI는 계산기, 데이터베이스, 근거 원문을 대체하지 않는다.
+AI는 자연어 검색 의도를 구조화하고, 애플리케이션이 검증한 OpenDART artifact에서 미게시 필드 후보를 추출하며, 허용된 fact block을 선택해 질문답변과 정정·위험 문구를 구성한다. AI는 Evidence 발급, 계산, 정정 승인, 위험 판정, 데이터베이스, 근거 원문을 대체하지 않는다.
 
 - 정량 계산: TypeScript 순수 함수
 - 자료·분석 저장: Repository
@@ -35,24 +35,20 @@ POST /api/ai/compare
 
 `OPENAI_API_KEY`를 `NEXT_PUBLIC_` 변수, Client Component, response payload, error detail, telemetry에 포함하지 않는다. 특정 모델명을 route마다 하드코딩하지 않는다. 구현 시 설치된 SDK 버전과 저장소 내 Next 16 공식 문서를 확인하고 현재 Responses API/Structured Outputs 문법을 사용한다.
 
-## 3. 전체 자료 조사 파이프라인
+## 3. OpenDART 근거 파이프라인
 
 ```mermaid
 flowchart LR
-  R[신규 등록/갱신 요청] --> S[공식·공개 자료 검색]
-  S --> X[원문/수치 추출]
-  X --> E[Evidence와 기준일 저장]
-  E --> N[정규화 데이터 생성]
-  N --> Q[순수 함수 정량 계산]
-  Q --> A[정성 분석]
-  A --> V[네 단계 최종 판단]
-  V --> Z[Schema 검증]
-  Z -->|성공| P[분석+근거 저장]
-  Z -->|실패| Y[재시도/저장 분석 fallback]
-  P --> W[웹에서 저장된 최신 분석 표시]
+  M[상품별 receipt manifest] --> D[OpenDART ZIP/XML 검증]
+  D --> C[크기 제한 immutable chunk + SHA-256]
+  C --> A[AI 필드 후보 추출]
+  A --> V[정확 quote·field/value 문맥 검증]
+  V --> U[candidate_only · unpublished]
+  F[승인된 저장 Fact] --> R[결정적 정정 reconciliation·위험 규칙]
+  R --> Q[extractive Q&A·위험 문구]
 ```
 
-페이지 렌더링마다 웹 전체를 조사하지 않는다. 상세은 저장된 최신 분석을 먼저 읽는다. 사용자 질문에서 최신 자료가 반드시 필요한 경우에만 검색을 보강하며, 보강 결과도 Evidence로 저장·검증한 뒤 사용한다.
+페이지 렌더링이나 질문마다 웹 전체를 조사하지 않는다. AI 요청에는 상품별 manifest에서 확인한 DART artifact chunk 또는 공개된 bounded fact block만 전달한다. AI 후보는 상품 원값을 변경하거나 Evidence/판정을 발급하지 않는다. 정정 계보가 검토되지 않았거나 필수 사실이 없으면 `not_assessed`를 유지한다.
 
 ### 출처 우선순위
 
@@ -65,25 +61,14 @@ flowchart LR
 
 유료벽·로그인 제한·접근 실패 자료를 확인한 것처럼 쓰지 않는다. 핵심 값이 접근 불가이면 `missingInformationRisks`로 저장하고 판단 위험에 반영한다. 충돌은 평균 내지 않고 `conflicts`와 개별 Evidence로 보존한다.
 
-## 4. 도구 호출 설계
+## 4. 모델 호출 경계
 
-도구 역할은 유지하되 코드 명명 규칙에 맞게 조정 가능하다.
+현재 Responses API 호출에는 도구를 제공하지 않는다. 특히 `web_search_preview`, 파일·컴퓨터 접근, `saveEvidence`, `saveAnalysis`를 사용하지 않는다.
 
-| 도구 | 입력 핵심 | 출력/부작용 |
-|---|---|---|
-| `searchWebSources` | 질의, 허용 도메인/출처유형, 날짜 | 접근 결과와 후보 URL; 임의 사실 생성 금지 |
-| `getProductFacts` | productId | Offering/Artwork/Issuer 사실과 Evidence ID |
-| `getArtworkFacts` | artworkId | 작품 식별·크기·시리즈·provenance |
-| `getArtistAuctionRecords` | artistId, 기간 | 원 경매행과 Evidence ID |
-| `getComparableWorks` | offeringId, 기준 | ComparableRecord와 비교 이유 |
-| `getPlatformTrackRecord` | platformId/issuerId | 상태별 원 이력; 매각/청산 구분 |
-| `calculatePriceMetrics` | 취득가, 공모가, 비용, 유사값 | 순수 함수 계산 결과 |
-| `calculateArtistMetrics` | 경매행, 기간 | 거래량·낙찰/유찰·중위/평균 |
-| `calculateExitMetrics` | 거래/트랙레코드 | 빈도·기간·지연·기간 내 청산 |
-| `saveEvidence` | 검증 Evidence | ID, version; idempotent 저장 |
-| `saveAnalysis` | 검증 AnalysisResult | 최신 version과 변경시각 |
-
-AI가 `save*`를 호출하기 전에 URL·날짜·단위·schema·중복·충돌을 애플리케이션이 검증한다. 웹 도구는 SSRF 방어, HTTPS, 허용 host 정책, timeout, 응답 크기 제한을 적용한다.
+- `store: false`, timeout, bounded request/response, strict JSON Schema를 적용한다.
+- 존재하지 않는 ID, 전체 quote 불일치, field/value 문맥 불일치, 상품/version 불일치는 출력 전체를 폐기한다.
+- Q&A와 정정·위험 문구는 전체 fact block을 그대로 선택하는 extractive 모드다. 의미 entailment 검증기 없이 AI paraphrase를 공개하지 않는다.
+- 저장·게시·계산·위험등급 변경은 모델 호출 경로에 없다.
 
 ## 5. 자연어 검색
 
@@ -168,18 +153,14 @@ unsoldRate = unsold / (sold + unsold) * 100;
 
 ## 8. 최종 판단
 
-허용값은 네 개뿐이다.
+최종 판단은 AI가 아니라 `lib/art/risk/`의 결정적 규칙이 계산한다.
 
 ```ts
-type Verdict = "worth_considering" | "conditional" | "caution" | "danger";
+type DecisionStatus = "decided" | "not_assessed";
+type Verdict = "worth_considering" | "conditional" | "caution" | "danger" | null;
 ```
 
-- **해볼 만함**: 가격 차이 대부분 설명, 충분한 유사 거래, 안정적 거래량·낙찰률, 유사 가격 범위, 확인된 기간 내 청산, 중대 위험 없음.
-- **조건부 해볼 만함**: 근거는 대체로 양호하나 표본·변동성·짧은 이력·일부 지연 등 약점이 있고 긍정 근거가 더 강함.
-- **주의**: 미설명 차액, 높은 공모가, 적은 동일 시리즈, 높은/상승 유찰, 감소 거래량, 적은 청산 이력, 반복 기간 초과 등 한 축이 뚜렷하게 약함.
-- **위험**: 취득가/주요 비용 비공개, 큰 미설명 차액, 거래 사실상 없음/급감, 높은 유찰·가격 하락, 청산 0/반복 지연·미매각·손실, 주체 불명, 핵심 원문 충돌 등 중대한 또는 복합 위험.
-
-단순 위험 개수, 동적 가중치, 평균점수만으로 결정하지 않는다. 자료가 부족해도 결론을 생략하지 않되 “비공개로 가격 검증 불가” 자체를 위험 근거로 쓴다. 없는 수치나 확인하지 못한 원문은 만들지 않는다.
+필수 사실의 결측·충돌·만료, 미래 기준일, 검토되지 않은 정정 계보가 하나라도 있으면 `decisionStatus: "not_assessed"`, `verdict: null`이다. 명시적으로 근거가 연결된 가격 산술 또는 작품 식별 실패만 `danger`가 될 수 있다. 독립적으로 공시된 차액 fact가 없으면 애플리케이션이 공모가와 취득가로 같은 값을 만들어 검증에 재사용하지 않고 판정을 보류한다. 모든 rule, signal, blocker에는 accepted Fact ID와 Evidence/provenance ID가 남아야 한다.
 
 ## 9. 코멘트 작성 규칙
 
@@ -202,6 +183,8 @@ type Verdict = "worth_considering" | "conditional" | "caution" | "danger";
 예를 들어 취득가가 없으면 “취득가가 비공개입니다”에서 멈추지 않고, 공모금액이 매입가보다 얼마나 높은지 계산할 수 없고 가격 검증의 핵심 정보 비공개를 가격 위험에 반영해 어떤 verdict가 되었는지 말한다.
 
 ## 10. Structured Output
+
+아래 `AiProductAnalysis`는 기존 저장 분석의 표시 계약이다. 현재 live OpenDART AI route는 이 객체를 생성·저장하거나 verdict를 변경하지 않고, 별도의 candidate/extractive 계약만 반환한다.
 
 ```ts
 type AiProductAnalysis = {

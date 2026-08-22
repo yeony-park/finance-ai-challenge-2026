@@ -1,4 +1,4 @@
-import type { AnalysisResult, ParsedSearchQuery, ProductView } from "@/lib/art/types";
+import type { AnalysisResult, ParsedSearchQuery } from "@/lib/art/types";
 
 const API_URL = "https://api.openai.com/v1/responses";
 
@@ -14,7 +14,6 @@ async function responsesJson<T>(
   name: string,
   schema: Record<string, unknown>,
   input: string,
-  tools?: Array<Record<string, unknown>>,
 ): Promise<T> {
   const { key, model } = config();
   if (!key) throw new Error("OPENAI_API_KEY is not configured");
@@ -26,8 +25,9 @@ async function responsesJson<T>(
       headers: { authorization: `Bearer ${key}`, "content-type": "application/json" },
       body: JSON.stringify({
         model,
+        store: false,
+        max_output_tokens: 1_024,
         input,
-        ...(tools ? { tools } : {}),
         text: { format: { type: "json_schema", name, strict: true, schema } },
       }),
       signal: controller.signal,
@@ -46,7 +46,19 @@ async function responsesJson<T>(
 }
 
 export function isParsedSearchQuery(value: unknown): value is ParsedSearchQuery {
-  return !!value && typeof value === "object" && !Array.isArray(value);
+  if (!value || typeof value !== "object" || Array.isArray(value)) return false;
+  const query = value as Record<string, unknown>;
+  const allowed = new Set(["keyword", "offeringStatus", "verdict", "premiumMin", "premiumMax", "auctionVolumeMin", "sellThroughRateMin", "delayedExitOnly", "sort"]);
+  if (!Object.keys(query).every((key) => allowed.has(key))) return false;
+  const status = new Set(["upcoming", "open", "operating", "exit_in_progress", "liquidated"]);
+  const verdict = new Set(["worth_considering", "conditional", "caution", "danger"]);
+  if (query.keyword !== undefined && (typeof query.keyword !== "string" || query.keyword.length > 200)) return false;
+  if (query.sort !== undefined && (typeof query.sort !== "string" || query.sort.length > 64)) return false;
+  if (query.delayedExitOnly !== undefined && typeof query.delayedExitOnly !== "boolean") return false;
+  if (query.offeringStatus !== undefined && (!Array.isArray(query.offeringStatus) || query.offeringStatus.some((item) => typeof item !== "string" || !status.has(item)))) return false;
+  if (query.verdict !== undefined && (!Array.isArray(query.verdict) || query.verdict.some((item) => typeof item !== "string" || !verdict.has(item)))) return false;
+  for (const key of ["premiumMin", "premiumMax", "auctionVolumeMin", "sellThroughRateMin"]) if (query[key] !== undefined && (typeof query[key] !== "number" || !Number.isFinite(query[key]))) return false;
+  return true;
 }
 
 export function isAnalysisResult(value: unknown): value is AnalysisResult {
@@ -89,115 +101,6 @@ export async function parseSearchLive(query: string) {
   return Object.fromEntries(Object.entries(output).filter(([, value]) => value !== null)) as ParsedSearchQuery;
 }
 
-export type ProductAnswer = {
-  answer: string;
-  facts: string[];
-  meaning: string;
-  impact: string;
-  evidenceIds: string[];
-};
-
-export async function askProductLive(product: ProductView, question: string) {
-  const schema = {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      answer: { type: "string" },
-      facts: { type: "array", items: { type: "string" } },
-      meaning: { type: "string" },
-      impact: { type: "string" },
-      evidenceIds: { type: "array", items: { type: "string" } },
-    },
-    required: ["answer", "facts", "meaning", "impact", "evidenceIds"],
-  };
-  return responsesJson<ProductAnswer>(
-    "art_product_answer",
-    schema,
-    `저장된 사실만 사용해 초보자에게 직접 답하라. 직접 답변→근거 수치→의미→청약 판단 영향 순서로 작성하고 사용자가 직접 찾아보라고 하지 마라. 질문: ${question}\n상품 JSON: ${JSON.stringify({ offering: product.offering, analysis: product.analysis, evidence: product.evidence })}`,
-  );
-}
-
-export async function compareLive(products: ProductView[]) {
-  const schema = {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      headline: { type: "string" },
-      summary: { type: "string" },
-      productFindings: {
-        type: "array",
-        items: {
-          type: "object",
-          additionalProperties: false,
-          properties: { productId: { type: "string" }, finding: { type: "string" } },
-          required: ["productId", "finding"],
-        },
-      },
-    },
-    required: ["headline", "summary", "productFindings"],
-  };
-  return responsesJson<{ headline: string; summary: string; productFindings: Array<{ productId: string; finding: string }> }>(
-    "art_product_comparison",
-    schema,
-    `최고 상품, 무조건 선택, 수익 보장 표현 없이 상대 비교하라. 데이터: ${JSON.stringify(products.map((product) => ({ id: product.offering.id, title: product.offering.title, analysis: product.analysis })))}`,
-  );
-}
-
-export type ResearchEvidenceCandidate = {
-  claim: string;
-  value: string;
-  sourceTitle: string;
-  sourceUrl: string;
-  asOfDate: string | null;
-  sourceType: string;
-};
-
-export async function researchProductLive(product: ProductView) {
-  const schema = {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      evidence: {
-        type: "array",
-        items: {
-          type: "object",
-          additionalProperties: false,
-          properties: {
-            claim: { type: "string" },
-            value: { type: "string" },
-            sourceTitle: { type: "string" },
-            sourceUrl: { type: "string" },
-            asOfDate: { type: ["string", "null"] },
-            sourceType: { type: "string" },
-          },
-          required: ["claim", "value", "sourceTitle", "sourceUrl", "asOfDate", "sourceType"],
-        },
-      },
-    },
-    required: ["evidence"],
-  };
-  return responsesJson<{ evidence: ResearchEvidenceCandidate[] }>(
-    "art_product_research",
-    schema,
-    `공식 자료 우선순위에 따라 이 미술품 조각투자 상품의 공개 근거를 조사하라. 접근하지 못한 자료는 확인했다고 쓰지 말고, 충돌하는 값은 모두 유지하라. 상품: ${JSON.stringify({ offering: product.offering, artwork: product.artwork, artist: product.artist, platform: product.platform, issuer: product.issuer })}`,
-    [{ type: "web_search_preview" }],
-  );
-}
-
 export function aiMode() {
   return config().mode;
 }
-
-export const researchToolInterfaces = [
-  "searchWebSources",
-  "getProductFacts",
-  "getArtworkFacts",
-  "getArtistAuctionRecords",
-  "getComparableWorks",
-  "getPlatformTrackRecord",
-  "calculatePriceMetrics",
-  "calculateArtistMetrics",
-  "calculateExitMetrics",
-  "saveEvidence",
-  "saveAnalysis",
-] as const;

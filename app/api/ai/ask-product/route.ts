@@ -1,2 +1,93 @@
-import { NextResponse } from "next/server";import { aiMode, askProductLive, type ProductAnswer } from "@/lib/art/ai";import { formatKrw, formatPercent, latestAnnualSellThroughRate, pricePremiumRate, unexplainedDifference } from "@/lib/domain/calculations";import { productRepository } from "@/lib/repositories/art-repositories";export async function POST(req:Request){try{const {productId,question}=await req.json();if(typeof productId!=="string"||typeof question!=="string"||!question.trim())return NextResponse.json({error:"상품과 질문이 필요합니다."},{status:400});const p=productRepository.getById(productId);if(!p)return NextResponse.json({error:"상품이 없습니다."},{status:404});let result:ProductAnswer;let fallback=false;if(aiMode()==="live"){try{result=await askProductLive(p,question)}catch{fallback=true;result=demo(p,question)}}else result=demo(p,question);const evidence=result.evidenceIds.flatMap(id=>{const e=p.evidence.find(x=>x.id===id);return e?[{id:e.id,title:e.sourceTitle,url:e.sourceUrl}]:[]});return NextResponse.json({answer:{...result,evidence},mode:aiMode(),fallback})}catch{return NextResponse.json({error:"질문 처리 중 오류가 발생했습니다."},{status:500})}}
-function demo(p:NonNullable<ReturnType<typeof productRepository.getById>>,q:string):ProductAnswer{const premium=pricePremiumRate(p.offering.totalOfferingAmount,p.offering.acquisitionPrice),unknown=unexplainedDifference(p.offering.totalOfferingAmount,p.offering.acquisitionPrice,p.offering.disclosedCosts),rate=latestAnnualSellThroughRate(p.annualMetrics,p.auctions);if(/긍정/.test(q))return{answer:p.analysis.verdict==="danger"?"긍정 근거는 작가 거래가 완전히 끊기지 않았다는 점입니다.":"가격 차이 중 공개 비용으로 설명되는 부분과 확인 가능한 거래 기록이 긍정적입니다.",facts:[`연결 비교 표본 ${p.auctions.length}건`,`낙찰률 ${formatPercent(rate)}`],meaning:"거래 기회가 전혀 없지는 않지만 동일 시리즈 표본의 수가 더 중요합니다.",impact:"긍정 근거만으로 가격 비공개나 청산 지연 위험을 상쇄하지는 못합니다.",evidenceIds:p.analysis.evidenceIds};return{answer:`${p.analysis.verdictLabel}으로 판단한 가장 큰 이유는 ${p.analysis.keyReasons[0].title}과 회수 이력을 함께 본 결과입니다.`,facts:[p.offering.acquisitionPrice==null?"작품 취득가 비공개":`공모가 차이율 ${formatPercent(premium)}`,`설명되지 않는 차액 ${formatKrw(unknown)}`,`낙찰률 ${formatPercent(rate)}`,p.analysis.keyReasons[2].finding],meaning:p.analysis.headline,impact:p.analysis.summary,evidenceIds:p.analysis.evidenceIds}}
+import { NextResponse } from "next/server";
+import { aiMode } from "@/lib/art/ai";
+import { answerGroundedQuestion, getGroundedAiServerConfig } from "@/lib/art/ai/server";
+import { buildProductFactBlocks, buildStoredRiskAssessment, productSnapshotVersion, safeEvidenceLinks, type ProductFactBlock } from "@/lib/art/review/product-review";
+import { RequestBodyError, acquireProductReview, exactObject, readBoundedJson } from "@/lib/art/review/request-guard";
+import { productRepository } from "@/lib/repositories/art-repositories";
+
+export const runtime = "nodejs";
+
+type AnswerBlock = { text: string; citations: Array<{ blockId: string; quote: string; title: string; evidence: Array<{ id: string; title: string; url: string | null }> }> };
+
+function today() { return new Date().toISOString().slice(0, 10); }
+function selectedFallbackBlocks(question: string, blocks: ProductFactBlock[]): ProductFactBlock[] {
+  const patterns: Array<[RegExp, string[]]> = [
+    [/가격|금액|공모|취득|구좌/, ["fact-offering-total", "fact-acquisition-price", "fact-unit-price"]],
+    [/거래량|경매|유찰|낙찰|플랫폼|청산|매각|회수|지연/, []],
+    [/작품명|작가명|누구|식별/, ["fact-artwork"]],
+    [/발행|회사|주체/, ["fact-issuer"]],
+    [/기준일|언제|날짜/, ["fact-data-date"]],
+    [/위험|판정|왜|보류/, blocks.filter((item) => item.id.startsWith("blocker-") || item.id.startsWith("signal-")).map((item) => item.id)],
+  ];
+  const ids = patterns.find(([pattern]) => pattern.test(question))?.[1] ?? [];
+  const selected = ids.flatMap((id) => blocks.find((block) => block.id === id) ?? []);
+  return selected.slice(0, 4);
+}
+
+function resolveBlocks(product: NonNullable<ReturnType<typeof productRepository.getById>>, blocks: ProductFactBlock[], answer: Array<{ text: string; citations: Array<{ blockId: string; quote: string }> }>): AnswerBlock[] {
+  const byId = new Map(blocks.map((block) => [block.id, block]));
+  return answer.map((item) => ({
+    text: item.text,
+    citations: item.citations.map((citation) => {
+      const block = byId.get(citation.blockId);
+      if (!block) throw new Error("invalid grounded citation");
+      return { blockId: block.id, quote: citation.quote, title: block.title, evidence: safeEvidenceLinks(product, block.evidenceIds) };
+    }),
+  }));
+}
+
+export async function POST(request: Request) {
+  let gate: ReturnType<typeof acquireProductReview> | null = null;
+  try {
+    const body = await readBoundedJson(request, 8_192);
+    if (!exactObject(body, ["productId", "question"]) || typeof body.productId !== "string" || typeof body.question !== "string" || !body.productId || body.productId.length > 128 || !body.question.trim() || body.question.length > 1_000) return NextResponse.json({ error: "상품과 1,000자 이하 질문이 필요합니다." }, { status: 400 });
+    const product = productRepository.getById(body.productId);
+    if (!product) return NextResponse.json({ error: "상품이 없습니다." }, { status: 404 });
+    const risk = buildStoredRiskAssessment(product, today());
+    const blocks = buildProductFactBlocks(product, risk);
+    const eligibleBlocks = selectedFallbackBlocks(body.question, blocks);
+    const version = productSnapshotVersion(product, risk);
+    const mode = aiMode() === "live" ? "live" : "demo";
+    let fallback = mode !== "live";
+    let fallbackReason = fallback ? "demo_mode" : null;
+    let rawAnswer: Array<{ text: string; citations: Array<{ blockId: string; quote: string }> }> = [];
+    if (mode === "live" && eligibleBlocks.length) {
+      const config = getGroundedAiServerConfig();
+      if (!config) {
+        fallback = true;
+        fallbackReason = "ai_unavailable";
+      } else {
+        gate = acquireProductReview(`qa:${product.offering.id}`);
+        if (!gate.ok) return NextResponse.json({ error: "같은 상품의 AI 답변이 이미 진행됐거나 잠시 전에 완료됐습니다.", retryAfterSeconds: gate.retryAfterSeconds }, { status: 429, headers: { "Retry-After": String(gate.retryAfterSeconds) } });
+        try {
+          const result = await answerGroundedQuestion({ productId: product.offering.id, productVersion: version, question: body.question.trim(), blocks: eligibleBlocks.map(({ id, text }) => ({ id, text })) }, config);
+          rawAnswer = result.answerBlocks;
+          if (!rawAnswer.length) { fallback = true; fallbackReason = "insufficient_grounded_answer"; }
+        } catch {
+          fallback = true;
+          fallbackReason = "ai_output_rejected";
+        }
+      }
+    } else if (mode === "live") {
+      fallback = true;
+      fallbackReason = "insufficient_context";
+    }
+    if (fallback) {
+      rawAnswer = eligibleBlocks.map((block) => ({ text: block.text, citations: [{ blockId: block.id, quote: block.text }] }));
+      if (!eligibleBlocks.length) fallbackReason = "insufficient_context";
+    }
+    const answerBlocks = resolveBlocks(product, blocks, rawAnswer);
+    return NextResponse.json({
+      answer: { productId: product.offering.id, productVersion: version, answerBlocks, decisionStatus: risk.decisionStatus },
+      mode,
+      fallback,
+      fallbackReason,
+      limitation: "검증된 저장 fact block만 사용하며, 근거가 없는 내용은 답변하지 않습니다.",
+    }, { headers: { "Cache-Control": "no-store" } });
+  } catch (error) {
+    const status = error instanceof RequestBodyError ? 400 : 500;
+    return NextResponse.json({ error: status === 400 ? "질문 요청 형식이 올바르지 않습니다." : "질문 처리 중 오류가 발생했습니다." }, { status });
+  } finally {
+    if (gate?.ok) gate.release();
+  }
+}

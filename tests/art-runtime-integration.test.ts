@@ -357,3 +357,44 @@ test("home shows four upcoming verdict demos without the removed repository snap
     assert.ok((await response.text()).includes("과거 상품 이력"));
   }
 });
+
+
+test("AI disclosure review routes expose only candidate data and grounded fallback", async () => {
+  const analyzeResponse = await fetch(`${baseUrl}/api/ai/analyze-product`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ productId: "at-chonghyun-009-02" }),
+  });
+  assert.equal(analyzeResponse.ok, true);
+  const analyze = await analyzeResponse.json() as { reviewStatus: string; published: boolean; riskAssessment: { decisionStatus: string; blockers: Array<{ code: string }> }; documents: unknown[]; candidates: unknown[] };
+  assert.equal(analyze.reviewStatus, "candidate_only");
+  assert.equal(analyze.published, false);
+  assert.equal(analyze.riskAssessment.decisionStatus, "not_assessed");
+  assert.ok(analyze.riskAssessment.blockers.some((blocker) => blocker.code === "unapproved_correction"));
+  const serialized = JSON.stringify(analyze);
+  for (const forbidden of ["OPENAI_API_KEY", "DART_API_KEY", "crtfc_key", "sourcePayload", "<?xml"]) assert.equal(serialized.includes(forbidden), false);
+
+  const askResponse = await fetch(`${baseUrl}/api/ai/ask-product`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ productId: "at-chonghyun-009-02", question: "취득가와 공모금액은 얼마야?" }),
+  });
+  assert.equal(askResponse.ok, true);
+  const ask = await askResponse.json() as { answer: { answerBlocks: Array<{ citations: unknown[] }> } };
+  assert.ok(ask.answer.answerBlocks.length > 0);
+  assert.ok(ask.answer.answerBlocks.every((block) => block.citations.length > 0));
+
+  const unsupportedResponse = await fetch(`${baseUrl}/api/ai/ask-product`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ productId: "at-chonghyun-009-02", question: "작가 거래량은 실제로 어느 정도야?" }),
+  });
+  assert.equal(unsupportedResponse.ok, true);
+  const unsupported = await unsupportedResponse.json() as { answer: { answerBlocks: unknown[] }; fallbackReason: string };
+  assert.deepEqual(unsupported.answer.answerBlocks, []);
+  assert.equal(unsupported.fallbackReason, "insufficient_context");
+
+  const detail = await fetch(`${baseUrl}/products/at-chonghyun-009-02`).then((response) => response.text());
+  assert.match(detail, /AI 공시 실사 코파일럿/);
+  assert.match(detail, /AI 추출값은 현재 상품 사실과 판정에 자동 반영되지 않습니다/);
+});
