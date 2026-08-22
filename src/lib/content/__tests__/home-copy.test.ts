@@ -43,8 +43,6 @@ import {
   METHOD_STEP_TITLE,
   SCAFFOLD_NOTICE,
   SEARCH_PLACEHOLDER,
-  SHARD_STATUS_LIVE,
-  SHARD_STATUS_PREVIEW,
   type FollowUpKey,
 } from "../home";
 import {
@@ -75,8 +73,6 @@ const ALL_COPY: readonly string[] = [
   HOME_HERO_LEAD,
   HERO_EYEBROW,
   HERO_SOURCES_LINE,
-  SHARD_STATUS_LIVE,
-  SHARD_STATUS_PREVIEW,
   SCAFFOLD_NOTICE,
   AI_ROLE_SENTENCE,
   SEARCH_PLACEHOLDER,
@@ -289,7 +285,7 @@ describe("정정 감시 밴드 — 상태 문안 정직성", () => {
   });
 });
 
-describe("조각 히어로 — 칩·상태 문안 정합", () => {
+describe("조각 히어로 — 칩 문안 정합", () => {
   test("히어로 압축 칩은 전부 예시 질문 목록에 존재한다", () => {
     const labels = new Set(EXAMPLE_QUESTIONS.map((question) => question.label));
     for (const label of HERO_CHIP_LABELS) {
@@ -298,12 +294,4 @@ describe("조각 히어로 — 칩·상태 문안 정합", () => {
     expect(HERO_CHIP_LABELS.length).toBeGreaterThanOrEqual(3);
   });
 
-  test("조각 상태 두 값은 서로 구분되고 판정 어휘를 침범하지 않는다", () => {
-    expect(SHARD_STATUS_LIVE).not.toBe(SHARD_STATUS_PREVIEW);
-    for (const status of [SHARD_STATUS_LIVE, SHARD_STATUS_PREVIEW]) {
-      expect(status).not.toContain("일치");
-      expect(status).not.toContain("안전");
-      expect(status).not.toContain("등급");
-    }
-  });
 });

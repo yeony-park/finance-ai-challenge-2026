@@ -6,7 +6,6 @@ import {
   categoryDisplayLabel,
   type CategoryId,
 } from "@/lib/content/categories";
-import { SHARD_STATUS_LIVE, SHARD_STATUS_PREVIEW } from "@/lib/content/home";
 
 import s from "./home.module.css";
 
@@ -50,12 +49,7 @@ export function HeroShards() {
       />
       {CATEGORY_REGISTRY.map((entry, index) => {
         const layout = SHARD_LAYOUT[entry.id];
-        const isPreview = entry.preview !== null;
-        const classNames = [
-          s.shard,
-          layout.compact ? s.shardCompact : "",
-          isPreview ? s.shardPreview : "",
-        ]
+        const classNames = [s.shard, layout.compact ? s.shardCompact : ""]
           .filter(Boolean)
           .join(" ");
         return (
@@ -77,9 +71,6 @@ export function HeroShards() {
             </span>
             <span className={s.shardIn}>
               <b className={s.shardLabel}>{categoryDisplayLabel(entry)}</b>
-              <span className={s.shardStatus}>
-                {isPreview ? SHARD_STATUS_PREVIEW : SHARD_STATUS_LIVE}
-              </span>
             </span>
           </Link>
         );

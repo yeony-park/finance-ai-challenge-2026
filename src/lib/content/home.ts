@@ -27,8 +27,6 @@ export const HERO_EYEBROW = "증권신고서 × 공공 원장 — 대조 실측"
 export const HERO_SOURCES_LINE =
   "공적 출처 — 전자공시(DART) · 축산물이력제 · 축산물품질평가원 경락 정보 · 국토부 실거래가(RTMS)";
 
-export const SHARD_STATUS_LIVE = "리포트 공개 중";
-export const SHARD_STATUS_PREVIEW = "준비 중";
 
 export const HERO_CHIP_LABELS: readonly string[] = [
   "조각투자가 뭔가요?",

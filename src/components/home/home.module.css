@@ -660,18 +660,6 @@
     0 0 0 2px var(--ds-bg),
     0 0 0 4px var(--ds-ink);
 }
-.shardPreview {
-  background: var(--ds-bg-muted);
-  border: 1.5px dashed var(--ds-chart-edge);
-  box-shadow: none;
-}
-.shardPreview:hover {
-  box-shadow: none;
-  border-color: var(--ds-ink-muted);
-}
-.shardPreview:focus-visible {
-  box-shadow: 0 0 0 2px var(--ds-bg), 0 0 0 4px var(--ds-ink);
-}
 @keyframes dsShardIn {
   from {
     opacity: 0;
@@ -696,12 +684,6 @@
   inset: 0;
   background: rgb(250 249 246 / 0.55);
 }
-.shardPreview .shardPhoto {
-  filter: grayscale(1);
-}
-.shardPreview .shardPhoto::after {
-  background: rgb(250 249 246 / 0.82);
-}
 .shardIn {
   position: absolute;
   inset: 0;
@@ -722,19 +704,6 @@
 }
 .shardCompact .shardLabel {
   font-size: 1.375rem;
-}
-.shardPreview .shardLabel {
-  color: var(--ds-ink-muted);
-}
-.shardStatus {
-  font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
-  letter-spacing: 0.08em;
-  color: var(--ds-ink);
-  white-space: nowrap;
-}
-.shardPreview .shardStatus {
-  color: var(--ds-ink-muted);
 }
 .shardDeco {
   pointer-events: none;
@@ -785,19 +754,12 @@
       0 0 0 2px var(--ds-bg),
       0 0 0 4px var(--ds-ink);
   }
-  .shardPreview,
-  .shardPreview:hover {
-    box-shadow: none;
-  }
   .shardPhoto {
     inset: 0;
     transform: none;
   }
   .shardPhoto::after {
     background: rgb(250 249 246 / 0.62);
-  }
-  .shardPreview .shardPhoto::after {
-    background: rgb(250 249 246 / 0.85);
   }
   .shardIn {
     position: relative;

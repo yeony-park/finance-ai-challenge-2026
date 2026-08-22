@@ -16,7 +16,7 @@ export const CATEGORY_REGISTRY: readonly CategoryInfo[] = [
     href: "/cattle",
     label: "한우",
     subLabel: null,
-    note: "공시-원장 대조 리포트 공개 중",
+    note: "증권신고서를 축산물이력제 원장과 개체 단위로 대조한 검증 리포트",
     preview: null,
   },
   {
@@ -36,11 +36,11 @@ export const CATEGORY_REGISTRY: readonly CategoryInfo[] = [
     href: "/art",
     label: "미술품",
     subLabel: null,
-    note: "카테고리 착지 준비 중 — 공통 검증 기반 연결 대기",
+    note: "미술품 공모 5건 — 공시 원문 대조와 공모가 구성 확인",
     preview: [
-      "대상 공모: 미술품 투자계약증권 — 공개 공모 정보 정리 중",
-      "연결 예정 출처: 전자공시(DART) 증권신고서 · 공개 판매·이행 공시",
-      "층별 지원 선언이 확정되면 같은 형식으로 확인 현황이 표시됩니다",
+      "대상 공모: 미술품 투자계약증권 5건 — 공모가 구성·공시 문서 좌표를 아래 확인 현황에 정리",
+      "공시 축: 증권신고서·투자설명서·발행실적보고서 원문 대조 (DART 링크)",
+      "원장 축: 독립 경매·보관 원장이 아직 연결되지 않아 해당 항목은 대조 불가로 표기",
     ],
   },
   {
@@ -48,7 +48,7 @@ export const CATEGORY_REGISTRY: readonly CategoryInfo[] = [
     href: "/real-estate",
     label: "부동산",
     subLabel: null,
-    note: "사후 검증 리포트 공개 중",
+    note: "종료 공모의 소재지·가격·이행을 공공 원장과 대조한 사후 검증 리포트",
     preview: null,
   },
 ];
