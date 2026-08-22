@@ -345,12 +345,20 @@ test("compare workspace renders selectable products and a two-product comparison
   assert.ok(comparedHtml.includes("플랫폼 청산 이력"));
 });
 
-test("home shows four upcoming verdict demos without the removed repository snapshot", async () => {
+test("home exposes the JeomJeom evidence workflow while keeping legacy platform history", async () => {
   const home = await fetch(`${baseUrl}/`).then((response) => response.text());
+  const homeText = home.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ");
   assert.equal(home.includes("REPOSITORY SNAPSHOT"), false);
-  assert.ok(home.includes("곧 청약 예정 · 판단 등급별 예시"));
-  for (const label of ["해볼 만함", "조건부 해볼 만함", "주의", "위험"]) assert.ok(home.includes(label));
-  assert.equal((home.match(/청약 예정/g) ?? []).length >= 4, true);
+  for (const label of [
+    "조각투자, 뭘 확인해야 할까요?",
+    "증권신고서 × 공공 원장 — 대조 실측",
+    "조각투자 첫걸음",
+    "카테고리별 확인 현황",
+    "‘믿을 만한가’를 확인하는 8가지 질문",
+  ]) assert.ok(homeText.includes(label), label);
+  for (const href of ["/cattle", "/pig", "/art", "/real-estate", "/offers", "/methodology"]) {
+    assert.ok(home.includes(`href="${href}"`), href);
+  }
   for (const id of ["platform-arttogether", "platform-artnguide", "platform-tessa"]) {
     const response = await fetch(`${baseUrl}/platforms/${id}`);
     assert.equal(response.ok, true, id);
