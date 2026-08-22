@@ -1,1 +1,14 @@
-export default function Loading(){return <main id="main-content" className="listing-page"><div className="art-shell"><div className="page-title"><p className="section-kicker">LOADING</p><h1>분석 데이터를 불러오고 있습니다.</h1></div><div className="loading-skeleton" aria-label="로딩 중"/></div></main>}
+import s from "@/components/site/status.module.css";
+
+export default function Loading() {
+  return (
+    <section className={s.wrap} aria-busy="true" aria-live="polite">
+      <p className={s.code}>대조 결과를 불러오는 중</p>
+      <div className={s.skeletonStack} aria-hidden="true">
+        <div className={`${s.skeleton} ${s.skeletonWide}`} />
+        <div className={`${s.skeleton} ${s.skeletonMid}`} />
+        <div className={`${s.skeleton} ${s.skeletonCard}`} />
+      </div>
+    </section>
+  );
+}

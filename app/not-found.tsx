@@ -1,1 +1,27 @@
-import Link from "next/link";export default function NotFound(){return <main id="main-content" className="state-panel state-large not-found-art"><span>404</span><h1>페이지를 찾을 수 없습니다.</h1><p>잘못된 주소이거나 분석 데이터가 없는 항목입니다.</p><div><Link className="button button-primary" href="/products">상품 목록으로</Link><Link className="button button-secondary" href="/artists">작가 목록으로</Link></div></main>}
+import Link from "next/link";
+
+import { StatusScreen } from "@/components/site/StatusScreen";
+import s from "@/components/site/status.module.css";
+
+export default function NotFound() {
+  return (
+    <StatusScreen
+      code="404 · Not Found"
+      title="이 주소에서는 리포트가 확인되지 않습니다"
+      actions={
+        <>
+          <Link href="/" className={s.actionPrimary}>
+            공개된 검증 리포트 보기
+          </Link>
+          <Link href="/methodology" className={s.actionGhost}>
+            검증 방법
+          </Link>
+        </>
+      }
+    >
+      <p className={s.body}>
+        주소가 잘못되었거나, 해당 공모의 리포트가 아직 공개되지 않았을 수 있습니다.
+      </p>
+    </StatusScreen>
+  );
+}
