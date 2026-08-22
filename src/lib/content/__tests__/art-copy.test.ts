@@ -1,6 +1,7 @@
 import { describe, expect, test } from "vitest";
 
 import { filterOutput } from "@/lib/spine/guardrail/output-filter";
+import * as ART from "../art";
 import {
   ART_ABSENCE_NOTE,
   ART_CUSTOM_TITLE,
@@ -11,6 +12,12 @@ import {
   ART_PRODUCT_FACTS,
 } from "../art";
 
+const STATIC_COPY: readonly string[] = Object.entries(ART)
+  .filter(
+    ([name, value]) => typeof value === "string" && name.startsWith("ART_"),
+  )
+  .map(([, value]) => value as string);
+
 const ALL_COPY: readonly string[] = [
   ART_PAGE_LEAD,
   ART_PAGE_DESCRIPTION,
@@ -18,6 +25,7 @@ const ALL_COPY: readonly string[] = [
   ART_FACT_LEAD,
   ART_ABSENCE_NOTE,
   ART_HISTORICAL_NOTE,
+  ...STATIC_COPY,
   ...ART_PRODUCT_FACTS.flatMap((fact) => [
     fact.label,
     fact.statusNote,
@@ -94,5 +102,33 @@ describe("외부 링크 — DART 원문만 유지", () => {
         expect(fact.sourceNote, fact.label).not.toBeNull();
       }
     }
+  });
+
+  test("각 source의 rcpNo는 url에 그대로 들어 있다", () => {
+    for (const fact of ART_PRODUCT_FACTS) {
+      for (const source of fact.sources) {
+        expect(source.url, `${fact.label}: ${source.label}`).toContain(
+          source.rcpNo,
+        );
+      }
+    }
+  });
+});
+
+describe("공모금액 구성 검산 — 산식 성립", () => {
+  test("취득가·발행비용이 모두 기재된 상품은 취득가 + 발행비용 = 공모금액", () => {
+    for (const fact of ART_PRODUCT_FACTS) {
+      if (fact.acquisition === null || fact.issuanceCost === null) continue;
+      expect(fact.acquisition + fact.issuanceCost, fact.label).toBe(
+        fact.offeringAmount,
+      );
+    }
+  });
+
+  test("구성 분리 기재 상품은 3건 이상이다", () => {
+    const withBreakdown = ART_PRODUCT_FACTS.filter(
+      (fact) => fact.acquisition !== null && fact.issuanceCost !== null,
+    );
+    expect(withBreakdown.length).toBeGreaterThanOrEqual(3);
   });
 });
