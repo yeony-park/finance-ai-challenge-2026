@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 
+import { ArtDemoOfferSection } from "@/components/landing/ArtDemoOfferSection";
 import { HeroSection } from "@/components/landing/HeroSection";
 import { OfferListSection } from "@/components/landing/OfferListSection";
 import { OFFERS, TOTAL_2026_OFFER_COUNT } from "@/components/site/offers";
+import { getArtDemoOfferCards } from "@/lib/art/demo-offer-bridge";
 import { loadLatestWatchState } from "@/lib/verify/amend/watch-state";
 import { loadLatestReport } from "@/lib/verify/report/load";
 import { buildOfferCard, type OfferCardView } from "@/lib/verify/report/view-model";
@@ -33,6 +35,7 @@ const isCohort2026 = (closesAt: string): boolean =>
 
 export default async function OffersPage() {
   const now = new Date();
+  const artDemoCards = getArtDemoOfferCards();
 
   const cards = await Promise.all(
     OFFERS.map(async (offer) => {
@@ -60,6 +63,7 @@ export default async function OffersPage() {
         )}
       />
       <OfferListSection id="open-offers" title="청약 예정·진행 중" cards={open} isMuted />
+      <ArtDemoOfferSection cards={artDemoCards} />
       <OfferListSection id="closed-offers" title="청약 종료 · 사후 검증" cards={closed} />
     </>
   );

@@ -30,6 +30,30 @@ async function getJson<T>(path: string): Promise<T> {
   return response.json() as Promise<T>;
 }
 
+function htmlText(html: string): string {
+  return html
+    .replace(/<!--[\s\S]*?-->/g, "")
+    .replace(/<[^>]*>/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function sectionsOf(html: string): string[] {
+  return [...html.matchAll(/<section\b[\s\S]*?<\/section>/g)].map((match) => match[0]);
+}
+
+function sectionWithText(html: string, text: string): string {
+  const section = sectionsOf(html).find((candidate) => htmlText(candidate).includes(text));
+  assert.ok(section, `section containing ${text} must remain exposed`);
+  return section;
+}
+
+function hrefsOf(html: string): string[] {
+  return [...html.matchAll(/href="([^"]+)"/g)].map((match) =>
+    (match[1] ?? "").replaceAll("&amp;", "&")
+  );
+}
+
 type HistoricalItem = {
   recordScope: "historical";
   offering: { id: string; slug: string; isDemo: boolean; sourcePayload?: unknown; asOfDate: string | null; sourceIds: string[]; currency?: string | null; currencyNote?: string | null; totalOfferingAmount?: number | null; actualExitAmount?: number | null; finalReturn?: number | null; soldAt?: string | null; liquidatedAt?: string | null };
@@ -417,14 +441,60 @@ test("home keeps the JeomJeom multi-category shell while art routes remain reach
 });
 
 
-test("original JeomJeom verification reports and methodology remain intact without art reports", async () => {
+test("original reports stay intact while demo art is isolated to product routes", async () => {
   const offersResponse = await fetch(`${baseUrl}/offers`);
   const offers = await offersResponse.text();
   assert.equal(offersResponse.ok, true);
   assert.ok(offers.includes('href="#content"'));
-  for (const title of ["가축 1호", "가축 9호", "부동산 A", "청약 종료 · 사후 검증"]) assert.ok(offers.includes(title), title);
   assert.equal(offers.includes("미술품 상품·과거 이력"), false);
-  assert.equal(offers.includes("DEMO 작가"), false);
+
+  const visibleOffers = htmlText(offers);
+  assert.ok(
+    visibleOffers.includes("2026년 투자계약증권 공모 8건 중 3건이 국가 공공데이터 대조를 거쳤습니다."),
+  );
+  assert.ok(
+    visibleOffers.includes("종료된 공모 7건의 사후 검증 리포트가 함께 공개돼 있습니다."),
+  );
+  assert.ok(htmlText(sectionWithText(offers, "청약 예정·진행 중")).includes("청약 예정·진행 중"));
+  assert.ok(htmlText(sectionWithText(offers, "청약 종료 · 사후 검증")).includes("청약 종료 · 사후 검증"));
+
+  const originalOfferIds = [
+    ...Array.from({ length: 9 }, (_, index) => `livestock-${index + 1}`),
+    "real-estate-a",
+  ];
+  const originalOfferLinks = hrefsOf(offers).filter((href) =>
+    originalOfferIds.some((id) => href === `/offers/${id}`),
+  );
+  assert.deepEqual(
+    [...new Set(originalOfferLinks)].sort(),
+    originalOfferIds.map((id) => `/offers/${id}`).sort(),
+  );
+  for (const title of [
+    ...Array.from({ length: 9 }, (_, index) => `가축 ${index + 1}호`),
+    "부동산 A",
+  ]) {
+    assert.ok(visibleOffers.includes(title), title);
+  }
+
+  const demoSection = sectionWithText(offers, "미술품 청약 예정 분석 DEMO");
+  assert.ok(htmlText(demoSection).includes("실제 청약 상품 아님"));
+  assert.ok(htmlText(demoSection).includes("기존 커버리지와 검증 완료 건수에 포함하지 않습니다."));
+  const demos = [
+    ["demo-art-001", "DEMO 작가 A 〈빛의 층위 01〉 조각투자"],
+    ["demo-art-002", "DEMO 작가 B 〈고요한 궤적 02〉 조각투자"],
+    ["demo-art-003", "DEMO 작가 C 〈경계의 리듬 03〉 조각투자"],
+    ["demo-art-004", "DEMO 작가 D 〈불확실한 장면 04〉 조각투자"],
+  ] as const;
+  const expectedDemoProductLinks = demos.map(([id]) => `/products/${id}`).sort();
+  const demoProductLinks = hrefsOf(demoSection).filter((href) => href.startsWith("/products/demo-art-"));
+  assert.deepEqual([...new Set(demoProductLinks)].sort(), expectedDemoProductLinks);
+  assert.deepEqual(
+    [...new Set(hrefsOf(demoSection))].sort(),
+    [...expectedDemoProductLinks, "/art?scope=current&currentStatus=upcoming"].sort(),
+  );
+  assert.equal([...demoSection.matchAll(/<article\b/g)].length, 4);
+  for (const [, title] of demos) assert.ok(htmlText(demoSection).includes(title), title);
+  assert.equal(hrefsOf(offers).some((href) => href.startsWith("/offers/demo-art-")), false);
 
   const livestockResponse = await fetch(`${baseUrl}/offers/livestock-9`);
   const livestock = await livestockResponse.text();
@@ -436,14 +506,27 @@ test("original JeomJeom verification reports and methodology remain intact witho
   assert.equal(realEstateResponse.ok, true);
   for (const text of ["부동산 A", "국토부 실거래 원장 대조", "실거래 비교군 내 위치"]) assert.ok(realEstate.includes(text), text);
 
+  const artOffer = await fetch(`${baseUrl}/offers/demo-art-001`);
+  assert.equal(artOffer.status, 404);
+  const demoProduct = await fetch(`${baseUrl}/products/demo-art-001`);
+  const demoProductHtml = await demoProduct.text();
+  assert.equal(demoProduct.status, 200);
+  assert.ok(htmlText(demoProductHtml).includes("DEMO 작가 A 〈빛의 층위 01〉 조각투자"));
+  assert.equal(demoProductHtml.includes("페이지를 찾을 수 없습니다."), false);
+
   const methodologyResponse = await fetch(`${baseUrl}/methodology`);
   const methodology = await methodologyResponse.text();
   assert.equal(methodologyResponse.ok, true);
-  for (const text of ["무엇을 어떤 기록과 대조하는가", "판정 3값", "일치", "원장 불일치", "대조 불가", "정정 재검증"]) assert.ok(methodology.includes(text), text);
-  assert.equal(methodology.includes("art-mvp-v1.0"), false);
+  for (const text of ["무엇을 어떤 기록과 대조하는가", "정정 재검증"]) assert.ok(methodology.includes(text), text);
+  const verdictSection = sectionWithText(methodology, "판정 3값");
+  const verdictTerms = [...verdictSection.matchAll(/<dt\b[^>]*>([\s\S]*?)<\/dt>/g)].map((match) => htmlText(match[1] ?? ""));
+  assert.deepEqual(verdictTerms, ["일치", "원장 불일치", "대조 불가"]);
+  assert.doesNotMatch(methodology, /art-mvp/i);
 
-  const artOffer = await fetch(`${baseUrl}/offers/demo-art-001`);
-  assert.equal(artOffer.status, 404);
+  const artResponse = await fetch(`${baseUrl}/art`);
+  const art = await artResponse.text();
+  assert.equal(artResponse.status, 200);
+  assert.ok(htmlText(art).includes("347건"));
 });
 
 test("AI disclosure review routes expose only candidate data and grounded fallback", async () => {
