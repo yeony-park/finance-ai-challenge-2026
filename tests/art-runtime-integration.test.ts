@@ -417,6 +417,35 @@ test("home keeps the JeomJeom multi-category shell while art routes remain reach
 });
 
 
+test("original JeomJeom verification reports and methodology remain intact without art reports", async () => {
+  const offersResponse = await fetch(`${baseUrl}/offers`);
+  const offers = await offersResponse.text();
+  assert.equal(offersResponse.ok, true);
+  assert.ok(offers.includes('href="#content"'));
+  for (const title of ["가축 1호", "가축 9호", "부동산 A", "청약 종료 · 사후 검증"]) assert.ok(offers.includes(title), title);
+  assert.equal(offers.includes("미술품 상품·과거 이력"), false);
+  assert.equal(offers.includes("DEMO 작가"), false);
+
+  const livestockResponse = await fetch(`${baseUrl}/offers/livestock-9`);
+  const livestock = await livestockResponse.text();
+  assert.equal(livestockResponse.ok, true);
+  for (const text of ["가축 9호 · 한우 사육 투자계약증권", "정정 이력과 재대조 기록", "검증 대상 문서와 재검증 이력", "공시된 개체 37두의 국가 원장 대조"]) assert.ok(livestock.includes(text), text);
+
+  const realEstateResponse = await fetch(`${baseUrl}/offers/real-estate-a`);
+  const realEstate = await realEstateResponse.text();
+  assert.equal(realEstateResponse.ok, true);
+  for (const text of ["부동산 A", "국토부 실거래 원장 대조", "실거래 비교군 내 위치"]) assert.ok(realEstate.includes(text), text);
+
+  const methodologyResponse = await fetch(`${baseUrl}/methodology`);
+  const methodology = await methodologyResponse.text();
+  assert.equal(methodologyResponse.ok, true);
+  for (const text of ["무엇을 어떤 기록과 대조하는가", "판정 3값", "일치", "원장 불일치", "대조 불가", "정정 재검증"]) assert.ok(methodology.includes(text), text);
+  assert.equal(methodology.includes("art-mvp-v1.0"), false);
+
+  const artOffer = await fetch(`${baseUrl}/offers/demo-art-001`);
+  assert.equal(artOffer.status, 404);
+});
+
 test("AI disclosure review routes expose only candidate data and grounded fallback", async () => {
   const analyzeResponse = await fetch(`${baseUrl}/api/ai/analyze-product`, {
     method: "POST",

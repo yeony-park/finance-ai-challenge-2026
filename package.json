@@ -21,10 +21,12 @@
     "check:standalone-env": "node scripts/sanitize-standalone-env.mjs --check"
   },
   "dependencies": {
+    "fast-xml-parser": "^5.10.1",
     "motion": "^13.1.1",
     "next": "16.3.0",
     "react": "19.2.0",
-    "react-dom": "19.2.0"
+    "react-dom": "19.2.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",

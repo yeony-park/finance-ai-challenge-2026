@@ -1,0 +1,2394 @@
+{
+  "kind": "actual-amendment-diff",
+  "offerId": "livestock-5",
+  "generatedAt": "2026-08-14T18:29:57.467Z",
+  "disclosure": "청약이 종료된 공모를 사후에 대조한 기록입니다 — 실제 접수된 정정신고서 2건 가운데 최종 정정본을 원 신고서와 같은 절차로 각각 다시 대조했고, 개체 원장 조회는 대조 실행 시각 기준입니다.",
+  "sourceName": "OpenDART 공시검색 (금융감독원 · opendart.fss.or.kr)",
+  "filings": [
+    {
+      "rcpNo": "20250508000518",
+      "receivedOn": "2025-05-08",
+      "role": "base",
+      "reportLabel": "증권신고서(투자계약증권)",
+      "isRechecked": true,
+      "correctionReason": "",
+      "correctionItems": [],
+      "correctionNotes": []
+    },
+    {
+      "rcpNo": "20250526000153",
+      "receivedOn": "2025-05-26",
+      "role": "amendment",
+      "reportLabel": "[기재정정]증권신고서(투자계약증권)",
+      "isRechecked": false,
+      "correctionReason": "금번 정정은 금융감독원 정정신고서 제출 요구 및 기재내용 추가, 보완을 위한 정정",
+      "correctionItems": [
+        "I. 모집 또는 매출에 관한 일반사항 · 1. 공모개요 및 2. 공모방법",
+        "I. 모집 또는 매출에 관한 일반사항 · 3. 공모가격 결정방법마. 공모가격 - 상세",
+        "I. 모집 또는 매출에 관한 일반사항 · 4. 모집 또는 매출절차 등에 관한 사항 가. 모집 또는 매출 일정에 관한 사항",
+        "V. 자금의 사용목적 · 1. 모집 또는 매출에 의한 자금조달 내역 가. 자금조달 금액 나. 공동사업의 세부 구조"
+      ],
+      "correctionDetails": [
+        {
+          "label": "I. 모집 또는 매출에 관한 일반사항 · 1. 공모개요 및 2. 공모방법",
+          "isOrderRelated": false,
+          "before": "1. 공모개요 [가축투자계약증권 제5-1호] (단위 : 원) 항목 내용 명칭 가축투자계약증권 제5-1호 모집가액 440,040,000 단위당 모집가액 20,000 수량 22,002주 모집방법 일반공모 인수여부 직접공모 공동사업의 내용 송아지 취득, 사육, 출하 및 경매 예상사업기간 20~26개월 권리내용 공동사업 운영자는 투자계약증권 모집가액의 재원으로 기초자산인 한우의 취득·사육·매각을 진행하며, 공동사업의 결과에 따른 손익을 투자자에 지급 투자자는 투자계약증권의 비율에 따라 기초자산에 대한 공유 지분권을 취득하고, 그 취득한 투자계약증권의 보유 지분 비율에 따라 손익을 귀속받을 권리를 보유 계좌관리기관 NH농협은행,신한투자증권 청약기일 2025. 05. 30(금) ~ 2025. 06. 13(금) 납입기일 2025. 06. 16(월) 청약공고일 2025. 05. 30(금) 배정공고일 2025. 06. 16(월) [가축투자계약증권 제5-2호] (단위 : 원) 항목 내용 명칭 가축투자계약증권 제5-2호 모집가액 426,760,000 단위당 모집가액 20,000 수량 21,338주 모집방법 일반공모 인수여부 직접공모 공동사업의 내용 송아지 취득, 사육, 출하 및 … (이하 생략)",
+          "after": "1. 공모개요 [가축투자계약증권 제5-1호] (단위 : 원) 항목 내용 명칭 가축투자계약증권 제5-1호 모집가액 334,180,000 단위당 모집가액 20,000 수량 16,709주 모집방법 일반공모 인수여부 직접공모 공동사업의 내용 송아지 취득, 사육, 출하 및 경매 예상사업기간 20~26개월 권리내용 공동사업 운영자는 투자계약증권 모집가액의 재원으로 기초자산인 한우의 취득·사육·매각을 진행하며, 공동사업의 결과에 따른 손익을 투자자에 지급 투자자는 투자계약증권의 비율에 따라 기초자산에 대한 공유 지분권을 취득하고, 그 취득한 투자계약증권의 보유 지분 비율에 따라 손익을 귀속받을 권리를 보유 계좌관리기관 NH농협은행,신한투자증권 청약기일 2025. 05. 30(금) ~ 2025. 06. 13(금) 납입기일 2025. 06. 16(월) 청약공고일 2025. 05. 30(금) 배정공고일 2025. 06. 16(월) [가축투자계약증권 제5-2호] (단위 : 원) 항목 내용 명칭 가축투자계약증권 제5-2호 모집가액 332,840,000 단위당 모집가액 20,000 수량 16,642주 모집방법 일반공모 인수여부 직접공모 공동사업의 내용 송아지 취득, 사육, 출하 및 … (이하 생략)",
+          "isExcerpt": true
+        },
+        {
+          "label": "I. 모집 또는 매출에 관한 일반사항 · 3. 공모가격 결정방법마. 공모가격 - 상세",
+          "isOrderRelated": false,
+          "before": "마. 공모가격 - 상세 (1) 가축투자계약증권 제5-1호 [총 발행금액: 440,040,000원] (단위: 원) 구분 이력번호 사육시작일 기초자산 취득원가 기초자산 사료비 기초자산 사육관리비 발행제비용 모집금액 에덴 101호 22●●●●●●00 2025-01-21 3,850,000 4,134,913 714,726 19,057,149 9,080,783 에덴 102호 22●●●●●●28 2025-02-04 3,950,000 4,134,092 714,726 9,179,961 에덴 103호 22●●●●●●72 2025-01-14 3,660,000 4,084,817 706,330 8,832,290 에덴 104호 22●●●●●●20 2025-01-03 3,180,000 4,158,508 718,924 8,438,575 에덴 105호 22●●●●●●83 2025-01-13 3,460,000 4,104,332 709,479 8,654,953 에덴 106호 22●●●●●●24 2025-01-08 3,880,000 4,134,092 714,726 9,109,961 에덴 107호 21●●●●●●85 2025-01-14 3,520,000 4,046,991 700,033 8,648 … (이하 생략)",
+          "after": "마. 공모가격 - 상세 (1) 가축투자계약증권 제5-1호 [총 발행금액: 334,180,000원] (단위: 원) 구분 이력번호 사육시작일 기초자산 취득원가 기초자산 사료비 기초자산 사육관리비 발행제비용 모집금액 에덴 101호 22●●●●●●00 2025-01-21 3,380,000 4,240,677 733,618 14,303,544 9,076,049 에덴 102호 22●●●●●●52 2025-01-14 3,830,000 4,140,607 715,776 8,797,736 에덴 103호 21●●●●●●39 2025-01-08 4,010,000 4,212,211 728,370 8,854,576 에덴 104호 22●●●●●●83 2025-01-13 3,430,000 4,181,691 723,122 8,650,219 에덴 105호 21●●●●●●67 2024-12-27 3,460,000 4,263,861 737,816 8,730,910 에덴 106호 22●●●●●●89 2025-01-21 3,680,000 4,211,390 728,370 8,710,812 에덴 107호 21●●●●●●79 2025-02-03 3,670,000 4,182,308 723,122 9,060 … (이하 생략)",
+          "isExcerpt": true
+        },
+        {
+          "label": "I. 모집 또는 매출에 관한 일반사항 · 4. 모집 또는 매출절차 등에 관한 사항 가. 모집 또는 매출 일정에 관한 사항",
+          "isOrderRelated": false,
+          "before": "가. 모집 또는 매출 일정에 관한 사항 [가축투자계약증권 제5-1호 공모일정] 항목 내용 모집 또는 매출증권의 수 22,002주 주당 모집(매출)가액 20,000원 모집(매출)총액 440,040,000원 청약기일 개시일 2025년 05월 30일 종료일 2025년 06월 13일 청약증거금 주당 모집가액의 100% 청약단위 1주 납입기일 2025년 06월 16일 청약취급처 발행사 발행사 플랫폼 계좌관리기관 NH농협은행, 신한투자증권 (주1) 청약기일 및 청약시간 ① 일반청약자 청약일 및 청약시간: 2025년 05월 30일 10시 00분 ~ 2025년 06월 13일 16시 00분 ② 온라인 청약만 진행되므로 청약기일 내에는 주말 및 야간 청약도 가능합니다. ※ 상기 일정은 효력발생일의 변경, 회사 상황 등에 따라 변경될 수 있으니 유의하시기 바랍니다.③ 청약기간 이후 청약 취소/철회는 불가합니다. (주2) 주당 공모가액은 20,000원이며, 별도의 수요예측은 실시하지 않습니다. (주3) 일반청약자의 1인당 최고 청약한도 및 청약단위는 아래와 같으며, 기타 사항은 발행사가 투명하고 공정하게 정하여 공시한 방법에 의합니다. 단, 청약단위와 상이한 청약수량은 그 … (이하 생략)",
+          "after": "가. 모집 또는 매출 일정에 관한 사항 [가축투자계약증권 제5-1호 공모일정] 항목 내용 모집 또는 매출증권의 수 16,709주 주당 모집(매출)가액 20,000원 모집(매출)총액 334,180,000원 청약기일 개시일 2025년 06월 19일 종료일 2025년 07월 02일 청약증거금 주당 모집가액의 100% 청약단위 1주 납입기일 2025년 07월 03일 청약취급처 발행사 발행사 플랫폼 계좌관리기관 NH농협은행, 신한투자증권 (주1) 청약기일 및 청약시간 ① 일반청약자 청약일 및 청약시간: 2025년 06월 19일 10시 00분 ~ 2025년 07월 02일 16시 00분 ② 온라인 청약만 진행되므로 청약기일 내에는 주말 및 야간 청약도 가능합니다. ※ 상기 일정은 효력발생일의 변경, 회사 상황 등에 따라 변경될 수 있으니 유의하시기 바랍니다.③ 청약기간 이후 청약 취소/철회는 불가합니다. (주2) 주당 공모가액은 20,000원이며, 별도의 수요예측은 실시하지 않습니다. (주3) 일반청약자의 1인당 최고 청약한도 및 청약단위는 아래와 같으며, 기타 사항은 발행사가 투명하고 공정하게 정하여 공시한 방법에 의합니다. 단, 청약단위와 상이한 청약수량은 그 … (이하 생략)",
+          "isExcerpt": true
+        },
+        {
+          "label": "V. 자금의 사용목적 · 1. 모집 또는 매출에 의한 자금조달 내역 가. 자금조달 금액 나. 공동사업의 세부 구조",
+          "isOrderRelated": false,
+          "before": "가. 자금조달 금액 가축투자계약증권 제5-1호 (단위: 원) 구 분 금 액 기초자산 취득비 179,120,000 기초자산 사료비 206,202,110 기초자산 사육관리비 35,660,741 발행제비용 19,057,149 모집 또는 매출 총액 440,040,000 (주1) 상기 모집 또는 매출총액은 상단에 기재된 자금의 사용 목적에 따라 사용할 예정입니다. 가축투자계약증권 제5-2호 (단위: 원) 구 분 금 액 기초자산 취득비 172,390,000 기초자산 사료비 201,009,999 기초자산 사육관리비 34,749,334 발행제비용 18,610,667 모집 또는 매출 총액 426,760,000 (주1) 상기 모집 또는 매출총액은 상단에 기재된 자금의 사용 목적에 따라 사용할 예정입니다. 가축투자계약증권 제5-3호 (단위: 원) 구 분 금 액 기초자산 취득비 176,140,000 기초자산 사료비 208,479,734 기초자산 사육관리비 36,059,561 발행제비용 18,940,705 모집 또는 매출 총액 439,620,000 (주1) 상기 모집 또는 매출총액은 상단에 기재된 자금의 사용 목적에 따라 사용할 예정입니다.",
+          "after": "가. 자금조달 금액 가축투자계약증권 제5-1호 (단위: 원) 구 분 금 액 기초자산 취득비 135,970,000 기초자산 사료비 156,795,561 기초자산 사육관리비 27,110,895 발행제비용 14,303,544 모집 또는 매출 총액 334,180,000 (주1) 상기 모집 또는 매출총액은 상단에 기재된 자금의 사용 목적에 따라 사용할 예정입니다. 가축투자계약증권 제5-2호 (단위: 원) 구 분 금 액 기초자산 취득비 134,420,000 기초자산 사료비 157,020,768 기초자산 사육관리비 27,155,395 발행제비용 14,243,837 모집 또는 매출 총액 332,840,000 (주1) 상기 모집 또는 매출총액은 상단에 기재된 자금의 사용 목적에 따라 사용할 예정입니다. 가축투자계약증권 제5-3호 (단위: 원) 구 분 금 액 기초자산 취득비 130,520,000 기초자산 사료비 152,783,107 기초자산 사육관리비 26,417,580 발행제비용 13,879,313 모집 또는 매출 총액 323,600,000 (주1) 상기 모집 또는 매출총액은 상단에 기재된 자금의 사용 목적에 따라 사용할 예정입니다. 가축투자계약증권 제5-4호 (단위: 원) … (이하 생략)",
+          "isExcerpt": true
+        }
+      ],
+      "correctionNotes": []
+    },
+    {
+      "rcpNo": "20250617000216",
+      "receivedOn": "2025-06-17",
+      "role": "amendment",
+      "reportLabel": "[기재정정]증권신고서(투자계약증권)",
+      "isRechecked": true,
+      "correctionReason": "금번 정정은 금융감독원 정정신고서 제출 요구 및 기재내용 추가, 보완을 위한 정정",
+      "correctionItems": [
+        "II. 증권의 주요 권리내용 · 5. 증권의 투자손익 분배 절차 라. 관련 시장의 수익성 영향",
+        "II. 증권의 주요 권리내용 · 가. 배당소득세 라. 소득세 원천징수를 위한 고유식별정보 ( 주민등록번호 등 ) 수집 및 이용 안내 6. 과세에 관한 사항",
+        "III. 투자위험요소 · 1. 회 사위험가. 수익성 관련 위험",
+        "VI. 그 밖에 투자자보호를 위해 필요한 사항 · 10. 투자자 보호장치에 관한 사항 나. 기초자산의 보관위치 및 관리상태 제공"
+      ],
+      "correctionDetails": [
+        {
+          "label": "II. 증권의 주요 권리내용 · 5. 증권의 투자손익 분배 절차 라. 관련 시장의 수익성 영향",
+          "isOrderRelated": false,
+          "before": "…  일반음식점 18.4 단체급식소 4.0 온라인 4.9 기타 0.8 소계 100 소계 100 소계 100 (축산물유통정보조사, 축산물품질평가원) (나) 전방시장의 생산량 및 거래량 식품 체계에서 축산의 역할은 농업의 발전과 빈곤 및 기근의 감소를 견인하였습니다. 축산은 세계 농업 분야의 40% 구성하고 전세계인구의 약 13.5%의 생존과 식품을 제공해주고 각국의 식량안보를 책임지고 있습니다. 축산은 전 세계 식품 열량의 약 12.9% 차지하고, 27.9%의 단백질을 충하는데 기여하고 있습니다(자료: 한우자조금관리위원회).축산시장의 주요 공급원은 쇠고기(9.6%), 돼지고기(40.1%), 닭고기(23.0%), 오리고기(3.5%), 계란(23.8%)으로 구성되어 총 생산량은 2,736,043톤입니다. 2021년 축산시장 주요 공급원 생산량 구성 국내 생산량(톤) 비중 쇠고기 263,660 9.6% 돼지고기 1,097,383 40.1% 닭고기 629,000 23.0% 오리고기 96,000 3.5% 계란 615,000 23.8% 합계 2,736,043 100% (자료: 축산물유통정보조사, 축산물품질평가원) 또한, 사육두수의 증가 및 전방시자의 수요 증가로 한우 도 … (이하 생략)",
+          "after": "…  일반음식점 18.4 단체급식소 4.0 온라인 4.9 기타 0.8 소계 100 소계 100 소계 100 (축산물유통정보조사, 축산물품질평가원) `25년 5월 기준 한우 유통단계별 경로 및 비율 소매단계 대형마트 20.6 슈퍼마켓 19.6 농/축협 17.3 기타(온라인, 정육점, 백화점 등) 20.7 소계 100 (축산물유통정보조사, 축산물품질평가원) (나) 전방시장의 생산량 및 거래량 식품 체계에서 축산의 역할은 농업의 발전과 빈곤 및 기근의 감소를 견인하였습니다. 축산은 세계 농업 분야의 40% 구성하고 전세계인구의 약 13.5%의 생존과 식품을 제공해주고 각국의 식량안보를 책임지고 있습니다. 축산은 전 세계 식품 열량의 약 12.9% 차지하고, 27.9%의 단백질을 충하는데 기여하고 있습니다(자료: 한우자조금관리위원회). 국내 축산시장의 주요 공급원은 쇠고기(10.5%), 돼지고기(38.8%), 닭고기(21.3%), 오리고기(3.8%), 계란(25.6%)으로 구성되어 총 생산량은 2,880천톤입니다. 2023년 축산시장 주요 공급원 생산량 구성 국내 생산량(톤) 비중 쇠고기 263,660 10.5% 돼지고기 1,097,383 38.8% 닭고기 629, … (이하 생략)",
+          "isExcerpt": true
+        },
+        {
+          "label": "II. 증권의 주요 권리내용 · 가. 배당소득세 라. 소득세 원천징수를 위한 고유식별정보 ( 주민등록번호 등 ) 수집 및 이용 안내 6. 과세에 관한 사항",
+          "isOrderRelated": false,
+          "before": "… 소득세법 (법률 제20615호, 2024. 12. 31., 일부개정)에 따라 2025년 7월 1일부터 투자계약증권으로부터의 이익은 배당소득으로 해석됩니다. 따라서 본 투자계약증권으로 인한 수익은 2025년 7월 1일 지급분부터는 배당소득으로 분류되어 배당소득세 14%와 지방세 1.4%를 포함한 15.4%를 원천징수하게 됩니다. 또한 2025년 7월 1일 시행예정인 개정 소득세법 시행령(대통령령 제35349호, 2025. 2. 28., 일부개정) 에 ○○면, 공동사업으로 얻는 이익 또는 투자계약증권의 실물양도, 계좌간 이체, 계좌의 명의 변경 그 외 유사한 권리이전의 방법으로 거래하여 발생한 이익은 과세대상에 포함됩니다(개정 소득세법 시행령 제26조3 참조). 이러한 이익은 개정 소득세법 시행령에 따라 그 이익을 지급받은 날이 배당소득의 수입시기가 됩니다(개정 소득세법 시행령 제46조). 자세한 내용은 아래 개정 소득세법 시행령 및 시행규칙의 내용을 참고하시기 바랍니다. 소득세법 시행령 개정안 주요내용 소득세법 시행령 개정안 회람(조각투자)_페이지_1.jpg 소득세법 시행령 개정안 회람(조각투자)_페이지_1 소득세법 시행령 개정안 회람(조각투자)_페이지_2 … (이하 생략)",
+          "after": "… 소득세법 (법률 제20615호, 2024. 12. 31., 일부개정)에 따라 2025년 7월 1일부터 투자계약증권으로부터의 이익은 배당소득으로 과세됩니다. 따라서 본 투자계약증권으로 인한 수익은 2025년 7월 1일 지급분부터는 배당소득으로 분류되어 배당소득세 14%와 지방세 1.4%를 포함한 15.4%를 원천징수하게 됩니다. 또한 2025년 7월 1일 시행예정인 개정 소득세법 시행령(대통령령 제35349호, 2025. 2. 28., 일부개정) 에 ○○면, 공동사업으로 얻는 이익 또는 투자계약증권의 실물양도, 계좌간 이체, 계좌의 명의 변경 그 외 유사한 권리이전의 방법으로 거래하여 발생한 이익은 과세대상에 포함됩니다(개정 소득세법 시행령 제26조3 참조). 이러한 이익은 개정 소득세법 시행령에 따라 그 이익을 지급받은 날이 배당소득의 수입시기가 됩니다(개정 소득세법 시행령 제46조). 자세한 내용은 아래 개정 소득세법 시행령 및 시행규칙의 내용을 참고하시기 바랍니다. 소득세법 시행령 개정안 주요내용 소득세법 시행령 개정안 회람(조각투자)_페이지_1.jpg 소득세법 시행령 개정안 회람(조각투자)_페이지_1 소득세법 시행령 개정안 회람(조각투자)_페이지_2 … (이하 생략)",
+          "isExcerpt": true
+        },
+        {
+          "label": "III. 투자위험요소 · 1. 회 사위험가. 수익성 관련 위험",
+          "isOrderRelated": false,
+          "before": "… 사의 영업손실은 4.8억원을 기록하였고, 이는 전년동기 대비 약 38% 감소하였고, 연환산 기준으로 `24년대비 약 27% 감소한 수치입니다. 추후 당사는 지속적으로 직영농가 및 경매기반으로 안정적인 가격에 원료육을 매입 및 불필요한 단계를 줄여 고품질의 상품을 소비자에게 합리적인 가격에 전달하여 매출과 수익을 증대할 계획입니다. 또한, 신규사업의 안정화가 `24년 4분기부터 이행되면서 관련 초기운영비용 등 일회성비용이 감소될 것으로 예상하고 있습니다. 또한, 인력효율화에 따른 인건비 절감효과를 기반으로 추후에는 판관비요율이 다소 개선될 것으로 전망있으며, 신규사업 부문의 운영안정화를 통해 관련 비용을 감축하여 수익성을 개선할 예정입니다. 그럼에도 불구하고 경기침제 및 소비둔화 등 경제환경 등의 급격한 변화로 수익성이 하락할 가능성을 투자자께서는 유의하시기 바랍니다. (단위: 백만원) 구분 2025년 1분기 2024년 2023년 2022년 2021년 2020년 매출액 3,733 20,485 10,788 18,075 12,246 1,430 증가율 - 89.89% (40.3%) 47.6% 7.56% - 영업이익 (482) (2,659) (1,947) 856 … (이하 생략)",
+          "after": "… 사의 영업손실은 4.8억원을 기록하였고, 이는 전년동기 대비 약 38% 감소하였고, 연환산 기준으로 `24년대비 약 27% 감소한 수치입니다. (단위: 백만원) 구분 2025년 1분기 2024년 2023년 2022년 2021년 2020년 매출액 3,733 20,485 10,788 18,075 12,246 1,430 증가율 - 89.89% (40.3%) 47.6% 7.56% - 영업이익 (482) (2,659) (1,947) 856 66 (23) 순이익 (550) (2,885) (2,207) 690 192 27 추후 당사는 지속적으로 직영농가 및 경매기반으로 안정적인 가격에 원료육을 매입 및 불필요한 단계를 줄여 고품질의 상품을 소비자에게 합리적인 가격에 전달하여 매출과 수익을 증대할 계획입니다. 또한, `24년 4분기부터 신규사업의 안정화가 이행되면서 관련 초기운영비용 등 일회성비용이 감소될 것으로 예상하고 있습니다. 또한, 인력효율화에 따른 인건비 절감효과를 기반으로 추후에는 판관비요율이 개선될 예정입니다. 또한, 당사는 신규사업 부문의 운영안정화를 통해 관련 일회성 비용 및 변동비용을 감축하여 수익성을 개선 중에 있습니다. 당사의 변동비성 비용은 점진 … (이하 생략)",
+          "isExcerpt": true
+        },
+        {
+          "label": "VI. 그 밖에 투자자보호를 위해 필요한 사항 · 10. 투자자 보호장치에 관한 사항 나. 기초자산의 보관위치 및 관리상태 제공",
+          "isOrderRelated": false,
+          "before": "",
+          "after": "(4) 기타 보관위치 및 관리상태에 관한 사항본 가축투자계약증권 제5호의 기초자산은 가축투자계약증권 제4호의 기초자산과 동일한 축사 또는 동일 우방 내에서 사육 및 관리되고 있습니다. 기초자산을 각 투자계약증권별로 우방 단위로 구분하여 관리하는 방식은 개체별 성장 상태나 사료 섭취 상태 등을 면밀히 통제·관리하는 데 실질적인 한계가 있어, 증권별로 물리적 구획을 엄격히 구분하는 것은 현실적으로 이행이 어렵습니다. 다만, 공동사업운영자는 모든 기초자산에 이력번호 식별표를 부착하여 관리하고 있으므로, 개별 기초자산의 구분 및 식별은 가능하며, 추후 정산 시 기초자산별 투자계약증권 간 손익 배분의 정확성을 확보할 수 있습니다. 이로 인해 제5호의 기초자산은 제4호 투자계약증권의 사육 환경 및 관리 방식, 그리고 이에 수반되는 리스크와 일부 공통될 수 있습니다.",
+          "isExcerpt": true
+        }
+      ],
+      "correctionNotes": []
+    }
+  ],
+  "facts": [
+    "값이 달라진 항목 179건 — 개체 102호 이력번호 20●●●●●28 → 20●●●●●52, 개체 102호 취득시기 2025-02-04 → 2025-01-14, 개체 103호 이력번호 20●●●●●72 → 19●●●●●39, 개체 103호 취득시기 2025-01-14 → 2025-01-08, 개체 104호 이력번호 20●●●●●20 → 20●●●●●83, 개체 104호 취득시기 2025-01-03 → 2025-01-13, 개체 105호 이력번호 20●●●●●83 → 19●●●●●67, 개체 105호 취득시기 2025-01-13 → 2024-12-27, 개체 106호 이력번호 20●●●●●24 → 20●●●●●89, 개체 106호 취득시기 2025-01-08 → 2025-01-21 외 169건",
+    "판정 유지 188건 · 변동 2건 — 개체 125호 취득시기 일치 → 대조 불가, 개체 125호 보관장소 일치 → 원장 불일치, 개체 139호 이력번호 항목 삭제, 개체 139호 품종 항목 삭제, 개체 139호 성별 항목 삭제, 개체 139호 취득시기 항목 삭제, 개체 139호 보관장소 항목 삭제, 개체 140호 이력번호 항목 삭제, 개체 140호 품종 항목 삭제, 개체 140호 성별 항목 삭제 외 64건",
+    "두 버전 모두 판정이 없는 항목 38건",
+    "청약이 종료된 공모라 두 버전 모두 지금 시점의 원장과 대조했습니다 — 청약 당시의 원장 상태와는 다를 수 있습니다.",
+    "정정신고서 2건 가운데 최종본만 다시 대조했습니다 — 나머지 1건은 접수 사실과 정정 항목만 읽었습니다.",
+    "같은 종류의 신규 신고서(20251010000109)가 접수되어 이 공모의 정정 계보는 그 앞에서 끊었습니다."
+  ],
+  "diff": {
+    "from": {
+      "offerId": "livestock-5",
+      "rcpNo": "20250508000518",
+      "submittedOn": "2025-05-08"
+    },
+    "to": {
+      "offerId": "livestock-5",
+      "rcpNo": "20250617000216",
+      "submittedOn": "2025-06-17"
+    },
+    "changedClaims": [
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 102호",
+        "subject": "개체 102호",
+        "field": "이력번호",
+        "before": "20●●●●●28",
+        "after": "20●●●●●52",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_date:개체 102호",
+        "subject": "개체 102호",
+        "field": "취득시기",
+        "before": "2025-02-04",
+        "after": "2025-01-14",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 103호",
+        "subject": "개체 103호",
+        "field": "이력번호",
+        "before": "20●●●●●72",
+        "after": "19●●●●●39",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_date:개체 103호",
+        "subject": "개체 103호",
+        "field": "취득시기",
+        "before": "2025-01-14",
+        "after": "2025-01-08",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 104호",
+        "subject": "개체 104호",
+        "field": "이력번호",
+        "before": "20●●●●●20",
+        "after": "20●●●●●83",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_date:개체 104호",
+        "subject": "개체 104호",
+        "field": "취득시기",
+        "before": "2025-01-03",
+        "after": "2025-01-13",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 105호",
+        "subject": "개체 105호",
+        "field": "이력번호",
+        "before": "20●●●●●83",
+        "after": "19●●●●●67",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_date:개체 105호",
+        "subject": "개체 105호",
+        "field": "취득시기",
+        "before": "2025-01-13",
+        "after": "2024-12-27",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 106호",
+        "subject": "개체 106호",
+        "field": "이력번호",
+        "before": "20●●●●●24",
+        "after": "20●●●●●89",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_date:개체 106호",
+        "subject": "개체 106호",
+        "field": "취득시기",
+        "before": "2025-01-08",
+        "after": "2025-01-21",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 107호",
+        "subject": "개체 107호",
+        "field": "이력번호",
+        "before": "19●●●●●85",
+        "after": "19●●●●●79",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_date:개체 107호",
+        "subject": "개체 107호",
+        "field": "취득시기",
+        "before": "2025-01-14",
+        "after": "2025-02-03",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 108호",
+        "subject": "개체 108호",
+        "field": "이력번호",
+        "before": "19●●●●●53",
+        "after": "19●●●●●35",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 109호",
+        "subject": "개체 109호",
+        "field": "이력번호",
+        "before": "20●●●●●89",
+        "after": "20●●●●●61",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_date:개체 109호",
+        "subject": "개체 109호",
+        "field": "취득시기",
+        "before": "2025-01-21",
+        "after": "2025-02-04",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 110호",
+        "subject": "개체 110호",
+        "field": "이력번호",
+        "before": "19●●●●●87",
+        "after": "20●●●●●93",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_date:개체 110호",
+        "subject": "개체 110호",
+        "field": "취득시기",
+        "before": "2024-12-24",
+        "after": "2025-02-10",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 111호",
+        "subject": "개체 111호",
+        "field": "이력번호",
+        "before": "20●●●●●10",
+        "after": "20●●●●●62",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_date:개체 111호",
+        "subject": "개체 111호",
+        "field": "취득시기",
+        "before": "2025-02-04",
+        "after": "2025-01-08",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 112호",
+        "subject": "개체 112호",
+        "field": "이력번호",
+        "before": "20●●●●●00",
+        "after": "19●●●●●93",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_date:개체 112호",
+        "subject": "개체 112호",
+        "field": "취득시기",
+        "before": "2025-01-15",
+        "after": "2025-01-08",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 113호",
+        "subject": "개체 113호",
+        "field": "이력번호",
+        "before": "19●●●●●79",
+        "after": "19●●●●●89",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_date:개체 113호",
+        "subject": "개체 113호",
+        "field": "취득시기",
+        "before": "2025-02-03",
+        "after": "2024-12-27",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 114호",
+        "subject": "개체 114호",
+        "field": "이력번호",
+        "before": "19●●●●●79",
+        "after": "20●●●●●58",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_date:개체 114호",
+        "subject": "개체 114호",
+        "field": "취득시기",
+        "before": "2024-12-27",
+        "after": "2025-02-20",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 115호",
+        "subject": "개체 115호",
+        "field": "이력번호",
+        "before": "19●●●●●83",
+        "after": "20●●●●●56",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_date:개체 115호",
+        "subject": "개체 115호",
+        "field": "취득시기",
+        "before": "2024-12-27",
+        "after": "2025-01-13",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 116호",
+        "subject": "개체 116호",
+        "field": "이력번호",
+        "before": "19●●●●●11",
+        "after": "20●●●●●88",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_date:개체 116호",
+        "subject": "개체 116호",
+        "field": "취득시기",
+        "before": "2024-12-27",
+        "after": "2025-01-21",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 117호",
+        "subject": "개체 117호",
+        "field": "이력번호",
+        "before": "20●●●●●93",
+        "after": "20●●●●●56",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 118호",
+        "subject": "개체 118호",
+        "field": "이력번호",
+        "before": "20●●●●●78",
+        "after": "20●●●●●67",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_date:개체 118호",
+        "subject": "개체 118호",
+        "field": "취득시기",
+        "before": "2025-01-21",
+        "after": "2025-01-13",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 119호",
+        "subject": "개체 119호",
+        "field": "이력번호",
+        "before": "19●●●●●27",
+        "after": "19●●●●●46",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_date:개체 119호",
+        "subject": "개체 119호",
+        "field": "취득시기",
+        "before": "2025-01-03",
+        "after": "2025-01-13",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 120호",
+        "subject": "개체 120호",
+        "field": "이력번호",
+        "before": "20●●●●●74",
+        "after": "20●●●●●39",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_date:개체 120호",
+        "subject": "개체 120호",
+        "field": "취득시기",
+        "before": "2025-01-13",
+        "after": "2025-02-19",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 121호",
+        "subject": "개체 121호",
+        "field": "이력번호",
+        "before": "20●●●●●62",
+        "after": "20●●●●●60",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_date:개체 121호",
+        "subject": "개체 121호",
+        "field": "취득시기",
+        "before": "2025-01-08",
+        "after": "2025-02-19",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 122호",
+        "subject": "개체 122호",
+        "field": "이력번호",
+        "before": "19●●●●●69",
+        "after": "20●●●●●68",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_date:개체 122호",
+        "subject": "개체 122호",
+        "field": "취득시기",
+        "before": "2025-02-03",
+        "after": "2025-02-14",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 123호",
+        "subject": "개체 123호",
+        "field": "이력번호",
+        "before": "20●●●●●99",
+        "after": "19●●●●●39",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_date:개체 123호",
+        "subject": "개체 123호",
+        "field": "취득시기",
+        "before": "2025-01-03",
+        "after": "2024-12-24",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 124호",
+        "subject": "개체 124호",
+        "field": "이력번호",
+        "before": "19●●●●●15",
+        "after": "20●●●●●37",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_date:개체 124호",
+        "subject": "개체 124호",
+        "field": "취득시기",
+        "before": "2025-02-03",
+        "after": "2024-12-24",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 125호",
+        "subject": "개체 125호",
+        "field": "이력번호",
+        "before": "19●●●●●93",
+        "after": "19●●●●●62",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_date:개체 125호",
+        "subject": "개체 125호",
+        "field": "취득시기",
+        "before": "2025-01-08",
+        "after": "2025-01-24",
+        "verdictBefore": "match",
+        "verdictAfter": "unverifiable",
+        "verdictShift": "changed"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 126호",
+        "subject": "개체 126호",
+        "field": "이력번호",
+        "before": "20●●●●●55",
+        "after": "19●●●●●91",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_date:개체 126호",
+        "subject": "개체 126호",
+        "field": "취득시기",
+        "before": "2025-02-04",
+        "after": "2025-01-21",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 127호",
+        "subject": "개체 127호",
+        "field": "이력번호",
+        "before": "19●●●●●70",
+        "after": "19●●●●●81",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_date:개체 127호",
+        "subject": "개체 127호",
+        "field": "취득시기",
+        "before": "2025-01-03",
+        "after": "2025-01-21",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 128호",
+        "subject": "개체 128호",
+        "field": "이력번호",
+        "before": "19●●●●●20",
+        "after": "20●●●●●78",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_date:개체 128호",
+        "subject": "개체 128호",
+        "field": "취득시기",
+        "before": "2024-12-27",
+        "after": "2025-02-04",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 129호",
+        "subject": "개체 129호",
+        "field": "이력번호",
+        "before": "19●●●●●89",
+        "after": "19●●●●●23",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_date:개체 129호",
+        "subject": "개체 129호",
+        "field": "취득시기",
+        "before": "2024-12-27",
+        "after": "2025-01-14",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 130호",
+        "subject": "개체 130호",
+        "field": "이력번호",
+        "before": "20●●●●●41",
+        "after": "20●●●●●57",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_date:개체 130호",
+        "subject": "개체 130호",
+        "field": "취득시기",
+        "before": "2025-01-13",
+        "after": "2025-01-08",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 131호",
+        "subject": "개체 131호",
+        "field": "이력번호",
+        "before": "19●●●●●73",
+        "after": "19●●●●●92",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 132호",
+        "subject": "개체 132호",
+        "field": "이력번호",
+        "before": "20●●●●●14",
+        "after": "19●●●●●76",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_date:개체 132호",
+        "subject": "개체 132호",
+        "field": "취득시기",
+        "before": "2025-02-04",
+        "after": "2024-12-27",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 133호",
+        "subject": "개체 133호",
+        "field": "이력번호",
+        "before": "20●●●●●58",
+        "after": "20●●●●●56",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_date:개체 133호",
+        "subject": "개체 133호",
+        "field": "취득시기",
+        "before": "2025-02-20",
+        "after": "2025-01-08",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 134호",
+        "subject": "개체 134호",
+        "field": "이력번호",
+        "before": "20●●●●●24",
+        "after": "20●●●●●46",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_date:개체 134호",
+        "subject": "개체 134호",
+        "field": "취득시기",
+        "before": "2025-02-20",
+        "after": "2025-01-21",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 135호",
+        "subject": "개체 135호",
+        "field": "이력번호",
+        "before": "20●●●●●12",
+        "after": "20●●●●●01",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_date:개체 135호",
+        "subject": "개체 135호",
+        "field": "취득시기",
+        "before": "2025-02-20",
+        "after": "2025-02-04",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 136호",
+        "subject": "개체 136호",
+        "field": "이력번호",
+        "before": "20●●●●●65",
+        "after": "20●●●●●62",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_date:개체 136호",
+        "subject": "개체 136호",
+        "field": "취득시기",
+        "before": "2025-01-21",
+        "after": "2025-02-04",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 137호",
+        "subject": "개체 137호",
+        "field": "이력번호",
+        "before": "20●●●●●56",
+        "after": "20●●●●●28",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_date:개체 137호",
+        "subject": "개체 137호",
+        "field": "취득시기",
+        "before": "2025-01-13",
+        "after": "2025-02-04",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "livestock_trace_no:개체 138호",
+        "subject": "개체 138호",
+        "field": "이력번호",
+        "before": "20●●●●●92",
+        "after": "20●●●●●24",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_date:개체 138호",
+        "subject": "개체 138호",
+        "field": "취득시기",
+        "before": "2025-01-21",
+        "after": "2025-01-08",
+        "verdictBefore": "match",
+        "verdictAfter": "match",
+        "verdictShift": "maintained"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "livestock_trace_no:개체 139호",
+        "subject": "개체 139호",
+        "field": "이력번호",
+        "before": "20●●●●●43",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "livestock_breed:개체 139호",
+        "subject": "개체 139호",
+        "field": "품종",
+        "before": "한우",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "livestock_sex:개체 139호",
+        "subject": "개체 139호",
+        "field": "성별",
+        "before": "수",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "acquisition_date:개체 139호",
+        "subject": "개체 139호",
+        "field": "취득시기",
+        "before": "2025-02-20",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "custody_location:개체 139호",
+        "subject": "개체 139호",
+        "field": "보관장소",
+        "before": "전북 ○○군",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "livestock_trace_no:개체 140호",
+        "subject": "개체 140호",
+        "field": "이력번호",
+        "before": "19●●●●●65",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "livestock_breed:개체 140호",
+        "subject": "개체 140호",
+        "field": "품종",
+        "before": "한우",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "livestock_sex:개체 140호",
+        "subject": "개체 140호",
+        "field": "성별",
+        "before": "수",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "acquisition_date:개체 140호",
+        "subject": "개체 140호",
+        "field": "취득시기",
+        "before": "2024-12-27",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "custody_location:개체 140호",
+        "subject": "개체 140호",
+        "field": "보관장소",
+        "before": "전북 ○○군",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "livestock_trace_no:개체 141호",
+        "subject": "개체 141호",
+        "field": "이력번호",
+        "before": "20●●●●●88",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "livestock_breed:개체 141호",
+        "subject": "개체 141호",
+        "field": "품종",
+        "before": "한우",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "livestock_sex:개체 141호",
+        "subject": "개체 141호",
+        "field": "성별",
+        "before": "수",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "acquisition_date:개체 141호",
+        "subject": "개체 141호",
+        "field": "취득시기",
+        "before": "2025-01-21",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "custody_location:개체 141호",
+        "subject": "개체 141호",
+        "field": "보관장소",
+        "before": "전북 ○○군",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "livestock_trace_no:개체 142호",
+        "subject": "개체 142호",
+        "field": "이력번호",
+        "before": "19●●●●●20",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "livestock_breed:개체 142호",
+        "subject": "개체 142호",
+        "field": "품종",
+        "before": "한우",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "livestock_sex:개체 142호",
+        "subject": "개체 142호",
+        "field": "성별",
+        "before": "수",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "acquisition_date:개체 142호",
+        "subject": "개체 142호",
+        "field": "취득시기",
+        "before": "2025-02-03",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "custody_location:개체 142호",
+        "subject": "개체 142호",
+        "field": "보관장소",
+        "before": "전북 ○○군",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "livestock_trace_no:개체 143호",
+        "subject": "개체 143호",
+        "field": "이력번호",
+        "before": "20●●●●●72",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "livestock_breed:개체 143호",
+        "subject": "개체 143호",
+        "field": "품종",
+        "before": "한우",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "livestock_sex:개체 143호",
+        "subject": "개체 143호",
+        "field": "성별",
+        "before": "수",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "acquisition_date:개체 143호",
+        "subject": "개체 143호",
+        "field": "취득시기",
+        "before": "2025-02-20",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "custody_location:개체 143호",
+        "subject": "개체 143호",
+        "field": "보관장소",
+        "before": "전북 ○○군",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "livestock_trace_no:개체 144호",
+        "subject": "개체 144호",
+        "field": "이력번호",
+        "before": "20●●●●●88",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "livestock_breed:개체 144호",
+        "subject": "개체 144호",
+        "field": "품종",
+        "before": "한우",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "livestock_sex:개체 144호",
+        "subject": "개체 144호",
+        "field": "성별",
+        "before": "수",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "acquisition_date:개체 144호",
+        "subject": "개체 144호",
+        "field": "취득시기",
+        "before": "2025-01-21",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "custody_location:개체 144호",
+        "subject": "개체 144호",
+        "field": "보관장소",
+        "before": "전북 ○○군",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "livestock_trace_no:개체 145호",
+        "subject": "개체 145호",
+        "field": "이력번호",
+        "before": "20●●●●●56",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "livestock_breed:개체 145호",
+        "subject": "개체 145호",
+        "field": "품종",
+        "before": "한우",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "livestock_sex:개체 145호",
+        "subject": "개체 145호",
+        "field": "성별",
+        "before": "수",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "acquisition_date:개체 145호",
+        "subject": "개체 145호",
+        "field": "취득시기",
+        "before": "2025-02-10",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "custody_location:개체 145호",
+        "subject": "개체 145호",
+        "field": "보관장소",
+        "before": "전북 ○○군",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "livestock_trace_no:개체 146호",
+        "subject": "개체 146호",
+        "field": "이력번호",
+        "before": "20●●●●●01",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "livestock_breed:개체 146호",
+        "subject": "개체 146호",
+        "field": "품종",
+        "before": "한우",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "livestock_sex:개체 146호",
+        "subject": "개체 146호",
+        "field": "성별",
+        "before": "수",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "acquisition_date:개체 146호",
+        "subject": "개체 146호",
+        "field": "취득시기",
+        "before": "2025-01-21",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "custody_location:개체 146호",
+        "subject": "개체 146호",
+        "field": "보관장소",
+        "before": "전북 ○○군",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "livestock_trace_no:개체 147호",
+        "subject": "개체 147호",
+        "field": "이력번호",
+        "before": "20●●●●●18",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "livestock_breed:개체 147호",
+        "subject": "개체 147호",
+        "field": "품종",
+        "before": "한우",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "livestock_sex:개체 147호",
+        "subject": "개체 147호",
+        "field": "성별",
+        "before": "수",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "acquisition_date:개체 147호",
+        "subject": "개체 147호",
+        "field": "취득시기",
+        "before": "2025-01-21",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "custody_location:개체 147호",
+        "subject": "개체 147호",
+        "field": "보관장소",
+        "before": "전북 ○○군",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "livestock_trace_no:개체 148호",
+        "subject": "개체 148호",
+        "field": "이력번호",
+        "before": "19●●●●●61",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "livestock_breed:개체 148호",
+        "subject": "개체 148호",
+        "field": "품종",
+        "before": "한우",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "livestock_sex:개체 148호",
+        "subject": "개체 148호",
+        "field": "성별",
+        "before": "수",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "acquisition_date:개체 148호",
+        "subject": "개체 148호",
+        "field": "취득시기",
+        "before": "2025-02-04",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "custody_location:개체 148호",
+        "subject": "개체 148호",
+        "field": "보관장소",
+        "before": "전북 ○○군",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "livestock_trace_no:개체 149호",
+        "subject": "개체 149호",
+        "field": "이력번호",
+        "before": "20●●●●●67",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "livestock_breed:개체 149호",
+        "subject": "개체 149호",
+        "field": "품종",
+        "before": "한우",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "livestock_sex:개체 149호",
+        "subject": "개체 149호",
+        "field": "성별",
+        "before": "수",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "acquisition_date:개체 149호",
+        "subject": "개체 149호",
+        "field": "취득시기",
+        "before": "2025-01-13",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "custody_location:개체 149호",
+        "subject": "개체 149호",
+        "field": "보관장소",
+        "before": "전북 ○○군",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "livestock_trace_no:개체 150호",
+        "subject": "개체 150호",
+        "field": "이력번호",
+        "before": "20●●●●●04",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "livestock_breed:개체 150호",
+        "subject": "개체 150호",
+        "field": "품종",
+        "before": "한우",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "livestock_sex:개체 150호",
+        "subject": "개체 150호",
+        "field": "성별",
+        "before": "수",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "acquisition_date:개체 150호",
+        "subject": "개체 150호",
+        "field": "취득시기",
+        "before": "2025-01-13",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "custody_location:개체 150호",
+        "subject": "개체 150호",
+        "field": "보관장소",
+        "before": "전북 ○○군",
+        "verdictBefore": "match",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_price:개체 101호",
+        "subject": "개체 101호",
+        "field": "취득원가",
+        "before": "3850000",
+        "after": "3380000",
+        "verdictShift": "not_judged"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_price:개체 102호",
+        "subject": "개체 102호",
+        "field": "취득원가",
+        "before": "3950000",
+        "after": "3830000",
+        "verdictShift": "not_judged"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_price:개체 103호",
+        "subject": "개체 103호",
+        "field": "취득원가",
+        "before": "3660000",
+        "after": "4010000",
+        "verdictShift": "not_judged"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_price:개체 104호",
+        "subject": "개체 104호",
+        "field": "취득원가",
+        "before": "3180000",
+        "after": "3430000",
+        "verdictShift": "not_judged"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_price:개체 106호",
+        "subject": "개체 106호",
+        "field": "취득원가",
+        "before": "3880000",
+        "after": "3680000",
+        "verdictShift": "not_judged"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_price:개체 107호",
+        "subject": "개체 107호",
+        "field": "취득원가",
+        "before": "3520000",
+        "after": "3670000",
+        "verdictShift": "not_judged"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_price:개체 108호",
+        "subject": "개체 108호",
+        "field": "취득원가",
+        "before": "3600000",
+        "after": "3370000",
+        "verdictShift": "not_judged"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_price:개체 109호",
+        "subject": "개체 109호",
+        "field": "취득원가",
+        "before": "3430000",
+        "after": "3480000",
+        "verdictShift": "not_judged"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_price:개체 110호",
+        "subject": "개체 110호",
+        "field": "취득원가",
+        "before": "3670000",
+        "after": "3310000",
+        "verdictShift": "not_judged"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_price:개체 111호",
+        "subject": "개체 111호",
+        "field": "취득원가",
+        "before": "3450000",
+        "after": "3690000",
+        "verdictShift": "not_judged"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_price:개체 112호",
+        "subject": "개체 112호",
+        "field": "취득원가",
+        "before": "3370000",
+        "after": "3820000",
+        "verdictShift": "not_judged"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_price:개체 113호",
+        "subject": "개체 113호",
+        "field": "취득원가",
+        "before": "3980000",
+        "after": "3740000",
+        "verdictShift": "not_judged"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_price:개체 114호",
+        "subject": "개체 114호",
+        "field": "취득원가",
+        "before": "3380000",
+        "after": "2990000",
+        "verdictShift": "not_judged"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_price:개체 115호",
+        "subject": "개체 115호",
+        "field": "취득원가",
+        "before": "3580000",
+        "after": "3670000",
+        "verdictShift": "not_judged"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_price:개체 116호",
+        "subject": "개체 116호",
+        "field": "취득원가",
+        "before": "3780000",
+        "after": "3110000",
+        "verdictShift": "not_judged"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_price:개체 117호",
+        "subject": "개체 117호",
+        "field": "취득원가",
+        "before": "3630000",
+        "after": "3470000",
+        "verdictShift": "not_judged"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_price:개체 118호",
+        "subject": "개체 118호",
+        "field": "취득원가",
+        "before": "3370000",
+        "after": "3720000",
+        "verdictShift": "not_judged"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_price:개체 119호",
+        "subject": "개체 119호",
+        "field": "취득원가",
+        "before": "3680000",
+        "after": "3630000",
+        "verdictShift": "not_judged"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_price:개체 120호",
+        "subject": "개체 120호",
+        "field": "취득원가",
+        "before": "3780000",
+        "after": "3680000",
+        "verdictShift": "not_judged"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_price:개체 121호",
+        "subject": "개체 121호",
+        "field": "취득원가",
+        "before": "3680000",
+        "after": "3490000",
+        "verdictShift": "not_judged"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_price:개체 122호",
+        "subject": "개체 122호",
+        "field": "취득원가",
+        "before": "3480000",
+        "after": "3840000",
+        "verdictShift": "not_judged"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_price:개체 123호",
+        "subject": "개체 123호",
+        "field": "취득원가",
+        "before": "3110000",
+        "after": "3680000",
+        "verdictShift": "not_judged"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_price:개체 124호",
+        "subject": "개체 124호",
+        "field": "취득원가",
+        "before": "3700000",
+        "after": "3240000",
+        "verdictShift": "not_judged"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_price:개체 125호",
+        "subject": "개체 125호",
+        "field": "취득원가",
+        "before": "3180000",
+        "after": "3580000",
+        "verdictShift": "not_judged"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_price:개체 126호",
+        "subject": "개체 126호",
+        "field": "취득원가",
+        "before": "3310000",
+        "after": "2880000",
+        "verdictShift": "not_judged"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_price:개체 127호",
+        "subject": "개체 127호",
+        "field": "취득원가",
+        "before": "3680000",
+        "after": "3820000",
+        "verdictShift": "not_judged"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_price:개체 128호",
+        "subject": "개체 128호",
+        "field": "취득원가",
+        "before": "3880000",
+        "after": "3610000",
+        "verdictShift": "not_judged"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_price:개체 129호",
+        "subject": "개체 129호",
+        "field": "취득원가",
+        "before": "3980000",
+        "after": "3480000",
+        "verdictShift": "not_judged"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_price:개체 130호",
+        "subject": "개체 130호",
+        "field": "취득원가",
+        "before": "3690000",
+        "after": "3830000",
+        "verdictShift": "not_judged"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_price:개체 131호",
+        "subject": "개체 131호",
+        "field": "취득원가",
+        "before": "4020000",
+        "after": "3920000",
+        "verdictShift": "not_judged"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_price:개체 132호",
+        "subject": "개체 132호",
+        "field": "취득원가",
+        "before": "3570000",
+        "after": "3200000",
+        "verdictShift": "not_judged"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_price:개체 133호",
+        "subject": "개체 133호",
+        "field": "취득원가",
+        "before": "3680000",
+        "after": "3130000",
+        "verdictShift": "not_judged"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_price:개체 134호",
+        "subject": "개체 134호",
+        "field": "취득원가",
+        "before": "3820000",
+        "after": "3580000",
+        "verdictShift": "not_judged"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_price:개체 136호",
+        "subject": "개체 136호",
+        "field": "취득원가",
+        "before": "3740000",
+        "after": "3130000",
+        "verdictShift": "not_judged"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_price:개체 137호",
+        "subject": "개체 137호",
+        "field": "취득원가",
+        "before": "3690000",
+        "after": "4040000",
+        "verdictShift": "not_judged"
+      },
+      {
+        "changeKind": "changed",
+        "claimId": "acquisition_price:개체 138호",
+        "subject": "개체 138호",
+        "field": "취득원가",
+        "before": "3740000",
+        "after": "3380000",
+        "verdictShift": "not_judged"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "acquisition_price:개체 139호",
+        "subject": "개체 139호",
+        "field": "취득원가",
+        "before": "3130000",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "acquisition_price:개체 140호",
+        "subject": "개체 140호",
+        "field": "취득원가",
+        "before": "3130000",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "acquisition_price:개체 141호",
+        "subject": "개체 141호",
+        "field": "취득원가",
+        "before": "3890000",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "acquisition_price:개체 142호",
+        "subject": "개체 142호",
+        "field": "취득원가",
+        "before": "2990000",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "acquisition_price:개체 143호",
+        "subject": "개체 143호",
+        "field": "취득원가",
+        "before": "3880000",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "acquisition_price:개체 144호",
+        "subject": "개체 144호",
+        "field": "취득원가",
+        "before": "3140000",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "acquisition_price:개체 145호",
+        "subject": "개체 145호",
+        "field": "취득원가",
+        "before": "3910000",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "acquisition_price:개체 146호",
+        "subject": "개체 146호",
+        "field": "취득원가",
+        "before": "3430000",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "acquisition_price:개체 147호",
+        "subject": "개체 147호",
+        "field": "취득원가",
+        "before": "3310000",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "acquisition_price:개체 148호",
+        "subject": "개체 148호",
+        "field": "취득원가",
+        "before": "3670000",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "acquisition_price:개체 149호",
+        "subject": "개체 149호",
+        "field": "취득원가",
+        "before": "3580000",
+        "verdictShift": "removed"
+      },
+      {
+        "changeKind": "removed",
+        "claimId": "acquisition_price:개체 150호",
+        "subject": "개체 150호",
+        "field": "취득원가",
+        "before": "3460000",
+        "verdictShift": "removed"
+      }
+    ],
+    "verdictChanges": [
+      {
+        "claimId": "acquisition_date:개체 125호",
+        "subject": "개체 125호",
+        "field": "취득시기",
+        "before": "match",
+        "after": "unverifiable",
+        "shift": "changed"
+      },
+      {
+        "claimId": "custody_location:개체 125호",
+        "subject": "개체 125호",
+        "field": "보관장소",
+        "before": "match",
+        "after": "mismatch",
+        "shift": "changed"
+      },
+      {
+        "claimId": "livestock_trace_no:개체 139호",
+        "subject": "개체 139호",
+        "field": "이력번호",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "livestock_breed:개체 139호",
+        "subject": "개체 139호",
+        "field": "품종",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "livestock_sex:개체 139호",
+        "subject": "개체 139호",
+        "field": "성별",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "acquisition_date:개체 139호",
+        "subject": "개체 139호",
+        "field": "취득시기",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "custody_location:개체 139호",
+        "subject": "개체 139호",
+        "field": "보관장소",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "livestock_trace_no:개체 140호",
+        "subject": "개체 140호",
+        "field": "이력번호",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "livestock_breed:개체 140호",
+        "subject": "개체 140호",
+        "field": "품종",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "livestock_sex:개체 140호",
+        "subject": "개체 140호",
+        "field": "성별",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "acquisition_date:개체 140호",
+        "subject": "개체 140호",
+        "field": "취득시기",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "custody_location:개체 140호",
+        "subject": "개체 140호",
+        "field": "보관장소",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "livestock_trace_no:개체 141호",
+        "subject": "개체 141호",
+        "field": "이력번호",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "livestock_breed:개체 141호",
+        "subject": "개체 141호",
+        "field": "품종",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "livestock_sex:개체 141호",
+        "subject": "개체 141호",
+        "field": "성별",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "acquisition_date:개체 141호",
+        "subject": "개체 141호",
+        "field": "취득시기",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "custody_location:개체 141호",
+        "subject": "개체 141호",
+        "field": "보관장소",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "livestock_trace_no:개체 142호",
+        "subject": "개체 142호",
+        "field": "이력번호",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "livestock_breed:개체 142호",
+        "subject": "개체 142호",
+        "field": "품종",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "livestock_sex:개체 142호",
+        "subject": "개체 142호",
+        "field": "성별",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "acquisition_date:개체 142호",
+        "subject": "개체 142호",
+        "field": "취득시기",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "custody_location:개체 142호",
+        "subject": "개체 142호",
+        "field": "보관장소",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "livestock_trace_no:개체 143호",
+        "subject": "개체 143호",
+        "field": "이력번호",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "livestock_breed:개체 143호",
+        "subject": "개체 143호",
+        "field": "품종",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "livestock_sex:개체 143호",
+        "subject": "개체 143호",
+        "field": "성별",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "acquisition_date:개체 143호",
+        "subject": "개체 143호",
+        "field": "취득시기",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "custody_location:개체 143호",
+        "subject": "개체 143호",
+        "field": "보관장소",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "livestock_trace_no:개체 144호",
+        "subject": "개체 144호",
+        "field": "이력번호",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "livestock_breed:개체 144호",
+        "subject": "개체 144호",
+        "field": "품종",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "livestock_sex:개체 144호",
+        "subject": "개체 144호",
+        "field": "성별",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "acquisition_date:개체 144호",
+        "subject": "개체 144호",
+        "field": "취득시기",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "custody_location:개체 144호",
+        "subject": "개체 144호",
+        "field": "보관장소",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "livestock_trace_no:개체 145호",
+        "subject": "개체 145호",
+        "field": "이력번호",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "livestock_breed:개체 145호",
+        "subject": "개체 145호",
+        "field": "품종",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "livestock_sex:개체 145호",
+        "subject": "개체 145호",
+        "field": "성별",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "acquisition_date:개체 145호",
+        "subject": "개체 145호",
+        "field": "취득시기",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "custody_location:개체 145호",
+        "subject": "개체 145호",
+        "field": "보관장소",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "livestock_trace_no:개체 146호",
+        "subject": "개체 146호",
+        "field": "이력번호",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "livestock_breed:개체 146호",
+        "subject": "개체 146호",
+        "field": "품종",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "livestock_sex:개체 146호",
+        "subject": "개체 146호",
+        "field": "성별",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "acquisition_date:개체 146호",
+        "subject": "개체 146호",
+        "field": "취득시기",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "custody_location:개체 146호",
+        "subject": "개체 146호",
+        "field": "보관장소",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "livestock_trace_no:개체 147호",
+        "subject": "개체 147호",
+        "field": "이력번호",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "livestock_breed:개체 147호",
+        "subject": "개체 147호",
+        "field": "품종",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "livestock_sex:개체 147호",
+        "subject": "개체 147호",
+        "field": "성별",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "acquisition_date:개체 147호",
+        "subject": "개체 147호",
+        "field": "취득시기",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "custody_location:개체 147호",
+        "subject": "개체 147호",
+        "field": "보관장소",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "livestock_trace_no:개체 148호",
+        "subject": "개체 148호",
+        "field": "이력번호",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "livestock_breed:개체 148호",
+        "subject": "개체 148호",
+        "field": "품종",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "livestock_sex:개체 148호",
+        "subject": "개체 148호",
+        "field": "성별",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "acquisition_date:개체 148호",
+        "subject": "개체 148호",
+        "field": "취득시기",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "custody_location:개체 148호",
+        "subject": "개체 148호",
+        "field": "보관장소",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "livestock_trace_no:개체 149호",
+        "subject": "개체 149호",
+        "field": "이력번호",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "livestock_breed:개체 149호",
+        "subject": "개체 149호",
+        "field": "품종",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "livestock_sex:개체 149호",
+        "subject": "개체 149호",
+        "field": "성별",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "acquisition_date:개체 149호",
+        "subject": "개체 149호",
+        "field": "취득시기",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "custody_location:개체 149호",
+        "subject": "개체 149호",
+        "field": "보관장소",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "livestock_trace_no:개체 150호",
+        "subject": "개체 150호",
+        "field": "이력번호",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "livestock_breed:개체 150호",
+        "subject": "개체 150호",
+        "field": "품종",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "livestock_sex:개체 150호",
+        "subject": "개체 150호",
+        "field": "성별",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "acquisition_date:개체 150호",
+        "subject": "개체 150호",
+        "field": "취득시기",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "custody_location:개체 150호",
+        "subject": "개체 150호",
+        "field": "보관장소",
+        "before": "match",
+        "shift": "removed"
+      },
+      {
+        "claimId": "acquisition_price:개체 139호",
+        "subject": "개체 139호",
+        "field": "취득원가",
+        "shift": "removed"
+      },
+      {
+        "claimId": "acquisition_price:개체 140호",
+        "subject": "개체 140호",
+        "field": "취득원가",
+        "shift": "removed"
+      },
+      {
+        "claimId": "acquisition_price:개체 141호",
+        "subject": "개체 141호",
+        "field": "취득원가",
+        "shift": "removed"
+      },
+      {
+        "claimId": "acquisition_price:개체 142호",
+        "subject": "개체 142호",
+        "field": "취득원가",
+        "shift": "removed"
+      },
+      {
+        "claimId": "acquisition_price:개체 143호",
+        "subject": "개체 143호",
+        "field": "취득원가",
+        "shift": "removed"
+      },
+      {
+        "claimId": "acquisition_price:개체 144호",
+        "subject": "개체 144호",
+        "field": "취득원가",
+        "shift": "removed"
+      },
+      {
+        "claimId": "acquisition_price:개체 145호",
+        "subject": "개체 145호",
+        "field": "취득원가",
+        "shift": "removed"
+      },
+      {
+        "claimId": "acquisition_price:개체 146호",
+        "subject": "개체 146호",
+        "field": "취득원가",
+        "shift": "removed"
+      },
+      {
+        "claimId": "acquisition_price:개체 147호",
+        "subject": "개체 147호",
+        "field": "취득원가",
+        "shift": "removed"
+      },
+      {
+        "claimId": "acquisition_price:개체 148호",
+        "subject": "개체 148호",
+        "field": "취득원가",
+        "shift": "removed"
+      },
+      {
+        "claimId": "acquisition_price:개체 149호",
+        "subject": "개체 149호",
+        "field": "취득원가",
+        "shift": "removed"
+      },
+      {
+        "claimId": "acquisition_price:개체 150호",
+        "subject": "개체 150호",
+        "field": "취득원가",
+        "shift": "removed"
+      }
+    ],
+    "summary": {
+      "changedClaims": 179,
+      "verdictMaintained": 188,
+      "verdictChanged": 2,
+      "verdictUnknown": 0,
+      "notJudged": 38
+    },
+    "notes": [
+      "청약이 종료된 공모라 두 버전 모두 지금 시점의 원장과 대조했습니다 — 청약 당시의 원장 상태와는 다를 수 있습니다.",
+      "정정신고서 2건 가운데 최종본만 다시 대조했습니다 — 나머지 1건은 접수 사실과 정정 항목만 읽었습니다.",
+      "같은 종류의 신규 신고서(20251010000109)가 접수되어 이 공모의 정정 계보는 그 앞에서 끊었습니다."
+    ]
+  }
+}
