@@ -111,18 +111,20 @@ export function RealitySection({
           ) : null}
         </AnimatePresence>
 
-        <details className={s.appendix}>
-          <summary className={s.appendixSummary}>
-            {flagged.length > 0
-              ? `전 항목 일치 ${matched.length}건 펼쳐 보기`
-              : `전체 ${matched.length}건 판정 펼쳐 보기 — 전 항목 일치`}
-          </summary>
-          <div className={s.appendixBody}>
-            <div className={s.herd} role="group" aria-label="전 항목 일치 판정">
-              {matched.map(renderCell)}
+        {matched.length > 0 ? (
+          <details className={s.appendix}>
+            <summary className={s.appendixSummary}>
+              {flagged.length > 0
+                ? `전 항목 일치 ${matched.length}건 펼쳐 보기`
+                : `전체 ${matched.length}건 판정 펼쳐 보기 — 전 항목 일치`}
+            </summary>
+            <div className={s.appendixBody}>
+              <div className={s.herd} role="group" aria-label="전 항목 일치 판정">
+                {matched.map(renderCell)}
+              </div>
             </div>
-          </div>
-        </details>
+          </details>
+        ) : null}
       </Reveal>
     </section>
   );

@@ -14,6 +14,7 @@ import {
   LIFECYCLE_NOTE,
   LIFECYCLE_TITLE,
   STAGE_NOTE_EXIT_VERIFIED,
+  STAGE_NOTE_OPERATING,
   STAGE_NOTE_PENDING,
 } from "../lifecycle";
 
@@ -78,6 +79,54 @@ describe("buildLifecycleStages — 단계 파생", () => {
     expect(stages.every((stage) => stage.state === "done")).toBe(true);
     expect(stages.at(-1)?.note).toBe(STAGE_NOTE_EXIT_VERIFIED);
   });
+
+  test("정산 완료 메타만 있고 외부 종료 검증이 없으면 매각 대조 완료로 올리지 않는다", () => {
+    const stages = buildLifecycleStages({
+      phase: "closed",
+      assetKind: "real-estate",
+      assetLifecycle: "settled",
+      isExitVerified: false,
+    });
+
+    expect(stages.at(-1)).toMatchObject({
+      id: "exit",
+      state: "pending",
+      note: STAGE_NOTE_PENDING,
+    });
+    expect(stages.at(-1)?.note).not.toBe(STAGE_NOTE_EXIT_VERIFIED);
+  });
+
+  test("운영 중 부동산: 청약·배정 완료, 운영 현재, 매각·정산 대기", () => {
+    const stages = buildLifecycleStages({
+      phase: "closed",
+      assetKind: "real-estate",
+      assetLifecycle: "operating",
+    });
+
+    expect(stages.map((stage) => stage.state)).toEqual([
+      "done",
+      "done",
+      "current",
+      "pending",
+    ]);
+    expect(stages[2]?.note).toBe(STAGE_NOTE_OPERATING);
+    expect(stages[2]?.note).toContain("플랫폼 공지 기준");
+    expect(stages[3]?.note).toBe(STAGE_NOTE_PENDING);
+  });
+
+  test.each(["upcoming", "open"] as const)(
+    "운영 메타가 있어도 청약 %s이면 청약·배정을 완료 처리하지 않는다",
+    (phase) => {
+      const stages = buildLifecycleStages({
+        phase,
+        assetKind: "real-estate",
+        assetLifecycle: "operating",
+      });
+
+      expect(stages[0]?.state).toBe("current");
+      expect(stages[1]?.state).toBe("pending");
+    },
+  );
 
   test("보유 단계 라벨은 자산 종류를 따른다", () => {
     expect(

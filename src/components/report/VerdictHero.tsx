@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, m } from "motion/react";
+import type { ReactNode } from "react";
 
 import { MOTION_DURATION, MOTION_EASE } from "@/components/motion/tokens";
 import { useReducedMotionSafe } from "@/components/motion/useReducedMotionSafe";
@@ -41,11 +42,13 @@ export function VerdictHero({
   view,
   level,
   narrative,
+  overview,
   onLevelChange,
 }: {
   readonly view: DemoView;
   readonly level: ExplainLevel;
   readonly narrative: Readonly<Record<ExplainLevel, NarrativeLevel>> | null;
+  readonly overview?: ReactNode;
   readonly onLevelChange: (level: ExplainLevel) => void;
 }) {
   const isReduced = useReducedMotionSafe();
@@ -61,6 +64,8 @@ export function VerdictHero({
         <h1 id={VERDICT_HEADING_ID} className={s.title}>
           {view.offer.title}
         </h1>
+
+        {overview}
 
         <p className={s.whenLine}>
           {view.verdict.eyebrow}

@@ -1,14 +1,40 @@
-import type { AssetKind } from "@/lib/verify/types";
+import type {
+  AssetKind,
+  RealEstateAssetLifecycle,
+  RealEstateTradabilityStatus,
+} from "@/lib/verify/types";
 
 export type { AssetKind };
 
 export type SchedulePrecision = "minute" | "day";
+export type RealEstateUserGroup =
+  | "current-confirmed"
+  | "operating-needs-check"
+  | "historical-completed"
+  | "development-sample";
+
+export interface RealEstateListingStatus {
+  readonly tradabilityStatus?: RealEstateTradabilityStatus;
+  readonly statusEvidence?: {
+    readonly tradabilityStatus?: {
+      readonly sourceKind:
+        | "platform-claim"
+        | "official-document"
+        | "external-observation";
+      readonly asOf: string;
+    };
+  };
+}
 
 export interface OfferEntry {
   readonly id: string;
   readonly title: string;
   readonly assetLabel: string;
   readonly assetKind: AssetKind;
+  readonly assetLifecycle?: RealEstateAssetLifecycle;
+  readonly isExitVerified?: boolean;
+  readonly tradabilityStatus?: RealEstateTradabilityStatus;
+  readonly realEstateListingKind?: "development-sample";
   readonly subscription: {
     readonly opensAt: string;
     readonly closesAt: string;
@@ -114,10 +140,41 @@ export const OFFERS: readonly OfferEntry[] = [
     },
   },
   {
+    id: "real-estate-bbric-hiwon",
+    title: "희원감천",
+    assetLabel: "부동산",
+    assetKind: "real-estate",
+    assetLifecycle: "operating",
+    isExitVerified: false,
+    tradabilityStatus: "unknown",
+    subscription: {
+      opensAt: "2024-11-13T00:00:00+09:00",
+      closesAt: "2024-11-22T23:59:00+09:00",
+      precision: "day",
+    },
+  },
+  {
+    id: "real-estate-sou-daejeon-startup",
+    title: "소유 3호 대전 창업스페이스",
+    assetLabel: "부동산",
+    assetKind: "real-estate",
+    assetLifecycle: "settled",
+    isExitVerified: false,
+    tradabilityStatus: "ended",
+    subscription: {
+      opensAt: "2022-12-08T00:00:00+09:00",
+      closesAt: "2022-12-15T23:59:00+09:00",
+      precision: "day",
+    },
+  },
+  {
     id: "real-estate-a",
     title: "부동산 A",
     assetLabel: "부동산",
     assetKind: "real-estate",
+    assetLifecycle: "sold",
+    isExitVerified: true,
+    realEstateListingKind: "development-sample",
     subscription: {
       opensAt: "2021-07-07T00:00:00+09:00",
       closesAt: "2021-07-15T23:59:00+09:00",
@@ -216,4 +273,42 @@ export const buildOfferSchedule = (entry: OfferEntry, now: Date): OfferSchedule 
     dday,
     badge: dday === 0 ? "마감 D-DAY" : `마감 D-${dday}`,
   };
+};
+
+const REAL_ESTATE_CURRENT_EVIDENCE_MAX_AGE_DAYS = 31;
+
+export const classifyRealEstateOffer = (
+  offer: OfferEntry,
+  now: Date,
+  status?: RealEstateListingStatus,
+): RealEstateUserGroup => {
+  if (offer.assetKind !== "real-estate") {
+    throw new Error("부동산 상품만 사용자 그룹을 분류할 수 있습니다");
+  }
+  if (offer.realEstateListingKind === "development-sample") {
+    return "development-sample";
+  }
+  if (buildOfferSchedule(offer, now).phase === "open") {
+    return "current-confirmed";
+  }
+  if (["sold", "settled"].includes(offer.assetLifecycle ?? "")) {
+    return "historical-completed";
+  }
+
+  const evidence = status?.statusEvidence?.tradabilityStatus;
+  const ageDays = evidence
+    ? (Date.parse(now.toISOString().slice(0, 10)) -
+        Date.parse(evidence.asOf)) /
+      DAY_MS
+    : Number.POSITIVE_INFINITY;
+  if (
+    (status?.tradabilityStatus ?? offer.tradabilityStatus) === "available" &&
+    evidence !== undefined &&
+    evidence.sourceKind !== "external-observation" &&
+    ageDays >= 0 &&
+    ageDays <= REAL_ESTATE_CURRENT_EVIDENCE_MAX_AGE_DAYS
+  ) {
+    return "current-confirmed";
+  }
+  return "operating-needs-check";
 };

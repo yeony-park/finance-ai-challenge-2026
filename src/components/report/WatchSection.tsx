@@ -32,9 +32,14 @@ const pendingText = (watch: WatchStatusView | null | undefined): string =>
 interface WatchSectionProps {
   readonly watch?: WatchStatusView | null;
   readonly replay?: AmendmentReplayView | null;
+  readonly showNotificationNotice?: boolean;
 }
 
-export function WatchSection({ watch, replay }: WatchSectionProps) {
+export function WatchSection({
+  watch,
+  replay,
+  showNotificationNotice = true,
+}: WatchSectionProps) {
   return (
     <section
       className={`${s.section} ${s.sectionMuted}`}
@@ -66,10 +71,12 @@ export function WatchSection({ watch, replay }: WatchSectionProps) {
           <p className={s.watchPending}>{pendingText(watch)}</p>
         )}
 
-        <div className={s.honesty}>
-          <IconInfo className={s.ic} />
-          <span>{NOTIFY_CHANNEL_TEXT}</span>
-        </div>
+        {showNotificationNotice ? (
+          <div className={s.honesty}>
+            <IconInfo className={s.ic} />
+            <span>{NOTIFY_CHANNEL_TEXT}</span>
+          </div>
+        ) : null}
       </Reveal>
     </section>
   );

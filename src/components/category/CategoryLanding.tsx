@@ -8,8 +8,15 @@ import { Reveal } from "@/components/motion/Reveal";
 import { FILING_HEADING_ID, REALITY_HEADING_ID, WATCH_HEADING_ID } from "@/components/report/ids";
 import { TrackRecordCard } from "@/components/report/TrackRecordCard";
 import { CategoryMotif } from "@/components/site/icons";
-import type { OfferEntry, OfferSchedule } from "@/components/site/offers";
-import { buildOfferSchedule } from "@/components/site/offers";
+import type {
+  OfferEntry,
+  OfferSchedule,
+  RealEstateUserGroup,
+} from "@/components/site/offers";
+import {
+  buildOfferSchedule,
+  classifyRealEstateOffer,
+} from "@/components/site/offers";
 import type { CategoryId } from "@/lib/content/categories";
 import {
   ACTIVE_GROUP_EMPTY,
@@ -53,6 +60,16 @@ import {
   type VerificationLayer,
 } from "@/lib/verify/contract/category";
 import { loadFilingFacts, type FilingFacts } from "@/lib/verify/report/filing-facts";
+import {
+  loadRealEstateInvestmentReview,
+  type RealEstateInvestmentReview,
+  type ReviewConfirmedIssue,
+  type ReviewEvidenceSufficiency,
+} from "@/lib/verify/real-estate-investment-review";
+import {
+  loadRealEstateProductSummary,
+  type RealEstateProductSummary,
+} from "@/lib/verify/real-estate-product-summary";
 import { loadLatestReport, type LoadedReport } from "@/lib/verify/report/load";
 import { issuerKeyForOffer } from "@/lib/verify/track-record/registry";
 import { loadTrackRecord } from "@/lib/verify/track-record/store";
@@ -89,7 +106,15 @@ interface OfferEvidence {
   readonly watch: WatchState | null;
   readonly schedule: OfferSchedule;
   readonly filingFacts: FilingFacts | null;
+  readonly productSummary: RealEstateProductSummary | null;
+  readonly investmentReview: RealEstateInvestmentReview | null;
 }
+
+const offerUnverifiableCount = (entry: OfferEvidence): number =>
+  entry.loaded.report.summary.unverifiable +
+  (entry.offer.assetKind === "real-estate"
+    ? entry.loaded.report.unjudged.length
+    : 0);
 
 const countsSentence = (
   match: number,
@@ -114,17 +139,31 @@ const loadEvidence = async (
 ): Promise<readonly OfferEvidence[]> =>
   Promise.all(
     offers.map(async (offer) => {
-      const [loaded, watch, filingFacts] = await Promise.all([
-        loadLatestReport(offer.id),
-        loadLatestWatchState(offer.id),
-        loadFilingFacts(offer.id),
-      ]);
+      const [loaded, watch, filingFacts, productSummary, investmentReview] =
+        await Promise.all([
+          loadLatestReport(offer.id),
+          loadLatestWatchState(offer.id),
+          loadFilingFacts(offer.id),
+          offer.assetKind === "real-estate"
+            ? loadRealEstateProductSummary(offer.id)
+            : Promise.resolve(null),
+          offer.assetKind === "real-estate"
+            ? loadRealEstateInvestmentReview(
+                offer.id,
+                new Date(now.getTime() + 9 * 60 * 60 * 1000)
+                  .toISOString()
+                  .slice(0, 10),
+              )
+            : Promise.resolve(null),
+        ]);
       return {
         offer,
         loaded,
         watch: watch ?? null,
         schedule: buildOfferSchedule(offer, now),
         filingFacts,
+        productSummary,
+        investmentReview,
       };
     }),
   );
@@ -135,18 +174,126 @@ const ACTIVE_CHAPTERS: readonly { readonly id: string; readonly label: string }[
   { id: FILING_HEADING_ID, label: "신고서 정보" },
 ];
 
+const formatWon = (value: number): string =>
+  value >= 100_000_000
+    ? `${(value / 100_000_000).toLocaleString("ko-KR", { maximumFractionDigits: 1 })}억원`
+    : `${value.toLocaleString("ko-KR")}원`;
+
+const formatProductDate = (value: string): string =>
+  value.replace(/^(\d{4})-(\d{2})-(\d{2})$/, "$1. $2. $3.");
+
+const SUFFICIENCY_LABEL: Readonly<Record<ReviewEvidenceSufficiency, string>> = {
+  comparable: "핵심 근거 대조 가능",
+  partial: "일부 근거만 대조됨",
+  insufficient: "판단할 근거 부족",
+};
+
+const ISSUE_LABEL: Readonly<Record<ReviewConfirmedIssue, string>> = {
+  not_assessed: "문제 여부 평가 불가",
+  none_found: "연결된 근거에서 중대 문제 미확인",
+  needs_follow_up: "중요 항목 추가 확인 필요",
+  critical_conflict: "핵심 주장 불일치 확인",
+};
+
+function RealEstateCardFacts({
+  entry,
+  group,
+}: {
+  readonly entry: OfferEvidence;
+  readonly group: RealEstateUserGroup;
+}) {
+  const product = entry.productSummary;
+  if (!product) return null;
+
+  const isBbric = product.platform?.label === "BBRIC";
+  const cycle = product.contractualDistributionCycle.value ?? "문서 확인 필요";
+  const trustPeriod = product.trustPeriod.value ?? "문서 확인 필요";
+
+  return (
+    <>
+      {product.platform ? (
+        <span className={s.offerProductPlatform}>
+          플랫폼 · {product.platform.label}
+        </span>
+      ) : null}
+      <dl className={s.offerProductFacts}>
+        <div>
+          <dt>공모총액</dt>
+          <dd>{formatWon(product.offer.amountWon)}</dd>
+        </div>
+        {product.sale ? (
+          <>
+            <div>
+              <dt>매각금액</dt>
+              <dd>{formatWon(product.sale.amountWon)}</dd>
+            </div>
+            <div>
+              <dt>{product.sale.dateLabel}</dt>
+              <dd>{formatProductDate(product.sale.dealOn)}</dd>
+            </div>
+          </>
+        ) : (
+          <>
+            <div>
+              <dt>{isBbric ? "1BRIC 가격" : "1단위 가격"}</dt>
+              <dd>{product.offer.unitPriceWon.toLocaleString("ko-KR")}원</dd>
+            </div>
+            <div>
+              <dt>결산주기</dt>
+              <dd>{cycle}</dd>
+            </div>
+            <div>
+              <dt>신탁기간</dt>
+              <dd>{trustPeriod}</dd>
+            </div>
+          </>
+        )}
+      </dl>
+      <span className={s.offerCardMeta}>
+        {group === "historical-completed"
+          ? "운영사 발표상 매각·대금지급 완료 · 외부 종료 검증 미확인"
+          : group === "operating-needs-check"
+            ? "청약 종료 · 운용 중 · 현재 거래 가능 여부 미확인"
+            : group === "development-sample"
+              ? "개발 샘플 · 실제 공개 상품 목록에서 제외"
+              : "공개 원문상 현재 청약·매수 가능 확인"}
+      </span>
+      {entry.investmentReview ? (
+        <dl className={s.offerReviewAxes}>
+          <div>
+            <dt>근거 충분도</dt>
+            <dd>{SUFFICIENCY_LABEL[entry.investmentReview.evidenceSufficiency]}</dd>
+          </div>
+          <div>
+            <dt>문제 확인 상태</dt>
+            <dd>{ISSUE_LABEL[entry.investmentReview.confirmedIssue]}</dd>
+          </div>
+        </dl>
+      ) : null}
+    </>
+  );
+}
+
 function OfferEvidenceCard({
   entry,
   showChapterLinks = false,
+  realEstateGroup,
 }: {
   readonly entry: OfferEvidence;
   readonly showChapterLinks?: boolean;
+  readonly realEstateGroup?: RealEstateUserGroup;
 }) {
   const { summary } = entry.loaded.report;
+  const isRealEstate = entry.offer.assetKind === "real-estate";
   return (
-    <article className={s.offerCard}>
+    <article
+      className={`${s.offerCard} ${isRealEstate ? s.offerCardLinked : ""}`}
+    >
       <span className={s.offerCardHead}>
-        <Link href={`/offers/${entry.offer.id}`} className={s.offerCardName}>
+        <Link
+          href={`/offers/${entry.offer.id}`}
+          className={`${s.offerCardName} ${isRealEstate ? s.offerCardStretched : ""}`}
+        >
           {entry.offer.title}
         </Link>
         <span
@@ -157,36 +304,51 @@ function OfferEvidenceCard({
           {entry.schedule.badge}
         </span>
       </span>
-      <span className={s.offerCardStats}>
-        <span className={s.offerStat}>
-          <span className={s.offerStatLabel}>
-            <span className={`${s.tileMark} ${s.tileMarkMatch}`} />
-            {VERDICT_LABEL.match}
+      {isRealEstate ? (
+        <RealEstateCardFacts
+          entry={entry}
+          group={realEstateGroup ?? "operating-needs-check"}
+        />
+      ) : (
+        <span className={s.offerCardStats}>
+          <span className={s.offerStat}>
+            <span className={s.offerStatLabel}>
+              <span className={`${s.tileMark} ${s.tileMarkMatch}`} />
+              {VERDICT_LABEL.match}
+            </span>
+            <span className={s.offerStatNum}>
+              {summary.match.toLocaleString("ko-KR")}
+            </span>
           </span>
-          <span className={s.offerStatNum}>
-            {summary.match.toLocaleString("ko-KR")}
+          <span className={s.offerStat}>
+            <span className={s.offerStatLabel}>
+              <span className={`${s.tileMark} ${s.tileMarkMiss}`} />
+              {VERDICT_LABEL.mismatch}
+            </span>
+            <span className={s.offerStatNum}>
+              {summary.mismatch.toLocaleString("ko-KR")}
+            </span>
+          </span>
+          <span className={s.offerStat}>
+            <span className={s.offerStatLabel}>
+              <span className={`${s.tileMark} ${s.tileMarkUnknown}`} />
+              {VERDICT_LABEL.unverifiable}
+            </span>
+            <span className={s.offerStatNum}>
+              {offerUnverifiableCount(entry).toLocaleString("ko-KR")}
+            </span>
           </span>
         </span>
-        <span className={s.offerStat}>
-          <span className={s.offerStatLabel}>
-            <span className={`${s.tileMark} ${s.tileMarkMiss}`} />
-            {VERDICT_LABEL.mismatch}
-          </span>
-          <span className={s.offerStatNum}>
-            {summary.mismatch.toLocaleString("ko-KR")}
-          </span>
-        </span>
-        <span className={s.offerStat}>
-          <span className={s.offerStatLabel}>
-            <span className={`${s.tileMark} ${s.tileMarkUnknown}`} />
-            {VERDICT_LABEL.unverifiable}
-          </span>
-          <span className={s.offerStatNum}>
-            {summary.unverifiable.toLocaleString("ko-KR")}
-          </span>
-        </span>
-      </span>
+      )}
       <span className={s.offerCardMeta}>청약 {entry.schedule.label}</span>
+      {!isRealEstate && entry.offer.assetLifecycle === "operating" ? (
+        <span className={s.offerCardMeta}>
+          플랫폼 공개자료 기준 자산 운영 중
+          {entry.offer.tradabilityStatus === "unknown"
+            ? " · 거래 가능 여부 미확인"
+            : ""}
+        </span>
+      ) : null}
       {showChapterLinks ? (
         <span className={s.chapterLinks}>
           {ACTIVE_CHAPTERS.filter(
@@ -203,16 +365,85 @@ function OfferEvidenceCard({
           ))}
         </span>
       ) : null}
-      <OfferWatchControl
-        offerId={entry.offer.id}
-        offerTitle={entry.offer.title}
-        statusText={amendmentLine(entry.watch)}
-        isAlert={(entry.watch?.amendmentCount ?? 0) > 0}
-      />
-      <Link href={`/offers/${entry.offer.id}`} className={s.questionBridge}>
-        {REPORT_OPEN_LABEL}
-      </Link>
+      {!isRealEstate || realEstateGroup !== "historical-completed" ? (
+        <div className={s.offerCardAction}>
+          <OfferWatchControl
+            offerId={entry.offer.id}
+            offerTitle={entry.offer.title}
+            statusText={amendmentLine(entry.watch)}
+            isAlert={(entry.watch?.amendmentCount ?? 0) > 0}
+          />
+        </div>
+      ) : null}
+      {isRealEstate ? (
+        <span className={s.offerCardCta}>
+          {realEstateGroup === "historical-completed"
+            ? "운용·종료 이력 보기 →"
+            : realEstateGroup === "operating-needs-check"
+              ? "운용 상태와 미확인 항목 보기 →"
+              : "현재 거래 근거와 상태 보기 →"}
+        </span>
+      ) : (
+        <Link href={`/offers/${entry.offer.id}`} className={s.questionBridge}>
+          {REPORT_OPEN_LABEL}
+        </Link>
+      )}
     </article>
+  );
+}
+
+function RealEstateOfferGroups({
+  evidence,
+  now,
+}: {
+  readonly evidence: readonly OfferEvidence[];
+  readonly now: Date;
+}) {
+  const group = (entry: OfferEvidence) =>
+    classifyRealEstateOffer(entry.offer, now, entry.loaded.report.realEstate);
+  const current = evidence.filter((entry) => group(entry) === "current-confirmed");
+  const needsCheck = evidence.filter(
+    (entry) => group(entry) === "operating-needs-check",
+  );
+  const historical = evidence.filter(
+    (entry) => group(entry) === "historical-completed",
+  );
+  const basisDate = new Date(now.getTime() + 9 * 60 * 60 * 1000)
+    .toISOString()
+    .slice(0, 10)
+    .replace(/-/g, ". ");
+
+  const cards = (entries: readonly OfferEvidence[], listingGroup: RealEstateUserGroup) =>
+    entries.length > 0 ? (
+      <div className={s.offerGrid}>
+        {entries.map((entry) => (
+          <OfferEvidenceCard
+            key={entry.offer.id}
+            entry={entry}
+            realEstateGroup={listingGroup}
+          />
+        ))}
+      </div>
+    ) : (
+      <p className={s.emptyNote}>
+        공개 웹 원문에서 이 조건을 확인한 상품이 없습니다.
+      </p>
+    );
+
+  return (
+    <>
+      <p className={s.listingScope}>
+        분류 기준일 {basisDate}. · 공개 웹 원문 기준이며 앱·회원 전용 화면은 확인
+        범위에 포함하지 않았습니다. 현재 매수 가능 여부를 추천·승인하는 분류가
+        아닙니다.
+      </p>
+      <h3 className={s.groupTitle}>공개 원문상 현재 청약·매수 가능 확인 상품</h3>
+      {cards(current, "current-confirmed")}
+      <h3 className={s.groupTitle}>청약 종료 · 운용·거래 상태 확인 필요</h3>
+      {cards(needsCheck, "operating-needs-check")}
+      <h3 className={s.groupTitle}>과거 상품 운용·종료 이력</h3>
+      {cards(historical, "historical-completed")}
+    </>
   );
 }
 
@@ -287,7 +518,7 @@ function OfferTimeline({ entry }: { readonly entry: OfferEvidence }) {
               {countsSentence(
                 entry.loaded.report.summary.match,
                 entry.loaded.report.summary.mismatch,
-                entry.loaded.report.summary.unverifiable,
+                offerUnverifiableCount(entry),
               )}
             </span>
           ) : null}
@@ -296,6 +527,51 @@ function OfferTimeline({ entry }: { readonly entry: OfferEvidence }) {
       <Link href={`/offers/${entry.offer.id}`} className={home.bandLink}>
         {TIMELINE_REPORT_LINK}
       </Link>
+    </div>
+  );
+}
+
+function RealEstateReviewSummary({
+  evidence,
+}: {
+  readonly evidence: readonly OfferEvidence[];
+}) {
+  const reviews = evidence.flatMap((entry) =>
+    entry.investmentReview ? [entry.investmentReview] : [],
+  );
+  const sufficiency = (state: ReviewEvidenceSufficiency) =>
+    reviews.filter((review) => review.evidenceSufficiency === state).length;
+  const issues = (state: ReviewConfirmedIssue) =>
+    reviews.filter((review) => review.confirmedIssue === state).length;
+
+  return (
+    <div>
+      <p className={s.slotLead}>
+        상품별로 대조 가능한 근거 범위와 아직 확인해야 할 질문을 함께 봅니다.
+        투자 적합성·안전성·수익성을 평가한 결과가 아닙니다.
+      </p>
+      <div className={s.reviewSummaryGrid}>
+        <section className={s.reviewSummaryItem}>
+          <h3>근거를 어디까지 대조할 수 있나?</h3>
+          <p>
+            핵심 근거 대조 가능 {sufficiency("comparable")}상품 · 일부 근거만
+            대조됨 {sufficiency("partial")}상품 · 판단할 근거 부족{" "}
+            {sufficiency("insufficient")}상품
+          </p>
+        </section>
+        <section className={s.reviewSummaryItem}>
+          <h3>중요한 문제를 판단했나?</h3>
+          <p>
+            추가 확인 필요 {issues("needs_follow_up")}상품 · 문제 여부 평가 불가{" "}
+            {issues("not_assessed")}상품 · 연결 근거에서 중대 문제 미확인{" "}
+            {issues("none_found")}상품
+          </p>
+        </section>
+      </div>
+      <p className={s.tallyMeta}>
+        공개 상품 {reviews.length}건 · 상세 화면에서 우선 주의사항과 확인 질문을
+        확인할 수 있습니다.
+      </p>
     </div>
   );
 }
@@ -312,11 +588,16 @@ export async function CategoryLanding({
   custom = null,
   customTitle = "카테고리 특화 영역",
 }: CategoryLandingProps) {
-  const byOpenAsc = [...offers].sort(
+  const isRealEstateCategory = categoryId === "real-estate";
+  const visibleOffers = isRealEstateCategory
+    ? offers.filter((offer) => offer.realEstateListingKind !== "development-sample")
+    : offers;
+  const byOpenAsc = [...visibleOffers].sort(
     (a, b) =>
       Date.parse(a.subscription.opensAt) - Date.parse(b.subscription.opensAt),
   );
-  const evidence = await loadEvidence(byOpenAsc, new Date());
+  const now = new Date();
+  const evidence = await loadEvidence(byOpenAsc, now);
 
   const issuerKey = byOpenAsc[0] ? issuerKeyForOffer(byOpenAsc[0].id) : undefined;
   const trackRecord = issuerKey
@@ -332,7 +613,7 @@ export async function CategoryLanding({
     (sum, entry) => ({
       match: sum.match + entry.loaded.report.summary.match,
       mismatch: sum.mismatch + entry.loaded.report.summary.mismatch,
-      unverifiable: sum.unverifiable + entry.loaded.report.summary.unverifiable,
+      unverifiable: sum.unverifiable + offerUnverifiableCount(entry),
     }),
     { match: 0, mismatch: 0, unverifiable: 0 },
   );
@@ -372,10 +653,19 @@ export async function CategoryLanding({
             <h2 id={`${title}-evidence`} className={s.slotTitle}>
               {OFFERS_SECTION_TITLE}
             </h2>
-            <p className={s.slotLead}>{OFFERS_SECTION_LEAD}</p>
+            <p className={s.slotLead}>
+              {isRealEstateCategory
+                ? `이 페이지에 수록한 공개 실상품 ${evidence.length}건 기준이며 시장 전체 조사 결과가 아닙니다.`
+                : OFFERS_SECTION_LEAD}
+            </p>
             {evidence.length > 0 ? (
+              isRealEstateCategory ? (
+                <RealEstateOfferGroups evidence={evidence} now={now} />
+              ) : (
               <>
-                <h3 className={s.groupTitle}>{ACTIVE_GROUP_TITLE}</h3>
+                <h3 className={s.groupTitle}>
+                  {ACTIVE_GROUP_TITLE}
+                </h3>
                 {active.length > 0 ? (
                   <>
                     <div className={s.offerGrid}>
@@ -397,7 +687,9 @@ export async function CategoryLanding({
                 ) : (
                   <p className={s.emptyNote}>{ACTIVE_GROUP_EMPTY}</p>
                 )}
-                <h3 className={s.groupTitle}>{CLOSED_GROUP_TITLE}</h3>
+                <h3 className={s.groupTitle}>
+                  {CLOSED_GROUP_TITLE}
+                </h3>
                 {closed.length > 0 ? (
                   <div className={s.offerGrid}>
                     {closed.map((entry) => (
@@ -410,6 +702,7 @@ export async function CategoryLanding({
                   </p>
                 )}
               </>
+              )
             ) : preview ? (
               <ul className={s.previewList}>
                 {preview.map((line) => (
@@ -427,57 +720,65 @@ export async function CategoryLanding({
         <section className={s.slot} aria-labelledby={`${title}-verdicts`}>
           <Reveal>
             <h2 id={`${title}-verdicts`} className={s.slotTitle}>
-              {VERDICT_SECTION_TITLE}
+              {isRealEstateCategory ? "상품별 검토 상태" : VERDICT_SECTION_TITLE}
             </h2>
             {evidence.length > 0 ? (
-              <div>
-                <p className={s.slotLead}>
-                  {verdictTotalsLead(evidence.length, totalItems)}
-                </p>
-                <div className={s.tileRow}>
-                  <div className={s.tile}>
-                    <span className={s.tileLabel}>
-                      <span className={`${s.tileMark} ${s.tileMarkMatch}`} />
-                      {VERDICT_LABEL.match}
-                    </span>
-                    <span className={s.tileNum}>
-                      <CountUp value={totals.match} />
-                      <small>건</small>
-                    </span>
-                    <span className={s.tileCaption}>{VERDICT_CAPTIONS.match}</span>
+              isRealEstateCategory ? (
+                <RealEstateReviewSummary evidence={evidence} />
+              ) : (
+                <div>
+                  <p className={s.slotLead}>
+                    {verdictTotalsLead(evidence.length, totalItems)}
+                  </p>
+                  <div className={s.tileRow}>
+                    <div className={s.tile}>
+                      <span className={s.tileLabel}>
+                        <span className={`${s.tileMark} ${s.tileMarkMatch}`} />
+                        {VERDICT_LABEL.match}
+                      </span>
+                      <span className={s.tileNum}>
+                        <CountUp value={totals.match} />
+                        <small>건</small>
+                      </span>
+                      <span className={s.tileCaption}>
+                        {VERDICT_CAPTIONS.match}
+                      </span>
+                    </div>
+                    <div className={s.tile}>
+                      <span className={s.tileLabel}>
+                        <span className={`${s.tileMark} ${s.tileMarkMiss}`} />
+                        {VERDICT_LABEL.mismatch}
+                      </span>
+                      <span className={s.tileNum}>
+                        <CountUp value={totals.mismatch} />
+                        <small>건</small>
+                      </span>
+                      <span className={s.tileCaption}>
+                        {VERDICT_CAPTIONS.mismatch}
+                      </span>
+                    </div>
+                    <div className={s.tile}>
+                      <span className={s.tileLabel}>
+                        <span className={`${s.tileMark} ${s.tileMarkUnknown}`} />
+                        {VERDICT_LABEL.unverifiable}
+                      </span>
+                      <span className={s.tileNum}>
+                        <CountUp value={totals.unverifiable} />
+                        <small>건</small>
+                      </span>
+                      <span className={s.tileCaption}>
+                        {VERDICT_CAPTIONS.unverifiable}
+                      </span>
+                    </div>
                   </div>
-                  <div className={s.tile}>
-                    <span className={s.tileLabel}>
-                      <span className={`${s.tileMark} ${s.tileMarkMiss}`} />
-                      {VERDICT_LABEL.mismatch}
-                    </span>
-                    <span className={s.tileNum}>
-                      <CountUp value={totals.mismatch} />
-                      <small>건</small>
-                    </span>
-                    <span className={s.tileCaption}>
-                      {VERDICT_CAPTIONS.mismatch}
-                    </span>
-                  </div>
-                  <div className={s.tile}>
-                    <span className={s.tileLabel}>
-                      <span className={`${s.tileMark} ${s.tileMarkUnknown}`} />
-                      {VERDICT_LABEL.unverifiable}
-                    </span>
-                    <span className={s.tileNum}>
-                      <CountUp value={totals.unverifiable} />
-                      <small>건</small>
-                    </span>
-                    <span className={s.tileCaption}>
-                      {VERDICT_CAPTIONS.unverifiable}
-                    </span>
-                  </div>
+                  <p className={s.tallyMeta}>
+                    공개 리포트 {evidence.length}건 합산 · 최근 대조{" "}
+                    {latestGeneratedAt
+                      ? formatKstDateTime(latestGeneratedAt)
+                      : "—"}
+                  </p>
                 </div>
-                <p className={s.tallyMeta}>
-                  공개 리포트 {evidence.length}건 합산 · 최근 대조{" "}
-                  {latestGeneratedAt ? formatKstDateTime(latestGeneratedAt) : "—"}
-                </p>
-              </div>
+              )
             ) : (
               <p className={s.emptyNote}>
                 공개된 대조 결과가 아직 없습니다 — 검증 경로가 연결되면 같은

@@ -14,6 +14,15 @@ import s from "./report.module.css";
 
 const RISE = 8;
 
+const httpUrl = (value: string): string | null => {
+  try {
+    const url = new URL(value);
+    return url.protocol === "http:" || url.protocol === "https:" ? value : null;
+  } catch {
+    return null;
+  }
+};
+
 function EvidenceColumn({
   heading,
   rows,
@@ -41,6 +50,40 @@ function EvidenceColumn({
         ))}
       </dl>
     </div>
+  );
+}
+
+function EvidenceSource({
+  label,
+  url,
+  icon,
+}: {
+  readonly label: string;
+  readonly url?: string;
+  readonly icon: ReactNode;
+}) {
+  const linkUrl = url ? httpUrl(url) : null;
+
+  if (!linkUrl) {
+    return (
+      <span className={s.evSourceItem}>
+        {icon}
+        {label}
+      </span>
+    );
+  }
+
+  return (
+    <a
+      href={linkUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`${s.evSourceItem} ${s.evSourceLink}`}
+      aria-label={`${label} (새 창)`}
+    >
+      {icon}
+      {label}
+    </a>
   );
 }
 
@@ -89,14 +132,16 @@ export function EvidenceCard({
       </p>
 
       <div className={s.evSource}>
-        <span className={s.evSourceItem}>
-          <IconDoc className={s.ic} />
-          {focus.sourceDoc}
-        </span>
-        <span className={s.evSourceItem}>
-          <IconDb className={s.ic} />
-          {focus.sourceLedger}
-        </span>
+        <EvidenceSource
+          label={focus.sourceDoc}
+          url={focus.sourceDocUrl}
+          icon={<IconDoc className={s.ic} />}
+        />
+        <EvidenceSource
+          label={focus.sourceLedger}
+          url={focus.sourceLedgerUrl}
+          icon={<IconDb className={s.ic} />}
+        />
       </div>
     </m.div>
   );

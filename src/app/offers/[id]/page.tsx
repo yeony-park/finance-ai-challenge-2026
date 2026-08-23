@@ -4,6 +4,8 @@ import { cache } from "react";
 
 import { FilingFactsSection } from "@/components/report/FilingFactsSection";
 import { LifecycleStrip } from "@/components/report/LifecycleStrip";
+import { RealEstateInvestmentReviewPanel } from "@/components/report/RealEstateInvestmentReviewPanel";
+import { RealEstateProductOverview } from "@/components/report/RealEstateProductOverview";
 import { ReportChapterNav } from "@/components/report/ReportChapterNav";
 import { ReportDocument } from "@/components/report/ReportDocument";
 import { ReportFoot } from "@/components/report/ReportFoot";
@@ -11,6 +13,7 @@ import { HistorySection, PriceSection } from "@/components/report/SummaryLayers"
 import { WatchSection } from "@/components/report/WatchSection";
 import {
   buildOfferSchedule,
+  classifyRealEstateOffer,
   isPublishedOfferId,
   OFFERS,
   PUBLISHED_OFFER_IDS,
@@ -27,6 +30,8 @@ import type { NarrativeDocument } from "@/lib/verify/narrative/types";
 import { toWatchStatusView, type WatchStatusView } from "@/lib/verify/amend/watch-view";
 import { loadLatestReport } from "@/lib/verify/report/load";
 import { toDemoView, type DemoView } from "@/lib/verify/report/view-model";
+import { loadRealEstateInvestmentReview } from "@/lib/verify/real-estate-investment-review";
+import { loadRealEstateProductSummary } from "@/lib/verify/real-estate-product-summary";
 import { issuerKeyForOffer } from "@/lib/verify/track-record/registry";
 import { loadTrackRecord } from "@/lib/verify/track-record/store";
 import {
@@ -37,6 +42,25 @@ import {
 interface OfferPageProps {
   readonly params: Promise<{ readonly id: string }>;
 }
+
+const loadProductSummary = cache(
+  async (offerId: string) => {
+    const offer = OFFERS.find((entry) => entry.id === offerId);
+    return offer?.assetKind === "real-estate"
+      ? loadRealEstateProductSummary(offerId)
+      : null;
+  },
+);
+
+const loadInvestmentReview = cache(async (offerId: string) => {
+  const offer = OFFERS.find((entry) => entry.id === offerId);
+  return offer?.assetKind === "real-estate"
+    ? loadRealEstateInvestmentReview(
+        offerId,
+        new Date(Date.now() + 9 * 60 * 60 * 1000).toISOString().slice(0, 10),
+      )
+    : null;
+});
 
 const loadOfferView = cache(async (offerId: string): Promise<DemoView | null> => {
   if (!isPublishedOfferId(offerId)) return null;
@@ -122,29 +146,76 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
 
   if (!view) notFound();
 
-  const [watch, replay, narrative, trackRecord, filingFacts] = await Promise.all([
+  const [
+    watch,
+    replay,
+    narrative,
+    trackRecord,
+    filingFacts,
+    productSummary,
+    investmentReview,
+  ] = await Promise.all([
     loadWatchStatus(id),
     loadAmendmentReplay(id),
     loadOfferNarrative(id),
     loadTrackRecordCard(id),
     loadFilingFacts(id),
+    loadProductSummary(id),
+    loadInvestmentReview(id),
   ]);
 
   const offerEntry = OFFERS.find((offer) => offer.id === id) ?? null;
+  const realEstateGroup =
+    offerEntry?.assetKind === "real-estate"
+      ? classifyRealEstateOffer(
+          offerEntry,
+          new Date(),
+          productSummary
+            ? {
+                tradabilityStatus: productSummary.tradabilityStatus,
+                statusEvidence: productSummary.statusEvidence,
+              }
+            : undefined,
+        )
+      : null;
 
   return (
     <>
-      <ReportDocument view={view} narrative={narrative?.levels ?? null}>
+      <ReportDocument
+        view={view}
+        narrative={narrative?.levels ?? null}
+        overview={
+          productSummary ? (
+            <>
+              <RealEstateProductOverview
+                summary={productSummary}
+                listingGroup={realEstateGroup ?? "operating-needs-check"}
+              />
+              {investmentReview ? (
+                <RealEstateInvestmentReviewPanel
+                  review={investmentReview}
+                  listingGroup={realEstateGroup ?? "operating-needs-check"}
+                />
+              ) : null}
+            </>
+          ) : null
+        }
+      >
         <ReportChapterNav hasFilingFacts={filingFacts !== null} />
         {offerEntry ? (
           <LifecycleStrip
             schedule={buildOfferSchedule(offerEntry, new Date())}
             assetKind={offerEntry.assetKind}
-            isExitVerified={offerEntry.assetKind === "real-estate"}
+            assetLifecycle={offerEntry.assetLifecycle}
+            isExitVerified={offerEntry.isExitVerified}
           />
         ) : null}
         {filingFacts ? <FilingFactsSection facts={filingFacts} /> : null}
-        <WatchSection watch={watch} replay={replay} />
+        <WatchSection
+          watch={watch}
+          replay={replay}
+          showNotificationNotice={realEstateGroup !== "historical-completed"}
+        />
         <HistorySection view={view} trackRecord={trackRecord} />
       </ReportDocument>
       <PriceSection view={view} />

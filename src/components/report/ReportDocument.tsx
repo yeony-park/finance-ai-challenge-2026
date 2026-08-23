@@ -11,10 +11,12 @@ import { VerdictHero } from "./VerdictHero";
 export function ReportDocument({
   view,
   narrative = null,
+  overview = null,
   children,
 }: {
   readonly view: DemoView;
   readonly narrative?: Readonly<Record<ExplainLevel, NarrativeLevel>> | null;
+  readonly overview?: ReactNode;
   readonly children?: ReactNode;
 }) {
   const profile = useProfile();
@@ -27,6 +29,7 @@ export function ReportDocument({
         view={view}
         level={level}
         narrative={narrative}
+        overview={overview}
         onLevelChange={setLevelOverride}
       />
       {children}
