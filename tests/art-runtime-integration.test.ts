@@ -197,6 +197,10 @@ test("art catalog and products compatibility route expose the same repository to
     assert.ok(html.includes('id="main-content"'), route);
     assert.ok(visibleText.includes("현재 상품 9건"), route);
     assert.ok(visibleText.includes("과거 기록 338건"), route);
+    assert.equal((html.match(/role="search"/g) ?? []).length, 1, route);
+    assert.ok(html.includes('type="search"'), route);
+    assert.ok(visibleText.includes("상품 통합 검색"), route);
+    assert.equal(visibleText.includes("AI로 상품 찾기"), false, route);
   }
 
   const filtered = await fetch(`${baseUrl}/art?scope=historical&lifecycle=returned`);

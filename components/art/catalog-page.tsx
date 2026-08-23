@@ -17,10 +17,6 @@ type Props = {
   title: string;
 };
 
-function HiddenFilterFields({ params }: { params: Record<string, string | undefined> }) {
-  return <>{Object.entries(params).map(([name, value]) => value ? <input key={name} type="hidden" name={name} value={value} /> : null)}</>;
-}
-
 export async function ArtCatalogPage({ basePath, searchParams, kicker, title }: Props) {
   const raw = await searchParams;
   const parsed = parseCatalogSearchParams(raw);
@@ -97,7 +93,7 @@ export async function ArtCatalogPage({ basePath, searchParams, kicker, title }: 
     sourceDataset: parsed.sourceDataset,
   };
   const filterKey = [parsed.currentStatus.join(","), parsed.lifecycle.join(","), parsed.identityStatus.join(","), parsed.sourceDataset.join(",")].join("|");
-  const searchHidden = { ...baseParams, q: undefined, keyword: undefined };
+  const preservedSearchParams = { ...baseParams, q: undefined, keyword: undefined };
   const aiConditions = searchConditionEntries({
     keyword: filters.keyword,
     offeringStatus: filters.currentStatus,
@@ -121,13 +117,7 @@ export async function ArtCatalogPage({ basePath, searchParams, kicker, title }: 
       <Link className={parsed.scope === "current" ? "active" : ""} aria-current={parsed.scope === "current" ? "page" : undefined} href={catalogHref(basePath, { ...baseParams, scope: "current", page: undefined })}>현재 상품 {counts.current}</Link>
       <Link className={parsed.scope === "historical" ? "active" : ""} aria-current={parsed.scope === "historical" ? "page" : undefined} href={catalogHref(basePath, { ...baseParams, scope: "historical", page: undefined })}>과거 기록 {counts.historical}</Link>
     </nav>
-    <form className="simple-search" role="search" action={basePath}>
-      <label htmlFor={`catalog-keyword-${basePath.slice(1)}`}>상품·작품·작가·플랫폼·상태 검색</label>
-      <input id={`catalog-keyword-${basePath.slice(1)}`} name="keyword" defaultValue={parsed.inputValue} placeholder="예 : 김환기, 아트투게더, 청산 완료" />
-      <HiddenFilterFields params={searchHidden} />
-      <button className="button button-primary">검색</button>
-    </form>
-    {parsed.scope !== "historical" ? <NaturalLanguageSearch compact defaultValue={parsed.query} targetPath={basePath} /> : null}
+    <NaturalLanguageSearch compact defaultValue={parsed.inputValue} preservedParams={preservedSearchParams} targetPath={basePath} />
     <div className="condition-row" aria-label="검색 범위 안내">
       {parsed.query && aiConditions.length ? aiConditions.map((condition) => <span className="condition-chip" key={`${condition.key}-${condition.label}`}>{condition.label}</span>) : null}
       <span>검색 대상 : 상품명, 작품명, 작가명, 플랫폼, 제작연도, 재료, 원문 상태, 매각 장소. 기본 정렬 : 현재 실상품 → 데모 → 날짜가 있는 과거 기록 → 날짜 미기재 기록</span>

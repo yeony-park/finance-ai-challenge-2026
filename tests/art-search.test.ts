@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { catalogHref, parseCatalogKeywordIntent, parseCatalogSearchParams, toggleCatalogFilterValues } from "../lib/art/catalog-query.ts";
+import { buildCatalogSearchParams, catalogHref, parseCatalogKeywordIntent, parseCatalogSearchParams, toggleCatalogFilterValues } from "../lib/art/catalog-query.ts";
 import { parseDemoSearchQuery, searchConditionEntries } from "../lib/art/search.ts";
 import { recentSellThroughRate } from "../lib/art/search-metrics.ts";
 
@@ -70,6 +70,44 @@ test("매각·청산 완료 체크는 두 정확한 상태를 함께 직렬화",
   assert.deepEqual(lifecycle, ["sold", "liquidated"]);
   assert.equal(catalogHref("/art", { scope: "historical", lifecycle: lifecycle.join(",") }), "/art?scope=historical&lifecycle=sold%2Cliquidated");
   assert.deepEqual(toggleCatalogFilterValues(lifecycle, ["sold", "liquidated"], false), []);
+});
+
+
+test("통합 검색은 기존 필터를 보존하고 명시된 범위 조건만 교체", () => {
+  const keyword = buildCatalogSearchParams("김환기", {
+    scope: "historical",
+    lifecycle: "returned",
+    source: "artnguide_track_records",
+    page: "3",
+  }, { keyword: "김환기" });
+  assert.equal(keyword.get("scope"), "historical");
+  assert.equal(keyword.get("lifecycle"), "returned");
+  assert.equal(keyword.get("source"), "artnguide_track_records");
+  assert.equal(keyword.get("page"), null);
+  assert.equal(keyword.get("q"), "김환기");
+  assert.equal(keyword.get("keyword"), "김환기");
+
+  const current = buildCatalogSearchParams("청약 예정", {
+    scope: "historical",
+    lifecycle: "returned",
+    source: "artnguide_track_records",
+  }, { offeringStatus: ["upcoming"] });
+  assert.equal(current.get("scope"), "current");
+  assert.equal(current.get("currentStatus"), "upcoming");
+  assert.equal(current.get("lifecycle"), null);
+  assert.equal(current.get("source"), null);
+
+  const historical = buildCatalogSearchParams("청산 완료", {
+    scope: "current",
+    currentStatus: "open",
+    premiumMax: "15",
+    sort: "premium_asc",
+  }, { offeringStatus: ["liquidated"] });
+  assert.equal(historical.get("scope"), "historical");
+  assert.equal(historical.get("lifecycle"), "liquidated");
+  assert.equal(historical.get("currentStatus"), null);
+  assert.equal(historical.get("premiumMax"), null);
+  assert.equal(historical.get("sort"), null);
 });
 
 

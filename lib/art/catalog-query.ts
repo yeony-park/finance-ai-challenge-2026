@@ -108,6 +108,63 @@ export function toggleCatalogFilterValues(current: string[], items: string[], ch
   return checked ? [...new Set([...current, ...items])] : current.filter((value) => !items.includes(value));
 }
 
+export type CatalogSearchIntent = {
+  offeringStatus?: string[];
+  keyword?: string;
+  verdict?: string[];
+  premiumMin?: number;
+  premiumMax?: number;
+  auctionVolumeMin?: number;
+  sellThroughRateMin?: number;
+  delayedExitOnly?: boolean;
+  sort?: string;
+};
+
+const historicalOnlyParams = ["lifecycle", "status", "identity", "source", "dateFrom", "dateTo", "returnMin", "returnMax"] as const;
+const currentOnlyParams = ["currentStatus", "verdict", "premiumMin", "premiumMax", "auctionVolumeMin", "sellThroughRateMin", "delayed", "sort"] as const;
+
+export function buildCatalogSearchParams(
+  query: string,
+  preserved: Record<string, string | undefined> = {},
+  intent: CatalogSearchIntent = {},
+): URLSearchParams {
+  const params = new URLSearchParams();
+  for (const [key, value] of Object.entries(preserved)) {
+    if (value) params.set(key, value);
+  }
+  params.delete("page");
+  params.delete("q");
+  params.delete("keyword");
+  params.set("q", query);
+
+  if (intent.offeringStatus?.length) {
+    const current = intent.offeringStatus.filter((status) => status === "upcoming" || status === "open" || status === "unverified");
+    const historical = intent.offeringStatus.filter((status) => status === "operating" || status === "exit_in_progress" || status === "liquidated");
+    if (current.length) {
+      params.set("currentStatus", current.join(","));
+      params.set("scope", "current");
+      for (const key of historicalOnlyParams) params.delete(key);
+    } else if (historical.length) {
+      params.set("lifecycle", historical.join(","));
+      params.set("scope", "historical");
+      for (const key of currentOnlyParams) params.delete(key);
+    }
+  }
+  if (intent.keyword) params.set("keyword", intent.keyword);
+  if (intent.verdict?.length) params.set("verdict", intent.verdict.join(","));
+  if (intent.premiumMin != null) params.set("premiumMin", String(intent.premiumMin));
+  if (intent.premiumMax != null) params.set("premiumMax", String(intent.premiumMax));
+  if (intent.auctionVolumeMin != null) params.set("auctionVolumeMin", String(intent.auctionVolumeMin));
+  if (intent.sellThroughRateMin != null) params.set("sellThroughRateMin", String(intent.sellThroughRateMin));
+  if (intent.delayedExitOnly) params.set("delayed", "1");
+  if (intent.verdict?.length || intent.premiumMin != null || intent.premiumMax != null || intent.auctionVolumeMin != null || intent.sellThroughRateMin != null || intent.delayedExitOnly) {
+    params.set("scope", "current");
+    for (const key of historicalOnlyParams) params.delete(key);
+  }
+  if (intent.sort) params.set("sort", intent.sort);
+  return params;
+}
+
 export function catalogHref(basePath: CatalogBasePath, params: Record<string, string | undefined>): string {
   const search = new URLSearchParams();
   for (const [key, item] of Object.entries(params)) {
