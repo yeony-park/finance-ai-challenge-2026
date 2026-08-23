@@ -16,7 +16,7 @@
     "build:live": "python3 scripts/build_live_static.py",
     "check:live": "python3 scripts/build_live_static.py --check",
     "test:js": "node tests/test_calculations.mjs && node tests/test_api.mjs && node tests/test_track_records.mjs && node tests/test_restructure.mjs",
-    "test:art": "npm run build && node --import tsx --test tests/art-demo-offers.test.ts tests/art-methodology-content.test.ts && node --experimental-strip-types --test tests/art-calculations.test.ts tests/art-search.test.ts tests/art-schema.test.ts tests/art-regression.test.ts tests/legacy-data-connection.test.ts tests/art-runtime-integration.test.ts tests/art-methodology-runtime.test.ts tests/opendart-verification.test.ts tests/ai-grounding.test.ts tests/risk-engine.test.ts tests/product-ai-review.test.ts",
+    "test:art": "npm run build && node --import tsx --test tests/art-demo-offers.test.ts tests/art-methodology-content.test.ts tests/product-copilot-continuity.test.ts tests/product-copilot-runtime.test.ts && node --experimental-strip-types --test tests/art-calculations.test.ts tests/art-search.test.ts tests/art-schema.test.ts tests/art-regression.test.ts tests/legacy-data-connection.test.ts tests/art-runtime-integration.test.ts tests/art-methodology-runtime.test.ts tests/opendart-verification.test.ts tests/ai-grounding.test.ts tests/risk-engine.test.ts tests/product-ai-review.test.ts",
     "test": "npm run test:art",
     "check:standalone-env": "node scripts/sanitize-standalone-env.mjs --check"
   },

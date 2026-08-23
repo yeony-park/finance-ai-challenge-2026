@@ -104,8 +104,55 @@ export function narrativeFacts(blocks: ProductFactBlock[]): GroundedFact[] {
   return blocks.map(({ id, text }) => ({ id, text }));
 }
 
+/**
+ * Produces a canonical, server-safe source URL for response links and snapshot
+ * hashes. Relative paths are resolved against a sentinel only to prove that
+ * they remain same-origin; no request is made.
+ */
+export function sanitizeEvidenceUrl(value: string | null): string | null {
+  if (value === null || /[\u0000-\u001F\u007F]/.test(value)) return null;
+  if (value.startsWith("/") && !value.startsWith("//")) {
+    try {
+      const base = new URL("https://grounding.invalid/");
+      const parsed = new URL(value, base);
+      if (parsed.origin !== base.origin) return null;
+      return `${parsed.pathname}${parsed.search}${parsed.hash}`;
+    } catch { return null; }
+  }
+  try {
+    const parsed = new URL(value);
+    if ((parsed.protocol !== "http:" && parsed.protocol !== "https:") || parsed.username || parsed.password) return null;
+    return parsed.toString();
+  } catch { return null; }
+}
+
+/** Hashes every response-relevant block and its referenced evidence, not mutable timestamps alone. */
 export function productSnapshotVersion(product: ProductView, risk: RiskAssessment, documentHashes: readonly string[] = []): string {
-  const input = JSON.stringify({ productId: product.offering.id, updatedAt: product.offering.updatedAt, asOfDate: product.offering.asOfDate, risk: risk.snapshotHash, documents: [...documentHashes].sort() });
+  const blocks = buildProductFactBlocks(product, risk)
+    .map((block) => ({ id: block.id, text: block.text, evidenceIds: [...new Set(block.evidenceIds)].sort() }))
+    .sort((left, right) => compareCodeUnits(left.id, right.id));
+  const referencedEvidenceIds = new Set(blocks.flatMap((block) => block.evidenceIds));
+  const evidence = product.evidence
+    .filter((item) => referencedEvidenceIds.has(item.id))
+    .map((item) => ({
+      id: item.id,
+      sourceTitle: item.sourceTitle,
+      publisher: item.sourcePublisher,
+      sourceUrl: sanitizeEvidenceUrl(item.sourceUrl),
+      asOfDate: item.asOfDate,
+      collectedAt: item.collectedAt,
+      fieldPath: item.fieldPath,
+    }))
+    .sort((left, right) => compareCodeUnits(left.id, right.id));
+  const input = JSON.stringify({
+    productId: product.offering.id,
+    updatedAt: product.offering.updatedAt,
+    asOfDate: product.offering.asOfDate,
+    risk: risk.snapshotHash,
+    blocks,
+    evidence,
+    documents: [...documentHashes].sort(),
+  });
   return `snapshot-${createHash("sha256").update(input).digest("hex")}`;
 }
 
@@ -147,7 +194,26 @@ export function buildDartGroundingChunks(product: ProductView, artifacts: readon
   return { chunks: selected.map((item) => item.chunk), metadata: new Map(selected.map((item) => [item.metadata.id, item.metadata])) };
 }
 
-export function safeEvidenceLinks(product: ProductView, ids: readonly string[]): Array<{ id: string; title: string; url: string | null }> {
+export type SafeEvidenceLink = {
+  id: string;
+  title: string;
+  url: string | null;
+  publisher: string;
+  asOfDate: string | null;
+  collectedAt: string | null;
+};
+
+/** Resolves only evidence IDs that belong to this current product snapshot. */
+export function safeEvidenceLinks(product: ProductView, ids: readonly string[]): SafeEvidenceLink[] {
   const allowed = new Set(ids);
-  return product.evidence.filter((item) => allowed.has(item.id)).map((item) => ({ id: item.id, title: item.sourceTitle, url: item.sourceUrl }));
+  return product.evidence
+    .filter((item) => allowed.has(item.id))
+    .map((item) => ({
+      id: item.id,
+      title: item.sourceTitle,
+      url: sanitizeEvidenceUrl(item.sourceUrl),
+      publisher: item.sourcePublisher,
+      asOfDate: item.asOfDate,
+      collectedAt: item.collectedAt,
+    }));
 }

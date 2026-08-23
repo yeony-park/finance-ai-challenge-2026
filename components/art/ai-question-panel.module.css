@@ -1,0 +1,39 @@
+.panel {
+  display: grid;
+  gap: 16px;
+}
+
+.heading h2 { margin: 0; }
+.heading > p:last-child { margin-bottom: 0; }
+.controls { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.contextStatus, .notice, .empty, .emptyGrounding, .fallback { margin: 0; color: var(--muted); font-size: 13px; }
+.notice { padding: 10px 12px; border-left: 3px solid var(--blue); background: var(--surface); color: var(--text); }
+.chips { display: flex; flex-wrap: wrap; gap: 7px; }
+.form { display: grid; gap: 6px; }
+.form label { color: var(--ink); font-size: 13px; font-weight: 700; }
+.form > div { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
+.form input { min-width: 0; min-height: 46px; padding: 10px 13px; border: 1px solid #b7c6d5; border-radius: var(--radius-button, 4px); background: var(--color-canvas, #fff); }
+.conversation { display: grid; gap: 16px; }
+.turn { display: grid; gap: 10px; padding: 16px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--color-canvas, #fff); }
+.question { padding: 12px; background: var(--surface); }
+.question h3 { margin: 0 0 4px; font-size: 13px; }
+.question p, .answerBlock > p { margin: 0; color: var(--text); font-size: 14px; }
+.answer { display: grid; gap: 10px; }
+.answerStatus { margin: 0; color: var(--blue); font-size: 12px; font-weight: 750; }
+.answerBlock { display: grid; gap: 10px; }
+.citation { padding: 12px; border-left: 3px solid var(--blue); background: var(--blue-soft); }
+.citation > p { margin: 0 0 3px; color: var(--text); font-size: 12px; overflow-wrap: anywhere; }
+.citation blockquote { margin: 9px 0; padding-left: 10px; border-left: 2px solid #8aa9c7; color: var(--text); font-size: 13px; }
+.citation ul { display: grid; gap: 7px; margin: 0; padding: 0; list-style: none; }
+.citation li { color: var(--text); font-size: 12px; overflow-wrap: anywhere; }
+.citation a { color: var(--blue); font-weight: 700; text-decoration: underline; }
+.citation small { display: block; color: var(--muted); }
+.noEvidence { margin: 0; color: var(--muted); font-size: 12px; }
+.emptyGrounding { padding: 12px; border: 1px dashed var(--line); background: var(--surface); }
+
+@media (max-width: 640px) {
+  .controls, .form > div { grid-template-columns: 1fr; display: grid; }
+  .controls button, .form button { width: 100%; }
+  .chips { display: grid; grid-template-columns: 1fr; }
+  .chips button { text-align: left; }
+}

@@ -1,13 +1,15 @@
 import { NextResponse } from "next/server";
 import { aiMode } from "@/lib/art/ai";
 import { answerGroundedQuestion, getGroundedAiServerConfig } from "@/lib/art/ai/server";
-import { buildProductFactBlocks, buildStoredRiskAssessment, productSnapshotVersion, safeEvidenceLinks, type ProductFactBlock } from "@/lib/art/review/product-review";
+import { buildProductFactBlocks, buildStoredRiskAssessment, productSnapshotVersion, safeEvidenceLinks, type ProductFactBlock, type SafeEvidenceLink } from "@/lib/art/review/product-review";
+import { eligibleGroundingBlocks, isStaleGroundingContext, parseGroundingContext, responseGroundingContext, type GroundingContext } from "@/lib/art/review/qa-continuity";
 import { RequestBodyError, acquireProductReview, exactObject, readBoundedJson } from "@/lib/art/review/request-guard";
 import { productRepository } from "@/lib/repositories/art-repositories";
 
 export const runtime = "nodejs";
 
-type AnswerBlock = { text: string; citations: Array<{ blockId: string; quote: string; title: string; evidence: Array<{ id: string; title: string; url: string | null }> }> };
+type AnswerBlock = { text: string; citations: Array<{ blockId: string; quote: string; title: string; evidence: SafeEvidenceLink[] }> };
+type RequestBody = { productId: string; question: string; groundingContext?: GroundingContext };
 
 function today() { return new Date().toISOString().slice(0, 10); }
 function selectedFallbackBlocks(question: string, blocks: ProductFactBlock[]): ProductFactBlock[] {
@@ -20,8 +22,20 @@ function selectedFallbackBlocks(question: string, blocks: ProductFactBlock[]): P
     [/위험|판정|왜|보류/, blocks.filter((item) => item.id.startsWith("blocker-") || item.id.startsWith("signal-")).map((item) => item.id)],
   ];
   const ids = patterns.find(([pattern]) => pattern.test(question))?.[1] ?? [];
-  const selected = ids.flatMap((id) => blocks.find((block) => block.id === id) ?? []);
-  return selected.slice(0, 4);
+  return ids.flatMap((id) => blocks.find((block) => block.id === id) ?? []).slice(0, 4);
+}
+
+function parseRequestBody(body: unknown): RequestBody | null {
+  if (body === null || typeof body !== "object" || Array.isArray(body)) return null;
+  const hasContext = "groundingContext" in body;
+  if (!exactObject(body, hasContext ? ["productId", "question", "groundingContext"] : ["productId", "question"])) return null;
+  const record = body as Record<string, unknown>;
+  if (typeof record.productId !== "string" || typeof record.question !== "string" || !record.productId || record.productId.length > 128 || !record.question.trim() || record.question.length > 1_000) return null;
+  const groundingContext = hasContext ? parseGroundingContext(record.groundingContext) : undefined;
+  if (hasContext && !groundingContext) return null;
+  return groundingContext
+    ? { productId: record.productId, question: record.question, groundingContext }
+    : { productId: record.productId, question: record.question };
 }
 
 function resolveBlocks(product: NonNullable<ReturnType<typeof productRepository.getById>>, blocks: ProductFactBlock[], answer: Array<{ text: string; citations: Array<{ blockId: string; quote: string }> }>): AnswerBlock[] {
@@ -39,14 +53,22 @@ function resolveBlocks(product: NonNullable<ReturnType<typeof productRepository.
 export async function POST(request: Request) {
   let gate: ReturnType<typeof acquireProductReview> | null = null;
   try {
-    const body = await readBoundedJson(request, 8_192);
-    if (!exactObject(body, ["productId", "question"]) || typeof body.productId !== "string" || typeof body.question !== "string" || !body.productId || body.productId.length > 128 || !body.question.trim() || body.question.length > 1_000) return NextResponse.json({ error: "상품과 1,000자 이하 질문이 필요합니다." }, { status: 400 });
+    const body = parseRequestBody(await readBoundedJson(request, 8_192));
+    if (!body) return NextResponse.json({ error: "상품과 1,000자 이하 질문이 필요합니다." }, { status: 400 });
+    // All snapshot data is rebuilt before considering client-held continuity references.
     const product = productRepository.getById(body.productId);
     if (!product) return NextResponse.json({ error: "상품이 없습니다." }, { status: 404 });
     const risk = buildStoredRiskAssessment(product, today());
     const blocks = buildProductFactBlocks(product, risk);
-    const eligibleBlocks = selectedFallbackBlocks(body.question, blocks);
     const version = productSnapshotVersion(product, risk);
+    if (body.groundingContext && isStaleGroundingContext(body.groundingContext, version, blocks)) {
+      return NextResponse.json({ code: "stale_grounding_context", resetRequired: true }, { status: 409, headers: { "Cache-Control": "no-store" } });
+    }
+    const eligibleBlocks = eligibleGroundingBlocks(
+      selectedFallbackBlocks(body.question, blocks),
+      body.groundingContext?.factBlockIds ?? [],
+      blocks,
+    );
     const mode = aiMode() === "live" ? "live" : "demo";
     let fallback = mode !== "live";
     let fallbackReason = fallback ? "demo_mode" : null;
@@ -60,6 +82,7 @@ export async function POST(request: Request) {
         gate = acquireProductReview(`qa:${product.offering.id}`);
         if (!gate.ok) return NextResponse.json({ error: "같은 상품의 AI 답변이 이미 진행됐거나 잠시 전에 완료됐습니다.", retryAfterSeconds: gate.retryAfterSeconds }, { status: 429, headers: { "Retry-After": String(gate.retryAfterSeconds) } });
         try {
+          // The provider receives the current question and current verified blocks only; never prior answer prose.
           const result = await answerGroundedQuestion({ productId: product.offering.id, productVersion: version, question: body.question.trim(), blocks: eligibleBlocks.map(({ id, text }) => ({ id, text })) }, config);
           rawAnswer = result.answerBlocks;
           if (!rawAnswer.length) { fallback = true; fallbackReason = "insufficient_grounded_answer"; }
@@ -78,7 +101,13 @@ export async function POST(request: Request) {
     }
     const answerBlocks = resolveBlocks(product, blocks, rawAnswer);
     return NextResponse.json({
-      answer: { productId: product.offering.id, productVersion: version, answerBlocks, decisionStatus: risk.decisionStatus },
+      answer: {
+        productId: product.offering.id,
+        productVersion: version,
+        answerBlocks,
+        decisionStatus: risk.decisionStatus,
+      },
+      groundingContext: responseGroundingContext(version, eligibleBlocks, rawAnswer),
       mode,
       fallback,
       fallbackReason,

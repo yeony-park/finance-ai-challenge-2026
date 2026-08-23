@@ -50,6 +50,8 @@ test("product adapter keeps unknown identity out of verified accepted facts", ()
   assert.equal(adapter.includes("comparableEvidence.length ? comparableEvidence : provenanceIds"), false);
   assert.ok(adapter.includes("if (comparableEvidence.length)"));
   assert.ok(adapter.includes("productSnapshotVersion"));
+  assert.ok(adapter.includes("sanitizeEvidenceUrl"));
+  assert.ok(adapter.includes("url: sanitizeEvidenceUrl(item.sourceUrl)"));
 });
 
 test("product detail exposes the AI disclosure candidate panel and grounded Q&A", () => {
@@ -61,4 +63,62 @@ test("product detail exposes the AI disclosure candidate panel and grounded Q&A"
   assert.ok(panel.includes("상품 사실과 판정에 자동 반영되지 않습니다"));
   assert.ok(qa.includes("GROUNDED PRODUCT Q&A"));
   assert.equal(qa.includes("askProductLive"), false);
+});
+
+
+test("product detail keeps Copilot for current products while preserving the real/demo split", () => {
+  const page = read("app/products/[id]/page.tsx");
+  assert.ok(page.includes('import { AiQuestionPanel } from "@/components/art/ai-question-panel"'));
+  assert.ok(page.includes("<AiQuestionPanel productId={id}/>") || page.includes("<AiQuestionPanel productId={id} />"));
+  assert.ok(page.includes("product.offering.isDemo?null:<AiDartReviewPanel productId={id}/>") || page.includes("product.offering.isDemo ? null : <AiDartReviewPanel productId={id} />"));
+  assert.ok(page.includes("recordScope==='historical'") || page.includes("recordScope === \"historical\""));
+});
+
+test("Copilot client state is product-scoped, bounded, resettable, and context-only on follow-ups", () => {
+  const panel = read("components/art/ai-question-panel.tsx");
+  for (const required of [
+    "sessionStorage",
+    "const storageKey = (productId: string)",
+    "product-copilot:${productId}",
+    "const maxTurns = 8",
+    "slice(-maxTurns)",
+    "resetConversation",
+    "groundingContext",
+    "factBlockIds",
+    "publisher",
+    "asOfDate",
+    "collectedAt",
+    "noopener noreferrer",
+    "href={evidence.url}",
+    "function safeUrl",
+    'url.startsWith("/")',
+    '!url.startsWith("//")',
+    "parsed.username",
+    "parsed.password",
+    "body: JSON.stringify(payload)",
+  ]) assert.ok(panel.includes(required), `Copilot source must retain ${required}`);
+  const payloadStart = panel.indexOf("const payload:");
+  const fetchStart = panel.indexOf('fetch("/api/ai/ask-product"', payloadStart);
+  assert.ok(payloadStart >= 0 && fetchStart > payloadStart);
+  const requestConstruction = panel.slice(payloadStart, fetchStart);
+  assert.ok(requestConstruction.includes("productId"));
+  assert.ok(requestConstruction.includes("question"));
+  assert.ok(requestConstruction.includes("groundingContext"));
+  assert.equal(/\b(?:turns|answer|history)\b/.test(requestConstruction), false, "follow-up request must not serialize conversation prose/history");
+  assert.ok(panel.includes("setTurns([]); setGroundingContext(null)"));
+  assert.ok(panel.includes("window.sessionStorage.removeItem(storageKey(productId))"));
+  assert.match(panel, /if \(!turns\.length && groundingContext === null\) \{[\s\S]*?sessionStorage\.removeItem\(storageKey\(productId\)\);[\s\S]*?return;/);
+  assert.match(panel, /이전 AI 답변 문장이나 이전 질문 내용은 후속 요청에 다시 보내지 않습니다/);
+});
+
+test("original methodology, report, and catalog entry points remain separate from the Copilot panel", () => {
+  const methodology = read("app/methodology/page.tsx");
+  const report = read("app/offers/page.tsx");
+  const catalog = read("app/art/page.tsx");
+  assert.ok(methodology.includes("ArtDemoMethodologySection"));
+  assert.ok(report.includes("OfferListSection"));
+  assert.ok(catalog.includes("ArtCatalogPage"));
+  assert.equal(methodology.includes("AiQuestionPanel"), false);
+  assert.equal(report.includes("AiQuestionPanel"), false);
+  assert.equal(catalog.includes("AiQuestionPanel"), false);
 });
