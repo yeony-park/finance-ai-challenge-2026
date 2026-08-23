@@ -1,1 +1,41 @@
-"use client";export default function ErrorPage({reset}:{error:Error&{digest?:string};reset:()=>void}){return <main id="main-content" className="state-panel state-large"><strong>분석 화면을 불러오지 못했습니다.</strong><p>저장된 분석을 표시하는 중 오류가 발생했습니다. 페이지 전체 대신 이 오류 상태를 표시합니다.</p><button className="button button-primary" onClick={reset}>다시 시도</button></main>}
+"use client";
+
+import Link from "next/link";
+import { useEffect } from "react";
+
+import { StatusScreen } from "@/components/site/StatusScreen";
+import s from "@/components/site/status.module.css";
+
+interface ErrorProps {
+  readonly error: Error & { digest?: string };
+  readonly reset: () => void;
+}
+
+export default function RootError({ error, reset }: ErrorProps) {
+  useEffect(() => {
+    console.error("[render error]", error);
+  }, [error]);
+
+  return (
+    <StatusScreen
+      code="Error · 화면을 그리지 못했습니다"
+      title="리포트를 불러오는 중 문제가 생겼습니다"
+      actions={
+        <>
+          <button type="button" onClick={() => reset()} className={s.actionPrimary}>
+            다시 시도
+          </button>
+          <Link href="/" className={s.actionGhost}>
+            처음 화면으로
+          </Link>
+        </>
+      }
+    >
+      <p className={s.body}>
+        검증 결과가 잘못되었다는 뜻은 아닙니다. 화면을 그리는 과정에서 실패한 것이며, 다시 시도하면
+        해결되는 경우가 많습니다.
+      </p>
+      {error.digest ? <p className={s.detail}>추적 번호 · {error.digest}</p> : null}
+    </StatusScreen>
+  );
+}

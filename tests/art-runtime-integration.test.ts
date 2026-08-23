@@ -370,12 +370,15 @@ test("compare workspace renders selectable products and a two-product comparison
   assert.ok(comparedHtml.includes("플랫폼 청산 이력"));
 });
 
-test("home shows four upcoming verdict demos without the removed repository snapshot", async () => {
+test("home keeps the JeomJeom multi-category shell while art routes remain reachable", async () => {
   const home = await fetch(`${baseUrl}/`).then((response) => response.text());
-  assert.equal(home.includes("REPOSITORY SNAPSHOT"), false);
-  assert.ok(home.includes("곧 청약 예정 · 판단 등급별 예시"));
-  for (const label of ["해볼 만함", "조건부 해볼 만함", "주의", "위험"]) assert.ok(home.includes(label));
-  assert.equal((home.match(/청약 예정/g) ?? []).length >= 4, true);
+  assert.ok(home.includes("JeomJeom"));
+  for (const label of ["부동산", "한우", "돼지", "미술품"]) assert.ok(home.includes(label));
+  assert.equal(home.includes("아트체크 홈"), false);
+  const art = await fetch(`${baseUrl}/art`).then((response) => response.text());
+  assert.ok(art.includes("JeomJeom"));
+  assert.equal(art.includes("아트체크 홈"), false);
+  assert.ok(art.replaceAll("<!-- -->", "").includes("347건"));
   for (const id of ["platform-arttogether", "platform-artnguide", "platform-tessa"]) {
     const response = await fetch(`${baseUrl}/platforms/${id}`);
     assert.equal(response.ok, true, id);
