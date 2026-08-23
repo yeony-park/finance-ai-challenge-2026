@@ -1,7 +1,12 @@
 import { OFFERS } from "../../../../components/site/offers";
 import { formatIsoDate, formatIsoDateShort, formatKstDateTime } from "../format";
 import type { ReportSnapshot } from "../snapshot";
-import type { AssetKind, ClaimKind, Verdict } from "../../types";
+import type {
+  AssetKind,
+  ClaimKind,
+  RealEstateAssetLifecycle,
+  Verdict,
+} from "../../types";
 import { buildFocus } from "./focus-card";
 import { shortSourceName } from "./labels";
 import { buildRealEstateFocus } from "./real-estate";
@@ -28,6 +33,10 @@ const realEstateRegionLabel = (report: ReportSnapshot): string =>
 export interface ReportContext {
   readonly report: ReportSnapshot;
   readonly assetKind: AssetKind;
+  readonly assetLifecycle?: RealEstateAssetLifecycle;
+  readonly isOperatingRealEstate: boolean;
+  readonly hasBuildingEvidence: boolean;
+  readonly buildingSourceName: string;
   readonly regionLabel: string;
   readonly versionCount: number;
   readonly headCount: number;
@@ -70,17 +79,21 @@ export const buildReportContext = (input: DemoViewInput): ReportContext => {
     "기초자산";
 
   const assetKind = report.assetKind;
+  const assetLifecycle = report.realEstate?.assetLifecycle;
+  const buildingEvidence = report.judgements
+    .flatMap((judgement) => judgement.evidence)
+    .find((evidence) => evidence.sourceId === "molit-building-register-hub");
   const isFixture = report.sources.some((name) => name.includes("픽스처"));
   const regionLabel = realEstateRegionLabel(report);
-  const assetLabel =
-    report.bySubject[0]?.subject ??
-    report.judgements[0]?.claim.subject ??
-    report.unjudged[0]?.claim.subject ??
-    "부동산";
-
   return {
     report,
     assetKind,
+    assetLifecycle,
+    isOperatingRealEstate:
+      assetKind === "real-estate" && assetLifecycle === "operating",
+    hasBuildingEvidence: buildingEvidence !== undefined,
+    buildingSourceName:
+      buildingEvidence?.sourceName ?? "국토교통부 건축물대장 표제부 조회 서비스",
     regionLabel,
     versionCount,
     headCount: report.bySubject.length,
@@ -90,7 +103,9 @@ export const buildReportContext = (input: DemoViewInput): ReportContext => {
     generatedAt: formatKstDateTime(report.generatedAt),
     submittedOn: formatIsoDate(report.document.submittedOn),
     submittedOnShort: formatIsoDateShort(report.document.submittedOn),
-    sourceName: shortSourceName(report.sources),
+    sourceName: shortSourceName(
+      buildingEvidence?.sourceName ? [buildingEvidence.sourceName] : report.sources,
+    ),
     modeLabel:
       report.mode === "live"
         ? "live 모드 · 공공 API 실호출"
@@ -99,7 +114,7 @@ export const buildReportContext = (input: DemoViewInput): ReportContext => {
           : "fake 모드 · 실측 스냅샷 재생",
     offerTitle:
       assetKind === "real-estate"
-        ? `${assetLabel} · ${regionLabel} 상업업무용 부동산`
+        ? `${report.realEstate?.publicAlias ?? registryTitle(report.offerId)} · ${regionLabel} 상업업무용 부동산`
         : `${registryTitle(report.offerId)} · ${breed} 사육 투자계약증권`,
     claimTotal: report.judgements.length + report.unjudged.length,
     unjudgedCount: report.unjudged.length,

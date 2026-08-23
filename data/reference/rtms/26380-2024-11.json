@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 2,
+  "month": "2024-11",
+  "lawdCd": "26380",
+  "sigunguName": "부산 사하구",
+  "collectedAt": "2026-08-22T17:40:36.383Z",
+  "sourceId": "molit-rtms-nrg-trade",
+  "sourceName": "국토교통부 상업업무용 부동산 매매 신고 자료 (국토교통부 · data.go.kr 실거래가 오픈API)",
+  "endpoint": "https://apis.data.go.kr/1613000/RTMSDataSvcNrgTrade/getRTMSDataSvcNrgTrade",
+  "status": "ok",
+  "totalCount": 15,
+  "collectedCount": 15,
+  "cancelledCount": 1,
+  "trades": [
+    {
+      "dong": "당리동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-11-25",
+      "amountWon": 186000000,
+      "floor": 2,
+      "buildingAreaSqm": 157.56,
+      "buildYear": 1997
+    },
+    {
+      "dong": "괴정동",
+      "buildingType": "일반",
+      "buildingUse": "제1종근린생활",
+      "dealOn": "2024-11-22",
+      "amountWon": 1200000000,
+      "buildingAreaSqm": 210.07,
+      "landAreaSqm": 124,
+      "buildYear": 1981
+    },
+    {
+      "dong": "괴정동",
+      "buildingType": "일반",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-11-26",
+      "amountWon": 700000000,
+      "buildingAreaSqm": 115.97,
+      "landAreaSqm": 145,
+      "buildYear": 1997
+    },
+    {
+      "dong": "장림동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-11-22",
+      "amountWon": 150000000,
+      "floor": 3,
+      "buildingAreaSqm": 51.6,
+      "buildYear": 2005
+    },
+    {
+      "dong": "괴정동",
+      "buildingType": "일반",
+      "buildingUse": "기타",
+      "dealOn": "2024-11-04",
+      "amountWon": 7000000000,
+      "buildingAreaSqm": 2297.86,
+      "landAreaSqm": 724.7,
+      "buildYear": 2007
+    },
+    {
+      "dong": "신평동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-11-26",
+      "amountWon": 10000000,
+      "floor": 1,
+      "buildingAreaSqm": 6.61,
+      "buildYear": 1980
+    },
+    {
+      "dong": "신평동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-11-26",
+      "amountWon": 10000000,
+      "floor": 1,
+      "buildingAreaSqm": 6.61,
+      "buildYear": 1980
+    },
+    {
+      "dong": "하단동",
+      "buildingType": "일반",
+      "buildingUse": "제1종근린생활",
+      "dealOn": "2024-11-21",
+      "amountWon": 1389300000,
+      "buildingAreaSqm": 733.4,
+      "landAreaSqm": 153.5,
+      "buildYear": 2004
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-11-13",
+      "amountWon": 290000000,
+      "floor": 5,
+      "buildingAreaSqm": 177.4,
+      "buildYear": 2004
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제1종근린생활",
+      "dealOn": "2024-11-19",
+      "amountWon": 110000000,
+      "floor": 3,
+      "buildingAreaSqm": 38,
+      "buildYear": 2007
+    },
+    {
+      "dong": "당리동",
+      "buildingType": "집합",
+      "buildingUse": "제1종근린생활",
+      "dealOn": "2024-11-18",
+      "amountWon": 15000000,
+      "floor": 3,
+      "buildingAreaSqm": 41.4,
+      "buildYear": 1991
+    },
+    {
+      "dong": "괴정동",
+      "buildingType": "집합",
+      "buildingUse": "제1종근린생활",
+      "dealOn": "2024-11-15",
+      "amountWon": 37000000,
+      "buildingAreaSqm": 48.54,
+      "buildYear": 1987
+    },
+    {
+      "dong": "구평동",
+      "buildingType": "일반",
+      "buildingUse": "업무",
+      "dealOn": "2024-11-26",
+      "amountWon": 39642000000,
+      "buildingAreaSqm": 11591.32,
+      "landAreaSqm": 28991,
+      "buildYear": 1979
+    },
+    {
+      "dong": "감천동",
+      "buildingType": "일반",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-11-05",
+      "amountWon": 4500000000,
+      "buildingAreaSqm": 1723.48,
+      "landAreaSqm": 384,
+      "buildYear": 2000
+    }
+  ]
+}

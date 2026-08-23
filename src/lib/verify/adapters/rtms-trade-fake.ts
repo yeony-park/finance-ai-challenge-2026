@@ -128,11 +128,21 @@ export const resolveRtmsTradeAdapter = async (
 
   const caches = await loadRtmsCaches(options.dataDir);
   const usable = caches.filter(
-    (cache) => cache.lawdCd === lawdCd && cache.status === "ok",
+    (cache) =>
+      cache.lawdCd === lawdCd &&
+      cache.status === "ok" &&
+      cache.trades.length > 0,
   );
-  if (usable.length === 0) return createFakeRtmsTradeAdapter();
+  if (usable.length === 0) {
+    return createRtmsTradeAdapter(usable, {
+      name: "cache",
+      lawdCd,
+      sigunguName,
+      sourceName: `${RTMS_SOURCE_NAME} — 요청 지역 사용 가능 캐시 없음(대조 보류)`,
+    });
+  }
 
-  return createRtmsTradeAdapter(caches, {
+  return createRtmsTradeAdapter(usable, {
     name: "cache",
     lawdCd,
     sigunguName,

@@ -40,7 +40,9 @@ export const buildSubjectCards = (
   const nos = assignSubjectNos(report.bySubject.map((head) => head.subject));
   return report.bySubject.map((head, index) => {
     const no = isRealEstate ? index + 1 : (nos[index] ?? index + 1);
-    const label = isRealEstate ? head.subject : `${no}호`;
+    const label = isRealEstate
+      ? (report.realEstate?.publicAlias ?? head.subject)
+      : `${no}호`;
     return {
       no,
       label,

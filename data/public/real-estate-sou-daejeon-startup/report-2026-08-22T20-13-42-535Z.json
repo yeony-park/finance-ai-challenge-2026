@@ -1,0 +1,169 @@
+{
+  "offerId": "real-estate-sou-daejeon-startup",
+  "assetKind": "real-estate",
+  "document": {
+    "offerId": "real-estate-sou-daejeon-startup",
+    "rcpNo": "",
+    "submittedOn": "2025-10-20"
+  },
+  "generatedAt": "2026-08-22T20:13:42.535Z",
+  "mode": "live",
+  "sources": [
+    "국토교통부 상업업무용 부동산 매매 신고 자료 (국토교통부 · data.go.kr 실거래가 오픈API) — 월 신고 사전 수집본"
+  ],
+  "summary": {
+    "total": 0,
+    "match": 0,
+    "mismatch": 0,
+    "unverifiable": 0
+  },
+  "bySubject": [],
+  "judgements": [],
+  "unjudged": [
+    {
+      "claim": {
+        "id": "real_estate_address:소유 3호 대전 창업스페이스",
+        "kind": "real_estate_address",
+        "subject": "소유 3호 대전 창업스페이스",
+        "field": "소재지",
+        "value": "대전 유성구 ○○동",
+        "document": {
+          "offerId": "real-estate-sou-daejeon-startup",
+          "rcpNo": "",
+          "submittedOn": "2025-10-20"
+        },
+        "location": {
+          "section": "플랫폼 상품 상세",
+          "table": "상품 상세",
+          "row": 1,
+          "sectionPath": [
+            "플랫폼 상품 상세",
+            "상품 상세"
+          ]
+        },
+        "verifiability": "unparsed",
+        "demotionReason": "소재지는 법정동·지번까지 적혀 있어야 합니다",
+        "extractedBy": "rules"
+      },
+      "reason": "소재지는 법정동·지번까지 적혀 있어야 합니다(대조 불가)"
+    },
+    {
+      "claim": {
+        "id": "sale_amount:소유 3호 대전 창업스페이스",
+        "kind": "sale_amount",
+        "subject": "소유 3호 대전 창업스페이스",
+        "field": "매각금액",
+        "value": "920,000,000원",
+        "numericValue": 920000000,
+        "unit": "원",
+        "document": {
+          "offerId": "real-estate-sou-daejeon-startup",
+          "rcpNo": "",
+          "submittedOn": "2025-10-20"
+        },
+        "location": {
+          "section": "운영사 매각 완료 및 대금지급 안내",
+          "table": "정리매매 종료·매각대금 지급",
+          "row": 1,
+          "sectionPath": [
+            "운영사 매각 완료 및 대금지급 안내",
+            "정리매매 종료·매각대금 지급"
+          ]
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "RTMS 법정동 비교군에는 지번이 없어 동일 물건을 연결할 수 없습니다. 동일 물건 식별 근거가 없어 판정을 보류합니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "sale_date:소유 3호 대전 창업스페이스",
+        "kind": "sale_date",
+        "subject": "소유 3호 대전 창업스페이스",
+        "field": "정리매매 종료일",
+        "value": "2025-10-20",
+        "document": {
+          "offerId": "real-estate-sou-daejeon-startup",
+          "rcpNo": "",
+          "submittedOn": "2025-10-20"
+        },
+        "location": {
+          "section": "운영사 매각 완료 및 대금지급 안내",
+          "table": "정리매매 종료·매각대금 지급",
+          "row": 2,
+          "sectionPath": [
+            "운영사 매각 완료 및 대금지급 안내",
+            "정리매매 종료·매각대금 지급"
+          ]
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "RTMS 법정동 비교군에는 지번이 없어 동일 물건을 연결할 수 없습니다. 동일 물건 식별 근거가 없어 판정을 보류합니다(대조 불가)."
+    },
+    {
+      "claim": {
+        "id": "offer_amount:소유 3호 대전 창업스페이스",
+        "kind": "offer_amount",
+        "subject": "소유 3호 대전 창업스페이스",
+        "field": "공모금액",
+        "value": "910,000,000원",
+        "numericValue": 910000000,
+        "unit": "원",
+        "document": {
+          "offerId": "real-estate-sou-daejeon-startup",
+          "rcpNo": "",
+          "submittedOn": "2025-10-20"
+        },
+        "location": {
+          "section": "운영사 공모 안내",
+          "table": "공모 정보",
+          "row": 2,
+          "sectionPath": [
+            "운영사 공모 안내",
+            "공모 정보"
+          ]
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "실거래 신고 수집본에 2022-10, 2022-11, 2022-12가 없어 비교군을 채울 수 없습니다(대조 불가)."
+    }
+  ],
+  "pricePlacements": [],
+  "realEstatePlacements": [],
+  "realEstate": {
+    "publicAlias": "소유 3호 대전 창업스페이스",
+    "subscriptionStatus": "closed",
+    "assetLifecycle": "settled",
+    "tradabilityStatus": "ended",
+    "statusEvidence": {
+      "assetLifecycle": {
+        "sourceKind": "platform-claim",
+        "label": "소유 3호 대전 창업스페이스 매각 완료 및 대금지급 안내",
+        "url": "https://blog.naver.com/sou_all/22●●●●●●●●41",
+        "asOf": "2025-10-23"
+      },
+      "tradabilityStatus": {
+        "sourceKind": "platform-claim",
+        "label": "소유 3호 대전 창업스페이스 매각 완료 및 대금지급 안내",
+        "url": "https://blog.naver.com/sou_all/22●●●●●●●●41",
+        "asOf": "2025-10-23"
+      }
+    }
+  },
+  "notes": [
+    "공모 기초자료 4건을 공개 자료에서 옮겨 적었습니다 (출처 9건 · data/offers/real-estate-sou-daejeon-startup.json).",
+    "소유 3호의 법적 정식 상품명은 직접 원문에서 확인하지 못했습니다.",
+    "공모 수량 182,000 SOU는 공모총액 910,000,000원÷단가 5,000원 산술값이며, 매각 수익자총회 공지의 총의결권 수와 교차한 값입니다. 직접 발행수량 원문이 아니므로 공모 구조는 확인 완료로 처리하지 않았습니다.",
+    "소재지는 대전 ○○구 ○○동 공개 수준으로만 기록했습니다. 정확한 지번, 면적, 건축물대장 조회 조건과 BuildingHub 대조는 미확인입니다.",
+    "약 100평은 운영사 설명이며 정확한 제곱미터로 환산하거나 저장하지 않았습니다.",
+    "매각금액 920,000,000원과 2025-10-20은 운영사 발표의 정리매매 종료일입니다. 법적 소유권 이전일은 미확인입니다.",
+    "2025-10-23 매각대금 지급, 누적 수익률 17.2%, 평균 배당 약 연 5%는 운영사 발표이며 외부 독립 검증이 아닙니다. 월별 실제 배당 총액·주당 배당·비용은 확인하지 않았습니다.",
+    "윙윙은 운영사 발표상 공간운영사이며, 법인 등록명·신탁·수탁 역할은 확인하지 않았습니다.",
+    "매각 수익자총회 공지의 조건은 해당 안건의 절차일 뿐 일반 매각·연장·청산 조건으로 확장하지 않습니다.",
+    "확인한 운영사 공지가 일부이므로 중요 공시 전체를 확인 완료로 처리하지 않았습니다.",
+    "RTMS 법정동 비교군에는 지번이 없어 매각금액·일자의 동일 물건 연결을 확인하지 않았습니다. 동일 물건 식별 근거가 추가되기 전에는 판정을 보류합니다.",
+    "2025-09~2025-11 같은 법정동 상업업무용 실거래 신고가 없어 비교군을 만들지 못했습니다 — 매각금액 위치를 제시하지 않았습니다."
+  ]
+}

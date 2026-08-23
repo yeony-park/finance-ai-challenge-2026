@@ -41,7 +41,9 @@ export interface FocusView {
   readonly ledgerRows: readonly EvidenceRowView[];
   readonly foot: Record<ExplainLevel, RichText>;
   readonly sourceDoc: string;
+  readonly sourceDocUrl?: string;
   readonly sourceLedger: string;
+  readonly sourceLedgerUrl?: string;
 }
 
 export interface NoteItemView {
@@ -49,6 +51,11 @@ export interface NoteItemView {
   readonly tone: "good" | "warn" | "unknown";
   readonly title: string;
   readonly meta: string;
+  readonly source?: {
+    readonly label: string;
+    readonly url: string;
+    readonly asOf?: string;
+  };
 }
 
 export interface DemoView {

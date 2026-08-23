@@ -3,6 +3,7 @@ import type { ClaimExtractionClient } from "./claims/llm-client";
 import {
   buildRealEstateClaims,
   realEstateDocumentRef,
+  realEstateReportMetadataOf,
   type RealEstateOffer,
 } from "./claims/real-estate";
 import { judgeClaims } from "./judge/engine";
@@ -12,6 +13,7 @@ import { submittedOnFromRcpNo, type DocumentRef, type VerifyReport } from "./typ
 import type { LivestockTraceAdapter } from "./adapters/livestock-trace";
 import type { AuctionPriceAdapter } from "./adapters/auction-price";
 import type { RtmsTradeAdapter } from "./adapters/rtms-trade";
+import type { BuildingHubCacheLookup } from "./adapters/building-register";
 
 const OFFER_REGISTRY: Readonly<Record<string, string>> = {
   "20240220002223": "livestock-1",
@@ -107,6 +109,7 @@ export const runVerification = async (
 export interface RealEstateVerifyInput {
   readonly offer: RealEstateOffer;
   readonly trades: RtmsTradeAdapter;
+  readonly buildingHub?: BuildingHubCacheLookup;
   readonly generatedAt?: string;
 }
 
@@ -119,6 +122,7 @@ export const runRealEstateVerification = (
     offer: input.offer,
     claims: extraction.claims,
     trades: input.trades,
+    buildingHub: input.buildingHub,
   });
 
   const modeNote =
@@ -133,10 +137,16 @@ export const runRealEstateVerification = (
     assetKind: "real-estate",
     generatedAt: input.generatedAt ?? new Date().toISOString(),
     mode: input.trades.name === "fake" ? "fake" : "live",
-    sources: [input.trades.sourceName],
+    sources: [
+      input.trades.sourceName,
+      ...(input.buildingHub?.cache
+        ? [input.buildingHub.cache.sourceName]
+        : []),
+    ],
     judgements: outcome.judgements,
     unjudged: outcome.unjudged,
     realEstatePlacements: outcome.placements,
+    realEstate: realEstateReportMetadataOf(input.offer),
     notes: [...modeNote, ...extraction.notes, ...outcome.notes],
   });
 };

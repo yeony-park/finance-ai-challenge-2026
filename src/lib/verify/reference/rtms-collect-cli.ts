@@ -5,6 +5,7 @@ import {
   rtmsMonthsBetween,
   writeRtmsCache,
 } from "./rtms-collect";
+import { rtmsServiceKeyOf } from "./rtms-service-key";
 
 const DEFAULT_FROM = "2026-01";
 const DEFAULT_TO = "2026-03";
@@ -35,14 +36,14 @@ const parseArgs = (argv: readonly string[]): CliOptions => {
 
 const main = async (): Promise<void> => {
   const options = parseArgs(process.argv.slice(2));
-  const serviceKey = process.env.DATA_GO_KR_API_KEY;
+  const months = rtmsMonthsBetween(options.from, options.to);
+  const serviceKey = rtmsServiceKeyOf(process.env);
   if (!serviceKey) {
     throw new Error(
       "DATA_GO_KR_API_KEY가 없습니다. 수집은 실키 전용입니다 (.env 설정 후 재실행).",
     );
   }
 
-  const months = rtmsMonthsBetween(options.from, options.to);
   console.log(
     `수집 계획: ${options.sigunguName}(${options.lawdCd}) · ${months.join(", ")} → 예상 호출 ${months.length}건 (일 쿼터 10,000)`,
   );
@@ -95,10 +96,16 @@ const main = async (): Promise<void> => {
   }
 };
 
-main().catch((error: unknown) => {
-  console.error(
-    "실거래 수집 실패:",
-    error instanceof Error ? error.message : error,
-  );
-  process.exitCode = 1;
-});
+if (
+  process.argv[1] !== undefined &&
+  import.meta.url === pathToFileURL(process.argv[1]).href
+) {
+  main().catch((error: unknown) => {
+    console.error(
+      "실거래 수집 실패:",
+      error instanceof Error ? error.message : error,
+    );
+    process.exitCode = 1;
+  });
+}
+import { pathToFileURL } from "node:url";

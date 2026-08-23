@@ -1,0 +1,253 @@
+{
+  "schemaVersion": 2,
+  "offerId": "real-estate-sou-daejeon-startup",
+  "subject": "소유 3호 대전 창업스페이스",
+  "publicAlias": "소유 3호 대전 창업스페이스",
+  "assetKind": "real-estate",
+  "subscriptionStatus": "closed",
+  "assetLifecycle": "settled",
+  "tradabilityStatus": "ended",
+  "statusSources": {
+    "assetLifecycle": "https://blog.naver.com/sou_all/224051448541",
+    "tradabilityStatus": "https://blog.naver.com/sou_all/224051448541"
+  },
+  "asset": {
+    "address": "대전 유성구 어은동",
+    "lawdCd": "30200",
+    "sigunguName": "대전 유성구",
+    "dong": "어은동",
+    "buildingUse": "운영사 발표상 청년 창업가 대상 창업스페이스",
+    "detail": "운영사 발표상 약 100평 규모의 창업공간이며, 정확한 면적·지번·건축물대장 대조는 미확인"
+  },
+  "offer": {
+    "amountWon": 910000000,
+    "opensOn": "2022-12-08",
+    "closesOn": "2022-12-15",
+    "listedOn": "2022-12-28",
+    "unitCount": 182000,
+    "unitPriceWon": 5000,
+    "section": "운영사 공모 안내",
+    "table": "공모 정보"
+  },
+  "sale": {
+    "amountWon": 920000000,
+    "dealOn": "2025-10-20",
+    "dateLabel": "정리매매 종료일",
+    "source": "https://blog.naver.com/sou_all/224051448541",
+    "section": "운영사 매각 완료 및 대금지급 안내",
+    "table": "정리매매 종료·매각대금 지급"
+  },
+  "productSummary": {
+    "platform": {
+      "label": "SOU(소유)",
+      "source": {
+        "label": "소유 공식 사이트",
+        "url": "https://sou.place/",
+        "asOf": "2026-08-23"
+      }
+    },
+    "expectedDistributionRate": {
+      "status": "unconfirmed",
+      "note": "운영사 완료 공지의 평균 배당 약 연 5%와 누적 수익률 17.2%는 운영사 발표이며, 월별 실제 배당·비용·외부 검증이 없어 계약상 또는 확정 수익률로 기록하지 않습니다."
+    },
+    "contractualDistributionCycle": {
+      "status": "unconfirmed",
+      "note": "운영사 과거 안내에는 월 배당 지급 예정과 5년 장기 임대차 설명이 있으나, 실제 지급 조건·계약 지속 여부를 직접 확인하지 못했습니다."
+    },
+    "trustPeriod": {
+      "status": "unconfirmed",
+      "note": "상품의 법적 신탁기간 또는 존속기간 원문을 직접 확인하지 못했습니다."
+    },
+    "saleLiquidationCondition": {
+      "status": "confirmed",
+      "value": "2025-06-18 매각 수익자총회 제안: 가결 시 정리매매 후 장 마감 기준 보유자에게 매각 수익금 지급 안내",
+      "note": "이는 해당 매각 수익자총회에 제시된 절차입니다. 일반적인 매각·연장·청산 조건이나 법적 소유권 이전일을 뜻하지 않습니다.",
+      "source": {
+        "label": "소유 3호 매각 수익자총회 개최 안내",
+        "url": "https://blog.naver.com/sou_all/223903448429",
+        "asOf": "2025-06-18"
+      }
+    },
+    "totalExpenseRates": [],
+    "frontEndSalesFeeRates": []
+  },
+  "investmentReview": {
+    "importantEvents": [],
+    "roleHistory": [
+      {
+        "role": "platform",
+        "entityId": "lucentblock",
+        "legalName": "주식회사 루센트블록",
+        "relationship": "platform-operator",
+        "events": [
+          {
+            "eventOn": "2026-08-23",
+            "outcome": "fulfilled",
+            "source": "https://sou.place/"
+          }
+        ]
+      },
+      {
+        "role": "property-manager",
+        "entityId": "wingwing",
+        "legalName": "윙윙",
+        "relationship": "appointed-service-provider",
+        "events": [
+          {
+            "eventOn": "2022-11-28",
+            "outcome": "unknown",
+            "source": "https://blog.naver.com/sou_all/222940154904"
+          }
+        ]
+      }
+    ],
+    "marketContext": [
+      {
+        "provider": "ECOS",
+        "metric": "base-rate",
+        "observedOn": "2025-10-20",
+        "publishedOn": "2026-08-23",
+        "value": 2.5,
+        "unit": "percent",
+        "source": "https://ecos.bok.or.kr/api/",
+        "validThrough": "2026-08-23"
+      },
+      {
+        "provider": "ECOS",
+        "metric": "base-rate",
+        "observedOn": "2026-08-21",
+        "publishedOn": "2026-08-23",
+        "value": 2.75,
+        "unit": "percent",
+        "source": "https://ecos.bok.or.kr/api/",
+        "validThrough": "2026-08-23"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "sourceKind": "platform-claim",
+      "label": "소유 3호 대전 창업스페이스 공모 안내",
+      "url": "https://blog.naver.com/sou_all/222936349304",
+      "asOf": "2022-12-08",
+      "collectedAt": "2026-08-23",
+      "method": "manual",
+      "status": "운영사 블로그 공지에서 공모 청약기간 2022-12-08~2022-12-15, 공모가 5,000원, 전체 공모금액 910,000,000원 확인",
+      "limitations": [
+        "직접 발행수량은 이 공지에서 확인하지 못했습니다.",
+        "정확한 지번·면적·건축물대장 대조는 포함하지 않습니다."
+      ]
+    },
+    {
+      "sourceKind": "platform-claim",
+      "label": "소유 3호 대전 창업스페이스 조기완판 안내",
+      "url": "https://blog.naver.com/sou_all/222950202618",
+      "asOf": "2022-12-08",
+      "collectedAt": "2026-08-23",
+      "method": "manual",
+      "status": "운영사 블로그 공지에서 공모 첫날 완판 발표 확인",
+      "limitations": [
+        "조기완판 공지는 배정·납입·발행수량 또는 현재 거래 가능 상태를 확인하지 않습니다."
+      ]
+    },
+    {
+      "sourceKind": "platform-claim",
+      "label": "소유 3호 대전 창업스페이스 상장 및 거래시작 안내",
+      "url": "https://blog.naver.com/sou_all/222967940939",
+      "asOf": "2022-12-28",
+      "collectedAt": "2026-08-23",
+      "method": "manual",
+      "status": "운영사 블로그 공지의 2022-12-28 상장 및 거래시작 안내",
+      "limitations": [
+        "과거 거래시작 공지는 2025년 정리매매 이후의 현재 거래 가능 상태를 확인하지 않습니다."
+      ]
+    },
+    {
+      "sourceKind": "platform-claim",
+      "label": "소유 3호 대전 창업스페이스 공간운영사 윙윙 안내",
+      "url": "https://blog.naver.com/sou_all/222940154904",
+      "asOf": "2022-11-28",
+      "collectedAt": "2026-08-23",
+      "method": "manual",
+      "status": "운영사 블로그 공지에서 소유 3호의 공간운영사를 윙윙으로 소개하고, 대전 어은동 소재 창업공간 및 5년 장기 임대차·월 배당 지급 예정 설명 확인",
+      "limitations": [
+        "윙윙의 법인 등록명, 신탁·수탁 역할, 임대차의 현재 지속 여부, 공실 및 실제 월별 배당은 확인하지 않습니다."
+      ]
+    },
+    {
+      "sourceKind": "platform-claim",
+      "label": "소유 3호 매각 수익자총회 개최 안내",
+      "url": "https://blog.naver.com/sou_all/223903448429",
+      "asOf": "2025-06-18",
+      "collectedAt": "2026-08-23",
+      "method": "manual",
+      "status": "운영사 블로그 공지에서 매각 제안금액 920,000,000원, 가결 시 정리매매 후 장 마감 기준 보유자에게 매각 수익금 지급 예정 절차 확인",
+      "limitations": [
+        "이는 총회 제안·절차 안내이며, 매각 성사, 법적 소유권 이전 또는 최종 투자자 정산의 독립 확인이 아닙니다."
+      ]
+    },
+    {
+      "sourceKind": "platform-claim",
+      "label": "소유 3호 매각 수익자총회 가결 결과 안내",
+      "url": "https://blog.naver.com/sou_all/223927673927",
+      "asOf": "2025-07-09",
+      "collectedAt": "2026-08-23",
+      "method": "manual",
+      "status": "운영사 블로그의 소유 3호 매각 확정 안내",
+      "limitations": [
+        "가결 공지는 정리매매 종료일, 법적 소유권 이전일 또는 투자자별 실제 수령액을 독립적으로 확인하지 않습니다."
+      ]
+    },
+    {
+      "sourceKind": "platform-claim",
+      "label": "소유 3호 대전 창업스페이스 매각 완료 및 대금지급 안내",
+      "url": "https://blog.naver.com/sou_all/224051448541",
+      "asOf": "2025-10-23",
+      "collectedAt": "2026-08-23",
+      "method": "manual",
+      "status": "운영사 블로그 공지에서 정리매매일 2025-10-20까지 보유한 소유주에게 2025-10-23 매각대금 지급 발표, 누적 수익률 17.2% 및 평균 배당 약 연 5% 발표 확인",
+      "limitations": [
+        "매각 완료·대금지급·수익률은 운영사 발표이며 외부 원장·감사·법적 소유권 이전으로 독립 검증하지 않았습니다.",
+        "개인별 보유수량, 세금, 수수료와 실제 수령액은 알 수 없습니다."
+      ]
+    },
+    {
+      "sourceKind": "platform-claim",
+      "label": "소유 공식 사이트 — 루센트블록 법인 표기",
+      "url": "https://sou.place/",
+      "asOf": "2026-08-23",
+      "collectedAt": "2026-08-23",
+      "method": "manual",
+      "status": "공식 사이트 하단에서 소유 서비스와 주식회사 루센트블록 표기 확인",
+      "limitations": [
+        "이 법인 표기는 소유 3호의 신탁·수탁·자산관리 또는 매각 법률행위 주체를 확인하지 않습니다."
+      ]
+    },
+    {
+      "sourceKind": "external-observation",
+      "label": "한국은행 ECOS StatisticSearch — 기준금리(722Y001) 정제 관측",
+      "url": "https://ecos.bok.or.kr/api/",
+      "asOf": "2026-08-23",
+      "collectedAt": "2026-08-22T20:12:24.172Z",
+      "method": "manual",
+      "status": "ECOS StatisticSearch 722Y001의 ITEM_CODE1 0101000(한국은행 기준금리) 일별 관측 659건을 2024-11-01~2026-08-23 범위에서 정제",
+      "limitations": [
+        "소유 3호의 2022년 시작 시점은 이 수집 범위 밖입니다. 2025-10-20 정리매매 종료일 관측과 최신 관측을 거시 맥락으로만 연결했습니다.",
+        "최신 관측일은 2026-08-21이며, 2026-08-22~23에 값이 없다는 뜻이 아니라 수집 결과의 마지막 관측일입니다.",
+        "기준금리는 거시 맥락일 뿐 이 상품의 가격, 동일성, 임대차, 매각, 배당 또는 수익을 증명하지 않습니다.",
+        "정제 캐시는 공개 API 설명 URL만 보존하며 인증키와 키가 포함된 요청 경로는 저장하지 않습니다."
+      ]
+    }
+  ],
+  "limits": [
+    "소유 3호의 법적 정식 상품명은 직접 원문에서 확인하지 못했습니다.",
+    "공모 수량 182,000 SOU는 공모총액 910,000,000원÷단가 5,000원의 산술값이며, 매각 수익자총회 공지의 총의결권 수와 교차한 값입니다. 직접 발행수량 원문이 아니므로 공모 구조는 확인 완료로 처리하지 않았습니다.",
+    "소재지는 대전 유성구 어은동 공개 수준으로만 기록했습니다. 정확한 지번, 면적, 건축물대장 조회 조건과 BuildingHub 대조는 미확인입니다.",
+    "약 100평은 운영사 설명이며 정확한 제곱미터로 환산하거나 저장하지 않았습니다.",
+    "매각금액 920,000,000원과 2025-10-20은 운영사 발표의 정리매매 종료일입니다. 법적 소유권 이전일은 미확인입니다.",
+    "2025-10-23 매각대금 지급, 누적 수익률 17.2%, 평균 배당 약 연 5%는 운영사 발표이며 외부 독립 검증이 아닙니다. 월별 실제 배당 총액·주당 배당·비용은 확인하지 않았습니다.",
+    "윙윙은 운영사 발표상 공간운영사이며, 법인 등록명·신탁·수탁 역할은 확인하지 않았습니다.",
+    "매각 수익자총회 공지의 조건은 해당 안건의 절차일 뿐 일반 매각·연장·청산 조건으로 확장하지 않습니다.",
+    "확인한 운영사 공지가 일부이므로 중요 공시 전체를 확인 완료로 처리하지 않았습니다."
+  ]
+}

@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 2,
+  "month": "2025-10",
+  "lawdCd": "30200",
+  "sigunguName": "대전 유성구",
+  "collectedAt": "2026-08-22T20:05:17.325Z",
+  "sourceId": "molit-rtms-nrg-trade",
+  "sourceName": "국토교통부 상업업무용 부동산 매매 신고 자료 (국토교통부 · data.go.kr 실거래가 오픈API)",
+  "endpoint": "https://apis.data.go.kr/1613000/RTMSDataSvcNrgTrade/getRTMSDataSvcNrgTrade",
+  "status": "ok",
+  "totalCount": 16,
+  "collectedCount": 16,
+  "cancelledCount": 2,
+  "trades": [
+    {
+      "dong": "구암동",
+      "buildingType": "일반",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2025-10-28",
+      "amountWon": 780000000,
+      "buildingAreaSqm": 69.24,
+      "landAreaSqm": 213.5,
+      "buildYear": 1993
+    },
+    {
+      "dong": "구암동",
+      "buildingType": "일반",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2025-10-28",
+      "amountWon": 535000000,
+      "buildingAreaSqm": 72,
+      "landAreaSqm": 140.5,
+      "buildYear": 1995
+    },
+    {
+      "dong": "관평동",
+      "buildingType": "집합",
+      "buildingUse": "업무",
+      "dealOn": "2025-10-25",
+      "amountWon": 70000000,
+      "buildingAreaSqm": 34.76
+    },
+    {
+      "dong": "지족동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2025-10-22",
+      "amountWon": 260000000,
+      "floor": 1,
+      "buildingAreaSqm": 38.07,
+      "buildYear": 2004
+    },
+    {
+      "dong": "반석동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2025-10-28",
+      "amountWon": 300000000,
+      "floor": 6,
+      "buildingAreaSqm": 156.21,
+      "buildYear": 2006
+    },
+    {
+      "dong": "반석동",
+      "buildingType": "일반",
+      "buildingUse": "제1종근린생활",
+      "dealOn": "2025-10-10",
+      "amountWon": 3000000000,
+      "buildingAreaSqm": 1396.76,
+      "landAreaSqm": 1075,
+      "buildYear": 2012
+    },
+    {
+      "dong": "관평동",
+      "buildingType": "일반",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2025-10-22",
+      "amountWon": 780000000,
+      "buildingAreaSqm": 420.88,
+      "landAreaSqm": 378.23,
+      "buildYear": 2012
+    },
+    {
+      "dong": "반석동",
+      "buildingType": "집합",
+      "buildingUse": "제1종근린생활",
+      "dealOn": "2025-10-20",
+      "amountWon": 150000000,
+      "floor": 3,
+      "buildingAreaSqm": 54.41,
+      "buildYear": 2006
+    },
+    {
+      "dong": "전민동",
+      "buildingType": "일반",
+      "buildingUse": "제1종근린생활",
+      "dealOn": "2025-10-13",
+      "amountWon": 1200000000,
+      "buildingAreaSqm": 492.2,
+      "landAreaSqm": 198.2,
+      "buildYear": 1994
+    },
+    {
+      "dong": "전민동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2025-10-20",
+      "amountWon": 90000000,
+      "buildingAreaSqm": 3.83,
+      "buildYear": 1994
+    },
+    {
+      "dong": "전민동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2025-10-20",
+      "amountWon": 90000000,
+      "buildingAreaSqm": 3.83
+    },
+    {
+      "dong": "용산동",
+      "buildingType": "집합",
+      "buildingUse": "제1종근린생활",
+      "dealOn": "2025-10-02",
+      "amountWon": 347700000,
+      "floor": 3,
+      "buildingAreaSqm": 63.56,
+      "buildYear": 2025
+    },
+    {
+      "dong": "도룡동",
+      "buildingType": "집합",
+      "buildingUse": "제1종근린생활",
+      "dealOn": "2025-10-13",
+      "amountWon": 600000000,
+      "floor": 1,
+      "buildingAreaSqm": 57.3,
+      "buildYear": 2008
+    },
+    {
+      "dong": "지족동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2025-10-11",
+      "amountWon": 105000000,
+      "floor": 2,
+      "buildingAreaSqm": 24,
+      "buildYear": 2005
+    }
+  ]
+}

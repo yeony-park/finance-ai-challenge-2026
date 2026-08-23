@@ -17,6 +17,8 @@
     "verify:realestate": "tsx src/lib/verify/real-estate-cli.ts",
     "reference:collect": "tsx --env-file-if-exists=.env src/lib/verify/reference/auction-collect-cli.ts",
     "reference:rtms": "tsx --env-file-if-exists=.env src/lib/verify/reference/rtms-collect-cli.ts",
+    "reference:ecos": "tsx --env-file-if-exists=.env src/lib/verify/reference/ecos-collect-cli.ts",
+    "reference:building-hub": "tsx --env-file-if-exists=.env src/lib/verify/reference/building-hub-collect-cli.ts",
     "track-record": "tsx --env-file-if-exists=.env src/lib/verify/track-record/cli.ts",
     "goldset:prelabel": "tsx src/lib/verify/goldset/cli.ts prelabel",
     "goldset:score": "tsx src/lib/verify/goldset/cli.ts score",

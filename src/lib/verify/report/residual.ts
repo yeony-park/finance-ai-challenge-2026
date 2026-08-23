@@ -4,6 +4,13 @@ export const RESIDUAL_MASK = "○○";
 
 const SUBJECT_NO_SUFFIX = /\s*\d+\s*(호|번)$/;
 const MIN_TOKEN_LENGTH = 2;
+const MIN_SUBJECT_PART_LENGTH = 4;
+const PARENTHETICAL_SUBJECT = /^(.+?)\(([^()]+)\)$/;
+
+export const subjectNameParts = (subject: string): readonly string[] =>
+  (subject.match(PARENTHETICAL_SUBJECT)?.slice(1) ?? []).filter(
+    (part) => part.trim().length >= MIN_SUBJECT_PART_LENGTH,
+  );
 
 const IDENTIFYING_KINDS: ReadonlySet<string> = new Set([
   "livestock_trace_no",
@@ -41,6 +48,7 @@ export const residualTokensOf = (
       ...subjectsOf(report).flatMap((subject) => [
         subject,
         subject.replace(SUBJECT_NO_SUFFIX, ""),
+        ...subjectNameParts(subject),
       ]),
       ...identifyingValuesOf(report),
     ]),
@@ -49,6 +57,7 @@ export const residualTokensOf = (
     .filter(
       (token) =>
         token.length >= MIN_TOKEN_LENGTH &&
+        token !== report.realEstate?.publicAlias &&
         !ALIAS_NAMESPACE.test(token) &&
         !token.includes(RESIDUAL_MASK) &&
         !token.includes("●"),

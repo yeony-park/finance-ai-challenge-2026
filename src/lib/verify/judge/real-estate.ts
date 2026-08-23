@@ -4,21 +4,20 @@ import {
   monthsBefore,
   rtmsQueryUrl,
   toComparable,
-  type RtmsTrade,
   type RtmsTradeAdapter,
   type RtmsWindow,
 } from "../adapters/rtms-trade";
+import type { BuildingHubCacheLookup } from "../adapters/building-register";
 import type { RealEstateOffer } from "../claims/real-estate";
 import type {
   AmountOrigin,
   Claim,
-  Evidence,
   Judgement,
   RealEstateComparable,
   RealEstatePlacement,
   UnjudgedClaim,
 } from "../types";
-import { createJudgement } from "../types";
+import { judgeBuildingRegister } from "./real-estate-building";
 
 export const COMPARABLE_WINDOW_MONTHS = 3;
 
@@ -26,16 +25,6 @@ const won = (value: number): string => `${value.toLocaleString("ko-KR")}원`;
 
 const eok = (value: number): string =>
   `${(Math.round((value / 100_000_000) * 100) / 100).toLocaleString("ko-KR")}억원`;
-
-const dealLabel = (trade: RtmsTrade): string =>
-  [
-    `${trade.dealOn} ${trade.dong} ${trade.buildingUse || trade.buildingType}`,
-    trade.floor === undefined ? "" : `${trade.floor}층`,
-    trade.buildingAreaSqm === undefined ? "" : `${trade.buildingAreaSqm}㎡`,
-    eok(trade.amountWon),
-  ]
-    .filter((part) => part.length > 0)
-    .join(" · ");
 
 const windowLabel = (window: RtmsWindow): string =>
   `${window.months[0]}~${window.months.at(-1)}`;
@@ -51,128 +40,34 @@ const queryUrlOf = (adapter: RtmsTradeAdapter, window: RtmsWindow): string =>
 interface LedgerLookup {
   readonly window: RtmsWindow;
   readonly month: string;
-  readonly monthTrades: readonly RtmsTrade[];
-  readonly exact: RtmsTrade | undefined;
-  readonly sameAmount: RtmsTrade | undefined;
 }
+
+const adjacentMonths = (month: string): readonly string[] => {
+  const [year, monthNumber] = month.split("-").map(Number);
+  return [-1, 0, 1].map((offset) => {
+    const date = new Date(Date.UTC(year, monthNumber - 1 + offset, 1));
+    return `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, "0")}`;
+  });
+};
 
 const lookupLedger = (
   offer: RealEstateOffer,
   adapter: RtmsTradeAdapter,
 ): LedgerLookup => {
-  const month = monthOf(offer.sale.dealOn);
+  if (!offer.sale) {
+    throw new Error("매각 정보가 없는 상품은 매각 원장을 조회할 수 없습니다");
+  }
+  const sale = offer.sale;
+  const month = monthOf(sale.dealOn);
+  const around = adjacentMonths(month);
+  const months = around.every((candidate) => adapter.months().includes(candidate))
+    ? around
+    : monthsBefore(month, COMPARABLE_WINDOW_MONTHS);
   const window = adapter.window({
-    months: monthsBefore(month, COMPARABLE_WINDOW_MONTHS),
+    months,
     dong: offer.asset.dong,
   });
-  const monthTrades = window.trades.filter(
-    (trade) => monthOf(trade.dealOn) === month,
-  );
-  const sameAmount = monthTrades.find(
-    (trade) => trade.amountWon === offer.sale.amountWon,
-  );
-  const exact =
-    sameAmount && sameAmount.dealOn === offer.sale.dealOn ? sameAmount : undefined;
-  return { window, month, monthTrades, exact, sameAmount };
-};
-
-const ledgerEvidence = (
-  claim: Claim,
-  adapter: RtmsTradeAdapter,
-  lookup: LedgerLookup,
-  observed: string,
-  stance: Evidence["stance"],
-): Evidence => ({
-  sourceId: adapter.sourceId,
-  sourceName: adapter.sourceName,
-  url: queryUrlOf(adapter, lookup.window),
-  observedAt: lookup.window.collectedAt,
-  field: claim.field,
-  claimed: claim.value,
-  observed,
-  stance,
-  note: `${adapter.sigunguName} ${lookup.window.dong} · ${lookup.month} 신고 ${lookup.monthTrades.length}건 대조`,
-});
-
-const judgeSaleAmount = (
-  claim: Claim,
-  adapter: RtmsTradeAdapter,
-  lookup: LedgerLookup,
-): Judgement => {
-  const found = lookup.sameAmount;
-  if (found) {
-    return createJudgement({
-      claim,
-      verdict: "match",
-      evidence: [
-        ledgerEvidence(claim, adapter, lookup, dealLabel(found), "supports"),
-      ],
-      rationale: `공시된 매각금액과 같은 금액의 상업업무용 매매 신고가 ${lookup.month} 같은 법정동에 있습니다`,
-    });
-  }
-  return createJudgement({
-    claim,
-    verdict: "mismatch",
-    evidence: [
-      ledgerEvidence(
-        claim,
-        adapter,
-        lookup,
-        `${lookup.month} 같은 법정동 상업업무용 신고 ${lookup.monthTrades.length}건 가운데 같은 금액의 거래가 없습니다`,
-        "contradicts",
-      ),
-    ],
-    rationale:
-      "공시된 매각금액과 같은 금액의 매매 신고가 해당 월 실거래 원장에서 확인되지 않았습니다",
-  });
-};
-
-const judgeSaleDate = (
-  claim: Claim,
-  adapter: RtmsTradeAdapter,
-  lookup: LedgerLookup,
-): Judgement => {
-  if (lookup.exact) {
-    return createJudgement({
-      claim,
-      verdict: "match",
-      evidence: [
-        ledgerEvidence(claim, adapter, lookup, dealLabel(lookup.exact), "supports"),
-      ],
-      rationale: "공시된 매각일과 실거래 신고의 계약일이 같습니다",
-    });
-  }
-  if (lookup.sameAmount) {
-    return createJudgement({
-      claim,
-      verdict: "mismatch",
-      evidence: [
-        ledgerEvidence(
-          claim,
-          adapter,
-          lookup,
-          dealLabel(lookup.sameAmount),
-          "contradicts",
-        ),
-      ],
-      rationale:
-        "같은 금액의 신고는 있으나 계약일이 공시된 매각일과 달라 같은 거래로 확정하지 못했습니다",
-    });
-  }
-  return createJudgement({
-    claim,
-    verdict: "mismatch",
-    evidence: [
-      ledgerEvidence(
-        claim,
-        adapter,
-        lookup,
-        `${lookup.month} 같은 법정동 상업업무용 신고 ${lookup.monthTrades.length}건 가운데 대응하는 거래가 없습니다`,
-        "contradicts",
-      ),
-    ],
-    rationale: "공시된 매각일의 매매 신고가 실거래 원장에서 확인되지 않았습니다",
-  });
+  return { window, month };
 };
 
 const median = (values: readonly number[]): number => {
@@ -188,11 +83,12 @@ interface PlacementInput {
   readonly origin: AmountOrigin;
   readonly amountWon: number;
   readonly window: RtmsWindow;
+  readonly fingerprintNote?: string;
 }
 
 const ORIGIN_LABEL: Record<AmountOrigin, string> = {
   issuer: "발행사 제시(예상값)",
-  market: "실거래 확정(실제값)",
+  market: "매각 자료 기재값",
 };
 
 const statementOf = (
@@ -258,9 +154,14 @@ const buildPlacement = (
         claimed: won(input.amountWon),
         observed: `${windowLabel(input.window)} ${adapter.sigunguName} ${input.window.dong} 상업업무용 매매 신고 ${comparables.length}건`,
         stance: "context",
-        note: thinSample
-          ? `비교군 ${comparables.length}건 — ${THIN_COMPARABLE_THRESHOLD}건 미만이라 백분위 미산출`
-          : `비교군 ${comparables.length}건 · 면적 보정 없는 거래 총액 기준`,
+        note: [
+          thinSample
+            ? `비교군 ${comparables.length}건 — ${THIN_COMPARABLE_THRESHOLD}건 미만이라 백분위 미산출`
+            : `비교군 ${comparables.length}건 · 면적 보정 없는 거래 총액 기준`,
+          input.fingerprintNote,
+        ]
+          .filter((note): note is string => note !== undefined)
+          .join(" · "),
       },
     ],
     statement: statementOf(base),
@@ -271,6 +172,7 @@ export interface RealEstateJudgeInput {
   readonly offer: RealEstateOffer;
   readonly claims: readonly Claim[];
   readonly trades: RtmsTradeAdapter;
+  readonly buildingHub?: BuildingHubCacheLookup;
 }
 
 export interface RealEstateJudgeOutcome {
@@ -285,6 +187,32 @@ const missingMonthsReason = (window: RtmsWindow): string | undefined =>
     ? undefined
     : `실거래 신고 수집본에 ${window.missingMonths.join(", ")}가 없어 비교군을 채울 수 없습니다`;
 
+const fingerprintNoteOf = (
+  offer: RealEstateOffer,
+  window: RtmsWindow,
+): string | undefined => {
+  const { parcelAreaSqm, totalAreaSqm, useApprovedYearMonth } = offer.asset;
+  if (
+    parcelAreaSqm === undefined ||
+    totalAreaSqm === undefined ||
+    useApprovedYearMonth === undefined
+  ) {
+    return undefined;
+  }
+  const year = Number(useApprovedYearMonth.slice(0, 4));
+  const candidates = window.trades.filter(
+    (trade) =>
+      trade.buildingType === "일반" &&
+      trade.landAreaSqm !== undefined &&
+      trade.buildingAreaSqm !== undefined &&
+      Math.abs(trade.landAreaSqm - parcelAreaSqm) <= 0.01 &&
+      Math.abs(trade.buildingAreaSqm - totalAreaSqm) <= 0.01 &&
+      trade.buildYear === year,
+  );
+  if (candidates.length === 0) return undefined;
+  return `동일 자산 후보 거래 ${candidates.length}건 · ${candidates.map((trade) => eok(trade.amountWon)).join(", ")} · 지번 미공개로 동일 물건 확정 불가`;
+};
+
 export const judgeRealEstate = (
   input: RealEstateJudgeInput,
 ): RealEstateJudgeOutcome => {
@@ -297,13 +225,14 @@ export const judgeRealEstate = (
   const placements: RealEstatePlacement[] = [];
   const notes: string[] = [];
 
-  const lookup = lookupLedger(offer, trades);
+  const lookup = offer.sale ? lookupLedger(offer, trades) : undefined;
   const ledgerBlocked =
+    lookup === undefined ||
     lookup.window.missingMonths.includes(lookup.month) ||
     lookup.window.collectedAt === "";
-  if (!ledgerBlocked && !lookup.sameAmount) {
+  if (lookup && !ledgerBlocked) {
     notes.push(
-      "매각금액·매각일이 실거래 원장에서 확인되지 않은 원인은 단정할 수 없습니다 — 신탁 구조의 소유권 이전은 매매 신고와 다른 형태로 이뤄질 수 있고, 신고 지연·거래 유형 차이도 가능한 원인입니다.",
+      "RTMS 법정동 비교군에는 지번이 없어 매각금액·일자의 동일 물건 연결을 확인하지 않았습니다. exact 동일물건 식별 근거가 추가되기 전에는 판정을 보류합니다.",
     );
   }
 
@@ -317,6 +246,7 @@ export const judgeRealEstate = (
     }
 
     if (claim.kind === "sale_amount" || claim.kind === "sale_date") {
+      if (!lookup) continue;
       if (ledgerBlocked) {
         unjudged.push({
           claim,
@@ -324,13 +254,21 @@ export const judgeRealEstate = (
         });
         continue;
       }
-      judgements.push(
-        claim.kind === "sale_amount"
-          ? judgeSaleAmount(claim, trades, lookup)
-          : judgeSaleDate(claim, trades, lookup),
-      );
+      unjudged.push({
+        claim,
+        reason:
+          "RTMS 법정동 비교군에는 지번이 없어 동일 물건을 연결할 수 없습니다. exact 동일물건 식별 근거가 없어 판정을 보류합니다(대조 불가).",
+      });
     }
   }
+
+  const buildingOutcome = judgeBuildingRegister(
+    offer,
+    claims,
+    input.buildingHub,
+  );
+  judgements.push(...buildingOutcome.judgements);
+  unjudged.push(...buildingOutcome.unjudged);
 
   const offerClaim = claimOf("offer_amount");
   if (offerClaim && offerClaim.verifiability === "verifiable") {
@@ -354,6 +292,7 @@ export const judgeRealEstate = (
             origin: "issuer",
             amountWon: offerClaim.numericValue ?? offer.offer.amountWon,
             window: offerWindow,
+            fingerprintNote: fingerprintNoteOf(offer, offerWindow),
           },
           trades,
         ),
@@ -362,13 +301,17 @@ export const judgeRealEstate = (
   }
 
   const saleClaim = claimOf("sale_amount");
-  if (saleClaim && saleClaim.verifiability === "verifiable") {
+  if (
+    saleClaim &&
+    saleClaim.verifiability === "verifiable" &&
+    offer.sale &&
+    lookup
+  ) {
     const blocked = missingMonthsReason(lookup.window);
     if (lookup.window.trades.length === 0) {
-      unjudged.push({
-        claim: saleClaim,
-        reason: `${blocked ?? `${windowLabel(lookup.window)} 같은 법정동 상업업무용 실거래 신고가 없어 비교군을 만들지 못했습니다`}(대조 불가).`,
-      });
+      notes.push(
+        `${blocked ?? `${windowLabel(lookup.window)} 같은 법정동 상업업무용 실거래 신고가 없어 비교군을 만들지 못했습니다`} — 매각금액 위치를 제시하지 않았습니다.`,
+      );
     } else {
       if (blocked) notes.push(`${blocked} — 매각 시점 비교군은 남은 달로만 만들었습니다.`);
       placements.push(

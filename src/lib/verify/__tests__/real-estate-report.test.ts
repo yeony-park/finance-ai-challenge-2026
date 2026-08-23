@@ -3,7 +3,10 @@ import { describe, expect, test } from "vitest";
 
 import { OFFERS } from "@/components/site/offers";
 
-import { createFakeRtmsTradeAdapter } from "../adapters/rtms-trade-fake";
+import {
+  createFakeRtmsTradeAdapter,
+  resolveRtmsTradeAdapter,
+} from "../adapters/rtms-trade-fake";
 import {
   buildRealEstateClaims,
   loadRealEstateOffer,
@@ -20,8 +23,55 @@ import { toDemoView } from "../report/view-model";
 
 const OFFER_ID = "real-estate-a";
 const PUBLIC_DIR = `data/public/${OFFER_ID}`;
+const SOU_PUBLIC_DIR = "data/public/real-estate-sou-daejeon-startup";
 
 const loadOffer = (): Promise<RealEstateOffer> => loadRealEstateOffer(OFFER_ID);
+
+const unsoldOffer = (): RealEstateOffer =>
+  parseRealEstateOffer(
+    {
+      schemaVersion: 2,
+      offerId: "real-estate-upcoming",
+      subject: "테스트 오피스 3층",
+      publicAlias: "부동산 테스트",
+      assetKind: "real-estate",
+      subscriptionStatus: "open",
+      assetLifecycle: "acquisition-pending",
+      tradabilityStatus: "available",
+      asset: {
+        address: "서울특별시 서초구 서초동 100-1",
+        lawdCd: "11650",
+        sigunguName: "서울 서초구",
+        dong: "서초동",
+        buildingUse: "상업업무용(사무소)",
+        detail: "3층 1개 호실",
+      },
+      offer: {
+        amountWon: 3_000_000_000,
+        opensOn: "2021-07-07",
+        closesOn: "2021-07-15",
+        listedOn: "2021-07-26",
+        unitCount: 600_000,
+        unitPriceWon: 5_000,
+        section: "공모 공고",
+        table: "공모 개요",
+      },
+      sources: [
+        {
+          sourceKind: "official-document",
+          label: "테스트 공모 공고",
+          url: "https://example.com/offers/real-estate-upcoming",
+          asOf: "2021-07-06",
+          collectedAt: "2026-08-23T10:00:00+09:00",
+          method: "manual",
+          status: "테스트 입력",
+          limitations: ["실제 상품 자료가 아닌 스키마 테스트입니다."],
+        },
+      ],
+      limits: ["실제 상품 자료가 아닌 스키마 테스트입니다."],
+    },
+    "(v2 미매각 테스트)",
+  );
 
 const runFake = async (offer?: RealEstateOffer) =>
   runRealEstateVerification({
@@ -38,14 +88,170 @@ describe("공모 기초자료 — 공개 자료를 옮겨 적은 파일", () => 
     const offer = await loadOffer();
 
     expect(offer.assetKind).toBe("real-estate");
+    expect(offer.schemaVersion).toBe(1);
+    expect(offer.subscriptionStatus).toBe("closed");
+    expect(offer.assetLifecycle).toBe("sold");
+    expect(offer.tradabilityStatus).toBe("ended");
+    expect(offer.sources[0]?.sourceKind).toBe("external-observation");
+    expect(offer.sources[0]?.method).toBe("manual");
     expect(offer.sources.length).toBeGreaterThan(0);
     expect(offer.limits.length).toBeGreaterThan(0);
+  });
+
+  test("v2는 청약·자산 생애주기·거래 가능 상태를 분리하고 매각 없이 통과한다", () => {
+    const offer = unsoldOffer();
+
+    expect(offer.subscriptionStatus).toBe("open");
+    expect(offer.assetLifecycle).toBe("acquisition-pending");
+    expect(offer.tradabilityStatus).toBe("available");
+    expect(offer.sale).toBeUndefined();
+    expect(offer.sources[0]).toMatchObject({
+      sourceKind: "official-document",
+      method: "manual",
+      asOf: "2021-07-06",
+    });
+  });
+
+  test("v2 상태 근거는 기존 provenance URL만 참조한다", () => {
+    const offer = unsoldOffer();
+    const sourceUrl = offer.sources[0]?.url;
+    if (!sourceUrl) throw new Error("테스트 provenance URL이 없습니다");
+
+    const referenced = parseRealEstateOffer(
+      {
+        ...offer,
+        statusSources: {
+          assetLifecycle: sourceUrl,
+          tradabilityStatus: sourceUrl,
+        },
+      },
+      "(상태 근거 참조 테스트)",
+    );
+    if (referenced.schemaVersion !== 2) throw new Error("v2 파싱에 실패했습니다");
+    expect(referenced.statusSources).toEqual({
+      assetLifecycle: sourceUrl,
+      tradabilityStatus: sourceUrl,
+    });
+    expect(() =>
+      parseRealEstateOffer(
+        {
+          ...offer,
+          statusSources: {
+            assetLifecycle: "https://example.com/not-in-sources",
+            tradabilityStatus: sourceUrl,
+          },
+        },
+        "(상태 근거 불일치 테스트)",
+      ),
+    ).toThrow(/provenance를 참조/);
+  });
+
+  test("source URL은 http와 https만 허용한다", () => {
+    const offer = unsoldOffer();
+
+    expect(() =>
+      parseRealEstateOffer(
+        {
+          ...offer,
+          sources: [{ ...offer.sources[0], url: "ftp://example.com/source" }],
+        },
+        "(source URL 테스트)",
+      ),
+    ).toThrow(/sources\.0\.url/);
+  });
+
+  test("source URL은 userinfo와 인증 query key를 대소문자 없이 거부한다", () => {
+    const offer = unsoldOffer();
+    for (const url of [
+      "https://user:password@example.com/source",
+      "https://example.com/source?SERVICEKEY=secret",
+      "https://example.com/source?api_key=secret",
+      "https://example.com/source?Authorization=secret",
+      "https://example.com/source?X-Amz-Signature=secret",
+    ]) {
+      expect(() =>
+        parseRealEstateOffer(
+          { ...offer, sources: [{ ...offer.sources[0], url }] },
+          "(source 인증정보 테스트)",
+        ),
+      ).toThrow(/sources\.0\.url/);
+    }
+
+    expect(
+      parseRealEstateOffer(
+        {
+          ...offer,
+          sources: [
+            { ...offer.sources[0], url: "https://example.com/source?page=1" },
+          ],
+        },
+        "(source 일반 query 테스트)",
+      ).sources[0]?.url,
+    ).toBe("https://example.com/source?page=1");
+  });
+
+  test("v2는 생애주기와 매각 정보가 모순되면 거부한다", () => {
+    const unsold = unsoldOffer();
+    const sale = {
+      amountWon: 3_300_000_000,
+      dealOn: "2026-08-20",
+      section: "매각 공시",
+      table: "처분 개요",
+    } as const;
+
+    expect(() =>
+      parseRealEstateOffer(
+        { ...unsold, assetLifecycle: "sold" },
+        "(매각 누락 테스트)",
+      ),
+    ).toThrow(/매각 정보가 필요합니다/);
+    expect(() =>
+      parseRealEstateOffer(
+        { ...unsold, assetLifecycle: "settled" },
+        "(정산 상품 매각 누락 테스트)",
+      ),
+    ).toThrow(/매각 정보가 필요합니다/);
+    expect(() =>
+      parseRealEstateOffer(
+        {
+          ...unsold,
+          assetLifecycle: "operating",
+          sale,
+        },
+        "(생애주기 모순 테스트)",
+      ),
+    ).toThrow(/매각 정보를 기록할 수 없습니다/);
+    expect(
+      parseRealEstateOffer(
+        { ...unsold, assetLifecycle: "sale-in-progress", sale },
+        "(매각 진행 테스트)",
+      ).sale,
+    ).toEqual(sale);
   });
 
   test("소재지가 지번까지 없으면 기초자료가 통과하지 않는다", () => {
     expect(() =>
       parseRealEstateOffer({ schemaVersion: 2 }, "(테스트)"),
     ).toThrow(/올바르지 않습니다/);
+  });
+
+  test("v1 출처 수집일은 ISO date가 아니면 정규화하지 않는다", () => {
+    const raw = JSON.parse(
+      readFileSync(`data/offers/${OFFER_ID}.json`, "utf8"),
+    ) as { sources: Array<Record<string, unknown>> };
+
+    expect(() =>
+      parseRealEstateOffer(
+        {
+          ...raw,
+          sources: [
+            { ...raw.sources[0], retrievedOn: "2026년 8월 8일" },
+            ...raw.sources.slice(1),
+          ],
+        },
+        "(v1 출처 날짜 테스트)",
+      ),
+    ).toThrow(/retrievedOn/);
   });
 });
 
@@ -66,12 +272,12 @@ describe("부동산 claim 추출 — 문서 좌표와 게이트", () => {
     }
   });
 
-  test("지번 단위 대조 불가는 추출 단계에서 사유와 함께 기록된다", async () => {
+  test("exact parcel 요청 누락은 추출 단계에서 사유와 함께 기록된다", async () => {
     const { claims } = buildRealEstateClaims(await loadOffer());
     const address = claims.find((claim) => claim.kind === "real_estate_address");
 
     expect(address?.verifiability).toBe("structurally_impossible");
-    expect(address?.demotionReason).toMatch(/법정동 단위/);
+    expect(address?.demotionReason).toMatch(/exact parcel 조회 조건이 없어/);
   });
 
   test("금액은 숫자로 읽히고 원 단위가 붙는다", async () => {
@@ -95,23 +301,38 @@ describe("부동산 claim 추출 — 문서 좌표와 게이트", () => {
 
     expect(address?.verifiability).toBe("unparsed");
   });
+
+  test("미매각 v2에는 매각 claim을 만들지 않는다", () => {
+    const kinds = buildRealEstateClaims(unsoldOffer()).claims.map(
+      (claim) => claim.kind,
+    );
+
+    expect(kinds).toEqual(["real_estate_address", "offer_amount"]);
+    expect(kinds).not.toContain("sale_amount");
+    expect(kinds).not.toContain("sale_date");
+  });
 });
 
 describe("실거래 원장 대조 — 일치 / 원장 불일치 / 대조 불가", () => {
-  test("같은 달·같은 금액의 신고가 있으면 매각 내역이 일치로 남는다", async () => {
+  test("같은 달·같은 금액이어도 지번 없는 RTMS만으로 동일 물건 일치를 확정하지 않는다", async () => {
     const outcome = judgeRealEstate({
       offer: await loadOffer(),
       claims: buildRealEstateClaims(await loadOffer()).claims,
       trades: createFakeRtmsTradeAdapter(),
     });
 
-    expect(outcome.judgements).toHaveLength(2);
-    expect(outcome.judgements.every((item) => item.verdict === "match")).toBe(true);
-    expect(outcome.judgements.every((item) => item.evidence.length >= 1)).toBe(true);
+    expect(outcome.judgements).toHaveLength(0);
+    expect(
+      outcome.unjudged.filter((item) =>
+        ["sale_amount", "sale_date"].includes(item.claim.kind),
+      ),
+    ).toHaveLength(2);
+    expect(outcome.notes.join(" ")).toContain("동일 물건 연결");
   });
 
-  test("금액이 다르면 일치로 넘어가지 않고 원장 불일치으로 남는다", async () => {
+  test("금액이 달라도 지번 없는 RTMS만으로 원장 불일치를 확정하지 않는다", async () => {
     const offer = await loadOffer();
+    if (!offer.sale) throw new Error("v1 매각 정보가 없습니다");
     const changed: RealEstateOffer = {
       ...offer,
       sale: { ...offer.sale, amountWon: 9_990_000_000 },
@@ -123,14 +344,17 @@ describe("실거래 원장 대조 — 일치 / 원장 불일치 / 대조 불가"
       trades: createFakeRtmsTradeAdapter(),
     });
 
-    expect(outcome.judgements.map((item) => item.verdict)).toEqual([
-      "mismatch",
-      "mismatch",
-    ]);
+    expect(outcome.judgements).toEqual([]);
+    expect(
+      outcome.unjudged
+        .filter((item) => ["sale_amount", "sale_date"].includes(item.claim.kind))
+        .every((item) => item.reason.includes("지번")),
+    ).toBe(true);
   });
 
   test("수집되지 않은 달은 판정하지 않고 대조 불가로 남는다", async () => {
     const offer = await loadOffer();
+    if (!offer.sale) throw new Error("v1 매각 정보가 없습니다");
     const future: RealEstateOffer = {
       ...offer,
       sale: { ...offer.sale, dealOn: "2030-01-15" },
@@ -146,6 +370,51 @@ describe("실거래 원장 대조 — 일치 / 원장 불일치 / 대조 불가"
     expect(
       outcome.unjudged.filter((item) => item.reason.includes("대조 불가")).length,
     ).toBeGreaterThanOrEqual(3);
+  });
+
+  test("미매각 v2도 실거래 judge 실행을 완료하고 매각 판정을 만들지 않는다", () => {
+    const offer = unsoldOffer();
+    const outcome = judgeRealEstate({
+      offer,
+      claims: buildRealEstateClaims(offer).claims,
+      trades: createFakeRtmsTradeAdapter(),
+    });
+
+    expect(outcome.judgements).toEqual([]);
+    expect(
+      outcome.unjudged.some((item) =>
+        ["sale_amount", "sale_date"].includes(item.claim.kind),
+      ),
+    ).toBe(false);
+    expect(outcome.placements.map((item) => item.origin)).toEqual(["issuer"]);
+  });
+
+  test("SOU 운영사 매각 발표는 30200 RTMS 법정동 비교군으로 match·mismatch 판정하지 않는다", async () => {
+    const offer = await loadRealEstateOffer(
+      "real-estate-sou-daejeon-startup",
+    );
+    const trades = await resolveRtmsTradeAdapter({
+      lawdCd: offer.asset.lawdCd,
+      sigunguName: offer.asset.sigunguName,
+    });
+    const outcome = judgeRealEstate({
+      offer,
+      claims: buildRealEstateClaims(offer).claims,
+      trades,
+    });
+
+    expect(
+      outcome.judgements.filter((item) =>
+        ["sale_amount", "sale_date"].includes(item.claim.kind),
+      ),
+    ).toEqual([]);
+    expect(
+      outcome.unjudged.filter((item) =>
+        ["sale_amount", "sale_date"].includes(item.claim.kind),
+      ),
+    ).toHaveLength(2);
+    expect(outcome.placements).toEqual([]);
+    expect(outcome.notes.join(" ")).toContain("2025-09~2025-11");
   });
 });
 
@@ -179,13 +448,13 @@ describe("가격 위치 제시 — 비교군 n은 항상, 백분위는 조건부
     expect(expected?.statement).toContain("백분위를 내지 않고");
   });
 
-  test("예상값(발행사 제시)과 실제값(실거래 확정)이 분리돼 기록된다", async () => {
+  test("발행사 제시값과 매각 자료 기재값이 분리돼 기록된다", async () => {
     const report = await runFake();
     const origins = report.realEstatePlacements.map((item) => item.origin);
 
     expect(origins).toEqual(["issuer", "market"]);
     expect(report.realEstatePlacements[0].originLabel).toContain("예상값");
-    expect(report.realEstatePlacements[1].originLabel).toContain("실제값");
+    expect(report.realEstatePlacements[1].originLabel).toBe("매각 자료 기재값");
   });
 
   test("근거 0건 위치 제시는 만들어지지 않는다", async () => {
@@ -213,6 +482,18 @@ describe("리포트 조립 — 픽스처는 픽스처라고 적는다", () => {
     expect(report.pricePlacements).toEqual([]);
     expect(report.realEstatePlacements).toHaveLength(2);
   });
+
+  test("v1도 정규화된 부동산 상태 메타데이터를 리포트에 남긴다", async () => {
+    const report = await runFake();
+
+    expect(report.realEstate).toMatchObject({
+      publicAlias: "부동산 A",
+      subscriptionStatus: "closed",
+      assetLifecycle: "sold",
+      tradabilityStatus: "ended",
+    });
+    expect(report.realEstate?.statusEvidence).toBeUndefined();
+  });
 });
 
 describe("공개 리포트 익명화", () => {
@@ -220,7 +501,9 @@ describe("공개 리포트 익명화", () => {
     const snapshot = await publicSnapshotOf();
     const raw = JSON.stringify(snapshot);
 
-    expect(snapshot.bySubject[0].subject).toBe("부동산 A");
+    expect(snapshot.unjudged.every((item) => item.claim.subject === "부동산 A")).toBe(
+      true,
+    );
     expect(raw).not.toContain("지웰");
     expect(raw).not.toContain("1678");
     expect(raw).not.toContain("서초동");
@@ -248,10 +531,43 @@ describe("공개 리포트 익명화", () => {
       const parsed = parseReportSnapshot(
         JSON.parse(readFileSync(`${PUBLIC_DIR}/${name}`, "utf8")),
       );
+      const raw = JSON.stringify(parsed);
       expect(parsed.assetKind).toBe("real-estate");
       expect(parsed.bySubject[0]?.subject).toBe("부동산 A");
       expect(parsed.judgements.every((item) => item.evidence.length >= 1)).toBe(true);
+      expect(raw).not.toContain("RTMSDataSvcNrgTrade");
+      expect(
+        parsed.realEstatePlacements.every((placement) =>
+          placement.evidence.every(
+            (evidence) =>
+              evidence.sourceId !== "molit-rtms-nrg-trade" ||
+              evidence.url ===
+                "https://www.data.go.kr/data/15126463/openapi.do",
+          ),
+        ),
+      ).toBe(true);
     }
+  });
+
+  test("SOU 최신 공개 리포트는 매각 판정을 보류하고 exact 식별자를 숨긴다", () => {
+    const name = readdirSync(SOU_PUBLIC_DIR)
+      .filter((file) => /^report-.*\.json$/.test(file))
+      .sort()
+      .at(-1);
+    expect(name).toBeDefined();
+    const raw = readFileSync(`${SOU_PUBLIC_DIR}/${name}`, "utf8");
+    const snapshot = parseReportSnapshot(JSON.parse(raw));
+
+    expect(snapshot.offerId).toBe("real-estate-sou-daejeon-startup");
+    expect(snapshot.judgements).toEqual([]);
+    expect(
+      snapshot.unjudged.filter((item) =>
+        ["sale_amount", "sale_date"].includes(item.claim.kind),
+      ),
+    ).toHaveLength(2);
+    expect(raw).not.toMatch(
+      /어은동|30200|serviceKey|api[_-]?key|LAWD_CD|DEAL_YMD|RTMSDataSvcNrgTrade/i,
+    );
   });
 });
 
@@ -276,7 +592,7 @@ describe("화면 뷰모델 — 축산 문구가 부동산에 새지 않는다", 
       "원장 불일치",
       "대조 불가",
     ]);
-    expect(view.verdict.tallies.map((tally) => tally.value)).toEqual([2, 0, 1]);
+    expect(view.verdict.tallies.map((tally) => tally.value)).toEqual([0, 0, 3]);
   });
 
   test("가격 층위는 비교군 건수를 항상 노출한다", async () => {
@@ -303,5 +619,12 @@ describe("화면 뷰모델 — 축산 문구가 부동산에 새지 않는다", 
     expect(card.verdictLine).toContain("비교군 13건");
     expect(card.schedule.phase).toBe("closed");
     expect(card.href).toBe(`/offers/${OFFER_ID}`);
+  });
+
+  test("real-estate-a는 매각 완료와 종료 검증이 명시돼 있다", () => {
+    const offer = OFFERS.find((entry) => entry.id === OFFER_ID);
+
+    expect(offer?.isExitVerified).toBe(true);
+    expect(offer?.assetLifecycle).toBe("sold");
   });
 });

@@ -1,4 +1,5 @@
 import { resolveRtmsTradeAdapter } from "./adapters/rtms-trade-fake";
+import { loadBuildingHubCache } from "./adapters/building-register";
 import { loadRealEstateOffer } from "./claims/real-estate";
 import { assertOfferId } from "./paths";
 import { runRealEstateVerification } from "./pipeline";
@@ -70,8 +71,11 @@ const main = async (): Promise<void> => {
     lawdCd: offer.asset.lawdCd,
     sigunguName: offer.asset.sigunguName,
   });
+  const buildingHub = offer.asset.buildingHubRequest
+    ? await loadBuildingHubCache(offer.asset.buildingHubRequest, options.dataDir)
+    : undefined;
 
-  const report = runRealEstateVerification({ offer, trades });
+  const report = runRealEstateVerification({ offer, trades, buildingHub });
   const internal = await writeReport(report, options.dataDir);
   const published = await writePublicReport(report, options.dataDir);
   printSummary(report, { internal, published });

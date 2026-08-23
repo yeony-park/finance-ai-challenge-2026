@@ -1,18 +1,25 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { offerDataDir } from "../paths";
+import { sanitizePublicSourceUrl } from "../real-estate/source-url";
 import type {
   AssetKind,
   Claim,
   ClaimKind,
   Evidence,
   RealEstateComparable,
+  RealEstateReportMetadata,
+  RealEstateStatusSource,
   SubjectRollup,
   UnjudgedClaim,
 } from "../types";
 import { maskAddressToDong, maskFreeText, maskRegion, maskTraceNo } from "./mask";
 import { reportFileName } from "./build";
-import { residualTokensOf, scrubResidualJson } from "./residual";
+import {
+  residualTokensOf,
+  scrubResidualJson,
+  subjectNameParts,
+} from "./residual";
 import type {
   JudgementRecord,
   PricePlacementRecord,
@@ -49,14 +56,16 @@ const buildAliases = (report: ReportSnapshot): SubjectAliases => {
   report.pricePlacements.forEach((item) => push(item.claim.subject));
   report.realEstatePlacements.forEach((item) => push(item.claim.subject));
 
-  return (
-    order
-      .map((subject, index): readonly [string, string] => [
-        subject,
-        maskSubject(subject, index + 1, report.assetKind),
-      ])
-      .sort((a, b) => b[0].length - a[0].length)
-  );
+  const aliases = order.flatMap((subject, index) => {
+    const masked =
+      report.assetKind === "real-estate" && report.realEstate?.publicAlias
+        ? report.realEstate.publicAlias
+        : maskSubject(subject, index + 1, report.assetKind);
+    return [subject, ...subjectNameParts(subject)].map(
+      (raw): readonly [string, string] => [raw, masked],
+    );
+  });
+  return [...new Map(aliases).entries()].sort((a, b) => b[0].length - a[0].length);
 };
 
 const applyAliases = (text: string, aliases: SubjectAliases): string =>
@@ -64,6 +73,21 @@ const applyAliases = (text: string, aliases: SubjectAliases): string =>
 
 const maskText = (text: string, aliases: SubjectAliases): string =>
   maskFreeText(applyAliases(text, aliases));
+
+const BUILDING_HUB_PUBLIC_URL =
+  "https://www.data.go.kr/data/15134735/openapi.do";
+const RTMS_PUBLIC_URL = "https://www.data.go.kr/data/15126463/openapi.do";
+const PUBLIC_SOURCE_FALLBACK_URL = "https://www.data.go.kr/";
+
+const maskEvidenceUrl = (evidence: Evidence): string =>
+  evidence.sourceId === "molit-building-register-hub"
+    ? BUILDING_HUB_PUBLIC_URL
+    : evidence.sourceId === "molit-rtms-nrg-trade"
+      ? RTMS_PUBLIC_URL
+    : sanitizePublicSourceUrl(
+        maskFreeText(evidence.url),
+        PUBLIC_SOURCE_FALLBACK_URL,
+      );
 
 const maskValue = (
   kind: ClaimKind,
@@ -81,6 +105,10 @@ const maskValue = (
     case "livestock_sex":
     case "acquisition_date":
     case "acquisition_price":
+    case "real_estate_parcel_area":
+    case "real_estate_building_area":
+    case "real_estate_total_area":
+    case "real_estate_use_approved_month":
     case "offer_amount":
     case "sale_amount":
     case "sale_date":
@@ -119,7 +147,7 @@ const maskEvidence = (
   aliases: SubjectAliases,
 ): Evidence => ({
   ...evidence,
-  url: maskFreeText(evidence.url),
+  url: maskEvidenceUrl(evidence),
   claimed: maskValue(kind, evidence.claimed, aliases),
   observed: maskObserved(kind, evidence.observed, aliases),
   ...(evidence.note === undefined
@@ -186,6 +214,48 @@ const maskRollup = (
   subject: applyAliases(head.subject, aliases),
 });
 
+const maskStatusSource = (
+  source: RealEstateStatusSource,
+  aliases: SubjectAliases,
+): RealEstateStatusSource => ({
+  ...source,
+  label: maskText(source.label, aliases),
+  url: sanitizePublicSourceUrl(
+    maskFreeText(source.url),
+    PUBLIC_SOURCE_FALLBACK_URL,
+  ),
+});
+
+const maskRealEstateMetadata = (
+  metadata: RealEstateReportMetadata,
+  aliases: SubjectAliases,
+): RealEstateReportMetadata => ({
+  ...metadata,
+  publicAlias: maskText(metadata.publicAlias, aliases),
+  ...(metadata.statusEvidence
+    ? {
+        statusEvidence: {
+          ...(metadata.statusEvidence.assetLifecycle
+            ? {
+                assetLifecycle: maskStatusSource(
+                  metadata.statusEvidence.assetLifecycle,
+                  aliases,
+                ),
+              }
+            : {}),
+          ...(metadata.statusEvidence.tradabilityStatus
+            ? {
+                tradabilityStatus: maskStatusSource(
+                  metadata.statusEvidence.tradabilityStatus,
+                  aliases,
+                ),
+              }
+            : {}),
+        },
+      }
+    : {}),
+});
+
 export const toPublicReport = (report: ReportSnapshot): ReportSnapshot => {
   const aliases = buildAliases(report);
   const masked: ReportSnapshot = {
@@ -201,6 +271,9 @@ export const toPublicReport = (report: ReportSnapshot): ReportSnapshot => {
     realEstatePlacements: report.realEstatePlacements.map((placement) =>
       maskRealEstatePlacement(placement, aliases),
     ),
+    ...(report.realEstate
+      ? { realEstate: maskRealEstateMetadata(report.realEstate, aliases) }
+      : {}),
     notes: report.notes.map((note) => maskText(note, aliases)),
   };
   return scrubResidualJson(masked, residualTokensOf(report));
