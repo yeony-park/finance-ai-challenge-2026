@@ -5,6 +5,7 @@ import { HistoricalProductCard } from "@/components/art/historical-products";
 import { NaturalLanguageSearch } from "@/components/art/natural-search";
 import { EmptyState, PageContainer, ProductCard } from "@/components/art/ui";
 import { catalogHref, firstValue, listValues, parseCatalogSearchParams, type CatalogBasePath, type CatalogSearchParams } from "@/lib/art/catalog-query";
+import { searchConditionEntries } from "@/lib/art/search";
 import { catalogRepository } from "@/lib/repositories/art-repositories";
 
 const pageSize = 24;
@@ -31,6 +32,13 @@ export async function ArtCatalogPage({ basePath, searchParams, kicker, title }: 
     status: parsed.status.length ? parsed.status : undefined,
     identityStatus: parsed.identityStatus.length ? parsed.identityStatus : undefined,
     sourceDataset: parsed.sourceDataset.length ? parsed.sourceDataset : undefined,
+    verdict: parsed.verdict.length ? parsed.verdict : undefined,
+    premiumMin: parsed.premiumMin,
+    premiumMax: parsed.premiumMax,
+    auctionVolumeMin: parsed.auctionVolumeMin,
+    sellThroughRateMin: parsed.sellThroughRateMin,
+    delayedExitOnly: parsed.delayedExitOnly || undefined,
+    sort: parsed.sort,
     dateFrom: parsed.dateFrom,
     dateTo: parsed.dateTo,
     returnMin: parsed.returnMin,
@@ -51,12 +59,20 @@ export async function ArtCatalogPage({ basePath, searchParams, kicker, title }: 
   });
   const baseParams = {
     scope: parsed.scope === "all" ? undefined : parsed.scope,
+    q: parsed.query || undefined,
     currentStatus: parsed.currentStatus.length ? parsed.currentStatus.join(",") : undefined,
     keyword: parsed.keyword || undefined,
     lifecycle: parsed.lifecycle.length ? parsed.lifecycle.join(",") : undefined,
     status: parsed.status.length ? parsed.status.join(",") : undefined,
     identity: parsed.identityStatus.length ? parsed.identityStatus.join(",") : undefined,
     source: parsed.sourceDataset.length ? parsed.sourceDataset.join(",") : undefined,
+    verdict: parsed.verdict.length ? parsed.verdict.join(",") : undefined,
+    premiumMin: parsed.premiumMin?.toString(),
+    premiumMax: parsed.premiumMax?.toString(),
+    auctionVolumeMin: parsed.auctionVolumeMin?.toString(),
+    sellThroughRateMin: parsed.sellThroughRateMin?.toString(),
+    delayed: parsed.delayedExitOnly ? "1" : undefined,
+    sort: parsed.sort,
     dateFrom: filters.dateFrom,
     dateTo: filters.dateTo,
     returnMin: filters.returnMin?.toString(),
@@ -65,7 +81,7 @@ export async function ArtCatalogPage({ basePath, searchParams, kicker, title }: 
   if (parsed.keywordCurrentStatus.length) {
     const requestedStatus = listValues(raw.currentStatus).sort().join(",");
     const intendedStatus = [...parsed.keywordCurrentStatus].sort().join(",");
-    const hasHistoricalFilters = [raw.lifecycle, raw.status, raw.identity, raw.source, raw.dateFrom, raw.dateTo, raw.returnMin, raw.returnMax].some((item) => listValues(item).length > 0);
+    const hasHistoricalFilters = [raw.lifecycle, raw.status, raw.identity, raw.source, raw.verdict, raw.premiumMin, raw.premiumMax, raw.auctionVolumeMin, raw.sellThroughRateMin, raw.delayed, raw.dateFrom, raw.dateTo, raw.returnMin, raw.returnMax].some((item) => listValues(item).length > 0);
     if (firstValue(raw.scope) !== "current" || requestedStatus !== intendedStatus || hasHistoricalFilters || firstValue(raw.page) !== "") {
       redirect(catalogHref(basePath, baseParams));
     }
@@ -81,7 +97,18 @@ export async function ArtCatalogPage({ basePath, searchParams, kicker, title }: 
     sourceDataset: parsed.sourceDataset,
   };
   const filterKey = [parsed.currentStatus.join(","), parsed.lifecycle.join(","), parsed.identityStatus.join(","), parsed.sourceDataset.join(",")].join("|");
-  const searchHidden = { ...baseParams, keyword: undefined };
+  const searchHidden = { ...baseParams, q: undefined, keyword: undefined };
+  const aiConditions = searchConditionEntries({
+    keyword: filters.keyword,
+    offeringStatus: filters.currentStatus,
+    verdict: filters.verdict,
+    premiumMin: filters.premiumMin,
+    premiumMax: filters.premiumMax,
+    auctionVolumeMin: filters.auctionVolumeMin,
+    sellThroughRateMin: filters.sellThroughRateMin,
+    delayedExitOnly: filters.delayedExitOnly,
+    sort: filters.sort,
+  });
 
   return <main id="main-content" className="listing-page"><PageContainer>
     <header className="page-title">
@@ -96,12 +123,13 @@ export async function ArtCatalogPage({ basePath, searchParams, kicker, title }: 
     </nav>
     <form className="simple-search" role="search" action={basePath}>
       <label htmlFor={`catalog-keyword-${basePath.slice(1)}`}>상품·작품·작가·플랫폼·상태 검색</label>
-      <input id={`catalog-keyword-${basePath.slice(1)}`} name="keyword" defaultValue={parsed.keyword} placeholder="예 : 김환기, 아트투게더, 청산 완료" />
+      <input id={`catalog-keyword-${basePath.slice(1)}`} name="keyword" defaultValue={parsed.inputValue} placeholder="예 : 김환기, 아트투게더, 청산 완료" />
       <HiddenFilterFields params={searchHidden} />
       <button className="button button-primary">검색</button>
     </form>
-    {parsed.scope !== "historical" ? <NaturalLanguageSearch compact defaultValue={Array.isArray(raw.q) ? raw.q[0] ?? "" : raw.q ?? ""} targetPath={basePath} /> : null}
+    {parsed.scope !== "historical" ? <NaturalLanguageSearch compact defaultValue={parsed.query} targetPath={basePath} /> : null}
     <div className="condition-row" aria-label="검색 범위 안내">
+      {parsed.query && aiConditions.length ? aiConditions.map((condition) => <span className="condition-chip" key={`${condition.key}-${condition.label}`}>{condition.label}</span>) : null}
       <span>검색 대상 : 상품명, 작품명, 작가명, 플랫폼, 제작연도, 재료, 원문 상태, 매각 장소. 기본 정렬 : 현재 실상품 → 데모 → 날짜가 있는 과거 기록 → 날짜 미기재 기록</span>
     </div>
     <details className="mobile-filter"><summary>필터 열기 · 체크 즉시 반영</summary><RealtimeCatalogFilter key={`mobile-${filterKey}`} idPrefix="mobile" {...filterProps} /></details>

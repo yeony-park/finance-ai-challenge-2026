@@ -187,6 +187,36 @@ test("art catalog and products compatibility route expose the same repository to
   assert.equal(scheduled.ok, true);
   assert.ok(scheduledText.includes('<div class="results-toolbar"><strong>4건'));
 
+  const cheapQuery = encodeURIComponent("공모가가 싼 작품");
+  const parsedCheap = await fetch(`${baseUrl}/api/ai/search`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ query: "공모가가 싼 작품" }) }).then((response) => response.json()) as { parsed: { premiumMax?: number; sort?: string } };
+  assert.deepEqual(parsedCheap.parsed, { premiumMax: 15, sort: "premium_asc" });
+  const cheapPage = await fetch(`${baseUrl}/art?q=${cheapQuery}&scope=current&premiumMax=15&sort=premium_asc`).then((response) => response.text());
+  assert.ok(cheapPage.replaceAll("<!-- -->", "").includes('<div class="results-toolbar"><strong>6건'));
+  assert.ok(cheapPage.includes("공모가 차이율 15% 이하"));
+  const cheapApi = await getJson<ProductResponse>(`/api/products?q=${cheapQuery}&scope=current&premiumMax=15&sort=premium_asc&pageSize=100`);
+  assert.equal(cheapApi.pagination.total, 6);
+
+  const structuredCases = [
+    ["currentStatus", "q=청약+예정&scope=current&currentStatus=upcoming", 4],
+    ["verdict", "q=위험한+상품&scope=current&verdict=caution,danger&sort=verdict", 7],
+    ["premiumMin", "q=비싼+작품&scope=current&premiumMin=15&sort=premium_desc", 2],
+    ["premiumMax", "q=싼+작품&scope=current&premiumMax=15&sort=premium_asc", 6],
+    ["auctionVolumeMin", "q=거래가+많은+작가&scope=current&auctionVolumeMin=20&sort=auction_volume_desc", 0],
+    ["sellThroughRateMin", "q=최근+3년+낙찰률&scope=current&sellThroughRateMin=70&sort=auction_volume_desc", 3],
+    ["delayed", "q=지연된+플랫폼&scope=current&delayed=1&sort=delay_desc", 4],
+    ["keyword+structured", "q=싼+데모&scope=current&keyword=DEMO&premiumMax=15&sort=premium_asc", 2],
+    ["historical lifecycle", "q=청산+완료&scope=historical&lifecycle=liquidated", 55],
+    ["sort only", "q=가격+부담+순으로+보여줘&scope=current&sort=premium_asc", 9],
+  ] as const;
+  for (const [label, query, expected] of structuredCases) {
+    const page = await fetch(`${baseUrl}/art?${query}`).then((response) => response.text());
+    assert.ok(page.replaceAll("<!-- -->", "").includes(`<div class="results-toolbar"><strong>${expected}건`), label);
+    const api = await getJson<ProductResponse>(`/api/products?${query}&pageSize=100`);
+    assert.equal(api.pagination.total, expected, label);
+  }
+  const sortOnlyApi = await getJson<ProductResponse>("/api/products?q=가격+부담+순으로+보여줘&scope=current&sort=premium_asc&pageSize=100");
+  assert.equal(sortOnlyApi.items[0]?.offering.id, "at-kusama-001");
+
   const completed = await fetch(`${baseUrl}/art?scope=historical&lifecycle=sold,liquidated`);
   const completedText = (await completed.text()).replaceAll("<!-- -->", "");
   assert.equal(completed.ok, true);

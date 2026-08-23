@@ -1,5 +1,6 @@
 import demoData from "@/data/demo/art-investment.json";
 import { legacyArtData, legacyDatasetSummaries, legacyIssuers, legacyPlatforms, legacyTrackRecords } from "@/lib/art/legacy-adapter";
+import { recentAuctionRecords, recentSellThroughRate } from "@/lib/art/search-metrics";
 import type { AnalysisResult, ArtDataset, Artist, CatalogProductView, CurrentProductView, Evidence, HistoricalCatalogFilter, HistoricalDatasetAggregate, HistoricalOfferingView, HistoricalSort, Offering, OfferingStatus, PageResult, ParsedSearchQuery, Platform, ProductView, RecordLifecycle, TrackRecord, TrackStatus, Verdict } from "@/lib/art/types";
 
 const demo = demoData as ArtDataset;
@@ -88,16 +89,38 @@ const historicalProducts: HistoricalOfferingView[] = legacyTrackRecords.map((rec
 
 function normalizedText(value: CatalogProductView) { return value.recordScope === "historical" ? value.searchText : cleanName(`${value.offering.title} ${value.artwork.title} ${value.artist.nameKo} ${value.artist.nameEn ?? ""} ${value.platform.name}`).toLowerCase(); }
 function paginate<T>(items: T[], page = 1, pageSize = 25): PageResult<T> { const safePageSize = Math.max(1, Math.min(100, Math.floor(pageSize) || 25)); const pageCount = Math.max(1, Math.ceil(items.length / safePageSize)); const safePage = Math.min(Math.max(1, Math.floor(page) || 1), pageCount); return { items: items.slice((safePage - 1) * safePageSize, safePage * safePageSize), page: safePage, pageSize: safePageSize, total: items.length, pageCount }; }
-type CatalogFilter = HistoricalCatalogFilter & { scope?: "current" | "historical" | "all" };
+type CatalogFilter = Omit<HistoricalCatalogFilter, "sort"> & Pick<ParsedSearchQuery, "verdict" | "premiumMin" | "premiumMax" | "auctionVolumeMin" | "sellThroughRateMin" | "delayedExitOnly"> & { scope?: "current" | "historical" | "all"; sort?: HistoricalSort | string };
+function premiumPercent(item: CurrentProductView) {
+  const acquisition = item.offering.acquisitionPrice;
+  const offering = item.offering.totalOfferingAmount;
+  return acquisition != null && acquisition > 0 && offering != null ? (offering - acquisition) / acquisition * 100 : null;
+}
+function recentAuctions(item: CurrentProductView) { return recentAuctionRecords(item.auctions); }
+function sellThroughRate(item: CurrentProductView) { return recentSellThroughRate(item.auctions); }
+function maxExitDelay(item: CurrentProductView) { return Math.max(0, ...item.trackRecords.map((record) => record.delayDays ?? 0)); }
+function hasAnalyticalFilter(filter: CatalogFilter) {
+  return !!filter.verdict?.length || filter.premiumMin != null || filter.premiumMax != null || filter.auctionVolumeMin != null || filter.sellThroughRateMin != null || filter.delayedExitOnly === true;
+}
 function filterCatalog(items: CatalogProductView[], filter: CatalogFilter = {}) {
   const words = cleanName(filter.keyword).toLowerCase().split(/\s+/).filter(Boolean);
   const artistWords = cleanName(filter.artistQuery).toLowerCase().split(/\s+/).filter(Boolean);
-  return items.filter((item) => {
+  const requiresCurrentAnalysis = hasAnalyticalFilter(filter);
+  const filtered = items.filter((item) => {
     const record = item.recordScope === "historical" ? item.trackRecord : null;
+    const current = item.recordScope === "current" ? item : null;
     const date = item.recordScope === "historical" ? historicalDate(item) : item.offering.subscriptionEnd;
     const returnValue = item.recordScope === "historical" ? item.trackRecord.sourceReportedReturnPct ?? null : null;
+    const premium = current ? premiumPercent(current) : null;
+    const rate = current ? sellThroughRate(current) : null;
     return (filter.scope == null || filter.scope === "all" || item.recordScope === filter.scope)
-      && (!filter.currentStatus?.length || (item.recordScope === "current" && filter.currentStatus.includes(item.offering.status)))
+      && (!requiresCurrentAnalysis || current != null)
+      && (!filter.currentStatus?.length || (current != null && filter.currentStatus.includes(current.offering.status)))
+      && (!filter.verdict?.length || (current != null && filter.verdict.includes(current.analysis.verdict)))
+      && (filter.premiumMin == null || (premium != null && premium >= filter.premiumMin))
+      && (filter.premiumMax == null || (premium != null && premium <= filter.premiumMax))
+      && (filter.auctionVolumeMin == null || (current != null && recentAuctions(current).length >= filter.auctionVolumeMin))
+      && (filter.sellThroughRateMin == null || (rate != null && rate >= filter.sellThroughRateMin))
+      && (!filter.delayedExitOnly || (current != null && maxExitDelay(current) > 0))
       && (filter.platformId == null || item.platform.id === filter.platformId)
       && (filter.artistId == null || item.artist.id === filter.artistId)
       && (!artistWords.length || artistWords.every((word) => `${item.artist.nameKo} ${item.artist.nameEn ?? ""}`.toLowerCase().includes(word)))
@@ -111,7 +134,28 @@ function filterCatalog(items: CatalogProductView[], filter: CatalogFilter = {}) 
       && (filter.returnMax == null || (returnValue != null && returnValue <= filter.returnMax))
       && words.every((word) => normalizedText(item).includes(word));
   });
+  const rank: Record<Verdict, number> = { worth_considering: 0, conditional: 1, caution: 2, danger: 3 };
+  if (["verdict", "premium_asc", "premium_desc", "auction_volume_desc", "delay_desc"].includes(filter.sort ?? "")) {
+    filtered.sort((left, right) => {
+      if (left.recordScope !== "current") return 1;
+      if (right.recordScope !== "current") return -1;
+      if (filter.sort === "verdict") return rank[left.analysis.verdict] - rank[right.analysis.verdict] || compareCurrentProducts(left, right);
+      if (filter.sort === "premium_asc" || filter.sort === "premium_desc") {
+        const direction = filter.sort === "premium_asc" ? 1 : -1;
+        const leftValue = premiumPercent(left);
+        const rightValue = premiumPercent(right);
+        if (leftValue == null) return 1;
+        if (rightValue == null) return -1;
+        return (leftValue - rightValue) * direction || compareCurrentProducts(left, right);
+      }
+      if (filter.sort === "auction_volume_desc") return recentAuctions(right).length - recentAuctions(left).length || compareCurrentProducts(left, right);
+      if (filter.sort === "delay_desc") return maxExitDelay(right) - maxExitDelay(left) || compareCurrentProducts(left, right);
+      return compareCurrentProducts(left, right);
+    });
+  }
+  return filtered;
 }
+
 function sortHistorical(items: HistoricalOfferingView[], sort: HistoricalSort = "default") {
   return [...items].sort((left, right) => {
     if (sort === "artist") return left.artist.nameKo.localeCompare(right.artist.nameKo) || left.offering.id.localeCompare(right.offering.id);

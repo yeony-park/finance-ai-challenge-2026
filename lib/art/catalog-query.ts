@@ -1,4 +1,4 @@
-import type { IdentityStatus, OfferingStatus, RecordLifecycle, TrackStatus } from "@/lib/art/types";
+import type { IdentityStatus, OfferingStatus, RecordLifecycle, TrackStatus, Verdict } from "@/lib/art/types";
 
 export type CatalogSearchValue = string | string[] | undefined;
 export type CatalogSearchParams = Record<string, CatalogSearchValue>;
@@ -8,6 +8,8 @@ const offeringStatuses: readonly OfferingStatus[] = ["upcoming", "open", "operat
 const lifecycles: readonly RecordLifecycle[] = ["current", "offering", "operating", "exit_in_progress", "sold", "liquidated", "returned", "loss_confirmed", "unknown"];
 const trackStatuses: readonly TrackStatus[] = ["offering", "operating", "exit_in_progress", "sold", "returned", "liquidated", "delayed", "unsold", "loss_confirmed", "unknown"];
 const identityStatuses: readonly IdentityStatus[] = ["exact_match", "partial", "self_reported", "unverified", "unknown"];
+const verdicts: readonly Verdict[] = ["worth_considering", "conditional", "caution", "danger"];
+const catalogSorts = ["verdict", "premium_asc", "premium_desc", "auction_volume_desc", "delay_desc"] as const;
 
 export function firstValue(input: CatalogSearchValue): string {
   return Array.isArray(input) ? input[0] ?? "" : input ?? "";
@@ -51,22 +53,49 @@ export function parseCatalogKeywordIntent(input: string): { keyword: string; cur
 }
 
 export function parseCatalogSearchParams(raw: CatalogSearchParams) {
-  const rawKeyword = firstValue(raw.keyword ?? raw.q).trim();
-  const intent = parseCatalogKeywordIntent(rawKeyword);
+  const query = firstValue(raw.q).trim();
+  const explicitKeyword = firstValue(raw.keyword).trim();
+  const explicitCurrentStatus = allowedValues(raw.currentStatus, offeringStatuses);
+  const explicitLifecycle = allowedValues(raw.lifecycle, lifecycles);
+  const parsedVerdicts = allowedValues(raw.verdict, verdicts);
+  const premiumMin = numberOrUndefined(raw.premiumMin);
+  const premiumMax = numberOrUndefined(raw.premiumMax);
+  const auctionVolumeMin = numberOrUndefined(raw.auctionVolumeMin);
+  const sellThroughRateMin = numberOrUndefined(raw.sellThroughRateMin);
+  const delayedExitOnly = firstValue(raw.delayed) === "1";
+  const sort = allowedValues(raw.sort, catalogSorts)[0];
+  const hasStructuredAiFilter = explicitCurrentStatus.length > 0
+    || explicitLifecycle.length > 0
+    || parsedVerdicts.length > 0
+    || premiumMin != null
+    || premiumMax != null
+    || auctionVolumeMin != null
+    || sellThroughRateMin != null
+    || delayedExitOnly
+    || sort != null;
+  const intent = parseCatalogKeywordIntent(explicitKeyword || (!hasStructuredAiFilter ? query : ""));
   const rawScope = firstValue(raw.scope);
   const requestedScope: "current" | "historical" | "all" = rawScope === "current" || rawScope === "historical" ? rawScope : "all";
-  const explicitCurrentStatus = allowedValues(raw.currentStatus, offeringStatuses);
   const hasCurrentKeywordIntent = intent.currentStatus.length > 0;
   return {
     scope: hasCurrentKeywordIntent ? "current" as const : requestedScope,
-    keyword: rawKeyword,
+    query,
+    inputValue: explicitKeyword || query,
+    keyword: explicitKeyword || (!hasStructuredAiFilter ? query : ""),
     filterKeyword: intent.keyword,
     keywordCurrentStatus: intent.currentStatus,
     currentStatus: hasCurrentKeywordIntent ? intent.currentStatus : explicitCurrentStatus,
-    lifecycle: hasCurrentKeywordIntent ? [] : allowedValues(raw.lifecycle, lifecycles),
+    lifecycle: hasCurrentKeywordIntent ? [] : explicitLifecycle,
     status: hasCurrentKeywordIntent ? [] : allowedValues(raw.status, trackStatuses),
     identityStatus: hasCurrentKeywordIntent ? [] : allowedValues(raw.identity, identityStatuses),
     sourceDataset: hasCurrentKeywordIntent ? [] : listValues(raw.source),
+    verdict: hasCurrentKeywordIntent ? [] : parsedVerdicts,
+    premiumMin: hasCurrentKeywordIntent ? undefined : premiumMin,
+    premiumMax: hasCurrentKeywordIntent ? undefined : premiumMax,
+    auctionVolumeMin: hasCurrentKeywordIntent ? undefined : auctionVolumeMin,
+    sellThroughRateMin: hasCurrentKeywordIntent ? undefined : sellThroughRateMin,
+    delayedExitOnly: hasCurrentKeywordIntent ? false : delayedExitOnly,
+    sort: hasCurrentKeywordIntent ? undefined : sort,
     page: hasCurrentKeywordIntent ? 1 : positiveInteger(raw.page, 1),
     dateFrom: hasCurrentKeywordIntent ? undefined : firstValue(raw.dateFrom) || undefined,
     dateTo: hasCurrentKeywordIntent ? undefined : firstValue(raw.dateTo) || undefined,
