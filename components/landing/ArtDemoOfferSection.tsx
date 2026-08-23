@@ -29,6 +29,10 @@ export function ArtDemoOfferSection({
           실제 청약 상품이 아닌 분석 예시입니다. 공시와 공공 원장을 대조한 검증 리포트와 별도이며, 기존 커버리지와 검증 완료 건수에 포함하지 않습니다. 투자 권유나 수익 예측을 제공하지 않습니다.
         </p>
 
+        <Link href="/methodology#art-analysis-demo" className={s.allLink}>
+          DEMO 분석 기준 보기 <span aria-hidden="true">→</span>
+        </Link>
+
         <div className={s.grid}>
           {visibleCards.map((card) => (
             <ArtDemoOfferCard key={card.id} card={card} />

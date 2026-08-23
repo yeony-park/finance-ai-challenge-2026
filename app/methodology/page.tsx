@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { DATA_SOURCES } from "@/components/site/service";
+import { ArtDemoMethodologySection } from "@/components/methodology/ArtDemoMethodologySection";
 
 import { METHODOLOGY_ANCHOR } from "./anchors";
 import s from "./methodology.module.css";
@@ -307,6 +308,8 @@ export default function MethodologyPage() {
             책임은 이용자 본인에게 있습니다.
           </p>
         </section>
+
+        <ArtDemoMethodologySection />
 
         <Link href="/offers" className={s.backLink}>
           <span aria-hidden="true">←</span>

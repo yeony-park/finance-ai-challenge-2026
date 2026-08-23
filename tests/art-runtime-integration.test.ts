@@ -490,7 +490,11 @@ test("original reports stay intact while demo art is isolated to product routes"
   assert.deepEqual([...new Set(demoProductLinks)].sort(), expectedDemoProductLinks);
   assert.deepEqual(
     [...new Set(hrefsOf(demoSection))].sort(),
-    [...expectedDemoProductLinks, "/art?scope=current&currentStatus=upcoming"].sort(),
+    [
+      ...expectedDemoProductLinks,
+      "/art?scope=current&currentStatus=upcoming",
+      "/methodology#art-analysis-demo",
+    ].sort(),
   );
   assert.equal([...demoSection.matchAll(/<article\b/g)].length, 4);
   for (const [, title] of demos) assert.ok(htmlText(demoSection).includes(title), title);
@@ -521,7 +525,8 @@ test("original reports stay intact while demo art is isolated to product routes"
   const verdictSection = sectionWithText(methodology, "판정 3값");
   const verdictTerms = [...verdictSection.matchAll(/<dt\b[^>]*>([\s\S]*?)<\/dt>/g)].map((match) => htmlText(match[1] ?? ""));
   assert.deepEqual(verdictTerms, ["일치", "원장 불일치", "대조 불가"]);
-  assert.doesNotMatch(methodology, /art-mvp/i);
+  assert.equal((methodology.match(/id="art-analysis-demo"/g) ?? []).length, 1);
+  assert.match(methodology, /art-mvp-v1\.0/);
 
   const artResponse = await fetch(`${baseUrl}/art`);
   const art = await artResponse.text();

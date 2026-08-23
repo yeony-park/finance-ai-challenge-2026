@@ -7,6 +7,7 @@ export const METHODOLOGY_ANCHOR = {
   amendment: "amendment-title",
   principles: "principles-title",
   limits: "limits-title",
+  artAnalysisDemo: "art-analysis-demo",
 } as const;
 
 export type MethodologyAnchor =

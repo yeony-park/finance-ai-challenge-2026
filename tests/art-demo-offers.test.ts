@@ -23,7 +23,7 @@ test("DEMO offer adapter returns exactly the four current upcoming products", ()
   assert.equal(cards[0]?.artistName, "DEMO 작가 A");
   assert.equal(cards[0]?.platformName, "DEMO 플랫폼 알파");
   assert.equal(cards[0]?.imageUrl, "/demo-art/art-1.svg");
-  assert.equal(cards[0]?.minimumInvestment, 50_000);
+  assert.ok(cards.every((card) => card.minimumInvestment === 100_000));
   assert.equal(cards[0]?.totalOfferingAmount, 130_000_000);
   assert.equal(cards[0]?.asOfDate, "2026-08-15");
 });

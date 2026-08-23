@@ -30,12 +30,23 @@ test("라이브 공시 분석은 검증된 DART artifact와 grounded AI 경계�
 });
 
 type DemoData = {
-  offerings: Array<{ id: string; acquisitionPrice: number | null; disclosedCosts: unknown[] }>;
+  offerings: Array<{ id: string; minimumInvestment: number; acquisitionPrice: number | null; disclosedCosts: unknown[] }>;
   artists: Array<{ id: string }>;
   analyses: Array<{ verdict: string }>;
   annualMetrics: Record<string, Array<{ offered: number }>>;
   trackRecords: Array<{ platformId: string; status: string; delayDays: number | null }>;
 };
+
+test("현재 네 개 DEMO 상품의 최소 투자금은 10만원으로 정규화됨", () => {
+  const data = JSON.parse(read("data/demo/art-investment.json")) as DemoData;
+  const currentDemoIds = ["demo-art-001", "demo-art-002", "demo-art-003", "demo-art-004"];
+
+  assert.deepEqual(data.offerings.map((item) => item.id), currentDemoIds);
+  assert.deepEqual(
+    data.offerings.map((item) => [item.id, item.minimumInvestment]),
+    currentDemoIds.map((id) => [id, 100_000]),
+  );
+});
 
 test("보정된 4개 데모 상품의 거래량·지연·비공개 값", () => {
   const data = JSON.parse(read("data/demo/art-investment.json")) as DemoData;
