@@ -1,0 +1,112 @@
+import Link from "next/link";
+import { RealtimeCatalogFilter } from "@/components/art/catalog-filter-client";
+import { HistoricalProductCard } from "@/components/art/historical-products";
+import { NaturalLanguageSearch } from "@/components/art/natural-search";
+import { EmptyState, PageContainer, ProductCard } from "@/components/art/ui";
+import { catalogHref, parseCatalogSearchParams, type CatalogBasePath, type CatalogSearchParams } from "@/lib/art/catalog-query";
+import { catalogRepository } from "@/lib/repositories/art-repositories";
+
+const pageSize = 24;
+
+type Props = {
+  basePath: CatalogBasePath;
+  searchParams: Promise<CatalogSearchParams>;
+  kicker: string;
+  title: string;
+};
+
+function HiddenFilterFields({ params }: { params: Record<string, string | undefined> }) {
+  return <>{Object.entries(params).map(([name, value]) => value ? <input key={name} type="hidden" name={name} value={value} /> : null)}</>;
+}
+
+export async function ArtCatalogPage({ basePath, searchParams, kicker, title }: Props) {
+  const raw = await searchParams;
+  const parsed = parseCatalogSearchParams(raw);
+  const filters = {
+    scope: parsed.scope,
+    currentStatus: parsed.currentStatus.length ? parsed.currentStatus : undefined,
+    keyword: parsed.keyword || undefined,
+    lifecycle: parsed.lifecycle.length ? parsed.lifecycle : undefined,
+    status: parsed.status.length ? parsed.status : undefined,
+    identityStatus: parsed.identityStatus.length ? parsed.identityStatus : undefined,
+    sourceDataset: parsed.sourceDataset.length ? parsed.sourceDataset : undefined,
+    dateFrom: parsed.dateFrom,
+    dateTo: parsed.dateTo,
+    returnMin: parsed.returnMin,
+    returnMax: parsed.returnMax,
+  };
+  const result = catalogRepository.paginate(parsed.page, pageSize, filters);
+  const counts = catalogRepository.getCounts();
+  const historicalAggregate = catalogRepository.getHistoricalAggregate({
+    keyword: filters.keyword,
+    lifecycle: filters.lifecycle,
+    status: filters.status,
+    identityStatus: filters.identityStatus,
+    sourceDataset: filters.sourceDataset,
+    dateFrom: filters.dateFrom,
+    dateTo: filters.dateTo,
+    returnMin: filters.returnMin,
+    returnMax: filters.returnMax,
+  });
+  const baseParams = {
+    scope: parsed.scope === "all" ? undefined : parsed.scope,
+    currentStatus: parsed.currentStatus.length ? parsed.currentStatus.join(",") : undefined,
+    keyword: parsed.keyword || undefined,
+    lifecycle: parsed.lifecycle.length ? parsed.lifecycle.join(",") : undefined,
+    status: parsed.status.length ? parsed.status.join(",") : undefined,
+    identity: parsed.identityStatus.length ? parsed.identityStatus.join(",") : undefined,
+    source: parsed.sourceDataset.length ? parsed.sourceDataset.join(",") : undefined,
+    dateFrom: filters.dateFrom,
+    dateTo: filters.dateTo,
+    returnMin: filters.returnMin?.toString(),
+    returnMax: filters.returnMax?.toString(),
+  };
+  const filterProps = {
+    basePath,
+    scope: parsed.scope,
+    baseParams,
+    currentStatus: parsed.currentStatus,
+    lifecycle: parsed.lifecycle,
+    identityStatus: parsed.identityStatus,
+    sourceDataset: parsed.sourceDataset,
+  };
+  const filterKey = [parsed.currentStatus.join(","), parsed.lifecycle.join(","), parsed.identityStatus.join(","), parsed.sourceDataset.join(",")].join("|");
+  const searchHidden = { ...baseParams, keyword: undefined };
+
+  return <main id="main-content" className="listing-page"><PageContainer>
+    <header className="page-title">
+      <p className="section-kicker">{kicker}</p>
+      <h1>{title}</h1>
+      <p>현재 상품 {counts.current}건과 플랫폼 자체 게시 과거 기록 {counts.historical}건을 분리해 탐색합니다. 과거 기록은 독립 검증된 발행사 청산 실적이 아닙니다.</p>
+    </header>
+    <nav className="detail-tabs" aria-label="표시 범위">
+      <Link className={parsed.scope === "all" ? "active" : ""} aria-current={parsed.scope === "all" ? "page" : undefined} href={catalogHref(basePath, { ...baseParams, scope: undefined, page: undefined })}>전체 {counts.total}</Link>
+      <Link className={parsed.scope === "current" ? "active" : ""} aria-current={parsed.scope === "current" ? "page" : undefined} href={catalogHref(basePath, { ...baseParams, scope: "current", page: undefined })}>현재 상품 {counts.current}</Link>
+      <Link className={parsed.scope === "historical" ? "active" : ""} aria-current={parsed.scope === "historical" ? "page" : undefined} href={catalogHref(basePath, { ...baseParams, scope: "historical", page: undefined })}>과거 기록 {counts.historical}</Link>
+    </nav>
+    <form className="simple-search" role="search" action={basePath}>
+      <label htmlFor={`catalog-keyword-${basePath.slice(1)}`}>상품·작품·작가·플랫폼·상태 검색</label>
+      <input id={`catalog-keyword-${basePath.slice(1)}`} name="keyword" defaultValue={parsed.keyword} placeholder="예 : 김환기, 아트투게더, 청산 완료" />
+      <HiddenFilterFields params={searchHidden} />
+      <button className="button button-primary">검색</button>
+    </form>
+    {parsed.scope !== "historical" ? <NaturalLanguageSearch compact defaultValue={Array.isArray(raw.q) ? raw.q[0] ?? "" : raw.q ?? ""} targetPath={basePath} /> : null}
+    <div className="condition-row" aria-label="검색 범위 안내">
+      <span>검색 대상 : 상품명, 작품명, 작가명, 플랫폼, 제작연도, 재료, 원문 상태, 매각 장소. 기본 정렬 : 현재 실상품 → 데모 → 날짜가 있는 과거 기록 → 날짜 미기재 기록</span>
+    </div>
+    <details className="mobile-filter"><summary>필터 열기 · 체크 즉시 반영</summary><RealtimeCatalogFilter key={`mobile-${filterKey}`} idPrefix="mobile" {...filterProps} /></details>
+    <div className="listing-layout">
+      <aside className="filter-panel" aria-label="상품 필터"><RealtimeCatalogFilter key={`desktop-${filterKey}`} idPrefix="desktop" {...filterProps} /></aside>
+      <section className="listing-results" aria-live="polite">
+        <div className="results-toolbar"><strong>{result.total}건</strong><span>페이지 {result.page} / {result.pageCount} · 페이지당 {result.pageSize}건</span></div>
+        {parsed.scope !== "current" ? <p className="table-note">과거 필터 집계 : {historicalAggregate.total}건 · 매각 완료 {historicalAggregate.byLifecycle.sold}건 · 반환 {historicalAggregate.byLifecycle.returned}건 · 매각 진행 {historicalAggregate.byLifecycle.exit_in_progress}건 · 원본 상태와 출처는 상세에서 확인</p> : null}
+        {result.items.length ? <div className="product-grid-art">{result.items.map((item) => item.recordScope === "historical" ? <HistoricalProductCard key={item.offering.id} product={item} /> : <ProductCard key={item.offering.id} product={item} />)}</div> : <EmptyState title="조건에 맞는 상품·과거 기록이 없습니다." description="검색어 또는 생애주기 필터를 조정하세요." />}
+        <nav className="pagination" aria-label="상품 목록 페이지">
+          {result.page > 1 ? <Link href={catalogHref(basePath, { ...baseParams, page: String(result.page - 1) })}>← 이전</Link> : <span />}
+          <span>{result.page} / {result.pageCount}</span>
+          {result.page < result.pageCount ? <Link href={catalogHref(basePath, { ...baseParams, page: String(result.page + 1) })}>다음 →</Link> : <span />}
+        </nav>
+      </section>
+    </div>
+  </PageContainer></main>;
+}

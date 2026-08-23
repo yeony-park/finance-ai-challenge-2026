@@ -164,11 +164,23 @@ test("unified catalog is real-first and pagination reaches every ID exactly once
   assert.equal(ids.size, 347);
 });
 
-test("rendered product and platform pages expose the repository totals", async () => {
-  const products = await fetch(`${baseUrl}/products?scope=historical`);
-  const productHtml = await products.text();
-  assert.equal(products.ok, true);
-  assert.ok(productHtml.includes('id="main-content"'));
+test("art catalog and products compatibility route expose the same repository totals", async () => {
+  for (const route of ["/art?scope=historical", "/products?scope=historical"] as const) {
+    const response = await fetch(`${baseUrl}${route}`);
+    const html = await response.text();
+    const visibleText = html.replaceAll("<!-- -->", "");
+    assert.equal(response.ok, true, route);
+    assert.ok(html.includes('id="main-content"'), route);
+    assert.ok(visibleText.includes("현재 상품 9건"), route);
+    assert.ok(visibleText.includes("과거 기록 338건"), route);
+  }
+
+  const filtered = await fetch(`${baseUrl}/art?scope=historical&lifecycle=returned`);
+  const filteredHtml = await filtered.text();
+  const filteredText = filteredHtml.replaceAll("<!-- -->", "");
+  assert.equal(filtered.ok, true);
+  assert.ok(filteredText.includes("12건"));
+  assert.ok(filteredHtml.includes("체크 즉시 결과에 반영됩니다."));
 
   const platform = await fetch(`${baseUrl}/platforms/platform-arttogether`);
   const platformHtml = await platform.text();
