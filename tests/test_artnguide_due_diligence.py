@@ -1,6 +1,9 @@
+import copy
 import importlib.util
 import json
+import tempfile
 import unittest
+from unittest import mock
 from pathlib import Path
 
 
@@ -142,6 +145,132 @@ class ArtnguideDueDiligenceTest(unittest.TestCase):
         study = next(row for row in rows if row["whitespace_normalized_author_name"] == "공부차")
         self.assertEqual(study["classification"], "non_artist_candidate")
         self.assertEqual(study["exclusions"]["yearProfit"], "excluded_from_artist_aggregate")
+
+
+    def _normalized_names(self):
+        return BUILDER.raw_name_groups(self.raw["records"])[1]
+
+    def _candidate_copy(self):
+        return copy.deepcopy(self.registry["artist_candidate_sources"])
+
+    def test_clean_checkout_replays_registry_without_lanes(self):
+        with mock.patch.object(BUILDER, "LANE_PATHS", (Path("/definitely/missing/a"), Path("/definitely/missing/b"))):
+            payload = BUILDER.build_payload()
+        self.assertEqual(payload["source_registry"]["sources"][-68:], self.registry["artist_candidate_sources"])
+        self.assertEqual(
+            payload["dataset"]["input_artifacts"]["artist_lane_expected_sha256"],
+            self.registry["artist_lane_materialization"]["expected_sha256"],
+        )
+
+    def test_registry_validation_replays_68_and_derives_artist_mapping(self):
+        candidates, by_artist = BUILDER.validate_candidate_sources(
+            self._candidate_copy(),
+            self._normalized_names(),
+            self.registry["artist_candidate_source_policy"],
+        )
+        self.assertEqual(len(candidates), 68)
+        self.assertEqual(candidates, self.registry["artist_candidate_sources"])
+        self.assertEqual(
+            by_artist["게르하르트 리히터"]["same_artist_other_work"][-1],
+            "artist-29fd69765ff1-same_artist_other_work-1-a4359e1f599c",
+        )
+        self.assertNotIn("공부차", by_artist)
+
+    def test_partial_lane_availability_fails_closed(self):
+        with tempfile.TemporaryDirectory() as directory:
+            a, b = Path(directory) / "a.md", Path(directory) / "b.md"
+            a.write_text("partial", encoding="utf-8")
+            with mock.patch.object(BUILDER, "LANE_PATHS", (a, b)):
+                with self.assertRaises(BUILDER.BuildError):
+                    BUILDER.build_payload()
+
+    def test_present_lane_wrong_hash_fails_before_parse(self):
+        with tempfile.TemporaryDirectory() as directory:
+            a, b = Path(directory) / "a.md", Path(directory) / "b.md"
+            a.write_text("wrong a", encoding="utf-8")
+            b.write_text("wrong b", encoding="utf-8")
+            with mock.patch.object(BUILDER, "LANE_PATHS", (a, b)):
+                with mock.patch.object(BUILDER, "parse_lane_candidate_sources") as parse:
+                    with self.assertRaises(BUILDER.BuildError):
+                        BUILDER.build_payload()
+            parse.assert_not_called()
+
+    def test_present_lane_parsed_mismatch_fails_closed(self):
+        with tempfile.TemporaryDirectory() as directory:
+            a, b = Path(directory) / "a.md", Path(directory) / "b.md"
+            a.write_text("lane a", encoding="utf-8")
+            b.write_text("lane b", encoding="utf-8")
+            with mock.patch.object(BUILDER, "LANE_PATHS", (a, b)):
+                with mock.patch.object(BUILDER, "_verify_lane_hashes"):
+                    with mock.patch.object(
+                        BUILDER,
+                        "parse_lane_candidate_sources",
+                        return_value=self._candidate_copy()[:-1],
+                    ):
+                        with self.assertRaises(BUILDER.BuildError):
+                            BUILDER.build_payload()
+
+    def test_invalid_candidate_fields_fail_closed(self):
+        mutations = {
+            "prefix": lambda item: item.update(id="source-" + item["id"]),
+            "category": lambda item: item.update(candidate_category="identity" if item["candidate_category"] == "same_artist_other_work" else "other"),
+            "url_hash": lambda item: item.update(id=item["id"][:-1] + ("0" if item["id"][-1] != "0" else "1")),
+            "non_https": lambda item: item.update(url=item["url"].replace("https://", "http://", 1)),
+            "no_artist_match": lambda item: item.update(id="artist-deadbeefcafe-identity-1-" + item["id"].rsplit("-", 1)[1]),
+            "ordinal": lambda item: item.update(id=item["id"].replace("-identity-1-", "-identity-3-", 1)),
+            "reported_by": lambda item: item.update(reported_by="tmp/not-allowlisted.md:1"),
+            "policy": lambda item: item.update(claim_scope="drift"),
+        }
+        for name, mutate in mutations.items():
+            with self.subTest(name=name):
+                candidates = self._candidate_copy()
+                mutate(candidates[0])
+                with self.assertRaises(BUILDER.BuildError):
+                    BUILDER.validate_candidate_sources(
+                        candidates,
+                        self._normalized_names(),
+                        self.registry["artist_candidate_source_policy"],
+                    )
+
+    def test_duplicate_candidate_and_wrong_count_fail_closed(self):
+        duplicate = self._candidate_copy()
+        duplicate[1] = copy.deepcopy(duplicate[0])
+        with self.assertRaises(BUILDER.BuildError):
+            BUILDER.validate_candidate_sources(
+                duplicate,
+                self._normalized_names(),
+                self.registry["artist_candidate_source_policy"],
+            )
+        with self.assertRaises(BUILDER.BuildError):
+            BUILDER.validate_candidate_sources(
+                duplicate[:-1],
+                self._normalized_names(),
+                self.registry["artist_candidate_source_policy"],
+            )
+
+    def test_candidate_registry_rejects_missing_or_unexpected_fields(self):
+        for remove, add in (("url", None), (None, "unexpected")):
+            with self.subTest(remove=remove, add=add):
+                candidates = self._candidate_copy()
+                if remove:
+                    del candidates[0][remove]
+                if add:
+                    candidates[0][add] = True
+                with self.assertRaises(BUILDER.BuildError):
+                    BUILDER.validate_candidate_sources(
+                        candidates,
+                        self._normalized_names(),
+                        self.registry["artist_candidate_source_policy"],
+                    )
+
+    def test_lane_refs_are_not_verified_and_report_has_replay_limitation(self):
+        payload_text = json.dumps(self.payload, ensure_ascii=False)
+        report = (ROOT / "deliverables/artnguide_due_diligence_evidence_2026-08-10.md").read_text(encoding="utf-8")
+        self.assertNotIn("verified_local_artifact", payload_text)
+        self.assertIn("missing_repository", payload_text)
+        self.assertIn("not_reverified", payload_text)
+        self.assertIn("optional local inputs absent from Git", report)
+        self.assertIn("registry replay does not verify completeness, external bodies, identity, or exact match", report)
 
 
 if __name__ == "__main__":

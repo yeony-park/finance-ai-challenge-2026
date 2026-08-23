@@ -20,12 +20,51 @@ from urllib.parse import urlparse
 ROOT = Path(__file__).resolve().parents[1]
 RAW_DATA = ROOT / "data/artnguide_track_records.json"
 REGISTRY = ROOT / "data/artnguide_evidence_sources.json"
-LANE_PATHS = (
-    ROOT / "tmp/orca-ai-team/artnguide_artist_lane_a.md",
-    ROOT / "tmp/orca-ai-team/artnguide_artist_lane_b.md",
+LANE_RELATIVE_PATHS = (
+    "tmp/orca-ai-team/artnguide_artist_lane_a.md",
+    "tmp/orca-ai-team/artnguide_artist_lane_b.md",
 )
+LANE_PATHS = tuple(ROOT / path for path in LANE_RELATIVE_PATHS)
 OUTPUT = ROOT / "data/artnguide_due_diligence.json"
 REPORT = ROOT / "deliverables/artnguide_due_diligence_evidence_2026-08-10.md"
+
+# These are expected hashes for the historical lane inputs.  They are kept in
+# the tracked registry and copied to the output as expected hashes; a build
+# never publishes a hash of whichever local files happen to be present.
+LANE_MATERIALIZATION_KEY = "artist_lane_materialization"
+CANDIDATE_COUNT = 68
+CANDIDATE_CATEGORIES = {"identity", "same_artist_other_work"}
+CANDIDATE_FIELDS = {
+    "id",
+    "url",
+    "publisher",
+    "source_type",
+    "source_or_event_date",
+    "accessed_at",
+    "evidence_grade",
+    "claim_scope",
+    "verification_status",
+    "verification_reason",
+    "candidate_category",
+    "source_label_as_reported",
+    "reported_by",
+}
+POLICY_FIELDS = {
+    "publisher",
+    "source_type",
+    "source_or_event_date",
+    "accessed_at",
+    "evidence_grade",
+    "claim_scope",
+    "verification_status",
+    "verification_reason",
+}
+REPORT_LOCATOR_RE = re.compile(
+    r"^tmp/orca-ai-team/artnguide_artist_lane_[ab]\.md:[1-9][0-9]*$"
+)
+CANDIDATE_ID_RE = re.compile(
+    r"^artist-([0-9a-f]{12})-(identity|same_artist_other_work)-([1-9][0-9]*)-([0-9a-f]{12})$"
+)
 
 RAW_ARTWORK_FIELDS = ("title", "yearItem", "artMaterial", "artSize")
 RECORD_EVIDENCE_FIELDS = ("title", "authorName", "yearItem", "artMaterial", "artSize")
@@ -77,66 +116,116 @@ def source_date_from_lane(value: str) -> str | None:
     return match.group(1) if match else None
 
 
-def lane_candidate_sources(registry: dict) -> tuple[list[dict], dict[str, dict[str, list[str]]]]:
-    """Extract lane URLs without claiming that their linked body was verified."""
+def _materialization_config(registry: dict) -> tuple[dict, dict[str, str]]:
+    """Validate and return the tracked lane materialization contract."""
+    if not isinstance(registry, dict):
+        raise BuildError("source registry must be an object")
+    materialization = registry.get(LANE_MATERIALIZATION_KEY)
+    if not isinstance(materialization, dict):
+        raise BuildError("source registry must include artist_lane_materialization")
+    expected = materialization.get("expected_sha256")
+    if not isinstance(expected, dict) or set(expected) != set(LANE_RELATIVE_PATHS):
+        raise BuildError("artist_lane_materialization.expected_sha256 must list both lane paths")
+    for relative_path, digest in expected.items():
+        if not isinstance(digest, str) or not re.fullmatch(r"[0-9a-f]{64}", digest):
+            raise BuildError(f"invalid expected SHA256 for {relative_path}")
+    if not isinstance(materialization.get("availability_semantics"), str):
+        raise BuildError("artist lane availability semantics are missing")
+    if not isinstance(materialization.get("replay_semantics"), str):
+        raise BuildError("artist lane replay semantics are missing")
+    if not isinstance(materialization.get("claim_scope"), str):
+        raise BuildError("artist lane claim scope is missing")
+    return materialization, expected
+
+
+def _lane_availability() -> tuple[bool, bool]:
+    available = tuple(path.exists() for path in LANE_PATHS)
+    if any(available) and not all(available):
+        raise BuildError("artist lane inputs must both be present or both be absent")
+    return available
+
+
+def _verify_lane_hashes(expected: dict[str, str]) -> None:
+    """Verify both local lanes before parsing either body."""
+    for path, relative_path in zip(LANE_PATHS, LANE_RELATIVE_PATHS):
+        try:
+            actual = hashlib.sha256(path.read_bytes()).hexdigest()
+        except OSError as error:
+            raise BuildError(f"cannot read artist lane {relative_path}: {error}") from error
+        if actual != expected[relative_path]:
+            raise BuildError(f"artist lane SHA256 mismatch for {relative_path}")
+
+
+def _candidate_source(
+    policy: dict, *, artist: str, category: str, ordinal: int, url: str,
+    source_label: str | None, reported_by: str, source_or_event_date: str | None = None,
+) -> dict:
+    return {
+        "id": f"artist-{slug(artist)}-{category}-{ordinal}-{slug(url)}",
+        "url": url,
+        "publisher": policy["publisher"],
+        "source_type": policy["source_type"],
+        "source_or_event_date": source_or_event_date,
+        "accessed_at": policy["accessed_at"],
+        "evidence_grade": policy["evidence_grade"],
+        "claim_scope": policy["claim_scope"],
+        "verification_status": policy["verification_status"],
+        "verification_reason": policy["verification_reason"],
+        "candidate_category": category,
+        "source_label_as_reported": source_label,
+        "reported_by": reported_by,
+    }
+
+
+def parse_lane_candidate_sources(registry: dict) -> list[dict]:
+    """Parse both already-materialized lane bodies for integrity comparison only."""
     policy = registry["artist_candidate_source_policy"]
     sources: list[dict] = []
-    by_artist: dict[str, dict[str, list[str]]] = defaultdict(
-        lambda: {"identity": [], "same_artist_other_work": []}
-    )
     seen_urls: set[tuple[str, str, str]] = set()
 
-    for lane_path in LANE_PATHS:
-        lane_id = f"artist-lane-{lane_path.stem.rsplit('_', 1)[-1]}"
-        for line_no, line in enumerate(lane_path.read_text(encoding="utf-8").splitlines(), 1):
+    for lane_index, lane_path in enumerate(LANE_PATHS):
+        logical_path = LANE_RELATIVE_PATHS[lane_index]
+        try:
+            lines = lane_path.read_text(encoding="utf-8").splitlines()
+        except OSError as error:
+            raise BuildError(f"cannot read artist lane {logical_path}: {error}") from error
+        for line_no, line in enumerate(lines, 1):
             if not line.startswith("| ") or line.startswith("| 정규화") or line.startswith("|---"):
                 continue
             cells = [cell.strip() for cell in line.split("|")]
             if len(cells) < 5:
                 continue
             artist = cells[1]
-            if lane_path.name.endswith("lane_a.md"):
-                category_cells = (
-                    ("identity", cells[2]),
-                    ("same_artist_other_work", cells[4]),
-                )
-            else:
-                category_cells = (
-                    ("identity", cells[2]),
-                    ("same_artist_other_work", cells[3]),
-                )
+            category_cells = (
+                (("identity", cells[2]), ("same_artist_other_work", cells[4]))
+                if lane_index == 0
+                else (("identity", cells[2]), ("same_artist_other_work", cells[3]))
+            )
             for category, cell in category_cells:
                 for ordinal, (label, url) in enumerate(lane_links(cell), 1):
                     key = (artist, category, url)
                     if key in seen_urls:
                         continue
                     seen_urls.add(key)
-                    source_id = f"artist-{slug(artist)}-{category}-{ordinal}-{slug(url)}"
-                    source = {
-                        "id": source_id,
-                        "url": url,
-                        "publisher": policy["publisher"],
-                        "source_type": policy["source_type"],
-                        "source_or_event_date": (
-                            source_date_from_lane(cell)
-                            if lane_path.name.endswith("lane_b.md")
-                            else None
-                        ),
-                        "accessed_at": policy["accessed_at"],
-                        "evidence_grade": policy["evidence_grade"],
-                        "claim_scope": policy["claim_scope"],
-                        "verification_status": policy["verification_status"],
-                        "verification_reason": policy["verification_reason"],
-                        "candidate_category": category,
-                        "source_label_as_reported": label,
-                        "reported_by": f"{lane_path.relative_to(ROOT)}:{line_no}",
-                    }
-                    sources.append(source)
-                    by_artist[artist][category].append(source_id)
+                    sources.append(
+                        _candidate_source(
+                            policy,
+                            artist=artist,
+                            category=category,
+                            ordinal=ordinal,
+                            url=url,
+                            source_label=label,
+                            reported_by=f"{logical_path}:{line_no}",
+                            source_or_event_date=(
+                                source_date_from_lane(cell) if lane_index == 1 else None
+                            ),
+                        )
+                    )
 
-    # Lane A records this URL in the exact-match memo column.  The memo itself
-    # says it is not an exact match, so retain the URL as an unverified
-    # same-artist-other-work candidate instead of dropping it or promoting it.
+    # Lane A recorded this URL in its exact-match memo column.  The correction
+    # is a tracked historical assertion that keeps it as a same-artist-other-
+    # work candidate.  It is appended only when the lane body did not already
+    # materialize it, so a correction is never double-added.
     for correction in LANE_A_EXACT_MATCH_CORRECTIONS:
         artist = correction["artist"]
         category = "same_artist_other_work"
@@ -145,27 +234,161 @@ def lane_candidate_sources(registry: dict) -> tuple[list[dict], dict[str, dict[s
         if key in seen_urls:
             continue
         seen_urls.add(key)
-        ordinal = len(by_artist[artist][category]) + 1
-        source_id = f"artist-{slug(artist)}-{category}-{ordinal}-{slug(url)}"
+        ordinal = sum(
+            source["candidate_category"] == category
+            and source["id"].startswith(f"artist-{slug(artist)}-{category}-")
+            for source in sources
+        ) + 1
         sources.append(
-            {
-                "id": source_id,
-                "url": url,
-                "publisher": policy["publisher"],
-                "source_type": policy["source_type"],
-                "source_or_event_date": policy["source_or_event_date"],
-                "accessed_at": policy["accessed_at"],
-                "evidence_grade": policy["evidence_grade"],
-                "claim_scope": policy["claim_scope"],
-                "verification_status": policy["verification_status"],
-                "verification_reason": policy["verification_reason"],
-                "candidate_category": category,
-                "source_label_as_reported": correction["source_label_as_reported"],
-                "reported_by": correction["reported_by"],
-            }
+            _candidate_source(
+                policy,
+                artist=artist,
+                category=category,
+                ordinal=ordinal,
+                url=url,
+                source_label=correction["source_label_as_reported"],
+                reported_by=correction["reported_by"],
+                source_or_event_date=policy["source_or_event_date"],
+            )
         )
-        by_artist[artist][category].append(source_id)
-    return sources, dict(by_artist)
+    return sources
+
+
+def _artist_slug_map(normalized_names: list[dict]) -> dict[str, list[str]]:
+    by_slug: dict[str, list[str]] = defaultdict(list)
+    for group in normalized_names:
+        if not isinstance(group, dict):
+            raise BuildError("normalized author mapping must contain objects")
+        name = group.get("whitespace_normalized_author_name")
+        if not isinstance(name, str) or not name:
+            raise BuildError("normalized author mapping contains an invalid name")
+        by_slug[slug(name)].append(name)
+    return dict(by_slug)
+
+
+def validate_candidate_sources(
+    candidate_sources: object, normalized_names: list[dict], policy: dict
+) -> tuple[list[dict], dict[str, dict[str, list[str]]]]:
+    """Validate the tracked candidate registry and derive only its routing map."""
+    if not isinstance(policy, dict) or set(policy) != POLICY_FIELDS:
+        raise BuildError("artist candidate source policy fields drifted")
+    if not isinstance(candidate_sources, list) or len(candidate_sources) != CANDIDATE_COUNT:
+        raise BuildError(f"artist candidate registry must contain exactly {CANDIDATE_COUNT} objects")
+    if len(normalized_names) != 45:
+        raise BuildError("candidate registry requires exactly 45 normalized author names")
+
+    by_slug = _artist_slug_map(normalized_names)
+    collisions = {digest: names for digest, names in by_slug.items() if len(names) != 1}
+    if collisions:
+        raise BuildError(f"normalized author SHA256 prefix collision: {collisions}")
+    by_artist: dict[str, dict[str, list[str]]] = defaultdict(
+        lambda: {"identity": [], "same_artist_other_work": []}
+    )
+    seen_ids: set[str] = set()
+    seen_keys: set[tuple[str, str, int]] = set()
+    seen_artist_urls: set[tuple[str, str, str]] = set()
+    parsed_ordinals: dict[tuple[str, str], list[int]] = defaultdict(list)
+    validated: list[dict] = []
+
+    for source in candidate_sources:
+        if not isinstance(source, dict) or set(source) != CANDIDATE_FIELDS:
+            raise BuildError("artist candidate source has unexpected or missing fields")
+        source_id = source["id"]
+        if not isinstance(source_id, str):
+            raise BuildError("artist candidate source ID must be a string")
+        match = CANDIDATE_ID_RE.fullmatch(source_id)
+        if not match:
+            raise BuildError(f"malformed artist candidate source ID: {source_id!r}")
+        artist_hash, category, ordinal_text, url_hash = match.groups()
+        names = by_slug.get(artist_hash, [])
+        if len(names) != 1:
+            raise BuildError(f"artist candidate ID does not map to one normalized author: {source_id}")
+        artist = names[0]
+        ordinal = int(ordinal_text)
+        if source_id in seen_ids:
+            raise BuildError(f"duplicate artist candidate source ID: {source_id}")
+        seen_ids.add(source_id)
+        if (artist_hash, category, ordinal) in seen_keys:
+            raise BuildError(f"duplicate artist candidate ordinal: {source_id}")
+        seen_keys.add((artist_hash, category, ordinal))
+        parsed_ordinals[(artist_hash, category)].append(ordinal)
+
+        url = source["url"]
+        if not isinstance(url, str) or not url or re.search(r"\s", url):
+            raise BuildError(f"malformed artist candidate URL: {source_id}")
+        parsed_url = urlparse(url)
+        if parsed_url.scheme != "https" or not parsed_url.netloc:
+            raise BuildError(f"artist candidate URL must be HTTPS: {source_id}")
+        if slug(url) != url_hash:
+            raise BuildError(f"artist candidate URL hash mismatch: {source_id}")
+        if category not in CANDIDATE_CATEGORIES or source["candidate_category"] != category:
+            raise BuildError(f"artist candidate category mismatch: {source_id}")
+        if (artist_hash, category, url) in seen_artist_urls:
+            raise BuildError(f"duplicate artist candidate URL: {source_id}")
+        seen_artist_urls.add((artist_hash, category, url))
+
+        for field in POLICY_FIELDS:
+            if field == "source_or_event_date":
+                value = source[field]
+                if value is not None:
+                    try:
+                        datetime.strptime(value, "%Y-%m-%d")
+                    except (TypeError, ValueError):
+                        raise BuildError(f"malformed artist candidate source date: {source_id}")
+                continue
+            if source[field] != policy[field]:
+                raise BuildError(f"artist candidate source policy drift: {source_id}:{field}")
+        if source["source_label_as_reported"] is not None and not isinstance(
+            source["source_label_as_reported"], str
+        ):
+            raise BuildError(f"malformed artist candidate label: {source_id}")
+        reported_by = source["reported_by"]
+        if not isinstance(reported_by, str) or not REPORT_LOCATOR_RE.fullmatch(reported_by):
+            raise BuildError(f"artist candidate reported_by is not an allowlisted locator: {source_id}")
+        validated.append(source)
+
+    for key, ordinals in parsed_ordinals.items():
+        expected = list(range(1, len(ordinals) + 1))
+        if sorted(ordinals) != expected:
+            raise BuildError(f"non-contiguous artist candidate ordinals for {key[0]}:{key[1]}")
+
+    for source in validated:
+        artist = by_slug[source["id"].split("-", 2)[1]][0]
+        category = source["candidate_category"]
+        by_artist[artist][category].append(source["id"])
+    return validated, dict(by_artist)
+
+
+def lane_candidate_sources(registry: dict) -> tuple[list[dict], dict[str, dict[str, list[str]]]]:
+    """Compatibility helper for callers that explicitly provide both lanes."""
+    _materialization_config(registry)
+    if _lane_availability() != (True, True):
+        raise BuildError("lane_candidate_sources requires both artist lane files")
+    materialized = parse_lane_candidate_sources(registry)
+    return materialized, {}
+
+
+def materialize_candidate_sources(
+    registry: dict, normalized_names: list[dict]
+) -> tuple[list[dict], dict[str, dict[str, list[str]]]]:
+    """Use tracked registry data, with optional lanes as integrity cross-checks."""
+    _, expected = _materialization_config(registry)
+    availability = _lane_availability()
+    if availability == (True, True):
+        # Hashes are checked before registry validation and before either lane
+        # is parsed. Lane materialization can only confirm the registry; it can
+        # never replace it.
+        _verify_lane_hashes(expected)
+    tracked, by_artist = validate_candidate_sources(
+        registry.get("artist_candidate_sources"),
+        normalized_names,
+        registry.get("artist_candidate_source_policy", {}),
+    )
+    if availability == (True, True):
+        parsed = parse_lane_candidate_sources(registry)
+        if parsed != tracked:
+            raise BuildError("parsed artist lanes do not exactly match tracked candidate registry")
+    return tracked, by_artist
 
 
 def is_complete_value(value: object) -> bool:
@@ -205,13 +428,13 @@ def raw_name_groups(records: list[dict]) -> tuple[list[dict], list[dict], list[d
             "raw_or_normalized_name": "최울가",
             "canonical_alias_candidate": "최 울 가",
             "status": "unverified_candidate",
-            "reason": "lane B가 Gana Art CV의 공백 표기를 후보로 기록했으며 동일인 자동 병합을 금지함",
+            "reason": "historical candidate-registry annotation preserves a possible spacing variant; identical identity is not confirmed or merged",
         },
         {
             "raw_or_normalized_name": "쟝 미셸 바스키아",
             "canonical_alias_candidate": "장-미셸 바스키아",
             "status": "unverified_candidate",
-            "reason": "lane B가 두 입력 표기를 동일인으로 자동 확정하지 않도록 기록함",
+            "reason": "historical candidate-registry annotation preserves two input spellings; identical identity is not confirmed or merged",
         },
     ]
     return raw_names, normalized, canonical_candidates
@@ -321,40 +544,33 @@ def build_payload() -> dict:
     if len(annotation_by_id) != 187:
         raise BuildError("record annotation IDs must be unique")
 
-    candidate_sources, sources_by_artist = lane_candidate_sources(registry)
-    sources = list(registry["source_documents"]) + [
-        {
-            "id": "artist-lane-a",
-            "url": None,
-            "publisher": "작업 분업 조사 메모",
-            "source_type": "local_research_lane",
-            "source_or_event_date": "2026-08-10 KST",
-            "accessed_at": "2026-08-10 KST",
-            "evidence_grade": "local_research_note",
-            "claim_scope": "작가 identity 및 same-artist other-work URL 후보의 확인 수준",
-            "verification_status": "verified_local_artifact",
-            "local_artifact": str(LANE_PATHS[0].relative_to(ROOT)),
-        },
-        {
-            "id": "artist-lane-b",
-            "url": None,
-            "publisher": "작업 분업 조사 메모",
-            "source_type": "local_research_lane",
-            "source_or_event_date": "2026-08-10 KST",
-            "accessed_at": "2026-08-10 KST",
-            "evidence_grade": "local_research_note",
-            "claim_scope": "작가 identity 및 same-artist other-work URL 후보의 확인 수준",
-            "verification_status": "verified_local_artifact",
-            "local_artifact": str(LANE_PATHS[1].relative_to(ROOT)),
-        },
-    ] + candidate_sources
-    source_ids = [source["id"] for source in sources]
-    if len(source_ids) != len(set(source_ids)):
-        raise BuildError("source IDs must be unique")
-
     raw_names, normalized_names, canonical_candidates = raw_name_groups(records)
     if len(raw_names) != 48 or len(normalized_names) != 45:
         raise BuildError("expected 48 raw and 45 whitespace-normalized author names")
+    candidate_sources, sources_by_artist = materialize_candidate_sources(registry, normalized_names)
+    _, expected_lane_hashes = _materialization_config(registry)
+    lane_pseudo_sources = [
+        {
+            "id": f"artist-lane-{lane_label}",
+            "url": None,
+            "publisher": "작업 분업 조사 메모",
+            "source_type": "local_research_lane",
+            "source_or_event_date": "2026-08-10 KST",
+            "accessed_at": "2026-08-10 KST",
+            "evidence_grade": "local_research_note",
+            "claim_scope": "역사적 lane locator와 후보 registry materialization의 provenance만 표시하며, lane 본문·완전성·identity·exact match를 확인하지 않음",
+            "verification_status": "missing_repository",
+            "verification_reason": "content_not_reverified; lane original is optional local input absent from Git",
+            "content_verification_status": "not_reverified",
+            "expected_sha256": expected_lane_hashes[relative_path],
+            "local_artifact": relative_path,
+        }
+        for lane_label, relative_path in zip(("a", "b"), LANE_RELATIVE_PATHS)
+    ]
+    sources = list(registry["source_documents"]) + lane_pseudo_sources + candidate_sources
+    source_ids = [source["id"] for source in sources]
+    if len(source_ids) != len(set(source_ids)):
+        raise BuildError("source IDs must be unique")
 
     identities = []
     for group in normalized_names:
@@ -366,7 +582,7 @@ def build_payload() -> dict:
                     "classification": "non_artist_candidate",
                     "identity_completeness": "unverified",
                     "source_ids": [],
-                    "reason": "lane A가 차 상품명 또는 브랜드일 가능성을 기록했고 작가로 가정하지 않음",
+                    "reason": "tracked materialized registry has no identity confirmation for this raw authorName; keep the non-artist candidate boundary",
                 }
             )
             continue
@@ -376,7 +592,7 @@ def build_payload() -> dict:
                 "classification": "artist_name_candidate",
                 "identity_completeness": "unverified",
                 "source_ids": sources_by_artist.get(name, {}).get("identity", []),
-                "reason": "lane의 URL·요약은 저장돼 있으나 외부 본문과 대상 identity를 직접 검증한 증거를 이 산출물에 보관하지 않음",
+                "reason": "tracked materialized candidate registry is a historical assertion only; external body and target identity were not reverified",
             }
         )
     identity_by_name = {item["whitespace_normalized_author_name"]: item for item in identities}
@@ -472,14 +688,14 @@ def build_payload() -> dict:
                 "external_exact_match": {
                     "status": "not_found_in_provided_evidence",
                     "source_ids": [],
-                    "reason": "provided artist lanes report no title·year·material·size exact match; no external result is promoted from a URL alone",
+                    "reason": "tracked materialized registry contains no exact-match source; optional lane originals are historical inputs and were not reverified, so no URL is promoted",
                 },
                 "same_artist_other_work": {
                     "status": (
                         "candidate_sources_unverified" if same_artist_source_ids else "확인 불가"
                     ),
                     "source_ids": same_artist_source_ids,
-                    "reason": "same-artist other-work candidates are separated from exact-match evidence and do not support price adequacy or prediction",
+                    "reason": "tracked materialized same-artist-other-work candidates are historical assertions, separate from exact-match evidence, and do not support price adequacy or prediction",
                 },
             }
         )
@@ -496,10 +712,9 @@ def build_payload() -> dict:
     official = raw["official_stats"]
     official_raw = official["raw"]
     raw_sha = hashlib.sha256(RAW_DATA.read_bytes()).hexdigest()
-    lane_hashes = {
-        str(path.relative_to(ROOT)): hashlib.sha256(path.read_bytes()).hexdigest()
-        for path in LANE_PATHS
-    }
+    # Lane hashes are expected historical hashes from the tracked registry.
+    # Do not hash optional local inputs into the checked output.
+    _, expected_lane_hashes = _materialization_config(registry)
     candidate_same_artist_records = sum(
         1 for item in record_evidence if item["same_artist_other_work"]["source_ids"]
     )
@@ -515,7 +730,7 @@ def build_payload() -> dict:
                 "raw_track_records": str(RAW_DATA.relative_to(ROOT)),
                 "raw_track_records_sha256": raw_sha,
                 "source_registry": str(REGISTRY.relative_to(ROOT)),
-                "artist_lane_sha256": lane_hashes,
+                "artist_lane_expected_sha256": expected_lane_hashes,
             },
         },
         "source_registry": {
@@ -529,6 +744,7 @@ def build_payload() -> dict:
                 "claim_scope",
                 "verification_status",
             ],
+            "artist_lane_materialization": registry[LANE_MATERIALIZATION_KEY],
             "sources": sources,
         },
         "operator_evidence": {
@@ -554,7 +770,7 @@ def build_payload() -> dict:
                 {
                     "raw_or_normalized_name": "공부차",
                     "classification": "non_artist_candidate",
-                    "reason": "차 상품명 또는 브랜드 가능성을 배제하지 못해 작가로 가정하지 않음",
+                    "reason": "raw authorName has no tracked identity confirmation; do not assume it is an artist",
                 }
             ],
             "artist_identity_evidence": identities,
@@ -588,7 +804,7 @@ def build_payload() -> dict:
             "identity_unverified_record_count": len(records),
             "external_exact_match_record_count": 0,
             "same_artist_other_work_candidate_record_count": candidate_same_artist_records,
-            "same_artist_other_work_unverified_reason": "candidate URL 또는 lane 요약만 있으며 target title·year·material·size 외부 원문 대조 증거가 없음",
+            "same_artist_other_work_unverified_reason": "tracked materialized candidate registry records URL/history only; target title·year·material·size external body comparison evidence is absent",
         },
         "aggregate_context": {
             "platform_official_stats": official,
@@ -603,7 +819,8 @@ def build_payload() -> dict:
         "limitations": [
             "플랫폼 자체 게시값은 법적 발행사 이력이나 독립 경매·매각 이력으로 표기하지 않음",
             "외부 exact match와 same-artist other-work를 분리하며 가격 적정성·예측·투자판단을 생성하지 않음",
-            "외부 URL, 검색 URL, generic homepage 또는 lane 요약만으로 identity를 confirmed 처리하지 않음",
+            "외부 URL, 검색 URL, generic homepage 또는 tracked candidate registry만으로 identity를 confirmed 처리하지 않음",
+            "lane originals are optional local inputs absent from Git; registry replay does not verify lane completeness, external bodies, identity, or exact match",
         ],
     }
     return payload
@@ -621,20 +838,23 @@ def render_report(payload: dict) -> str:
             "",
             "## 출처·확인 상태",
             "",
-            f"- source registry : {len(payload['source_registry']['sources'])}건. URL만 있는 artist 후보 링크는 `candidate_link_from_research_lane`·`unverified`로 유지했다.",
+            f"- source registry : {len(payload['source_registry']['sources'])}건. 68개 artist 후보는 tracked `artist_candidate_sources` registry가 authoritative한 materialized registry replay이며 `candidate_link_from_research_lane`·`unverified`로 유지했다.",
+            "- 두 lane 원본은 Git에 없는 선택적 local integrity-cross-check 입력이다. 이 clean checkout에서는 lane 본문을 읽지 않고 registry를 replay했다.",
+            "- registry replay는 lane 완전성, 외부 본문, 작가 identity 또는 exact match를 검증하지 않는다. lane locator는 historical locator로만 취급한다.",
+            "- Lane originals are optional local inputs absent from Git; registry replay does not verify completeness, external bodies, identity, or exact match.",
             "- 플랫폼 187건은 아트앤가이드·열매컴퍼니의 self-reported raw snapshot이다. 법적 발행인, 독립 매각·경매, 실제 분배 이력은 이 저장본으로 확인하지 않는다.",
-            "- 운영사 관련 약관·금감원·DART URL은 lane에 기록된 주장 범위만 보존했다. 외부 본문 저장본이 없으므로 이 artifact에서 `unverified`다.",
+            "- 운영사 관련 약관·금감원·DART URL은 historical research assertions의 범위만 보존했다. 외부 본문 저장본이 없으므로 이 artifact에서 `unverified`다.",
             "",
             "## 187개 record 결합",
             "",
             f"- `artist_track_records` : {coverage['artist_track_record_count']}건. status, gpMoney, soldMoney, reported profit, dateHold를 raw 값·출처·분모·계산식과 분리해 기록했다.",
             f"- `record_evidence` : {coverage['record_evidence_count']}건. 각 id에 raw JSON의 title/yearItem/artMaterial/artSize를 직접 결합했다. 필드 complete 수는 title {coverage['platform_artwork_field_complete_counts']['title']}건, yearItem {coverage['platform_artwork_field_complete_counts']['yearItem']}건, artMaterial {coverage['platform_artwork_field_complete_counts']['artMaterial']}건, artSize {coverage['platform_artwork_field_complete_counts']['artSize']}건이다.",
-            f"- external exact match : {coverage['external_exact_match_record_count']}건. same-artist other-work candidate는 {coverage['same_artist_other_work_candidate_record_count']}건이며 모두 unverified다.",
+            f"- external exact match : {coverage['external_exact_match_record_count']}건. tracked materialized same-artist other-work candidates는 {coverage['same_artist_other_work_candidate_record_count']}건이며 모두 historical assertions·unverified다.",
             "",
             "## 이름·발행사 한계",
             "",
-            f"- raw `authorName`은 {payload['author_name_evidence']['raw_authorName_distinct_count']}개 원값을 보존했고, `strip()` whitespace-only 결과는 {payload['author_name_evidence']['whitespace_normalized_distinct_count']}개다. canonical alias 후보는 별도이며 자동 병합하지 않았다.",
-            "- `공부차`는 `non_artist_candidate`로 분류했다.",
+            f"- raw `authorName`은 {payload['author_name_evidence']['raw_authorName_distinct_count']}개 원값을 보존했고, `strip()` whitespace-only 결과는 {payload['author_name_evidence']['whitespace_normalized_distinct_count']}개다. canonical alias 후보는 역사적 registry annotation으로 별도 보존하며 자동 병합하지 않았다.",
+            "- `공부차`는 tracked registry에 identity 확인이 없어 `non_artist_candidate` 경계를 유지했다.",
             f"- 레코드별 legal issuer mapping {coverage['legal_issuer_mapping_count']}건은 모두 null/unverified다.",
             "",
             "## 집계 규칙",

@@ -127,9 +127,16 @@
 
 .evidence ul {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
   gap: var(--ds-space-1);
   margin: var(--ds-space-1) 0 0;
   padding-left: 1.2em;
+}
+
+.evidence li {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .gradeList {

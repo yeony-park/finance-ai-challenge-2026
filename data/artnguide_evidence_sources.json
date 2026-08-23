@@ -82,6 +82,15 @@
     "tmp/orca-ai-team/artnguide_artist_lane_a.md",
     "tmp/orca-ai-team/artnguide_artist_lane_b.md"
   ],
+  "artist_lane_materialization": {
+    "expected_sha256": {
+      "tmp/orca-ai-team/artnguide_artist_lane_a.md": "59e8318c4b12d54bab4a1d4afcf6424accbacfbde872fb5cb672b1427b7d257b",
+      "tmp/orca-ai-team/artnguide_artist_lane_b.md": "19ef5408ed1a91160ede8c66e0ffc3cbaf2b46472d0bb41d0845f56bd5659ab9"
+    },
+    "availability_semantics": "optional local integrity cross-check inputs; both lane files are required when present and partial availability fails closed; neither is the clean-checkout replay path",
+    "replay_semantics": "tracked artist_candidate_sources is authoritative; when both lane inputs are present, exact SHA256 and parsed candidate-array equality are checked before registry replay; when neither is present, exactly 68 registry objects are validated and replayed without reconstructing lane bodies",
+    "claim_scope": "historical lane locator and candidate-registry materialization provenance only; does not verify lane completeness, external bodies, artist identity, exact match, legal issuer, or independent sale"
+  },
   "artist_candidate_source_policy": {
     "publisher": null,
     "source_type": "artist_identity_or_same_artist_other_work_candidate",

@@ -4,20 +4,23 @@
 
 ## 출처·확인 상태
 
-- source registry : 76건. URL만 있는 artist 후보 링크는 `candidate_link_from_research_lane`·`unverified`로 유지했다.
+- source registry : 76건. 68개 artist 후보는 tracked `artist_candidate_sources` registry가 authoritative한 materialized registry replay이며 `candidate_link_from_research_lane`·`unverified`로 유지했다.
+- 두 lane 원본은 Git에 없는 선택적 local integrity-cross-check 입력이다. 이 clean checkout에서는 lane 본문을 읽지 않고 registry를 replay했다.
+- registry replay는 lane 완전성, 외부 본문, 작가 identity 또는 exact match를 검증하지 않는다. lane locator는 historical locator로만 취급한다.
+- Lane originals are optional local inputs absent from Git; registry replay does not verify completeness, external bodies, identity, or exact match.
 - 플랫폼 187건은 아트앤가이드·열매컴퍼니의 self-reported raw snapshot이다. 법적 발행인, 독립 매각·경매, 실제 분배 이력은 이 저장본으로 확인하지 않는다.
-- 운영사 관련 약관·금감원·DART URL은 lane에 기록된 주장 범위만 보존했다. 외부 본문 저장본이 없으므로 이 artifact에서 `unverified`다.
+- 운영사 관련 약관·금감원·DART URL은 historical research assertions의 범위만 보존했다. 외부 본문 저장본이 없으므로 이 artifact에서 `unverified`다.
 
 ## 187개 record 결합
 
 - `artist_track_records` : 187건. status, gpMoney, soldMoney, reported profit, dateHold를 raw 값·출처·분모·계산식과 분리해 기록했다.
 - `record_evidence` : 187건. 각 id에 raw JSON의 title/yearItem/artMaterial/artSize를 직접 결합했다. 필드 complete 수는 title 187건, yearItem 179건, artMaterial 186건, artSize 187건이다.
-- external exact match : 0건. same-artist other-work candidate는 104건이며 모두 unverified다.
+- external exact match : 0건. tracked materialized same-artist other-work candidates는 104건이며 모두 historical assertions·unverified다.
 
 ## 이름·발행사 한계
 
-- raw `authorName`은 48개 원값을 보존했고, `strip()` whitespace-only 결과는 45개다. canonical alias 후보는 별도이며 자동 병합하지 않았다.
-- `공부차`는 `non_artist_candidate`로 분류했다.
+- raw `authorName`은 48개 원값을 보존했고, `strip()` whitespace-only 결과는 45개다. canonical alias 후보는 역사적 registry annotation으로 별도 보존하며 자동 병합하지 않았다.
+- `공부차`는 tracked registry에 identity 확인이 없어 `non_artist_candidate` 경계를 유지했다.
 - 레코드별 legal issuer mapping 187건은 모두 null/unverified다.
 
 ## 집계 규칙
