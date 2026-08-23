@@ -182,6 +182,19 @@ test("art catalog and products compatibility route expose the same repository to
   assert.ok(filteredText.includes("12건"));
   assert.ok(filteredHtml.includes("체크 즉시 결과에 반영됩니다."));
 
+  const scheduled = await fetch(`${baseUrl}/art?scope=current&currentStatus=upcoming&keyword=${encodeURIComponent("청약 예정인 작품")}`);
+  const scheduledText = (await scheduled.text()).replaceAll("<!-- -->", "");
+  assert.equal(scheduled.ok, true);
+  assert.ok(scheduledText.includes('<div class="results-toolbar"><strong>4건'));
+
+  const completed = await fetch(`${baseUrl}/art?scope=historical&lifecycle=sold,liquidated`);
+  const completedText = (await completed.text()).replaceAll("<!-- -->", "");
+  assert.equal(completed.ok, true);
+  assert.ok(completedText.includes('<div class="results-toolbar"><strong>193건'));
+  assert.ok(completedText.includes("매각·청산 완료"));
+  const completedApi = await getJson<ProductResponse>("/api/products?scope=historical&lifecycle=sold,liquidated&pageSize=100");
+  assert.equal(completedApi.pagination.total, 193);
+
   const platform = await fetch(`${baseUrl}/platforms/platform-arttogether`);
   const platformHtml = await platform.text();
   assert.equal(platform.ok, true);

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import type { CatalogBasePath } from "@/lib/art/catalog-query";
-import { catalogHref } from "@/lib/art/catalog-query";
+import { catalogHref, toggleCatalogFilterValues } from "@/lib/art/catalog-query";
 import type { IdentityStatus, OfferingStatus, RecordLifecycle } from "@/lib/art/types";
 
 type FilterState = {
@@ -21,24 +21,43 @@ type Props = FilterState & {
   baseParams: Record<string, string | undefined>;
 };
 
-const currentStatusOptions: ReadonlyArray<[OfferingStatus, string]> = [["upcoming", "청약 예정"], ["open", "청약 중"], ["unverified", "상태 미확인"]];
-const lifecycleOptions: ReadonlyArray<[RecordLifecycle, string]> = [["operating", "운용 중"], ["exit_in_progress", "매각 진행"], ["sold", "매각 완료"], ["liquidated", "청산 완료"], ["returned", "반환"], ["loss_confirmed", "손실 확인"]];
-const identityOptions: ReadonlyArray<[IdentityStatus, string]> = [["self_reported", "플랫폼 자체 게시"], ["unverified", "식별 미검증"]];
-const sourceOptions: ReadonlyArray<[string, string]> = [["artnguide_track_records", "ArtNGuide"], ["weshareart_research", "아트투게더"], ["tessa_sale_records", "TESSA"]];
+type FilterOption = { key: string; label: string; values: string[] };
+
+const currentStatusOptions: FilterOption[] = [
+  { key: "upcoming", label: "청약 예정", values: ["upcoming"] },
+  { key: "open", label: "청약 중", values: ["open"] },
+];
+const lifecycleOptions: FilterOption[] = [
+  { key: "operating", label: "운용 중", values: ["operating"] },
+  { key: "exit_in_progress", label: "매각 진행", values: ["exit_in_progress"] },
+  { key: "completed", label: "매각·청산 완료", values: ["sold", "liquidated"] },
+  { key: "returned", label: "반환", values: ["returned"] },
+  { key: "loss_confirmed", label: "손실 확인", values: ["loss_confirmed"] },
+];
+const identityOptions: FilterOption[] = [
+  { key: "self_reported", label: "플랫폼 자체 게시", values: ["self_reported"] },
+  { key: "unverified", label: "식별 미검증", values: ["unverified"] },
+];
+const sourceOptions: FilterOption[] = [
+  { key: "artnguide_track_records", label: "ArtNGuide", values: ["artnguide_track_records"] },
+  { key: "weshareart_research", label: "아트투게더", values: ["weshareart_research"] },
+  { key: "tessa_sale_records", label: "TESSA", values: ["tessa_sale_records"] },
+];
 
 type FilterKey = keyof FilterState;
 
 function CheckboxGroup({ legend, name, options, selected, idPrefix, onToggle }: {
   legend: string;
   name: FilterKey;
-  options: ReadonlyArray<readonly [string, string]>;
+  options: FilterOption[];
   selected: string[];
   idPrefix: string;
-  onToggle: (name: FilterKey, value: string, checked: boolean) => void;
+  onToggle: (name: FilterKey, values: string[], checked: boolean) => void;
 }) {
-  return <fieldset className="filter-group"><legend>{legend}</legend><div className="filter-options">{options.map(([key, label]) => {
-    const id = `${idPrefix}-${name}-${key}`;
-    return <label className="filter-checkbox" htmlFor={id} key={key}><input id={id} type="checkbox" name={name} value={key} checked={selected.includes(key)} onChange={(event) => onToggle(name, key, event.target.checked)} /><span>{label}</span></label>;
+  return <fieldset className="filter-group"><legend>{legend}</legend><div className="filter-options">{options.map((option) => {
+    const id = `${idPrefix}-${name}-${option.key}`;
+    const checked = option.values.every((value) => selected.includes(value));
+    return <label className="filter-checkbox" htmlFor={id} key={option.key}><input id={id} type="checkbox" name={name} value={option.key} checked={checked} onChange={(event) => onToggle(name, option.values, event.target.checked)} /><span>{option.label}</span></label>;
   })}</div></fieldset>;
 }
 
@@ -47,8 +66,10 @@ export function RealtimeCatalogFilter({ idPrefix, basePath, scope, baseParams, c
   const [pending, startTransition] = useTransition();
   const [filters, setFilters] = useState<FilterState>({ currentStatus, lifecycle, identityStatus, sourceDataset });
 
-  function toggle(name: FilterKey, item: string, checked: boolean) {
-    const next = { ...filters, [name]: checked ? [...filters[name], item] : filters[name].filter((value) => value !== item) } as FilterState;
+  function toggle(name: FilterKey, items: string[], checked: boolean) {
+    const current = filters[name] as string[];
+    const updated = toggleCatalogFilterValues(current, items, checked);
+    const next = { ...filters, [name]: updated } as FilterState;
     setFilters(next);
     const params = {
       ...baseParams,

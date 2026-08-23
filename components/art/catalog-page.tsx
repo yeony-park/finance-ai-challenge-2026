@@ -1,9 +1,10 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { RealtimeCatalogFilter } from "@/components/art/catalog-filter-client";
 import { HistoricalProductCard } from "@/components/art/historical-products";
 import { NaturalLanguageSearch } from "@/components/art/natural-search";
 import { EmptyState, PageContainer, ProductCard } from "@/components/art/ui";
-import { catalogHref, parseCatalogSearchParams, type CatalogBasePath, type CatalogSearchParams } from "@/lib/art/catalog-query";
+import { catalogHref, firstValue, listValues, parseCatalogSearchParams, type CatalogBasePath, type CatalogSearchParams } from "@/lib/art/catalog-query";
 import { catalogRepository } from "@/lib/repositories/art-repositories";
 
 const pageSize = 24;
@@ -25,7 +26,7 @@ export async function ArtCatalogPage({ basePath, searchParams, kicker, title }: 
   const filters = {
     scope: parsed.scope,
     currentStatus: parsed.currentStatus.length ? parsed.currentStatus : undefined,
-    keyword: parsed.keyword || undefined,
+    keyword: parsed.filterKeyword || undefined,
     lifecycle: parsed.lifecycle.length ? parsed.lifecycle : undefined,
     status: parsed.status.length ? parsed.status : undefined,
     identityStatus: parsed.identityStatus.length ? parsed.identityStatus : undefined,
@@ -61,6 +62,15 @@ export async function ArtCatalogPage({ basePath, searchParams, kicker, title }: 
     returnMin: filters.returnMin?.toString(),
     returnMax: filters.returnMax?.toString(),
   };
+  if (parsed.keywordCurrentStatus.length) {
+    const requestedStatus = listValues(raw.currentStatus).sort().join(",");
+    const intendedStatus = [...parsed.keywordCurrentStatus].sort().join(",");
+    const hasHistoricalFilters = [raw.lifecycle, raw.status, raw.identity, raw.source, raw.dateFrom, raw.dateTo, raw.returnMin, raw.returnMax].some((item) => listValues(item).length > 0);
+    if (firstValue(raw.scope) !== "current" || requestedStatus !== intendedStatus || hasHistoricalFilters || firstValue(raw.page) !== "") {
+      redirect(catalogHref(basePath, baseParams));
+    }
+  }
+
   const filterProps = {
     basePath,
     scope: parsed.scope,
@@ -99,7 +109,7 @@ export async function ArtCatalogPage({ basePath, searchParams, kicker, title }: 
       <aside className="filter-panel" aria-label="상품 필터"><RealtimeCatalogFilter key={`desktop-${filterKey}`} idPrefix="desktop" {...filterProps} /></aside>
       <section className="listing-results" aria-live="polite">
         <div className="results-toolbar"><strong>{result.total}건</strong><span>페이지 {result.page} / {result.pageCount} · 페이지당 {result.pageSize}건</span></div>
-        {parsed.scope !== "current" ? <p className="table-note">과거 필터 집계 : {historicalAggregate.total}건 · 매각 완료 {historicalAggregate.byLifecycle.sold}건 · 반환 {historicalAggregate.byLifecycle.returned}건 · 매각 진행 {historicalAggregate.byLifecycle.exit_in_progress}건 · 원본 상태와 출처는 상세에서 확인</p> : null}
+        {parsed.scope !== "current" ? <p className="table-note">과거 필터 집계 : {historicalAggregate.total}건 · 매각·청산 완료 {historicalAggregate.byLifecycle.sold + historicalAggregate.byLifecycle.liquidated}건 · 반환 {historicalAggregate.byLifecycle.returned}건 · 매각 진행 {historicalAggregate.byLifecycle.exit_in_progress}건 · 원본 상태와 출처는 상세에서 확인</p> : null}
         {result.items.length ? <div className="product-grid-art">{result.items.map((item) => item.recordScope === "historical" ? <HistoricalProductCard key={item.offering.id} product={item} /> : <ProductCard key={item.offering.id} product={item} />)}</div> : <EmptyState title="조건에 맞는 상품·과거 기록이 없습니다." description="검색어 또는 생애주기 필터를 조정하세요." />}
         <nav className="pagination" aria-label="상품 목록 페이지">
           {result.page > 1 ? <Link href={catalogHref(basePath, { ...baseParams, page: String(result.page - 1) })}>← 이전</Link> : <span />}

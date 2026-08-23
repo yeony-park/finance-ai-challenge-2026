@@ -35,23 +35,48 @@ function numberOrUndefined(input: CatalogSearchValue): number | undefined {
   return Number.isFinite(number) ? number : undefined;
 }
 
+export function parseCatalogKeywordIntent(input: string): { keyword: string; currentStatus: OfferingStatus[] } {
+  let keyword = input.trim();
+  const currentStatus: OfferingStatus[] = [];
+  const statusRules: ReadonlyArray<[RegExp, OfferingStatus]> = [
+    [/청약\s*예정(?:인|된)?/g, "upcoming"],
+    [/청약\s*중(?:인)?/g, "open"],
+  ];
+  for (const [pattern, status] of statusRules) {
+    if (pattern.test(keyword)) currentStatus.push(status);
+    keyword = keyword.replace(pattern, " ");
+  }
+  if (currentStatus.length) keyword = keyword.replace(/(작품|상품|찾아줘|보여줘|검색해줘)/g, " ");
+  return { keyword: keyword.replace(/\s+/g, " ").trim(), currentStatus: [...new Set(currentStatus)] };
+}
+
 export function parseCatalogSearchParams(raw: CatalogSearchParams) {
+  const rawKeyword = firstValue(raw.keyword ?? raw.q).trim();
+  const intent = parseCatalogKeywordIntent(rawKeyword);
   const rawScope = firstValue(raw.scope);
-  const scope: "current" | "historical" | "all" = rawScope === "current" || rawScope === "historical" ? rawScope : "all";
+  const requestedScope: "current" | "historical" | "all" = rawScope === "current" || rawScope === "historical" ? rawScope : "all";
+  const explicitCurrentStatus = allowedValues(raw.currentStatus, offeringStatuses);
+  const hasCurrentKeywordIntent = intent.currentStatus.length > 0;
   return {
-    scope,
-    keyword: firstValue(raw.keyword ?? raw.q).trim(),
-    currentStatus: allowedValues(raw.currentStatus, offeringStatuses),
-    lifecycle: allowedValues(raw.lifecycle, lifecycles),
-    status: allowedValues(raw.status, trackStatuses),
-    identityStatus: allowedValues(raw.identity, identityStatuses),
-    sourceDataset: listValues(raw.source),
-    page: positiveInteger(raw.page, 1),
-    dateFrom: firstValue(raw.dateFrom) || undefined,
-    dateTo: firstValue(raw.dateTo) || undefined,
-    returnMin: numberOrUndefined(raw.returnMin),
-    returnMax: numberOrUndefined(raw.returnMax),
+    scope: hasCurrentKeywordIntent ? "current" as const : requestedScope,
+    keyword: rawKeyword,
+    filterKeyword: intent.keyword,
+    keywordCurrentStatus: intent.currentStatus,
+    currentStatus: hasCurrentKeywordIntent ? intent.currentStatus : explicitCurrentStatus,
+    lifecycle: hasCurrentKeywordIntent ? [] : allowedValues(raw.lifecycle, lifecycles),
+    status: hasCurrentKeywordIntent ? [] : allowedValues(raw.status, trackStatuses),
+    identityStatus: hasCurrentKeywordIntent ? [] : allowedValues(raw.identity, identityStatuses),
+    sourceDataset: hasCurrentKeywordIntent ? [] : listValues(raw.source),
+    page: hasCurrentKeywordIntent ? 1 : positiveInteger(raw.page, 1),
+    dateFrom: hasCurrentKeywordIntent ? undefined : firstValue(raw.dateFrom) || undefined,
+    dateTo: hasCurrentKeywordIntent ? undefined : firstValue(raw.dateTo) || undefined,
+    returnMin: hasCurrentKeywordIntent ? undefined : numberOrUndefined(raw.returnMin),
+    returnMax: hasCurrentKeywordIntent ? undefined : numberOrUndefined(raw.returnMax),
   };
+}
+
+export function toggleCatalogFilterValues(current: string[], items: string[], checked: boolean): string[] {
+  return checked ? [...new Set([...current, ...items])] : current.filter((value) => !items.includes(value));
 }
 
 export function catalogHref(basePath: CatalogBasePath, params: Record<string, string | undefined>): string {

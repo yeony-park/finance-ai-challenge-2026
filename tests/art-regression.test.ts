@@ -50,3 +50,10 @@ test("보정된 4개 데모 상품의 거래량·지연·비공개 값", () => {
   assert.equal(danger?.acquisitionPrice, null);
   assert.equal(danger?.disclosedCosts.length, 2);
 });
+
+
+test("카탈로그 필터는 완료 상태를 하나로 표시하고 상태 미확인 선택을 노출하지 않음", () => {
+  const filter = read("components/art/catalog-filter-client.tsx");
+  assert.match(filter, /label: "매각·청산 완료", values: \["sold", "liquidated"\]/);
+  assert.doesNotMatch(filter, /label: "상태 미확인"/);
+});
