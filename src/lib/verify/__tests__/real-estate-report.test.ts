@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { describe, expect, test } from "vitest";
 
-import { OFFERS } from "@/components/site/offers";
+import { OFFERS, type OfferEntry } from "@/components/site/offers";
 
 import { createFakeBuildingRegisterAdapter } from "../adapters/building-register-fake";
 import {
@@ -25,6 +25,20 @@ import { toDemoView } from "../report/view-model";
 const OFFER_ID = "real-estate-a";
 const PUBLIC_DIR = `data/public/${OFFER_ID}`;
 const SOU_PUBLIC_DIR = "data/public/real-estate-sou-daejeon-startup";
+const INTERNAL_REPORT_OFFER: OfferEntry = {
+  id: OFFER_ID,
+  title: "부동산 A",
+  assetLabel: "부동산",
+  assetKind: "real-estate",
+  assetLifecycle: "sold",
+  isExitVerified: true,
+  realEstateListingKind: "development-sample",
+  subscription: {
+    opensAt: "2021-07-07T00:00:00+09:00",
+    closesAt: "2021-07-15T23:59:00+09:00",
+    precision: "day",
+  },
+};
 
 const loadOffer = (): Promise<RealEstateOffer> => loadRealEstateOffer(OFFER_ID);
 
@@ -718,11 +732,8 @@ describe("화면 뷰모델 — 축산 문구가 부동산에 새지 않는다", 
   });
 
   test("목록 카드 문장의 주어는 공모이고 비교군 수가 함께 나온다", async () => {
-    const offer = OFFERS.find((item) => item.id === OFFER_ID);
-    if (!offer) throw new Error("레지스트리에 부동산 공모가 없습니다");
-
     const card = buildOfferCard({
-      offer,
+      offer: INTERNAL_REPORT_OFFER,
       now: new Date("2026-08-14T00:00:00+09:00"),
       report: await publicSnapshotOf(),
       versionCount: 1,
@@ -734,10 +745,9 @@ describe("화면 뷰모델 — 축산 문구가 부동산에 새지 않는다", 
     expect(card.href).toBe(`/offers/${OFFER_ID}`);
   });
 
-  test("real-estate-a는 매각 완료와 종료 검증이 명시돼 있다", () => {
-    const offer = OFFERS.find((entry) => entry.id === OFFER_ID);
-
-    expect(offer?.isExitVerified).toBe(true);
-    expect(offer?.assetLifecycle).toBe("sold");
+  test("real-estate-a는 공개 registry에서 제외돼도 내부 리포트 fixture로 검증한다", () => {
+    expect(OFFERS.some((entry) => entry.id === OFFER_ID)).toBe(false);
+    expect(INTERNAL_REPORT_OFFER.isExitVerified).toBe(true);
+    expect(INTERNAL_REPORT_OFFER.assetLifecycle).toBe("sold");
   });
 });

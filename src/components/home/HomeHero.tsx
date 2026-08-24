@@ -43,6 +43,37 @@ const HERO_CHIPS = HERO_CHIP_LABELS.map((label) =>
   question !== undefined,
 );
 
+interface SearchResult {
+  readonly id: string;
+  readonly title: string;
+  readonly phase: "upcoming" | "subscription-open" | "closed" | "listed-trading" | "settled";
+  readonly href: string;
+}
+
+const SEARCH_PHASE_LABEL: Readonly<Record<SearchResult["phase"], string>> = {
+  upcoming: "청약 예정",
+  "subscription-open": "청약 중",
+  closed: "청약 종료",
+  "listed-trading": "상장 거래",
+  settled: "종료",
+};
+
+function SearchResultsPanel({ results }: { readonly results: readonly SearchResult[] }) {
+  return (
+    <div className={s.panel}>
+      <h3 className={s.panelTitle}>검색 결과</h3>
+      <ul className={s.searchResults}>
+        {results.map((result) => (
+          <li key={result.id}>
+            <Link href={result.href} className={s.searchResultLink}>{result.title}</Link>
+            <span>{SEARCH_PHASE_LABEL[result.phase]}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 function ScaffoldPanel({ match }: { readonly match: ScaffoldMatch }) {
   if (match.kind === "guide") {
     const card = guideCard(match.target);
@@ -131,16 +162,36 @@ export function HomeHero() {
   const [query, setQuery] = useState("");
   const [match, setMatch] = useState<ScaffoldMatch | null>(null);
   const [activeChip, setActiveChip] = useState<string | null>(null);
+  const [results, setResults] = useState<readonly SearchResult[] | null>(null);
+  const [isSearching, setIsSearching] = useState(false);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setActiveChip(null);
-    setMatch(matchScaffold(query));
+    setIsSearching(true);
+    try {
+      const response = await fetch("/api/search", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ q: query, limit: 10 }),
+      });
+      if (!response.ok) throw new Error("search failed");
+      const body = (await response.json()) as { readonly results?: readonly SearchResult[] };
+      const found = body.results ?? [];
+      setResults(found.length > 0 ? found : null);
+      setMatch(found.length > 0 ? null : matchScaffold(query));
+    } catch {
+      setResults(null);
+      setMatch(matchScaffold(query));
+    } finally {
+      setIsSearching(false);
+    }
   };
 
   const handleChip = (label: string, target: string) => {
     setActiveChip(label);
     setQuery(label);
+    setResults(null);
     setMatch(
       target === "reports"
         ? { kind: "reports" }
@@ -180,8 +231,8 @@ export function HomeHero() {
                 placeholder={SEARCH_PLACEHOLDER}
                 autoComplete="off"
               />
-              <button type="submit" className={s.searchButton}>
-                안내 찾기
+              <button type="submit" className={s.searchButton} disabled={isSearching || !query.trim()}>
+                {isSearching ? "찾는 중" : "안내 찾기"}
               </button>
             </form>
             <p className={s.scaffoldNote}>{SCAFFOLD_NOTICE}</p>
@@ -201,6 +252,7 @@ export function HomeHero() {
             </div>
 
             <div aria-live="polite">
+              {results ? <SearchResultsPanel results={results} /> : null}
               {match ? <ScaffoldPanel match={match} /> : null}
               {(() => {
                 const key = match ? followUpKeyOf(match) : null;

@@ -139,48 +139,6 @@ export const OFFERS: readonly OfferEntry[] = [
       closesAt: "2026-09-22T16:00:00+09:00",
     },
   },
-  {
-    id: "real-estate-bbric-hiwon",
-    title: "희원감천",
-    assetLabel: "부동산",
-    assetKind: "real-estate",
-    assetLifecycle: "operating",
-    isExitVerified: false,
-    tradabilityStatus: "unknown",
-    subscription: {
-      opensAt: "2024-11-13T00:00:00+09:00",
-      closesAt: "2024-11-22T23:59:00+09:00",
-      precision: "day",
-    },
-  },
-  {
-    id: "real-estate-sou-daejeon-startup",
-    title: "소유 3호 대전 창업스페이스",
-    assetLabel: "부동산",
-    assetKind: "real-estate",
-    assetLifecycle: "settled",
-    isExitVerified: false,
-    tradabilityStatus: "ended",
-    subscription: {
-      opensAt: "2022-12-08T00:00:00+09:00",
-      closesAt: "2022-12-15T23:59:00+09:00",
-      precision: "day",
-    },
-  },
-  {
-    id: "real-estate-a",
-    title: "부동산 A",
-    assetLabel: "부동산",
-    assetKind: "real-estate",
-    assetLifecycle: "sold",
-    isExitVerified: true,
-    realEstateListingKind: "development-sample",
-    subscription: {
-      opensAt: "2021-07-07T00:00:00+09:00",
-      closesAt: "2021-07-15T23:59:00+09:00",
-      precision: "day",
-    },
-  },
 ];
 
 export const PUBLISHED_OFFER_IDS: readonly string[] = OFFERS.map((offer) => offer.id);

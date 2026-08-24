@@ -11,6 +11,7 @@ import { ReportDocument } from "@/components/report/ReportDocument";
 import { ReportFoot } from "@/components/report/ReportFoot";
 import { HistorySection, PriceSection } from "@/components/report/SummaryLayers";
 import { WatchSection } from "@/components/report/WatchSection";
+import { ScenarioDetail } from "@/components/real-estate-scenario/ScenarioDetail";
 import {
   buildOfferSchedule,
   classifyRealEstateOffer,
@@ -19,6 +20,7 @@ import {
   PUBLISHED_OFFER_IDS,
 } from "@/components/site/offers";
 import { loadFilingFacts } from "@/lib/verify/report/filing-facts";
+import { loadApprovedScenarios } from "@/lib/knowledge/loader";
 import { loadLatestReplayDiff } from "@/lib/verify/amend/replay-load";
 import {
   toAmendmentReplayView,
@@ -42,6 +44,12 @@ import {
 interface OfferPageProps {
   readonly params: Promise<{ readonly id: string }>;
 }
+
+const loadScenarios = cache(loadApprovedScenarios);
+
+const loadScenarioOffer = cache(async (offerId: string) =>
+  (await loadScenarios()).find((entry) => entry.offerId === offerId) ?? null,
+);
 
 const loadProductSummary = cache(
   async (offerId: string) => {
@@ -109,14 +117,25 @@ const loadTrackRecordCard = cache(
   },
 );
 
-export function generateStaticParams() {
-  return PUBLISHED_OFFER_IDS.map((id) => ({ id }));
+export async function generateStaticParams() {
+  return [
+    ...PUBLISHED_OFFER_IDS.map((id) => ({ id })),
+    ...(await loadScenarios()).map((scenario) => ({ id: scenario.offerId })),
+  ];
 }
 
 export const dynamicParams = false;
 
 export async function generateMetadata({ params }: OfferPageProps): Promise<Metadata> {
   const { id } = await params;
+  const scenario = await loadScenarioOffer(id);
+  if (scenario) {
+    return {
+      title: scenario.title,
+      description: `${scenario.asset.publicName}의 상품 투자조건과 공개 근거 확인 범위`,
+      robots: { index: false, follow: false },
+    };
+  }
   const view = await loadOfferView(id);
 
   if (!view) {
@@ -142,6 +161,20 @@ export async function generateMetadata({ params }: OfferPageProps): Promise<Meta
 
 export default async function OfferReportPage({ params }: OfferPageProps) {
   const { id } = await params;
+  const scenario = await loadScenarioOffer(id);
+  if (scenario) {
+    const operatorHistory = (await loadScenarios())
+      .filter(
+        (entry) =>
+          entry.operatorGroupId === scenario.operatorGroupId &&
+          entry.offering.phase === "settled",
+      )
+      .toSorted((a, b) =>
+        (b.completion?.actualExitOn ?? "").localeCompare(a.completion?.actualExitOn ?? ""),
+      )
+      .slice(0, 3);
+    return <ScenarioDetail offer={scenario} operatorHistory={operatorHistory} />;
+  }
   const view = await loadOfferView(id);
 
   if (!view) notFound();

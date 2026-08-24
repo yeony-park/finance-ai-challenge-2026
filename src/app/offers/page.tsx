@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 
 import { HeroSection } from "@/components/landing/HeroSection";
 import { OfferListSection } from "@/components/landing/OfferListSection";
+import { ScenarioCatalog } from "@/components/real-estate-scenario/ScenarioCatalog";
 import { OFFERS, TOTAL_2026_OFFER_COUNT } from "@/components/site/offers";
+import { loadApprovedScenarios } from "@/lib/knowledge/loader";
 import { loadLatestWatchState } from "@/lib/verify/amend/watch-state";
 import { loadLatestReport } from "@/lib/verify/report/load";
 import { buildOfferCard, type OfferCardView } from "@/lib/verify/report/view-model";
@@ -34,15 +36,16 @@ const isCohort2026 = (closesAt: string): boolean =>
 export default async function OffersPage() {
   const now = new Date();
 
-  const cards = await Promise.all(
-    OFFERS.map(async (offer) => {
+  const [cards, scenarios] = await Promise.all([
+    Promise.all(OFFERS.map(async (offer) => {
       const [loaded, watch] = await Promise.all([
         loadLatestReport(offer.id),
         loadLatestWatchState(offer.id),
       ]);
       return buildOfferCard({ offer, now, ...loaded, watch: watch ?? null });
-    }),
-  );
+    })),
+    loadApprovedScenarios(),
+  ]);
 
   const open = cards
     .filter((card) => card.schedule.phase !== "closed")
@@ -58,6 +61,12 @@ export default async function OffersPage() {
           OFFERS.filter((offer) => isCohort2026(offer.subscription.closesAt)).length,
           OFFERS.filter((offer) => !isCohort2026(offer.subscription.closesAt)).length,
         )}
+      />
+      <ScenarioCatalog
+        offers={scenarios}
+        heading="부동산 상품 검토"
+        lead="실제 건물 공개정보와 상품 투자조건을 분리해 확인할 수 있습니다."
+        isPageHeading={false}
       />
       <OfferListSection id="open-offers" title="청약 예정·진행 중" cards={open} isMuted />
       <OfferListSection id="closed-offers" title="청약 종료 · 사후 검증" cards={closed} />

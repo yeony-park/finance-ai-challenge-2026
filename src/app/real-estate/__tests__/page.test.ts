@@ -1,30 +1,52 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, test } from "vitest";
 
-import {
-  CategoryLanding,
-  type CategoryLandingProps,
-} from "@/components/category/CategoryLanding";
+import { SCENARIO_DEMO_DISCLOSURE } from "@/lib/knowledge/schema";
+import nextConfig from "../../../../next.config";
 
-import RealEstatePage from "../page";
+import RealEstatePage, { metadata } from "../page";
 
-describe("부동산 카테고리 근거 안내", () => {
-  test("구현 대기 placeholder 대신 실제 대조 범위와 한계를 표시한다", async () => {
-    const page = RealEstatePage();
-    const markup = renderToStaticMarkup(
-      await CategoryLanding(page.props as CategoryLandingProps),
+describe("부동산 승인 시나리오 목록", () => {
+  test("13개 시나리오를 세 단계로 나누고 실제 상품은 노출하지 않는다", async () => {
+    const markup = renderToStaticMarkup(await RealEstatePage());
+
+    expect(markup).toContain("서울스퀘어");
+    expect(markup).toContain("센터원");
+    expect(markup).toContain("파크원 타워1");
+    expect(markup.match(/href="\/offers\/re-offer-/g)).toHaveLength(13);
+    expect(markup).toContain("청약 중");
+    expect(markup).toContain("상장 거래");
+    expect(markup).toContain("종료");
+    expect(markup).not.toContain("real-estate-bbric-hiwon");
+    expect(markup).not.toContain("real-estate-sou-daejeon-startup");
+    expect(markup).not.toContain("real-estate-a");
+    expect(markup).not.toContain("한강대로 416");
+    expect(markup).toContain("공개 승인된 검토 데이터 13개");
+    expect(markup.split("검토용 시나리오 · 실제 청약·판매 상품이 아닙니다.")).toHaveLength(2);
+    expect(markup.split(SCENARIO_DEMO_DISCLOSURE)).toHaveLength(2);
+    expect(metadata.robots).toEqual({ index: false, follow: false });
+  });
+
+  test("제거된 실제 부동산 상세 경로에만 검색 차단 응답 헤더를 둔다", async () => {
+    const headers = await nextConfig.headers?.();
+    expect(headers).toEqual(
+      expect.arrayContaining(
+        [
+          "/offers/real-estate-a",
+          "/offers/real-estate-bbric-hiwon",
+          "/offers/real-estate-sou-daejeon-startup",
+        ].map((source) =>
+          expect.objectContaining({
+            source,
+            headers: expect.arrayContaining([
+              { key: "X-Robots-Tag", value: "noindex, nofollow" },
+            ]),
+          }),
+        ),
+      ),
     );
-
-    expect(markup).toContain("BuildingHUB");
-    expect(markup).toContain("국토부 건축물대장");
-    expect(markup).toContain("국토부 RTMS 신고");
-    expect(markup).toContain("동일 물건 확정이나 적정성 판단은 하지 않음");
-    expect(markup).toContain("플랫폼의 운영·배당 주장");
-    expect(markup).toContain("부동산 근거를 읽는 순서");
-    expect(markup).toContain("공개 원문상 현재 청약·매수 가능 확인 상품");
-    expect(markup).toContain("과거 상품 운용·종료 이력");
-    expect(markup).not.toContain(">부동산 A</a>");
-    expect(markup).not.toContain("선언 대기");
-    expect(markup).not.toContain("담당 구현");
+    expect(headers?.find((entry) => entry.source === "/:path*")?.headers).not.toContainEqual(
+      expect.objectContaining({ key: "X-Robots-Tag" }),
+    );
   });
 });
