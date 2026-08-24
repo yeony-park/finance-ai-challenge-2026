@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "categoryId": "real-estate",
+  "scenarioId": "re-scenario-03",
+  "offerId": "re-offer-03",
+  "dataNature": "scenario",
+  "sourceKind": "scenario-input",
+  "chunkId": "re-scenario-03-guide-re-scenario-03-p4",
+  "documentId": "re-scenario-03-guide-re-scenario-03",
+  "title": "페럼타워 시나리오 설명서",
+  "sourceUrl": "/scenario-documents/re-scenario-03-guide.pdf",
+  "asOf": "2026-08-24",
+  "page": 4,
+  "text": "공개 사실과 한계 후보 건물명과 도로명 주소는 상품 화면용 후보 입력입니다 . 개별 BuildingHUB 정확 레코드를 확인하지 않아 건 물명 · 주용도 · 연면적 · 대지면적 · 사용승인일은 unknown 입니다 . 공식 데이터셋 출처 : https://data.seoul.go.kr/bsp/wgs/dataView/data300View/630.do 데모 데이터 안내 : 이 화면의 투자조건은 실제 건축물의 공개정보를 기반으로 구성한 시나리오이며 , 실제 청약 · 판매 중인 상품이 아닙니다 . 데모 데이터 안내 : 이 화면의 투자조건은 실제 건축물의 공개정보를 기반으로 구성한 시나리오이며 , 실제 청약 · 판매 중인 상품이 아닙니다 .",
+  "sourceHash": "dd94c03f232e72cb795fc9063ef19b288df7fe5f6901c5df5fa10120340ba38f",
+  "chunkHash": "7ff251ba5b2a1b54aff4cdefa2a7352ae2b082aaf5a89ce0ef68fb2eb0715ca8",
+  "approvedForPublic": true,
+  "status": "ready",
+  "limitations": [
+    "PDF는 공개 가능한 가상 시나리오 문서이며 실제 상품·성과의 원문이 아닙니다.",
+    "도로명 주소와 건축물대장 조회키는 chunk에 포함하지 않았습니다."
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "categoryId": "real-estate",
+  "scenarioId": "re-scenario-12",
+  "offerId": "re-offer-12",
+  "dataNature": "scenario",
+  "sourceKind": "scenario-input",
+  "documentId": "operator-c-history-re-scenario-12",
+  "title": "운영그룹 C 완료 이력보고서",
+  "sourceUrl": "/scenario-documents/operator-c-history.pdf",
+  "asOf": "2026-08-24",
+  "sourceHash": "71a7c1d52edc72217d68d4bf405f15f5fc00bdb30d21815fa3302f8fbe36d68b",
+  "approvedForPublic": true,
+  "status": "ready",
+  "limitations": [
+    "PDF는 공개 가능한 가상 시나리오 문서이며 실제 상품·성과의 원문이 아닙니다.",
+    "도로명 주소와 건축물대장 조회키는 chunk에 포함하지 않았습니다."
+  ]
+}

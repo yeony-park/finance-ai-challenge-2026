@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "categoryId": "real-estate",
+  "scenarioId": "re-scenario-02",
+  "offerId": "re-offer-02",
+  "dataNature": "scenario",
+  "sourceKind": "scenario-input",
+  "chunkId": "operator-b-history-re-scenario-02-p1",
+  "documentId": "operator-b-history-re-scenario-02",
+  "title": "운영그룹 B 완료 이력보고서",
+  "sourceUrl": "/scenario-documents/operator-b-history.pdf",
+  "asOf": "2026-08-24",
+  "page": 1,
+  "text": "가상 시나리오 문서 · scenario-input 운영그룹 B 완료 이력보고서 이력보고서 안내 데모 데이터 안내 : 이 화면의 투자조건은 실제 건축물의 공개정보를 기반으로 구성한 시나리오이며 , 실제 청약 · 판 매 중인 상품이 아닙니다 . 운영그룹 B 의 아래 이력은 모두 가상 scenario-input 입니다 . 실제 법인 · 플랫폼 · 은행 · 소유자 · 임차인 · 성과와 연결 하지 않습니다 . 데모 데이터 안내 : 이 화면의 투자조건은 실제 건축물의 공개정보를 기반으로 구성한 시나리오이며 , 실제 청약 · 판매 중인 상품이 아닙니다 .",
+  "sourceHash": "7aa96ec8d622449f619ff99c1e47fae0153a0df6dbf15f78c4e97470a6efacc5",
+  "chunkHash": "acb5b75d2edbd7711790f37b56f5653f728e9b9be416e775a2c6302e470ec397",
+  "approvedForPublic": true,
+  "status": "ready",
+  "limitations": [
+    "PDF는 공개 가능한 가상 시나리오 문서이며 실제 상품·성과의 원문이 아닙니다.",
+    "도로명 주소와 건축물대장 조회키는 chunk에 포함하지 않았습니다."
+  ]
+}

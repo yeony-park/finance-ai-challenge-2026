@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "categoryId": "real-estate",
+  "scenarioId": "re-scenario-03",
+  "offerId": "re-offer-03",
+  "dataNature": "scenario",
+  "sourceKind": "scenario-input",
+  "documentId": "re-scenario-03-guide-re-scenario-03",
+  "title": "페럼타워 시나리오 설명서",
+  "sourceUrl": "/scenario-documents/re-scenario-03-guide.pdf",
+  "asOf": "2026-08-24",
+  "sourceHash": "dd94c03f232e72cb795fc9063ef19b288df7fe5f6901c5df5fa10120340ba38f",
+  "approvedForPublic": true,
+  "status": "ready",
+  "limitations": [
+    "PDF는 공개 가능한 가상 시나리오 문서이며 실제 상품·성과의 원문이 아닙니다.",
+    "도로명 주소와 건축물대장 조회키는 chunk에 포함하지 않았습니다."
+  ]
+}

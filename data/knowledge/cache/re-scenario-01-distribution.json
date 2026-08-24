@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "categoryId": "real-estate",
+  "scenarioId": "re-scenario-01",
+  "offerId": "re-offer-01",
+  "cacheKey": "d7ec87634f88a4622df8ce0ff8bc90b8c85ee2ca055aed564c30e6296743001b",
+  "question": "예상배당과 분배 주기는 어떻게 되나요?",
+  "normalizedQuestion": "예상배당과 분배 주기는 어떻게 되나요",
+  "outcome": "answer",
+  "answer": "등록된 공개 근거에서 확인한 내용입니다.\n- 가상 투자조건 공모총액 12,000,000,000 원 = 단가 5,000 원 × 수량 2,400,000 좌 . 최소투자금 100,000 원 (20 단위 ). 예상 연 분 배율 4.60%, 분배 주기 3 개월 , 거래 수수료율 0.20%, 총비용률 0.90%, 목표 보유기간 30 개월 . 시나리오 조건상 1 좌는 가상 조건을 표시하기 위한 단위이며 실제 권리 또는 증권을 뜻하지 않습니다 . 예상 분배율은 세전 단순 가 정이며 임대수익 · 비용 · 보유기간 변화에 따라 달라질 수 있습니다 . 거래 수수료율과 총비용률은 시나리오상 비용 범위이며 실제 플랫폼 · 운용보수 ·",
+  "chunkIds": [
+    "re-scenario-01-guide-re-scenario-01-p2"
+  ],
+  "documentIds": [
+    "re-scenario-01-guide-re-scenario-01"
+  ],
+  "sourceHashes": {
+    "re-scenario-01-guide-re-scenario-01": "c12e5a07a8b6af8fc623633a7e25c00d6780dcde6e4a46d2d42347d34b765b91"
+  },
+  "chunkHashes": {
+    "re-scenario-01-guide-re-scenario-01-p2": "e72d9878074df3b98f06f7327cf008c353e5335b41a18e545034dad2e7314c7d"
+  },
+  "createdAt": "2026-08-24T09:00:00+09:00",
+  "generator": "deterministic-template",
+  "generatorVersion": "1.0.0",
+  "promptVersion": "real-estate-scenario-v1",
+  "approvedAt": "2026-08-24T09:00:00+09:00",
+  "guardrailStatus": "passed",
+  "limitations": [
+    "PDF는 공개 가능한 가상 시나리오 문서이며 실제 상품·성과의 원문이 아닙니다.",
+    "도로명 주소와 건축물대장 조회키는 chunk에 포함하지 않았습니다."
+  ]
+}

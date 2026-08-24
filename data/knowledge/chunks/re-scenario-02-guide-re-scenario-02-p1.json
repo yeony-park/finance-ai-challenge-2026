@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "categoryId": "real-estate",
+  "scenarioId": "re-scenario-02",
+  "offerId": "re-offer-02",
+  "dataNature": "scenario",
+  "sourceKind": "scenario-input",
+  "chunkId": "re-scenario-02-guide-re-scenario-02-p1",
+  "documentId": "re-scenario-02-guide-re-scenario-02",
+  "title": "센터원 시나리오 설명서",
+  "sourceUrl": "/scenario-documents/re-scenario-02-guide.pdf",
+  "asOf": "2026-08-24",
+  "page": 1,
+  "text": "가상 시나리오 문서 · scenario-input 센터원 시나리오 설명서 시나리오 안내 데모 데이터 안내 : 이 화면의 투자조건은 실제 건축물의 공개정보를 기반으로 구성한 시나리오이며 , 실제 청약 · 판 매 중인 상품이 아닙니다 . 센터원은 청약중 상태를 가정한 가상 시나리오입니다 . 공모총액 · 분배 · 수수료 · 회수 조건은 모두 scenario-input 이 며 실제 상품 조건이 아닙니다 . 데모 데이터 안내 : 이 화면의 투자조건은 실제 건축물의 공개정보를 기반으로 구성한 시나리오이며 , 실제 청약 · 판매 중인 상품이 아닙니다 .",
+  "sourceHash": "2e9f3ca372ca5521e960e5d2499ecd8330651657e16f550e6a396595d630fbe8",
+  "chunkHash": "22b8c681a8290d2588e754c3448d1b02c0285b67e73e62a5eaa96d0bc38a5668",
+  "approvedForPublic": true,
+  "status": "ready",
+  "limitations": [
+    "PDF는 공개 가능한 가상 시나리오 문서이며 실제 상품·성과의 원문이 아닙니다.",
+    "도로명 주소와 건축물대장 조회키는 chunk에 포함하지 않았습니다."
+  ]
+}

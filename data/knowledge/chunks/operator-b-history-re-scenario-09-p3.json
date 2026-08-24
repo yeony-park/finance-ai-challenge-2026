@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "categoryId": "real-estate",
+  "scenarioId": "re-scenario-09",
+  "offerId": "re-offer-09",
+  "dataNature": "scenario",
+  "sourceKind": "scenario-input",
+  "chunkId": "operator-b-history-re-scenario-09-p3",
+  "documentId": "operator-b-history-re-scenario-09",
+  "title": "운영그룹 B 완료 이력보고서",
+  "sourceUrl": "/scenario-documents/operator-b-history.pdf",
+  "asOf": "2026-08-24",
+  "page": 3,
+  "text": "시나리오 가정과 해석 한계 종로타워 : 시나리오 가정상 매각대금과 비용을 반영한 순회수가 원금과 같았습니다 . 시나리오 가정 태그 : market- conditions. 디타워 광화문 : 시나리오 가정상 매수자 확보가 지연되어 목표일 이후에 매각 · 정산했습니다 . 시나리오 가정 태그 : liquidity, interest-rate. 포스코센터 : 시나리오 가정상 임차 안정성과 매각회수로 순회수가 원금을 웃돌았습니다 . 시나리오 가정 태그 : tenant, market-conditions. 데모 데이터 안내 : 이 화면의 투자조건은 실제 건축물의 공개정보를 기반으로 구성한 시나리오이며 , 실제 청약 · 판매 중인 상품이 아닙니다 . 데모 데이터 안내 : 이 화면의 투자조건은 실제 건축물의 공개정보를 기반으로 구성한 시나리오이며 , 실제 청약 · 판매 중인 상품이 아닙니다 .",
+  "sourceHash": "7aa96ec8d622449f619ff99c1e47fae0153a0df6dbf15f78c4e97470a6efacc5",
+  "chunkHash": "5f77229eabfd5437ebabe5202471daeaaffe08f0f6c794946649170850fe968b",
+  "approvedForPublic": true,
+  "status": "ready",
+  "limitations": [
+    "PDF는 공개 가능한 가상 시나리오 문서이며 실제 상품·성과의 원문이 아닙니다.",
+    "도로명 주소와 건축물대장 조회키는 chunk에 포함하지 않았습니다."
+  ]
+}

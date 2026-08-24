@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "categoryId": "real-estate",
+  "scenarioId": "re-scenario-01",
+  "offerId": "re-offer-01",
+  "dataNature": "scenario",
+  "sourceKind": "scenario-input",
+  "documentId": "re-scenario-01-guide-re-scenario-01",
+  "title": "서울스퀘어 시나리오 설명서",
+  "sourceUrl": "/scenario-documents/re-scenario-01-guide.pdf",
+  "asOf": "2026-08-24",
+  "sourceHash": "c12e5a07a8b6af8fc623633a7e25c00d6780dcde6e4a46d2d42347d34b765b91",
+  "approvedForPublic": true,
+  "status": "ready",
+  "limitations": [
+    "PDF는 공개 가능한 가상 시나리오 문서이며 실제 상품·성과의 원문이 아닙니다.",
+    "도로명 주소와 건축물대장 조회키는 chunk에 포함하지 않았습니다."
+  ]
+}

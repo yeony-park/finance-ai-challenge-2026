@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "categoryId": "real-estate",
+  "scenarioId": "re-scenario-02",
+  "offerId": "re-offer-02",
+  "cacheKey": "f1a502b284b2549ccd9b3f28413a9fa6cc27f9db252428da77e4913ca2f6a8cf",
+  "question": "운영그룹의 과거이력은 무엇인가요?",
+  "normalizedQuestion": "운영그룹의 과거이력은 무엇인가요",
+  "outcome": "answer",
+  "answer": "등록된 공개 근거에서 확인한 내용입니다.\n- 완료 이력 종로타워 : 원금 7,600,000,000 원 , 누적분배 400,000,000 원 , 매각회수 7,250,000,000 원 , 비용 50,000,000 원 , 순회수 7,600,000,000 원 , 보유 785 일 , 단순 총회수 기준 ( 세전 가정 ; 분배시점 · 세금 미반영 ) 총수익률 0.00%, 회 수 결과 손익분기 , 일정 결과 정시 , 목표 종료 2026-03-31, 실제 종료 2026-03-31. 디타워 광화문 : 원금 11,600,000,000 원 , 누적분배 610,000,000 원 , 매각회수 10,900,000,000 원 , 비용 80",
+  "chunkIds": [
+    "operator-b-history-re-scenario-02-p2"
+  ],
+  "documentIds": [
+    "operator-b-history-re-scenario-02"
+  ],
+  "sourceHashes": {
+    "operator-b-history-re-scenario-02": "7aa96ec8d622449f619ff99c1e47fae0153a0df6dbf15f78c4e97470a6efacc5"
+  },
+  "chunkHashes": {
+    "operator-b-history-re-scenario-02-p2": "cec2c85af15b6dbb2f8209b39db5c3aea8199ec6273fdfc9c8375f1f0f02429c"
+  },
+  "createdAt": "2026-08-24T09:00:00+09:00",
+  "generator": "deterministic-template",
+  "generatorVersion": "1.0.0",
+  "promptVersion": "real-estate-scenario-v1",
+  "approvedAt": "2026-08-24T09:00:00+09:00",
+  "guardrailStatus": "passed",
+  "limitations": [
+    "PDF는 공개 가능한 가상 시나리오 문서이며 실제 상품·성과의 원문이 아닙니다.",
+    "도로명 주소와 건축물대장 조회키는 chunk에 포함하지 않았습니다."
+  ]
+}

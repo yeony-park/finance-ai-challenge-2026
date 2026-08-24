@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "categoryId": "real-estate",
+  "scenarioId": "re-scenario-02",
+  "offerId": "re-offer-02",
+  "dataNature": "scenario",
+  "sourceKind": "scenario-input",
+  "documentId": "re-scenario-02-guide-re-scenario-02",
+  "title": "센터원 시나리오 설명서",
+  "sourceUrl": "/scenario-documents/re-scenario-02-guide.pdf",
+  "asOf": "2026-08-24",
+  "sourceHash": "2e9f3ca372ca5521e960e5d2499ecd8330651657e16f550e6a396595d630fbe8",
+  "approvedForPublic": true,
+  "status": "ready",
+  "limitations": [
+    "PDF는 공개 가능한 가상 시나리오 문서이며 실제 상품·성과의 원문이 아닙니다.",
+    "도로명 주소와 건축물대장 조회키는 chunk에 포함하지 않았습니다."
+  ]
+}

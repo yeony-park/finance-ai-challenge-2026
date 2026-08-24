@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "categoryId": "real-estate",
+  "scenarioId": "re-scenario-03",
+  "offerId": "re-offer-03",
+  "dataNature": "scenario",
+  "sourceKind": "scenario-input",
+  "chunkId": "operator-c-history-re-scenario-03-p1",
+  "documentId": "operator-c-history-re-scenario-03",
+  "title": "운영그룹 C 완료 이력보고서",
+  "sourceUrl": "/scenario-documents/operator-c-history.pdf",
+  "asOf": "2026-08-24",
+  "page": 1,
+  "text": "가상 시나리오 문서 · scenario-input 운영그룹 C 완료 이력보고서 이력보고서 안내 데모 데이터 안내 : 이 화면의 투자조건은 실제 건축물의 공개정보를 기반으로 구성한 시나리오이며 , 실제 청약 · 판 매 중인 상품이 아닙니다 . 운영그룹 C 의 아래 이력은 모두 가상 scenario-input 입니다 . 실제 법인 · 플랫폼 · 은행 · 소유자 · 임차인 · 성과와 연결 하지 않습니다 . 데모 데이터 안내 : 이 화면의 투자조건은 실제 건축물의 공개정보를 기반으로 구성한 시나리오이며 , 실제 청약 · 판매 중인 상품이 아닙니다 .",
+  "sourceHash": "71a7c1d52edc72217d68d4bf405f15f5fc00bdb30d21815fa3302f8fbe36d68b",
+  "chunkHash": "50ca6f8842895f63cf651b4000a34a958aac2ba74282eddf77b3d5a90abbc39c",
+  "approvedForPublic": true,
+  "status": "ready",
+  "limitations": [
+    "PDF는 공개 가능한 가상 시나리오 문서이며 실제 상품·성과의 원문이 아닙니다.",
+    "도로명 주소와 건축물대장 조회키는 chunk에 포함하지 않았습니다."
+  ]
+}
