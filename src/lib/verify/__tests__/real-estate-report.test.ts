@@ -3,6 +3,7 @@ import { describe, expect, test } from "vitest";
 
 import { OFFERS } from "@/components/site/offers";
 
+import { createFakeBuildingRegisterAdapter } from "../adapters/building-register-fake";
 import {
   createFakeRtmsTradeAdapter,
   resolveRtmsTradeAdapter,
@@ -273,11 +274,19 @@ describe("부동산 claim 추출 — 문서 좌표와 게이트", () => {
   });
 
   test("exact parcel 요청 누락은 추출 단계에서 사유와 함께 기록된다", async () => {
-    const { claims } = buildRealEstateClaims(await loadOffer());
+    const { claims } = buildRealEstateClaims(unsoldOffer());
     const address = claims.find((claim) => claim.kind === "real_estate_address");
 
     expect(address?.verifiability).toBe("structurally_impossible");
     expect(address?.demotionReason).toMatch(/exact parcel 조회 조건이 없어/);
+  });
+
+  test("소재지는 검증 가능으로 추출된다 (표제부 대조 축 개통)", async () => {
+    const { claims } = buildRealEstateClaims(await loadOffer());
+    const address = claims.find((claim) => claim.kind === "real_estate_address");
+
+    expect(address?.verifiability).toBe("verifiable");
+    expect(address?.demotionReason).toBeUndefined();
   });
 
   test("금액은 숫자로 읽히고 원 단위가 붙는다", async () => {
@@ -328,6 +337,8 @@ describe("실거래 원장 대조 — 일치 / 원장 불일치 / 대조 불가"
       ),
     ).toHaveLength(2);
     expect(outcome.notes.join(" ")).toContain("동일 물건 연결");
+    expect(JSON.stringify(outcome)).toContain("동일 물건 식별 근거");
+    expect(JSON.stringify(outcome)).not.toContain("exact 동일물건");
   });
 
   test("금액이 달라도 지번 없는 RTMS만으로 원장 불일치를 확정하지 않는다", async () => {
@@ -415,6 +426,101 @@ describe("실거래 원장 대조 — 일치 / 원장 불일치 / 대조 불가"
     ).toHaveLength(2);
     expect(outcome.placements).toEqual([]);
     expect(outcome.notes.join(" ")).toContain("2025-09~2025-11");
+  });
+});
+
+describe("건축물대장 표제부 대조 — 소재지 실재", () => {
+  test("수집본이 없으면 소재지는 판정하지 않고 대조 불가로 남는다", async () => {
+    const outcome = judgeRealEstate({
+      offer: await loadOffer(),
+      claims: buildRealEstateClaims(await loadOffer()).claims,
+      trades: createFakeRtmsTradeAdapter(),
+    });
+
+    const address = outcome.unjudged.find(
+      (item) => item.claim.kind === "real_estate_address",
+    );
+    expect(address?.reason).toMatch(/표제부 수집본이 없어/);
+    expect(address?.reason).toContain("대조 불가");
+  });
+
+  test("표제부에 같은 지번이 있으면 소재지가 일치로 남는다", async () => {
+    const offer = await loadOffer();
+    const fixtureParcel: RealEstateOffer = {
+      ...offer,
+      asset: { ...offer.asset, address: "서울특별시 서초구 서초동 999-1" },
+    };
+
+    const outcome = judgeRealEstate({
+      offer: fixtureParcel,
+      claims: buildRealEstateClaims(fixtureParcel).claims,
+      trades: createFakeRtmsTradeAdapter(),
+      register: createFakeBuildingRegisterAdapter(),
+    });
+
+    const address = outcome.judgements.find(
+      (item) => item.claim.kind === "real_estate_address",
+    );
+    expect(address?.verdict).toBe("match");
+    expect(address?.evidence[0].sourceId).toBe("molit-bldrgst-title");
+    expect(address?.evidence[0].observed).toContain("표제부 등재 확인");
+    expect(address?.evidence[0].observed).not.toContain("999-1");
+  });
+
+  test("수집본에서 지번을 찾지 못하면 판정하지 않고 사유를 남긴다", async () => {
+    const outcome = judgeRealEstate({
+      offer: await loadOffer(),
+      claims: buildRealEstateClaims(await loadOffer()).claims,
+      trades: createFakeRtmsTradeAdapter(),
+      register: createFakeBuildingRegisterAdapter(),
+    });
+
+    const address = outcome.unjudged.find(
+      (item) => item.claim.kind === "real_estate_address",
+    );
+    expect(address?.reason).toMatch(/확인하지 못했습니다/);
+    expect(outcome.judgements.map((item) => item.claim.kind)).not.toContain(
+      "real_estate_address",
+    );
+  });
+
+  test("라이브 실거래에 픽스처 표제부를 섞지 않는다", async () => {
+    const offer = await loadOffer();
+    const liveTrades = {
+      ...createFakeRtmsTradeAdapter(),
+      name: "cache",
+    } as ReturnType<typeof createFakeRtmsTradeAdapter>;
+
+    const report = runRealEstateVerification({
+      offer,
+      trades: liveTrades,
+      register: createFakeBuildingRegisterAdapter(),
+      generatedAt: "2026-08-22T00:00:00.000Z",
+    });
+
+    expect(report.mode).toBe("live");
+    expect(report.sources).toHaveLength(1);
+    expect(
+      report.unjudged.some((item) =>
+        item.reason.includes("표제부 수집본이 없어"),
+      ),
+    ).toBe(true);
+  });
+
+  test("픽스처 표제부로 판정한 fake 실행은 그 사실을 리포트에 적는다", async () => {
+    const offer = await loadOffer();
+    const report = runRealEstateVerification({
+      offer,
+      trades: createFakeRtmsTradeAdapter(),
+      register: createFakeBuildingRegisterAdapter(),
+      generatedAt: "2026-08-22T00:00:00.000Z",
+    });
+
+    expect(report.mode).toBe("fake");
+    expect(report.sources).toHaveLength(2);
+    expect(
+      report.notes.some((note) => note.includes("건축물대장 표제부 대조는 픽스처")),
+    ).toBe(true);
   });
 });
 
@@ -533,7 +639,14 @@ describe("공개 리포트 익명화", () => {
       );
       const raw = JSON.stringify(parsed);
       expect(parsed.assetKind).toBe("real-estate");
-      expect(parsed.bySubject[0]?.subject).toBe("부동산 A");
+      if (parsed.judgements.length === 0) {
+        expect(parsed.bySubject).toEqual([]);
+        expect(parsed.unjudged.length).toBeGreaterThan(0);
+      } else {
+        expect(parsed.bySubject.map((item) => item.subject)).toEqual([
+          "부동산 A",
+        ]);
+      }
       expect(parsed.judgements.every((item) => item.evidence.length >= 1)).toBe(true);
       expect(raw).not.toContain("RTMSDataSvcNrgTrade");
       expect(

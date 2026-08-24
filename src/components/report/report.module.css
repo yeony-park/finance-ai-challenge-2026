@@ -168,7 +168,10 @@
   background: var(--ds-bg-sunken);
 }
 .levelButton {
-  padding: 0.35rem 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--ds-control-h-sm);
+  padding: 0.35rem 0.95rem;
   border: 0;
   border-radius: var(--ds-radius-pill);
   background: transparent;
@@ -816,7 +819,10 @@
 }
 .chapterLink {
   flex: none;
-  padding: 0.3rem 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--ds-control-h-sm);
+  padding: 0.3rem 0.85rem;
   border: 1px solid var(--ds-line);
   border-radius: var(--ds-radius-pill);
   color: var(--ds-ink-muted);
@@ -840,6 +846,7 @@
   background: var(--ds-surface);
 }
 .appendixSummary {
+  min-height: var(--ds-tap-min);
   padding: var(--ds-space-3) var(--ds-space-4);
   color: var(--ds-ink-muted);
   font-size: var(--ds-text-sm);
@@ -1134,7 +1141,8 @@
   align-items: center;
   gap: var(--ds-space-2);
   margin-top: var(--ds-space-4);
-  padding: 0.6rem 1.25rem;
+  min-height: var(--ds-control-h-md);
+  padding: 0.6rem 1.4rem;
   border: 0;
   border-radius: var(--ds-radius-pill);
   background: var(--ds-ink);
@@ -1250,7 +1258,7 @@
   background: var(--ds-surface);
 }
 .rowDiffSummary {
-  padding: var(--ds-space-1) var(--ds-space-2);
+  padding: var(--ds-space-2) var(--ds-space-2);
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-2xs);
   font-weight: var(--ds-weight-medium);

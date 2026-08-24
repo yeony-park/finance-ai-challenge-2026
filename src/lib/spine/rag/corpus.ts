@@ -47,6 +47,15 @@ export const SAMPLE_CORPUS: readonly CorpusDoc[] = [
       "상업업무용 부동산의 신고된 매매 실거래 내역을 제공한다. 오픈API는 data.go.kr RTMSDataSvcNrgTrade다. 동일 지역·용도 비교군의 단가 분포에서 공모가·매각가의 백분위 위치를 계산하며, 비교군 표본이 얇으면 '대조 불가'로 표시한다.",
   },
   {
+    id: "molit-bldrgst-title",
+    kind: "public_record",
+    title: "국토교통부 건축물대장 표제부 (건축HUB)",
+    url: "https://www.hub.go.kr",
+    issuer: "국토교통부",
+    content:
+      "건축물대장 표제부의 소재지·주용도·연면적·구조·사용승인일을 제공한다. 오픈API는 data.go.kr BldRgstHubService getBrTitleInfo다. 공시된 소재지 지번의 표제부 존재 여부를 대조하며, 수집본이 없으면 '대조 불가'로 표시한다.",
+  },
+  {
     id: "capital-markets-decree-2026",
     kind: "regulation",
     title: "자본시장과 금융투자업에 관한 법률 시행령 (2026-07-28 시행 개정)",

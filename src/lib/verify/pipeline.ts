@@ -12,8 +12,11 @@ import { buildReport } from "./report/build";
 import { submittedOnFromRcpNo, type DocumentRef, type VerifyReport } from "./types";
 import type { LivestockTraceAdapter } from "./adapters/livestock-trace";
 import type { AuctionPriceAdapter } from "./adapters/auction-price";
+import type {
+  BuildingHubCacheLookup,
+  BuildingRegisterAdapter,
+} from "./adapters/building-register";
 import type { RtmsTradeAdapter } from "./adapters/rtms-trade";
-import type { BuildingHubCacheLookup } from "./adapters/building-register";
 
 const OFFER_REGISTRY: Readonly<Record<string, string>> = {
   "20240220002223": "livestock-1",
@@ -110,6 +113,7 @@ export interface RealEstateVerifyInput {
   readonly offer: RealEstateOffer;
   readonly trades: RtmsTradeAdapter;
   readonly buildingHub?: BuildingHubCacheLookup;
+  readonly register?: BuildingRegisterAdapter;
   readonly generatedAt?: string;
 }
 
@@ -118,17 +122,30 @@ export const runRealEstateVerification = (
 ): VerifyReport => {
   const document = realEstateDocumentRef(input.offer);
   const extraction = buildRealEstateClaims(input.offer);
+  const register =
+    input.register === undefined
+      ? undefined
+      : input.register.name === "cache" || input.trades.name === "fake"
+        ? input.register
+        : undefined;
   const outcome = judgeRealEstate({
     offer: input.offer,
     claims: extraction.claims,
     trades: input.trades,
     buildingHub: input.buildingHub,
+    ...(register === undefined ? {} : { register }),
   });
 
   const modeNote =
     input.trades.name === "fake"
       ? [
           "국토부 실거래가 API 활용신청이 승인되지 않아 실호출이 거부됐습니다(등록되지 않은 서비스키 · returnReasonCode=30). 이 리포트의 비교군과 원장 대조는 픽스처로 실행한 것이며 실측 데이터가 아닙니다.",
+        ]
+      : [];
+  const registerNote =
+    register !== undefined && register.name === "fake"
+      ? [
+          "건축물대장 표제부 대조는 픽스처로 실행한 것이며 실측 데이터가 아닙니다.",
         ]
       : [];
 
@@ -142,11 +159,12 @@ export const runRealEstateVerification = (
       ...(input.buildingHub?.cache
         ? [input.buildingHub.cache.sourceName]
         : []),
+      ...(register === undefined ? [] : [register.sourceName]),
     ],
     judgements: outcome.judgements,
     unjudged: outcome.unjudged,
     realEstatePlacements: outcome.placements,
     realEstate: realEstateReportMetadataOf(input.offer),
-    notes: [...modeNote, ...extraction.notes, ...outcome.notes],
+    notes: [...modeNote, ...registerNote, ...extraction.notes, ...outcome.notes],
   });
 };

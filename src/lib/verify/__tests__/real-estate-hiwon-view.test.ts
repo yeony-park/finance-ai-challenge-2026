@@ -112,10 +112,11 @@ describe("희원감천 운영 상품 화면 모델", () => {
     expect(lifecycle?.meta).not.toContain("플랫폼 제공 주장");
   });
 
-  test("v1 부동산 리포트는 기존 공개 별칭으로 fallback한다", async () => {
+  test("v1 부동산 리포트는 공개 별칭과 판정 zero-state를 유지한다", async () => {
     const view = toDemoView(await loadLatestReport("real-estate-a"));
 
-    expect(view.reality.subjects[0]?.label).toBe("부동산 A");
+    expect(view.offer.title).toContain("부동산 A");
+    expect(view.reality.subjects).toEqual([]);
     expect(view.history.items[0]?.title).toContain("매각 공시");
     expect(view.history.items).not.toContainEqual(
       expect.objectContaining({ id: "real-estate-lifecycle-status" }),

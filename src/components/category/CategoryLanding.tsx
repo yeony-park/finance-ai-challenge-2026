@@ -7,7 +7,6 @@ import { CountUp } from "@/components/motion/CountUp";
 import { Reveal } from "@/components/motion/Reveal";
 import { FILING_HEADING_ID, REALITY_HEADING_ID, WATCH_HEADING_ID } from "@/components/report/ids";
 import { TrackRecordCard } from "@/components/report/TrackRecordCard";
-import { CategoryMotif } from "@/components/site/icons";
 import type {
   OfferEntry,
   OfferSchedule,
@@ -372,6 +371,7 @@ function OfferEvidenceCard({
             offerTitle={entry.offer.title}
             statusText={amendmentLine(entry.watch)}
             isAlert={(entry.watch?.amendmentCount ?? 0) > 0}
+            className={s.offerCardWatch}
           />
         </div>
       ) : null}
@@ -639,12 +639,7 @@ export async function CategoryLanding({
           </div>
         ) : null}
         <div className={s.landingHeroBody}>
-          <div className={s.titleRow}>
-            <span className={s.titleMotif}>
-              <CategoryMotif id={categoryId} />
-            </span>
-            <h1 className={home.sectionTitle}>{title}</h1>
-          </div>
+          <h1 className={home.sectionTitle}>{title}</h1>
           <p className={home.sectionLead}>{lead}</p>
         </div>
 

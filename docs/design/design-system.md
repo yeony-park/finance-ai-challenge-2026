@@ -35,6 +35,14 @@
 - **섹션 리듬**: `bg`(흰) ↔ `bg-muted`(종이톤, `border-block: line`) 교차, 끝은 ink 푸터.
 - **타이포**: 제목 `weight-black` + `tracking-tight`, 본문 `leading-relaxed`,
   한국어 개행은 `word-break: keep-all`. display는 홈 hero 전용.
+- **아이콘 0 (2026-08-22 오너 결정)**: 전 표면에서 장식·식별 아이콘을 쓰지 않는다.
+  재료는 타이포·기하(마름모 등)·사진 3종. 기존 라인아트 모티프는 퇴역(icons.tsx 삭제).
+- **조각 클러스터 (홈 히어로 전용)**: 마름모 = `rotate(45deg)` + `overflow: hidden`
+  클리핑, 내용·사진은 역회전으로 수평 유지. 상태 문법 — 리포트 공개 중 =
+  실선(`line-strong`) + 노랑 하드 엣지(`box-shadow 5px 5px 0 accent-line`) + 선명 사진
+  (웜 베일 `rgb(250 249 246 / .55)`), 준비 중 = 점선(`chart-edge`) + grayscale 사진
+  (베일 `.82`). 상태는 레지스트리 `preview` 필드에서만 파생. ≤68rem에서 회전 해제 →
+  사진 카드 강등. 판정 3색은 히어로에 등장하지 않는다.
 
 ## 페이지 작성 규칙 (카테고리 담당자)
 

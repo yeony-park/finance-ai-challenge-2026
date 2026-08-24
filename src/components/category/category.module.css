@@ -69,23 +69,10 @@
   word-break: keep-all;
 }
 
-@media (max-width: 600px) {
-  .layerTable {
-    table-layout: fixed;
-  }
-  .layerTable th,
-  .layerTable td {
-    padding-right: var(--ds-space-2);
-  }
-  .layerTable th:nth-child(1) {
-    width: 33%;
-  }
-  .layerTable th:nth-child(2) {
-    width: 22%;
-  }
-  .layerName,
-  .layerLevel {
+@media (max-width: 640px) {
+  .layerName {
     white-space: normal;
+    word-break: keep-all;
   }
   .layerBasis {
     overflow-wrap: anywhere;
@@ -196,29 +183,10 @@ span.offerName {
   color: var(--ds-ink-muted);
 }
 
-.titleRow {
-  display: flex;
-  align-items: center;
-  gap: var(--ds-space-3);
-}
-
-.titleMotif {
-  display: block;
-  width: 34px;
-  height: 34px;
-  color: var(--ds-ink-muted);
-}
-
-.titleMotif svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
 .tileRow {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
+  align-items: flex-start;
   gap: var(--ds-space-5) clamp(1.5rem, 4vw, 3.5rem);
 }
 
@@ -468,6 +436,7 @@ span.offerName {
 
 .chartRaw summary {
   width: fit-content;
+  padding-block: var(--ds-space-2);
   cursor: pointer;
   font-family: var(--ds-font-mono);
   font-size: var(--ds-text-2xs);
@@ -711,6 +680,10 @@ span.offerName {
   z-index: 2;
 }
 
+.offerCardAction {
+  margin-top: auto;
+}
+
 .offerCardCta {
   align-self: flex-start;
   color: var(--ds-ink);
@@ -770,6 +743,10 @@ span.offerName {
   .reviewSummaryItem + .reviewSummaryItem {
     border-top: 1px solid var(--ds-line);
   }
+}
+
+.offerCardWatch {
+  margin-top: auto;
 }
 
 .timeline {

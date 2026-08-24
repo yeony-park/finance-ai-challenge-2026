@@ -96,6 +96,7 @@ const buildingHubRequestSchema = z.object({
 const assetSchema = z.object({
   address: z.string().min(1),
   lawdCd: z.string().min(1),
+  bjdongCd: z.string().regex(/^\d{5}$/).optional(),
   sigunguName: z.string().min(1),
   dong: z.string().min(1),
   buildingUse: z.string().min(1),
@@ -563,12 +564,14 @@ export const buildRealEstateClaims = (
   const lawdReason = gateReasonOf(lawdCdSchema, offer.asset.lawdCd);
   const offerReason = gateReasonOf(offerAmountSchema, String(offer.offer.amountWon));
 
-  const structuralReason =
-    "실거래 신고 자료는 법정동 단위까지만 공개돼 지번 단위 실재 대조가 구조적으로 불가합니다.";
   const addressGateReason = addressReason ?? lawdReason;
   const buildingHubReason = offer.asset.buildingHubRequest
     ? undefined
     : "건축물대장 exact parcel 조회 조건이 없어 원장 대조를 시작하지 않았습니다.";
+  const addressReferenceReason =
+    offer.asset.buildingHubRequest || offer.asset.bjdongCd
+      ? undefined
+      : buildingHubReason;
   const assetSection =
     offer.sources.some((source) => source.sourceKind === "platform-claim")
       ? "플랫폼 상품 상세"
@@ -584,13 +587,12 @@ export const buildRealEstateClaims = (
       row: 1,
       verifiability: addressGateReason
         ? "unparsed"
-        : buildingHubReason
+        : addressReferenceReason
           ? "structurally_impossible"
           : "verifiable",
-      ...(addressGateReason || buildingHubReason
+      ...(addressGateReason || addressReferenceReason
         ? {
-            demotionReason:
-              addressGateReason ?? buildingHubReason ?? structuralReason,
+            demotionReason: addressGateReason ?? addressReferenceReason,
           }
         : {}),
     },

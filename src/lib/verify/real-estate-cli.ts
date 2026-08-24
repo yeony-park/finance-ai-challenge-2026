@@ -1,3 +1,4 @@
+import { resolveBuildingRegisterAdapter } from "./adapters/building-register-fake";
 import { resolveRtmsTradeAdapter } from "./adapters/rtms-trade-fake";
 import { loadBuildingHubCache } from "./adapters/building-register";
 import { loadRealEstateOffer } from "./claims/real-estate";
@@ -74,8 +75,23 @@ const main = async (): Promise<void> => {
   const buildingHub = offer.asset.buildingHubRequest
     ? await loadBuildingHubCache(offer.asset.buildingHubRequest, options.dataDir)
     : undefined;
+  const register =
+    offer.asset.bjdongCd === undefined
+      ? undefined
+      : await resolveBuildingRegisterAdapter({
+          forceFake: options.forceFake,
+          dataDir: options.dataDir,
+          sigunguCd: offer.asset.lawdCd,
+          bjdongCd: offer.asset.bjdongCd,
+           regionName: `${offer.asset.sigunguName} ${offer.asset.dong}`,
+         });
 
-  const report = runRealEstateVerification({ offer, trades, buildingHub });
+  const report = runRealEstateVerification({
+    offer,
+    trades,
+    ...(buildingHub === undefined ? {} : { buildingHub }),
+    ...(register === undefined ? {} : { register }),
+  });
   const internal = await writeReport(report, options.dataDir);
   const published = await writePublicReport(report, options.dataDir);
   printSummary(report, { internal, published });

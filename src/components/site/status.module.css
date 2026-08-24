@@ -58,7 +58,8 @@
   display: inline-flex;
   align-items: center;
   gap: var(--ds-space-2);
-  padding: 0.6rem 1.05rem;
+  min-height: var(--ds-control-h-md);
+  padding: 0.6rem 1.25rem;
   border-radius: var(--ds-radius-pill);
   font-size: var(--ds-text-sm);
   font-weight: var(--ds-weight-bold);

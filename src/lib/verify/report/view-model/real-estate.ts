@@ -88,13 +88,13 @@ export const realEstateOneLiner = (
     ? "대조할 공시 항목이 없어 판정을 보류합니다. "
     : onlyUnjudged
       ? `공시 항목 ${ctx.unjudgedCount}건은 외부 원장 근거가 부족해 모두 대조 보류입니다. `
-    : ctx.hasBuildingEvidence
-      ? summary.mismatch > 0
-        ? `상품 원문 항목 ${summary.total}건을 국토부 건축물대장과 대조한 결과 ${summary.match}건이 일치하고, ${mismatchFieldLabel(ctx.report)} ${summary.mismatch}건이 다릅니다. `
-        : `상품 원문 항목 ${summary.match}건이 국토부 건축물대장과 일치합니다. `
-      : summary.mismatch > 0
-        ? `공시된 항목 ${summary.total}건 가운데 ${summary.mismatch}건이 국토부 실거래 원장에서 확인되지 않습니다. `
-          : `공시된 매각 내역 ${summary.match}건이 국토부 실거래 원장에서 확인됩니다. `;
+      : ctx.hasBuildingEvidence
+        ? summary.mismatch > 0
+          ? `상품 원문 항목 ${summary.total}건을 국토부 건축물대장과 대조한 결과 ${summary.match}건이 일치하고, ${mismatchFieldLabel(ctx.report)} ${summary.mismatch}건이 다릅니다. `
+          : `상품 원문 항목 ${summary.match}건이 국토부 건축물대장과 일치합니다. `
+        : summary.mismatch > 0
+          ? `공시된 항목 ${summary.total}건 가운데 ${summary.mismatch}건이 공공 원장에서 확인되지 않습니다. `
+          : `공시된 항목 ${summary.match}건이 공공 원장에서 확인됩니다. `;
 
   const gapSentence =
     expected && actual && gap !== undefined
@@ -113,7 +113,7 @@ export const realEstateOneLiner = (
       t(
         ctx.hasBuildingEvidence
           ? `${realEstatePriceSentence(ctx)} 건축물대장 대조는 권리·소유·임대차 상태를 확인하지 않습니다.`
-          : `${realEstatePriceSentence(ctx)} 지번 단위 실재 대조는 실거래 신고 자료가 법정동까지만 공개돼 구조적으로 불가합니다.`,
+          : `${realEstatePriceSentence(ctx)} 지번 단위 실재 대조는 건축물대장 표제부 근거가 없어 수행하지 못했습니다.`,
       ),
     ],
   };

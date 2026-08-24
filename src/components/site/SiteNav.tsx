@@ -33,6 +33,8 @@ const isCurrent = (pathname: string, match: string): boolean =>
 export function SiteNav() {
   const pathname = usePathname();
 
+  if (pathname === "/") return null;
+
   return (
     <nav className={s.nav} aria-label="주요 메뉴">
       {NAV_ITEMS.map((item) => (

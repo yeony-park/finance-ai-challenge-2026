@@ -1,13 +1,19 @@
 import type { Metadata } from "next";
 
+import { ArtFactsSection } from "@/components/art/ArtFactsSection";
 import { CategoryLanding } from "@/components/category/CategoryLanding";
 import { categoryById } from "@/lib/content/categories";
+import {
+  ART_CUSTOM_TITLE,
+  ART_PAGE_DESCRIPTION,
+  ART_PAGE_LEAD,
+} from "@/lib/content/art";
 
 const INFO = categoryById("art");
 
 export const metadata: Metadata = {
   title: INFO.label,
-  description: "미술품 공모의 확인 현황 — 카테고리 착지 준비 중",
+  description: ART_PAGE_DESCRIPTION,
 };
 
 export default function ArtPage() {
@@ -15,11 +21,13 @@ export default function ArtPage() {
     <CategoryLanding
       categoryId="art"
       title={INFO.label}
-      lead="카테고리 착지 준비 중입니다 — 담당 구현이 층별 지원 선언을 확정하면, 같은 공통 검증 기반 위에서 확인 현황이 여기에 표시됩니다."
+      lead={ART_PAGE_LEAD}
       descriptor={null}
       heroImage="/category-art.jpg"
       offers={[]}
       preview={INFO.preview}
+      custom={<ArtFactsSection />}
+      customTitle={ART_CUSTOM_TITLE}
     />
   );
 }

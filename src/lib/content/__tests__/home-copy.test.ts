@@ -34,6 +34,9 @@ import {
   EXAMPLE_QUESTIONS,
   FOLLOW_UP_LABEL,
   followUpQuestions,
+  HERO_CHIP_LABELS,
+  HERO_EYEBROW,
+  HERO_SOURCES_LINE,
   HOME_HERO_LEAD,
   HOME_HERO_TITLE,
   INTRO_CARDS,
@@ -68,6 +71,8 @@ import {
 const ALL_COPY: readonly string[] = [
   HOME_HERO_TITLE,
   HOME_HERO_LEAD,
+  HERO_EYEBROW,
+  HERO_SOURCES_LINE,
   SCAFFOLD_NOTICE,
   AI_ROLE_SENTENCE,
   SEARCH_PLACEHOLDER,
@@ -278,4 +283,15 @@ describe("정정 감시 밴드 — 상태 문안 정직성", () => {
   test("밴드 리드는 로컬 저장 사실을 밝힌다", () => {
     expect(WATCH_BAND_LEAD).toContain("이 브라우저");
   });
+});
+
+describe("조각 히어로 — 칩 문안 정합", () => {
+  test("히어로 압축 칩은 전부 예시 질문 목록에 존재한다", () => {
+    const labels = new Set(EXAMPLE_QUESTIONS.map((question) => question.label));
+    for (const label of HERO_CHIP_LABELS) {
+      expect(labels.has(label), label).toBe(true);
+    }
+    expect(HERO_CHIP_LABELS.length).toBeGreaterThanOrEqual(3);
+  });
+
 });

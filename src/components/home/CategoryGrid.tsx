@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 
-import { CategoryMotif } from "@/components/site/icons";
 import { Reveal } from "@/components/motion/Reveal";
 import { orderByInterests, useProfile } from "@/components/site/profile";
 import { CATEGORY_REGISTRY } from "@/lib/content/categories";
@@ -28,9 +27,6 @@ export function CategoryGrid() {
         <div className={s.categoryGrid}>
           {entries.map((entry) => (
             <Link key={entry.id} href={entry.href} className={s.categoryCard}>
-              <span className={s.categoryMotif}>
-                <CategoryMotif id={entry.id} />
-              </span>
               <span className={s.categoryLabel}>
                 {entry.label}
                 {entry.subLabel ? (

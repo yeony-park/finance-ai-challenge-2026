@@ -4,7 +4,7 @@
 
 | 파일 | 출처 | 작가 | 라이선스 | 용도 | 도입 |
 |---|---|---|---|---|---|
-| `public/hero-dossier.jpg` | [Unsplash — stacks of paper documents and file folders](https://unsplash.com/photos/stacks-of-paper-documents-and-file-folders-snNHKZ-mGfE) | Wesley Tingey | Unsplash License (상업 사용·무귀속 허용, 재판매 금지) | 홈 히어로 배경 투명 레이어 (multiply 블렌드·4방향 마스크) | 2026-08-16 오너 결정 — 실물 사진 투명 레이어 |
+| ~~`public/hero-dossier.jpg`~~ | Unsplash (Wesley Tingey) | — | — | **퇴역** — 조각 히어로 전환으로 홈에서 완전 제거 | 2026-08-22 오너 확정, 자산 삭제 |
 
 - 사진 선정 기준: 카테고리 중립(특정 자산 편향 금지) · 발행사·인물·주소 미식별 · Unsplash+ (유료) 제외.
 - 처리 규약: 원본 무편집 재배포 금지 조건과 무관하게, 화면에는 항상 블렌드·마스크 처리로만 사용.
