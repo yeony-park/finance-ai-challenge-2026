@@ -11,14 +11,15 @@
 }
 
 .chartCard {
-  --market-chart-blue: #4f7fc8;
-  --market-chart-blue-soft: #aac4e9;
+  --market-chart-primary: var(--ds-accent-line);
+  --market-chart-soft: var(--ds-accent-line-soft);
 
   padding: 1.5rem 1.65rem 1.1rem;
   border: 1px solid var(--ds-line-soft);
   border-radius: var(--ds-radius-xl);
-  background: linear-gradient(180deg, var(--ds-surface) 0%, #fbfcfe 100%);
+  background: var(--ds-surface);
   box-shadow: var(--ds-shadow-md);
+  font-family: var(--ds-font-sans);
 }
 
 .chartHead {
@@ -29,10 +30,19 @@
   gap: var(--ds-space-3);
 }
 
+.chartRangeGroup {
+  display: grid;
+  gap: var(--ds-space-1);
+}
+
 .chartRange {
-  font-family: var(--ds-font-mono);
   font-size: var(--ds-text-xs);
   color: var(--ds-ink-muted);
+}
+
+.chartDragHint {
+  font-size: var(--ds-text-2xs);
+  color: var(--ds-ink-faint);
 }
 
 .chartLegend {
@@ -51,19 +61,19 @@
 
 .chartKeyAvg {
   width: 16px;
-  border-top: 2.5px solid var(--market-chart-blue);
+  border-top: 2.5px solid var(--market-chart-primary);
 }
 
 .chartKeyEdge {
   width: 16px;
-  border-top: 1.5px solid var(--market-chart-blue-soft);
+  border-top: 1.5px solid var(--market-chart-soft);
 }
 
 .chartKeyBand {
   width: 16px;
   height: 10px;
   border-radius: 2px;
-  background: rgb(125 164 223 / 0.18);
+  background: var(--ds-accent-soft);
 }
 
 .chartWrap {
@@ -76,7 +86,14 @@
   width: 100%;
   height: auto;
   border-radius: var(--ds-radius-md);
-  cursor: crosshair;
+  cursor: grab;
+  font-family: var(--ds-font-sans);
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.chartWrap svg.chartDragging {
+  cursor: grabbing;
 }
 
 .chartWrap svg:focus-visible {
@@ -90,13 +107,11 @@
 }
 
 .chartAxisText {
-  font-family: var(--ds-font-mono);
   font-size: 11px;
   fill: var(--ds-ink-faint);
 }
 
 .chartLabelStrong {
-  font-family: var(--ds-font-mono);
   font-size: 11px;
   font-weight: var(--ds-weight-bold);
   fill: var(--ds-ink);
@@ -108,7 +123,7 @@
 
 .chartEdgeLine {
   fill: none;
-  stroke: var(--market-chart-blue-soft);
+  stroke: var(--market-chart-soft);
   stroke-width: 1.5;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -116,20 +131,20 @@
 
 .chartAvgLine {
   fill: none;
-  stroke: var(--market-chart-blue);
+  stroke: var(--market-chart-primary);
   stroke-width: 3;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
 .chartAvgDot {
-  fill: var(--market-chart-blue);
+  fill: var(--market-chart-primary);
   stroke: var(--ds-surface);
   stroke-width: 2;
 }
 
 .chartCrosshair {
-  stroke: var(--market-chart-blue);
+  stroke: var(--market-chart-primary);
   stroke-width: 1;
   stroke-dasharray: 3 3;
   opacity: 0.5;
@@ -137,7 +152,7 @@
 
 .chartHoverDot {
   fill: var(--ds-surface);
-  stroke: var(--market-chart-blue);
+  stroke: var(--market-chart-primary);
   stroke-width: 3;
 }
 
@@ -148,7 +163,6 @@
   border-radius: var(--ds-radius-sm);
   background: var(--ds-ink);
   color: var(--ds-ink-invert);
-  font-family: var(--ds-font-mono);
   font-size: var(--ds-text-2xs);
   line-height: 1.55;
   white-space: nowrap;
@@ -168,7 +182,6 @@
   margin-top: var(--ds-space-4);
   padding-top: var(--ds-space-3);
   border-top: 1px solid var(--ds-line);
-  font-family: var(--ds-font-mono);
   font-size: var(--ds-text-2xs);
   color: var(--ds-ink-faint);
 }
@@ -181,7 +194,6 @@
   width: fit-content;
   padding-block: var(--ds-space-2);
   cursor: pointer;
-  font-family: var(--ds-font-mono);
   font-size: var(--ds-text-2xs);
   color: var(--ds-ink-muted);
   text-decoration: underline;
@@ -204,7 +216,6 @@
 .chartScroll table {
   min-width: 460px;
   border-collapse: collapse;
-  font-family: var(--ds-font-mono);
   font-size: var(--ds-text-2xs);
   font-variant-numeric: tabular-nums;
 }
@@ -236,7 +247,6 @@
   stroke-dasharray: 3 4;
 }
 .chartMarkerText {
-  font-family: var(--ds-font-mono);
   font-size: 10.5px;
   fill: var(--ds-ink-faint);
 }
