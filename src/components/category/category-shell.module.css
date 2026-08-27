@@ -419,6 +419,10 @@
     max-width: var(--ds-maxw-prose);
   }
 
+  .aboutShortcut {
+    font-size: var(--ds-text-sm);
+  }
+
   .analysisArea {
     order: 3;
   }
