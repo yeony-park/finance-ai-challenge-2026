@@ -1,11 +1,11 @@
-.visualIntroSearch {
+.visualIntroSearch.visualIntroSearch {
   height: auto;
   min-height: 100svh;
   margin-top: 0;
   background: var(--ds-bg);
 }
 
-.visualStickySearch {
+.visualStickySearch.visualStickySearch {
   position: relative;
   top: auto;
   display: block;
@@ -16,7 +16,7 @@
   overflow: visible;
 }
 
-.visualFrameSearch {
+.visualFrameSearch.visualFrameSearch {
   opacity: 0;
   pointer-events: none;
   transform: translate(-50%, -50%) scale(0.9) !important;
@@ -26,7 +26,7 @@
   display: none;
 }
 
-.visualContentSearch {
+.visualContentSearch.visualContentSearch {
   position: relative;
   inset: auto;
   display: grid;
@@ -74,7 +74,7 @@
   }
 }
 
-.visualContentSearch .heroTitle {
+.visualContentSearch.visualContentSearch .heroTitle.heroTitle {
   position: relative;
   display: block;
   width: min(42rem, 100%);
@@ -82,6 +82,8 @@
   margin: 0;
   padding: 0 3rem 0 0;
   color: var(--ds-ink);
+  font-size: var(--ds-heading-h4);
+  line-height: var(--ds-leading-snug);
   text-align: left;
   transform: none;
   will-change: auto;
@@ -144,15 +146,15 @@
   transform: none;
 }
 
-.visualContentSearch .scaffold {
+.visualContentSearch.visualContentSearch .scaffold.scaffold {
   position: static;
   width: min(42rem, 100%);
-  margin: var(--ds-space-5) 0 0;
+  margin: var(--ds-space-4) 0 0;
   transform: none;
   will-change: auto;
 }
 
-.visualContentSearch .scaffoldOpen {
+.visualContentSearch.visualContentSearch .scaffoldOpen.scaffoldOpen {
   max-height: none;
   padding: 0;
   overflow: visible;
@@ -299,6 +301,14 @@
   background: var(--ds-surface-glass);
   box-shadow: none;
   backdrop-filter: blur(16px);
+}
+
+.answer .panel {
+  margin-top: 0;
+}
+
+.answer + .searchForm {
+  margin-top: var(--ds-space-4);
 }
 
 .panelTitle {

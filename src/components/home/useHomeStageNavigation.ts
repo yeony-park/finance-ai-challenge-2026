@@ -15,6 +15,11 @@ import {
   STAGE_SNAP_DURATION_MS,
 } from "./home-hero-config";
 
+type WheelInputMode = "wheel" | "trackpad";
+
+const TRACKPAD_GESTURE_GAP_MS = 120;
+const TRACKPAD_DELTA_THRESHOLD = 12;
+
 export function useHomeSectionDial(isSearchOpen: boolean): {
   readonly activeSection: number;
   readonly scrollToSection: (index: number) => void;
@@ -74,7 +79,10 @@ export function useHomeStageSnap(match: ScaffoldMatch | null): void {
       return;
 
     let animationFrame = 0;
-    let isAnimating = false;
+    let animationTarget: number | null = null;
+    let inputMode: WheelInputMode | null = null;
+    let gestureHasMovedStage = false;
+    let previousWheelEventAt = Number.NEGATIVE_INFINITY;
 
     const stageTargets = () => {
       const sectionTargets = HOME_STAGE_SECTION_IDS.flatMap((id) => {
@@ -85,10 +93,11 @@ export function useHomeStageSnap(match: ScaffoldMatch | null): void {
     };
 
     const animateToStage = (target: number) => {
+      window.cancelAnimationFrame(animationFrame);
       const start = window.scrollY;
       const distance = target - start;
       const startTime = window.performance.now();
-      isAnimating = true;
+      animationTarget = target;
 
       const tick = (now: number) => {
         const progress = Math.min((now - startTime) / STAGE_SNAP_DURATION_MS, 1);
@@ -104,31 +113,58 @@ export function useHomeStageSnap(match: ScaffoldMatch | null): void {
         }
 
         scrollImmediately(target);
-        isAnimating = false;
+        animationTarget = null;
+        animationFrame = 0;
       };
 
       animationFrame = window.requestAnimationFrame(tick);
     };
 
+    const moveToAdjacentStage = (direction: number): boolean => {
+      const targets = stageTargets();
+      const reference = animationTarget ?? window.scrollY;
+      const currentIndex = targets.findIndex(
+        (target) => Math.abs(reference - target) < 8,
+      );
+      if (currentIndex === -1) return false;
+
+      const nextTarget = targets[currentIndex + direction];
+      if (nextTarget === undefined) return false;
+
+      animateToStage(nextTarget);
+      return true;
+    };
+
     const handleWheel = (event: WheelEvent) => {
       if (event.deltaY === 0 || event.ctrlKey || event.metaKey) return;
-      if (isAnimating) {
+
+      const now = window.performance.now();
+      const eventInterval = now - previousWheelEventAt;
+      if (eventInterval > TRACKPAD_GESTURE_GAP_MS) {
+        inputMode = null;
+        gestureHasMovedStage = false;
+      }
+
+      const delta = Math.abs(event.deltaY);
+      if (inputMode === null) {
+        const isLikelyTrackpad =
+          event.deltaMode === WheelEvent.DOM_DELTA_PIXEL &&
+          (delta < TRACKPAD_DELTA_THRESHOLD ||
+            !Number.isInteger(event.deltaY));
+        inputMode = isLikelyTrackpad ? "trackpad" : "wheel";
+      }
+      previousWheelEventAt = now;
+
+      if (inputMode === "trackpad" && gestureHasMovedStage) {
         event.preventDefault();
         return;
       }
 
-      const targets = stageTargets();
-      const currentIndex = targets.findIndex(
-        (target) => Math.abs(window.scrollY - target) < 8,
-      );
-      if (currentIndex === -1) return;
-
       const direction = event.deltaY > 0 ? 1 : -1;
-      const nextTarget = targets[currentIndex + direction];
-      if (nextTarget === undefined) return;
+      if (!moveToAdjacentStage(direction)) return;
 
       event.preventDefault();
-      animateToStage(nextTarget);
+      gestureHasMovedStage = true;
     };
 
     window.addEventListener("wheel", handleWheel, { passive: false });

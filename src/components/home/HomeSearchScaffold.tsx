@@ -51,9 +51,14 @@ export function HomeSearchScaffold({
     <div
       ref={scaffoldRef}
       className={`${visual.scaffold} ${s.scaffold} ${
-        match ? `${visual.scaffoldOpen} ${s.scaffoldOpen}` : ""
+        match ? s.scaffoldOpen : ""
       }`}
     >
+      {match ? (
+        <div className={s.answer} aria-live="polite">
+          <HomeScaffoldPanel match={match} />
+        </div>
+      ) : null}
       <form className={s.searchForm} onSubmit={onSubmit} role="search">
         <label htmlFor="home-search" className="sr-only">
           궁금한 내용 입력
@@ -92,24 +97,21 @@ export function HomeSearchScaffold({
         ) : null}
       </form>
 
-      <div aria-live="polite">
-        {match ? <HomeScaffoldPanel match={match} /> : null}
-        {followUps.length > 0 ? (
-          <div className={s.followRow} role="group" aria-label={FOLLOW_UP_LABEL}>
-            <span className={s.followLabel}>{FOLLOW_UP_LABEL}</span>
-            {followUps.map((question) => (
-              <button
-                key={question.label}
-                type="button"
-                className={controls.chip}
-                onClick={() => onChip(question.label, question.target)}
-              >
-                {question.label}
-              </button>
-            ))}
-          </div>
-        ) : null}
-      </div>
+      {followUps.length > 0 ? (
+        <div className={s.followRow} role="group" aria-label={FOLLOW_UP_LABEL}>
+          <span className={s.followLabel}>{FOLLOW_UP_LABEL}</span>
+          {followUps.map((question) => (
+            <button
+              key={question.label}
+              type="button"
+              className={controls.chip}
+              onClick={() => onChip(question.label, question.target)}
+            >
+              {question.label}
+            </button>
+          ))}
+        </div>
+      ) : null}
     </div>
   );
 }

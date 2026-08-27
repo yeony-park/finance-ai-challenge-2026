@@ -75,8 +75,6 @@ export function useHomeHeroVisual(
         !frameElement ||
         !contentElement ||
         !titleElement ||
-        !titlePrefixElement ||
-        !titleQuestionElement ||
         !scaffoldElement ||
         !sticky
       )
@@ -84,11 +82,17 @@ export function useHomeHeroVisual(
 
       stickyElement = sticky;
 
+      if (match) {
+        header?.style.setProperty("--home-header-surface", "100%");
+        header?.style.setProperty("--home-header-ink", "100%");
+        return;
+      }
+
+      if (!titlePrefixElement || !titleQuestionElement) return;
+
       const scrollOffset = Math.max(-visualElement.getBoundingClientRect().top, 0);
-      const imageProgress = match
-        ? 1
-        : Math.min(scrollOffset / HERO_SHRINK_SCROLL_DISTANCE, 1);
-      const nextTitleSplit = !match && imageProgress > 0.03;
+      const imageProgress = Math.min(scrollOffset / HERO_SHRINK_SCROLL_DISTANCE, 1);
+      const nextTitleSplit = imageProgress > 0.03;
       if (titleSplitRef.current !== nextTitleSplit) {
         titleSplitRef.current = nextTitleSplit;
         setIsTitleSplit(nextTitleSplit);

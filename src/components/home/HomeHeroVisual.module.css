@@ -276,13 +276,11 @@
   transform: scale(1.3);
 }
 
-@media (max-width: 40rem) {
-  .sectionDial {
-    left: 0.75rem;
-  }
-}
-
 @media (max-width: 1023px) {
+  .sectionDial {
+    display: none;
+  }
+
   .visualIntro {
     height: calc(100svh + 120px);
   }
