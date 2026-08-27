@@ -56,17 +56,74 @@ export function VerdictHero({
   return (
     <section className={`${s.section} ${s.hero}`} aria-labelledby={VERDICT_HEADING_ID}>
       <div className={`${s.wrap} ${s.heroGrid}`}>
-        <p className={s.offerTag}>{view.offer.tag}</p>
+        <div className={s.heroPrimary}>
+          <p className={s.offerTag}>{view.offer.tag}</p>
 
-        <h1 id={VERDICT_HEADING_ID} className={s.title}>
-          {view.offer.title}
-        </h1>
+          <h1 id={VERDICT_HEADING_ID} className={s.title}>
+            {view.offer.title}
+          </h1>
 
-        <p className={s.whenLine}>
-          {view.verdict.eyebrow}
-          <br />
-          {view.verdict.when}
-        </p>
+          <p className={s.whenLine}>
+            {view.verdict.eyebrow}
+            <br />
+            {view.verdict.when}
+          </p>
+
+          <p className={s.itemLine}>{view.verdict.itemLine}</p>
+          <MethodologyLink anchor={METHODOLOGY_ANCHOR.verdicts} />
+
+          <AnimatePresence mode="wait" initial={false}>
+            <m.div
+              key={level}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{
+                duration: isReduced ? MOTION_DURATION.fast : MOTION_DURATION.base,
+                ease: MOTION_EASE,
+              }}
+            >
+              {hasNarrative ? (
+                <VerdictNarrative level={narrativeLevel} />
+              ) : (
+                <p className={s.oneLiner}>
+                  <RichText
+                    parts={view.verdict.oneLiner[level]}
+                    strongClassName={s.oneLinerStrong}
+                  />
+                </p>
+              )}
+            </m.div>
+          </AnimatePresence>
+
+          <div className={s.levelRow}>
+            <span className={s.levelToggle} role="group" aria-label="설명 수준">
+              {LEVELS.map((item) => (
+                <m.button
+                  key={item.id}
+                  type="button"
+                  className={s.levelButton}
+                  aria-pressed={level === item.id}
+                  onClick={() => onLevelChange(item.id)}
+                  whileTap={isReduced ? undefined : { scale: 0.97 }}
+                  transition={{ duration: MOTION_DURATION.fast, ease: MOTION_EASE }}
+                >
+                  {item.label}
+                </m.button>
+              ))}
+            </span>
+            <span className={s.levelHint}>판정은 동일하며, 설명 깊이만 달라집니다</span>
+          </div>
+
+          <p className={s.modeChips}>
+            <span className={s.modeBadge}>{view.meta.badge}</span>
+            {view.meta.items.map((item) => (
+              <span key={item} className={s.modeChip}>
+                {item}
+              </span>
+            ))}
+          </p>
+        </div>
 
         <dl className={s.tallies}>
           {view.verdict.tallies.map((tally) => (
@@ -81,61 +138,6 @@ export function VerdictHero({
             </div>
           ))}
         </dl>
-
-        <p className={s.itemLine}>{view.verdict.itemLine}</p>
-        <MethodologyLink anchor={METHODOLOGY_ANCHOR.verdicts} />
-
-        <AnimatePresence mode="wait" initial={false}>
-          <m.div
-            key={level}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{
-              duration: isReduced ? MOTION_DURATION.fast : MOTION_DURATION.base,
-              ease: MOTION_EASE,
-            }}
-          >
-            {hasNarrative ? (
-              <VerdictNarrative level={narrativeLevel} />
-            ) : (
-              <p className={s.oneLiner}>
-                <RichText
-                  parts={view.verdict.oneLiner[level]}
-                  strongClassName={s.oneLinerStrong}
-                />
-              </p>
-            )}
-          </m.div>
-        </AnimatePresence>
-
-        <div className={s.levelRow}>
-          <span className={s.levelToggle} role="group" aria-label="설명 수준">
-            {LEVELS.map((item) => (
-              <m.button
-                key={item.id}
-                type="button"
-                className={s.levelButton}
-                aria-pressed={level === item.id}
-                onClick={() => onLevelChange(item.id)}
-                whileTap={isReduced ? undefined : { scale: 0.97 }}
-                transition={{ duration: MOTION_DURATION.fast, ease: MOTION_EASE }}
-              >
-                {item.label}
-              </m.button>
-            ))}
-          </span>
-          <span className={s.levelHint}>판정은 동일하며, 설명 깊이만 달라집니다</span>
-        </div>
-
-        <p className={s.modeChips}>
-          <span className={s.modeBadge}>{view.meta.badge}</span>
-          {view.meta.items.map((item) => (
-            <span key={item} className={s.modeChip}>
-              {item}
-            </span>
-          ))}
-        </p>
       </div>
     </section>
   );

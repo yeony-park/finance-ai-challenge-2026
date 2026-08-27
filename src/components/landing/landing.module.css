@@ -35,20 +35,23 @@
 }
 
 .hero {
-  padding-block: clamp(2.5rem, 1.6rem + 4vw, 5rem) var(--ds-section-y-tight);
+  padding-block: clamp(4.5rem, 3rem + 6vw, 9rem) var(--ds-section-y-tight);
+  border-bottom: 1px solid var(--ds-line);
 }
 
 .heroCopy {
   display: grid;
-  gap: var(--ds-space-5);
+  grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 0.8fr);
+  gap: var(--ds-space-6) var(--ds-layout-gap);
+  align-items: end;
 }
 
 .heroTitle {
   display: grid;
   font-size: var(--ds-display);
-  font-weight: var(--ds-weight-black);
-  line-height: 1.14;
-  letter-spacing: -0.035em;
+  font-weight: var(--ds-weight-bold);
+  line-height: 1.16;
+  letter-spacing: -0.04em;
   word-break: keep-all;
   margin-top: var(--ds-space-3);
 }
@@ -58,7 +61,7 @@
 }
 
 .coverage {
-  max-width: 46ch;
+  max-width: 38ch;
   color: var(--ds-ink-muted);
   font-size: var(--ds-text-lg);
   line-height: var(--ds-leading-relaxed);
@@ -72,7 +75,9 @@
 }
 
 .groupTitle {
-  margin-bottom: var(--ds-space-6);
+  margin-bottom: var(--ds-space-7);
+  padding-top: var(--ds-space-5);
+  border-top: 1px solid var(--ds-line);
   font-size: var(--ds-title-lg);
   font-weight: var(--ds-weight-black);
   letter-spacing: var(--ds-tracking-tight);
@@ -105,9 +110,9 @@
   height: 100%;
   padding: clamp(1.125rem, 0.9rem + 1.2vw, 1.75rem);
   border: 1px solid var(--ds-line);
-  border-radius: var(--ds-radius-lg);
+  border-radius: var(--ds-radius-panel);
   background: var(--ds-surface);
-  box-shadow: var(--ds-shadow-sm);
+  box-shadow: none;
   transition:
     border-color var(--ds-duration-base) var(--ds-ease),
     box-shadow var(--ds-duration-base) var(--ds-ease);
@@ -115,7 +120,7 @@
 
 .offerCard:hover {
   border-color: var(--ds-line-strong);
-  box-shadow: var(--ds-shadow-md);
+  box-shadow: inset 0 -2px 0 var(--ds-accent);
 }
 
 .offerCard:focus-within {
@@ -316,7 +321,18 @@
   content: "";
   position: absolute;
   inset: 0;
-  border-radius: var(--ds-radius-lg);
+  border-radius: var(--ds-radius-panel);
+}
+
+@media (max-width: 760px) {
+  .heroCopy {
+    grid-template-columns: 1fr;
+    gap: var(--ds-space-5);
+  }
+
+  .coverage {
+    max-width: var(--ds-maxw-prose);
+  }
 }
 
 .offerCard:hover .offerLink {
