@@ -19,6 +19,8 @@ interface CategoryAboutViewProps {
   readonly categoryHref: string;
   readonly activeTab: CategoryTab;
   readonly heroImage: string | null;
+  readonly leadVisual?: ReactNode;
+  readonly analysisHintVisual?: ReactNode;
   readonly descriptionContent: ReactNode;
   readonly descriptionContentTitle: string;
 }
@@ -30,9 +32,13 @@ export function CategoryAboutView({
   categoryHref,
   activeTab,
   heroImage,
+  leadVisual = null,
+  analysisHintVisual = null,
   descriptionContent,
   descriptionContentTitle,
 }: CategoryAboutViewProps) {
+  const hasInlineVisuals = leadVisual !== null || analysisHintVisual !== null;
+
   return (
     <div className={`${home.section} ${s.categorySection}`}>
       <div
@@ -41,7 +47,12 @@ export function CategoryAboutView({
         }`}
       >
         {heroImage ? (
-          <div className={s.landingHeroPhoto} aria-hidden="true">
+          <div
+            className={`${s.landingHeroPhoto} ${
+              hasInlineVisuals ? s.landingHeroPhotoWithVisuals : ""
+            }`}
+            aria-hidden="true"
+          >
             <Image
               src={heroImage}
               alt=""
@@ -61,12 +72,35 @@ export function CategoryAboutView({
           />
         </div>
 
-        <section className={s.aboutContent} aria-label={`${title} 설명`}>
-          <p className={base.slotLead}>{lead}</p>
-          <p className={s.aboutHint}>
-            공시 분석 탭에서는 공개된 공시 원문, 공공 자료와의 대조 결과, 그리고
-            현재 확인할 수 없는 범위를 근거와 함께 확인할 수 있습니다.
-          </p>
+        <section
+          className={`${s.aboutContent} ${
+            hasInlineVisuals ? s.aboutContentWithVisuals : ""
+          }`}
+          aria-label={`${title} 설명`}
+        >
+          {leadVisual ? (
+            <div className={s.aboutVisualBlock}>
+              <div className={s.aboutLeadVisual}>{leadVisual}</div>
+              <p className={`${base.slotLead} ${s.aboutLead}`}>{lead}</p>
+            </div>
+          ) : (
+            <p className={`${base.slotLead} ${s.aboutLead}`}>{lead}</p>
+          )}
+          {analysisHintVisual ? (
+            <div className={s.aboutVisualBlock}>
+              <div className={s.aboutHintVisual}>{analysisHintVisual}</div>
+              <p className={s.aboutHint}>
+                공시 분석 탭에서는 공개된 공시 원문, 공공 자료와의 대조 결과,
+                그리고 현재 확인할 수 없는 범위를 근거와 함께 확인할 수
+                있습니다.
+              </p>
+            </div>
+          ) : (
+            <p className={s.aboutHint}>
+              공시 분석 탭에서는 공개된 공시 원문, 공공 자료와의 대조 결과,
+              그리고 현재 확인할 수 없는 범위를 근거와 함께 확인할 수 있습니다.
+            </p>
+          )}
           <nav
             className={s.aboutShortcuts}
             aria-label={`${title} 설명 바로가기`}

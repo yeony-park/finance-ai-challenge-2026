@@ -19,6 +19,8 @@ export interface CategoryLandingProps {
   readonly preview?: readonly string[] | null;
   readonly market?: ReactNode;
   readonly heroImage?: string | null;
+  readonly leadVisual?: ReactNode;
+  readonly analysisHintVisual?: ReactNode;
   readonly custom?: ReactNode;
   readonly customTitle?: string;
   readonly descriptionContent?: ReactNode;
@@ -34,6 +36,8 @@ export async function CategoryLanding({
   preview = null,
   market = null,
   heroImage = null,
+  leadVisual = null,
+  analysisHintVisual = null,
   custom = null,
   customTitle = "카테고리 특화 영역",
   descriptionContent = null,
@@ -53,6 +57,8 @@ export async function CategoryLanding({
         categoryHref={categoryHref}
         activeTab={activeTab}
         heroImage={heroImage}
+        leadVisual={leadVisual}
+        analysisHintVisual={analysisHintVisual}
         descriptionContent={descriptionContent}
         descriptionContentTitle={descriptionContentTitle}
       />

@@ -196,6 +196,13 @@
 .landingHeroWithDescription .landingHeroPhoto {
   min-height: clamp(14rem, 22vw, 20rem);
 }
+
+.landingHeroWithDescription .landingHeroPhotoWithVisuals {
+  grid-column: 1;
+  min-height: 0;
+  aspect-ratio: 3 / 2;
+}
+
 .landingHeroImg {
   object-fit: cover;
   object-position: center;
@@ -255,6 +262,42 @@
   grid-row: 2;
   max-width: 34rem;
   padding-bottom: clamp(1rem, 3vw, 3rem);
+}
+
+.aboutContentWithVisuals {
+  grid-column: 2;
+  grid-row: 2;
+  display: grid;
+  gap: var(--ds-space-6);
+  max-width: none;
+}
+
+.aboutVisualBlock {
+  display: grid;
+  gap: var(--ds-space-3);
+  min-width: 0;
+}
+
+.aboutLeadVisual {
+  min-width: 0;
+}
+
+.aboutContentWithVisuals .aboutHint {
+  max-width: none;
+  margin-top: 0;
+}
+
+.aboutHintVisual {
+  min-width: 0;
+}
+
+.aboutLeadVisual > *,
+.aboutHintVisual > * {
+  margin-top: 0;
+}
+
+.aboutContentWithVisuals .aboutShortcuts {
+  margin-top: 0;
 }
 
 .aboutHint {
@@ -396,6 +439,11 @@
 
   .aboutContent {
     order: 3;
+    max-width: var(--ds-maxw-prose);
+  }
+
+  .aboutContentWithVisuals {
+    display: grid;
     max-width: var(--ds-maxw-prose);
   }
 

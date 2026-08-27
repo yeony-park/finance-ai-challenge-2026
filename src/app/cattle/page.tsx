@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 
 import { AuctionMarketSection } from "@/components/category/AuctionMarketSection";
+import {
+  AnalysisEvidenceDiagram,
+  CattleCrossCheckDiagram,
+} from "@/components/category/CattleAboutDiagrams";
 import { CattleFlowBand } from "@/components/category/CattleFlowBand";
 import { CategoryLanding } from "@/components/category/CategoryLanding";
 import { OFFERS } from "@/components/site/offers";
@@ -43,6 +47,8 @@ export default async function CattlePage({ searchParams }: CattlePageProps) {
       descriptor={CATTLE_CATEGORY}
       offers={cattleOffers}
       heroImage="/category-cattle.jpg"
+      leadVisual={<CattleCrossCheckDiagram />}
+      analysisHintVisual={<AnalysisEvidenceDiagram />}
       market={
         series ? <AuctionMarketSection series={series} markers={markers} /> : null
       }
