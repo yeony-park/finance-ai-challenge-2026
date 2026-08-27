@@ -35,7 +35,7 @@ describe("카테고리 설명 바로가기", () => {
     },
   );
 
-  test("소 사진 왼쪽에 우측 시각 자료와 설명을 요청 순서로 배치한다", () => {
+  test("좌측 시각 자료와 설명을 요청 순서로 배치하고 소 사진도 표시한다", () => {
     const html = renderToStaticMarkup(
       createElement(CategoryAboutView, {
         title: "한우",
