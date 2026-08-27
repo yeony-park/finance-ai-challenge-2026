@@ -285,26 +285,6 @@
 }
 
 
-.followRow {
-  margin-top: var(--ds-space-4);
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--ds-space-2);
-}
-.followLabel {
-  display: inline-flex;
-  align-items: center;
-  min-height: 2.25rem;
-  padding: 0.35rem 0.1rem;
-  border-bottom: 1px solid var(--ds-accent-line);
-  color: var(--ds-ink-muted);
-  font-size: var(--ds-text-sm);
-  font-weight: var(--ds-weight-bold);
-  letter-spacing: 0;
-  white-space: nowrap;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .visualFrame {
     transition: none;

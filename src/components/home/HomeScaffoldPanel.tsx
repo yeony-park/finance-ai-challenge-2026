@@ -3,7 +3,7 @@
 import Link from "next/link";
 
 import { CATEGORY_REGISTRY } from "@/lib/content/categories";
-import { INTRO_CARDS, type FollowUpKey, type GuideTarget } from "@/lib/content/home";
+import { INTRO_CARDS, type GuideTarget } from "@/lib/content/home";
 import type { ScaffoldMatch } from "@/lib/content/scaffold-match";
 
 import controls from "./home-controls.module.css";
@@ -16,13 +16,6 @@ const guideCard = (target: GuideTarget) =>
 
 const categoryEntry = (categoryId: string) =>
   CATEGORY_REGISTRY.find((entry) => entry.id === categoryId);
-
-export const followUpKeyOf = (match: ScaffoldMatch): FollowUpKey | null => {
-  if (match.kind === "guide") return match.target;
-  if (match.kind === "reports") return "reports";
-  if (match.kind === "category") return "category";
-  return null;
-};
 
 export function HomeScaffoldPanel({
   match,

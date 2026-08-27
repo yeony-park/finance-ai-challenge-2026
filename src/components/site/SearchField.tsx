@@ -1,6 +1,7 @@
 import type {
   FocusEventHandler,
   FormEventHandler,
+  MouseEventHandler,
   ReactNode,
 } from "react";
 
@@ -15,6 +16,7 @@ interface SearchFieldProps {
   readonly autoComplete?: string;
   readonly children?: ReactNode;
   readonly onChange: (value: string) => void;
+  readonly onClick?: MouseEventHandler<HTMLInputElement>;
   readonly onFocus?: FocusEventHandler<HTMLInputElement>;
   readonly onBlur?: FocusEventHandler<HTMLInputElement>;
   readonly onSubmit?: FormEventHandler<HTMLFormElement>;
@@ -29,6 +31,7 @@ export function SearchField({
   autoComplete = "off",
   children,
   onChange,
+  onClick,
   onFocus,
   onBlur,
   onSubmit,
@@ -56,6 +59,7 @@ export function SearchField({
         enterKeyHint="search"
         value={value}
         onChange={(event) => onChange(event.target.value)}
+        onClick={onClick}
         onFocus={onFocus}
         onBlur={onBlur}
         placeholder={placeholder}

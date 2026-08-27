@@ -26,7 +26,6 @@ import {
 export function HomeHero() {
   const [query, setQuery] = useState("");
   const [match, setMatch] = useState<ScaffoldMatch | null>(null);
-  const [activeChip, setActiveChip] = useState<string | null>(null);
   const [isSearchClosing, setIsSearchClosing] = useState(false);
   const [isSearchRestoring, setIsSearchRestoring] = useState(false);
   const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false);
@@ -64,7 +63,6 @@ export function HomeHero() {
   useEffect(() => {
     const handleHomeReset = () => {
       setMatch(null);
-      setActiveChip(null);
       setQuery("");
       setIsSearchClosing(false);
       setIsSearchRestoring(false);
@@ -79,14 +77,12 @@ export function HomeHero() {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setActiveChip(null);
     setIsSearchRestoring(false);
     setIsSuggestionsOpen(false);
     setMatch(matchScaffold(query));
   };
 
   const handleChip = (label: string, target: string) => {
-    setActiveChip(label);
     setQuery(label);
     setIsSearchRestoring(false);
     setIsSuggestionsOpen(false);
@@ -103,7 +99,6 @@ export function HomeHero() {
     window.setTimeout(() => {
       scrollImmediately(HERO_SHRINK_SCROLL_DISTANCE);
       setMatch(null);
-      setActiveChip(null);
       setQuery("");
       setIsSearchClosing(false);
       setIsSearchRestoring(true);
@@ -170,8 +165,6 @@ export function HomeHero() {
             scaffoldRef={scaffoldRef}
             query={query}
             match={match}
-            activeChip={activeChip}
-            isSearchOpen={isSearchOpen}
             isSuggestionsOpen={isSuggestionsOpen}
             onQueryChange={setQuery}
             onSuggestionsOpenChange={setIsSuggestionsOpen}

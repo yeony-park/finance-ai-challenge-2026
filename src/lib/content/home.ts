@@ -57,50 +57,6 @@ export const EXAMPLE_QUESTIONS: readonly ExampleQuestion[] = [
   { label: "공시가 실제와 다르면요?", target: "reports" },
 ];
 
-export const FOLLOW_UP_LABEL = "추가 질문";
-
-export type FollowUpKey = GuideTarget | "reports" | "category";
-
-const FOLLOW_UP_MAP: Readonly<Record<FollowUpKey, readonly string[]>> = {
-  intro: [
-    "예금자보호가 되나요?",
-    "청약이 주식과 뭐가 다른가요?",
-    "투자 전에 뭘 확인해야 하나요?",
-  ],
-  protection: [
-    "산 조각은 언제 팔 수 있나요?",
-    "투자 전에 뭘 확인해야 하나요?",
-    "공시가 실제와 다르면요?",
-  ],
-  lifecycle: [
-    "예금자보호가 되나요?",
-    "공시가 실제와 다르면요?",
-    "투자 전에 뭘 확인해야 하나요?",
-  ],
-  checklist: [
-    "공시가 실제와 다르면요?",
-    "예금자보호가 되나요?",
-    "청약이 주식과 뭐가 다른가요?",
-  ],
-  reports: [
-    "투자 전에 뭘 확인해야 하나요?",
-    "청약이 주식과 뭐가 다른가요?",
-    "예금자보호가 되나요?",
-  ],
-  category: [
-    "투자 전에 뭘 확인해야 하나요?",
-    "공시가 실제와 다르면요?",
-    "예금자보호가 되나요?",
-  ],
-};
-
-export const followUpQuestions = (
-  key: FollowUpKey,
-): readonly ExampleQuestion[] =>
-  FOLLOW_UP_MAP[key]
-    .map((label) => EXAMPLE_QUESTIONS.find((question) => question.label === label))
-    .filter((question): question is ExampleQuestion => question !== undefined);
-
 export interface IntroCard {
   readonly id: GuideTarget;
   readonly title: string;
