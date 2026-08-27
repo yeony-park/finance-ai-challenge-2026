@@ -28,10 +28,12 @@ export function WatchBand({
   return (
     <section className={s.section} aria-labelledby="watch-band-title">
       <div className={s.wrap}>
-        <h2 id="watch-band-title" className={s.sectionTitle}>
-          {WATCH_BAND_TITLE}
-        </h2>
-        <p className={s.sectionLead}>{WATCH_BAND_LEAD}</p>
+        <header className={s.sectionHead}>
+          <h2 id="watch-band-title" className={s.sectionTitle}>
+            {WATCH_BAND_TITLE}
+          </h2>
+          <p className={s.sectionLead}>{WATCH_BAND_LEAD}</p>
+        </header>
         <Reveal>
         <ul className={s.watchList}>
           {watched.map((entry) => (

@@ -11,9 +11,9 @@ export default async function Home() {
   return (
     <>
       <HomeHero />
-      <WatchBand entries={watchSummaries} />
-      <IntroBand />
       <CategoryGrid />
+      <IntroBand />
+      <WatchBand entries={watchSummaries} />
       <ChecklistBand />
     </>
   );

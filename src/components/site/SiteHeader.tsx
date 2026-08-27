@@ -1,16 +1,33 @@
+"use client";
+
+import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import { SiteNav } from "./SiteNav";
-import { SERVICE_NAME, SERVICE_ROLE } from "./service";
+import { SERVICE_NAME } from "./service";
 import s from "./shell.module.css";
 
 export function SiteHeader() {
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+
   return (
-    <header className={s.header}>
+    <header
+      className={`${s.header} ${isHome ? s.headerHome : ""}`}
+      data-site-header
+    >
       <div className={`${s.inner} ${s.headerRow}`}>
         <Link href="/" className={s.wordmark}>
+          <Image
+            src="/jeomjeom-mark.png"
+            alt=""
+            width={196}
+            height={256}
+            className={s.wordmarkMark}
+            aria-hidden="true"
+          />
           <span className={s.wordmarkName}>{SERVICE_NAME}</span>
-          <span className={s.wordmarkRole}>{SERVICE_ROLE}</span>
         </Link>
         <SiteNav />
       </div>

@@ -4,12 +4,13 @@ import type { PublicSourceRef } from "./checklist";
 export interface HeroTitlePart {
   readonly text: string;
   readonly isMark?: boolean;
+  readonly lineBreakAfter?: boolean;
 }
 
 export const HOME_HERO_TITLE_PARTS: readonly HeroTitlePart[] = [
   { text: "조각투자, " },
-  { text: "뭘 확인해야", isMark: true },
-  { text: " 할까요?" },
+  { text: "무엇을", isMark: true },
+  { text: " 확인해야 할까요?" },
 ];
 
 export const HOME_HERO_TITLE = HOME_HERO_TITLE_PARTS.map(
@@ -17,7 +18,7 @@ export const HOME_HERO_TITLE = HOME_HERO_TITLE_PARTS.map(
 ).join("");
 
 export const HOME_HERO_LEAD =
-  "증권신고서와 국가 공공데이터를 대조한 실측으로 확인 항목에 답합니다. 등급 대신 사실 판정, 추천 대신 근거 — 근거가 없으면 “대조 불가”라고 말합니다.";
+  "증권신고서와 국가 공공데이터를 대조해, 확인이 필요한 항목을 보여줍니다. 등급이나 추천 대신 사실과 근거를 기록하고, 근거가 없으면 “대조 불가”로 남깁니다.";
 
 export const SCAFFOLD_NOTICE =
   "질문을 확인 항목과 준비된 안내로 연결합니다.";

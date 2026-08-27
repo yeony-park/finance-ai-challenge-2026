@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { CATEGORY_REGISTRY } from "@/lib/content/categories";
+import { categoryById } from "@/lib/content/categories";
 
 import s from "./shell.module.css";
 
@@ -18,12 +18,17 @@ const UTILITY_ITEMS: readonly NavItem[] = [
   { href: "/methodology", label: "검증 방법", match: "/methodology" },
 ];
 
+const NAV_CATEGORY_IDS = ["art", "cattle", "pig", "real-estate"] as const;
+
 const NAV_ITEMS: readonly NavItem[] = [
-  ...CATEGORY_REGISTRY.map((entry) => ({
-    href: entry.href,
-    label: entry.label,
-    match: entry.href,
-  })),
+  ...NAV_CATEGORY_IDS.map((categoryId) => {
+    const entry = categoryById(categoryId);
+    return {
+      href: entry.href,
+      label: entry.label,
+      match: entry.href,
+    };
+  }),
   ...UTILITY_ITEMS,
 ];
 
@@ -32,8 +37,6 @@ const isCurrent = (pathname: string, match: string): boolean =>
 
 export function SiteNav() {
   const pathname = usePathname();
-
-  if (pathname === "/") return null;
 
   return (
     <nav className={s.nav} aria-label="주요 메뉴">

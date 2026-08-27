@@ -1,16 +1,9 @@
 import Link from "next/link";
 
-import { CATEGORY_REGISTRY } from "@/lib/content/categories";
 import { FIXED_NOTICES } from "@/lib/verify/contract/notices";
 import { OnboardingOpenButton } from "./OnboardingOpenButton";
 import { DATA_SOURCES, SERVICE_NAME, SERVICE_ROLE } from "./service";
 import s from "./shell.module.css";
-
-const FOOTER_NAV: readonly { href: string; label: string }[] = [
-  ...CATEGORY_REGISTRY.map((entry) => ({ href: entry.href, label: entry.label })),
-  { href: "/offers", label: "검증 리포트" },
-  { href: "/methodology", label: "검증 방법" },
-];
 
 const VERDICT_TERMS: readonly string[] = [
   "일치 — 공시 내용이 공공 데이터에서 확인됩니다",
@@ -28,30 +21,13 @@ export function SiteFooter() {
             <p className={s.footerTagline}>
               {SERVICE_ROLE} · 증권신고서와 국가 공공데이터 대조
             </p>
-            <ul className={s.footerNavList}>
-              {FOOTER_NAV.map((item) => (
-                <li key={item.href}>
-                  <Link href={item.href} className={s.footerLink}>
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <p className={s.footerTeam}>팀 박연정 · 박현석 · 신문수 · 최원준</p>
             <OnboardingOpenButton className={s.footerAction} />
           </div>
 
           <div>
             <h2 className={s.footerHeading}>판정은 세 값</h2>
-            <ul className={s.footerList}>
-              {VERDICT_TERMS.map((term) => (
-                <li key={term}>
-                  <span className={s.footerListMark} aria-hidden="true">
-                    ·
-                  </span>
-                  <span>{term}</span>
-                </li>
-              ))}
-            </ul>
+            <p className={s.footerProse}>{VERDICT_TERMS.join(". ")}</p>
           </div>
 
           <div>
@@ -63,8 +39,7 @@ export function SiteFooter() {
                     ·
                   </span>
                   <span>
-                    {source.name}
-                    <span className={s.footerListNote}>{source.holder} · 공개 데이터</span>
+                    {source.holder} — {source.name}
                   </span>
                 </li>
               ))}
@@ -98,9 +73,7 @@ export function SiteFooter() {
         </div>
 
         <p className={s.colophon}>
-          <span>© 2026 {SERVICE_NAME} (가칭)</span>
-          <span>익명화 적용</span>
-          <span>2026 금융 AI Challenge 출품</span>
+          <span>© 2026 {SERVICE_NAME} | 2026 금융 AI Challenge 출품</span>
         </p>
       </div>
     </footer>
