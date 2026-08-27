@@ -1,12 +1,8 @@
 .categoryStage {
   min-height: calc(
-    100svh - var(--ds-header-h) - var(--ds-section-y-tight)
+    100dvh - var(--ds-header-h) - var(--ds-section-y-tight)
   );
-  padding-top: var(--ds-space-5);
-}
-
-.categorySectionTitle {
-  font-size: var(--ds-heading-h3);
+  padding-top: 0;
 }
 
 .categoryGrid {
@@ -56,10 +52,6 @@
   transition: transform var(--ds-duration-slow) var(--ds-ease);
 }
 
-.categoryPhotoImgPig {
-  filter: brightness(0.76) contrast(1.06);
-}
-
 .categoryCard:hover .categoryPhotoImg,
 .categoryCard:focus-within .categoryPhotoImg {
   transform: scale(1.075);
@@ -97,7 +89,7 @@
   margin: var(--ds-space-2) 0 0;
   display: grid;
   gap: 0.1rem;
-  font-size: var(--ds-text-sm);
+  font-size: var(--ds-text-xs);
   line-height: var(--ds-leading-normal);
   color: var(--ds-ink-muted);
   word-break: keep-all;
@@ -151,10 +143,6 @@
 
   .categoryBody {
     padding-top: var(--ds-space-3);
-  }
-
-  .categoryNote {
-    font-size: var(--ds-text-sm);
   }
 }
 

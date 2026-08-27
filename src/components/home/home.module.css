@@ -82,7 +82,7 @@
 .categorySectionHead {
   grid-template-columns: minmax(0, 1fr);
   align-items: start;
-  padding-top: var(--ds-space-5);
+  padding-top: clamp(var(--ds-space-7), 4vw, var(--ds-space-9));
   border-top: 1px solid var(--ds-line);
 }
 

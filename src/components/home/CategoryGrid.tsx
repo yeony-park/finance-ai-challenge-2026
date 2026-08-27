@@ -15,10 +15,7 @@ import s from "./CategoryGrid.module.css";
 
 const CATEGORY_ORDER = ["art", "cattle", "pig", "real-estate"] as const;
 
-const categoryImageSrc = (categoryId: string) =>
-  `/category-${categoryId}-3d-${
-    categoryId === "cattle" ? "v4" : categoryId === "real-estate" ? "v2" : "v3"
-  }.png`;
+const categoryImageSrc = (categoryId: string) => `/category-${categoryId}.jpg`;
 
 export function CategoryGrid() {
   const profile = useProfile();
@@ -32,7 +29,6 @@ export function CategoryGrid() {
         <HomeSectionHeader
           titleId="category-grid-title"
           title="카테고리별 확인 현황"
-          titleClassName={s.categorySectionTitle}
           className={layout.categorySectionHead}
           titleRowClassName={s.sectionTitleRow}
           aside={
@@ -61,12 +57,10 @@ export function CategoryGrid() {
                 >
                   <Image
                     src={categoryImageSrc(entry.id)}
-                    alt={`${entry.label} 공시 대조를 상징하는 3차원 이미지`}
+                    alt={`${entry.label} 카테고리 대표 이미지`}
                     fill
                     sizes="(max-width: 760px) calc(100vw - 2.25rem), (max-width: 1100px) calc((100vw - 5rem) / 2), 25vw"
-                    className={`${s.categoryPhotoImg} ${
-                      entry.id === "pig" ? s.categoryPhotoImgPig : ""
-                    }`}
+                    className={s.categoryPhotoImg}
                   />
                   <span className={s.categoryIndex} aria-hidden="true">
                     {String(index + 1).padStart(2, "0")}
