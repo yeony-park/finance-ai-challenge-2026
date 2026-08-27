@@ -151,6 +151,107 @@
   gap: var(--ds-space-4);
 }
 
+.snapshot {
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-surface);
+  box-shadow: none;
+  padding: var(--ds-space-6);
+  display: grid;
+  gap: var(--ds-space-5);
+}
+
+.snapshotMetrics {
+  display: grid;
+  gap: var(--ds-space-3);
+  grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
+  margin: 0;
+}
+
+.snapshotMetrics > div {
+  display: grid;
+  gap: var(--ds-space-1);
+  padding: var(--ds-space-3);
+  border-left: 2px solid var(--ds-accent);
+  background: transparent;
+}
+
+.snapshotMetrics dt {
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  color: var(--ds-ink-faint);
+}
+
+.snapshotMetrics dd {
+  margin: 0;
+  color: var(--ds-ink);
+  font-size: var(--ds-text-md);
+  font-weight: var(--ds-weight-black);
+  font-variant-numeric: tabular-nums;
+  word-break: keep-all;
+}
+
+.snapshotTableWrap {
+  overflow-x: auto;
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius-md);
+}
+
+.snapshotTable {
+  width: 100%;
+  min-width: 54rem;
+  border-collapse: collapse;
+  font-size: var(--ds-text-xs);
+  line-height: var(--ds-leading-snug);
+}
+
+.snapshotTable th,
+.snapshotTable td {
+  padding: var(--ds-space-3) var(--ds-space-4);
+  border-bottom: 1px solid var(--ds-line);
+  text-align: left;
+  vertical-align: top;
+  word-break: keep-all;
+}
+
+.snapshotTable thead th {
+  background: var(--ds-bg-muted);
+  color: var(--ds-ink-faint);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  font-weight: var(--ds-weight-medium);
+  letter-spacing: var(--ds-tracking-wide);
+}
+
+.snapshotTable tbody th {
+  color: var(--ds-ink);
+  font-size: var(--ds-text-sm);
+  font-weight: var(--ds-weight-bold);
+  white-space: nowrap;
+}
+
+.snapshotTable tbody tr:last-child th,
+.snapshotTable tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.documentChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-2);
+}
+
+.documentChips a {
+  color: var(--ds-ink);
+  font-size: var(--ds-text-2xs);
+  text-decoration: none;
+  border-bottom: 1px solid var(--ds-accent-line);
+}
+
+.documentChips a:hover {
+  border-color: var(--ds-ink);
+}
+
 .axesGrid {
   display: grid;
   gap: var(--ds-space-4);

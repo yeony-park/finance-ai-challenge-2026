@@ -6,6 +6,7 @@ import {
 
 import { PigDisclosureDetail } from "./PigDisclosureDetail";
 import { PigDisclosureGallery } from "./PigDisclosureGallery";
+import { PigDisclosureSummary } from "./PigDisclosureSummary";
 import s from "./pig.module.css";
 
 interface PigLandingProps {
@@ -43,6 +44,8 @@ export function PigLanding({ selectedProductId }: PigLandingProps) {
           </article>
         </div>
       </section>
+
+      <PigDisclosureSummary products={PIG_DISCLOSURE_PRODUCTS} />
 
       <PigDisclosureGallery
         products={PIG_DISCLOSURE_PRODUCTS}
