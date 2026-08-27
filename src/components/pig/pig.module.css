@@ -562,6 +562,15 @@
   align-content: start;
 }
 
+.marketCard {
+  --pig-chart-blue: #4f7fc8;
+
+  border-color: var(--ds-line-soft);
+  border-radius: var(--ds-radius-xl);
+  background: linear-gradient(180deg, var(--ds-surface) 0%, #fbfcfe 100%);
+  box-shadow: var(--ds-shadow-md);
+}
+
 .marketCardHeader,
 .sideCardHeading {
   display: flex;
@@ -621,6 +630,7 @@
 
 .chartBody {
   display: flex;
+  align-items: stretch;
   gap: var(--ds-space-2);
 }
 
@@ -634,27 +644,45 @@
   padding: var(--ds-space-2) 0;
 }
 
-.chartSvg {
+.chartCanvas {
+  position: relative;
   flex: 1;
+  min-width: 0;
+}
+
+.chartSvg {
+  display: block;
   width: 100%;
   height: auto;
+  border-radius: var(--ds-radius-sm);
+  cursor: crosshair;
+}
+
+.chartSvg:focus-visible {
+  box-shadow: var(--ds-focus-ring);
 }
 
 .chartGrid {
-  stroke: var(--ds-chart-band);
+  stroke: var(--ds-line);
   stroke-width: 1;
   fill: none;
 }
 
 .chartGuide {
-  stroke: var(--ds-chart-edge);
+  stroke: var(--pig-chart-blue);
   stroke-width: 1;
+  stroke-dasharray: 3 4;
   fill: none;
+  opacity: 0.5;
+}
+
+.chartArea {
+  pointer-events: none;
 }
 
 .chartLine {
-  stroke: var(--ds-ink);
-  stroke-width: 4;
+  stroke: var(--pig-chart-blue);
+  stroke-width: 3;
   stroke-linecap: round;
   stroke-linejoin: round;
   fill: none;
@@ -662,14 +690,52 @@
 
 .chartDot {
   fill: var(--ds-surface);
-  stroke: var(--ds-ink);
-  stroke-width: 4;
+  stroke: var(--pig-chart-blue);
+  stroke-width: 3;
+  transition: r var(--ds-duration-fast) var(--ds-ease);
 }
 
 .chartDotLast {
-  fill: var(--ds-ink);
-  stroke: var(--ds-ink);
-  stroke-width: 4;
+  fill: var(--pig-chart-blue);
+  stroke: var(--ds-surface);
+  stroke-width: 3;
+  transition: r var(--ds-duration-fast) var(--ds-ease);
+}
+
+.chartDotActive {
+  r: 8px;
+}
+
+.marketChartTooltip {
+  position: absolute;
+  z-index: 2;
+  display: grid;
+  gap: 0.1rem;
+  transform: translate(-50%, calc(-100% - 12px));
+  min-width: 7.5rem;
+  padding: 0.5rem 0.65rem;
+  border-radius: var(--ds-radius-sm);
+  background: var(--ds-ink);
+  color: var(--ds-ink-invert);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  line-height: 1.45;
+  pointer-events: none;
+  box-shadow: var(--ds-shadow-md);
+}
+
+.marketChartTooltip b {
+  color: var(--ds-accent);
+  font-weight: var(--ds-weight-medium);
+}
+
+.marketChartTooltip span,
+.marketChartTooltip small {
+  white-space: nowrap;
+}
+
+.marketChartTooltip small {
+  color: var(--ds-hero-ink-muted);
 }
 
 .marketMonths {
