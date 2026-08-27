@@ -35,7 +35,7 @@ export function CattleFlowBand() {
                 alt=""
                 width={512}
                 height={512}
-                sizes="(max-width: 640px) 12.75rem, (max-width: 900px) 15rem, 13.5rem"
+                sizes="(max-width: 640px) 16.5rem, (max-width: 1100px) 20rem, 20.25rem"
                 className={s.flowIcon}
               />
             </li>

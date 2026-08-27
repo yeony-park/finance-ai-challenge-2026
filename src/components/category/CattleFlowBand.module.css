@@ -1,6 +1,6 @@
 .flowSection {
   margin-top: var(--ds-space-4);
-  padding: clamp(var(--ds-space-4), 3vw, var(--ds-space-6));
+  padding: clamp(var(--ds-space-5), 4vw, var(--ds-space-7));
   background: var(--ds-bg-muted);
   box-shadow: 0 0 0 100vmax var(--ds-bg-muted);
   clip-path: inset(0 -100vmax);
@@ -11,17 +11,17 @@
 }
 
 .flowRow {
-  margin: var(--ds-space-5) 0 0;
+  margin: var(--ds-space-6) 0 0;
   padding: 0;
   list-style: none;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: var(--ds-space-3);
+  gap: var(--ds-space-4);
 }
 .flowStep {
   position: relative;
-  min-height: 20rem;
-  padding: var(--ds-space-5);
+  min-height: 24rem;
+  padding: var(--ds-space-6);
   border: 1px solid var(--ds-line-soft);
   border-radius: var(--ds-radius-xl);
   background: var(--ds-surface);
@@ -42,9 +42,9 @@
 .flowIcon {
   position: absolute;
   z-index: 1;
-  right: -1.875rem;
-  bottom: -2.25rem;
-  width: clamp(12rem, 16.5vw, 13.5rem);
+  right: -4.5rem;
+  bottom: -4.75rem;
+  width: clamp(18rem, 24.75vw, 20.25rem);
   height: auto;
   object-fit: contain;
   pointer-events: none;
@@ -73,7 +73,7 @@
   position: relative;
   z-index: 2;
   margin: var(--ds-space-2) 0 0;
-  padding-bottom: 8rem;
+  padding-bottom: 11rem;
   font-size: var(--ds-text-sm);
   line-height: var(--ds-leading-relaxed);
   color: var(--ds-ink-muted);
@@ -93,7 +93,7 @@
 }
 .termTitle {
   margin: 0 0 var(--ds-space-3);
-  font-size: var(--ds-text-md);
+  font-size: var(--ds-section-title);
   font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-tight);
   color: var(--ds-ink);
@@ -124,17 +124,19 @@
   word-break: keep-all;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
   .flowRow {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .flowStep {
-    min-height: 18rem;
+    min-height: 22rem;
   }
 
   .flowIcon {
-    width: 15rem;
+    right: -3.5rem;
+    bottom: -4rem;
+    width: 20rem;
   }
 }
 
@@ -149,18 +151,18 @@
   }
 
   .flowStep {
-    min-height: 16rem;
+    min-height: 18rem;
     padding: var(--ds-space-4);
   }
 
   .flowCheck {
-    max-width: calc(100% - 6.5rem);
+    max-width: calc(100% - 7.5rem);
     padding-bottom: var(--ds-space-3);
   }
 
   .flowIcon {
-    right: -1.5rem;
-    bottom: -1.875rem;
-    width: 12.75rem;
+    right: -3rem;
+    bottom: -3rem;
+    width: 16.5rem;
   }
 }
