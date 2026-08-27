@@ -215,8 +215,6 @@
 
 .introSectionHead {
   grid-template-columns: minmax(0, 1fr);
-  padding-top: var(--ds-space-5);
-  border-top: 1px solid rgb(74 61 0 / 0.24);
 }
 
 .introSection .roadmap {
