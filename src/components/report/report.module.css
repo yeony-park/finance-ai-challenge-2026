@@ -53,7 +53,7 @@
 
 .offerTag {
   font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
+  font-size: var(--ds-heading-h5);
   color: var(--ds-ink-faint);
   letter-spacing: var(--ds-tracking-normal);
 }
@@ -68,7 +68,7 @@
 
 .whenLine {
   font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
+  font-size: var(--ds-heading-h5);
   color: var(--ds-ink-faint);
   line-height: 1.75;
 }
@@ -120,7 +120,7 @@
 
 .tallyLabel {
   grid-column: 1;
-  font-size: var(--ds-text-2xs);
+  font-size: var(--ds-heading-h5);
   line-height: 1.4;
   color: var(--ds-ink-muted);
   word-break: keep-all;
@@ -128,7 +128,7 @@
 
 .itemLine {
   font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
+  font-size: var(--ds-heading-h5);
   color: var(--ds-ink-faint);
   line-height: 1.75;
 }
@@ -273,7 +273,7 @@
   font-size: var(--ds-text-xs);
 }
 .lcLabel {
-  font-size: var(--ds-text-sm);
+  font-size: var(--ds-heading-h5);
   font-weight: var(--ds-weight-bold);
   color: var(--ds-ink-faint);
   word-break: keep-all;
@@ -323,7 +323,7 @@
   border-bottom: 1px solid var(--ds-line);
 }
 .filingLabel {
-  font-size: var(--ds-text-sm);
+  font-size: var(--ds-heading-h4);
   font-weight: var(--ds-weight-bold);
   color: var(--ds-ink);
 }
@@ -356,7 +356,7 @@
 }
 .layerNo {
   font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
+  font-size: var(--ds-heading-h5);
   letter-spacing: var(--ds-tracking-wide);
   color: var(--ds-ink-faint);
 }
@@ -440,7 +440,7 @@
 }
 .layerSource {
   font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
+  font-size: var(--ds-heading-h5);
   color: var(--ds-ink-faint);
   line-height: 1.7;
 }
@@ -582,7 +582,7 @@
   border-bottom: 1px solid var(--ds-verdict-miss-line);
   background: var(--ds-verdict-miss-soft);
   color: var(--ds-verdict-miss);
-  font-size: var(--ds-text-md);
+  font-size: var(--ds-heading-h3);
   font-weight: var(--ds-weight-bold);
   word-break: keep-all;
 }
@@ -618,7 +618,7 @@
   gap: var(--ds-space-2);
   margin-bottom: var(--ds-space-4);
   font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
+  font-size: var(--ds-heading-h4);
   letter-spacing: var(--ds-tracking-wide);
   color: var(--ds-ink-faint);
 }
@@ -628,7 +628,7 @@
   gap: var(--ds-space-3) var(--ds-space-4);
 }
 .evTerm {
-  font-size: var(--ds-text-xs);
+  font-size: var(--ds-heading-h5);
   color: var(--ds-ink-muted);
   padding-top: 1px;
   word-break: keep-all;
@@ -729,7 +729,7 @@
   min-width: 0;
 }
 .noteTitle {
-  font-size: var(--ds-text-sm);
+  font-size: var(--ds-heading-h4);
   font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-snug);
   word-break: keep-all;
@@ -765,13 +765,13 @@
   border-bottom: 1px solid var(--ds-line);
 }
 .trackTitle {
-  font-size: var(--ds-title-sm);
+  font-size: var(--ds-heading-h3);
   font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-snug);
   word-break: keep-all;
 }
 .trackSectionTitle {
-  font-size: var(--ds-section-title);
+  font-size: var(--ds-heading-h2);
   font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-tight);
   letter-spacing: var(--ds-tracking-tight);
@@ -826,7 +826,7 @@
   box-shadow: var(--ds-shadow-sm);
 }
 .replayTitle {
-  font-size: var(--ds-title-sm);
+  font-size: var(--ds-heading-h3);
   font-weight: var(--ds-weight-bold);
   letter-spacing: var(--ds-tracking-snug);
   word-break: keep-all;
@@ -911,13 +911,13 @@
 .stageBlockName {
   margin-bottom: var(--ds-space-1);
   font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
+  font-size: var(--ds-heading-h5);
   font-weight: var(--ds-weight-bold);
   letter-spacing: 0.08em;
   color: var(--ds-ink-faint);
 }
 .stageTitle {
-  font-size: var(--ds-text-base);
+  font-size: var(--ds-heading-h4);
   font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-snug);
   word-break: keep-all;
@@ -940,7 +940,7 @@
   border-bottom: 1px solid var(--ds-line);
 }
 .stageRowLabel {
-  font-size: var(--ds-text-xs);
+  font-size: var(--ds-heading-h5);
   font-weight: var(--ds-weight-bold);
   color: var(--ds-ink);
   word-break: keep-all;
@@ -1185,7 +1185,7 @@
 }
 
 .footHead {
-  font-size: var(--ds-title-sm);
+  font-size: var(--ds-heading-h2);
   font-weight: var(--ds-weight-bold);
   letter-spacing: var(--ds-tracking-snug);
   margin-bottom: var(--ds-space-3);
@@ -1318,7 +1318,7 @@
 
 .narrativeLayerLabel {
   font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
+  font-size: var(--ds-heading-h5);
   letter-spacing: var(--ds-tracking-wide);
   color: var(--ds-ink-faint);
 }
