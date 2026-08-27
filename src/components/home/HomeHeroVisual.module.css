@@ -1,0 +1,370 @@
+.hero {
+  padding-block: var(--ds-section-y-tight);
+}
+
+.heroTitle {
+  font-size: var(--ds-heading-h1);
+  font-weight: var(--ds-weight-bold);
+  line-height: 1.16;
+  letter-spacing: -0.045em;
+  max-width: 17ch;
+}
+
+.heroTitleLine {
+  display: block;
+}
+
+.mark {
+  font-style: normal;
+  background-image: linear-gradient(var(--ds-accent), var(--ds-accent));
+  background-repeat: no-repeat;
+  background-position: 0 88%;
+  background-size: 100% 0.32em;
+}
+
+.heroLead {
+  margin-top: var(--ds-space-5);
+  font-size: var(--ds-text-lg);
+  line-height: var(--ds-leading-relaxed);
+  color: var(--ds-ink-muted);
+  max-width: 48rem;
+  word-break: keep-all;
+}
+
+.visualIntro {
+  height: calc(100svh + 120px);
+  margin-top: calc(-1 * var(--ds-header-h));
+  background: color-mix(in srgb, var(--ds-bg) 72%, var(--ds-bg-muted));
+}
+
+.visualSticky {
+  --home-copy-lift: clamp(3.5rem, 5.6svh, 5rem);
+  --home-scaffold-offset: clamp(1.75rem, 3.2svh, 2.5rem);
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: grid;
+  place-items: center;
+  overflow: clip;
+}
+
+.visualFrame {
+  position: absolute;
+  left: 50%;
+  top: var(--home-visual-center-y, 50%);
+  width: var(--home-visual-width, 100%);
+  height: var(--home-visual-height, 100%);
+  overflow: hidden;
+  border-radius: var(--home-visual-radius, 0);
+  background: var(--ds-hero-dark);
+  isolation: isolate;
+  transform: translate(-50%, -50%);
+  transform-origin: center center;
+  will-change: width, height, top, border-radius, opacity, transform;
+  transition:
+    opacity 260ms var(--ds-ease),
+    transform 260ms var(--ds-ease);
+}
+
+.visualFrame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(var(--ds-hero-shade-dark), var(--ds-hero-shade-dark)),
+    linear-gradient(90deg, var(--ds-hero-vignette), transparent 58%);
+  pointer-events: none;
+}
+
+.visualFrame::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background: var(--ds-hero-blue-tint);
+  mix-blend-mode: color;
+  pointer-events: none;
+}
+
+.visualImage {
+  object-fit: cover;
+  object-position: 58% center;
+}
+
+.visualContent {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+}
+
+.visualContent .heroTitle {
+  position: absolute;
+  top: calc(50% - var(--home-copy-lift));
+  right: 0;
+  left: 0;
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr)
+    var(--home-title-spacer-x, 0px)
+    minmax(0, 1fr);
+  align-items: center;
+  column-gap: var(--home-title-gap, 0px);
+  max-width: none;
+  margin: 0;
+  padding-inline: var(--ds-gutter);
+  color: color-mix(
+    in srgb,
+    var(--ds-ink) var(--home-title-ink, 0%),
+    var(--ds-ink-invert)
+  );
+  font-size: var(--ds-heading-h1);
+  line-height: 1.08;
+  transform: translateY(-50%);
+  will-change: color, grid-template-columns, column-gap;
+}
+
+.visualContent .scaffold {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + var(--home-scaffold-offset));
+  width: min(35rem, calc(100% - (var(--ds-gutter) * 2)));
+  margin: 0;
+  transform: translate(-50%, var(--home-scaffold-shift, 0px));
+  will-change: transform;
+}
+
+.visualContent .scaffoldOpen .panel {
+  margin-top: var(--ds-space-4);
+  padding: var(--ds-space-4) var(--ds-space-5);
+}
+
+.visualContent .scaffoldOpen .panelTitle {
+  font-size: var(--ds-text-xl);
+}
+
+.visualContent .scaffoldOpen .panelBody {
+  margin-top: var(--ds-space-2);
+  gap: var(--ds-space-1);
+  font-size: var(--ds-text-sm);
+  line-height: var(--ds-leading-snug);
+}
+
+.visualContent .scaffoldOpen .sourceList {
+  margin-top: var(--ds-space-3);
+  line-height: var(--ds-leading-snug);
+}
+
+.heroTitlePrefix,
+.heroTitleQuestion {
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  min-height: 1.08em;
+}
+
+.heroTitlePrefix {
+  grid-column: 1;
+}
+
+.heroTitleQuestion {
+  grid-column: 3;
+}
+
+.heroTitleText {
+  position: absolute;
+  top: 0;
+  white-space: nowrap;
+  will-change: left, right, transform;
+}
+
+.heroTitlePrefix .heroTitleText {
+  right: var(--home-title-balance, 0%);
+  transform: translateX(var(--home-title-balance, 0%));
+}
+
+.heroTitleQuestion .heroTitleText {
+  left: var(--home-title-balance, 0%);
+  transform: translateX(calc(-1 * var(--home-title-balance, 0%)));
+}
+
+.visualContent .heroTitleUnified {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+}
+
+.heroTitleUnified .heroTitlePrefix,
+.heroTitleUnified .heroTitleQuestion {
+  width: auto;
+  min-height: 0;
+}
+
+.heroTitleUnified .heroTitleText,
+.heroTitleUnified .heroTitlePrefix .heroTitleText,
+.heroTitleUnified .heroTitleQuestion .heroTitleText {
+  position: static;
+  display: inline;
+  transform: none;
+}
+
+.visualContent .chipRow {
+  justify-content: center;
+}
+
+.visualScroll {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  bottom: var(--ds-space-5);
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: color-mix(
+    in srgb,
+    var(--ds-ink) var(--home-scroll-ink, 0%),
+    var(--ds-ink-invert)
+  );
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  letter-spacing: 0.18em;
+  cursor: pointer;
+  transform: translateX(-50%);
+}
+
+.visualScroll:focus-visible {
+  outline: none;
+  box-shadow: var(--ds-focus-ring);
+}
+
+.sectionDial {
+  position: fixed;
+  z-index: 30;
+  top: 50%;
+  left: max(var(--ds-gutter), 1rem);
+  display: grid;
+  justify-items: center;
+  gap: 0.45rem;
+  transform: translateY(-50%);
+}
+
+.sectionDialButton {
+  width: 0.45rem;
+  height: 0.45rem;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: var(--ds-line-strong);
+  cursor: pointer;
+  transition:
+    background-color var(--ds-duration-fast) var(--ds-ease),
+    transform var(--ds-duration-fast) var(--ds-ease);
+}
+
+.sectionDialButton:hover,
+.sectionDialButton:focus-visible {
+  background: var(--ds-accent);
+  transform: scale(1.25);
+}
+
+.sectionDialButtonActive {
+  background: var(--ds-ink);
+  transform: scale(1.3);
+}
+
+@media (max-width: 40rem) {
+  .sectionDial {
+    left: 0.75rem;
+  }
+}
+
+@media (max-width: 1023px) {
+  .visualIntro {
+    height: calc(100svh + 120px);
+  }
+
+  .visualFrame::after {
+    background:
+      linear-gradient(var(--ds-hero-shade-dark), var(--ds-hero-shade-dark)),
+      linear-gradient(
+        180deg,
+        rgb(4 10 17 / 0.64) 0%,
+        transparent 30%,
+        transparent 68%,
+        rgb(4 10 17 / 0.58) 100%
+      );
+  }
+
+  .visualImage {
+    object-position: 68% center;
+  }
+
+  .visualContent .heroTitle {
+    top: calc(47% - var(--home-copy-lift));
+    right: var(--ds-gutter);
+    left: var(--ds-gutter);
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows:
+      auto
+      var(--home-title-spacer-y, 0px)
+      auto;
+    row-gap: var(--home-title-gap, 0px);
+    padding-inline: 0;
+    font-size: var(--ds-heading-h1);
+    text-align: center;
+  }
+
+  .heroTitlePrefix,
+  .heroTitleQuestion {
+    grid-column: 1;
+    width: 100%;
+    justify-self: center;
+    text-align: center;
+  }
+
+  .heroTitleText {
+    position: static;
+    display: inline;
+    white-space: normal;
+    transform: none;
+  }
+
+  .heroTitlePrefix {
+    grid-row: 1;
+  }
+
+  .heroTitleQuestion {
+    grid-row: 3;
+  }
+
+  .visualContent .scaffold {
+    top: 72%;
+  }
+
+  .visualContent .scaffoldOpen {
+    top: calc(var(--ds-header-h) + var(--ds-space-5));
+    max-height: calc(100svh - var(--ds-header-h) - var(--ds-space-7));
+    overflow-y: auto;
+    padding: var(--ds-space-3);
+    border-radius: var(--ds-radius-panel);
+    background: var(--ds-surface-glass);
+    box-shadow: var(--ds-shadow-lg);
+    backdrop-filter: blur(16px);
+  }
+
+  .visualContent .searchInput {
+    font-size: var(--ds-text-sm);
+  }
+
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .visualFrame {
+    transform: translate(-50%, -50%) !important;
+  }
+}

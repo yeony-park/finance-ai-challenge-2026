@@ -8,7 +8,10 @@ import { useProfile } from "@/components/site/profile";
 import { categoryById } from "@/lib/content/categories";
 import { INTEREST_TAG } from "@/lib/content/onboarding";
 
-import s from "./home.module.css";
+import layout from "./home.module.css";
+import tags from "./home-tags.module.css";
+import { HomeSectionFrame, HomeSectionHeader } from "./HomeSection";
+import s from "./CategoryGrid.module.css";
 
 const CATEGORY_ORDER = ["art", "cattle", "pig", "real-estate"] as const;
 
@@ -22,22 +25,30 @@ export function CategoryGrid() {
   const entries = CATEGORY_ORDER.map((categoryId) => categoryById(categoryId));
 
   return (
-    <section className={s.section} aria-labelledby="category-grid-title">
-      <div className={s.wrap}>
-        <header className={`${s.sectionHead} ${s.categorySectionHead}`}>
-          <div className={s.sectionTitleRow}>
-            <h2 id="category-grid-title" className={s.sectionTitle}>
-              카테고리별 확인 현황
-            </h2>
-            <Link href="/offers" className={s.sectionAllReports}>
+    <HomeSectionFrame
+      labelledBy="category-grid-title"
+      containerClassName={s.categoryStage}
+    >
+        <HomeSectionHeader
+          titleId="category-grid-title"
+          title="카테고리별 확인 현황"
+          className={layout.categorySectionHead}
+          titleRowClassName={s.sectionTitleRow}
+          aside={
+            <Link
+              href="/offers"
+              className={`${layout.sectionAllReports} ${s.sectionAllReports}`}
+            >
               전체 검증 리포트 보기 <span aria-hidden="true">→</span>
             </Link>
-          </div>
-          <p className={s.sectionLead}>
-            미술품·한우·한돈·부동산의 공시 내용을 공공 원장과 공식 자료로 항목별
-            대조하고, 확인 근거가 없으면 “대조 불가”로 표시합니다.
-          </p>
-        </header>
+          }
+          lead={
+            <>
+              미술품·한우·한돈·부동산의 공시 내용을 공공 원장과 공식 자료로
+              항목별 대조하고, 확인 근거가 없으면 “대조 불가”로 표시합니다.
+            </>
+          }
+        />
         <Reveal>
           <div className={s.categoryGrid}>
             {entries.map((entry, index) => (
@@ -67,7 +78,7 @@ export function CategoryGrid() {
                       <span className={s.categorySub}>({entry.subLabel})</span>
                     ) : null}
                     {profile.interests.includes(entry.id) ? (
-                      <span className={s.checkTag}>{INTEREST_TAG}</span>
+                      <span className={tags.checkTag}>{INTEREST_TAG}</span>
                     ) : null}
                   </h3>
                   <p className={s.categoryNote}>
@@ -83,7 +94,6 @@ export function CategoryGrid() {
             ))}
           </div>
         </Reveal>
-      </div>
-    </section>
+    </HomeSectionFrame>
   );
 }

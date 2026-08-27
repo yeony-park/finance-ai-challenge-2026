@@ -13,7 +13,8 @@ import {
 } from "@/lib/content/watch-band";
 
 import type { WatchSummaryEntry } from "./watch-summary";
-import s from "./home.module.css";
+import { HomeSectionFrame, HomeSectionHeader } from "./HomeSection";
+import s from "./WatchBand.module.css";
 
 export function WatchBand({
   entries,
@@ -26,14 +27,12 @@ export function WatchBand({
   if (watched.length === 0) return null;
 
   return (
-    <section className={s.section} aria-labelledby="watch-band-title">
-      <div className={s.wrap}>
-        <header className={s.sectionHead}>
-          <h2 id="watch-band-title" className={s.sectionTitle}>
-            {WATCH_BAND_TITLE}
-          </h2>
-          <p className={s.sectionLead}>{WATCH_BAND_LEAD}</p>
-        </header>
+    <HomeSectionFrame labelledBy="watch-band-title">
+        <HomeSectionHeader
+          titleId="watch-band-title"
+          title={WATCH_BAND_TITLE}
+          lead={WATCH_BAND_LEAD}
+        />
         <Reveal>
         <ul className={s.watchList}>
           {watched.map((entry) => (
@@ -56,7 +55,6 @@ export function WatchBand({
           ))}
         </ul>
         </Reveal>
-      </div>
-    </section>
+    </HomeSectionFrame>
   );
 }

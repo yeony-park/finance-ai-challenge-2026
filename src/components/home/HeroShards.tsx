@@ -6,7 +6,7 @@ import {
   categoryDisplayLabel,
 } from "@/lib/content/categories";
 
-import s from "./home.module.css";
+import s from "./HeroShards.module.css";
 
 export function HeroShards() {
   return (

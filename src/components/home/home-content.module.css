@@ -1,0 +1,57 @@
+.cardTitle {
+  font-size: var(--ds-heading-h3);
+  font-weight: var(--ds-weight-bold);
+  letter-spacing: var(--ds-tracking-snug);
+  line-height: var(--ds-leading-snug);
+  word-break: keep-all;
+}
+
+.cardBody {
+  margin-top: var(--ds-space-3);
+  display: grid;
+  gap: var(--ds-space-2);
+  font-size: var(--ds-text-base);
+  line-height: var(--ds-leading-relaxed);
+  color: var(--ds-ink);
+  word-break: keep-all;
+}
+
+
+.sourceList {
+  margin-top: var(--ds-space-4);
+  display: grid;
+  gap: var(--ds-space-1);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  line-height: 1.75;
+  color: var(--ds-ink-faint);
+}
+.sourceList a {
+  color: var(--ds-ink-muted);
+  text-decoration: none;
+  border-bottom: 1px solid var(--ds-line-strong);
+  padding-bottom: 1px;
+  transition: border-color var(--ds-duration-base) var(--ds-ease);
+}
+.sourceList a:hover {
+  border-color: var(--ds-ink);
+  color: var(--ds-ink);
+}
+
+
+.bandLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+  margin-top: var(--ds-space-5);
+  font-size: var(--ds-text-sm);
+  font-weight: var(--ds-weight-bold);
+  color: var(--ds-ink);
+  text-decoration: none;
+  border-bottom: 2px solid var(--ds-accent);
+  padding-bottom: 2px;
+  transition: gap var(--ds-duration-base) var(--ds-ease);
+}
+.bandLink:hover {
+  gap: 0.65rem;
+}

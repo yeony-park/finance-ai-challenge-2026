@@ -3,23 +3,55 @@
 import Link from "next/link";
 import { useEffect, useRef, useState, type CSSProperties, type UIEvent } from "react";
 
-import { Reveal } from "@/components/motion/Reveal";
 import { AI_ROLE_SENTENCE, INTRO_CARDS, METHOD_STEP_TITLE } from "@/lib/content/home";
 
-import s from "./home.module.css";
+import content from "./home-content.module.css";
+import layout from "./home.module.css";
+import { IntroRoadStep } from "./IntroRoadStep";
+import { HomeSectionFrame, HomeSectionHeader } from "./HomeSection";
+import s from "./IntroBand.module.css";
 
-const stepNo = (index: number): string => String(index + 1).padStart(2, "0");
 const AUTO_ADVANCE_MS = 30_000;
 
 export function IntroBand() {
+  const sectionRef = useRef<HTMLElement>(null);
   const roadmapRef = useRef<HTMLOListElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isSectionInView, setIsSectionInView] = useState(false);
+  const [sectionVisit, setSectionVisit] = useState(0);
   const cardCount = INTRO_CARDS.length + 1;
 
   const goToCard = (index: number) => {
     const nextIndex = Math.min(Math.max(index, 0), cardCount - 1);
     setActiveIndex(nextIndex);
   };
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    let wasInView = false;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry) return;
+        if (entry.isIntersecting && !wasInView) {
+          wasInView = true;
+          setActiveIndex(0);
+          setSectionVisit((visit) => visit + 1);
+          setIsSectionInView(true);
+          return;
+        }
+        if (!entry.isIntersecting) {
+          wasInView = false;
+          setIsSectionInView(false);
+        }
+      },
+      { threshold: 0.25 },
+    );
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const frameId = window.requestAnimationFrame(() => {
@@ -35,14 +67,18 @@ export function IntroBand() {
   }, [activeIndex]);
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (
+      !isSectionInView ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    )
+      return;
 
     const timerId = window.setTimeout(() => {
       setActiveIndex((current) => (current + 1) % cardCount);
     }, AUTO_ADVANCE_MS);
 
     return () => window.clearTimeout(timerId);
-  }, [activeIndex, cardCount]);
+  }, [activeIndex, cardCount, isSectionInView]);
 
   const handleScroll = (event: UIEvent<HTMLOListElement>) => {
     if (!window.matchMedia("(max-width: 980px)").matches) return;
@@ -59,122 +95,62 @@ export function IntroBand() {
   };
 
   return (
-    <section
-      className={`${s.section} ${s.sectionCloud} ${s.introSection}`}
-      aria-labelledby="intro-band-title"
+    <HomeSectionFrame
+      sectionRef={sectionRef}
+      className={`${layout.sectionCloud} ${s.introSection}`}
+      containerClassName={s.wrap}
+      labelledBy="intro-band-title"
     >
-      <div className={s.wrap}>
-        <header className={`${s.sectionHead} ${s.introSectionHead}`}>
-          <h2 id="intro-band-title" className={s.sectionTitle}>
-            조각투자 첫걸음
-          </h2>
-        </header>
+        <HomeSectionHeader
+          titleId="intro-band-title"
+          title="조각투자 첫걸음"
+          className={s.introSectionHead}
+          titleClassName={s.sectionTitle}
+        />
         <ol
+          key={sectionVisit}
           ref={roadmapRef}
           className={s.roadmap}
           onScroll={handleScroll}
           style={{ "--road-auto-duration": `${AUTO_ADVANCE_MS}ms` } as CSSProperties}
         >
           {INTRO_CARDS.map((card, index) => (
-            <Reveal
+            <IntroRoadStep
               key={card.id}
-              as="li"
               id={`guide-${card.id}`}
-              className={`${s.roadStep} ${
-                activeIndex === index ? s.roadStepActive : ""
-              }`}
-            >
-              <span className={s.roadNo} aria-hidden="true">
-                <svg className={s.roadNoRing} viewBox="0 0 48 48">
-                  <circle className={s.roadNoTrack} cx="24" cy="24" r="22" />
-                  <circle
-                    className={s.roadNoProgress}
-                    cx="24"
-                    cy="24"
-                    r="22"
-                    pathLength="1"
-                  />
-                </svg>
-                <span className={s.roadNoLabel}>{stepNo(index)}</span>
-              </span>
-              <div className={s.roadBody}>
-                <h3 className={s.cardTitle}>{card.title}</h3>
-                <div className={s.roadDetails}>
-                  <div className={s.cardBody}>
-                    {card.body.map((line) => (
-                      <p key={line}>{line}</p>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              <footer className={s.roadFooter}>
-                <ul className={s.sourceList}>
-                  {card.sources.map((source) => (
-                    <li key={source.url}>
-                      출처:{" "}
-                      <a href={source.url} target="_blank" rel="noopener noreferrer">
-                        {source.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-                {card.id === "checklist" ? (
-                  <a href="#checklist" className={s.bandLink}>
+              index={index}
+              title={card.title}
+              body={card.body}
+              sources={card.sources}
+              action={
+                card.id === "checklist" ? (
+                  <a
+                    href="#checklist"
+                    className={`${content.bandLink} ${s.bandLink}`}
+                  >
                     확인 질문 8가지 보기 →
                   </a>
-                ) : null}
-              </footer>
-              {activeIndex !== index ? (
-                <button
-                  type="button"
-                  className={s.roadStepSelect}
-                  onClick={() => goToCard(index)}
-                  aria-label={`${card.title} 카드 펼치기`}
-                />
-              ) : null}
-            </Reveal>
+                ) : null
+              }
+              isActive={activeIndex === index}
+              onSelect={() => goToCard(index)}
+            />
           ))}
-          <Reveal
-            as="li"
-            className={`${s.roadStep} ${
-              activeIndex === INTRO_CARDS.length ? s.roadStepActive : ""
-            }`}
-          >
-            <span className={s.roadNo} aria-hidden="true">
-              <svg className={s.roadNoRing} viewBox="0 0 48 48">
-                <circle className={s.roadNoTrack} cx="24" cy="24" r="22" />
-                <circle
-                  className={s.roadNoProgress}
-                  cx="24"
-                  cy="24"
-                  r="22"
-                  pathLength="1"
-                />
-              </svg>
-              <span className={s.roadNoLabel}>{stepNo(INTRO_CARDS.length)}</span>
-            </span>
-            <div className={s.roadBody}>
-              <h3 className={s.cardTitle}>{METHOD_STEP_TITLE}</h3>
-              <div className={s.roadDetails}>
-                <div className={s.cardBody}>
-                  <p>{AI_ROLE_SENTENCE}</p>
-                </div>
-              </div>
-            </div>
-            <footer className={s.roadFooter}>
-              <Link href="/methodology" className={s.bandLink}>
+          <IntroRoadStep
+            index={INTRO_CARDS.length}
+            title={METHOD_STEP_TITLE}
+            body={[AI_ROLE_SENTENCE]}
+            action={
+              <Link
+                href="/methodology"
+                className={`${content.bandLink} ${s.bandLink}`}
+              >
                 판정 기준과 한계 전체 보기 →
               </Link>
-            </footer>
-            {activeIndex !== INTRO_CARDS.length ? (
-              <button
-                type="button"
-                className={s.roadStepSelect}
-                onClick={() => goToCard(INTRO_CARDS.length)}
-                aria-label={`${METHOD_STEP_TITLE} 카드 펼치기`}
-              />
-            ) : null}
-          </Reveal>
+            }
+            isActive={activeIndex === INTRO_CARDS.length}
+            onSelect={() => goToCard(INTRO_CARDS.length)}
+          />
         </ol>
         <div className={s.roadControls} aria-label="첫걸음 카드 이동">
           <button
@@ -196,7 +172,6 @@ export function IntroBand() {
             →
           </button>
         </div>
-      </div>
-    </section>
+    </HomeSectionFrame>
   );
 }

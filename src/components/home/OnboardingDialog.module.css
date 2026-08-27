@@ -1,0 +1,92 @@
+.obGroup {
+  margin-top: var(--ds-space-5);
+}
+
+.obQuestion {
+  margin: 0;
+  font-size: var(--ds-text-md);
+  font-weight: var(--ds-weight-bold);
+  letter-spacing: var(--ds-tracking-snug);
+}
+
+.obHint {
+  margin: var(--ds-space-1) 0 0;
+  font-size: var(--ds-text-xs);
+  color: var(--ds-ink-faint);
+}
+
+
+
+.obStorage {
+  margin: var(--ds-space-4) 0 0;
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  color: var(--ds-ink-faint);
+}
+
+
+.checkOrderNote {
+  margin: 0 0 var(--ds-space-4);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  color: var(--ds-ink-faint);
+}
+
+
+.obOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: var(--ds-space-4);
+  background: rgb(20 18 12 / 0.45);
+}
+.obDialog {
+  width: min(38rem, 100%);
+  max-height: 85dvh;
+  overflow-y: auto;
+  padding: var(--ds-space-6);
+  border: 1px solid var(--ds-line-strong);
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-surface);
+  box-shadow: var(--ds-shadow-md);
+}
+.obDialogTitle {
+  margin: 0 0 var(--ds-space-2);
+  font-size: var(--ds-heading-h2);
+  font-weight: var(--ds-weight-black);
+  letter-spacing: var(--ds-tracking-tight);
+  word-break: keep-all;
+}
+.obDialogLead {
+  margin: 0 0 var(--ds-space-4);
+  font-size: var(--ds-text-base);
+  line-height: var(--ds-leading-relaxed);
+  color: var(--ds-ink-muted);
+  word-break: keep-all;
+}
+.obDialogFoot {
+  margin-top: var(--ds-space-5);
+}
+.obDone {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--ds-control-h-md);
+  padding: 0.55rem 1.5rem;
+  border: none;
+  border-radius: var(--ds-radius-pill);
+  background: var(--ds-ink);
+  color: var(--ds-ink-invert);
+  font-size: var(--ds-text-sm);
+  font-weight: var(--ds-weight-bold);
+  cursor: pointer;
+}
+.obDone:focus-visible {
+  outline: none;
+  box-shadow: var(--ds-focus-ring);
+}
+
+.roadBody > a {
+  justify-self: start;
+}

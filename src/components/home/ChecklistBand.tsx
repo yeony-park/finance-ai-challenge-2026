@@ -14,7 +14,12 @@ import {
 } from "@/lib/content/checklist";
 import { CONCERN_TAG } from "@/lib/content/onboarding";
 
-import s from "./home.module.css";
+import controls from "./home-controls.module.css";
+import content from "./home-content.module.css";
+import layout from "./home.module.css";
+import tags from "./home-tags.module.css";
+import { HomeSectionFrame, HomeSectionHeader } from "./HomeSection";
+import s from "./ChecklistBand.module.css";
 
 export function ChecklistBand() {
   const profile = useProfile();
@@ -22,20 +27,22 @@ export function ChecklistBand() {
   const bridgeOffer = latestOfferEntry(OFFERS);
 
   return (
-    <section id="checklist" className={s.section} aria-labelledby="checklist-title">
-      <div className={s.wrap}>
-        <header className={s.sectionHead}>
-          <h2 id="checklist-title" className={s.sectionTitle}>
-            &lsquo;믿을만한지&rsquo; 확인하는 8가지 질문
-          </h2>
-          <OnboardingOpenButton
-            className={`${s.chip} ${s.checklistProfileButton}`}
-          />
-        </header>
-        <p className={`${s.sectionLead} ${s.checklistLead}`}>
-            무엇을 봐야 할지 모르겠다면 여기서부터 — 각 질문은 공적 출처에서 직접
-            확인할 수 있고, 일부는 이 서비스의 대조 실측이 답을 대신합니다.
-        </p>
+    <HomeSectionFrame id="checklist" labelledBy="checklist-title">
+        <HomeSectionHeader
+          titleId="checklist-title"
+          title={<>&lsquo;믿을만한지&rsquo; 확인하는 8가지 질문</>}
+          className={layout.checklistSectionHead}
+        >
+          <div className={layout.checklistMeta}>
+            <p className={`${layout.sectionLead} ${layout.checklistLead}`}>
+              무엇을 봐야 할지 모르겠다면 여기서부터 — 각 질문은 공적 출처에서 직접
+              확인할 수 있고, 일부는 이 서비스의 대조 실측이 답을 대신합니다.
+            </p>
+            <OnboardingOpenButton
+              className={`${controls.chip} ${layout.checklistProfileButton}`}
+            />
+          </div>
+        </HomeSectionHeader>
         <Reveal>
         <div>
           {items.map((item) => (
@@ -43,7 +50,7 @@ export function ChecklistBand() {
               <summary>
                 {item.title}
                 {item.id === profile.concern ? (
-                  <span className={s.checkTag}>{CONCERN_TAG}</span>
+                  <span className={tags.checkTag}>{CONCERN_TAG}</span>
                 ) : null}
               </summary>
               <div className={s.checkDetail}>
@@ -62,7 +69,7 @@ export function ChecklistBand() {
                     </Link>
                   </p>
                 ) : null}
-                <ul className={s.sourceList}>
+                <ul className={content.sourceList}>
                   {item.sources.map((source) => (
                     <li key={`${item.id}-${source.url}`}>
                       확인 경로:{" "}
@@ -82,7 +89,6 @@ export function ChecklistBand() {
           <p className={s.checkNotice}>{CHECKLIST_BRIDGE_NOTE}</p>
         ) : null}
         <p className={s.checkNotice}>{CHECKLIST_NOTICE}</p>
-      </div>
-    </section>
+    </HomeSectionFrame>
   );
 }

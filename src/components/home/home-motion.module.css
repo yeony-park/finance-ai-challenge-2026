@@ -1,0 +1,49 @@
+.heroIn {
+  animation: dsRise 0.55s var(--ds-ease, ease-out) both;
+}
+.heroIn2 { animation-delay: 0.08s; }
+.heroIn3 { animation-delay: 0.16s; }
+@keyframes dsRise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.scrollCue {
+  grid-column: 1 / -1;
+  margin-top: clamp(1.5rem, 4vh, 3rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--ds-space-2);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  letter-spacing: 0.18em;
+  color: var(--ds-ink-faint);
+}
+.scrollCueArrow {
+  display: inline-block;
+  animation: dsCue 1.8s ease-in-out infinite;
+}
+@keyframes dsCue {
+  0%, 100% { transform: translateY(-2px); }
+  50% { transform: translateY(3px); }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .heroIn,
+  .scrollCueArrow {
+    animation: none;
+  }
+
+  .heroIn {
+    opacity: 1;
+    transform: none;
+  }
+}
