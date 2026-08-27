@@ -8,6 +8,7 @@ import {
   SEARCH_PLACEHOLDER,
 } from "@/lib/content/home";
 import type { ScaffoldMatch } from "@/lib/content/scaffold-match";
+import { SearchField } from "@/components/site/SearchField";
 
 import { HERO_CHIPS } from "./home-hero-config";
 import controls from "./home-controls.module.css";
@@ -59,27 +60,17 @@ export function HomeSearchScaffold({
           <HomeScaffoldPanel match={match} />
         </div>
       ) : null}
-      <form className={s.searchForm} onSubmit={onSubmit} role="search">
-        <label htmlFor="home-search" className="sr-only">
-          궁금한 내용 입력
-        </label>
-        <input
-          id="home-search"
-          className={s.searchInput}
-          type="text"
-          value={query}
-          onChange={(event) => onQueryChange(event.target.value)}
-          onFocus={() => onSuggestionsOpenChange(true)}
-          onBlur={() => onSuggestionsOpenChange(false)}
-          placeholder={SEARCH_PLACEHOLDER}
-          autoComplete="off"
-        />
-        <button type="submit" className={s.searchButton} aria-label="검색">
-          <svg className={s.searchIcon} viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="10.5" cy="10.5" r="6.5" />
-            <path d="m15.5 15.5 5 5" />
-          </svg>
-        </button>
+      <SearchField
+        id="home-search"
+        label="궁금한 내용 입력"
+        className={s.searchField}
+        value={query}
+        placeholder={SEARCH_PLACEHOLDER}
+        onChange={onQueryChange}
+        onFocus={() => onSuggestionsOpenChange(true)}
+        onBlur={() => onSuggestionsOpenChange(false)}
+        onSubmit={onSubmit}
+      >
         {!isSearchOpen && isSuggestionsOpen ? (
           <div className={s.searchSuggestions} role="group" aria-label="예시 질문">
             {HERO_CHIPS.map((question) => (
@@ -95,7 +86,7 @@ export function HomeSearchScaffold({
             ))}
           </div>
         ) : null}
-      </form>
+      </SearchField>
 
       {followUps.length > 0 ? (
         <div className={s.followRow} role="group" aria-label={FOLLOW_UP_LABEL}>

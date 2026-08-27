@@ -52,35 +52,15 @@
   padding: var(--ds-space-5);
 }
 
-.analysisSearchLabel {
+.analysisSearchGroup {
   display: grid;
   gap: var(--ds-space-2);
+}
+
+.analysisSearchHeading {
   font-size: var(--ds-text-xs);
   font-weight: var(--ds-weight-bold);
   color: var(--ds-ink);
-}
-
-.analysisSearchInput {
-  width: 100%;
-  min-height: var(--ds-control-h-md);
-  padding: 0 var(--ds-space-3);
-  border: 1px solid var(--ds-line-strong);
-  border-radius: var(--ds-radius-lg);
-  background: var(--ds-surface);
-  color: var(--ds-ink);
-  font: inherit;
-  font-size: var(--ds-text-sm);
-  outline: none;
-  transition: border-color var(--ds-duration-base) var(--ds-ease);
-}
-
-.analysisSearchInput::placeholder {
-  color: var(--ds-ink-faint);
-}
-
-.analysisSearchInput:focus {
-  border-color: var(--ds-accent-line);
-  box-shadow: var(--ds-focus-ring);
 }
 
 .analysisFilterGroup {

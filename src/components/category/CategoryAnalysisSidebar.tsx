@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 
 import type { SubscriptionPhase } from "@/components/site/offers";
+import { SearchField } from "@/components/site/SearchField";
 import type { CategoryId } from "@/lib/content/categories";
 import { VERDICT_LABEL } from "@/lib/verify/report/view-model/labels";
 
@@ -104,16 +105,16 @@ export function CategoryAnalysisSidebar({
 
   const controls = (variant: "desktop" | "mobile") => (
     <div className={s.analysisSidebarControls}>
-      <label className={s.analysisSearchLabel}>
-        <span>검색</span>
-        <input
-          type="search"
+      <div className={s.analysisSearchGroup}>
+        <span className={s.analysisSearchHeading}>검색</span>
+        <SearchField
+          id={`${variant}-${categoryId}-analysis-search`}
+          label="공모 및 분석 항목 검색"
           value={query}
-          onChange={(event) => setQuery(event.target.value)}
+          onChange={setQuery}
           placeholder={SEARCH_PLACEHOLDER[categoryId]}
-          className={s.analysisSearchInput}
         />
-      </label>
+      </div>
 
       <fieldset className={s.analysisFilterGroup}>
         <legend>판정 필터</legend>

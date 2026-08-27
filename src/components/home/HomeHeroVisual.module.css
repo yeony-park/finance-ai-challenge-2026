@@ -354,10 +354,6 @@
     backdrop-filter: blur(16px);
   }
 
-  .visualContent .searchInput {
-    font-size: var(--ds-text-sm);
-  }
-
 }
 
 
