@@ -159,11 +159,6 @@
   box-shadow: none;
 }
 
-.offerCard:focus-within {
-  border-color: var(--ds-ink);
-  box-shadow: var(--ds-shadow-md), 0 0 0 3px var(--ds-accent-soft);
-}
-
 .offerTop {
   display: flex;
   flex-wrap: wrap;
@@ -275,40 +270,27 @@
   place-items: center;
   padding: 0;
   border: 1px solid transparent;
-  border-radius: var(--ds-radius-pill);
+  border-radius: 50%;
   background: transparent;
   color: var(--ds-ink-muted);
   font-family: var(--ds-font-sans);
   font-size: 1.25rem;
   line-height: 1;
   cursor: pointer;
-  transition:
-    border-color var(--ds-duration-base) var(--ds-ease),
-    background-color var(--ds-duration-base) var(--ds-ease),
-    color var(--ds-duration-base) var(--ds-ease);
+  transition: color var(--ds-duration-base) var(--ds-ease);
 }
 
-.watchIconToggle:hover,
+.watchIconToggle:hover {
+  color: var(--ds-ink);
+}
+
 .watchIconToggle[aria-pressed="true"] {
-  border-color: var(--ds-accent-line);
-  background: var(--ds-accent-soft);
   color: var(--ds-accent-ink);
 }
 
 .watchIconToggle:focus-visible {
   outline: none;
   box-shadow: var(--ds-focus-ring);
-}
-
-.watchFlag {
-  padding: 0.2rem 0.5rem;
-  border: 1px solid var(--ds-accent-line);
-  border-radius: var(--ds-radius-sm);
-  background: var(--ds-accent-soft);
-  color: var(--ds-accent-ink);
-  font-family: var(--ds-font-sans);
-  font-size: var(--ds-text-2xs);
-  white-space: nowrap;
 }
 
 .watchRow {
@@ -393,6 +375,14 @@
   position: absolute;
   inset: 0;
   border-radius: var(--ds-radius-panel);
+}
+
+.offerLink:focus-visible {
+  box-shadow: none;
+}
+
+.offerLink:focus-visible::after {
+  box-shadow: var(--ds-focus-ring);
 }
 
 @media (max-width: 760px) {

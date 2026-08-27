@@ -9,7 +9,6 @@ import {
   OfferWatchControl,
   OfferWatchIconButton,
 } from "./OfferWatchControl";
-import { OfferWatchFlag } from "./OfferWatchFlag";
 
 const TONE_CLASS: Record<TallyView["tone"], string> = {
   good: s.toneGood,
@@ -20,7 +19,6 @@ const TONE_CLASS: Record<TallyView["tone"], string> = {
 export function OfferCard({ card }: { readonly card: OfferCardView }) {
   const titleId = `offer-${card.id}-title`;
   const isOpen = card.schedule.phase === "open";
-  const isUpcoming = card.schedule.phase === "upcoming";
 
   return (
     <Pressable hover={1.01} tap={0.99}>
@@ -28,16 +26,13 @@ export function OfferCard({ card }: { readonly card: OfferCardView }) {
         <div className={s.offerTop}>
           <p className={s.offerAsset}>{card.assetLabel}</p>
           <span className={s.offerFlags}>
-            {!isUpcoming ? <OfferWatchFlag offerId={card.id} /> : null}
             <span className={isOpen ? `${s.dday} ${s.ddayOpen}` : s.dday}>
               {card.schedule.badge}
             </span>
-            {isUpcoming ? (
-              <OfferWatchIconButton
-                offerId={card.id}
-                offerTitle={card.title}
-              />
-            ) : null}
+            <OfferWatchIconButton
+              offerId={card.id}
+              offerTitle={card.title}
+            />
           </span>
         </div>
 
@@ -66,7 +61,7 @@ export function OfferCard({ card }: { readonly card: OfferCardView }) {
           offerTitle={card.title}
           statusText={card.amendment}
           isAlert={card.hasAmendment}
-          showToggle={!isUpcoming}
+          showToggle={false}
         />
 
         <Link href={card.href} className={s.offerLink}>
