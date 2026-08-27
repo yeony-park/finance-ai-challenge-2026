@@ -20,16 +20,14 @@ const ALL_LAYERS: readonly VerificationLayer[] = [
 export function LayerSupportTable({
   descriptor,
   headingId,
-  title = LAYERS_SECTION_TITLE,
 }: {
   readonly descriptor: CategoryDescriptor | null;
   readonly headingId: string;
-  readonly title?: string;
 }) {
   return (
     <>
       <h2 id={headingId} className={s.slotTitle}>
-        {title}
+        {LAYERS_SECTION_TITLE}
       </h2>
       <p className={s.slotLead}>{LAYERS_SECTION_LEAD}</p>
       <div className={s.layerTableFrame}>

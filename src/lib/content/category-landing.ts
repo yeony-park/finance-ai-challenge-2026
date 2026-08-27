@@ -20,7 +20,7 @@ export const verdictTotalsLead = (
 ): string =>
   `공모 ${offerCount}건에서 공시된 기재 ${itemCount.toLocaleString("ko-KR")}건을 공적 원장과 하나씩 대조한 누적 결과입니다.`;
 
-export const LAYERS_SECTION_TITLE = "무엇을 어디까지 대조하나";
+export const LAYERS_SECTION_TITLE = "대조는 어떻게 이루어지나요?";
 
 export const LAYERS_SECTION_LEAD =
   "확인 질문마다 어떤 공공 데이터로 어디까지 대조하는지, 데이터 깊이의 차이까지 그대로 적습니다.";
