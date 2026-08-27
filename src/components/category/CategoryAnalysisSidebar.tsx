@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 
+import type { SubscriptionPhase } from "@/components/site/offers";
 import type { CategoryId } from "@/lib/content/categories";
 import { VERDICT_LABEL } from "@/lib/verify/report/view-model/labels";
 
@@ -14,6 +16,7 @@ export interface AnalysisOfferOption {
   readonly id: string;
   readonly title: string;
   readonly href: string;
+  readonly phase: SubscriptionPhase;
   readonly verdicts: readonly AnalysisVerdict[];
 }
 
@@ -25,7 +28,9 @@ export interface AnalysisSectionLink {
 
 interface CategoryAnalysisSidebarProps {
   readonly categoryId: CategoryId;
+  readonly categoryHref: string;
   readonly offers: readonly AnalysisOfferOption[];
+  readonly selectedPhase: SubscriptionPhase | null;
   readonly sections: readonly AnalysisSectionLink[];
 }
 
@@ -46,14 +51,26 @@ const VERDICT_FILTERS: readonly {
   { id: "unverifiable", label: VERDICT_LABEL.unverifiable },
 ];
 
+const OFFER_PHASE_FILTERS: readonly {
+  readonly id: SubscriptionPhase;
+  readonly label: string;
+}[] = [
+  { id: "upcoming", label: "청약예정" },
+  { id: "open", label: "청약 진행중" },
+  { id: "closed", label: "청약종료" },
+];
+
 const normalize = (value: string): string =>
   value.trim().toLocaleLowerCase("ko-KR").replaceAll(" ", "");
 
 export function CategoryAnalysisSidebar({
   categoryId,
+  categoryHref,
   offers,
+  selectedPhase,
   sections,
 }: CategoryAnalysisSidebarProps) {
+  const router = useRouter();
   const [query, setQuery] = useState("");
   const [verdict, setVerdict] = useState<"all" | AnalysisVerdict>("all");
   const normalizedQuery = normalize(query);
@@ -66,9 +83,11 @@ export function CategoryAnalysisSidebar({
           normalize(`${offer.title} ${offer.id}`).includes(normalizedQuery);
         const matchesVerdict =
           verdict === "all" || offer.verdicts.includes(verdict);
-        return matchesQuery && matchesVerdict;
+        const matchesPhase =
+          selectedPhase === null || offer.phase === selectedPhase;
+        return matchesQuery && matchesVerdict && matchesPhase;
       }),
-    [normalizedQuery, offers, verdict],
+    [normalizedQuery, offers, selectedPhase, verdict],
   );
 
   const filteredSections = useMemo(
@@ -114,6 +133,37 @@ export function CategoryAnalysisSidebar({
               {filter.label}
             </button>
           ))}
+        </div>
+      </fieldset>
+
+      <fieldset className={s.analysisFilterGroup}>
+        <legend>청약 상태</legend>
+        <div className={s.analysisVerdictFilters}>
+          {OFFER_PHASE_FILTERS.map((filter) => {
+            const isActive = selectedPhase === filter.id;
+            return (
+              <button
+                key={filter.id}
+                type="button"
+                className={
+                  isActive
+                    ? `${s.analysisVerdictFilter} ${s.analysisVerdictFilterActive}`
+                    : s.analysisVerdictFilter
+                }
+                aria-pressed={isActive}
+                onClick={() =>
+                  router.replace(
+                    isActive
+                      ? `${categoryHref}?tab=analysis`
+                      : `${categoryHref}?tab=analysis&status=${filter.id}`,
+                    { scroll: false },
+                  )
+                }
+              >
+                {filter.label}
+              </button>
+            );
+          })}
         </div>
       </fieldset>
 

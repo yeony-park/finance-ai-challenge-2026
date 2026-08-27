@@ -6,22 +6,22 @@
 
 .slotGrid {
   display: grid;
-  grid-template-columns: minmax(11rem, 0.38fr) minmax(0, 1fr);
-  gap: var(--ds-space-4) var(--ds-layout-gap);
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--ds-space-5);
   align-items: start;
 }
 
 .slotGrid > .slotTitle {
   grid-column: 1;
-  grid-row: 1;
+  grid-row: auto;
 }
 
 .slotGrid > :not(.slotTitle) {
-  grid-column: 2;
+  grid-column: 1;
 }
 
 .slotGrid > .slotTitle + * {
-  grid-row: 1;
+  grid-row: auto;
 }
 
 .slotTitle {
@@ -686,41 +686,27 @@ span.offerName {
   fill: var(--ds-ink-faint);
 }
 
+.categorySection,
 .analysisSection {
-  padding-block: var(--ds-space-6) var(--ds-section-y-tight);
+  padding-block: var(--ds-space-4) var(--ds-section-y-tight);
 }
 
 .analysisPage {
   display: grid;
-  gap: var(--ds-space-7);
+  gap: var(--ds-space-5);
 }
 
 .analysisHeader {
+  display: block;
+}
+
+.analysisHeaderIdentity {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: end;
-  gap: var(--ds-space-6) var(--ds-layout-gap);
-  padding-bottom: var(--ds-space-5);
-  border-bottom: 1px solid var(--ds-line);
+  gap: var(--ds-space-2);
+  min-width: 0;
 }
 
-.analysisHeaderCopy {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: baseline;
-  gap: var(--ds-space-2) var(--ds-space-5);
-}
-
-.analysisEyebrow {
-  grid-column: 1 / -1;
-  margin: 0;
-  font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
-  color: var(--ds-ink-faint);
-  letter-spacing: var(--ds-tracking-wide);
-}
-
-.analysisHeaderCopy h1 {
+.analysisHeaderIdentity h1 {
   margin: 0;
   font-size: var(--ds-heading-h2);
   font-weight: var(--ds-weight-black);
@@ -728,23 +714,16 @@ span.offerName {
   line-height: var(--ds-leading-tight);
 }
 
-.analysisHeaderCopy > p:last-child {
-  max-width: 54rem;
-  margin: 0;
-  color: var(--ds-ink-muted);
-  font-size: var(--ds-text-sm);
-  line-height: var(--ds-leading-relaxed);
-  word-break: keep-all;
-}
-
 .analysisHeader .pageNav {
-  margin-top: 0;
+  width: 100%;
+  margin-top: var(--ds-space-2);
+  justify-self: start;
 }
 
 .analysisWorkspace {
   display: grid;
   grid-template-columns: minmax(13.5rem, 16rem) minmax(0, 1fr);
-  gap: var(--ds-space-7) var(--ds-layout-gap);
+  gap: var(--ds-space-5) var(--ds-layout-gap);
   align-items: start;
 }
 
@@ -911,7 +890,7 @@ span.offerName {
 .landingHero {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 0.82fr) minmax(26rem, 1.18fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   grid-template-rows: auto 1fr;
   gap: var(--ds-space-6) var(--ds-layout-gap);
   align-items: start;
@@ -919,8 +898,8 @@ span.offerName {
 .landingHeroPhoto {
   position: relative;
   grid-column: 2;
-  grid-row: 1 / span 2;
-  min-height: clamp(23rem, 48vw, 38rem);
+  grid-row: 2;
+  min-height: clamp(18rem, 30vw, 28rem);
   overflow: hidden;
   border-radius: var(--ds-radius-panel);
   background: var(--ds-bg-muted);
@@ -934,23 +913,24 @@ span.offerName {
   transform: scale(1.025);
 }
 .landingHeroBody {
-  grid-column: 1;
+  grid-column: 1 / -1;
   grid-row: 1;
-  padding-top: clamp(1rem, 4vw, 4rem);
+  padding-top: 0;
 }
 
 .landingHeroBody h1 {
-  font-size: var(--ds-heading-h1);
+  font-size: var(--ds-heading-h2);
   font-weight: var(--ds-weight-bold);
-  letter-spacing: -0.055em;
-  line-height: 1.05;
+  letter-spacing: var(--ds-tracking-tight);
+  line-height: var(--ds-leading-tight);
 }
 
 .pageNav {
   display: flex;
   align-items: flex-end;
   gap: var(--ds-space-5);
-  margin-top: var(--ds-space-7);
+  width: 100%;
+  margin-top: var(--ds-space-4);
   border-bottom: 1px solid var(--ds-line);
 }
 
@@ -993,6 +973,10 @@ span.offerName {
   word-break: keep-all;
 }
 
+.descriptionArea {
+  margin-top: var(--ds-space-7);
+}
+
 .analysisArea > .slot:first-child {
   border-top: 0;
 }
@@ -1002,23 +986,10 @@ span.offerName {
   margin-top: 0;
 }
 
-@media (min-width: 901px) and (max-width: 1180px) {
-  .analysisMain .slotGrid {
-    grid-template-columns: 1fr;
-    gap: var(--ds-space-4);
-  }
-
-  .analysisMain .slotGrid > .slotTitle,
-  .analysisMain .slotGrid > :not(.slotTitle),
-  .analysisMain .slotGrid > .slotTitle + * {
-    grid-column: 1;
-    grid-row: auto;
-  }
-}
-
 @media (max-width: 900px) {
+  .categorySection,
   .analysisSection {
-    padding-top: var(--ds-space-5);
+    padding-top: var(--ds-space-4);
   }
 
   .analysisPage {
@@ -1029,11 +1000,6 @@ span.offerName {
     grid-template-columns: 1fr;
     align-items: start;
     gap: var(--ds-space-4);
-  }
-
-  .analysisHeaderCopy {
-    grid-template-columns: 1fr;
-    gap: var(--ds-space-2);
   }
 
   .analysisHeader .pageNav {
@@ -1102,17 +1068,6 @@ span.offerName {
     order: 3;
   }
 
-  .slotGrid {
-    grid-template-columns: 1fr;
-    gap: var(--ds-space-4);
-  }
-
-  .slotGrid > .slotTitle,
-  .slotGrid > :not(.slotTitle),
-  .slotGrid > .slotTitle + * {
-    grid-column: 1;
-    grid-row: auto;
-  }
 }
 
 .factStrip {

@@ -12,7 +12,11 @@ import {
   WATCH_HEADING_ID,
 } from "@/components/report/ids";
 import { TrackRecordCard } from "@/components/report/TrackRecordCard";
-import type { OfferEntry, OfferSchedule } from "@/components/site/offers";
+import type {
+  OfferEntry,
+  OfferSchedule,
+  SubscriptionPhase,
+} from "@/components/site/offers";
 import { buildOfferSchedule } from "@/components/site/offers";
 import { categoryById, type CategoryId } from "@/lib/content/categories";
 import {
@@ -106,6 +110,9 @@ export interface CategoryLandingProps {
   readonly heroImage?: string | null;
   readonly custom?: ReactNode;
   readonly customTitle?: string;
+  readonly descriptionContent?: ReactNode;
+  readonly descriptionContentTitle?: string;
+  readonly analysisStatus?: SubscriptionPhase | null;
 }
 
 interface OfferEvidence {
@@ -336,6 +343,9 @@ export async function CategoryLanding({
   heroImage = null,
   custom = null,
   customTitle = "카테고리 특화 영역",
+  descriptionContent = null,
+  descriptionContentTitle = "카테고리 안내",
+  analysisStatus = null,
   activeTab,
   categoryId,
 }: CategoryLandingProps) {
@@ -352,8 +362,16 @@ export async function CategoryLanding({
         .catch(() => null)
     : null;
 
-  const active = evidence.filter((entry) => entry.schedule.phase !== "closed");
-  const closed = evidence.filter((entry) => entry.schedule.phase === "closed");
+  const visibleEvidence =
+    analysisStatus === null
+      ? evidence
+      : evidence.filter((entry) => entry.schedule.phase === analysisStatus);
+  const active = visibleEvidence.filter(
+    (entry) => entry.schedule.phase !== "closed",
+  );
+  const closed = visibleEvidence.filter(
+    (entry) => entry.schedule.phase === "closed",
+  );
 
   const totals = evidence.reduce(
     (sum, entry) => ({
@@ -374,12 +392,18 @@ export async function CategoryLanding({
     id: entry.offer.id,
     title: entry.offer.title,
     href: `/offers/${entry.offer.id}`,
+    phase: entry.schedule.phase,
     verdicts: ANALYSIS_VERDICTS.filter(
       (verdict) => entry.loaded.report.summary[verdict] > 0,
     ),
   }));
   const analysisSections: AnalysisSectionLink[] = [];
 
+  analysisSections.push({
+    id: `${title}-evidence`,
+    label: OFFERS_SECTION_TITLE,
+    keywords: [...categoryKeywords, "공모", "리포트", "신고서", "원문"],
+  });
   if (custom) {
     analysisSections.push({
       id: `${title}-custom`,
@@ -387,18 +411,11 @@ export async function CategoryLanding({
       keywords: categoryKeywords,
     });
   }
-  analysisSections.push(
-    {
-      id: `${title}-evidence`,
-      label: OFFERS_SECTION_TITLE,
-      keywords: [...categoryKeywords, "공모", "리포트", "신고서", "원문"],
-    },
-    {
-      id: `${title}-verdicts`,
-      label: VERDICT_SECTION_TITLE,
-      keywords: ["판정", "일치", "원장 불일치", "대조 불가"],
-    },
-  );
+  analysisSections.push({
+    id: `${title}-verdicts`,
+    label: VERDICT_SECTION_TITLE,
+    keywords: ["판정", "일치", "원장 불일치", "대조 불가"],
+  });
   if (trackRecord) {
     analysisSections.push({
       id: TRACK_RECORD_HEADING_ID,
@@ -415,11 +432,6 @@ export async function CategoryLanding({
   }
   analysisSections.push(
     {
-      id: `${title}-layers`,
-      label: LAYERS_SECTION_TITLE,
-      keywords: ["실재", "가격", "실적", "확인 범위"],
-    },
-    {
       id: `${title}-questions`,
       label: "확인 질문",
       keywords: ["질문", "확인 항목", "검색"],
@@ -431,7 +443,7 @@ export async function CategoryLanding({
       className={
         activeTab === "analysis"
           ? `${home.section} ${s.analysisSection}`
-          : home.section
+          : `${home.section} ${s.categorySection}`
       }
     >
       {activeTab === "analysis" ? (
@@ -439,65 +451,66 @@ export async function CategoryLanding({
           categoryId={categoryId}
           categoryHref={categoryHref}
           title={title}
-          lead={lead}
           offers={analysisOffers}
+          selectedPhase={analysisStatus}
           sections={analysisSections}
         >
           <div className={s.analysisArea}>
-        {custom ? (
-          <section className={s.slot} aria-labelledby={`${title}-custom`}>
-            <div className={s.slotGrid}>
-              <h2 id={`${title}-custom`} className={s.slotTitle}>
-                {customTitle}
-              </h2>
-              {custom}
-            </div>
-          </section>
-        ) : null}
-
         <section className={s.slot} aria-labelledby={`${title}-evidence`}>
           <Reveal className={s.slotGrid}>
             <h2 id={`${title}-evidence`} className={s.slotTitle}>
               {OFFERS_SECTION_TITLE}
             </h2>
             <p className={s.slotLead}>{OFFERS_SECTION_LEAD}</p>
-            {evidence.length > 0 ? (
+            {visibleEvidence.length > 0 ? (
               <>
-                <h3 className={s.groupTitle}>{ACTIVE_GROUP_TITLE}</h3>
-                {active.length > 0 ? (
+                {analysisStatus !== "closed" ? (
                   <>
-                    <div className={s.offerGrid}>
-                      {active.map((entry) => (
-                        <OfferEvidenceCard
-                          key={entry.offer.id}
-                          entry={entry}
-                          showChapterLinks
-                        />
-                      ))}
-                    </div>
-                    {active.map((entry) => (
-                      <FactStrip key={`facts-${entry.offer.id}`} entry={entry} />
-                    ))}
-                    {active.map((entry) => (
-                      <OfferTimeline key={entry.offer.id} entry={entry} />
-                    ))}
+                    <h3 className={s.groupTitle}>{ACTIVE_GROUP_TITLE}</h3>
+                    {active.length > 0 ? (
+                      <>
+                        <div className={s.offerGrid}>
+                          {active.map((entry) => (
+                            <OfferEvidenceCard
+                              key={entry.offer.id}
+                              entry={entry}
+                              showChapterLinks
+                            />
+                          ))}
+                        </div>
+                        {active.map((entry) => (
+                          <FactStrip key={`facts-${entry.offer.id}`} entry={entry} />
+                        ))}
+                        {active.map((entry) => (
+                          <OfferTimeline key={entry.offer.id} entry={entry} />
+                        ))}
+                      </>
+                    ) : (
+                      <p className={s.emptyNote}>{ACTIVE_GROUP_EMPTY}</p>
+                    )}
                   </>
-                ) : (
-                  <p className={s.emptyNote}>{ACTIVE_GROUP_EMPTY}</p>
-                )}
-                <h3 className={s.groupTitle}>{CLOSED_GROUP_TITLE}</h3>
-                {closed.length > 0 ? (
-                  <div className={s.offerGrid}>
-                    {closed.map((entry) => (
-                      <OfferEvidenceCard key={entry.offer.id} entry={entry} />
-                    ))}
-                  </div>
-                ) : (
-                  <p className={s.emptyNote}>
-                    이 카테고리에는 아직 청약이 종료된 공모가 없습니다.
-                  </p>
-                )}
+                ) : null}
+                {analysisStatus === null || analysisStatus === "closed" ? (
+                  <>
+                    <h3 className={s.groupTitle}>{CLOSED_GROUP_TITLE}</h3>
+                    {closed.length > 0 ? (
+                      <div className={s.offerGrid}>
+                        {closed.map((entry) => (
+                          <OfferEvidenceCard key={entry.offer.id} entry={entry} />
+                        ))}
+                      </div>
+                    ) : (
+                      <p className={s.emptyNote}>
+                        이 카테고리에는 아직 청약이 종료된 공모가 없습니다.
+                      </p>
+                    )}
+                  </>
+                ) : null}
               </>
+            ) : analysisStatus !== null && evidence.length > 0 ? (
+              <p className={s.emptyNote}>
+                선택한 청약 상태에 해당하는 공모가 없습니다.
+              </p>
             ) : preview ? (
               <ul className={s.previewList}>
                 {preview.map((line) => (
@@ -511,6 +524,17 @@ export async function CategoryLanding({
             )}
           </Reveal>
         </section>
+
+        {custom ? (
+          <section className={s.slot} aria-labelledby={`${title}-custom`}>
+            <div className={s.slotGrid}>
+              <h2 id={`${title}-custom`} className={s.slotTitle}>
+                {customTitle}
+              </h2>
+              {custom}
+            </div>
+          </section>
+        ) : null}
 
         <section className={s.slot} aria-labelledby={`${title}-verdicts`}>
           <Reveal className={s.slotGrid}>
@@ -585,62 +609,6 @@ export async function CategoryLanding({
 
         {market}
 
-        <section className={s.slot} aria-labelledby={`${title}-layers`}>
-          <Reveal className={s.slotGrid}>
-            <h2 id={`${title}-layers`} className={s.slotTitle}>
-              {LAYERS_SECTION_TITLE}
-            </h2>
-            <p className={s.slotLead}>{LAYERS_SECTION_LEAD}</p>
-            <table className={s.layerTable}>
-              <thead>
-                <tr>
-                  <th scope="col">확인 질문</th>
-                  <th scope="col">지원</th>
-                  <th scope="col">근거</th>
-                </tr>
-              </thead>
-              <tbody>
-                {ALL_LAYERS.map((layer) => {
-                  const declared = descriptor?.layers.find(
-                    (entry) => entry.layer === layer,
-                  );
-                  return (
-                    <tr key={layer}>
-                      <td className={s.layerName}>
-                        {LAYER_EASY_QUESTIONS[layer]}
-                        <span className={s.layerSub}>{LAYER_LABELS[layer]} 층</span>
-                      </td>
-                      <td>
-                        <span
-                          className={
-                            declared
-                              ? s.layerLevel
-                              : `${s.layerLevel} ${s.layerLevelPending}`
-                          }
-                        >
-                          {declared
-                            ? LAYER_SUPPORT_LABELS[declared.level]
-                            : "선언 대기"}
-                        </span>
-                      </td>
-                      <td className={s.layerBasis}>
-                        {declared
-                          ? declared.basis
-                          : "담당 구현에서 확정되면 그때부터 대조를 제공합니다."}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-            {descriptor ? (
-              <p className={s.slotLead}>
-                현재성 기준: {descriptor.freshnessNote}.
-              </p>
-            ) : null}
-          </Reveal>
-        </section>
-
         <section className={s.slot} aria-labelledby={`${title}-questions`}>
           <Reveal className={s.slotGrid}>
             <h2 id={`${title}-questions`} className={s.slotTitle}>
@@ -653,6 +621,7 @@ export async function CategoryLanding({
           </div>
         </CategoryAnalysisWorkspace>
       ) : (
+        <>
         <div className={`${home.wrap} ${s.landingHero}`}>
           {heroImage ? (
             <div className={s.landingHeroPhoto} aria-hidden="true">
@@ -661,7 +630,7 @@ export async function CategoryLanding({
                 alt=""
                 fill
                 priority
-                sizes="(max-width: 900px) calc(100vw - 2.25rem), 58vw"
+                sizes="(max-width: 900px) calc(100vw - 2.25rem), 50vw"
                 className={s.landingHeroImg}
               />
             </div>
@@ -677,11 +646,8 @@ export async function CategoryLanding({
 
           <section
             className={s.aboutContent}
-            aria-labelledby={`${title}-about`}
+            aria-label={`${title} 설명`}
           >
-            <h2 id={`${title}-about`} className={s.slotTitle}>
-              설명
-            </h2>
             <p className={s.slotLead}>{lead}</p>
             <p className={s.aboutHint}>
               공시 분석 탭에서는 공개된 공시 원문, 공공 자료와의 대조 결과,
@@ -689,6 +655,81 @@ export async function CategoryLanding({
             </p>
           </section>
         </div>
+        <div className={`${home.wrap} ${s.descriptionArea}`}>
+          {descriptionContent ? (
+            <section
+              className={s.slot}
+              aria-labelledby={`${title}-description-content`}
+            >
+              <Reveal className={s.slotGrid}>
+                <h2
+                  id={`${title}-description-content`}
+                  className={s.slotTitle}
+                >
+                  {descriptionContentTitle}
+                </h2>
+                {descriptionContent}
+              </Reveal>
+            </section>
+          ) : null}
+
+          <section className={s.slot} aria-labelledby={`${title}-layers`}>
+            <Reveal className={s.slotGrid}>
+              <h2 id={`${title}-layers`} className={s.slotTitle}>
+                {LAYERS_SECTION_TITLE}
+              </h2>
+              <p className={s.slotLead}>{LAYERS_SECTION_LEAD}</p>
+              <table className={s.layerTable}>
+                <thead>
+                  <tr>
+                    <th scope="col">확인 질문</th>
+                    <th scope="col">지원</th>
+                    <th scope="col">근거</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {ALL_LAYERS.map((layer) => {
+                    const declared = descriptor?.layers.find(
+                      (entry) => entry.layer === layer,
+                    );
+                    return (
+                      <tr key={layer}>
+                        <td className={s.layerName}>
+                          {LAYER_EASY_QUESTIONS[layer]}
+                          <span className={s.layerSub}>{LAYER_LABELS[layer]} 층</span>
+                        </td>
+                        <td>
+                          <span
+                            className={
+                              declared
+                                ? s.layerLevel
+                                : `${s.layerLevel} ${s.layerLevelPending}`
+                            }
+                          >
+                            {declared
+                              ? LAYER_SUPPORT_LABELS[declared.level]
+                              : "선언 대기"}
+                          </span>
+                        </td>
+                        <td className={s.layerBasis}>
+                          {declared
+                            ? declared.basis
+                            : "담당 구현에서 확정되면 그때부터 대조를 제공합니다."}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+              {descriptor ? (
+                <p className={s.slotLead}>
+                  현재성 기준: {descriptor.freshnessNote}.
+                </p>
+              ) : null}
+            </Reveal>
+          </section>
+        </div>
+        </>
       )}
     </div>
   );

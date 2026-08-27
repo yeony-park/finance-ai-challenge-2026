@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 
 import { CategoryLanding } from "@/components/category/CategoryLanding";
 import { OFFERS } from "@/components/site/offers";
-import { categoryTabFromSearchParam } from "@/lib/content/category-tabs";
+import {
+  analysisStatusFromSearchParam,
+  categoryTabFromSearchParam,
+} from "@/lib/content/category-tabs";
 import { REAL_ESTATE_CATEGORY } from "@/lib/verify/contract/real-estate";
 
 export const metadata: Metadata = {
@@ -11,16 +14,21 @@ export const metadata: Metadata = {
 };
 
 interface RealEstatePageProps {
-  readonly searchParams: Promise<{ readonly tab?: string | string[] }>;
+  readonly searchParams: Promise<{
+    readonly tab?: string | string[];
+    readonly status?: string | string[];
+  }>;
 }
 
 export default async function RealEstatePage({ searchParams }: RealEstatePageProps) {
-  const activeTab = categoryTabFromSearchParam((await searchParams).tab);
+  const params = await searchParams;
+  const activeTab = categoryTabFromSearchParam(params.tab);
 
   return (
     <CategoryLanding
       categoryId="real-estate"
       activeTab={activeTab}
+      analysisStatus={analysisStatusFromSearchParam(params.status)}
       title="부동산"
       lead="종료된 공모의 사후 검증 리포트가 공개돼 있습니다 — 소재지·가격·이행을 공공 원장과 대조합니다."
       descriptor={REAL_ESTATE_CATEGORY}

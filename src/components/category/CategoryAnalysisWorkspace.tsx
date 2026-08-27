@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+import type { SubscriptionPhase } from "@/components/site/offers";
 import type { CategoryId } from "@/lib/content/categories";
 
 import home from "@/components/home/home.module.css";
@@ -15,8 +16,8 @@ interface CategoryAnalysisWorkspaceProps {
   readonly categoryId: CategoryId;
   readonly categoryHref: string;
   readonly title: string;
-  readonly lead: string;
   readonly offers: readonly AnalysisOfferOption[];
+  readonly selectedPhase: SubscriptionPhase | null;
   readonly sections: readonly AnalysisSectionLink[];
   readonly children: ReactNode;
 }
@@ -25,30 +26,30 @@ export function CategoryAnalysisWorkspace({
   categoryId,
   categoryHref,
   title,
-  lead,
   offers,
+  selectedPhase,
   sections,
   children,
 }: CategoryAnalysisWorkspaceProps) {
   return (
     <div className={`${home.wrap} ${s.analysisPage}`}>
       <header className={s.analysisHeader}>
-        <div className={s.analysisHeaderCopy}>
-          <p className={s.analysisEyebrow}>카테고리 분석</p>
+        <div className={s.analysisHeaderIdentity}>
           <h1>{title}</h1>
-          <p>{lead}</p>
+          <CategoryPageNav
+            title={title}
+            href={categoryHref}
+            activeTab="analysis"
+          />
         </div>
-        <CategoryPageNav
-          title={title}
-          href={categoryHref}
-          activeTab="analysis"
-        />
       </header>
 
       <div className={s.analysisWorkspace}>
         <CategoryAnalysisSidebar
           categoryId={categoryId}
+          categoryHref={categoryHref}
           offers={offers}
+          selectedPhase={selectedPhase}
           sections={sections}
         />
         <main className={s.analysisMain} id={`${categoryId}-analysis-results`}>

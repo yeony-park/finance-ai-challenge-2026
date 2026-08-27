@@ -3,7 +3,10 @@ import type { Metadata } from "next";
 import { ArtFactsSection } from "@/components/art/ArtFactsSection";
 import { CategoryLanding } from "@/components/category/CategoryLanding";
 import { categoryById } from "@/lib/content/categories";
-import { categoryTabFromSearchParam } from "@/lib/content/category-tabs";
+import {
+  analysisStatusFromSearchParam,
+  categoryTabFromSearchParam,
+} from "@/lib/content/category-tabs";
 import {
   ART_CUSTOM_TITLE,
   ART_PAGE_DESCRIPTION,
@@ -18,16 +21,21 @@ export const metadata: Metadata = {
 };
 
 interface ArtPageProps {
-  readonly searchParams: Promise<{ readonly tab?: string | string[] }>;
+  readonly searchParams: Promise<{
+    readonly tab?: string | string[];
+    readonly status?: string | string[];
+  }>;
 }
 
 export default async function ArtPage({ searchParams }: ArtPageProps) {
-  const activeTab = categoryTabFromSearchParam((await searchParams).tab);
+  const params = await searchParams;
+  const activeTab = categoryTabFromSearchParam(params.tab);
 
   return (
     <CategoryLanding
       categoryId="art"
       activeTab={activeTab}
+      analysisStatus={analysisStatusFromSearchParam(params.status)}
       title={INFO.label}
       lead={ART_PAGE_LEAD}
       descriptor={null}

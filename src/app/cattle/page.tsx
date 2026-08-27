@@ -3,7 +3,10 @@ import type { Metadata } from "next";
 import { AuctionMarketSection } from "@/components/category/AuctionMarketSection";
 import { CategoryLanding } from "@/components/category/CategoryLanding";
 import { OFFERS } from "@/components/site/offers";
-import { categoryTabFromSearchParam } from "@/lib/content/category-tabs";
+import {
+  analysisStatusFromSearchParam,
+  categoryTabFromSearchParam,
+} from "@/lib/content/category-tabs";
 import {
   CATTLE_FLOW_LEAD,
   CATTLE_FLOW_STEPS,
@@ -56,7 +59,10 @@ function CattleFlowBand() {
 }
 
 interface CattlePageProps {
-  readonly searchParams: Promise<{ readonly tab?: string | string[] }>;
+  readonly searchParams: Promise<{
+    readonly tab?: string | string[];
+    readonly status?: string | string[];
+  }>;
 }
 
 export default async function CattlePage({ searchParams }: CattlePageProps) {
@@ -65,6 +71,7 @@ export default async function CattlePage({ searchParams }: CattlePageProps) {
     searchParams,
   ]);
   const activeTab = categoryTabFromSearchParam(params.tab);
+  const analysisStatus = analysisStatusFromSearchParam(params.status);
   const cattleOffers = OFFERS.filter((offer) => offer.assetKind === "livestock");
   const markers = cattleOffers.map((offer) => ({
     month: kstMonth(offer.subscription.opensAt),
@@ -75,14 +82,15 @@ export default async function CattlePage({ searchParams }: CattlePageProps) {
     <CategoryLanding
       categoryId="cattle"
       activeTab={activeTab}
+      analysisStatus={analysisStatus}
       title="한우"
       lead="공시된 개체를 축산물이력제 원장과 대조하고, 공모가의 시장 위치와 정정 이력을 함께 보여줍니다."
       descriptor={CATTLE_CATEGORY}
       offers={cattleOffers}
       heroImage="/category-cattle.jpg"
       market={<AuctionMarketSection series={series} markers={markers} />}
-      customTitle={CATTLE_FLOW_TITLE}
-      custom={<CattleFlowBand />}
+      descriptionContentTitle={CATTLE_FLOW_TITLE}
+      descriptionContent={<CattleFlowBand />}
     />
   );
 }
