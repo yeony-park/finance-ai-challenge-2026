@@ -87,14 +87,16 @@ export function CategoryAnalysisView({
 
           {market}
 
-          <section className={base.slot} aria-labelledby={`${title}-questions`}>
-            <Reveal className={base.slotGrid}>
-              <h2 id={`${title}-questions`} className={base.slotTitle}>
-                확인 질문
-              </h2>
-              <CategoryQuestions bridgeOffer={model.bridgeOffer} />
-            </Reveal>
-          </section>
+          {categoryId !== "pig" ? (
+            <section className={base.slot} aria-labelledby={`${title}-questions`}>
+              <Reveal className={base.slotGrid}>
+                <h2 id={`${title}-questions`} className={base.slotTitle}>
+                  확인 질문
+                </h2>
+                <CategoryQuestions bridgeOffer={model.bridgeOffer} />
+              </Reveal>
+            </section>
+          ) : null}
         </div>
       </CategoryAnalysisWorkspace>
     </div>

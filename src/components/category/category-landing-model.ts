@@ -127,6 +127,7 @@ const buildAnalysisSections = ({
   customTitle,
   hasTrackRecord,
   hasMarketContent,
+  hasQuestions,
 }: {
   readonly title: string;
   readonly categoryKeywords: readonly string[];
@@ -134,6 +135,7 @@ const buildAnalysisSections = ({
   readonly customTitle: string;
   readonly hasTrackRecord: boolean;
   readonly hasMarketContent: boolean;
+  readonly hasQuestions: boolean;
 }): readonly AnalysisSectionLink[] => {
   const sections: AnalysisSectionLink[] = [
     {
@@ -173,11 +175,13 @@ const buildAnalysisSections = ({
     });
   }
 
-  sections.push({
-    id: `${title}-questions`,
-    label: "확인 질문",
-    keywords: ["질문", "확인 항목", "검색"],
-  });
+  if (hasQuestions) {
+    sections.push({
+      id: `${title}-questions`,
+      label: "확인 질문",
+      keywords: ["질문", "확인 항목", "검색"],
+    });
+  }
   return sections;
 };
 
@@ -259,6 +263,7 @@ export async function loadCategoryLandingModel({
       customTitle,
       hasTrackRecord: trackRecord !== null,
       hasMarketContent,
+      hasQuestions: categoryId !== "pig",
     }),
     trackRecord,
     bridgeOffer: byOpenAsc.at(-1) ?? null,
