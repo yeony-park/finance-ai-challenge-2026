@@ -82,7 +82,7 @@
   margin: 0;
   padding: 0 3rem 0 0;
   color: var(--ds-ink);
-  font-size: var(--ds-heading-h4);
+  font-size: var(--ds-heading-h2);
   line-height: var(--ds-leading-snug);
   text-align: left;
   transform: none;
@@ -254,7 +254,7 @@
   margin-top: var(--ds-space-3);
   display: grid;
   gap: var(--ds-space-2);
-  font-size: var(--ds-text-base);
+  font-size: var(--ds-heading-h4);
   line-height: var(--ds-leading-relaxed);
   color: var(--ds-ink);
   word-break: keep-all;

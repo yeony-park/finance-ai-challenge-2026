@@ -140,13 +140,13 @@
 }
 
 .visualContent .scaffoldOpen .panelTitle {
-  font-size: var(--ds-text-xl);
+  font-size: var(--ds-heading-h3);
 }
 
 .visualContent .scaffoldOpen .panelBody {
   margin-top: var(--ds-space-2);
   gap: var(--ds-space-1);
-  font-size: var(--ds-text-sm);
+  font-size: var(--ds-heading-h4);
   line-height: var(--ds-leading-snug);
 }
 
