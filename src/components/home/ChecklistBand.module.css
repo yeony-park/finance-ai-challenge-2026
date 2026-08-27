@@ -19,7 +19,7 @@
   border-bottom: 1px solid var(--ds-line);
 }
 .checkItem summary {
-  padding-block: var(--ds-space-2);
+  padding-block: var(--ds-space-3);
   cursor: pointer;
   font-size: var(--ds-text-md);
   font-weight: var(--ds-weight-bold);
@@ -53,10 +53,17 @@
   word-break: keep-all;
 }
 
-.checkNotice {
+.checkNotices {
   margin-top: var(--ds-space-5);
+  margin-bottom: 0;
+  padding-left: 1.25rem;
+  list-style: disc;
   font-family: var(--ds-font-mono);
   font-size: var(--ds-text-2xs);
   line-height: 1.75;
   color: var(--ds-ink-faint);
+}
+
+.checkNotices li + li {
+  margin-top: var(--ds-space-1);
 }

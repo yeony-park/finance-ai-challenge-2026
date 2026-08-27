@@ -32,6 +32,7 @@ export function CategoryGrid() {
         <HomeSectionHeader
           titleId="category-grid-title"
           title="카테고리별 확인 현황"
+          titleClassName={s.categorySectionTitle}
           className={layout.categorySectionHead}
           titleRowClassName={s.sectionTitleRow}
           aside={

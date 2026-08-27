@@ -35,8 +35,9 @@ export function ChecklistBand() {
         >
           <div className={layout.checklistMeta}>
             <p className={`${layout.sectionLead} ${layout.checklistLead}`}>
-              무엇을 봐야 할지 모르겠다면 여기서부터 — 각 질문은 공적 출처에서 직접
-              확인할 수 있고, 일부는 이 서비스의 대조 실측이 답을 대신합니다.
+              무엇을 봐야 할지 모르겠다면 여기서부터 확인해 보세요. 각 질문은 공적
+              출처에서 직접 확인할 수 있으며, 일부는 이 서비스의 대조 실측 결과로
+              답을 확인할 수 있습니다.
             </p>
             <OnboardingOpenButton
               className={`${controls.chip} ${layout.checklistProfileButton}`}
@@ -85,10 +86,10 @@ export function ChecklistBand() {
           ))}
         </div>
         </Reveal>
-        {bridgeOffer ? (
-          <p className={s.checkNotice}>{CHECKLIST_BRIDGE_NOTE}</p>
-        ) : null}
-        <p className={s.checkNotice}>{CHECKLIST_NOTICE}</p>
+        <ul className={s.checkNotices}>
+          {bridgeOffer ? <li>{CHECKLIST_BRIDGE_NOTE}</li> : null}
+          <li>{CHECKLIST_NOTICE}</li>
+        </ul>
     </HomeSectionFrame>
   );
 }
