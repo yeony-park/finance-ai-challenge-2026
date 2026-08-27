@@ -5,7 +5,12 @@ import type { ReactNode } from "react";
 import { OfferWatchControl } from "@/components/landing/OfferWatchControl";
 import { CountUp } from "@/components/motion/CountUp";
 import { Reveal } from "@/components/motion/Reveal";
-import { FILING_HEADING_ID, REALITY_HEADING_ID, WATCH_HEADING_ID } from "@/components/report/ids";
+import {
+  FILING_HEADING_ID,
+  REALITY_HEADING_ID,
+  TRACK_RECORD_HEADING_ID,
+  WATCH_HEADING_ID,
+} from "@/components/report/ids";
 import { TrackRecordCard } from "@/components/report/TrackRecordCard";
 import type { OfferEntry, OfferSchedule } from "@/components/site/offers";
 import { buildOfferSchedule } from "@/components/site/offers";
@@ -61,6 +66,12 @@ import { formatKstDateTime, formatYmd8 } from "@/lib/verify/report/format";
 import type { CategoryTab } from "@/lib/content/category-tabs";
 
 import home from "@/components/home/home.module.css";
+import type {
+  AnalysisOfferOption,
+  AnalysisSectionLink,
+  AnalysisVerdict,
+} from "./CategoryAnalysisSidebar";
+import { CategoryAnalysisWorkspace } from "./CategoryAnalysisWorkspace";
 import { CategoryQuestions } from "./CategoryQuestions";
 import { CategoryPageNav } from "./CategoryPageNav";
 import s from "./category.module.css";
@@ -70,6 +81,18 @@ const ALL_LAYERS: readonly VerificationLayer[] = [
   "price",
   "performance",
 ];
+const ANALYSIS_VERDICTS: readonly AnalysisVerdict[] = [
+  "match",
+  "mismatch",
+  "unverifiable",
+];
+
+const CATEGORY_ANALYSIS_KEYWORDS: Record<CategoryId, readonly string[]> = {
+  art: ["상품", "작품", "작가", "플랫폼", "미술품"],
+  cattle: ["공모", "개체", "이력번호", "판정", "축산물이력제"],
+  pig: ["공모", "발행사", "신고서", "판정", "한돈", "회차"],
+  "real-estate": ["공모", "소재지", "사업자", "거래 근거", "실거래가"],
+};
 
 export interface CategoryLandingProps {
   readonly categoryId: CategoryId;
@@ -346,43 +369,81 @@ export async function CategoryLanding({
     .sort()
     .at(-1);
   const categoryHref = categoryById(categoryId).href;
+  const categoryKeywords = CATEGORY_ANALYSIS_KEYWORDS[categoryId];
+  const analysisOffers: readonly AnalysisOfferOption[] = evidence.map((entry) => ({
+    id: entry.offer.id,
+    title: entry.offer.title,
+    href: `/offers/${entry.offer.id}`,
+    verdicts: ANALYSIS_VERDICTS.filter(
+      (verdict) => entry.loaded.report.summary[verdict] > 0,
+    ),
+  }));
+  const analysisSections: AnalysisSectionLink[] = [];
+
+  if (custom) {
+    analysisSections.push({
+      id: `${title}-custom`,
+      label: customTitle,
+      keywords: categoryKeywords,
+    });
+  }
+  analysisSections.push(
+    {
+      id: `${title}-evidence`,
+      label: OFFERS_SECTION_TITLE,
+      keywords: [...categoryKeywords, "공모", "리포트", "신고서", "원문"],
+    },
+    {
+      id: `${title}-verdicts`,
+      label: VERDICT_SECTION_TITLE,
+      keywords: ["판정", "일치", "원장 불일치", "대조 불가"],
+    },
+  );
+  if (trackRecord) {
+    analysisSections.push({
+      id: TRACK_RECORD_HEADING_ID,
+      label: ISSUER_SLOT_TITLE,
+      keywords: ["발행사", "이력", "정정", "공모"],
+    });
+  }
+  if (market) {
+    analysisSections.push({
+      id: "market-context-title",
+      label: "경락 시장 대조",
+      keywords: ["경락", "가격", "시장", "공공데이터"],
+    });
+  }
+  analysisSections.push(
+    {
+      id: `${title}-layers`,
+      label: LAYERS_SECTION_TITLE,
+      keywords: ["실재", "가격", "실적", "확인 범위"],
+    },
+    {
+      id: `${title}-questions`,
+      label: "확인 질문",
+      keywords: ["질문", "확인 항목", "검색"],
+    },
+  );
 
   return (
-    <div className={home.section}>
-      <div className={`${home.wrap} ${s.landingHero}`}>
-        {heroImage ? (
-          <div className={s.landingHeroPhoto} aria-hidden="true">
-            <Image
-              src={heroImage}
-              alt=""
-              fill
-              priority
-              sizes="(max-width: 900px) calc(100vw - 2.25rem), 58vw"
-              className={s.landingHeroImg}
-            />
-          </div>
-        ) : null}
-        <div className={s.landingHeroBody}>
-          <h1 className={home.sectionTitle}>{title}</h1>
-          <CategoryPageNav title={title} href={categoryHref} activeTab={activeTab} />
-        </div>
-
-        <section
-          className={s.aboutContent}
-          aria-labelledby={`${title}-about`}
-          hidden={activeTab !== "about"}
+    <div
+      className={
+        activeTab === "analysis"
+          ? `${home.section} ${s.analysisSection}`
+          : home.section
+      }
+    >
+      {activeTab === "analysis" ? (
+        <CategoryAnalysisWorkspace
+          categoryId={categoryId}
+          categoryHref={categoryHref}
+          title={title}
+          lead={lead}
+          offers={analysisOffers}
+          sections={analysisSections}
         >
-          <h2 id={`${title}-about`} className={s.slotTitle}>
-            설명
-          </h2>
-          <p className={s.slotLead}>{lead}</p>
-          <p className={s.aboutHint}>
-            공시 분석 탭에서는 공개된 공시 원문, 공공 자료와의 대조 결과, 그리고
-            현재 확인할 수 없는 범위를 근거와 함께 확인할 수 있습니다.
-          </p>
-        </section>
-
-        <div className={s.analysisArea} hidden={activeTab !== "analysis"}>
+          <div className={s.analysisArea}>
         {custom ? (
           <section className={s.slot} aria-labelledby={`${title}-custom`}>
             <div className={s.slotGrid}>
@@ -589,8 +650,46 @@ export async function CategoryLanding({
           </Reveal>
         </section>
 
+          </div>
+        </CategoryAnalysisWorkspace>
+      ) : (
+        <div className={`${home.wrap} ${s.landingHero}`}>
+          {heroImage ? (
+            <div className={s.landingHeroPhoto} aria-hidden="true">
+              <Image
+                src={heroImage}
+                alt=""
+                fill
+                priority
+                sizes="(max-width: 900px) calc(100vw - 2.25rem), 58vw"
+                className={s.landingHeroImg}
+              />
+            </div>
+          ) : null}
+          <div className={s.landingHeroBody}>
+            <h1 className={home.sectionTitle}>{title}</h1>
+            <CategoryPageNav
+              title={title}
+              href={categoryHref}
+              activeTab={activeTab}
+            />
+          </div>
+
+          <section
+            className={s.aboutContent}
+            aria-labelledby={`${title}-about`}
+          >
+            <h2 id={`${title}-about`} className={s.slotTitle}>
+              설명
+            </h2>
+            <p className={s.slotLead}>{lead}</p>
+            <p className={s.aboutHint}>
+              공시 분석 탭에서는 공개된 공시 원문, 공공 자료와의 대조 결과,
+              그리고 현재 확인할 수 없는 범위를 근거와 함께 확인할 수 있습니다.
+            </p>
+          </section>
         </div>
-      </div>
+      )}
     </div>
   );
 }
