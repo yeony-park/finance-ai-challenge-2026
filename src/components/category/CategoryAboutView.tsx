@@ -2,6 +2,7 @@ import Image from "next/image";
 import type { ReactNode } from "react";
 
 import { Reveal } from "@/components/motion/Reveal";
+import { LAYERS_SECTION_TITLE } from "@/lib/content/category-landing";
 import type { CategoryTab } from "@/lib/content/category-tabs";
 import type { CategoryDescriptor } from "@/lib/verify/contract/category";
 
@@ -20,6 +21,7 @@ interface CategoryAboutViewProps {
   readonly heroImage: string | null;
   readonly descriptionContent: ReactNode;
   readonly descriptionContentTitle: string;
+  readonly layersSectionTitle?: string;
 }
 
 export function CategoryAboutView({
@@ -31,6 +33,7 @@ export function CategoryAboutView({
   heroImage,
   descriptionContent,
   descriptionContentTitle,
+  layersSectionTitle = LAYERS_SECTION_TITLE,
 }: CategoryAboutViewProps) {
   return (
     <div className={`${home.section} ${s.categorySection}`}>
@@ -66,6 +69,24 @@ export function CategoryAboutView({
             공시 분석 탭에서는 공개된 공시 원문, 공공 자료와의 대조 결과, 그리고
             현재 확인할 수 없는 범위를 근거와 함께 확인할 수 있습니다.
           </p>
+          {descriptionContent ? (
+            <nav
+              className={s.aboutShortcuts}
+              aria-label={`${title} 설명 바로가기`}
+            >
+              <a
+                className={s.aboutShortcut}
+                href={`#${title}-description-content`}
+              >
+                <span>{descriptionContentTitle}</span>
+                <span aria-hidden="true">→</span>
+              </a>
+              <a className={s.aboutShortcut} href={`#${title}-layers`}>
+                <span>{layersSectionTitle}</span>
+                <span aria-hidden="true">→</span>
+              </a>
+            </nav>
+          ) : null}
         </section>
       </div>
 
@@ -96,6 +117,7 @@ export function CategoryAboutView({
             <LayerSupportTable
               descriptor={descriptor}
               headingId={`${title}-layers`}
+              title={layersSectionTitle}
             />
           </Reveal>
         </section>

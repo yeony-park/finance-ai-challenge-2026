@@ -48,6 +48,7 @@ export default async function CattlePage({ searchParams }: CattlePageProps) {
       }
       descriptionContentTitle={CATTLE_FLOW_TITLE}
       descriptionContent={<CattleFlowBand />}
+      layersSectionTitle="대조는 어떻게 이루어지나요?"
     />
   );
 }

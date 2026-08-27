@@ -23,6 +23,7 @@ export interface CategoryLandingProps {
   readonly customTitle?: string;
   readonly descriptionContent?: ReactNode;
   readonly descriptionContentTitle?: string;
+  readonly layersSectionTitle?: string;
   readonly analysisStatus?: SubscriptionPhase | null;
 }
 
@@ -38,6 +39,7 @@ export async function CategoryLanding({
   customTitle = "카테고리 특화 영역",
   descriptionContent = null,
   descriptionContentTitle = "카테고리 안내",
+  layersSectionTitle,
   analysisStatus = null,
   activeTab,
   categoryId,
@@ -55,6 +57,7 @@ export async function CategoryLanding({
         heroImage={heroImage}
         descriptionContent={descriptionContent}
         descriptionContentTitle={descriptionContentTitle}
+        layersSectionTitle={layersSectionTitle}
       />
     );
   }

@@ -285,8 +285,47 @@
   word-break: keep-all;
 }
 
+.aboutShortcuts {
+  display: grid;
+  gap: var(--ds-space-2);
+  max-width: 32rem;
+  margin-top: var(--ds-space-6);
+}
+
+.aboutShortcut {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  gap: var(--ds-space-2);
+  padding-bottom: 0.2rem;
+  border-bottom: 2px solid var(--ds-accent);
+  color: var(--ds-ink);
+  font-size: var(--ds-text-md);
+  font-weight: var(--ds-weight-bold);
+  text-decoration: none;
+  word-break: keep-all;
+  transition: gap var(--ds-duration-base) var(--ds-ease);
+}
+
+.aboutShortcut:hover {
+  gap: 0.65rem;
+}
+
+.aboutShortcut:focus-visible {
+  outline: none;
+  box-shadow: var(--ds-focus-ring);
+}
+
+.aboutShortcut span:last-child {
+  flex: none;
+}
+
 .descriptionArea {
   margin-top: var(--ds-space-7);
+}
+
+.descriptionArea [id] {
+  scroll-margin-top: calc(var(--ds-header-h) + var(--ds-space-5));
 }
 
 .descriptionAreaCompact {
