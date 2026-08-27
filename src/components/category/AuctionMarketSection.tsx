@@ -1,7 +1,7 @@
 "use client";
 
 import { m } from "motion/react";
-import { useRef, useState } from "react";
+import { useId, useRef, useState } from "react";
 
 import { MOTION_EASE } from "@/components/motion/tokens";
 import { useReducedMotionSafe } from "@/components/motion/useReducedMotionSafe";
@@ -74,6 +74,7 @@ export function AuctionMarketSection({
   const svgRef = useRef<SVGSVGElement | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const isReduced = useReducedMotionSafe();
+  const gradientId = `auction-market-band-${useId().replaceAll(":", "")}`;
 
   if (series.length < MIN_POINTS) return null;
 
@@ -174,17 +175,32 @@ export function AuctionMarketSection({
           </div>
         </div>
         <div className={s.chartWrap}>
+          <p id="auction-market-chart-help" className={s.srOnly}>
+            그래프에 초점을 맞춘 뒤 좌우 방향키 또는 Home, End 키로 월별 값을 확인할 수
+            있습니다.
+          </p>
           <svg
             ref={svgRef}
             viewBox={`0 0 ${W} ${H}`}
             role="img"
             tabIndex={0}
             aria-label={`${MARKET_SECTION_TITLE} 월별 추이 — ${MARKET_SECTION_LEAD}`}
+            aria-describedby="auction-market-chart-help"
             onPointerMove={(event) => handleMove(event.clientX)}
-            onPointerLeave={() => setHoveredIndex(null)}
+            onPointerDown={(event) => handleMove(event.clientX)}
+            onPointerLeave={(event) => {
+              if (event.pointerType === "mouse" && document.activeElement !== svgRef.current) {
+                setHoveredIndex(null);
+              }
+            }}
             onFocus={() => setHoveredIndex(series.length - 1)}
             onBlur={() => setHoveredIndex(null)}
             onKeyDown={(event) => {
+              if (event.key === "Home" || event.key === "End") {
+                event.preventDefault();
+                setHoveredIndex(event.key === "Home" ? 0 : series.length - 1);
+                return;
+              }
               if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
               event.preventDefault();
               const direction = event.key === "ArrowLeft" ? -1 : 1;
@@ -198,7 +214,7 @@ export function AuctionMarketSection({
           >
             <defs>
               <linearGradient
-                id="auction-market-band-gradient"
+                id={gradientId}
                 x1="0"
                 y1="0"
                 x2="0"
@@ -262,7 +278,7 @@ export function AuctionMarketSection({
                 <m.path
                   className={s.chartBand}
                   d={bandPath(segment)}
-                  fill="url(#auction-market-band-gradient)"
+                  fill={`url(#${gradientId})`}
                   initial={isReduced ? false : { opacity: 0 }}
                   whileInView={{ opacity: 1 }}
                   viewport={{ once: true, amount: 0.35 }}
@@ -275,11 +291,11 @@ export function AuctionMarketSection({
                 <m.path
                   className={s.chartEdgeLine}
                   d={linePath(segment, (point) => point.top)}
-                  initial={isReduced ? false : { pathLength: 0, opacity: 0 }}
-                  whileInView={{ pathLength: 1, opacity: 1 }}
+                  initial={isReduced ? false : { opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
                   viewport={{ once: true, amount: 0.35 }}
                   transition={{
-                    duration: 1,
+                    duration: 0.55,
                     ease: MOTION_EASE,
                     delay: 0.08 + segmentIndex * 0.06,
                   }}
@@ -287,11 +303,11 @@ export function AuctionMarketSection({
                 <m.path
                   className={s.chartEdgeLine}
                   d={linePath(segment, (point) => point.bottom)}
-                  initial={isReduced ? false : { pathLength: 0, opacity: 0 }}
-                  whileInView={{ pathLength: 1, opacity: 1 }}
+                  initial={isReduced ? false : { opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
                   viewport={{ once: true, amount: 0.35 }}
                   transition={{
-                    duration: 1,
+                    duration: 0.55,
                     ease: MOTION_EASE,
                     delay: 0.12 + segmentIndex * 0.06,
                   }}
@@ -375,6 +391,11 @@ export function AuctionMarketSection({
               경락 {fmt(hovered.sampleSize)}두
             </div>
           ) : null}
+          <p className={s.srOnly} aria-live="polite" aria-atomic="true">
+            {hovered
+              ? `${hovered.month}, 평균 ${fmt(hovered.average)}원, 1++ ${fmt(hovered.top)}원, 3등급 ${fmt(hovered.bottom)}원, 경락 ${fmt(hovered.sampleSize)}두`
+              : ""}
+          </p>
         </div>
         <div className={s.chartFoot}>
           <span>

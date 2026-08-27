@@ -1,7 +1,7 @@
 "use client";
 
 import { m } from "motion/react";
-import { useRef, useState } from "react";
+import { useId, useRef, useState } from "react";
 
 import { MOTION_EASE } from "@/components/motion/tokens";
 import { useReducedMotionSafe } from "@/components/motion/useReducedMotionSafe";
@@ -43,6 +43,7 @@ export function PigMarketInfographic({
   const svgRef = useRef<SVGSVGElement | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const isReduced = useReducedMotionSafe();
+  const gradientId = `pig-market-area-${useId().replaceAll(":", "")}`;
   const firstPoint = market.points[0];
   const latestPoint = market.points.at(-1);
   if (!firstPoint || !latestPoint) return null;
@@ -139,6 +140,10 @@ export function PigMarketInfographic({
               ))}
             </div>
             <div className={s.chartCanvas}>
+              <p id="pig-market-chart-help" className={s.srOnly}>
+                그래프에 초점을 맞춘 뒤 좌우 방향키 또는 Home, End 키로 월별 값을 확인할
+                수 있습니다.
+              </p>
               <svg
                 ref={svgRef}
                 className={s.chartSvg}
@@ -146,11 +151,22 @@ export function PigMarketInfographic({
                 role="img"
                 tabIndex={0}
                 aria-labelledby="pig-market-chart-title pig-market-chart-desc"
+                aria-describedby="pig-market-chart-help"
                 onPointerMove={(event) => handleChartMove(event.clientX)}
-                onPointerLeave={() => setHoveredIndex(null)}
+                onPointerDown={(event) => handleChartMove(event.clientX)}
+                onPointerLeave={(event) => {
+                  if (event.pointerType === "mouse" && document.activeElement !== svgRef.current) {
+                    setHoveredIndex(null);
+                  }
+                }}
                 onFocus={() => setHoveredIndex(chartPoints.length - 1)}
                 onBlur={() => setHoveredIndex(null)}
                 onKeyDown={(event) => {
+                  if (event.key === "Home" || event.key === "End") {
+                    event.preventDefault();
+                    setHoveredIndex(event.key === "Home" ? 0 : chartPoints.length - 1);
+                    return;
+                  }
                   if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
                   event.preventDefault();
                   const direction = event.key === "ArrowLeft" ? -1 : 1;
@@ -174,7 +190,7 @@ export function PigMarketInfographic({
                     .join(", ")}
                 </desc>
                 <defs>
-                  <linearGradient id="pig-market-area-gradient" x1="0" y1="0" x2="0" y2="1">
+                  <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0%" stopColor="#7da4df" stopOpacity="0.28" />
                     <stop offset="100%" stopColor="#dce9f8" stopOpacity="0.03" />
                   </linearGradient>
@@ -197,7 +213,7 @@ export function PigMarketInfographic({
                 <m.path
                   className={s.chartArea}
                   d={areaPath}
-                  fill="url(#pig-market-area-gradient)"
+                  fill={`url(#${gradientId})`}
                   initial={isReduced ? false : { opacity: 0 }}
                   whileInView={{ opacity: 1 }}
                   viewport={{ once: true, amount: 0.35 }}
@@ -250,6 +266,11 @@ export function PigMarketInfographic({
                   <small>경락 {hoveredPoint.headCount.toLocaleString("ko-KR")}두</small>
                 </div>
               ) : null}
+              <p className={s.srOnly} aria-live="polite" aria-atomic="true">
+                {hoveredPoint
+                  ? `${Number(hoveredPoint.month.slice(-2))}월, ${Math.round(hoveredPoint.priceWonPerKg).toLocaleString("ko-KR")}원/kg, 경락 ${hoveredPoint.headCount.toLocaleString("ko-KR")}두`
+                  : ""}
+              </p>
             </div>
           </div>
 
