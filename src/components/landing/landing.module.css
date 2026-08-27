@@ -155,7 +155,7 @@
 }
 
 .offerCard:hover {
-  border-color: var(--ds-accent-line);
+  border-color: var(--ds-line-strong);
   box-shadow: none;
 }
 
