@@ -270,6 +270,7 @@
   grid-column: 1;
   grid-row: 2;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--ds-space-6);
   min-width: 0;
   max-width: none;
