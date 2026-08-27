@@ -68,16 +68,16 @@
 .roadNoTrack,
 .roadNoProgress {
   fill: none;
-  stroke-width: 1.5;
+  stroke-width: 2.5;
 }
 
 .roadNoTrack {
-  stroke: var(--ds-line-strong);
+  stroke: var(--ds-line);
 }
 
 .roadNoProgress {
   stroke: var(--ds-accent);
-  stroke-width: 2.5;
+  stroke-width: 3.5;
   stroke-linecap: round;
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
@@ -186,7 +186,9 @@
 
 .introSection {
   position: relative;
-  min-height: calc(100svh - var(--ds-header-h));
+  min-height: 100vh;
+  min-height: 100svh;
+  min-height: 100dvh;
   padding-block: var(--ds-section-y-tight) var(--ds-space-5);
   overflow: hidden;
   background: var(--ds-bg-muted);
