@@ -25,7 +25,10 @@ import { loadLatestWatchState } from "@/lib/verify/amend/watch-state";
 import { loadNarrativeForReport } from "@/lib/verify/narrative/cache";
 import type { NarrativeDocument } from "@/lib/verify/narrative/types";
 import { toWatchStatusView, type WatchStatusView } from "@/lib/verify/amend/watch-view";
-import { loadLatestReport } from "@/lib/verify/report/load";
+import {
+  loadLatestReport,
+  type LoadedReport,
+} from "@/lib/verify/report/load";
 import { toDemoView, type DemoView } from "@/lib/verify/report/view-model";
 import { issuerKeyForOffer } from "@/lib/verify/track-record/registry";
 import { loadTrackRecord } from "@/lib/verify/track-record/store";
@@ -38,15 +41,23 @@ interface OfferPageProps {
   readonly params: Promise<{ readonly id: string }>;
 }
 
+const loadPublishedReport = cache(
+  async (offerId: string): Promise<LoadedReport | null> => {
+    if (!isPublishedOfferId(offerId)) return null;
+    return loadLatestReport(offerId);
+  },
+);
+
 const loadOfferView = cache(async (offerId: string): Promise<DemoView | null> => {
-  if (!isPublishedOfferId(offerId)) return null;
-  return toDemoView(await loadLatestReport(offerId));
+  const loaded = await loadPublishedReport(offerId);
+  if (!loaded) return null;
+  return toDemoView(loaded);
 });
 
 const loadOfferNarrative = cache(
   async (offerId: string): Promise<NarrativeDocument | null> => {
-    if (!isPublishedOfferId(offerId)) return null;
-    const loaded = await loadLatestReport(offerId);
+    const loaded = await loadPublishedReport(offerId);
+    if (!loaded) return null;
     return loadNarrativeForReport(loaded.report, loaded.fileName);
   },
 );
