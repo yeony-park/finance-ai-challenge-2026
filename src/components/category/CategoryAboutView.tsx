@@ -43,8 +43,8 @@ export function CategoryAboutView({
     <div className={`${home.section} ${s.categorySection}`}>
       <div
         className={`${home.wrap} ${s.landingHero} ${
-          descriptionContent ? s.landingHeroWithDescription : ""
-        }`}
+          hasInlineVisuals ? s.landingHeroWithVisuals : ""
+        } ${descriptionContent ? s.landingHeroWithDescription : ""}`}
       >
         {heroImage ? (
           <div

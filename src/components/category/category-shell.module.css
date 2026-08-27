@@ -183,6 +183,13 @@
   gap: var(--ds-space-6) var(--ds-layout-gap);
   align-items: start;
 }
+
+.landingHeroWithVisuals {
+  grid-template-columns:
+    minmax(0, calc((100% - var(--ds-layout-gap)) / 2))
+    minmax(0, 1fr);
+  column-gap: var(--ds-space-6);
+}
 .landingHeroPhoto {
   position: relative;
   grid-column: 2;
@@ -199,8 +206,9 @@
 
 .landingHeroWithDescription .landingHeroPhotoWithVisuals {
   grid-column: 1;
-  min-height: 0;
-  aspect-ratio: 3 / 2;
+  height: auto;
+  min-height: clamp(18rem, 30vw, 28rem);
+  aspect-ratio: auto;
 }
 
 .landingHeroImg {
@@ -269,6 +277,13 @@
   grid-row: 2;
   display: grid;
   gap: var(--ds-space-6);
+  width: min(
+    70.625rem,
+    calc(
+      50vw - var(--ds-gutter) + clamp(1rem, 0.5rem + 2vw, 2.5rem) -
+        var(--ds-space-6)
+    )
+  );
   max-width: none;
 }
 
@@ -444,7 +459,14 @@
 
   .aboutContentWithVisuals {
     display: grid;
+    width: 100%;
     max-width: var(--ds-maxw-prose);
+  }
+
+  .landingHeroWithDescription .landingHeroPhotoWithVisuals {
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 16 / 10;
   }
 
   .aboutShortcut {
