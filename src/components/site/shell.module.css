@@ -189,9 +189,8 @@
 
 .footer {
   margin-top: auto;
-  border-top: 1px solid var(--ds-line);
   background: var(--ds-bg-muted);
-  padding-block: var(--ds-section-y-tight) var(--ds-space-7);
+  padding-block: var(--ds-space-5) var(--ds-space-7);
 }
 
 .footerGrid {
@@ -200,13 +199,8 @@
   grid-template-columns: 1fr;
 }
 
-.footerBrand {
-  font-size: var(--ds-text-md);
-  font-weight: var(--ds-weight-black);
-  letter-spacing: var(--ds-tracking-tight);
-}
 .footerTagline {
-  margin-top: var(--ds-space-2);
+  margin: 0;
   max-width: 30ch;
   color: var(--ds-ink-muted);
   font-size: var(--ds-text-sm);
@@ -225,14 +219,19 @@
 
 .disclaimer {
   margin-top: var(--ds-space-7);
-  padding-top: var(--ds-space-5);
+  padding: var(--ds-space-5) 0 0 1.2rem;
   border-top: 1px solid var(--ds-line);
   display: grid;
-  gap: var(--ds-space-3);
+  gap: var(--ds-space-1);
+  list-style: disc;
   color: var(--ds-ink-muted);
   font-size: var(--ds-text-xs);
   line-height: var(--ds-leading-relaxed);
-  max-width: 92ch;
+}
+
+.disclaimer li {
+  margin: 0;
+  padding-left: var(--ds-space-1);
 }
 .disclaimerStrong {
   color: var(--ds-ink);
@@ -255,6 +254,12 @@
   display: inline-flex;
   align-items: center;
   gap: var(--ds-space-4);
+}
+
+.colophonBrand {
+  color: var(--ds-ink);
+  font-weight: var(--ds-weight-black);
+  letter-spacing: var(--ds-tracking-tight);
 }
 
 .colophonLink,
@@ -308,20 +313,4 @@
   .nav::-webkit-scrollbar {
     display: none;
   }
-}
-
-.footerAction {
-  margin-top: var(--ds-space-3);
-  padding: 0;
-  border: none;
-  background: none;
-  cursor: pointer;
-  font-size: var(--ds-text-xs);
-  font-weight: var(--ds-weight-bold);
-  color: var(--ds-ink-invert, #fff);
-  opacity: 0.75;
-  border-bottom: 1px solid currentColor;
-}
-.footerAction:hover {
-  opacity: 1;
 }
