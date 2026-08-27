@@ -3,6 +3,11 @@ import type { SubscriptionPhase } from "@/components/site/offers";
 export const CATEGORY_TABS = ["about", "analysis"] as const;
 export type CategoryTab = (typeof CATEGORY_TABS)[number];
 
+export interface CategoryPageSearchParams {
+  readonly tab?: string | string[];
+  readonly status?: string | string[];
+}
+
 export const categoryTabFromSearchParam = (
   value: string | string[] | undefined,
 ): CategoryTab => {
@@ -18,3 +23,13 @@ export const analysisStatusFromSearchParam = (
     ? selected
     : null;
 };
+
+export const categoryPageStateFromSearchParams = (
+  params: CategoryPageSearchParams,
+): {
+  readonly activeTab: CategoryTab;
+  readonly analysisStatus: SubscriptionPhase | null;
+} => ({
+  activeTab: categoryTabFromSearchParam(params.tab),
+  analysisStatus: analysisStatusFromSearchParam(params.status),
+});

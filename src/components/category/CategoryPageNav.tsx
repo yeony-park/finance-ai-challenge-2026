@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import type { CategoryTab } from "@/lib/content/category-tabs";
 
-import s from "./category.module.css";
+import s from "./category-shell.module.css";
 
 interface CategoryPageNavProps {
   readonly title: string;

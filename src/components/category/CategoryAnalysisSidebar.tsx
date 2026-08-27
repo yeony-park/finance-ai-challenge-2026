@@ -8,7 +8,7 @@ import type { SubscriptionPhase } from "@/components/site/offers";
 import type { CategoryId } from "@/lib/content/categories";
 import { VERDICT_LABEL } from "@/lib/verify/report/view-model/labels";
 
-import s from "./category.module.css";
+import s from "./category-shell.module.css";
 
 export type AnalysisVerdict = "match" | "mismatch" | "unverifiable";
 

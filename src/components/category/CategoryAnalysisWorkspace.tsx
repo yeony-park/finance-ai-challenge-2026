@@ -10,7 +10,7 @@ import {
   type AnalysisSectionLink,
 } from "./CategoryAnalysisSidebar";
 import { CategoryPageNav } from "./CategoryPageNav";
-import s from "./category.module.css";
+import s from "./category-shell.module.css";
 
 interface CategoryAnalysisWorkspaceProps {
   readonly categoryId: CategoryId;

@@ -18,7 +18,8 @@ import {
 } from "@/lib/content/market-context";
 import type { AuctionSeriesPoint } from "@/lib/verify/reference/auction-series";
 
-import s from "./category.module.css";
+import base from "./category.module.css";
+import s from "./AuctionMarketSection.module.css";
 
 const W = 960;
 const H = 380;
@@ -142,11 +143,11 @@ export function AuctionMarketSection({
   };
 
   return (
-    <section className={`${s.slot} ${s.slotGrid}`} aria-labelledby="market-context-title">
-      <h2 id="market-context-title" className={s.slotTitle}>
+    <section className={`${base.slot} ${base.slotGrid}`} aria-labelledby="market-context-title">
+      <h2 id="market-context-title" className={base.slotTitle}>
         {MARKET_SECTION_TITLE}
       </h2>
-      <p className={s.slotLead}>{MARKET_SECTION_LEAD}</p>
+      <p className={base.slotLead}>{MARKET_SECTION_LEAD}</p>
       <div className={s.chartCard}>
         <div className={s.chartHead}>
           <span className={s.chartRange}>
