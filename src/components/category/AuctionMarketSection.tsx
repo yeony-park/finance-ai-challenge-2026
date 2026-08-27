@@ -1,7 +1,10 @@
 "use client";
 
+import { m } from "motion/react";
 import { useRef, useState } from "react";
 
+import { MOTION_EASE } from "@/components/motion/tokens";
+import { useReducedMotionSafe } from "@/components/motion/useReducedMotionSafe";
 import {
   MARKET_CHART_UNIT,
   MARKET_DISCLAIMER,
@@ -69,7 +72,8 @@ export function AuctionMarketSection({
   readonly markers?: readonly MarketMarker[];
 }) {
   const svgRef = useRef<SVGSVGElement | null>(null);
-  const [hovered, setHovered] = useState<AuctionSeriesPoint | null>(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const isReduced = useReducedMotionSafe();
 
   if (series.length < MIN_POINTS) return null;
 
@@ -124,22 +128,23 @@ export function AuctionMarketSection({
       monthOrdinal(marker.month) >= firstOrdinal &&
       monthOrdinal(marker.month) <= monthOrdinal(last.month),
   );
+  const hovered = hoveredIndex === null ? null : series[hoveredIndex];
 
   const handleMove = (clientX: number): void => {
     const svg = svgRef.current;
     if (!svg) return;
     const rect = svg.getBoundingClientRect();
     const px = ((clientX - rect.left) / rect.width) * W;
-    let best = series[0];
+    let bestIndex = 0;
     let bestDistance = Number.POSITIVE_INFINITY;
-    for (const point of series) {
+    series.forEach((point, index) => {
       const distance = Math.abs(x(point.month) - px);
       if (distance < bestDistance) {
         bestDistance = distance;
-        best = point;
+        bestIndex = index;
       }
-    }
-    setHovered(best);
+    });
+    setHoveredIndex(bestIndex);
   };
 
   return (
@@ -173,10 +178,36 @@ export function AuctionMarketSection({
             ref={svgRef}
             viewBox={`0 0 ${W} ${H}`}
             role="img"
+            tabIndex={0}
             aria-label={`${MARKET_SECTION_TITLE} 월별 추이 — ${MARKET_SECTION_LEAD}`}
-            onMouseMove={(event) => handleMove(event.clientX)}
-            onMouseLeave={() => setHovered(null)}
+            onPointerMove={(event) => handleMove(event.clientX)}
+            onPointerLeave={() => setHoveredIndex(null)}
+            onFocus={() => setHoveredIndex(series.length - 1)}
+            onBlur={() => setHoveredIndex(null)}
+            onKeyDown={(event) => {
+              if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+              event.preventDefault();
+              const direction = event.key === "ArrowLeft" ? -1 : 1;
+              setHoveredIndex((current) =>
+                Math.min(
+                  series.length - 1,
+                  Math.max(0, (current ?? series.length - 1) + direction),
+                ),
+              );
+            }}
           >
+            <defs>
+              <linearGradient
+                id="auction-market-band-gradient"
+                x1="0"
+                y1="0"
+                x2="0"
+                y2="1"
+              >
+                <stop offset="0%" stopColor="#7da4df" stopOpacity="0.28" />
+                <stop offset="100%" stopColor="#dce9f8" stopOpacity="0.06" />
+              </linearGradient>
+            </defs>
             {yTicks.map((tick) => (
               <g key={tick}>
                 <line
@@ -226,28 +257,68 @@ export function AuctionMarketSection({
                 {point.month.replace("-", ".")}
               </text>
             ))}
-            {segments.map((segment) => (
+            {segments.map((segment, segmentIndex) => (
               <g key={segment[0].month}>
-                <path className={s.chartBand} d={bandPath(segment)} />
-                <path
+                <m.path
+                  className={s.chartBand}
+                  d={bandPath(segment)}
+                  fill="url(#auction-market-band-gradient)"
+                  initial={isReduced ? false : { opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true, amount: 0.35 }}
+                  transition={{
+                    duration: 0.7,
+                    ease: MOTION_EASE,
+                    delay: segmentIndex * 0.06,
+                  }}
+                />
+                <m.path
                   className={s.chartEdgeLine}
                   d={linePath(segment, (point) => point.top)}
+                  initial={isReduced ? false : { pathLength: 0, opacity: 0 }}
+                  whileInView={{ pathLength: 1, opacity: 1 }}
+                  viewport={{ once: true, amount: 0.35 }}
+                  transition={{
+                    duration: 1,
+                    ease: MOTION_EASE,
+                    delay: 0.08 + segmentIndex * 0.06,
+                  }}
                 />
-                <path
+                <m.path
                   className={s.chartEdgeLine}
                   d={linePath(segment, (point) => point.bottom)}
+                  initial={isReduced ? false : { pathLength: 0, opacity: 0 }}
+                  whileInView={{ pathLength: 1, opacity: 1 }}
+                  viewport={{ once: true, amount: 0.35 }}
+                  transition={{
+                    duration: 1,
+                    ease: MOTION_EASE,
+                    delay: 0.12 + segmentIndex * 0.06,
+                  }}
                 />
-                <path
+                <m.path
                   className={s.chartAvgLine}
                   d={linePath(segment, (point) => point.average)}
+                  initial={isReduced ? false : { pathLength: 0, opacity: 0 }}
+                  whileInView={{ pathLength: 1, opacity: 1 }}
+                  viewport={{ once: true, amount: 0.35 }}
+                  transition={{
+                    duration: 1.15,
+                    ease: MOTION_EASE,
+                    delay: 0.16 + segmentIndex * 0.06,
+                  }}
                 />
               </g>
             ))}
-            <circle
+            <m.circle
               className={s.chartAvgDot}
               cx={x(last.month)}
               cy={y(last.average)}
               r={4}
+              initial={isReduced ? false : { opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, amount: 0.35 }}
+              transition={{ duration: 0.3, delay: 0.9 }}
             />
             <text
               className={s.chartAxisText}
@@ -271,20 +342,28 @@ export function AuctionMarketSection({
               3 {fmt(last.bottom)}
             </text>
             {hovered ? (
-              <line
-                className={s.chartCrosshair}
-                x1={x(hovered.month)}
-                x2={x(hovered.month)}
-                y1={PAD_TOP}
-                y2={PAD_TOP + INNER_H}
-              />
+              <g>
+                <line
+                  className={s.chartCrosshair}
+                  x1={x(hovered.month)}
+                  x2={x(hovered.month)}
+                  y1={PAD_TOP}
+                  y2={PAD_TOP + INNER_H}
+                />
+                <circle
+                  className={s.chartHoverDot}
+                  cx={x(hovered.month)}
+                  cy={y(hovered.average)}
+                  r={6}
+                />
+              </g>
             ) : null}
           </svg>
           {hovered ? (
             <div
               className={s.chartTooltip}
               style={{
-                left: `${(x(hovered.month) / W) * 100}%`,
+                left: `${Math.min(88, Math.max(12, (x(hovered.month) / W) * 100))}%`,
                 top: `${(y(hovered.top) / H) * 100}%`,
               }}
             >

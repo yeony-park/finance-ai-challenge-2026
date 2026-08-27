@@ -1,9 +1,12 @@
 .chartCard {
+  --market-chart-blue: #4f7fc8;
+  --market-chart-blue-soft: #aac4e9;
+
   padding: 1.5rem 1.65rem 1.1rem;
-  border: 1px solid var(--ds-line);
-  border-radius: var(--ds-radius-lg);
-  background: var(--ds-surface);
-  box-shadow: var(--ds-shadow-sm);
+  border: 1px solid var(--ds-line-soft);
+  border-radius: var(--ds-radius-xl);
+  background: linear-gradient(180deg, var(--ds-surface) 0%, #fbfcfe 100%);
+  box-shadow: var(--ds-shadow-md);
 }
 
 .chartHead {
@@ -36,19 +39,19 @@
 
 .chartKeyAvg {
   width: 16px;
-  border-top: 2.5px solid var(--ds-ink);
+  border-top: 2.5px solid var(--market-chart-blue);
 }
 
 .chartKeyEdge {
   width: 16px;
-  border-top: 1.5px solid var(--ds-chart-edge);
+  border-top: 1.5px solid var(--market-chart-blue-soft);
 }
 
 .chartKeyBand {
   width: 16px;
   height: 10px;
   border-radius: 2px;
-  background: var(--ds-chart-band);
+  background: rgb(125 164 223 / 0.18);
 }
 
 .chartWrap {
@@ -60,11 +63,18 @@
   display: block;
   width: 100%;
   height: auto;
+  border-radius: var(--ds-radius-md);
+  cursor: crosshair;
+}
+
+.chartWrap svg:focus-visible {
+  box-shadow: var(--ds-focus-ring);
 }
 
 .chartGridLine {
   stroke: var(--ds-line);
   stroke-width: 1;
+  stroke-dasharray: 3 7;
 }
 
 .chartAxisText {
@@ -81,31 +91,42 @@
 }
 
 .chartBand {
-  fill: var(--ds-chart-band);
+  opacity: 0.9;
 }
 
 .chartEdgeLine {
   fill: none;
-  stroke: var(--ds-chart-edge);
+  stroke: var(--market-chart-blue-soft);
   stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .chartAvgLine {
   fill: none;
-  stroke: var(--ds-ink);
-  stroke-width: 2.5;
+  stroke: var(--market-chart-blue);
+  stroke-width: 3;
   stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .chartAvgDot {
-  fill: var(--ds-ink);
+  fill: var(--market-chart-blue);
+  stroke: var(--ds-surface);
+  stroke-width: 2;
 }
 
 .chartCrosshair {
-  stroke: var(--ds-ink);
+  stroke: var(--market-chart-blue);
   stroke-width: 1;
   stroke-dasharray: 3 3;
-  opacity: 0.35;
+  opacity: 0.5;
+}
+
+.chartHoverDot {
+  fill: var(--ds-surface);
+  stroke: var(--market-chart-blue);
+  stroke-width: 3;
 }
 
 .chartTooltip {
