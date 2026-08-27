@@ -268,7 +268,7 @@
   padding-bottom: 0.2rem;
   border-bottom: 2px solid var(--ds-accent);
   color: var(--ds-ink);
-  font-size: var(--ds-text-md);
+  font-size: var(--ds-text-base);
   font-weight: var(--ds-weight-bold);
   text-decoration: none;
   transition: gap var(--ds-duration-base) var(--ds-ease);
