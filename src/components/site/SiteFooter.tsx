@@ -8,7 +8,7 @@ const GITHUB_REPOSITORY_URL =
   "https://github.com/yeony-park/finance-ai-challenge-2026";
 
 export function SiteFooter() {
-  const [primaryNotice, ...remainingNotices] = FIXED_NOTICES;
+  const [primaryNotice] = FIXED_NOTICES;
 
   return (
     <footer className={s.footer}>
@@ -45,20 +45,20 @@ export function SiteFooter() {
             <span className={s.disclaimerStrong}>{primaryNotice}</span>
           </li>
           <li>
+            <span className={s.disclaimerStrong}>
+              자료가 부족하다는 사실 자체는 부정적 판단의 근거가 아닙니다.
+            </span>
+          </li>
+          <li>
             대조 결과가 &ldquo;원장 불일치&rdquo;라는 것은 해당 시점의 공개 기록과 값이
-            다르다는 사실만을 뜻하며, 그 원인이나 의도를 단정하지 않습니다.{" "}
-            <span className={s.disclaimerStrong}>자료가 부족하다는 사실 자체는 부정적 판단의
-            근거가 아닙니다.</span> 판정 기준과 한계는{" "}
+            다르다는 사실만을 뜻하며, 그 원인이나 의도를 단정하지 않습니다.
+          </li>
+          <li>
+            판정 기준과 한계는{" "}
             <Link href="/methodology" className={s.footerLink}>
               검증 방법
             </Link>
             에서 확인할 수 있습니다.
-          </li>
-          {remainingNotices.map((notice) => (
-            <li key={notice}>{notice}</li>
-          ))}
-          <li>
-            화면에 표시되는 발행사명·이력번호·소재지는 익명화 처리된 상태입니다.
           </li>
         </ul>
 
