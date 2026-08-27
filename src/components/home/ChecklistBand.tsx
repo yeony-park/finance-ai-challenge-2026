@@ -49,7 +49,7 @@ export function ChecklistBand() {
           {items.map((item) => (
             <details key={item.id} className={s.checkItem}>
               <summary>
-                {item.title}
+                <span className={s.checkSummaryText}>{item.title}</span>
                 {item.id === profile.concern ? (
                   <span className={tags.checkTag}>{CONCERN_TAG}</span>
                 ) : null}
