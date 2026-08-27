@@ -23,6 +23,10 @@
 # misc
 .DS_Store
 *.pem
+__pycache__/
+*.py[cod]
+/.flow-transfer/
+/.ouroboros/
 
 # debug
 npm-debug.log*
