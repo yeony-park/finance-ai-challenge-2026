@@ -37,8 +37,8 @@
 }
 
 .sectionTitle {
-  font-size: var(--ds-heading-h3);
-  font-weight: var(--ds-weight-black);
+  font-size: var(--ds-section-title);
+  font-weight: var(--ds-weight-bold);
   letter-spacing: var(--ds-tracking-tight);
   color: var(--ds-ink);
   margin: var(--ds-space-2) 0 0;

@@ -80,7 +80,7 @@ export function CategoryAnalysisView({
           {model.trackRecord ? (
             <section className={base.slot} aria-label={ISSUER_SLOT_TITLE}>
               <Reveal>
-                <TrackRecordCard card={model.trackRecord} />
+                <TrackRecordCard card={model.trackRecord} sectionTitle />
               </Reveal>
             </section>
           ) : null}

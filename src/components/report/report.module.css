@@ -770,6 +770,12 @@
   line-height: var(--ds-leading-snug);
   word-break: keep-all;
 }
+.trackSectionTitle {
+  font-size: var(--ds-section-title);
+  font-weight: var(--ds-weight-bold);
+  line-height: var(--ds-leading-tight);
+  letter-spacing: var(--ds-tracking-tight);
+}
 .trackLead {
   margin-top: var(--ds-space-2);
   font-size: var(--ds-text-sm);

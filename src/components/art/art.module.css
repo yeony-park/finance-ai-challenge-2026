@@ -325,7 +325,7 @@
 
 .factLabel {
   font-size: var(--ds-text-md);
-  font-weight: var(--ds-weight-black);
+  font-weight: var(--ds-weight-bold);
   letter-spacing: var(--ds-tracking-tight);
 }
 
@@ -477,8 +477,8 @@
 
 .subhead {
   margin: 0 0 var(--ds-space-2);
-  font-size: var(--ds-heading-h3);
-  font-weight: var(--ds-weight-black);
+  font-size: var(--ds-section-title);
+  font-weight: var(--ds-weight-bold);
   letter-spacing: var(--ds-tracking-tight);
 }
 

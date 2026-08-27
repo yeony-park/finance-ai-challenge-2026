@@ -61,10 +61,10 @@
 | 인용 | Noto Serif KR | 400 · 600 · 700 | `/methodology` 인용 1곳뿐 |
 | 메타 | IBM Plex Mono | 400 · 500 | 출처 · 시각 · rcpNo · 라벨 |
 
-- 본문 기본값 `--ds-text-base` = 17px, 행간 1.62, 자간 -0.015em
+- 본문 기본값 `--ds-text-base` = 16px, 행간 1.62, 자간 -0.015em
 - 제목은 전부 자간 -0.03em + 행간 1.22. 히어로 제목만 -0.045em으로 더 조인다
-- 제목 스케일은 `clamp()` 반응형 — h1 36→48px, h2 26→34px, h3 22→26px
-- 섹션 제목은 `weight-black(900)`, 카드 제목은 `weight-bold(700)`
+- 제목 스케일은 `clamp()` 반응형 — h1 36→48px, h2 26→34px, h3 20→24px
+- 섹션 제목은 `--ds-section-title`(`h3`, 20→24px) + `weight-bold(700)`, 카드 제목도 `weight-bold(700)`
 - 한국어 본문은 전부 `word-break: keep-all`
 
 ### 간격 · 형태

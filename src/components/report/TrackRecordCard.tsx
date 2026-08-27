@@ -6,18 +6,25 @@ import s from "./report.module.css";
 
 export function TrackRecordCard({
   card,
+  sectionTitle = false,
 }: {
   readonly card: TrackRecordCardView;
+  readonly sectionTitle?: boolean;
 }) {
+  const Title = sectionTitle ? "h2" : "h3";
+
   return (
     <section
       className={s.trackCard}
       aria-labelledby={TRACK_RECORD_HEADING_ID}
     >
       <header className={s.trackHead}>
-        <h3 id={TRACK_RECORD_HEADING_ID} className={s.trackTitle}>
+        <Title
+          id={TRACK_RECORD_HEADING_ID}
+          className={`${s.trackTitle} ${sectionTitle ? s.trackSectionTitle : ""}`}
+        >
           {card.title}
-        </h3>
+        </Title>
         <p className={s.trackLead}>{card.lead}</p>
       </header>
 
