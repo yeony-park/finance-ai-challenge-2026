@@ -18,7 +18,7 @@
 .eyebrow {
   grid-column: 1 / -1;
   font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
+  font-size: var(--ds-heading-h5);
   letter-spacing: var(--ds-tracking-wide);
   text-transform: uppercase;
   color: var(--ds-ink-faint);
@@ -108,13 +108,20 @@
   border-radius: var(--ds-radius-panel);
   background: var(--ds-surface);
   color: var(--ds-ink-muted);
-  font-size: var(--ds-text-md);
   line-height: var(--ds-leading-relaxed);
   word-break: keep-all;
 }
-.stepItem strong {
+.stepTitle {
+  margin: 0 0 var(--ds-space-2);
+  font-size: var(--ds-heading-h3);
   color: var(--ds-ink);
   font-weight: var(--ds-weight-bold);
+  letter-spacing: var(--ds-tracking-snug);
+  line-height: var(--ds-leading-snug);
+}
+.stepDescription {
+  margin: 0;
+  font-size: var(--ds-text-md);
 }
 .stepItem::before {
   counter-increment: step;
@@ -130,7 +137,7 @@
   border: 1px solid var(--ds-line-strong);
   border-radius: 50%;
   font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
+  font-size: var(--ds-heading-h5);
   font-weight: var(--ds-weight-bold);
   color: var(--ds-ink);
 }
@@ -159,18 +166,18 @@
   padding: 0;
   background: transparent;
   font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
+  font-size: var(--ds-heading-h5);
   color: var(--ds-ink-faint);
 }
 .layerTitle {
-  font-size: var(--ds-text-lg);
+  font-size: var(--ds-heading-h3);
   font-weight: var(--ds-weight-bold);
   letter-spacing: var(--ds-tracking-snug);
   word-break: keep-all;
 }
 .layerNote {
   font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
+  font-size: var(--ds-heading-h5);
   color: var(--ds-ink-faint);
   line-height: 1.7;
 }
@@ -201,7 +208,7 @@
 }
 .table thead th {
   font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
+  font-size: var(--ds-heading-h5);
   letter-spacing: var(--ds-tracking-wide);
   text-transform: uppercase;
   color: var(--ds-ink-faint);
@@ -241,7 +248,7 @@
   background: var(--ds-verdict-unknown-soft);
 }
 .verdictTerm {
-  font-size: var(--ds-text-md);
+  font-size: var(--ds-heading-h4);
   font-weight: var(--ds-weight-bold);
   letter-spacing: var(--ds-tracking-snug);
   word-break: keep-all;
@@ -268,7 +275,7 @@
   background: var(--ds-surface);
 }
 .ruleTerm {
-  font-size: var(--ds-text-md);
+  font-size: var(--ds-heading-h4);
   font-weight: var(--ds-weight-bold);
   word-break: keep-all;
 }
@@ -308,7 +315,7 @@
 }
 
 .statLabel {
-  font-size: var(--ds-text-xs);
+  font-size: var(--ds-heading-h5);
   color: var(--ds-ink-muted);
   line-height: var(--ds-leading-snug);
   word-break: keep-all;
