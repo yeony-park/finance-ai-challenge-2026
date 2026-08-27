@@ -6,7 +6,7 @@
 }
 
 .section {
-  padding-block: var(--ds-section-y-tight);
+  padding-block: clamp(2rem, 1.5rem + 2vw, 3.5rem);
 }
 
 .sectionMuted {
@@ -35,7 +35,7 @@
 }
 
 .hero {
-  padding-block: clamp(4.5rem, 3rem + 6vw, 9rem) var(--ds-section-y-tight);
+  padding-block: clamp(3.5rem, 2.5rem + 4vw, 7rem) clamp(2.5rem, 2rem + 2vw, 4rem);
   border-bottom: 1px solid var(--ds-line);
 }
 
@@ -74,15 +74,51 @@
   font-variant-numeric: tabular-nums;
 }
 
-.groupTitle {
-  margin-bottom: var(--ds-space-7);
+.offerTabs {
+  display: flex;
+  align-items: end;
+  gap: var(--ds-space-5);
+  border-bottom: 1px solid var(--ds-line);
+}
+
+.offerTab {
+  position: relative;
+  min-height: var(--ds-control-h-sm);
+  padding: 0 var(--ds-space-1);
+  border: 0;
+  background: transparent;
+  color: var(--ds-ink-faint);
+  font: inherit;
+  font-size: var(--ds-text-lg);
+  font-weight: var(--ds-weight-medium);
+  cursor: pointer;
+}
+
+.offerTab::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 3px;
+  background: transparent;
+}
+
+.offerTab:hover {
+  color: var(--ds-ink);
+}
+
+.offerTabActive {
+  color: var(--ds-ink);
+  font-weight: var(--ds-weight-bold);
+}
+
+.offerTabActive::after {
+  background: var(--ds-accent);
+}
+
+.offerPanel {
   padding-top: var(--ds-space-5);
-  border-top: 1px solid var(--ds-line);
-  font-size: var(--ds-heading-h2);
-  font-weight: var(--ds-weight-black);
-  letter-spacing: var(--ds-tracking-tight);
-  line-height: var(--ds-leading-tight);
-  word-break: keep-all;
 }
 
 .offerGrid {
@@ -106,9 +142,9 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--ds-space-4);
+  gap: var(--ds-space-3);
   height: 100%;
-  padding: clamp(1.125rem, 0.9rem + 1.2vw, 1.75rem);
+  padding: clamp(1rem, 0.85rem + 0.6vw, 1.25rem);
   border: 1px solid var(--ds-line);
   border-radius: var(--ds-radius-panel);
   background: var(--ds-surface);
@@ -171,7 +207,7 @@
 }
 
 .schedule {
-  margin-top: calc(var(--ds-space-3) * -1);
+  margin-top: calc(var(--ds-space-2) * -1);
   font-family: var(--ds-font-mono);
   font-size: var(--ds-text-2xs);
   color: var(--ds-ink-muted);
@@ -179,11 +215,11 @@
 }
 
 .offerVerdict {
-  padding-top: var(--ds-space-4);
+  padding-top: var(--ds-space-3);
   border-top: 1px solid var(--ds-line);
   color: var(--ds-ink);
-  font-size: var(--ds-text-base);
-  line-height: var(--ds-leading-relaxed);
+  font-size: var(--ds-text-sm);
+  line-height: var(--ds-leading-normal);
   word-break: keep-all;
 }
 
@@ -196,8 +232,8 @@
 .tallyInlineItem {
   display: inline-flex;
   align-items: baseline;
-  gap: 0.35rem;
-  padding: 0.3rem 0.6rem;
+  gap: var(--ds-space-1);
+  padding: 0.2rem var(--ds-space-2);
   border-radius: var(--ds-radius-pill);
   border: 1px solid var(--ds-line);
   background: var(--ds-bg-muted);
@@ -215,12 +251,12 @@
 
 .offerMeta {
   margin-top: auto;
-  padding-top: var(--ds-space-4);
+  padding-top: var(--ds-space-3);
   border-top: 1px solid var(--ds-line);
   font-family: var(--ds-font-mono);
   font-size: var(--ds-text-2xs);
   color: var(--ds-ink-faint);
-  line-height: 1.75;
+  line-height: 1.5;
 }
 
 .offerFlags {
@@ -247,8 +283,8 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--ds-space-3);
-  margin-top: calc(var(--ds-space-3) * -1);
+  gap: var(--ds-space-2);
+  margin-top: calc(var(--ds-space-2) * -1);
 }
 
 .watchStatus {
@@ -257,7 +293,7 @@
   font-family: var(--ds-font-mono);
   font-size: var(--ds-text-2xs);
   color: var(--ds-ink-faint);
-  line-height: 1.75;
+  line-height: 1.5;
   word-break: keep-all;
 }
 
@@ -275,8 +311,8 @@
   display: inline-flex;
   align-items: center;
   margin-left: auto;
-  min-height: var(--ds-control-h-sm);
-  padding: 0.35rem 0.85rem;
+  min-height: 2rem;
+  padding: 0.25rem 0.65rem;
   border: 1px solid var(--ds-line-strong);
   border-radius: var(--ds-radius-pill);
   background: var(--ds-surface);
@@ -308,7 +344,7 @@
   display: inline-flex;
   align-items: center;
   gap: var(--ds-space-2);
-  font-size: var(--ds-text-sm);
+  font-size: var(--ds-text-xs);
   font-weight: var(--ds-weight-bold);
   color: var(--ds-ink);
   text-decoration: none;
@@ -337,6 +373,13 @@
 
 .offerCard:hover .offerLink {
   gap: 0.65rem;
+}
+
+.emptyState {
+  margin: 0;
+  padding: var(--ds-space-7) 0;
+  color: var(--ds-ink-muted);
+  font-size: var(--ds-text-sm);
 }
 
 .arrow {

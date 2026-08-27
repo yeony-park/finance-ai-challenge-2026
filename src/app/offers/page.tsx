@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { HeroSection } from "@/components/landing/HeroSection";
-import { OfferListSection } from "@/components/landing/OfferListSection";
+import { OfferTabs } from "@/components/landing/OfferTabs";
 import { OFFERS, TOTAL_2026_OFFER_COUNT } from "@/components/site/offers";
 import { loadLatestWatchState } from "@/lib/verify/amend/watch-state";
 import { loadLatestReport } from "@/lib/verify/report/load";
@@ -44,8 +44,11 @@ export default async function OffersPage() {
     }),
   );
 
+  const upcoming = cards
+    .filter((card) => card.schedule.phase === "upcoming")
+    .toSorted(byCloseAsc);
   const open = cards
-    .filter((card) => card.schedule.phase !== "closed")
+    .filter((card) => card.schedule.phase === "open")
     .toSorted(byCloseAsc);
   const closed = cards
     .filter((card) => card.schedule.phase === "closed")
@@ -59,8 +62,7 @@ export default async function OffersPage() {
           OFFERS.filter((offer) => !isCohort2026(offer.subscription.closesAt)).length,
         )}
       />
-      <OfferListSection id="open-offers" title="청약 예정·진행 중" cards={open} isMuted />
-      <OfferListSection id="closed-offers" title="청약 종료 · 사후 검증" cards={closed} />
+      <OfferTabs upcoming={upcoming} open={open} closed={closed} />
     </>
   );
 }
