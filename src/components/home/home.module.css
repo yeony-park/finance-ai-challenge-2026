@@ -19,7 +19,7 @@
 }
 
 .heroTitle {
-  font-size: var(--ds-display);
+  font-size: var(--ds-heading-h1);
   font-weight: var(--ds-weight-bold);
   line-height: 1.16;
   letter-spacing: -0.045em;
@@ -131,7 +131,7 @@
     var(--ds-ink) var(--home-title-ink, 0%),
     var(--ds-ink-invert)
   );
-  font-size: clamp(2.8rem, 2.4vw + 1rem, 3.75rem);
+  font-size: var(--ds-heading-h1);
   line-height: 1.08;
   transform: translateY(-50%);
   will-change: color, grid-template-columns, column-gap;
@@ -258,7 +258,7 @@
       auto;
     row-gap: var(--home-title-gap, 0px);
     padding-inline: 0;
-    font-size: clamp(2rem, 8.5vw, 2.5rem);
+    font-size: var(--ds-heading-h1);
     text-align: center;
   }
 
@@ -439,7 +439,7 @@
 }
 
 .panelTitle {
-  font-size: var(--ds-title-sm);
+  font-size: var(--ds-heading-h3);
   font-weight: var(--ds-weight-bold);
   letter-spacing: var(--ds-tracking-snug);
   line-height: var(--ds-leading-snug);
@@ -481,7 +481,7 @@
 }
 
 .sectionTitle {
-  font-size: var(--ds-title-lg);
+  font-size: var(--ds-heading-h2);
   font-weight: var(--ds-weight-black);
   letter-spacing: var(--ds-tracking-tight);
   line-height: var(--ds-leading-tight);
@@ -559,7 +559,7 @@
 
 
 .cardTitle {
-  font-size: var(--ds-title-sm);
+  font-size: var(--ds-heading-h3);
   font-weight: var(--ds-weight-bold);
   letter-spacing: var(--ds-tracking-snug);
   line-height: var(--ds-leading-snug);
@@ -744,7 +744,7 @@
 
 .categoryLabel {
   margin: 0;
-  font-size: var(--ds-title-lg);
+  font-size: var(--ds-heading-h3);
   font-weight: var(--ds-weight-bold);
   letter-spacing: var(--ds-tracking-tight);
   color: var(--ds-ink);
@@ -796,10 +796,6 @@
     gap: var(--ds-space-3);
   }
 
-  .sectionTitleRow .sectionTitle {
-    font-size: 1.5rem;
-  }
-
   .sectionAllReports {
     font-size: var(--ds-text-xs);
   }
@@ -810,10 +806,6 @@
 
   .categoryBody {
     padding-top: var(--ds-space-3);
-  }
-
-  .categoryLabel {
-    font-size: var(--ds-title-md);
   }
 
   .categoryNote {
@@ -949,11 +941,10 @@
   padding: 0 0 var(--ds-space-2);
   list-style: none;
   display: flex;
-  gap: var(--ds-space-5);
-  overflow-x: auto;
+  gap: var(--ds-space-3);
+  overflow-x: hidden;
   overscroll-behavior-inline: contain;
   scroll-padding-inline: 0;
-  scroll-snap-type: x mandatory;
   scrollbar-width: none;
 }
 
@@ -963,57 +954,144 @@
 .roadStep {
   position: relative;
   display: flex;
-  flex: 0 0 clamp(20rem, 42vw, 36rem);
+  flex: 1 1 0;
+  min-width: 7.5rem;
   height: clamp(27rem, 58svh, 34rem);
-  min-height: 0;
   flex-direction: column;
   gap: var(--ds-space-5);
   align-items: flex-start;
-  padding: var(--ds-space-5);
-  border: 1px solid var(--ds-line);
-  border-radius: var(--ds-radius-panel);
-  background: color-mix(in srgb, var(--ds-surface) 52%, var(--ds-bg-muted));
-  opacity: 0.72;
-  overflow-y: auto;
-  scroll-snap-align: start;
+  padding: var(--ds-space-6);
+  border: 1px solid transparent;
+  border-radius: clamp(1.75rem, 2.5vw, 2.75rem);
+  background: color-mix(in srgb, var(--ds-surface) 38%, var(--ds-bg-muted));
+  opacity: 0.78;
+  overflow: hidden;
   transition:
+    flex-grow 650ms var(--ds-ease),
+    min-width 650ms var(--ds-ease),
     background-color var(--ds-duration-slow) var(--ds-ease),
     border-color var(--ds-duration-slow) var(--ds-ease),
     opacity var(--ds-duration-slow) var(--ds-ease);
 }
 
 .roadStepActive {
+  flex-grow: 3;
+  min-width: clamp(26rem, 42vw, 38rem);
   border-color: var(--ds-line-strong);
   background: var(--ds-surface);
   opacity: 1;
 }
 .roadNo {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.3rem;
-  height: 2.3rem;
-  border: 1px solid var(--ds-line-strong);
-  border-radius: var(--ds-radius-sm);
-  background: var(--ds-surface);
+  width: 3rem;
+  height: 3rem;
+  flex: 0 0 auto;
   font-family: var(--ds-font-mono);
   font-size: var(--ds-text-xs);
   font-weight: var(--ds-weight-bold);
   color: var(--ds-ink);
 }
-.roadBody {
-  display: grid;
-  gap: var(--ds-space-2);
-  max-width: none;
+
+.roadNoRing {
+  position: absolute;
+  inset: 0;
+  width: 100%;
   height: 100%;
+  overflow: visible;
+}
+
+.roadNoTrack,
+.roadNoProgress {
+  fill: none;
+  stroke-width: 1.5;
+}
+
+.roadNoTrack {
+  stroke: var(--ds-line-strong);
+}
+
+.roadNoProgress {
+  stroke: var(--ds-ink);
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transform: rotate(-90deg);
+  transform-origin: center;
+}
+
+.roadStepActive .roadNoProgress {
+  animation: roadProgressClockwise var(--road-auto-duration) linear forwards;
+}
+
+.roadNoLabel {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes roadProgressClockwise {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.roadBody {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--ds-space-3);
+  max-width: none;
 }
 
 .roadStep .cardTitle {
-  font-size: clamp(1.125rem, 1rem + 0.5vw, 1.35rem);
+  font-size: var(--ds-heading-h3);
+  transition: margin-top 500ms var(--ds-ease);
 }
 
-.roadBody .bandLink {
+.roadStep:not(.roadStepActive) .cardTitle {
   margin-top: auto;
+}
+
+.roadDetails {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--ds-space-2);
+  overflow-y: auto;
+  opacity: 1;
+  transition: opacity var(--ds-duration-slow) var(--ds-ease);
+}
+
+.roadStep:not(.roadStepActive) .roadDetails {
+  height: 0;
+  flex: 0;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.roadDetails .bandLink {
+  margin-top: auto;
+}
+
+.roadStepSelect {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  cursor: pointer;
+}
+
+.roadStepSelect:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--ds-accent);
 }
 
 .introSection {
@@ -1061,6 +1139,21 @@
   letter-spacing: var(--ds-tracking-wide);
 }
 
+@media (max-width: 980px) {
+  .roadmap {
+    gap: var(--ds-space-4);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+  }
+
+  .roadStep,
+  .roadStepActive {
+    flex: 0 0 min(82vw, 30rem);
+    min-width: min(82vw, 30rem);
+    scroll-snap-align: center;
+  }
+}
+
 @media (max-width: 760px) {
   .sectionHead {
     grid-template-columns: 1fr;
@@ -1074,7 +1167,15 @@
 
   .roadStep {
     flex-basis: min(88vw, 30rem);
+    min-width: min(88vw, 30rem);
     height: min(32rem, calc(100svh - 12rem));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .roadStepActive .roadNoProgress {
+    animation: none;
+    stroke-dashoffset: 0;
   }
 }
 
@@ -1099,7 +1200,7 @@
 }
 .obDialogTitle {
   margin: 0 0 var(--ds-space-2);
-  font-size: var(--ds-title-md);
+  font-size: var(--ds-heading-h2);
   font-weight: var(--ds-weight-black);
   letter-spacing: var(--ds-tracking-tight);
   word-break: keep-all;
