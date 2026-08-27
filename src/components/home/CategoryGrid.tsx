@@ -34,8 +34,8 @@ export function CategoryGrid() {
             </Link>
           </div>
           <p className={s.sectionLead}>
-            미술품·한우·한돈·부동산을 같은 기준으로 확인하고, 근거가 없으면 “대조
-            불가”로 남깁니다.
+            미술품·한우·한돈·부동산의 공시 내용을 공공 원장과 공식 자료로 항목별
+            대조하고, 확인 근거가 없으면 “대조 불가”로 표시합니다.
           </p>
         </header>
         <Reveal>
@@ -70,7 +70,11 @@ export function CategoryGrid() {
                       <span className={s.checkTag}>{INTEREST_TAG}</span>
                     ) : null}
                   </h3>
-                  <p className={s.categoryNote}>{entry.note}</p>
+                  <p className={s.categoryNote}>
+                    {entry.cardNote.map((line) => (
+                      <span key={line}>{line}</span>
+                    ))}
+                  </p>
                   <Link href={entry.href} className={s.categoryReportLink}>
                     검증 리포트 보기 <span aria-hidden="true">→</span>
                   </Link>

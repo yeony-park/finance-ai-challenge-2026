@@ -10,7 +10,8 @@ export interface HeroTitlePart {
 export const HOME_HERO_TITLE_PARTS: readonly HeroTitlePart[] = [
   { text: "조각투자, " },
   { text: "무엇을", isMark: true },
-  { text: " 확인해야 할까요?" },
+  { text: " 확인", isMark: true },
+  { text: "해야 할까요?" },
 ];
 
 export const HOME_HERO_TITLE = HOME_HERO_TITLE_PARTS.map(
@@ -36,9 +37,9 @@ export const HERO_CHIP_LABELS: readonly string[] = [
 ];
 
 export const AI_ROLE_SENTENCE =
-  "AI가 신고서에서 검증 가능한 주장을 추출하고, 규칙 엔진이 같은 원문을 독립적으로 읽어 교차검증합니다 — 두 경로가 일치할 때만 판정이 성립합니다.";
+  "AI가 신고서에서 확인할 항목을 찾으면, 규칙 엔진이 같은 원문을 다시 읽어 결과를 확인합니다. 두 결과가 일치한 경우에만 판정으로 표시합니다.";
 
-export const SEARCH_PLACEHOLDER = "궁금한 것을 적어 보세요 — 예: 예금자보호가 되나요?";
+export const SEARCH_PLACEHOLDER = "궁금한 것을 질문하세요";
 
 export type GuideTarget = "intro" | "protection" | "lifecycle" | "checklist";
 
@@ -56,7 +57,7 @@ export const EXAMPLE_QUESTIONS: readonly ExampleQuestion[] = [
   { label: "공시가 실제와 다르면요?", target: "reports" },
 ];
 
-export const FOLLOW_UP_LABEL = "이어서 볼 만한 질문";
+export const FOLLOW_UP_LABEL = "추가 질문";
 
 export type FollowUpKey = GuideTarget | "reports" | "category";
 
@@ -113,6 +114,7 @@ export const INTRO_CARDS: readonly IntroCard[] = [
     title: "조각투자는 실물 자산의 증권입니다",
     body: [
       "한우·한돈·미술품·부동산 같은 실물 자산에서 나오는 수익에 대한 권리를 증권으로 쪼개 공모하는 구조입니다.",
+      "이처럼 블록체인 기반으로 발행하는 증권을 토큰증권(STO)이라고 부릅니다.",
       "투자계약증권은 증권신고서 제출 의무가 있어, 상품의 조건이 전자공시(DART)에 문서로 남습니다.",
       "그래서 확인은 문서와 공공 원장의 대조로 할 수 있습니다.",
     ],
@@ -140,7 +142,7 @@ export const INTRO_CARDS: readonly IntroCard[] = [
   },
   {
     id: "lifecycle",
-    title: "청약으로 들어가고, 파는 길은 상품마다 다릅니다",
+    title: "청약으로 들어가고, 판매 구조는 상품마다 다릅니다",
     body: [
       "공모 청약으로 시작해 운용 기간을 거쳐 자산 매각·정산으로 끝나는 흐름이 일반적입니다.",
       "주식과 달리 상시 유통시장이 없을 수 있어, 보유 중 매각 경로와 시점은 상품 구조마다 다릅니다.",

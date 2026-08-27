@@ -47,7 +47,18 @@ const HERO_FRAME_MOBILE_MAX_WIDTH = 420;
 const HERO_FRAME_GAP = 24;
 const HERO_FRAME_ASPECT_RATIO = 16 / 9;
 const HERO_SHRINK_SCROLL_DISTANCE = 120;
-const HOME_SCROLL_STAGE_LOCK_MS = 900;
+const STAGE_SNAP_DURATION_MS = 440;
+const WHEEL_SETTLE_MS = 220;
+
+interface SettledHeroFrame {
+  readonly width: number;
+  readonly height: number;
+  readonly centerY: number;
+  readonly containerWidth: number;
+  readonly containerHeight: number;
+}
+
+const easeOutCubic = (progress: number): number => 1 - Math.pow(1 - progress, 3);
 
 function ScaffoldPanel({ match }: { readonly match: ScaffoldMatch }) {
   if (match.kind === "guide") {
@@ -70,7 +81,7 @@ function ScaffoldPanel({ match }: { readonly match: ScaffoldMatch }) {
         </ul>
         {match.target === "checklist" ? (
           <Link href="#checklist" className={s.panelLink}>
-            확인 질문 8가지 보기
+            확인 질문 8가지 보기 <span aria-hidden="true">→</span>
           </Link>
         ) : null}
       </div>
@@ -87,7 +98,7 @@ function ScaffoldPanel({ match }: { readonly match: ScaffoldMatch }) {
           <p>{entry.note}</p>
         </div>
         <Link href={entry.href} className={s.panelLink}>
-          {entry.label} 확인 현황 보기
+          {entry.label} 확인 현황 보기 <span aria-hidden="true">→</span>
         </Link>
       </div>
     );
@@ -104,7 +115,7 @@ function ScaffoldPanel({ match }: { readonly match: ScaffoldMatch }) {
           </p>
         </div>
         <Link href="/offers" className={s.panelLink}>
-          검증 리포트 목록 보기
+          검증 리포트 보기 <span aria-hidden="true">→</span>
         </Link>
       </div>
     );
@@ -137,6 +148,9 @@ export function HomeHero() {
   const [query, setQuery] = useState("");
   const [match, setMatch] = useState<ScaffoldMatch | null>(null);
   const [activeChip, setActiveChip] = useState<string | null>(null);
+  const [isSearchClosing, setIsSearchClosing] = useState(false);
+  const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false);
+  const [isTitleSplit, setIsTitleSplit] = useState(false);
   const visualRef = useRef<HTMLElement>(null);
   const visualFrameRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -144,9 +158,13 @@ export function HomeHero() {
   const titlePrefixRef = useRef<HTMLSpanElement>(null);
   const titleQuestionRef = useRef<HTMLSpanElement>(null);
   const scaffoldRef = useRef<HTMLDivElement>(null);
+  const titleSplitRef = useRef(false);
+  const settledFrameRef = useRef<SettledHeroFrame | null>(null);
+  const isSearchOpen = match !== null || isSearchClosing;
 
   useEffect(() => {
     let frameId = 0;
+    let stickyElement: HTMLElement | null = null;
 
     const updateVisual = () => {
       frameId = 0;
@@ -170,11 +188,17 @@ export function HomeHero() {
         !sticky
       ) return;
 
+      stickyElement = sticky;
+
       const scrollOffset = Math.max(-visual.getBoundingClientRect().top, 0);
-      const imageProgress = Math.min(
-        scrollOffset / HERO_SHRINK_SCROLL_DISTANCE,
-        1,
-      );
+      const imageProgress = match
+        ? 1
+        : Math.min(scrollOffset / HERO_SHRINK_SCROLL_DISTANCE, 1);
+      const nextTitleSplit = !match && imageProgress > 0.03;
+      if (titleSplitRef.current !== nextTitleSplit) {
+        titleSplitRef.current = nextTitleSplit;
+        setIsTitleSplit(nextTitleSplit);
+      }
       const prefixRect = titlePrefix.getBoundingClientRect();
       const questionRect = titleQuestion.getBoundingClientRect();
       const viewportWidth = document.documentElement.clientWidth;
@@ -200,10 +224,34 @@ export function HomeHero() {
       const startCenterY = startHeight / 2;
       const titleTop = Number.parseFloat(window.getComputedStyle(title).top);
       const targetCenterY = Number.isFinite(titleTop) ? titleTop : startCenterY;
-      const currentWidth = startWidth + (targetWidth - startWidth) * imageProgress;
-      const currentHeight = startHeight + (targetHeight - startHeight) * imageProgress;
-      const currentCenterY =
-        startCenterY + (targetCenterY - startCenterY) * imageProgress;
+      const isImageSettled = imageProgress === 1;
+      const settledFrame = settledFrameRef.current;
+      const hasCurrentSettledFrame =
+        settledFrame?.containerWidth === startWidth &&
+        settledFrame.containerHeight === startHeight;
+
+      if (isImageSettled && !hasCurrentSettledFrame) {
+        settledFrameRef.current = {
+          width: targetWidth,
+          height: targetHeight,
+          centerY: targetCenterY,
+          containerWidth: startWidth,
+          containerHeight: startHeight,
+        };
+      }
+
+      if (!isImageSettled) settledFrameRef.current = null;
+
+      const fixedFrame = settledFrameRef.current;
+      const currentWidth = fixedFrame
+        ? fixedFrame.width
+        : startWidth + (targetWidth - startWidth) * imageProgress;
+      const currentHeight = fixedFrame
+        ? fixedFrame.height
+        : startHeight + (targetHeight - startHeight) * imageProgress;
+      const currentCenterY = fixedFrame
+        ? fixedFrame.centerY
+        : startCenterY + (targetCenterY - startCenterY) * imageProgress;
       const scaffoldProgress = Math.min(imageProgress / 0.68, 1);
       const scaffoldShift = Math.max(
         currentCenterY + currentHeight / 2 + HERO_FRAME_GAP - scaffold.offsetTop,
@@ -232,6 +280,7 @@ export function HomeHero() {
       content.style.setProperty("--home-title-ink", `${imageProgress * 100}%`);
       content.style.setProperty("--home-content-ink", `${imageProgress * 100}%`);
       content.style.setProperty("--home-scaffold-shift", `${scaffoldShift}px`);
+      sticky.style.setProperty("--home-scroll-ink", `${imageProgress * 100}%`);
       header?.style.setProperty("--home-header-surface", `${imageProgress * 100}%`);
       header?.style.setProperty("--home-header-ink", `${imageProgress * 100}%`);
     };
@@ -249,80 +298,138 @@ export function HomeHero() {
       window.removeEventListener("resize", requestUpdate);
       if (frameId !== 0) window.cancelAnimationFrame(frameId);
       const header = document.querySelector<HTMLElement>("[data-site-header]");
+      stickyElement?.style.removeProperty("--home-scroll-ink");
       header?.style.removeProperty("--home-header-surface");
       header?.style.removeProperty("--home-header-ink");
     };
-  }, []);
+  }, [match]);
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (match || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    let locked = false;
-    let unlockTimer = 0;
+    let animationFrame = 0;
+    let settleTimer = 0;
+    let isAnimating = false;
+    let isSettling = false;
 
-    const scheduleUnlock = () => {
-      window.clearTimeout(unlockTimer);
-      unlockTimer = window.setTimeout(() => {
-        locked = false;
-      }, HOME_SCROLL_STAGE_LOCK_MS);
+    const holdAtStage = () => {
+      isSettling = true;
+      window.clearTimeout(settleTimer);
+      settleTimer = window.setTimeout(() => {
+        isSettling = false;
+      }, WHEEL_SETTLE_MS);
     };
 
-    const sectionTarget = (headingId: string): number | null => {
-      const heading = document.getElementById(headingId);
-      const section = heading?.closest("section");
-      if (!section) return null;
+    const stageTargets = () => {
       const headerHeight =
         document.querySelector<HTMLElement>("[data-site-header]")?.offsetHeight ?? 0;
-      return Math.max(
-        section.getBoundingClientRect().top + window.scrollY - headerHeight,
-        0,
-      );
+      const sectionHeadingIds = [
+        "category-grid-title",
+        "intro-band-title",
+        "watch-band-title",
+        "checklist-title",
+      ];
+      const sectionTargets = sectionHeadingIds.flatMap((id) => {
+        const heading = document.getElementById(id);
+        const header = heading?.closest("header");
+        if (!header) return [];
+        return [
+          Math.max(header.getBoundingClientRect().top + window.scrollY - headerHeight, 0),
+        ];
+      });
+
+      return [0, HERO_SHRINK_SCROLL_DISTANCE, ...sectionTargets];
+    };
+
+    const animateToStage = (target: number) => {
+      const start = window.scrollY;
+      const distance = target - start;
+      const startTime = window.performance.now();
+
+      isAnimating = true;
+      holdAtStage();
+
+      const tick = (now: number) => {
+        const progress = Math.min((now - startTime) / STAGE_SNAP_DURATION_MS, 1);
+        const eased = easeOutCubic(progress);
+        window.scrollTo({ top: start + distance * eased, behavior: "auto" });
+
+        if (progress < 1) {
+          animationFrame = window.requestAnimationFrame(tick);
+          return;
+        }
+
+        window.scrollTo({ top: target, behavior: "auto" });
+        isAnimating = false;
+        holdAtStage();
+      };
+
+      animationFrame = window.requestAnimationFrame(tick);
     };
 
     const handleWheel = (event: WheelEvent) => {
-      if (event.deltaY <= 0 || event.ctrlKey || event.metaKey) return;
-      if (locked) {
+      if (event.deltaY === 0 || event.ctrlKey || event.metaKey) return;
+
+      if (isAnimating || isSettling) {
         event.preventDefault();
-        scheduleUnlock();
+        holdAtStage();
         return;
       }
 
-      const categoryTarget = sectionTarget("category-grid-title");
-      const introTarget = sectionTarget("intro-band-title");
-      const current = window.scrollY;
-      let target: number | null = null;
+      const targets = stageTargets();
+      const currentIndex = targets.findIndex(
+        (target) => Math.abs(window.scrollY - target) < 8,
+      );
+      if (currentIndex === -1) return;
 
-      if (current < HERO_SHRINK_SCROLL_DISTANCE - 8) {
-        target = HERO_SHRINK_SCROLL_DISTANCE;
-      } else if (categoryTarget !== null && current < categoryTarget - 8) {
-        target = categoryTarget;
-      } else if (introTarget !== null && current < introTarget - 8) {
-        target = introTarget;
-      }
+      const direction = event.deltaY > 0 ? 1 : -1;
+      const nextTarget = targets[currentIndex + direction];
+      if (nextTarget === undefined) return;
 
-      if (target === null) return;
       event.preventDefault();
-      locked = true;
-      window.scrollTo({ top: target, behavior: "smooth" });
-      scheduleUnlock();
+      animateToStage(nextTarget);
     };
 
     window.addEventListener("wheel", handleWheel, { passive: false });
     return () => {
       window.removeEventListener("wheel", handleWheel);
-      window.clearTimeout(unlockTimer);
+      window.cancelAnimationFrame(animationFrame);
+      window.clearTimeout(settleTimer);
     };
+  }, [match]);
+
+  useEffect(() => {
+    if (!match) return;
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [match]);
+
+  useEffect(() => {
+    const handleHomeReset = () => {
+      setMatch(null);
+      setActiveChip(null);
+      setQuery("");
+      setIsSearchClosing(false);
+      setIsSuggestionsOpen(false);
+      setIsTitleSplit(false);
+      titleSplitRef.current = false;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    window.addEventListener("jeomjeom:home-reset", handleHomeReset);
+    return () => window.removeEventListener("jeomjeom:home-reset", handleHomeReset);
   }, []);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setActiveChip(null);
+    setIsSuggestionsOpen(false);
     setMatch(matchScaffold(query));
   };
 
   const handleChip = (label: string, target: string) => {
     setActiveChip(label);
     setQuery(label);
+    setIsSuggestionsOpen(false);
     setMatch(
       target === "reports"
         ? { kind: "reports" }
@@ -330,10 +437,39 @@ export function HomeHero() {
     );
   };
 
+  const handleCloseSearch = () => {
+    if (isSearchClosing) return;
+    setIsSearchClosing(true);
+    window.setTimeout(() => {
+      window.scrollTo({ top: HERO_SHRINK_SCROLL_DISTANCE, behavior: "auto" });
+      setMatch(null);
+      setActiveChip(null);
+      setQuery("");
+      setIsSearchClosing(false);
+      setIsSuggestionsOpen(false);
+    }, 260);
+  };
+
+  const handleScrollCue = () => {
+    document.getElementById("category-grid-title")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
   return (
-    <section ref={visualRef} className={s.visualIntro} aria-labelledby="home-hero-title">
-      <div className={s.visualSticky}>
-        <div ref={visualFrameRef} className={s.visualFrame}>
+    <section
+      ref={visualRef}
+      className={`${s.visualIntro} ${isSearchOpen ? s.visualIntroSearch : ""}`}
+      aria-labelledby="home-hero-title"
+    >
+      <div className={`${s.visualSticky} ${isSearchOpen ? s.visualStickySearch : ""}`}>
+        <div
+          ref={visualFrameRef}
+          className={`${s.visualFrame} ${
+            isSearchOpen && !isSearchClosing ? s.visualFrameSearch : ""
+          }`}
+        >
           <Image
             src="/sto-disclosure-hero-v2.png"
             alt="투자계약증권 공시와 대조를 상징하는 3차원 문서"
@@ -344,23 +480,44 @@ export function HomeHero() {
           />
         </div>
 
-        <div ref={contentRef} className={s.visualContent}>
+        <div
+          ref={contentRef}
+          className={`${s.visualContent} ${
+            isSearchOpen ? s.visualContentSearch : ""
+          } ${isSearchClosing ? s.visualContentSearchClosing : ""}`}
+        >
           <h1
             ref={titleRef}
             id="home-hero-title"
-            className={s.heroTitle}
+            className={`${s.heroTitle} ${
+              !isTitleSplit && !isSearchOpen ? s.heroTitleUnified : ""
+            }`}
             aria-label={HOME_HERO_TITLE}
           >
             <span className={s.heroTitlePrefix}>
               <span ref={titlePrefixRef} className={s.heroTitleText}>
                 {HOME_HERO_TITLE_PARTS[0]?.text}
-                <em className={s.mark}>{HOME_HERO_TITLE_PARTS[1]?.text}</em>
+                <em className={s.mark}>
+                  {HOME_HERO_TITLE_PARTS[1]?.text}
+                  {!isTitleSplit || isSearchOpen
+                    ? HOME_HERO_TITLE_PARTS[2]?.text
+                    : null}
+                </em>
               </span>
             </span>
             <span className={s.heroTitleQuestion}>
               <span ref={titleQuestionRef} className={s.heroTitleText}>
-                <span aria-hidden="true">{"\u00a0"}</span>
-                {HOME_HERO_TITLE_PARTS[2]?.text.trimStart()}
+                {isSearchOpen || !isTitleSplit ? (
+                  HOME_HERO_TITLE_PARTS[3]?.text
+                ) : (
+                  <>
+                    <span aria-hidden="true">{"\u00a0"}</span>
+                    <em className={s.mark}>
+                      {HOME_HERO_TITLE_PARTS[2]?.text.trimStart()}
+                    </em>
+                    {HOME_HERO_TITLE_PARTS[3]?.text}
+                  </>
+                )}
               </span>
             </span>
           </h1>
@@ -369,7 +526,11 @@ export function HomeHero() {
             ref={scaffoldRef}
             className={`${s.scaffold} ${match ? s.scaffoldOpen : ""}`}
           >
-            <form className={s.searchForm} onSubmit={handleSubmit} role="search">
+            <form
+              className={`${s.searchForm} ${match ? s.searchFormOpen : ""}`}
+              onSubmit={handleSubmit}
+              role="search"
+            >
               <label htmlFor="home-search" className="sr-only">
                 궁금한 내용 입력
               </label>
@@ -379,27 +540,43 @@ export function HomeHero() {
                 type="text"
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
+                onFocus={() => setIsSuggestionsOpen(true)}
+                onBlur={() => setIsSuggestionsOpen(false)}
                 placeholder={SEARCH_PLACEHOLDER}
                 autoComplete="off"
               />
-              <button type="submit" className={s.searchButton}>
-                검색
+              <button type="submit" className={s.searchButton} aria-label="검색">
+                <svg className={s.searchIcon} viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="10.5" cy="10.5" r="6.5" />
+                  <path d="m15.5 15.5 5 5" />
+                </svg>
               </button>
-            </form>
-
-            <div className={s.chipRow} role="group" aria-label="예시 질문">
-              {HERO_CHIPS.map((question) => (
+              {match ? (
                 <button
-                  key={question.label}
                   type="button"
-                  className={s.chip}
-                  aria-pressed={activeChip === question.label}
-                  onClick={() => handleChip(question.label, question.target)}
+                  className={s.searchClose}
+                  onClick={handleCloseSearch}
+                  aria-label="검색 닫기"
                 >
-                  {question.label}
+                  ×
                 </button>
-              ))}
-            </div>
+              ) : null}
+              {!isSearchOpen && isSuggestionsOpen ? (
+                <div className={s.searchSuggestions} role="group" aria-label="예시 질문">
+                  {HERO_CHIPS.map((question) => (
+                    <button
+                      key={question.label}
+                      type="button"
+                      className={s.searchSuggestion}
+                      onMouseDown={(event) => event.preventDefault()}
+                      onClick={() => handleChip(question.label, question.target)}
+                    >
+                      {question.label}
+                    </button>
+                  ))}
+                </div>
+              ) : null}
+            </form>
 
             <div aria-live="polite">
               {match ? <ScaffoldPanel match={match} /> : null}
@@ -431,9 +608,14 @@ export function HomeHero() {
           </div>
         </div>
 
-        <p className={s.visualScroll} aria-hidden="true">
+        <button
+          type="button"
+          className={s.visualScroll}
+          onClick={handleScrollCue}
+          aria-label="다음 콘텐츠로 이동"
+        >
           <span className={s.scrollCueArrow}>↓</span> SCROLL
-        </p>
+        </button>
       </div>
     </section>
   );

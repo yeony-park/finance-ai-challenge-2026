@@ -7,6 +7,7 @@ export interface CategoryInfo {
   readonly label: string;
   readonly subLabel: string | null;
   readonly note: string;
+  readonly cardNote: readonly [string, string];
   readonly preview: readonly string[] | null;
 }
 
@@ -16,7 +17,11 @@ export const CATEGORY_REGISTRY: readonly CategoryInfo[] = [
     href: "/cattle",
     label: "한우",
     subLabel: null,
-    note: "증권신고서를 축산물이력제 원장과 개체 단위로 대조한 검증 리포트",
+    note: "증권신고서의 개체 정보를 축산물이력제 원장과 대조한 검증 리포트",
+    cardNote: [
+      "증권신고서의 개체 정보를 확인합니다",
+      "축산물이력제 원장과 대조합니다",
+    ],
     preview: null,
   },
   {
@@ -24,7 +29,11 @@ export const CATEGORY_REGISTRY: readonly CategoryInfo[] = [
     href: "/pig",
     label: "한돈",
     subLabel: null,
-    note: "국산 돼지 공모 — 공시 축 정리 공개, 원장 축은 대조 불가",
+    note: "국산 돼지 공모의 공시 내용과 가격 산식을 정리한 검증 리포트",
+    cardNote: [
+      "공시 내용과 가격 산식을 확인합니다",
+      "개체 원장은 대조할 수 없습니다",
+    ],
     preview: [
       "대상 공모: 한돈 투자계약증권 3건 — 증권신고서 원문·발행실적 정리 공개",
       "공시 축: 회차·가격 산식·정산 실측·경락 시장 참고값·원문 링크",
@@ -36,7 +45,11 @@ export const CATEGORY_REGISTRY: readonly CategoryInfo[] = [
     href: "/art",
     label: "미술품",
     subLabel: null,
-    note: "미술품 공모 5건 — 공시 원문 대조와 공모가 구성 확인",
+    note: "미술품 공모 5건의 공시 원문과 공모가 구성을 확인한 검증 리포트",
+    cardNote: [
+      "공모 5건의 공시 원문을 확인합니다",
+      "공모가 구성을 항목별로 대조합니다",
+    ],
     preview: [
       "대상 공모: 미술품 투자계약증권 5건 — 공모가 구성·공시 문서 좌표를 아래 확인 현황에 정리",
       "공시 축: 증권신고서·투자설명서·발행실적보고서 원문 대조 (DART 링크)",
@@ -49,6 +62,10 @@ export const CATEGORY_REGISTRY: readonly CategoryInfo[] = [
     label: "부동산",
     subLabel: null,
     note: "종료 공모의 소재지·가격·이행을 공공 원장과 대조한 사후 검증 리포트",
+    cardNote: [
+      "종료 공모의 사후 기록을 확인합니다",
+      "소재지·가격·이행을 대조합니다",
+    ],
     preview: null,
   },
 ];

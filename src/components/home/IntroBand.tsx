@@ -105,23 +105,25 @@ export function IntroBand() {
                       <p key={line}>{line}</p>
                     ))}
                   </div>
-                  <ul className={s.sourceList}>
-                    {card.sources.map((source) => (
-                      <li key={source.url}>
-                        출처:{" "}
-                        <a href={source.url} target="_blank" rel="noopener noreferrer">
-                          {source.label}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                  {card.id === "checklist" ? (
-                    <a href="#checklist" className={s.bandLink}>
-                      확인 질문 8가지 보기 →
-                    </a>
-                  ) : null}
                 </div>
               </div>
+              <footer className={s.roadFooter}>
+                <ul className={s.sourceList}>
+                  {card.sources.map((source) => (
+                    <li key={source.url}>
+                      출처:{" "}
+                      <a href={source.url} target="_blank" rel="noopener noreferrer">
+                        {source.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+                {card.id === "checklist" ? (
+                  <a href="#checklist" className={s.bandLink}>
+                    확인 질문 8가지 보기 →
+                  </a>
+                ) : null}
+              </footer>
               {activeIndex !== index ? (
                 <button
                   type="button"
@@ -157,11 +159,13 @@ export function IntroBand() {
                 <div className={s.cardBody}>
                   <p>{AI_ROLE_SENTENCE}</p>
                 </div>
-                <Link href="/methodology" className={s.bandLink}>
-                  판정 기준과 한계 전체 보기 →
-                </Link>
               </div>
             </div>
+            <footer className={s.roadFooter}>
+              <Link href="/methodology" className={s.bandLink}>
+                판정 기준과 한계 전체 보기 →
+              </Link>
+            </footer>
             {activeIndex !== INTRO_CARDS.length ? (
               <button
                 type="button"
@@ -191,9 +195,6 @@ export function IntroBand() {
           >
             →
           </button>
-          <span className={s.roadPosition} aria-live="polite">
-            {stepNo(activeIndex)} / {stepNo(cardCount - 1)}
-          </span>
         </div>
       </div>
     </section>

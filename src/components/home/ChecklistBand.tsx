@@ -26,16 +26,16 @@ export function ChecklistBand() {
       <div className={s.wrap}>
         <header className={s.sectionHead}>
           <h2 id="checklist-title" className={s.sectionTitle}>
-            &lsquo;믿을 만한가&rsquo;를 확인하는 8가지 질문
+            &lsquo;믿을만한지&rsquo; 확인하는 8가지 질문
           </h2>
-          <p className={s.sectionLead}>
+          <OnboardingOpenButton
+            className={`${s.chip} ${s.checklistProfileButton}`}
+          />
+        </header>
+        <p className={`${s.sectionLead} ${s.checklistLead}`}>
             무엇을 봐야 할지 모르겠다면 여기서부터 — 각 질문은 공적 출처에서 직접
             확인할 수 있고, 일부는 이 서비스의 대조 실측이 답을 대신합니다.
-          </p>
-        </header>
-        <div className={s.chipRow}>
-          <OnboardingOpenButton className={s.chip} />
-        </div>
+        </p>
         <Reveal>
         <div>
           {items.map((item) => (

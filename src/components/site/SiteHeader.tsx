@@ -12,13 +12,17 @@ export function SiteHeader() {
   const pathname = usePathname();
   const isHome = pathname === "/";
 
+  const handleWordmarkClick = () => {
+    if (isHome) window.dispatchEvent(new Event("jeomjeom:home-reset"));
+  };
+
   return (
     <header
       className={`${s.header} ${isHome ? s.headerHome : ""}`}
       data-site-header
     >
       <div className={`${s.inner} ${s.headerRow}`}>
-        <Link href="/" className={s.wordmark}>
+        <Link href="/" className={s.wordmark} onClick={handleWordmarkClick}>
           <Image
             src="/jeomjeom-mark.png"
             alt=""
