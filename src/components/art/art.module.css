@@ -477,7 +477,7 @@
 
 .subhead {
   margin: 0 0 var(--ds-space-2);
-  font-size: var(--ds-title-sm);
+  font-size: var(--ds-heading-h3);
   font-weight: var(--ds-weight-black);
   letter-spacing: var(--ds-tracking-tight);
 }

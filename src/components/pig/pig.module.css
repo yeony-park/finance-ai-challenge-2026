@@ -37,7 +37,7 @@
 }
 
 .sectionTitle {
-  font-size: var(--ds-title-sm);
+  font-size: var(--ds-heading-h3);
   font-weight: var(--ds-weight-black);
   letter-spacing: var(--ds-tracking-tight);
   color: var(--ds-ink);
@@ -55,7 +55,7 @@
 }
 
 .cardHeading {
-  font-size: var(--ds-text-md);
+  font-size: var(--ds-heading-h4);
   font-weight: var(--ds-weight-bold);
   letter-spacing: var(--ds-tracking-snug);
   color: var(--ds-ink);

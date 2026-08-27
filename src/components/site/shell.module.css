@@ -60,7 +60,7 @@
   color: color-mix(
     in srgb,
     var(--ds-ink-muted) var(--home-header-ink, 0%),
-    var(--ds-hero-ink-muted)
+    var(--ds-surface)
   );
 }
 

@@ -48,7 +48,7 @@
 
 .heroTitle {
   display: grid;
-  font-size: var(--ds-display);
+  font-size: var(--ds-heading-h1);
   font-weight: var(--ds-weight-bold);
   line-height: 1.16;
   letter-spacing: -0.04em;
@@ -78,7 +78,7 @@
   margin-bottom: var(--ds-space-7);
   padding-top: var(--ds-space-5);
   border-top: 1px solid var(--ds-line);
-  font-size: var(--ds-title-lg);
+  font-size: var(--ds-heading-h2);
   font-weight: var(--ds-weight-black);
   letter-spacing: var(--ds-tracking-tight);
   line-height: var(--ds-leading-tight);
@@ -162,7 +162,7 @@
 }
 
 .offerTitle {
-  font-size: var(--ds-title-sm);
+  font-size: var(--ds-heading-h3);
   font-weight: var(--ds-weight-bold);
   letter-spacing: var(--ds-tracking-snug);
   line-height: var(--ds-leading-snug);

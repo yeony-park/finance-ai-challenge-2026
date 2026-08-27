@@ -59,7 +59,7 @@
 }
 
 .title {
-  font-size: clamp(2.5rem, 1.85rem + 2.8vw, 4.75rem);
+  font-size: var(--ds-heading-h1);
   font-weight: var(--ds-weight-black);
   letter-spacing: var(--ds-tracking-tight);
   line-height: var(--ds-leading-tight);
@@ -361,7 +361,7 @@
   color: var(--ds-ink-faint);
 }
 .layerTitle {
-  font-size: var(--ds-title-md);
+  font-size: var(--ds-heading-h2);
   font-weight: var(--ds-weight-bold);
   letter-spacing: var(--ds-tracking-tight);
   line-height: var(--ds-leading-snug);
