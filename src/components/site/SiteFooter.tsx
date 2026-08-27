@@ -2,14 +2,11 @@ import Link from "next/link";
 
 import { FIXED_NOTICES } from "@/lib/verify/contract/notices";
 import { OnboardingOpenButton } from "./OnboardingOpenButton";
-import { DATA_SOURCES, SERVICE_NAME, SERVICE_ROLE } from "./service";
+import { SERVICE_NAME } from "./service";
 import s from "./shell.module.css";
 
-const VERDICT_TERMS: readonly string[] = [
-  "일치 — 공시 내용이 공공 데이터에서 확인됩니다",
-  "원장 불일치 — 공시 기재와 공공 데이터의 값이 서로 다릅니다",
-  "대조 불가 — 대조할 공공 데이터가 없거나 조회해도 확인되지 않습니다",
-];
+const GITHUB_REPOSITORY_URL =
+  "https://github.com/yeony-park/finance-ai-challenge-2026";
 
 export function SiteFooter() {
   return (
@@ -18,32 +15,27 @@ export function SiteFooter() {
         <div className={s.footerGrid}>
           <div>
             <p className={s.footerBrand}>{SERVICE_NAME}</p>
-            <p className={s.footerTagline}>
-              {SERVICE_ROLE} · 증권신고서와 국가 공공데이터 대조
-            </p>
-            <p className={s.footerTeam}>팀 박연정 · 박현석 · 신문수 · 최원준</p>
+            <p className={s.footerTagline}>조각투자 공시 대조 플랫폼</p>
+            <div className={s.colophon}>
+              <div className={s.colophonMeta}>
+                <span>{SERVICE_NAME} © 2026</span>
+                <Link href="/about" className={s.colophonLink}>
+                  About
+                </Link>
+              </div>
+              <a
+                href={GITHUB_REPOSITORY_URL}
+                className={s.footerGithub}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span>GitHub</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 2.5a9.5 9.5 0 0 0-3 18.51c.48.09.65-.2.65-.46v-1.68c-2.65.57-3.21-1.12-3.21-1.12-.43-1.1-1.06-1.4-1.06-1.4-.86-.59.07-.58.07-.58.96.06 1.46.98 1.46.98.85 1.45 2.22 1.03 2.76.78.09-.62.33-1.03.61-1.27-2.12-.24-4.35-1.06-4.35-4.72 0-1.04.37-1.89.98-2.56-.1-.24-.42-1.21.09-2.53 0 0 .8-.26 2.62.98A9.1 9.1 0 0 1 12 7.57a9.1 9.1 0 0 1 2.39.32c1.82-1.24 2.62-.98 2.62-.98.51 1.32.19 2.29.09 2.53.61.67.98 1.52.98 2.56 0 3.67-2.23 4.47-4.36 4.71.34.29.64.84.64 1.69v2.5c0 .26.17.56.66.46A9.5 9.5 0 0 0 12 2.5Z" />
+                </svg>
+              </a>
+            </div>
             <OnboardingOpenButton className={s.footerAction} />
-          </div>
-
-          <div>
-            <h2 className={s.footerHeading}>판정은 세 값</h2>
-            <p className={s.footerProse}>{VERDICT_TERMS.join(". ")}</p>
-          </div>
-
-          <div>
-            <h2 className={s.footerHeading}>데이터 출처</h2>
-            <ul className={s.footerList}>
-              {DATA_SOURCES.map((source) => (
-                <li key={source.name}>
-                  <span className={s.footerListMark} aria-hidden="true">
-                    ·
-                  </span>
-                  <span>
-                    {source.holder} — {source.name}
-                  </span>
-                </li>
-              ))}
-            </ul>
           </div>
         </div>
 
@@ -72,9 +64,6 @@ export function SiteFooter() {
           </p>
         </div>
 
-        <p className={s.colophon}>
-          <span>© 2026 {SERVICE_NAME} | 2026 금융 AI Challenge 출품</span>
-        </p>
       </div>
     </footer>
   );
