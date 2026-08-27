@@ -256,7 +256,7 @@ export function PigMarketInfographic({
                   className={s.marketChartTooltip}
                   style={{
                     left: `${Math.min(86, Math.max(14, (hoveredPoint.x / CHART_WIDTH) * 100))}%`,
-                    top: `${(hoveredPoint.y / CHART_HEIGHT) * 100}%`,
+                    top: `${Math.max(22, (hoveredPoint.y / CHART_HEIGHT) * 100)}%`,
                   }}
                 >
                   <b>{Number(hoveredPoint.month.slice(-2))}월</b>
