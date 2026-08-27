@@ -142,7 +142,7 @@ export function AuctionMarketSection({
   };
 
   return (
-    <section className={s.slot} aria-labelledby="market-context-title">
+    <section className={`${s.slot} ${s.slotGrid}`} aria-labelledby="market-context-title">
       <h2 id="market-context-title" className={s.slotTitle}>
         {MARKET_SECTION_TITLE}
       </h2>

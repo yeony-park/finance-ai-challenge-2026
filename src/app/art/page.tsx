@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { ArtFactsSection } from "@/components/art/ArtFactsSection";
 import { CategoryLanding } from "@/components/category/CategoryLanding";
 import { categoryById } from "@/lib/content/categories";
+import { categoryTabFromSearchParam } from "@/lib/content/category-tabs";
 import {
   ART_CUSTOM_TITLE,
   ART_PAGE_DESCRIPTION,
@@ -16,10 +17,17 @@ export const metadata: Metadata = {
   description: ART_PAGE_DESCRIPTION,
 };
 
-export default function ArtPage() {
+interface ArtPageProps {
+  readonly searchParams: Promise<{ readonly tab?: string | string[] }>;
+}
+
+export default async function ArtPage({ searchParams }: ArtPageProps) {
+  const activeTab = categoryTabFromSearchParam((await searchParams).tab);
+
   return (
     <CategoryLanding
       categoryId="art"
+      activeTab={activeTab}
       title={INFO.label}
       lead={ART_PAGE_LEAD}
       descriptor={null}

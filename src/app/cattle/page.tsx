@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { AuctionMarketSection } from "@/components/category/AuctionMarketSection";
 import { CategoryLanding } from "@/components/category/CategoryLanding";
 import { OFFERS } from "@/components/site/offers";
+import { categoryTabFromSearchParam } from "@/lib/content/category-tabs";
 import {
   CATTLE_FLOW_LEAD,
   CATTLE_FLOW_STEPS,
@@ -54,8 +55,16 @@ function CattleFlowBand() {
   );
 }
 
-export default async function CattlePage() {
-  const series = await loadCattleAuctionSeries();
+interface CattlePageProps {
+  readonly searchParams: Promise<{ readonly tab?: string | string[] }>;
+}
+
+export default async function CattlePage({ searchParams }: CattlePageProps) {
+  const [series, params] = await Promise.all([
+    loadCattleAuctionSeries(),
+    searchParams,
+  ]);
+  const activeTab = categoryTabFromSearchParam(params.tab);
   const cattleOffers = OFFERS.filter((offer) => offer.assetKind === "livestock");
   const markers = cattleOffers.map((offer) => ({
     month: kstMonth(offer.subscription.opensAt),
@@ -65,6 +74,7 @@ export default async function CattlePage() {
   return (
     <CategoryLanding
       categoryId="cattle"
+      activeTab={activeTab}
       title="한우"
       lead="공시된 개체를 축산물이력제 원장과 대조하고, 공모가의 시장 위치와 정정 이력을 함께 보여줍니다."
       descriptor={CATTLE_CATEGORY}

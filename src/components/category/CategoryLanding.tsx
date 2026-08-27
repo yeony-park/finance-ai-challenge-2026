@@ -9,7 +9,7 @@ import { FILING_HEADING_ID, REALITY_HEADING_ID, WATCH_HEADING_ID } from "@/compo
 import { TrackRecordCard } from "@/components/report/TrackRecordCard";
 import type { OfferEntry, OfferSchedule } from "@/components/site/offers";
 import { buildOfferSchedule } from "@/components/site/offers";
-import type { CategoryId } from "@/lib/content/categories";
+import { categoryById, type CategoryId } from "@/lib/content/categories";
 import {
   ACTIVE_GROUP_EMPTY,
   ACTIVE_GROUP_TITLE,
@@ -58,9 +58,11 @@ import { loadTrackRecord } from "@/lib/verify/track-record/store";
 import { toTrackRecordView } from "@/lib/verify/track-record/view";
 import { VERDICT_LABEL } from "@/lib/verify/report/view-model/labels";
 import { formatKstDateTime, formatYmd8 } from "@/lib/verify/report/format";
+import type { CategoryTab } from "@/lib/content/category-tabs";
 
 import home from "@/components/home/home.module.css";
 import { CategoryQuestions } from "./CategoryQuestions";
+import { CategoryPageNav } from "./CategoryPageNav";
 import s from "./category.module.css";
 
 const ALL_LAYERS: readonly VerificationLayer[] = [
@@ -71,6 +73,7 @@ const ALL_LAYERS: readonly VerificationLayer[] = [
 
 export interface CategoryLandingProps {
   readonly categoryId: CategoryId;
+  readonly activeTab: CategoryTab;
   readonly title: string;
   readonly lead: string;
   readonly descriptor: CategoryDescriptor | null;
@@ -310,6 +313,8 @@ export async function CategoryLanding({
   heroImage = null,
   custom = null,
   customTitle = "카테고리 특화 영역",
+  activeTab,
+  categoryId,
 }: CategoryLandingProps) {
   const byOpenAsc = [...offers].sort(
     (a, b) =>
@@ -340,6 +345,7 @@ export async function CategoryLanding({
     .map((entry) => entry.loaded.report.generatedAt)
     .sort()
     .at(-1);
+  const categoryHref = categoryById(categoryId).href;
 
   return (
     <div className={home.section}>
@@ -351,18 +357,45 @@ export async function CategoryLanding({
               alt=""
               fill
               priority
-              sizes="(max-width: 1088px) 1px, 55vw"
+              sizes="(max-width: 900px) calc(100vw - 2.25rem), 58vw"
               className={s.landingHeroImg}
             />
           </div>
         ) : null}
         <div className={s.landingHeroBody}>
           <h1 className={home.sectionTitle}>{title}</h1>
-          <p className={home.sectionLead}>{lead}</p>
+          <CategoryPageNav title={title} href={categoryHref} activeTab={activeTab} />
         </div>
 
+        <section
+          className={s.aboutContent}
+          aria-labelledby={`${title}-about`}
+          hidden={activeTab !== "about"}
+        >
+          <h2 id={`${title}-about`} className={s.slotTitle}>
+            설명
+          </h2>
+          <p className={s.slotLead}>{lead}</p>
+          <p className={s.aboutHint}>
+            공시 분석 탭에서는 공개된 공시 원문, 공공 자료와의 대조 결과, 그리고
+            현재 확인할 수 없는 범위를 근거와 함께 확인할 수 있습니다.
+          </p>
+        </section>
+
+        <div className={s.analysisArea} hidden={activeTab !== "analysis"}>
+        {custom ? (
+          <section className={s.slot} aria-labelledby={`${title}-custom`}>
+            <div className={s.slotGrid}>
+              <h2 id={`${title}-custom`} className={s.slotTitle}>
+                {customTitle}
+              </h2>
+              {custom}
+            </div>
+          </section>
+        ) : null}
+
         <section className={s.slot} aria-labelledby={`${title}-evidence`}>
-          <Reveal>
+          <Reveal className={s.slotGrid}>
             <h2 id={`${title}-evidence`} className={s.slotTitle}>
               {OFFERS_SECTION_TITLE}
             </h2>
@@ -419,7 +452,7 @@ export async function CategoryLanding({
         </section>
 
         <section className={s.slot} aria-labelledby={`${title}-verdicts`}>
-          <Reveal>
+          <Reveal className={s.slotGrid}>
             <h2 id={`${title}-verdicts`} className={s.slotTitle}>
               {VERDICT_SECTION_TITLE}
             </h2>
@@ -492,7 +525,7 @@ export async function CategoryLanding({
         {market}
 
         <section className={s.slot} aria-labelledby={`${title}-layers`}>
-          <Reveal>
+          <Reveal className={s.slotGrid}>
             <h2 id={`${title}-layers`} className={s.slotTitle}>
               {LAYERS_SECTION_TITLE}
             </h2>
@@ -548,7 +581,7 @@ export async function CategoryLanding({
         </section>
 
         <section className={s.slot} aria-labelledby={`${title}-questions`}>
-          <Reveal>
+          <Reveal className={s.slotGrid}>
             <h2 id={`${title}-questions`} className={s.slotTitle}>
               확인 질문
             </h2>
@@ -556,19 +589,7 @@ export async function CategoryLanding({
           </Reveal>
         </section>
 
-        <section className={s.slot} aria-labelledby={`${title}-custom`}>
-          <Reveal>
-            <h2 id={`${title}-custom`} className={s.slotTitle}>
-              {customTitle}
-            </h2>
-            {custom ?? (
-              <p className={s.emptyNote}>
-                카테고리 담당 구현이 들어오는 자리입니다 — 공통 계약(층별 선언·판정
-                어휘·데이터 정책)을 유지한 채 확장됩니다.
-              </p>
-            )}
-          </Reveal>
-        </section>
+        </div>
       </div>
     </div>
   );
