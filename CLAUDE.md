@@ -70,6 +70,9 @@ npm run data:manifest                  # data/MANIFEST.md 재생성 (직접 수�
 
 ## 프로젝트 규칙
 
+- **집행 계약 선독**: 코드·데이터 작업 전 `contracts/README.md`의 로딩 규칙을 따라 해당 계약
+  파일(`invariants.md`는 항상, API 작업 시 `api.md`, DB·데이터 작업 시 `storage.md`)을 읽는다.
+  규칙 ID(`R-INV-*` 등)로 준수 여부를 PR 본문에 명기한다. 아래 항목들은 계약의 요약이다
 - **판정 어휘**: match="일치", mismatch="원장 불일치", unverifiable="대조 불가"("미확인"은
   unverifiable 전용). 근거 0건이면 판정하지 않는다. 성별 수→거세는 예상된 상태 전이로 match
 - **UI 자기보고형 금지 (리포트 표면 한정)**: 검증 리포트·공모 목록 화면 문장의 주어는
