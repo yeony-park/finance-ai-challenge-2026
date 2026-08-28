@@ -2,7 +2,7 @@
 
 # data/ 매니페스트
 
-생성 시각: 2026-08-15T15:54:32.322Z
+생성 시각: 2026-08-28T16:45:16.947Z
 
 ## 저장 정책
 
@@ -56,6 +56,7 @@
 | 경로 | 바이트 | sha256 |
 |---|---:|---|
 | `data/reports/livestock-9/report-2026-08-15T15-52-44-480Z.json` | 430,308 | `eae1cd4fd24efd09bc84ba7d6d7647ff915f5fed9e656e4859f9b379afe6e5ca` |
+| `data/reports/real-estate-a/report-2026-08-21T16-58-05-870Z.json` | 51,295 | `a6a92d2e1de63f3293a312a02943ad373cf611d9f9edf92f31241e99187b21f5` |
 
 ## 커밋 대상 산출물
 
@@ -130,11 +131,13 @@
 | `data/public/livestock-9/report-2026-08-14T05-52-59-028Z.json` | 410,700 | `5391ed8bbf1455f3af56dfc9fb78c9dcc04b87ecf6bf9b98098ef019b812819d` |
 | `data/public/livestock-9/report-2026-08-14T15-30-30-662Z.json` | 412,860 | `c80032207a70e8a3b7d060cc6938bad29de130e477ac220e683c99a6c61a79d1` |
 | `data/public/livestock-9/report-2026-08-15T15-52-44-480Z.json` | 430,888 | `c989fb5dce8532b849ace669fed17f4b29ae7d5c52db028659a538c312807da3` |
+| `data/public/offerings/index.json` | 2,852 | `d324c45e7eb40c4c5b806f68a15889f3ba70e8921512aa26005a19bf6b524cef` |
 | `data/public/real-estate-a/narrative-latest.json` | 4,203 | `ba5978b954e4e0c8bcc17ae28cf5a18925f77f8ae9afafdda574c5925af8122f` |
 | `data/public/real-estate-a/report-2026-08-13T17-53-03-085Z.json` | 15,168 | `931ed4b78f166004a50fc90e7b0b9cf9689170baf76f7091e4cb6f6b629e7387` |
 | `data/public/real-estate-a/report-2026-08-14T04-34-57-566Z.json` | 50,960 | `659b739f067591b35ece1f3da4b16e80794c85591b600f01f6e2cb1e301db753` |
 | `data/public/real-estate-a/report-2026-08-14T04-53-03-242Z.json` | 50,960 | `902e90ecea4e77d53e309e350767f985ac8e1d646df1ddf743900e7e0106c25b` |
 | `data/public/real-estate-a/report-2026-08-14T04-54-06-189Z.json` | 51,237 | `fe2b4434b20657a1cb2872bae4622085043c189bf96af2dc01d705a7e338513e` |
+| `data/public/real-estate-a/report-2026-08-21T16-58-05-870Z.json` | 51,125 | `2a2814b666e9a2470f556c8b2a8428600c7614434cd9b39b51b7cf3b8b43d830` |
 | `data/public/replay/livestock-1/diff-2026-08-14T18-14-36-550Z.json` | 154,949 | `9a10c64b363454d94c9a088f655a0e7757a4fbddd0dd2f4b66c1aaf9a7478e34` |
 | `data/public/replay/livestock-2/diff-2026-08-14T18-17-47-890Z.json` | 51,111 | `7afb5e1a547445e539f32371cc005b7c15668e8e031ca30bc2f3ad8890621543` |
 | `data/public/replay/livestock-3/diff-2026-08-14T18-21-45-354Z.json` | 22,678 | `c3799b15bb0ed0fe4c6b0b5ece1fc5dcb0dd5fa9a935686c2142ddbfbe9a974b` |
@@ -210,6 +213,10 @@
 | `data/reference/auction-price/024001-2026-06.json` | 2,910 | `38895fdcd3b41353b8f6fe524156e992b6853c8df29a101de639ca3fe315a126` |
 | `data/reference/auction-price/024001-2026-07.json` | 2,910 | `1cf72fbee49bbc0c077683f56c4ecdeaf5a84d1b498636692f74ee7dbf282707` |
 | `data/reference/auction-price/024001-2026-08.json` | 2,902 | `048efb1156ca18cc9ec4582ca0d82bb7f043143fe3723e847486e26b6e1aea5a` |
+| `data/reference/building-register/11650-10800-1678-0004.json` | 666 | `8e1aaf9a6caeed472ab872af079698529d14106b4448379810f26dfe4f7757ca` |
+| `data/reference/pig-auction-price/pig_price_20260815021618.csv` | 40,445 | `673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d` |
+| `data/reference/pig-auction-price/pig_price_20260815021618.meta.json` | 1,035 | `2d62daccfdbcc13ecb882df975b3275e1cc6f49daf6408882ff69a74fe87af83` |
+| `data/reference/rag/onboarding.json` | 1,345 | `b032ef0f4ddb64b56c18f4cbc271ed08b7528bf8cac2ebc485c397e4d12f07b3` |
 | `data/reference/rtms/11650-2021-05.json` | 16,087 | `266a5beda1d2ec27ee2195d278d74676f47117e50ea6308c28ec2d06b2a9c9bd` |
 | `data/reference/rtms/11650-2021-06.json` | 100,163 | `ea9eec5486547bc2ba855a5670fae82e59f44e8d92618fc6cab5dc299293c7b5` |
 | `data/reference/rtms/11650-2021-07.json` | 24,563 | `bf683644dd07ee08389d979f573205e27d72e1f02cea60f46dd413d1eb290ebc` |
@@ -227,4 +234,5 @@
 
 | 경로 | 바이트 | sha256 |
 |---|---:|---|
-| `data/offers/real-estate-a.json` | 2,291 | `3e4aa9d9a7cecca7c894ae2fb55aa8dd56ec21df5e43dd95a2c0706510ba7ee8` |
+| `data/offers/filing-facts/livestock-9.json` | 2,637 | `922c7310902aef3bf925eab22c59bbedb4bf61420950ce50b4bc7dc522c4c8e5` |
+| `data/offers/real-estate-a.json` | 2,399 | `ec380f2f23d763d365db2aca2022c221d9bf89ca3c4e18a4bc6f733580975c08` |

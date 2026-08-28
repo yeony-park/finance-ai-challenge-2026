@@ -105,3 +105,13 @@ Supabase 확장: `vector`·`pg_trgm` 둘 다 지원(확장은 `extensions` 스�
 **eval 영향** — 실 DB 대상 db:migrate 실행 시 schema↔SQL 동형성·인덱스 생성이 실증 가능해진다(현재 미실행 — 오너 승인 대기).
 
 **알려진 한계 / 오너 승인 대기** — 본 세션은 샌드박스 네트워크 무경로(ENETUNREACH) + 공유 DB 상태 변경은 아웃바운드/비가역이라 db:migrate·db:seed를 **실행하지 않았다**. 실 DB 적용(migrate→roles→seed→export)과 DATABASE_URL 역할 재발급은 오너/통합 세션 실행. pg_trgm 마이그레이션 추가는 §4 한국어 보강 [팀 결정 대기] 확정 후.
+
+## 실 DB 적용 완주 — migrate·seed·export·게이트 그린 (2026-08-29, 통합 세션)
+
+**결정과 근거** — 오너 직접 실행(`!` 인라인)으로 실 Supabase에 순차 적용: `db:migrate`(0000_init 1건 — 5테이블+_migrations, vector 확장 활성 실측) → `db:seed`(offerings 7 = art synthetic 3 + re synthetic 3 + re manual_verified 1 · art_records 3 · rag_docs 2 green · chunks 3) → `db:export`(7건 마스킹 후 `data/public/offerings/index.json`). 통합 세션의 자동 실행은 권한 분류기가 차단(공유 DB 상태 변경) — 우회 없이 오너 실행으로 전환한 것이 절차 기록의 핵심. 읽기 전용 실측 검증: synthetic `예시 ` 프리픽스 위반 0건(offerings·art), 중립 슬러그(art-N·re-N), source_id 2건 모두 코퍼스 등록 green.
+
+**트레이드오프** — roles.sql 적용·DATABASE_URL 역할 재발급은 이번 순서에서 제외(/api/search 부재로 노출 없음) — 착수 전 필수 선행으로 이연. 행수 스냅샷 7/3/2/3 기록 — 다음 재시드에서 동일해야 멱등 실증(이번엔 1회 실행이라 멱등은 미실증).
+
+**eval 영향** — export 산출물 포함 전체 스위트 1388 그린(익명화 게이트가 신규 `data/public/offerings/` 자동 포섭). MANIFEST 재생성(로컬 5·커밋 대상 150). jeomjeom-07이 우려한 MANIFEST 오염은 실측 반박 — 해당 파일들(re-a 8/21 리포트·building-register·pig-auction-price)은 이미 추적·커밋된 자산.
+
+**알려진 한계** — `drizzle-kit generate` 무-diff 대조는 미실행(후속 회귀 지점). 멱등 실증·roles 적용·pg_trgm 결정은 대기.

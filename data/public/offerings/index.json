@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "generatedBy": "db:export",
+  "offerings": [
+    {
+      "offerSlug": "art-1",
+      "categoryId": "art",
+      "provenance": "synthetic",
+      "titlePublic": "예시 회화 A",
+      "amountWon": 120000000,
+      "opensOn": "2026-05-04",
+      "closesOn": "2026-05-12",
+      "isExample": true,
+      "detail": {
+        "note": "예시 데이터로 구성한 화면입니다.",
+        "artist": "예시 작가 가"
+      }
+    },
+    {
+      "offerSlug": "art-2",
+      "categoryId": "art",
+      "provenance": "synthetic",
+      "titlePublic": "예시 회화 B",
+      "amountWon": 85000000,
+      "opensOn": "2026-06-01",
+      "closesOn": "2026-06-09",
+      "isExample": true,
+      "detail": {
+        "note": "예시 데이터로 구성한 화면입니다.",
+        "artist": "예시 작가 나"
+      }
+    },
+    {
+      "offerSlug": "art-3",
+      "categoryId": "art",
+      "provenance": "synthetic",
+      "titlePublic": "예시 조각 C",
+      "amountWon": 47000000,
+      "opensOn": "2026-07-06",
+      "closesOn": "2026-07-14",
+      "isExample": true,
+      "detail": {
+        "note": "예시 데이터로 구성한 화면입니다.",
+        "artist": "예시 작가 다"
+      }
+    },
+    {
+      "offerSlug": "re-1",
+      "categoryId": "real-estate",
+      "provenance": "synthetic",
+      "titlePublic": "예시 오피스 A",
+      "amountWon": 3800000000,
+      "opensOn": "2026-04-06",
+      "closesOn": "2026-04-14",
+      "isExample": true,
+      "detail": {
+        "note": "예시 데이터로 구성한 화면입니다.",
+        "buildingUse": "상업업무용(사무소)"
+      }
+    },
+    {
+      "offerSlug": "re-2",
+      "categoryId": "real-estate",
+      "provenance": "synthetic",
+      "titlePublic": "예시 근린상가 B",
+      "amountWon": 2150000000,
+      "opensOn": "2026-05-11",
+      "closesOn": "2026-05-19",
+      "isExample": true,
+      "detail": {
+        "note": "예시 데이터로 구성한 화면입니다.",
+        "buildingUse": "상업업무용(근린생활시설)"
+      }
+    },
+    {
+      "offerSlug": "re-3",
+      "categoryId": "real-estate",
+      "provenance": "synthetic",
+      "titlePublic": "예시 물류센터 C",
+      "amountWon": 6400000000,
+      "opensOn": "2026-06-15",
+      "closesOn": "2026-06-23",
+      "isExample": true,
+      "detail": {
+        "note": "예시 데이터로 구성한 화면입니다.",
+        "buildingUse": "공업용(창고)"
+      }
+    },
+    {
+      "offerSlug": "real-estate-a",
+      "categoryId": "real-estate",
+      "provenance": "manual_verified",
+      "titlePublic": "부동산 A",
+      "amountWon": 4000000000,
+      "opensOn": "2021-07-07",
+      "closesOn": "2021-07-15",
+      "isExample": false,
+      "detail": {
+        "unitCount": 800000,
+        "unitPriceWon": 5000
+      }
+    }
+  ]
+}
