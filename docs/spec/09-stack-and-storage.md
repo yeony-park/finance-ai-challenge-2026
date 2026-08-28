@@ -152,6 +152,33 @@ npm run db:export      # DB → data/public/·data/reference/ 화면용 산출�
 - `db:export`만이 화면 데이터를 만든다. export는 기존 마스킹 2단(`report/mask.ts` → `residual.ts`)과 익명화 게이트 테스트를 동일하게 통과해야 한다.
 - 시드 원천 파일 위치: 커밋 가능한 것은 `data/offers/`·`data/reference/`, 로컬 전용은 `data/raw/` — 기존 정책 그대로.
 
+### 3.4 offerings 공개 인덱스 v2 (`data/public/offerings/index.json`)
+
+`db:export` 산출물. 목록·카드 렌더 공통 계약. 단일 진실은 `src/lib/db/export/public-offering.ts`의 Zod(`publicOfferingsManifestSchema`) — 문서와 다르면 코드를 따른다. **판정은 3값 계열만**: 집계 점수·4단계 verdict(`worth_considering|conditional|caution|danger` 류)·`similarityScore` 필드 반입 금지(현석 미술품 카탈로그의 4단계 verdict는 배제 대상). synthetic 고지는 `isExample`로 유지.
+
+```jsonc
+{
+  "schemaVersion": 2,
+  "generatedBy": "db:export",
+  "offerings": [{
+    "offerSlug": "art-1",              // 중립 공개 id
+    "categoryId": "art",               // cattle|pig|art|real-estate
+    "assetLabel": "미술품",             // categoryById(id).label 파생
+    "titlePublic": "예시 회화 A",       // maskFreeText 경유
+    "provenance": "synthetic",         // 3값
+    "isExample": true,                 // synthetic 고지 (provenance==='synthetic')
+    "amountWon": 120000000,            // 정수|null
+    "minimumInvestment": 100000,       // 정수|null (detail.minimumInvestment ?? detail.unitPriceWon)
+    "subscription": { "opensOn": "2026-05-04", "closesOn": "2026-05-12", "precision": "day" },  // phase는 클라이언트가 파생
+    "detail": { "artistName": "…", "platformName": "…", "hasImage": false, "note": "…" }  // 카테고리별 화이트리스트, 전부 마스킹
+  }]
+}
+```
+
+- `detail` 화이트리스트: art=`{artistName, platformName, hasImage, note?}`, real-estate=`{buildingUse, note?}`, 그 외=`{note?}`. 카테고리 확장 시 `cardDetail`에 화이트리스트 추가.
+- 청약 `phase`(`upcoming|open|closed`)는 인덱스에 굽지 않는다 — `subscription.opensOn/closesOn`에서 클라이언트가 파생(내보내기 시각 고정 방지).
+- **재생성 절차(오너)**: 합성 생성기(`seed/synthetic.ts`)의 detail 확장은 `db:seed` 재실행으로 DB에 반영된 뒤 `db:export`로 산출물에 반영된다 — schema.ts(DB 컬럼)는 불변(카테고리 필드는 `detail` jsonb)이라 신규 마이그레이션 불필요.
+
 ## 4. RAG 저장소 (pgvector)
 
 용도: `POST /api/search`(08 §4)의 ①입문 교육 ④범위 밖 판별 근거 검색. **검증 사실(③유형)은 RAG가 아니라 리포트 캐시가 원천**이다 — RAG로 판정·수치를 검색해 답하지 않는다.

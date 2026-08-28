@@ -28,6 +28,9 @@ interface ArtOfferingSeed {
   readonly opensOn: string;
   readonly closesOn: string;
   readonly artist: string;
+  readonly platform: string;
+  readonly minimumInvestmentWon: number;
+  readonly hasImage: boolean;
 }
 
 const ART_OFFERINGS: readonly ArtOfferingSeed[] = [
@@ -38,6 +41,9 @@ const ART_OFFERINGS: readonly ArtOfferingSeed[] = [
     opensOn: "2026-05-04",
     closesOn: "2026-05-12",
     artist: "예시 작가 가",
+    platform: "예시 플랫폼 가",
+    minimumInvestmentWon: 100_000,
+    hasImage: false,
   },
   {
     slug: "art-2",
@@ -46,6 +52,9 @@ const ART_OFFERINGS: readonly ArtOfferingSeed[] = [
     opensOn: "2026-06-01",
     closesOn: "2026-06-09",
     artist: "예시 작가 나",
+    platform: "예시 플랫폼 나",
+    minimumInvestmentWon: 50_000,
+    hasImage: false,
   },
   {
     slug: "art-3",
@@ -54,6 +63,9 @@ const ART_OFFERINGS: readonly ArtOfferingSeed[] = [
     opensOn: "2026-07-06",
     closesOn: "2026-07-14",
     artist: "예시 작가 다",
+    platform: "예시 플랫폼 가",
+    minimumInvestmentWon: 50_000,
+    hasImage: false,
   },
 ];
 
@@ -64,6 +76,7 @@ interface RealEstateOfferingSeed {
   readonly opensOn: string;
   readonly closesOn: string;
   readonly buildingUse: string;
+  readonly minimumInvestmentWon: number;
 }
 
 const REAL_ESTATE_OFFERINGS: readonly RealEstateOfferingSeed[] = [
@@ -74,6 +87,7 @@ const REAL_ESTATE_OFFERINGS: readonly RealEstateOfferingSeed[] = [
     opensOn: "2026-04-06",
     closesOn: "2026-04-14",
     buildingUse: "상업업무용(사무소)",
+    minimumInvestmentWon: 5_000,
   },
   {
     slug: "re-2",
@@ -82,6 +96,7 @@ const REAL_ESTATE_OFFERINGS: readonly RealEstateOfferingSeed[] = [
     opensOn: "2026-05-11",
     closesOn: "2026-05-19",
     buildingUse: "상업업무용(근린생활시설)",
+    minimumInvestmentWon: 5_000,
   },
   {
     slug: "re-3",
@@ -90,6 +105,7 @@ const REAL_ESTATE_OFFERINGS: readonly RealEstateOfferingSeed[] = [
     opensOn: "2026-06-15",
     closesOn: "2026-06-23",
     buildingUse: "공업용(창고)",
+    minimumInvestmentWon: 10_000,
   },
 ];
 
@@ -103,7 +119,13 @@ export const syntheticOfferings = (): readonly OfferingRow[] => {
       amountWon: seed.amountWon,
       opensOn: seed.opensOn,
       closesOn: seed.closesOn,
-      detail: { artist: seed.artist, note: "예시 데이터로 구성한 화면입니다." },
+      detail: {
+        artistName: seed.artist,
+        platformName: seed.platform,
+        hasImage: seed.hasImage,
+        minimumInvestment: seed.minimumInvestmentWon,
+        note: "예시 데이터로 구성한 화면입니다.",
+      },
       sourceMeta: syntheticSourceMeta(seed.slug),
     }),
   );
@@ -118,6 +140,7 @@ export const syntheticOfferings = (): readonly OfferingRow[] => {
       closesOn: seed.closesOn,
       detail: {
         buildingUse: seed.buildingUse,
+        minimumInvestment: seed.minimumInvestmentWon,
         note: "예시 데이터로 구성한 화면입니다.",
       },
       sourceMeta: syntheticSourceMeta(seed.slug),

@@ -2,7 +2,7 @@
 
 # data/ 매니페스트
 
-생성 시각: 2026-08-28T16:45:16.947Z
+생성 시각: 2026-08-28T17:14:57.292Z
 
 ## 저장 정책
 
@@ -235,4 +235,7 @@
 | 경로 | 바이트 | sha256 |
 |---|---:|---|
 | `data/offers/filing-facts/livestock-9.json` | 2,637 | `922c7310902aef3bf925eab22c59bbedb4bf61420950ce50b4bc7dc522c4c8e5` |
+| `data/offers/filing-facts/pig-1.json` | 2,005 | `4f15e93b1833ae19d654e0f523280069ff21c1cb9a191f018ef80a3bd2810826` |
+| `data/offers/filing-facts/pig-2.json` | 1,932 | `61323e19a54b212b367dde5daa5d4f5995ad0d50d950288a2d8d8f56ef758fe8` |
+| `data/offers/filing-facts/pig-3.json` | 1,916 | `e246f6fc8080627b48d70314510810c7099e2edbc8676f2db2ca146ebc31a199` |
 | `data/offers/real-estate-a.json` | 2,399 | `ec380f2f23d763d365db2aca2022c221d9bf89ca3c4e18a4bc6f733580975c08` |
