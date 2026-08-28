@@ -42,8 +42,9 @@
 - 드라이버: **postgres-js(`postgres`) + drizzle-orm** (스키마 = `src/lib/db/schema.ts`, 마이그레이션 = drizzle-kit → `db/migrations/` 커밋). drizzle 대신 직 SQL 여부는 `[팀 결정 대기]` — 단 §2.2 파라미터화 의무는 선택과 무관하게 적용.
 - **연결 문자열 2종 분리 (의무)**:
   - `DATABASE_URL` — Supavisor **transaction 풀러**(포트 6543) 경유, 런타임(`/api/search`) 전용. 서버리스 동시 인보케이션의 직결 커넥션 고갈 방지.
-  - `DATABASE_URL_DIRECT` — 직결(포트 5432, session), CLI 전용(마이그레이션·시드·export). drizzle-kit은 반드시 이쪽을 쓴다(트랜잭션 풀링 모드에서 DDL·세션 기능 제약).
-- **자격증명 역할 분리 (의무)**: 런타임 `DATABASE_URL`에는 `rag_documents`·`rag_chunks` **SELECT 전용 Postgres 역할**을 부여한다. 원장 쓰기·마이그레이션 권한은 CLI 전용 자격증명에만. 공개 검색 경로의 취약점이 원장 쓰기로 확대되는 것을 차단하는 유일한 방어선이다(Supabase 무료 플랜에는 IP allow가 없음). Supabase의 `service_role`·`anon` 키는 PostgREST용 — 이 프로젝트는 PostgREST를 쓰지 않으므로 두 키를 코드에 들여오지 않는다.
+  - `DATABASE_URL_DIRECT` — 세션 모드 연결(포트 5432), CLI 전용(마이그레이션·시드·export). drizzle-kit은 반드시 이쪽을 쓴다(트랜잭션 풀링 모드에서 DDL·세션 기능 제약). **2026-08-29 오너 실측 정정**: 이 프로젝트의 진짜 직결 호스트(`db.*.supabase.co`)는 IPv6 전용이라 로컬에서 도달 불가 → **세션 풀러(5432)로 대체**한다. 세션 모드라 DDL·마이그레이션·`CREATE ROLE`이 호환된다("직결"이라는 표기는 세션 풀러를 포함하는 뜻으로 읽는다).
+- **자격증명 역할 분리 (의무)**: 런타임 `DATABASE_URL`에는 `rag_documents`·`rag_chunks` **SELECT 전용 Postgres 역할**을 부여한다. 원장 쓰기·마이그레이션 권한은 CLI 전용 자격증명에만. 공개 검색 경로의 취약점이 원장 쓰기로 확대되는 것을 차단하는 유일한 방어선이다(Supabase 무료 플랜에는 IP allow가 없음). Supabase의 `service_role`·`anon` 키는 PostgREST용 — 이 프로젝트는 PostgREST를 쓰지 않으므로 두 키를 코드에 들여오지 않는다. **역할 생성은 마이그레이션과 분리한 운영 스크립트 `db/roles.sql`**로 준비돼 있다(마이그레이션이 아님 — `db:migrate`가 실행하지 않는다). **적용 순서·시점(오너 결정)**: `db:migrate`로 스키마 적용 후 → `db/roles.sql`(비밀번호 실행 시 주입, 커밋 금지) → `DATABASE_URL`을 이 역할로 재발급. 그 전까지는 런타임·CLI 둘 다 `postgres` 사용자지만 `/api/search`가 없어 노출 표면이 없다.
+- **확장 가용 실측 (2026-08-29 오너)**: `vector` 0.8.2 · `pg_trgm` 1.6 · `unaccent` 1.1 모두 사용 가능. `CREATE EXTENSION`은 마이그레이션에서 수행한다(`vector`는 `0000_init.sql` 선두에 이미 포함; `pg_trgm`은 §4 한국어 보강 [팀 결정 대기] 확정 후 별도 마이그레이션으로 추가).
 - `DATABASE_URL` 미설정이면 **file 모드** — 어댑터 fake 트윈 관례(`01` §1) 그대로, DB 리포지토리의 트윈이 `data/` JSON을 읽어 같은 인터페이스로 응답한다. 팀원 로컬·CI에서 DB 불필요 원칙.
 - 금액은 원화 정수 `bigint`(won), 시각은 `timestamptz`, 문자열은 `text`, id는 `bigint identity` + 공개 슬러그 별도 열. 외래키에는 인덱스 필수.
 - 마이그레이션은 append-only — 배포된 마이그레이션 파일 수정 금지, 정정은 새 마이그레이션으로.

@@ -88,6 +88,10 @@ npm run data:manifest                  # data/MANIFEST.md 재생성 (직접 수�
 
 ## 배포
 
+**배포 전 체크** (CI 없는 수동 배포 구조 — 사람이 확인):
+- [ ] `npm run build`·`npm test` 그린 (키·DB 없이 완주 — R-INV-05)
+- [ ] DB에서 화면 데이터를 새로 뽑았다면, **직전 `npm run db:export` 산출물이 익명화 게이트 테스트를 그린으로 통과**했는가 (R-STO-03 — DB 유래라고 마스킹 게이트 우회 금지). export는 `DATABASE_URL_DIRECT` 전용, 미설정이면 not_configured로 정직 종료하며 화면 데이터를 만들지 않는다.
+
 Vercel CLI 수동 배포 — git 연동 없음(푸시는 배포를 트리거하지 않는다):
 `npx -y vercel@58.9.2 deploy --prod --scope lostarkofzephyr`
 (58.9.4는 "Not authorized" 회귀. `--scope` 생략 시에도 같은 "Not authorized"로 실패한 사례 있음 — 항상 명시).
