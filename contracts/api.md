@@ -1,7 +1,7 @@
 ---
 scope: src/app/api/** 및 응답 형태에 닿는 모든 변경
 read-when: API 라우트 신설·수정, 에러 응답 작성, 검색(/api/search) 구현
-source-of-truth: src/lib/verify/live/response.ts (LiveVerifyBody·LiveVerifyError)
+source-of-truth: src/lib/verify/live/response.ts (LiveVerifyBody) + src/lib/verify/live/revalidate.ts (LiveVerifyError·LiveVerifyErrorCode)
 rationale: docs/spec/08-api-contract.md
 ---
 
@@ -38,7 +38,7 @@ rationale: docs/spec/08-api-contract.md
 
 ## 경계·어휘
 
-- **R-API-07 (MUST)** 요청 입력(바디·쿼리·동적 세그먼트) 핸들러 진입 즉시 Zod 검증. 실패 → `validation_error`.
+- **R-API-07 (MUST)** 요청 입력(바디·쿼리·동적 세그먼트) 핸들러 진입 즉시 Zod 검증. 실패 → `validation_error`. 신설·수정 엔드포인트 의무 — 현행 3종은 allowlist·인증 비교뿐이라 소급 미적용(후속 과제).
 - **R-API-08 (MUST)** 판정 값은 엔진 3값(`match|mismatch|unverifiable`) 원형 송출. 화면 5상태 번역·비율·점수 필드 신설 금지 — 건수(`summary`)만.
 - **R-API-09 (MUST)** 리포트 내용물은 `toPublicView`(브랜드 타입 `PublicReport`) 경유 후에만 직렬화. 원본 스냅샷 직렬화 금지.
 - **R-API-10 (MUST)** 라우트 파일은 배선만 — 로직은 `src/lib/`에 두고 lib 단위 테스트로 검증(`live-revalidate.test.ts` 미러).
@@ -52,7 +52,7 @@ rationale: docs/spec/08-api-contract.md
 | `GET /api/cron/monitor` | implemented | `authorizeCronRequest` 필수, 화면·문서에 URL 비노출 |
 | `POST /api/search` | planned (M2+) | R-API-11 참조 |
 
-- **R-API-11 (MUST)** `/api/search`는 `docs/spec/06` 4게이트(다턴 레드팀·전역 한도·킬스위치·강등 리허설) 전부 통과 전 공개 금지. 응답은 스파인 유니언 `answer|abstain|blocked|pending_action|rate_limited` + `citations[].sourceId`(코퍼스·RAG 등록분만) + `degraded` 정직 표기. 검증 사실 인용의 근거는 리포트 캐시만 — 대화 중 라이브 원장 호출 금지.
+- **R-API-11 (MUST)** `/api/search`는 `docs/spec/06` 4게이트(다턴 레드팀·전역 한도·킬스위치·강등 리허설) 전부 통과 전 공개 금지. 요청 `query`는 z.string().min(1).max(500). 응답은 스파인 유니언 `answer|abstain|blocked|pending_action|rate_limited` + `citations[].sourceId`(**코퍼스 등록분만** — RAG 테이블은 등록 출처의 본문 확장일 뿐, R-STO-12) + `degraded` 정직 표기. 검증 사실 인용의 근거는 리포트 캐시만 — 대화 중 라이브 원장 호출 금지.
 - **R-API-12 (MUST)** 카테고리 확장 시 `POST /api/verify/{id}`는 동일 엔드포인트·동일 바디 유지. 라우트에 카테고리 분기 금지 — 어댑터는 디스크립터에서 해석. 라이브 불가 카테고리는 404가 아니라 200 + `mode:"snapshot"`.
 - **R-API-13 (기본값)** 버저닝 없음(`/api/v1` 미도입). 외부 공개 시점에 일괄 승격.
 

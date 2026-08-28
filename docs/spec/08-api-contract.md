@@ -1,6 +1,6 @@
 # API 계약 (API Contract)
 
-> **상태: v1-draft (팀 리뷰 요청)** · 2026-08-23 · 타입 단일 진실: `src/lib/verify/live/response.ts`(현행) — 문서와 타입이 다르면 타입을 따르고 문서를 정정한다.
+> **상태: v1-draft (팀 리뷰 요청)** · 2026-08-23 초안 · 2026-08-29 3관점 리뷰 반영 · 타입 단일 진실: `src/lib/verify/live/response.ts`(`LiveVerifyBody`) + `src/lib/verify/live/revalidate.ts`(`LiveVerifyError`·`LiveVerifyErrorCode`) — 문서와 타입이 다르면 타입을 따르고 문서를 정정한다.
 > 근거: `00-overview.md` 결정 8(캐시 경계), `06-ai-guardrails.md`(대화 라우트 게이트), api-design 스킬 규약.
 
 ## 0. 제1원칙 — API는 예외 경로다
@@ -54,13 +54,16 @@
 
 ### 1.4 헤더·캐싱
 
-- 동적 응답은 `Cache-Control: no-store` (현행 계승).
+- 동적 응답은 `Cache-Control: no-store`. 현행 실측: verify·cron은 설정, `/api/health`는 미설정(uptimeSeconds가 동적이므로 후속 정비 대상 — 신설 라우트는 예외 없음).
 - 429에는 `Retry-After: <초>` 필수.
 - 레이트리밋 정보 헤더(`X-RateLimit-*`)는 대화 라우트 신설 시 함께 도입한다.
 
 ### 1.5 경계 검증·판정 어휘
 
 - 모든 요청 입력(바디·쿼리·동적 세그먼트)은 핸들러 진입 즉시 Zod로 검증한다. 외부 응답도 동일 (`01` §1).
+  **적용 범위 주의 (2026-08-29 정정)**: 이 의무는 **신설·수정 엔드포인트**에 적용된다. 현행 3종은 입력이
+  allowlist 대조(`isPublished`)·인증 헤더 비교뿐이라 Zod 미경유 상태로 소급 미적용(후속 과제) —
+  레지스트리의 `validation_error`(400)도 현행 코드에서는 도달하지 않는 예약 코드다.
 - API 표면의 판정 값은 엔진 3값(`match | mismatch | unverifiable`)을 **그대로** 내보낸다.
   화면 5상태 프로젝션(`02-vocabulary.md`)은 클라이언트 렌더 층의 책임이다 — API가 미리 번역하지 않는다.
 - 비율·게이지·집계 점수 필드 신설 금지 — 건수(`summary.subjects/items`)만 허용 (`04` 계승).
@@ -78,7 +81,7 @@
 
 ### POST `/api/verify/{offerId}` — 라이브 재대조
 
-- 인증 없음 · IP 단위 레이트리밋(`createLiveVerifyGate`) · `Cache-Control: no-store`.
+- 인증 없음 · 레이트리밋 2단(`createLiveVerifyGate`): 클라이언트 버스트(분당 2회) + **전역 일일 쿼터**(공공 API 쿼터 예산 기반 — 도달 시 전 사용자 429, `src/lib/verify/live/policy.ts`) · `Cache-Control: no-store`.
 - 성공 바디: `LiveVerifyBody` (`src/lib/verify/live/response.ts` — offerId, `mode: "live" | "snapshot"`,
   verifiedAt, document{rcpNo, submittedOn}, sources[], summary{subjects, items 건수}, subjects[], notes[]).
 - 상태: 200(live 또는 snapshot 폴백) · 404 `not_found` · 429 `rate_limited`(+Retry-After) ·
@@ -87,7 +90,7 @@
 
 ### GET `/api/cron/monitor` — 정정 감시 (vercel.json cron 주 2회)
 
-- `authorizeCronRequest` 인증 필수 — 실패 시 401.
+- `authorizeCronRequest` 인증 필수 — 실패 시 401. 인증 실패 응답은 서버 로그에 남긴다(저비용 관측 — 반복 실패는 시크릿 오설정 또는 탐색 시도의 신호).
 - 키 미설정 시 실행 생략을 정직 표기(§1.3 `not_configured` 문형)로 응답한다.
 - 수동 호출은 운영자 디버깅 한정 — 화면·외부 문서에서 이 URL을 안내하지 않는다.
 
@@ -106,21 +109,23 @@
 리허설) 전부 통과 전에는 공개하지 않는다.** 여기는 형태 계약만 정의한다.
 
 ```jsonc
-// 요청
+// 요청 — Zod: query는 z.string().min(1).max(500) (긴 질의로 요청당 임베딩·LLM 비용을
+// 부풀리는 우회를 차단 — 전역 요청 수 한도의 사각지대 보완), citations는 응답에서 최대 5건
 { "query": "한우 공모는 뭘 확인해야 해?", "categoryId": "cattle" /* 선택 */ }
 
 // 응답 (스파인 응답 유니언 그대로)
 {
   "kind": "answer" | "abstain" | "blocked" | "pending_action" | "rate_limited",
-  "responseType": "education" | "routing" | "verified_fact" | "out_of_scope",  // 06 §2의 4유형
+  "responseType": "education" | "routing" | "verified_fact" | "out_of_scope",  // 06 §2 4유형의 영문 식별자(신규 명명 — 06은 한국어 명칭만). 조합 규칙: out_of_scope는 kind:"abstain"과만 성립
   "message": "...",                       // 출력 필터 통과 문장
   "citations": [ { "sourceId": "...", "label": "...", "asOf": "2026-08-01" } ],
   "degraded": false                       // 열화 모드 여부 정직 표기
 }
 ```
 
-- `citations[].sourceId`는 코퍼스 레지스트리(`spine/rag/corpus.ts`) 또는 RAG 문서 저장소(`09` §4)
-  등록분만 허용 — 미등록 인용은 스파인이 abstain으로 강등한다.
+- `citations[].sourceId`는 **코퍼스 레지스트리(`spine/rag/corpus.ts`) 등록분만** 허용 — RAG 테이블(`09` §4)은
+  등록된 출처의 본문 확장일 뿐 별도 인용 레지스트리가 아니다(RAG 적재 ≠ 출처 등록, R-STO-12).
+  미등록 인용은 스파인이 abstain으로 강등한다.
 - 검증 사실 인용(③유형)의 근거는 **사전 생성 리포트 캐시만** — 대화 중 라이브 원장 호출 금지 (`06` §3).
 - 다건 대화 이력은 서버에 저장하지 않는 것을 기본값으로 한다. 입력 로그 보존은 `05` §4(30일) 준수.
 - 세션·대화 이력이 없으므로 페이지네이션·커서 없음. 목록형 API가 향후 생기면 커서 방식을 기본으로 한다.

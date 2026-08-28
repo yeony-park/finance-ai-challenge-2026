@@ -1,5 +1,43 @@
 # 공통 명세 08(API 계약)·09(스택·저장 계층) 초안 (2026-08-23, 커밋 예정)
 
+## 커밋 전 3관점 리뷰 반영 + DB 호스팅 Supabase 확정 (2026-08-29)
+
+**결정과 근거** — 미커밋 초안(08·09·본 워크로그·CLAUDE.md/00 수정분)에 3관점 병렬 리뷰(DB
+설계·정합성·보안)를 실행하고 CRITICAL 3건·HIGH 전건·정합성 정정을 문서에 반영했다. 주요 반영:
+① DDL 보강 — provenance CHECK 2곳 추가(re_trades·rag_documents), 멱등 시드용 자연키/UNIQUE
+신설(rag_documents.source_id UNIQUE·art external_ref·re_trades 복합 자연키), category_id
+CHECK, FK ON DELETE CASCADE, created_at 통일, 형식 CHECK(lawd_cd·deal_ym·기간 순서).
+② 보안 게이트의 기계 강제 지점 신설 — db:seed 로컬 전용 경로 원천 즉시 실패(R-STO-03a),
+synthetic `예시 ` 프리픽스 Zod 강제+블록리스트 대조(R-STO-07a), 자격증명 역할 분리
+(R-STO-16, 런타임=rag SELECT 전용), 파라미터 바인딩 의무(R-STO-09a, 접근 계층 선택 무관),
+RAG 프롬프트 격리+적재 인젝션 스캔(R-STO-17·18), /api/search query 500자 상한.
+③ 정합성 정정 — Zod 의무의 소급 미적용 명시(현행 3종은 allowlist뿐 — validation_error는
+예약 코드), RAG 인용 범위를 "코퍼스 등록분만"으로 단일화(08↔R-STO-12 드리프트 해소),
+LiveVerifyError 단일 진실 포인터를 revalidate.ts로 정정, 환경 변수 표를 .env.example
+전 변수로 확장, 임베딩 근거 정정("스파인 동일 제공자"→"claim 추출 프로덕션 경로 동일").
+④ 한국어 검색 리스크 명문화 — tsvector 'simple'은 형태소 미지원, fake 모드 검색 품질
+직결이므로 pg_trgm 병행/사전 토큰화를 [팀 결정 대기]로 항목화, websearch_to_tsquery 의무.
+⑤ **DB 호스팅 오너 확정 = Supabase** (Neon 기본값 대체). 실측 비교: Neon(자동 기상) vs
+Supabase(7일 무활동 일시정지·수동 복구, 대신 팀 대시보드 가시성) vs Oracle Always Free
+(관리형 Postgres 없음·idle 회수 — 탈락). 채택 사유는 대시보드 + 챗 개통 후 대화 로그
+저장으로 상시 활동 예상. 드라이버는 @neondatabase/serverless → postgres-js로 교체,
+Supavisor 풀러(6543)/직결(5432) 2종 연결 문자열 분리.
+
+**트레이드오프** — (a) Supabase 채택으로 일시정지 리스크를 수용: 챗 개통 전 구간은 cron
+DB ping으로 방어(명세에 없던 keep-alive 장치 1개 추가 비용). 자동 기상(Neon)을 포기하고
+팀 가시성을 샀다. (b) DDL에 CHECK·UNIQUE를 늘려 시드 유연성이 줄었다 — 정직 규약(3값
+외 거부·멱등)이 유연성보다 우선. (c) 기계 게이트 조항(R-STO-03a·07a·16~18)은 구현 비용을
+선불로 늘리지만, "선언만 있고 게이트 없음"이 리뷰가 지목한 최대 구조 리스크였다.
+
+**검증 영향** — 09 §6 계약 테스트 4종→6종(프리픽스 강제·원천 경로 가드 추가). 배포 전
+"db:export 익명화 게이트 그린" 체크를 CLAUDE.md 배포 절에 연동하기로 예약(DB 도입 PR).
+챗 게이트 다턴 레드팀에 "RAG 소스 내 인젝션" 시나리오 의무 추가.
+
+**알려진 한계** — drizzle의 vector·generated column·HNSW 지원 범위는 미검증(spike 선행
+조항만 존재). pg_trgm의 Supabase 지원과 한국어 정확도 비교도 spike 대기. re_trades 복합
+자연키는 근사치(공식 거래 id 확보 시 교체). 현행 3종 라우트의 Zod 소급·health no-store는
+후속 과제로 남김. 대화 로그 DB 저장 테이블(30일 TTL)은 챗 개통 결정 시 별도 정의.
+
 
 ## 명세 08·09 신설 — API 계약과 Postgres 더미 원장·RAG 정의 (2026-08-23)
 
