@@ -92,3 +92,22 @@
 **검증 영향** — 전체 1445 그린·tsc·eslint clean. loadFilingFacts 손상도 이제 관측된다.
 
 **알려진 한계** — 구조화 로거 미도입(관측성 후속, 리뷰 informational). AGENTS.md의 next dev 자동생성 블록은 알려진 정상 산출물(리뷰 주의 환기).
+
+## 배포 사고 — .vercelignore 앵커 누락으로 src/lib/db 업로드 제외 (2026-08-30, 통합 세션)
+
+**결정과 근거** — 4차 수정 배포 시 Vercel 빌드가 `Module not found: @/lib/db/ledger/*` 4건으로
+실패(로컬 빌드는 그린). 원인: 업로드 표면 축소로 추가한 `.vercelignore`의 `db` 패턴이 앵커
+없이 쓰여 gitignore 의미론상 **모든 깊이의 db 디렉터리**(src/lib/db 포함)를 제외. 교정:
+내부 자료 5항목 전부 루트 앵커(`/db` 등) + 파일 내 경고 주석(6ce3d67). 재배포 Ready(39s),
+프로덕션 실측: health corpusDocs 9(kape 반영)·전 페이지 200·/pig "선언 대기" 0건·홈
+WatchBand 8/30 01:49 KST 표기.
+
+**트레이드오프** — 실패 배포 동안 프로덕션은 직전 Ready 유지(무중단 요건 보존 — Vercel의
+실패 시 미승격 동작이 방어). dry-run 검증을 앵커 교정 후 생략하고 실배포로 검증 — 배포
+1회 낭비 대신 실측 확실성.
+
+**eval 영향** — 없음(설정 사고). 로컬-Vercel 빌드 결과 차이는 .vercelignore 변경 시에만
+발생 — "수정 시 dry-run 검증" 기존 규칙의 실효성이 재확인됨.
+
+**알려진 한계** — .vercelignore 패턴 의미론(비앵커=전 깊이 매칭)을 검증하는 자동 장치
+없음 — 수정 시 dry-run 규칙(CLAUDE.md)이 유일한 가드.
