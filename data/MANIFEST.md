@@ -2,7 +2,7 @@
 
 # data/ 매니페스트
 
-생성 시각: 2026-08-28T17:14:57.292Z
+생성 시각: 2026-08-29T04:17:58.913Z
 
 ## 저장 정책
 
@@ -131,7 +131,7 @@
 | `data/public/livestock-9/report-2026-08-14T05-52-59-028Z.json` | 410,700 | `5391ed8bbf1455f3af56dfc9fb78c9dcc04b87ecf6bf9b98098ef019b812819d` |
 | `data/public/livestock-9/report-2026-08-14T15-30-30-662Z.json` | 412,860 | `c80032207a70e8a3b7d060cc6938bad29de130e477ac220e683c99a6c61a79d1` |
 | `data/public/livestock-9/report-2026-08-15T15-52-44-480Z.json` | 430,888 | `c989fb5dce8532b849ace669fed17f4b29ae7d5c52db028659a538c312807da3` |
-| `data/public/offerings/index.json` | 2,852 | `d324c45e7eb40c4c5b806f68a15889f3ba70e8921512aa26005a19bf6b524cef` |
+| `data/public/offerings/index.json` | 3,939 | `e6e3d3269be63774617b28782929b6c2cf34810af2f5f43169c4e787d7cb2a08` |
 | `data/public/real-estate-a/narrative-latest.json` | 4,203 | `ba5978b954e4e0c8bcc17ae28cf5a18925f77f8ae9afafdda574c5925af8122f` |
 | `data/public/real-estate-a/report-2026-08-13T17-53-03-085Z.json` | 15,168 | `931ed4b78f166004a50fc90e7b0b9cf9689170baf76f7091e4cb6f6b629e7387` |
 | `data/public/real-estate-a/report-2026-08-14T04-34-57-566Z.json` | 50,960 | `659b739f067591b35ece1f3da4b16e80794c85591b600f01f6e2cb1e301db753` |
