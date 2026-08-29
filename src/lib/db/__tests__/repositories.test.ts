@@ -88,6 +88,15 @@ describe("④ DATABASE_URL 없이 file 모드 완주 (R-STO-02·R-INV-05)", () =
     expect(result.degraded).toBe(true);
     expect(result.hits.length).toBeGreaterThan(0);
   });
+
+  test("degraded는 하이브리드 벡터 도입 전까지 고정 true — 히트 유무 무관 (09 §4)", async () => {
+    const repository = await resolveRagSearchRepository();
+    const withHits = await repository.search("대조 불가");
+    const noHits = await repository.search("존재하지않는키워드zzz9");
+    expect(withHits.degraded).toBe(true);
+    expect(noHits.hits).toEqual([]);
+    expect(noHits.degraded).toBe(true);
+  });
 });
 
 describe("③ rag_documents.source_id 미등록 id 거부 (R-STO-12)", () => {

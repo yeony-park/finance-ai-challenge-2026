@@ -5,6 +5,24 @@ import { parseReportSnapshot, type ReportSnapshot } from "./snapshot";
 
 const REPORT_FILE_PATTERN = /^report-.*\.json$/;
 
+export class ReportNotFoundError extends Error {
+  readonly name = "ReportNotFoundError";
+}
+
+export class ReportCorruptError extends Error {
+  readonly name = "ReportCorruptError";
+  constructor(fileName: string, cause: unknown) {
+    super(
+      `리포트 파일이 손상됐습니다 (${fileName}): ${cause instanceof Error ? cause.message : String(cause)}`,
+    );
+  }
+}
+
+const isEnoent = (error: unknown): boolean =>
+  typeof error === "object" &&
+  error !== null &&
+  (error as { code?: string }).code === "ENOENT";
+
 export interface LoadedReport {
   readonly report: ReportSnapshot;
   readonly fileName: string;
@@ -23,8 +41,10 @@ const listReportFiles = async (dir: string): Promise<readonly string[]> => {
   try {
     const entries = await readdir(dir);
     return entries.filter((entry) => REPORT_FILE_PATTERN.test(entry));
-  } catch {
-    return [];
+  } catch (error) {
+    if (isEnoent(error)) return [];
+    console.error(`[report] 디렉터리 조회 실패 (${dir}): ${error instanceof Error ? error.message : String(error)}`);
+    throw error;
   }
 };
 
@@ -33,7 +53,7 @@ export const loadLatestReport = async (offerId: string): Promise<LoadedReport> =
   const files = await listReportFiles(dir);
   const fileName = pickLatestFileName(files);
   if (!fileName) {
-    throw new Error(
+    throw new ReportNotFoundError(
       [
         `공개 리포트를 찾을 수 없습니다: ${dir}`,
         "먼저 검증을 실행하세요: npm run verify -- --rcpNo <접수번호>",
@@ -42,9 +62,11 @@ export const loadLatestReport = async (offerId: string): Promise<LoadedReport> =
   }
 
   const raw = await readFile(path.join(dir, fileName), "utf8");
-  return {
-    report: parseReportSnapshot(JSON.parse(raw)),
-    fileName,
-    versionCount: files.length,
-  };
+  let report: ReportSnapshot;
+  try {
+    report = parseReportSnapshot(JSON.parse(raw));
+  } catch (error) {
+    throw new ReportCorruptError(fileName, error);
+  }
+  return { report, fileName, versionCount: files.length };
 };

@@ -11,11 +11,12 @@ import {
 import { assertSeedSourcePathsAllowed } from "../seed/guards";
 
 type Db = ReturnType<typeof getDirectDb>;
+type DbOrTx = Db | Parameters<Parameters<Db["transaction"]>[0]>[0];
 
 const numeric = (value: number | null): string | null =>
   value === null ? null : String(value);
 
-const ingestCattle = async (db: Db, plan: IngestPlan): Promise<void> => {
+const ingestCattle = async (db: DbOrTx, plan: IngestPlan): Promise<void> => {
   for (const row of plan.cattleAuction) {
     await db
       .insert(cattleAuctionPrices)
@@ -50,7 +51,7 @@ const ingestCattle = async (db: Db, plan: IngestPlan): Promise<void> => {
   }
 };
 
-const ingestReTrades = async (db: Db, plan: IngestPlan): Promise<void> => {
+const ingestReTrades = async (db: DbOrTx, plan: IngestPlan): Promise<void> => {
   for (const row of plan.reTrades) {
     const values = {
       provenance: row.provenance,
@@ -93,7 +94,7 @@ const ingestReTrades = async (db: Db, plan: IngestPlan): Promise<void> => {
   }
 };
 
-const ingestPig = async (db: Db, plan: IngestPlan): Promise<void> => {
+const ingestPig = async (db: DbOrTx, plan: IngestPlan): Promise<void> => {
   for (const row of plan.pigAuction) {
     await db
       .insert(pigAuctionPrices)
@@ -128,7 +129,7 @@ const ingestPig = async (db: Db, plan: IngestPlan): Promise<void> => {
   }
 };
 
-const ingestFilingFacts = async (db: Db, plan: IngestPlan): Promise<void> => {
+const ingestFilingFacts = async (db: DbOrTx, plan: IngestPlan): Promise<void> => {
   for (const row of plan.filingFacts) {
     await db
       .insert(offeringFilingFacts)
@@ -167,10 +168,10 @@ const main = async (): Promise<void> => {
   }
 
   const db = getDirectDb();
-  await ingestCattle(db, plan);
-  await ingestReTrades(db, plan);
-  await ingestPig(db, plan);
-  await ingestFilingFacts(db, plan);
+  await db.transaction((tx) => ingestCattle(tx, plan));
+  await db.transaction((tx) => ingestReTrades(tx, plan));
+  await db.transaction((tx) => ingestPig(tx, plan));
+  await db.transaction((tx) => ingestFilingFacts(tx, plan));
   console.log(`[db:ingest] 완료 — ${counts} (멱등 자연키 ON CONFLICT).`);
 };
 

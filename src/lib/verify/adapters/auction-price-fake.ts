@@ -1,5 +1,6 @@
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
+import { isEnoent, ioErrorMessage } from "./io-errors";
 import {
   AUCTION_CACHE_SUBDIR,
   AUCTION_SOURCE_NAME,
@@ -248,8 +249,12 @@ export const loadAuctionCaches = async (
   let files: readonly string[];
   try {
     files = await readdir(dir);
-  } catch {
-    return [];
+  } catch (error) {
+    if (isEnoent(error)) return [];
+    console.error(
+      `[auction-price] 캐시 디렉터리 조회 실패 (${dir}): ${ioErrorMessage(error)}`,
+    );
+    throw error;
   }
 
   const caches: AuctionMonthCache[] = [];

@@ -6,7 +6,7 @@ import { createEkapeTraceAdapter } from "@/lib/verify/adapters/livestock-trace";
 import { fetchDocumentXmlInMemory } from "@/lib/verify/dart/fetch-document";
 import { createLiveVerifyGate } from "@/lib/verify/live/policy";
 import { revalidateOffer } from "@/lib/verify/live/revalidate";
-import { loadLatestReport } from "@/lib/verify/report/load";
+import { ReportCorruptError, loadLatestReport } from "@/lib/verify/report/load";
 import type { ReportSnapshot } from "@/lib/verify/report/snapshot";
 import { rcpNoForOffer } from "@/lib/verify/pipeline";
 import { buildVerificationRunRecordFromLiveBody } from "@/lib/db/ledger/build";
@@ -22,7 +22,10 @@ const loadSnapshot = async (
 ): Promise<ReportSnapshot | undefined> => {
   try {
     return (await loadLatestReport(offerId)).report;
-  } catch {
+  } catch (error) {
+    if (error instanceof ReportCorruptError) {
+      console.error(`[verify] ${offerId} 스냅샷 손상 — 폴백 생략: ${error.message}`);
+    }
     return undefined;
   }
 };

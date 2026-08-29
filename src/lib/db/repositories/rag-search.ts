@@ -55,7 +55,15 @@ const loadFixtureChunks = async (
     const parsed = fixtureSchema.safeParse(
       JSON.parse(await readFile(path.join(dir, file), "utf8")),
     );
-    if (!parsed.success) continue;
+    if (!parsed.success) {
+      console.warn(
+        `[rag-search] ${file} 스키마 불일치 — 건너뜀: ${parsed.error.issues
+          .slice(0, 3)
+          .map((issue) => `${issue.path.join(".") || "(root)"}: ${issue.message}`)
+          .join("; ")}`,
+      );
+      continue;
+    }
     for (const doc of parsed.data.documents) {
       if (!isRegisteredSource(doc.sourceId)) continue;
       for (const chunk of doc.chunks) {

@@ -26,4 +26,12 @@ export const loadManifestIndex = async (
 export const manifestSha256 = (
   index: ManifestIndex,
   relPath: string,
-): string => index.get(relPath) ?? "";
+): string => {
+  const sha = index.get(relPath);
+  if (!sha) {
+    throw new Error(
+      `MANIFEST에 ${relPath} 항목이 없습니다 — 참조 원장 적재 전 'npm run data:manifest'로 갱신하세요.`,
+    );
+  }
+  return sha;
+};
