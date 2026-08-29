@@ -88,3 +88,33 @@ Supabase, drizzle vs 직 SQL, 임베딩 모델, 더미 규모). DB·RAG는 코�
 승인 + worklog 기록 의무로 묶었지만 집행 장치는 리뷰뿐. Codex 등 타 도구 세션은
 CLAUDE.md를 읽지 않으므로 AGENTS.md 배선이 비어 있다(next dev 자동 재생성 파일이라
 수정 보류 — 별도 진입점 필요 시 팀 결정).
+
+## 저장 계층 v2 통합 개정 — 전수 인벤토리 기반 (2026-08-29, 오너 지시)
+
+**결정과 근거** — 오너 지시("카테고리별 개별 적용 전에 DB에 들어가야 할 것 전수 확인 →
+명세 통합 → 일괄 적용")에 따라 2관점 전수 인벤토리(검증 파이프라인 산출물 / 카테고리별
+참조·RAG·콘텐츠) 실행 후 09 개정. 핵심 발견: ① 현행 5테이블은 보유 데이터 약 20%만 수용
+(실거래 839건·한우 경락가 ~480행·돼지 60행 적재 경로 전무, re_trades 적재 코드 부재)
+② 원장 대조 기록 부재 — 라이브 재대조 100% 휘발, cron 이력 Blob write-only(읽는 코드
+0건), 원장 원응답 폐기로 과거 판정 재현 불가 ③ offerings가 조인 키(lawd_cd 등)·sale·
+limits 유실 ④ 실측 art-1~5(코드 상수) vs synthetic art-1~3(DB) slug 충돌. 개정:
+§3.5 카테고리별 참조 원장 통합표(cattle_auction_prices·pig_auction_prices 신설,
+re_trades 6컬럼 확장, offering_filing_facts 신설, content 상수 실측분 offerings 이관,
+RAG 미적재 6건+교육 콘텐츠 미러), §5 Run Ledger 신설(verification_runs·monitor_runs/
+events·ledger_observations), §3.1 synthetic slug ex- 프리픽스 의무. R-STO-11 경계
+재정의(본문 금지 유지 + 이력·집계·구조화 관측치 기록 대상), R-STO-16 개정(런타임 역할에
+verification_runs INSERT-only 추가), R-STO-19~22 신설.
+
+**트레이드오프** — (a) 라이브 API에 DB 쓰기(best-effort)를 열어 "렌더 경로 DB 금지"
+원칙에 쓰기 전용 예외가 생김: 감사 추적·쿼터 집계가 무기록보다 우선, 실패 무영향 규칙으로
+무중단 요건 보존. (b) 원장 관측치 적재로 저장량 증가(무료 500MB 내 여유 충분) 대신 과거
+판정 재현 가능성 확보. (c) slug 개칭은 breaking이나 인덱스 v2 소비자 부재 시점이라 저비용.
+(d) 골드셋 점수·건축물대장은 [팀 결정 대기]로 이연 — 데이터 0건 상태에서 테이블 선행은 과설계.
+
+**검증 영향** — 계약 테스트 확장 예약: ex- 프리픽스 강제, fields 화이트리스트(금지 필드명),
+run_key 멱등, 자유문장 유입 거부. 쿼터 실사용 집계가 verification_runs.ledger_calls로
+최초 측정 가능해짐.
+
+**알려진 한계** — DDL 초안은 구현 전 참조용(schema.ts가 단일 진실). Blob→DB 이관이 아니라
+이중 기록이라 기존 Blob 축적분은 소급 적재 안 됨. 교육 콘텐츠 RAG 미러는 범위 미확정.
+art 실데이터 338건은 라이선스 재판정(팀 안건 6) 차단 유지.

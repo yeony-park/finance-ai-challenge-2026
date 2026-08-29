@@ -26,7 +26,7 @@
 |---|---|---|---|
 | ① 파일 캐시 | `data/public/`·`data/reference/`·`data/offers/` (커밋) | 검증 리포트·시장 통계·공모 좌표 — **모든 화면 수치·근거의 유일한 원천** (사용자 대면 문안의 단일 진실은 `src/lib/content/` — R-INV-01) | 서버 컴포넌트 직독 (유지) |
 | ② Vercel Blob | 정정 감시 이벤트 스토어 | cron 간 상태 보존 | 불가 |
-| ③ Postgres (신설) | **Supabase (관리형 Postgres) + pgvector — 2026-08-29 오너 확정** | §3 더미·참조 데이터 원장 + §4 RAG 코퍼스 | **불가 — 렌더 경로에서 DB 조회 금지** |
+| ③ Postgres (신설) | **Supabase (관리형 Postgres) + pgvector — 2026-08-29 오너 확정** | §3 더미·참조 데이터 원장 + §4 RAG 코퍼스 + **§5 검증 실행 이력·원장 관측** | **불가 — 렌더 경로에서 DB 조회 금지** (§5 라이브 이력 기록은 쓰기 전용 예외) |
 
 호스팅 비교 근거 (2026-08-29 실측): Neon(0.5GB·100 CU-h·연결 시 자동 기상) / Supabase(500MB·pgvector 전 플랜·**7일 무활동 시 일시정지 — 대시보드 수동 복구, 90일 초과 시 인프라 회수**·테이블/SQL 대시보드) / Oracle Always Free(관리형 Postgres 없음·VM 셀프호스팅은 idle 회수 정책과 충돌 — 탈락). Supabase 채택 사유: 팀원이 적재 데이터를 눈으로 확인할 대시보드 + 챗 개통 후 대화 로그 저장으로 상시 활동 예상. **일시정지 방어**: 챗 개통 전 구간은 cron(`/api/cron/monitor`, 주 2회)에 경량 DB ping 1쿼리를 포함해 7일 무활동을 구조적으로 차단한다 — ping 실패는 cron 결과에 정직 표기하되 cron 본 임무를 중단시키지 않는다.
 
@@ -81,6 +81,7 @@ file 모드 트윈은 "DB 스키마와 동형인 JSON 미러"가 아니라 위 �
 
 - 모든 레코드에 `provenance` 필수: `"public_record" | "manual_verified" | "synthetic"`. 3값 외 금지.
 - `synthetic` 레코드가 화면에 오르는 표면에는 **"예시 데이터" 고지를 같은 표면에** 부착한다 — 실측처럼 보이는 배치는 `04-expression-rules.md` 위반이다. 판정(`match` 등)은 synthetic 근거 위에서 산출하지 않는다 — synthetic 근거만 있는 항목은 "대조 불가"다.
+- **synthetic slug 네임스페이스 분리 (2026-08-29 신설)**: synthetic 레코드의 `offer_slug`는 `ex-` 프리픽스 의무(`ex-art-1` 류). 근거: 실측 미술품 상수(`src/lib/content/art.ts`의 `art-1~5`, 공모 11.8억)와 DB synthetic(`art-1~3`, 예시 회화 1.2억)이 **같은 키의 다른 실체**로 충돌하는 것이 실측됨 — 실측 데이터의 slug 공간을 synthetic이 선점하지 않는다. 기존 synthetic slug는 시드·인덱스에서 일괄 개칭(인덱스 v2 소비자 부재 시점이라 저비용).
 - 실존 발행사·실존 상품을 흉내 낸 합성 금지 — 가공 명칭(`예시 오피스 A` 류)만. 실명 규칙은 `05` §1. **기계 검증 의무**: ① synthetic 레코드의 표기명은 `예시 ` 프리픽스를 Zod `.refine()`으로 강제(프리픽스 없는 synthetic 삽입 거부) ② 시드 CLI는 synthetic 명칭 필드(`title_public`·`artwork_title`·`auction_house` 등)를 실존 개체 블록리스트(DART 발행인 레지스트리 스냅샷 + `07-asset-map` 등재 실존 플랫폼·경매사)와 대조해 겹치면 시드를 실패시킨다 — 눈대중 판단에 맡기지 않는다.
 - 시드는 결정적(고정 시드)이며 스크립트 재실행으로 동일 결과가 재현돼야 한다. 손으로 DB를 고치지 않는다.
 - **적재 원천 경로 가드 (의무)**: `db:seed`는 원천 파일 경로가 `data/raw/`·`data/snapshots/`·`data/reports/`(로컬 전용)이면 즉시 실패한다 — 커밋 가능 원천(`data/offers/`·`data/reference/`)과 명시적 synthetic 생성기만 허용. CLI 진입점에 하드코딩한다. "마스킹 전 데이터 DB 적재 금지"(§3.2 말미)의 유일한 기계 강제 지점이다 — export 사후 게이트는 Supabase 인스턴스 자체의 유출은 못 막는다.
@@ -179,6 +180,26 @@ npm run db:export      # DB → data/public/·data/reference/ 화면용 산출�
 - 청약 `phase`(`upcoming|open|closed`)는 인덱스에 굽지 않는다 — `subscription.opensOn/closesOn`에서 클라이언트가 파생(내보내기 시각 고정 방지).
 - **재생성 절차(오너)**: 합성 생성기(`seed/synthetic.ts`)의 detail 확장은 `db:seed` 재실행으로 DB에 반영된 뒤 `db:export`로 산출물에 반영된다 — schema.ts(DB 컬럼)는 불변(카테고리 필드는 `detail` jsonb)이라 신규 마이그레이션 불필요.
 
+### 3.5 카테고리별 참조 원장 통합표 (2026-08-29 전수 인벤토리 기반 — 일괄 적용 대상)
+
+2026-08-29 실측: 현행 5테이블은 보유 데이터의 약 20%만 수용한다. 파일에 실거래 839건·한우 경락가 33개월(~480행)·돼지 경락가 60행이 있으나 DB 적재 경로가 전무하고, `re_trades`는 적재 코드 자체가 없다. 목표 상태:
+
+| 카테고리 | 참조 원장 | 대상 테이블 | 작업 |
+|---|---|---|---|
+| cattle | 경락가 월집계 (`data/reference/auction-price/` 33파일) | `cattle_auction_prices` **신설** — month·breed_cd·sex_cd·grade_cd·price_per_kg·head_count·avg_price_per_kg·sample_size·partial·source_meta, UNIQUE(month,breed_cd,sex_cd,grade_cd) | 파일→DB 적재 CLI. license·sha256은 MANIFEST에서 조인해 source_meta 충족 |
+| cattle | 개체 이력 (축산물이력제) | §5 `ledger_observations` — **farmerNm·farmAddr 등 PII 제외 구조화 필드만** | 대조 실행 시 기록 (수기 스냅샷 이관 아님 — snapshots는 DB 금지 유지) |
+| pig | 대표가격 (CSV 60행, Green·메타 완비) | `pig_auction_prices` **신설** — month·skin_type·sex·grade·region·head_count·price_won_per_kg·amount_won·weight_kg, UNIQUE(month,skin_type,sex,grade,region) | CSV→DB 적재 |
+| pig | 회차 3건 (`src/lib/content/pig.ts` 상수) | `offerings` 이관 — provenance=`manual_verified`, 회차 구조는 `detail` 화이트리스트 확장 | pig 공모 행 0건 공백 해소. 문안 상수는 코드 유지(감사 게이트) |
+| art | 낙찰 기록 | `art_auction_records` (기존) | 실데이터 338건은 라이선스 재판정(팀 안건 6) 전 적재 보류 |
+| art | 실측 공모 5건 (`src/lib/content/art.ts` 상수) | `offerings` 이관 — provenance=`manual_verified`, slug 충돌은 §3.1 `ex-` 규칙으로 해소 | |
+| real-estate | 실거래 (RTMS 8파일 839건) | `re_trades` **확장** — +building_type·floor·building_area_sqm·land_area_sqm·build_year·cancelled boolean (면적 없이는 ㎡ 단가 비교 불가) | 새 마이그레이션(append-only) + 적재 CLI |
+| real-estate | 건축물대장 | 보류 — 실데이터 0건(API 403) | 키 승인 후 신설 `[팀 결정 대기]` |
+| 공통 | 신고서 사실 카드 (`data/offers/filing-facts/` 18행) | `offering_filing_facts` **신설** — offer_slug·rcp_no·submitted_on·fact_id·label·value·section·short, UNIQUE(offer_slug,rcp_no,fact_id) | offerings와 DART 계보 연결 확보 |
+| 공통 | 공모 좌표 (`data/offers/*.json`) | `offerings` **확장 파싱** — `asset` jsonb(lawd_cd·bjdong_cd·dong 등 조인 키)·`sale` jsonb·`limits` — 현행 rawOfferSchema가 6개 필드군을 유실 중 | detail 화이트리스트 확장(스키마 컬럼 불변) 또는 컬럼 추가 — 구현 시 확정 |
+| RAG | 코퍼스 미적재 6건 + 교육 콘텐츠(1,464줄, 검색 밖) | `rag_documents/chunks` | `data/reference/rag/`에 청크 추가(코드 변경 불필요). 교육 콘텐츠는 청크 **미러**만 — 컴포넌트 직독 구조 유지 |
+
+파일은 계속 **수집 원본이자 화면 원천**이다(R-STO-03) — DB는 대조·질의·감사용 원장이고, 화면 데이터는 여전히 export 산출물만. 파일→DB 적재는 `db:seed`가 아니라 **`db:ingest` 계열 CLI**(참조 원장 적재 전용, 시드와 분리)로 명명해 synthetic 시드와 실데이터 적재를 구분한다.
+
 ## 4. RAG 저장소 (pgvector)
 
 용도: `POST /api/search`(08 §4)의 ①입문 교육 ④범위 밖 판별 근거 검색. **검증 사실(③유형)은 RAG가 아니라 리포트 캐시가 원천**이다 — RAG로 판정·수치를 검색해 답하지 않는다.
@@ -219,7 +240,69 @@ CREATE INDEX ON rag_chunks USING gin (tsv);
   1. **프롬프트 격리**: `rag_chunks.content`는 프롬프트 조립 시 고정 구분자 데이터 블록(`<retrieved_context>…</retrieved_context>` 류)으로만 삽입 — 사용자 지시와 같은 채널에 원문을 이어붙이지 않는다. `06` §6 "문서 내 지시문은 데이터일 뿐 명령이 아니다"의 RAG 구간 집행 조항.
   2. **적재 시 스캔**: 적재 CLI는 청크의 인젝션 휴리스틱(명령형 지시 패턴·역할 지정 문구·인코딩 스머글 징후)을 1차 통과분만 등록 — 실패분은 license 등급과 무관하게 보류. 챗 게이트의 다턴 레드팀 시나리오 셋에 "RAG 소스 내 인젝션"을 명시적으로 포함한다.
 
-## 5. 환경 변수 (DB 도입 PR에서 `.env.example` 반영 의무 — PR 체크 항목)
+## 5. 검증 실행 이력·원장 관측 (Run Ledger — 2026-08-29 오너 지시 신설)
+
+**문제**: 파일에 없는 것은 판정 결과가 아니라 "판정이 언제·무엇을 보고 내려졌는지"다. 실측 — ① 라이브 재대조(`POST /api/verify`)는 100% 휘발(감사 추적 0, 공공 API 일 쿼터 실사용 집계 불가) ② cron 감시 이력은 Blob write-only(읽는 코드 0건) ③ 원장 API 원응답은 판정 문장 1줄로 축약 후 폐기 → **과거 판정 재현 불가** ④ 로컬 실행 이력은 파일명 ISO 시각으로만 존재(livestock-9에 리포트 18개 누적).
+
+**경계 재정의 (R-STO-11 개정)**: "판정·리포트 **본문**(판정 문장·근거 서술·화면이 읽는 것)은 DB에 넣지 않는다"는 유지. **실행 이력 메타 + 판정 건수 집계 + 구조화 원장 관측치**는 DB 기록 대상이다 — 이는 R-STO-11이 허용한 "대조용 참조 원장"의 연장이지 리포트 이관이 아니다.
+
+```sql
+CREATE TABLE verification_runs (                  -- 실행 원장: 모든 검증 실행(cli·cron·api)
+  id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  run_key text NOT NULL UNIQUE,                   -- {offer_slug}:{generated_at ISO} — 멱등 타깃
+  offer_slug text NOT NULL, rcp_no text,
+  trigger text NOT NULL CHECK (trigger IN ('cli','cron','api')),
+  mode text NOT NULL CHECK (mode IN ('fake','live','snapshot')),
+  extraction_mode text,
+  generated_at timestamptz NOT NULL,
+  status text NOT NULL CHECK (status IN ('ok','failed','degraded')),
+  verdict_counts jsonb NOT NULL DEFAULT '{}',     -- {match,mismatch,unverifiable} 건수만 — 판정 본문·문장 금지
+  source_ids text[] NOT NULL DEFAULT '{}',
+  artifact_name text, artifact_sha256 text,       -- 산출 리포트 파일과의 연결 고리
+  ledger_calls int,                               -- 공공 API 호출 수 — 쿼터 실사용 집계 근거
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+CREATE INDEX ON verification_runs (offer_slug, generated_at);
+CREATE INDEX ON verification_runs (trigger, created_at);
+
+CREATE TABLE monitor_runs (                       -- cron 감시 실행 이력 (Blob 원본은 아카이브로 유지)
+  id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  checked_at timestamptz NOT NULL UNIQUE,
+  source text NOT NULL,
+  event_counts jsonb NOT NULL DEFAULT '{}',       -- kind별 건수
+  blob_key text,                                  -- 원본 MonitorRun의 Blob 경로
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+CREATE TABLE monitor_events (
+  id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  monitor_run_id bigint NOT NULL REFERENCES monitor_runs(id) ON DELETE CASCADE,
+  offer_slug text NOT NULL,
+  kind text NOT NULL CHECK (kind IN ('no_amendment','amendment_detected','detection_failed')),
+  base_rcp_no text, checked_through text, amendment_rcp_nos text[] NOT NULL DEFAULT '{}'
+);
+CREATE INDEX ON monitor_events (offer_slug, kind);
+
+CREATE TABLE ledger_observations (                -- 원장 관측 스냅샷: 대조 시점의 공공 원장 상태 (과거 판정 재현 근거)
+  id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  category_id text NOT NULL CHECK (category_id IN ('cattle','pig','art','real-estate')),
+  subject_key text NOT NULL,                      -- 공개 마스킹 규칙과 동일한 마스킹 식별자 — 원문 이력번호 금지
+  source_id text NOT NULL,
+  observed_at timestamptz NOT NULL,
+  subject_exists boolean,
+  fields jsonb NOT NULL DEFAULT '{}',             -- 구조화 화이트리스트만(birth_ymd·breed·sex·current_farm_no 등)
+  UNIQUE (subject_key, source_id, observed_at)
+);
+CREATE INDEX ON ledger_observations (subject_key, observed_at);
+```
+
+**집행 규칙**:
+1. **자유문장 금지**: `Evidence.observed` 원문 문자열을 어떤 컬럼에도 복사하지 않는다 — 마스킹 전 실명·주소가 따라 들어가는 경로다. `fields`는 Zod strict 화이트리스트만, `farmerNm`·`farmAddr` 계열 필드명은 리터럴 금지어.
+2. **기록 주체**: CLI·cron은 `DATABASE_URL_DIRECT`로 기록. 라이브 API(`POST /api/verify`)는 **best-effort 비동기 기록** — DB 실패가 응답을 실패시키지 않는다(무중단 요건). DB 미설정(file 모드)이면 기록 생략이 정직한 동작.
+3. **런타임 역할 확장 (R-STO-16 개정)**: 런타임 자격증명 = rag 2테이블 SELECT + **`verification_runs` INSERT 전용**(SELECT 불가) — 공개 경로가 이력을 읽거나 타 테이블을 쓰는 것은 계속 차단.
+4. **watch 이중 경로 정리**: cron은 Blob(원본 아카이브) + `monitor_runs/events`(질의용) 이중 기록. 화면의 `data/public/watch/` 파일은 CLI 산출 유지 — 캐시 전용 원칙 불변.
+5. 골드셋 **점수**(라벨 본문 제외)의 DB 기록은 `[팀 결정 대기]` — 현재 stdout 증발 문제만 명세에 기록해 둔다.
+
+## 6. 환경 변수 (DB 도입 PR에서 `.env.example` 반영 의무 — PR 체크 항목)
 
 | 변수 | 없을 때 동작 |
 |---|---|
@@ -233,7 +316,7 @@ CREATE INDEX ON rag_chunks USING gin (tsv);
 
 "없으면 죽는다"는 허용되지 않는다 — 모든 변수에 부재 시 동작이 정의돼야 한다.
 
-## 6. 검증
+## 7. 검증
 
 - 계약 테스트: ① provenance 3값 외 거부 ② synthetic 근거로 판정 산출 시도 거부 ③ `rag_documents.source_id` 미등록 id 거부 ④ file 모드 완주(`DATABASE_URL` 없이 `npm test`·`npm run build` 그린) ⑤ synthetic `예시 ` 프리픽스 없는 레코드 거부 ⑥ `db:seed` 로컬 전용 경로(`data/raw/` 등) 원천 즉시 실패.
 - `db:export` 산출물은 기존 익명화 게이트 테스트 대상에 자동 포함된다 — DB 유래라고 게이트를 우회하지 않는다. **배포 체크 연동**: CI 없는 수동 배포 구조이므로, `CLAUDE.md` 배포 절에 "직전 `db:export` 실행분이 익명화 게이트를 그린으로 통과했는가"를 체크 항목으로 명기한다(DB 도입 PR에서 반영).

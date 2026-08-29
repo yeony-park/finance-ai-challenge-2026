@@ -34,7 +34,7 @@ rationale: docs/spec/09-stack-and-storage.md
 - **R-STO-09 (기본값)** 접근 계층: postgres-js(`postgres`) + drizzle-orm. 스키마 = `src/lib/db/schema.ts`, 마이그레이션 = drizzle-kit → `db/migrations/` 커밋, append-only(배포된 파일 수정 금지 — 정정은 새 마이그레이션). drizzle-kit은 `DATABASE_URL_DIRECT`(직결) 사용.
 - **R-STO-09a (MUST, 접근 계층 선택 무관)** 사용자 입력이 개입하는 모든 쿼리는 파라미터 바인딩 강제 — drizzle은 쿼리 빌더 API만(원시 `sql` 템플릿에 문자열 보간 금지), 직 SQL은 postgres-js 태그드 템플릿만. 문자열 결합·보간으로 사용자 값을 SQL에 삽입하는 패턴은 계약 위반.
 - **R-STO-10 (MUST)** 타입 규약: 금액 = 원화 정수 `bigint`, 시각 = `timestamptz`, 문자열 = `text`(varchar(n) 금지), id = `bigint identity` + 공개 슬러그 별도 열. 외래키에 인덱스 필수.
-- **R-STO-11 (MUST)** 판정·리포트를 DB에 넣지 않는다 — 리포트의 진실은 파이프라인 산출 JSON(①층). DB는 대조용 참조 원장까지만. 테이블 구성은 `docs/spec/09` §3.2·§4(offerings·art_auction_records·re_trades·rag_documents·rag_chunks) 기준.
+- **R-STO-11 (MUST, 2026-08-29 개정)** 판정·리포트 **본문**(판정 문장·근거 서술·화면이 읽는 것)을 DB에 넣지 않는다 — 리포트의 진실은 파이프라인 산출 JSON(①층). 단 **실행 이력 메타·판정 건수 집계·구조화 원장 관측치는 DB 기록 대상**(09 §5 — verification_runs·monitor_runs/events·ledger_observations). 테이블 구성은 `docs/spec/09` §3.2·§3.5·§4·§5 기준(offerings·art_auction_records·re_trades[확장]·cattle_auction_prices·pig_auction_prices·offering_filing_facts·rag_documents·rag_chunks·verification_runs·monitor_runs·monitor_events·ledger_observations).
 
 ## RAG
 
@@ -42,9 +42,16 @@ rationale: docs/spec/09-stack-and-storage.md
 - **R-STO-13 (MUST)** `license`는 `green | yellow_confirmed`만 적재 가능. red·yellow 미확인 금지.
 - **R-STO-14 (MUST)** RAG 용도는 검색(교육·범위 밖 판별)만 — 검증 사실·수치의 원천은 리포트 캐시(R-API-11). 문서 임베딩은 적재 CLI에서 1회, 런타임은 질의 임베딩 1회만. 대화 입력 로그를 RAG 테이블에 혼입 금지.
 - **R-STO-15 (기본값)** 임베딩 text-embedding-3-small(1536) + 하이브리드 검색(tsvector + vector cosine, HNSW). fake 모드는 임베딩 생략, 사전 작성 콘텐츠 키워드 매칭으로 열화. 키워드 질의는 `websearch_to_tsquery`만(`to_tsquery` 금지). `simple` 설정은 한국어 형태소 미지원 — `pg_trgm` 병행 등 보강은 09 §4 [팀 결정 대기].
-- **R-STO-16 (MUST)** 자격증명 역할 분리: 런타임 `DATABASE_URL`은 rag 테이블 SELECT 전용 역할. 원장 쓰기·마이그레이션은 CLI 전용 `DATABASE_URL_DIRECT`에만. Supabase `service_role`·`anon` 키는 코드에 들여오지 않는다(PostgREST 미사용).
+- **R-STO-16 (MUST, 2026-08-29 개정)** 자격증명 역할 분리: 런타임 `DATABASE_URL`은 rag 2테이블 SELECT + `verification_runs` INSERT 전용(SELECT 불가) 역할. 원장 쓰기·마이그레이션은 CLI 전용 `DATABASE_URL_DIRECT`에만. Supabase `service_role`·`anon` 키는 코드에 들여오지 않는다(PostgREST 미사용).
 - **R-STO-17 (MUST)** RAG 청크는 프롬프트 조립 시 고정 구분자 데이터 블록으로만 삽입 — 사용자 지시 채널에 원문 이어붙이기 금지(06 §6의 RAG 집행 조항).
 - **R-STO-18 (MUST)** RAG 적재 CLI는 인젝션 휴리스틱 스캔 통과분만 등록 — 실패분은 license 등급 무관 보류. 챗 게이트 다턴 레드팀에 "RAG 소스 내 인젝션" 시나리오 포함.
+
+## 실행 이력·원장 관측 (09 §5)
+
+- **R-STO-19 (MUST)** 모든 검증 실행(cli·cron·api)은 `verification_runs`에 기록한다 — run_key 멱등, 판정은 건수 집계(jsonb)만. 라이브 API 경로는 best-effort 비동기(DB 실패가 응답을 실패시키지 않는다). DB 미설정(file 모드) 시 기록 생략이 정직한 동작.
+- **R-STO-20 (MUST)** `ledger_observations.fields`는 Zod strict 화이트리스트만 — `Evidence.observed` 자유문장 복사 금지, `farmerNm`·`farmAddr` 계열 필드명 리터럴 금지, `subject_key`는 공개 마스킹 규칙과 동일(원문 이력번호 금지).
+- **R-STO-21 (MUST)** synthetic 레코드의 `offer_slug`는 `ex-` 프리픽스 의무 — 실측 데이터 slug 공간과 네임스페이스 분리(09 §3.1). 표기명 `예시 ` 프리픽스(R-STO-07a)와 쌍.
+- **R-STO-22 (MUST)** 파일→DB 참조 원장 적재는 `db:seed`(synthetic)와 분리된 `db:ingest` 계열 CLI로 — 원천은 커밋 가능 경로(`data/reference/`·`data/offers/`)만(R-STO-03a 가드 동일 적용).
 
 ## 명령어 (도입 시 package.json 등재)
 
