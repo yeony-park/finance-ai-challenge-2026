@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 
@@ -10,10 +11,23 @@ import { assertSeedSourcePathAllowed } from "../seed/guards";
 import { syntheticOfferings } from "../seed/synthetic";
 import type { Offering, OfferingsRepository } from "./types";
 
+const assetSchema = z
+  .object({
+    lawdCd: z.string().optional(),
+    bjdongCd: z.string().optional(),
+    dong: z.string().optional(),
+    sigunguName: z.string().optional(),
+    buildingUse: z.string().optional(),
+    detail: z.string().optional(),
+  })
+  .optional();
+
 const rawOfferSchema = z.object({
   offerId: z.string().min(1),
   publicAlias: z.string().min(1),
   assetKind: z.enum(["cattle", "pig", "art", "real-estate"]),
+  license: z.enum(["green", "yellow_confirmed"]).optional(),
+  asset: assetSchema,
   offer: z
     .object({
       amountWon: z.number().int().nullable().optional(),
@@ -23,6 +37,15 @@ const rawOfferSchema = z.object({
       unitPriceWon: z.number().optional(),
     })
     .optional(),
+  sale: z
+    .object({
+      amountWon: z.number().int().optional(),
+      dealOn: z.string().optional(),
+      section: z.string().optional(),
+      table: z.string().optional(),
+    })
+    .optional(),
+  limits: z.array(z.string()).optional(),
   sources: z
     .array(
       z.object({
@@ -34,7 +57,13 @@ const rawOfferSchema = z.object({
     .optional(),
 });
 
-const mapRawOffer = (raw: z.infer<typeof rawOfferSchema>): OfferingRow => {
+const sha256Hex = (value: string): string =>
+  createHash("sha256").update(value).digest("hex");
+
+const mapRawOffer = (
+  raw: z.infer<typeof rawOfferSchema>,
+  rawText: string,
+): OfferingRow => {
   const source = raw.sources?.[0];
   return offeringRowSchema.parse({
     offerSlug: raw.offerId,
@@ -51,13 +80,19 @@ const mapRawOffer = (raw: z.infer<typeof rawOfferSchema>): OfferingRow => {
       ...(raw.offer?.unitPriceWon === undefined
         ? {}
         : { unitPriceWon: raw.offer.unitPriceWon }),
+      ...(raw.asset?.buildingUse === undefined
+        ? {}
+        : { buildingUse: raw.asset.buildingUse }),
+      ...(raw.asset === undefined ? {} : { asset: raw.asset }),
+      ...(raw.sale === undefined ? {} : { sale: raw.sale }),
+      ...(raw.limits === undefined ? {} : { limits: raw.limits }),
     },
     sourceMeta: {
       sourceUrl: source?.url ?? "",
-      license: "green",
+      license: raw.license ?? "green",
       method: "manual_verified",
       retrievedAt: source?.retrievedOn ?? "",
-      sha256: "",
+      sha256: sha256Hex(rawText),
     },
   });
 };
@@ -76,10 +111,9 @@ const loadCommittedOfferings = async (
   const offerings: OfferingRow[] = [];
   for (const file of [...files].sort()) {
     if (!file.endsWith(".json")) continue;
-    const parsed = rawOfferSchema.safeParse(
-      JSON.parse(await readFile(path.join(dir, file), "utf8")),
-    );
-    if (parsed.success) offerings.push(mapRawOffer(parsed.data));
+    const rawText = await readFile(path.join(dir, file), "utf8");
+    const parsed = rawOfferSchema.safeParse(JSON.parse(rawText));
+    if (parsed.success) offerings.push(mapRawOffer(parsed.data, rawText));
   }
   return offerings;
 };

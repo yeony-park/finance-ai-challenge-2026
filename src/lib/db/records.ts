@@ -86,6 +86,14 @@ export const offeringRowSchema = z
         message: "closes_on은 opens_on 이후여야 합니다 (CHECK 제약).",
       });
     }
+    if (value.provenance === "synthetic" && !value.offerSlug.startsWith("ex-")) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["offerSlug"],
+        message:
+          "synthetic 레코드의 offer_slug는 'ex-' 프리픽스가 필수입니다 (R-STO-21).",
+      });
+    }
   })
   .superRefine(requireSyntheticPrefix(["titlePublic"]));
 

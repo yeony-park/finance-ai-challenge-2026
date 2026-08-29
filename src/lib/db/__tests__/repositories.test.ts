@@ -45,9 +45,35 @@ describe("④ DATABASE_URL 없이 file 모드 완주 (R-STO-02·R-INV-05)", () =
       realEstate.some((offering) => offering.provenance === "manual_verified"),
     ).toBe(true);
 
-    const bySlug = await repository.findBySlug("art-1");
-    expect(bySlug?.offerSlug).toBe("art-1");
+    const bySlug = await repository.findBySlug("ex-art-1");
+    expect(bySlug?.offerSlug).toBe("ex-art-1");
+    expect(
+      art
+        .filter((offering) => offering.provenance === "synthetic")
+        .every((offering) => offering.offerSlug.startsWith("ex-")),
+    ).toBe(true);
     expect(await repository.findBySlug("does-not-exist")).toBeNull();
+  });
+
+  test("실 공모 파싱은 asset 조인 키·sale·limits를 detail 화이트리스트로 수용한다 (09 §3.5)", async () => {
+    const repository = await resolveOfferingsRepository();
+    const offering = await repository.findBySlug("real-estate-a");
+    expect(offering?.provenance).toBe("manual_verified");
+
+    const detail = offering?.detail ?? {};
+    const asset = detail.asset as Record<string, unknown> | undefined;
+    expect(asset?.lawdCd).toBe("11650");
+    expect(asset?.bjdongCd).toBeDefined();
+    expect(asset?.dong).toBeDefined();
+    // 지번 원문 주소는 DB 적재 금지 (R-STO-04) — 조인 키만 수용
+    expect(asset).not.toHaveProperty("address");
+    expect(JSON.stringify(detail)).not.toContain("1678-4");
+
+    expect(detail.sale).toBeDefined();
+    expect(Array.isArray(detail.limits)).toBe(true);
+
+    // sourceMeta.sha256 공란 하드코딩 교정 — 실 파일 해시
+    expect(offering?.sourceMeta.sha256).toMatch(/^[a-f0-9]{64}$/);
   });
 
   test("RagSearchRepository file 트윈은 degraded로 정직 표기한다", async () => {

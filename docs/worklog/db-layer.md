@@ -127,3 +127,13 @@ Supabase 확장: `vector`·`pg_trgm` 둘 다 지원(확장은 `extensions` 스�
 **eval 영향** — tsc·eslint clean, db 계약 45종 그린. 마이그레이션 러너(migrate.ts)는 `db/migrations/*.sql` 정렬 적용이라 0001 자동 픽업(코드 변경 불요). 실 DB 적용은 오너.
 
 **알려진 한계** — 신규 테이블은 아직 적재 코드(작업 2 ingest)·배선(작업 5 ledger) 전이라 빈 상태. 실 DB 미적용(오너 실행 대기)이라 마이그레이션 실적용·인덱스 생성은 미검증.
+
+## v2 일괄 적용 — 작업 3: synthetic ex- 개칭 + offerings 확장 파싱 (2026-08-29)
+
+**결정과 근거** — R-STO-21: synthetic offer_slug를 `ex-` 프리픽스로 일괄 개칭(ex-art-1·ex-re-1 등, 생성기 6건) + offeringRowSchema에 synthetic slug ex- 프리픽스 Zod 강제(표기명 `예시 ` 프리픽스와 쌍). 근거는 실측 미술품 상수(art-1~5, 11.8억)와 DB synthetic(art-1~3, 예시 1.2억)의 같은 키 충돌(09 §3.1). rawOfferSchema 확장: `asset`(lawd_cd·bjdong_cd·dong·sigunguName·buildingUse·detail 조인 키)·`sale`·`limits`를 detail 화이트리스트로 수용(현행 6필드군 유실 해소, 09 §3.5). sourceMeta 교정: license는 offer JSON의 `license` 필드 우선(없으면 green — 커밋 공개 데이터 정당 분류), sha256은 원 파일 바이트 실해시로 공란 교정.
+
+**트레이드오프** — asset 화이트리스트는 지번 원문 `address`를 **의도적으로 배제**(z.object 비-strict가 미선언 키 스트립) — 마스킹 전 지번을 DB detail에 넣으면 R-STO-04 위반. 조인 키(법정동 코드·동)만 수용해 RTMS 대조 경로는 확보하되 PII 표면은 차단. export cardDetail은 real-estate에서 buildingUse만 노출하므로 asset/sale/limits는 DB 원장에만 남고 화면 미유출. synthetic detail의 platformName 등도 ex- 개칭과 무관하게 유지.
+
+**eval 영향** — 계약 테스트 확장: R-STO-21 ex- 프리픽스 3종(거부·통과·비-synthetic 면제) + 실 공모 파싱 화이트리스트(asset 조인 키 수용·지번 배제·sale/limits·sha256 실해시) 1종. db 계약 49종 그린. 전체 1415 그린·build 통과.
+
+**알려진 한계** — committed `data/public/offerings/index.json`(오너 재수출 3991eaf)은 구 slug(art-1). 생성기가 ex- 로 바뀌었으니 **오너 db:seed 재실행 + db:export 재수출** 후 ex- slug로 갱신된다(손 재생성 안 함 — R-STO-03). 프론트 인덱스 소비자 부재 시점이라 저비용(09 §3.1).

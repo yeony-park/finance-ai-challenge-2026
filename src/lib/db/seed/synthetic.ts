@@ -35,7 +35,7 @@ interface ArtOfferingSeed {
 
 const ART_OFFERINGS: readonly ArtOfferingSeed[] = [
   {
-    slug: "art-1",
+    slug: "ex-art-1",
     title: "예시 회화 A",
     amountWon: 120_000_000,
     opensOn: "2026-05-04",
@@ -46,7 +46,7 @@ const ART_OFFERINGS: readonly ArtOfferingSeed[] = [
     hasImage: false,
   },
   {
-    slug: "art-2",
+    slug: "ex-art-2",
     title: "예시 회화 B",
     amountWon: 85_000_000,
     opensOn: "2026-06-01",
@@ -57,7 +57,7 @@ const ART_OFFERINGS: readonly ArtOfferingSeed[] = [
     hasImage: false,
   },
   {
-    slug: "art-3",
+    slug: "ex-art-3",
     title: "예시 조각 C",
     amountWon: 47_000_000,
     opensOn: "2026-07-06",
@@ -81,7 +81,7 @@ interface RealEstateOfferingSeed {
 
 const REAL_ESTATE_OFFERINGS: readonly RealEstateOfferingSeed[] = [
   {
-    slug: "re-1",
+    slug: "ex-re-1",
     title: "예시 오피스 A",
     amountWon: 3_800_000_000,
     opensOn: "2026-04-06",
@@ -90,7 +90,7 @@ const REAL_ESTATE_OFFERINGS: readonly RealEstateOfferingSeed[] = [
     minimumInvestmentWon: 5_000,
   },
   {
-    slug: "re-2",
+    slug: "ex-re-2",
     title: "예시 근린상가 B",
     amountWon: 2_150_000_000,
     opensOn: "2026-05-11",
@@ -99,7 +99,7 @@ const REAL_ESTATE_OFFERINGS: readonly RealEstateOfferingSeed[] = [
     minimumInvestmentWon: 5_000,
   },
   {
-    slug: "re-3",
+    slug: "ex-re-3",
     title: "예시 물류센터 C",
     amountWon: 6_400_000_000,
     opensOn: "2026-06-15",

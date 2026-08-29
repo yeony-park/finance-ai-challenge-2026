@@ -15,7 +15,7 @@ const baseSourceMeta = {
 };
 
 const baseOffering = {
-  offerSlug: "art-x",
+  offerSlug: "ex-art-x",
   categoryId: "art",
   provenance: "synthetic",
   titlePublic: "예시 회화 X",
@@ -99,6 +99,31 @@ describe("⑤ synthetic '예시 ' 프리픽스 강제 (R-STO-07a)", () => {
       sourceMeta: baseSourceMeta,
     });
     expect(badHouse.success).toBe(false);
+  });
+});
+
+describe("R-STO-21 synthetic slug ex- 프리픽스 강제", () => {
+  test("synthetic offer_slug가 ex-로 시작하지 않으면 거부된다", () => {
+    const result = offeringRowSchema.safeParse({ ...baseOffering, offerSlug: "art-x" });
+    expect(result.success).toBe(false);
+  });
+
+  test("ex- 프리픽스 synthetic slug는 통과한다", () => {
+    const result = offeringRowSchema.safeParse({
+      ...baseOffering,
+      offerSlug: "ex-art-x",
+    });
+    expect(result.success).toBe(true);
+  });
+
+  test("manual_verified·public_record slug에는 ex-를 요구하지 않는다", () => {
+    const result = offeringRowSchema.safeParse({
+      ...baseOffering,
+      provenance: "manual_verified",
+      titlePublic: "부동산 A",
+      offerSlug: "real-estate-a",
+    });
+    expect(result.success).toBe(true);
   });
 });
 

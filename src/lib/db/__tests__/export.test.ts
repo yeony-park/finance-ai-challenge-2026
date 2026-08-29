@@ -8,7 +8,7 @@ import {
 } from "../export/public-offering";
 
 const offering: Offering = {
-  offerSlug: "art-1",
+  offerSlug: "ex-art-1",
   categoryId: "art",
   provenance: "synthetic",
   titlePublic: "예시 회화 A",
@@ -23,7 +23,7 @@ const offering: Offering = {
     note: "예시 데이터로 구성한 화면입니다.",
   },
   sourceMeta: {
-    sourceUrl: "synthetic://generator/art-1",
+    sourceUrl: "synthetic://generator/ex-art-1",
     license: "synthetic",
     method: "deterministic-generator",
     retrievedAt: "2026-08-29T00:00:00.000Z",
@@ -84,18 +84,18 @@ describe("db:export 공개 인덱스 v2 (R-STO-03 마스킹 경유)", () => {
 
   test("매니페스트는 schemaVersion 2 · slug 정렬로 결정적이다", () => {
     const manifest = toPublicOfferingsManifest([
-      { ...offering, offerSlug: "re-2", categoryId: "real-estate" },
-      { ...offering, offerSlug: "art-1" },
+      { ...offering, offerSlug: "ex-re-2", categoryId: "real-estate" },
+      { ...offering, offerSlug: "ex-art-1" },
     ]);
     expect(manifest.schemaVersion).toBe(2);
     expect(manifest.offerings.map((entry) => entry.offerSlug)).toEqual([
-      "art-1",
-      "re-2",
+      "ex-art-1",
+      "ex-re-2",
     ]);
     expect(publicOfferingsManifestSchema.safeParse(manifest).success).toBe(true);
 
     const reDetail = manifest.offerings.find(
-      (entry) => entry.offerSlug === "re-2",
+      (entry) => entry.offerSlug === "ex-re-2",
     )?.detail;
     expect(reDetail).not.toHaveProperty("artistName");
     expect(reDetail).not.toHaveProperty("platformName");
