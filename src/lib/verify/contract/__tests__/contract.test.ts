@@ -243,17 +243,22 @@ describe("pig 디스크립터 (01-category-contract)", () => {
     }
   });
 
-  it("가격 층이 인용하는 경락가 출처는 코퍼스 미등록이라 proposedSources로 선언한다 (R-INV-13)", () => {
+  it("가격 층 경락가 출처는 오너 승인으로 코퍼스 등록됐다 (R-INV-13)", () => {
     const price = PIG_CATEGORY.layers.find((layer) => layer.layer === "price");
     expect(price?.publicSourceIds).toContain("kape-pig-auction-price");
-    expect(isRegisteredSource("kape-pig-auction-price")).toBe(false);
-    expect(
-      PIG_CATEGORY.proposedSources.map((source) => source.id),
-    ).toContain("kape-pig-auction-price");
+    expect(isRegisteredSource("kape-pig-auction-price")).toBe(true);
+    expect(PIG_CATEGORY.proposedSources).toEqual([]);
   });
 
-  it("어댑터 바인딩은 출처 등록 전까지 비어 있다 (등록은 오너 일괄)", () => {
-    expect(PIG_CATEGORY.adapters).toEqual([]);
+  it("경락가 어댑터가 등록 출처로 정식 바인딩됐다 (implemented·fake 트윈)", () => {
+    for (const adapter of PIG_CATEGORY.adapters) {
+      expect(isRegisteredSource(adapter.sourceId)).toBe(true);
+      expect(adapter.status).toBe("implemented");
+      expect(adapter.hasFakeTwin).toBe(true);
+    }
+    expect(
+      PIG_CATEGORY.adapters.map((adapter) => adapter.sourceId),
+    ).toContain("kape-pig-auction-price");
   });
 
   it("claim kinds가 비어 있지 않고 중복이 없다", () => {

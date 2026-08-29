@@ -54,6 +54,19 @@
       ]
     },
     {
+      "sourceId": "kape-pig-auction-price",
+      "title": "축산물등급판정정보 — 돼지 대표가격 (등급별 경락가격)",
+      "url": "https://www.data.go.kr/data/15148902/fileData.do",
+      "license": "green",
+      "retrievedOn": "2026-08-29",
+      "chunks": [
+        {
+          "chunkIndex": 0,
+          "content": "돈피·성별·등급·지역·월별 돼지 대표가격(경락가격)을 제공한다. 공공데이터포털 15148902 공식 파일 다운로드본이며 Green 라이선스로 이용 제한이 없다. 탕박·등외제외·전국(제주제외) 월 집계를 사전 수집해 캐시로 사용하며, 발행사 공시 기준가가 같은 조건 시장 분포의 어느 위치인지 표시하는 데 쓰일 뿐 가격 적정성 판단이 아니다."
+        }
+      ]
+    },
+    {
       "sourceId": "molit-rtms-nrg-trade",
       "title": "국토교통부 상업업무용 부동산 매매 실거래가",
       "url": "https://rt.molit.go.kr",

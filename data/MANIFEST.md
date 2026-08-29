@@ -2,7 +2,7 @@
 
 # data/ 매니페스트
 
-생성 시각: 2026-08-29T05:26:43.028Z
+생성 시각: 2026-08-29T05:36:40.666Z
 
 ## 저장 정책
 
@@ -216,7 +216,7 @@
 | `data/reference/building-register/11650-10800-1678-0004.json` | 666 | `8e1aaf9a6caeed472ab872af079698529d14106b4448379810f26dfe4f7757ca` |
 | `data/reference/pig-auction-price/pig_price_20260815021618.csv` | 40,445 | `673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d` |
 | `data/reference/pig-auction-price/pig_price_20260815021618.meta.json` | 1,035 | `2d62daccfdbcc13ecb882df975b3275e1cc6f49daf6408882ff69a74fe87af83` |
-| `data/reference/rag/corpus-sources.json` | 3,986 | `a20848640101ba25cf58f9799e441a81ef3ce8c7b60f41d20cda4bb6732707bb` |
+| `data/reference/rag/corpus-sources.json` | 4,809 | `d3dc06951b05c8915a5c3cce0a18f84a7dd1f2f726009d1a00679113062549db` |
 | `data/reference/rag/onboarding.json` | 1,345 | `b032ef0f4ddb64b56c18f4cbc271ed08b7528bf8cac2ebc485c397e4d12f07b3` |
 | `data/reference/rtms/11650-2021-05.json` | 16,087 | `266a5beda1d2ec27ee2195d278d74676f47117e50ea6308c28ec2d06b2a9c9bd` |
 | `data/reference/rtms/11650-2021-06.json` | 100,163 | `ea9eec5486547bc2ba855a5670fae82e59f44e8d92618fc6cab5dc299293c7b5` |

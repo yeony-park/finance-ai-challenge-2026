@@ -5,19 +5,17 @@ export const PIG_CATEGORY: CategoryDescriptor = {
   label: "한돈",
   owner: "연정",
   engineAssetKind: "livestock",
-  adapters: [],
-  claimKinds: ["offer_amount", "acquisition_date", "acquisition_price"],
-  proposedClaimKinds: [],
-  proposedSources: [
+  adapters: [
     {
-      id: "kape-pig-auction-price",
-      title:
-        "축산물 등급별 경락가격 (돼지) — 축산물품질평가원 · 공공데이터포털 15148902",
-      url: "https://www.data.go.kr/data/15148902/fileData.do",
-      note: "돼지 경락가 월 통계 — 공모 기준가 시장 참고값. 코퍼스 등록은 오너 일괄(R-INV-13) 대기.",
-      license: "green",
+      sourceId: "kape-pig-auction-price",
+      moduleName: "adapters/pig-auction-price",
+      status: "implemented",
+      hasFakeTwin: true,
     },
   ],
+  claimKinds: ["offer_amount", "acquisition_date", "acquisition_price"],
+  proposedClaimKinds: [],
+  proposedSources: [],
   // [팀 결정 대기] 발행사 법정명 허용 (05 §1)
   allowedPublicNames: [],
   layers: [
@@ -32,7 +30,7 @@ export const PIG_CATEGORY: CategoryDescriptor = {
       layer: "price",
       level: "partial",
       basis:
-        "축산물 등급별 경락가격(돼지) 월 통계 대비 공시 기준가 위치 — 기준월이 달라 가격 적정성 판정이 아닌 시장 참고값 (출처 코퍼스 등록 대기)",
+        "축산물 등급별 경락가격(돼지) 월 통계 대비 공시 기준가 위치 — 기준월이 달라 가격 적정성 판정이 아닌 시장 참고값",
       publicSourceIds: ["kape-pig-auction-price"],
     },
     {

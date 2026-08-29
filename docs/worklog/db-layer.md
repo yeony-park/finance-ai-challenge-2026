@@ -177,3 +177,20 @@ Supabase 확장: `vector`·`pg_trgm` 둘 다 지원(확장은 `extensions` 스�
 **eval 영향** — seed plan rag docs 2→8, R-STO-12 미등록 거부 테스트는 그대로 통과(전부 등록분). db 70종 그린. MANIFEST 갱신(corpus-sources.json).
 
 **알려진 한계** — RAG 인젝션 스캔(R-STO-18)은 적재 CLI(M2+) 몫 — 현 fixture는 큐레이션 corpus content라 안전하나 자동 스캔 미적용. roles.sql 실적용·권한 검증은 오너 실행 후.
+
+## v2 일괄 적용 — 작업 8: 3관점 리뷰 반영 + kape 코퍼스 등록(오너 승인) (2026-08-29)
+
+**결정과 근거** — DB·보안·코드 3관점 병렬 리뷰(APPROVE, CRITICAL 1·HIGH 1은 즉시 반영):
+- [CRIT·DB/코드] re_trades ingest가 `dong ""`를 null로 재변환 → 자연키 NULL 비-distinct로 재-ingest 중복(멱등 붕괴). 수정: `dong: trade.dong`(어댑터가 이미 비-null 문자열 보장) + **방어심화** 자연키에 `NULLS NOT DISTINCT`(schema.ts + 0003 마이그레이션, PG15+).
+- [HIGH·DB] monitor_events.monitor_run_id FK 인덱스 누락(R-STO-10) → schema.ts + 0002 마이그레이션 신설. drizzle-kit generate 무-diff 재확인(0002·0003 반영).
+- [MED·코드] POST /api/verify fire-and-forget `void`가 서버리스 응답 후 유실 위험 → Next 16 `after()`로 응답 후 실행 보장.
+- [MED·코드] ledger 산문 주석 2건(R-INV-14) 제거.
+- [LOW·코드] pig CSV split을 RFC4180 인용 인식(따옴표 내 쉼표) 파서로 교체 — DB ingest 경로 견고화.
+
+**kape-pig-auction-price 코퍼스 등록(오너 승인, 통합 세션 통보)** — R-INV-13 오너 일괄 결정 완료: ① corpus.ts에 kape 출처 등록(public_record, Green) ② contract.test pig 블록을 미등록→등록·정식 바인딩 검증으로 갱신 ③ pig 디스크립터 가격층 proposedSources→어댑터 정식 바인딩 승격(implemented·fake 트윈) ④ corpus-sources.json에 kape 문서·청크 추가(등록 9건).
+
+**트레이드오프** — dong 수정은 어댑터 계약(z.string, 항상 존재)에 의존하되 constraint 층 NULLS NOT DISTINCT로 이중 방어. `after()`는 cron/CLI는 이미 await라 API만 적용. 미반영(후속·비차단): 배치 삽입(현 행-단위, 리뷰 비차단), ledger_observations jsonb 키 DB CHECK(현 Zod strict + R-STO-08 수동편집 금지로 커버), best-effort 무로깅(관측성), re_trades.cancelled 상수(수집 단계 제외로 현재 항상 false), ④ 관측 실배선(파이프라인 트레이스 표면화 필요).
+
+**eval 영향** — 전체 1436 그린·tsc·eslint·build clean. drizzle 무-diff 재확인(re_trades UNIQUE NULLS NOT DISTINCT·monitor FK idx canonical 일치). pig 디스크립터 계약 테스트가 등록·바인딩 검증으로 전환, 코퍼스 등록 9건.
+
+**알려진 한계** — 실 DB 미적용이라 0002·0003·NULLS NOT DISTINCT·ingest 멱등은 오너 실 적용 후 검증. 후속 항목(배치·CHECK·로깅·④ 배선)은 위 트레이드오프에 등재.
