@@ -1,6 +1,7 @@
 # Vercel CLI 업로드 제외 목록 — CLI는 .gitignore를 존중하지 않는다(실측: deploy --dry 매니페스트).
 # 보안 리뷰(2026-08-12) CRITICAL 대응: 실키 .env와 개인정보 원천 데이터를 업로드에서 차단한다.
-# 커밋·배포 허용 데이터는 data/public/(마스킹 완료)과 data/MANIFEST.md뿐이다.
+# 배포 허용 데이터: 마스킹 완료 data/public/·시장 통계 data/reference/·공모 좌표 data/offers/·
+# data/MANIFEST.md. 개인정보 원천(raw·reports·snapshots·goldset)과 DB 소스(db/)는 제외한다.
 .env
 .env.*
 !.env.example

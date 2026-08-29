@@ -1,7 +1,7 @@
 ---
 scope: DB·스키마·시드·RAG·더미 데이터·data/ 산출물
 read-when: Postgres 스키마/마이그레이션/시드 작업, RAG 적재·검색, 더미 데이터 생성, db:export
-source-of-truth: (도입 후) src/lib/db/schema.ts — 생기기 전까지 docs/spec/09 §3.2·§4 DDL 초안
+source-of-truth: src/lib/db/schema.ts (근거·배경은 docs/spec/09 §3·§4·§5)
 rationale: docs/spec/09-stack-and-storage.md
 ---
 
@@ -31,7 +31,7 @@ rationale: docs/spec/09-stack-and-storage.md
 
 ## 스키마·마이그레이션
 
-- **R-STO-09 (기본값)** 접근 계층: postgres-js(`postgres`) + drizzle-orm. 스키마 = `src/lib/db/schema.ts`, 마이그레이션 = drizzle-kit → `db/migrations/` 커밋, append-only(배포된 파일 수정 금지 — 정정은 새 마이그레이션). drizzle-kit은 `DATABASE_URL_DIRECT`(직결) 사용.
+- **R-STO-09 (기본값, 2026-08-30 실물 정정)** 접근 계층: postgres-js(`postgres`) + drizzle-orm. 스키마 정본 = `src/lib/db/schema.ts`. **마이그레이션은 수기 SQL(`db/migrations/`) + 자체 러너**(`db:migrate` = `src/lib/db/cli/migrate.ts`, `_migrations` 테이블로 적용 추적), append-only(배포된 파일 수정 금지 — 정정은 새 마이그레이션). `DATABASE_URL_DIRECT`(직결) 사용. **drizzle-kit generate는 스키마↔마이그레이션 드리프트 대조(spike) 전용** — `drizzle.config.ts`의 out은 정본을 덮지 않도록 `db/generated/`(스크래치)로 분리했다. 실 적용은 자체 러너만.
 - **R-STO-09a (MUST, 접근 계층 선택 무관)** 사용자 입력이 개입하는 모든 쿼리는 파라미터 바인딩 강제 — drizzle은 쿼리 빌더 API만(원시 `sql` 템플릿에 문자열 보간 금지), 직 SQL은 postgres-js 태그드 템플릿만. 문자열 결합·보간으로 사용자 값을 SQL에 삽입하는 패턴은 계약 위반.
 - **R-STO-10 (MUST)** 타입 규약: 금액 = 원화 정수 `bigint`, 시각 = `timestamptz`, 문자열 = `text`(varchar(n) 금지), id = `bigint identity` + 공개 슬러그 별도 열. 외래키에 인덱스 필수.
 - **R-STO-11 (MUST, 2026-08-29 개정)** 판정·리포트 **본문**(판정 문장·근거 서술·화면이 읽는 것)을 DB에 넣지 않는다 — 리포트의 진실은 파이프라인 산출 JSON(①층). 단 **실행 이력 메타·판정 건수 집계·구조화 원장 관측치는 DB 기록 대상**(09 §5 — verification_runs·monitor_runs/events·ledger_observations). 테이블 구성은 `docs/spec/09` §3.2·§3.5·§4·§5 기준(offerings·art_auction_records·re_trades[확장]·cattle_auction_prices·pig_auction_prices·offering_filing_facts·rag_documents·rag_chunks·verification_runs·monitor_runs·monitor_events·ledger_observations).
@@ -56,8 +56,9 @@ rationale: docs/spec/09-stack-and-storage.md
 ## 명령어 (도입 시 package.json 등재)
 
 ```bash
-npm run db:migrate   # drizzle-kit 적용
-npm run db:seed      # 결정적·멱등 시드
+npm run db:migrate   # 수기 SQL 마이그레이션 적용 (자체 러너, _migrations 추적)
+npm run db:ingest    # 참조 원장 적재 (커밋 파일 → cattle/pig 경락가·re_trades·filing_facts, R-STO-22)
+npm run db:seed      # 결정적·멱등 synthetic 시드 (+ 플랜 외 synthetic prune)
 npm run db:export    # DB → data/public/·data/reference/ (마스킹 게이트 경유)
 ```
 
