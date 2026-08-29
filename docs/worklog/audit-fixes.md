@@ -82,3 +82,13 @@
 **검증 영향** — provenance.ts 4건 제거 후 tsc clean·전체 그린(참조 0 확인). OFFERS_DIR 수정으로 비-기본 dataDir 시드 가드 정합.
 
 **알려진 한계** — 합성 배지 분기 제거·잔여 미참조 export 정리는 스코프 확정 후 후속(통합 세션).
+
+## 작업 8 — 마감 리뷰 반영 (2026-08-30)
+
+**결정과 근거** — 보안·코드 2관점 리뷰. 보안: Approve(CRITICAL/HIGH/MEDIUM 0 — R-STO-16·20·03a·PII·시크릿 전부 clean 확인, console 로그는 error.message만 노출·연결문자열/PII 무유출). 코드: [HIGH] drizzle.config.ts 산문 주석(R-INV-14) 제거(근거는 worklog·storage.md에 존재). [MED] loadFilingFacts가 손상을 조용히 흡수 — /pig 신규 소비 경로라 작업 3 동일 처리(ENOENT는 무음 null, 파싱·스키마·offerId 불일치는 console.warn/error 후 null). [LOW] report/load.ts의 isEnoent를 공용 adapters/io-errors에서 재사용(중복 제거).
+
+**트레이드오프** — 해당 없음(리뷰 지적 반영).
+
+**검증 영향** — 전체 1445 그린·tsc·eslint clean. loadFilingFacts 손상도 이제 관측된다.
+
+**알려진 한계** — 구조화 로거 미도입(관측성 후속, 리뷰 informational). AGENTS.md의 next dev 자동생성 블록은 알려진 정상 산출물(리뷰 주의 환기).

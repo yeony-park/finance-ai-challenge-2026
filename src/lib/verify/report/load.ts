@@ -1,5 +1,6 @@
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
+import { isEnoent } from "../adapters/io-errors";
 import { assertOfferId } from "../paths";
 import { parseReportSnapshot, type ReportSnapshot } from "./snapshot";
 
@@ -17,11 +18,6 @@ export class ReportCorruptError extends Error {
     );
   }
 }
-
-const isEnoent = (error: unknown): boolean =>
-  typeof error === "object" &&
-  error !== null &&
-  (error as { code?: string }).code === "ENOENT";
 
 export interface LoadedReport {
   readonly report: ReportSnapshot;
