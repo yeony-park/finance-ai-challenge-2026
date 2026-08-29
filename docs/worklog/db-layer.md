@@ -137,3 +137,13 @@ Supabase 확장: `vector`·`pg_trgm` 둘 다 지원(확장은 `extensions` 스�
 **eval 영향** — 계약 테스트 확장: R-STO-21 ex- 프리픽스 3종(거부·통과·비-synthetic 면제) + 실 공모 파싱 화이트리스트(asset 조인 키 수용·지번 배제·sale/limits·sha256 실해시) 1종. db 계약 49종 그린. 전체 1415 그린·build 통과.
 
 **알려진 한계** — committed `data/public/offerings/index.json`(오너 재수출 3991eaf)은 구 slug(art-1). 생성기가 ex- 로 바뀌었으니 **오너 db:seed 재실행 + db:export 재수출** 후 ex- slug로 갱신된다(손 재생성 안 함 — R-STO-03). 프론트 인덱스 소비자 부재 시점이라 저비용(09 §3.1).
+
+## v2 일괄 적용 — 작업 4: 실측 상수 → 공모 원장 이관 (2026-08-29)
+
+**결정과 근거** — `content/art.ts`의 ART_PRODUCT_FACTS 5건·`content/pig.ts`의 PIG_DISCLOSURE_PRODUCTS 3건을 커밋 가능 원천 `data/offers/{art-1..5,pig-1..3}.json`으로 파일화(생성기로 상수에서 직접 추출 — 전사 오류 0). 시드는 loadFileModeOfferings 경유 manual_verified로 적재해 art/pig 공모 행 0건 공백 해소(09 §3.5). ex- slug 분리(작업 3) 덕에 실측 art가 art-1..5 slug를 충돌 없이 점유. rawOfferSchema에 art(acquisition·issuance·lifecycle·asOf)·pig(heads·units·statusLabel·baseline) 화이트리스트 추가.
+
+**트레이드오프** — 화면 소비 구조 불변: content 상수는 병존(화면은 상수 직독 유지 — 전환은 별도 결정), 파일↔상수 **정합 테스트**로 드리프트 방지. 판정 verdict·finding·limitation(리포트 본문)은 offer 파일에 넣지 않음 — R-STO-11(리포트 본문 DB 금지) 준수, 상수에만 유지. 파일이 상수의 부분집합(공모 좌표)만 담아 이중 관리 표면 최소화.
+
+**eval 영향** — `offer-ledger-drift.test.ts`(11종): art 5·pig 3 파일↔상수 amount·acquisition·일정·heads 일치 + 원문 실명 0건 + 시드 원장 manual_verified 적재 확인. tsc·58 그린. MANIFEST 갱신(offer 파일 8건).
+
+**알려진 한계** — 파일↔상수 이중 관리는 정합 테스트로만 방어(단일화는 화면 전환 결정 후). manual_verified art의 detail.art(acquisition 등)는 원장에만 — v2 인덱스 art 카드 필드(artistName 등)와 별개(실측 art 화면은 content/art.ts 직독).

@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "offerId": "pig-2",
+  "publicAlias": "가축투자계약증권 제2호",
+  "assetKind": "pig",
+  "license": "green",
+  "offer": {
+    "amountWon": 212800000,
+    "opensOn": "2026-05-14",
+    "closesOn": "2026-05-27",
+    "unitCount": 10640,
+    "unitPriceWon": 20000
+  },
+  "pig": {
+    "heads": 500,
+    "units": 10640,
+    "statusLabel": "발행 완료",
+    "baselineMonth": "2026-03",
+    "baselinePriceWonPerKg": 5229
+  },
+  "sources": [
+    {
+      "label": "최초 신고서",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260420000157",
+      "retrievedOn": "2026-04-20"
+    },
+    {
+      "label": "기재정정 신고서",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260506000437",
+      "retrievedOn": "2026-05-06"
+    },
+    {
+      "label": "투자설명서",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260514000004",
+      "retrievedOn": "2026-05-14"
+    },
+    {
+      "label": "발행실적보고서",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260528001031",
+      "retrievedOn": "2026-05-28"
+    }
+  ]
+}

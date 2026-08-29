@@ -45,6 +45,23 @@ const rawOfferSchema = z.object({
       table: z.string().optional(),
     })
     .optional(),
+  art: z
+    .object({
+      acquisitionWon: z.number().int().nullable().optional(),
+      issuanceCostWon: z.number().int().nullable().optional(),
+      lifecycle: z.string().optional(),
+      asOf: z.string().optional(),
+    })
+    .optional(),
+  pig: z
+    .object({
+      heads: z.number().int().optional(),
+      units: z.number().int().optional(),
+      statusLabel: z.string().optional(),
+      baselineMonth: z.string().optional(),
+      baselinePriceWonPerKg: z.number().int().optional(),
+    })
+    .optional(),
   limits: z.array(z.string()).optional(),
   sources: z
     .array(
@@ -85,6 +102,8 @@ const mapRawOffer = (
         : { buildingUse: raw.asset.buildingUse }),
       ...(raw.asset === undefined ? {} : { asset: raw.asset }),
       ...(raw.sale === undefined ? {} : { sale: raw.sale }),
+      ...(raw.art === undefined ? {} : { art: raw.art }),
+      ...(raw.pig === undefined ? {} : { pig: raw.pig }),
       ...(raw.limits === undefined ? {} : { limits: raw.limits }),
     },
     sourceMeta: {

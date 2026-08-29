@@ -2,7 +2,7 @@
 
 # data/ 매니페스트
 
-생성 시각: 2026-08-29T04:17:58.913Z
+생성 시각: 2026-08-29T05:09:49.089Z
 
 ## 저장 정책
 
@@ -234,8 +234,16 @@
 
 | 경로 | 바이트 | sha256 |
 |---|---:|---|
+| `data/offers/art-1.json` | 673 | `2d15c14f37d5854eb8aea34080edce8727f0237944169b9264a00eb42f387f7d` |
+| `data/offers/art-2.json` | 672 | `76c99fa68e02ae9f0d816c081ef8317b0cf87155f3896c9883f06e4311fdf451` |
+| `data/offers/art-3.json` | 833 | `7c69a9cc1a7dec1e59e6d8d5abe9614146af87e6904f86ff4a6409bf0e034ea6` |
+| `data/offers/art-4.json` | 829 | `aa95b50bce748b39ce8388f5bedfb8eb314776ca0c15bf6bc4505d666b9a607e` |
+| `data/offers/art-5.json` | 331 | `1c21d9db338b6f54c32d88e72eca71f2642cf2d166436a2b398200212c25e61d` |
 | `data/offers/filing-facts/livestock-9.json` | 2,637 | `922c7310902aef3bf925eab22c59bbedb4bf61420950ce50b4bc7dc522c4c8e5` |
 | `data/offers/filing-facts/pig-1.json` | 2,005 | `4f15e93b1833ae19d654e0f523280069ff21c1cb9a191f018ef80a3bd2810826` |
 | `data/offers/filing-facts/pig-2.json` | 1,932 | `61323e19a54b212b367dde5daa5d4f5995ad0d50d950288a2d8d8f56ef758fe8` |
 | `data/offers/filing-facts/pig-3.json` | 1,916 | `e246f6fc8080627b48d70314510810c7099e2edbc8676f2db2ca146ebc31a199` |
+| `data/offers/pig-1.json` | 1,116 | `6129f4ae364c72ee8c7a2afb4d29d0865fa540a833d1b1fc02c48061cdad5058` |
+| `data/offers/pig-2.json` | 1,116 | `71ed1f1184bb213a35c1572eec2e0f2fcaeb5bd7c540b8848aee87add430eb29` |
+| `data/offers/pig-3.json` | 1,116 | `cb4cf817c92a7d97e384f76bc89a66f2a44a6eb625f02e4e2559218c69e96536` |
 | `data/offers/real-estate-a.json` | 2,399 | `ec380f2f23d763d365db2aca2022c221d9bf89ca3c4e18a4bc6f733580975c08` |
