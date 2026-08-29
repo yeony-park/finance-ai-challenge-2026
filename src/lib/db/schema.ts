@@ -121,13 +121,9 @@ export const reTrades = pgTable(
       "re_trades_deal_ym_check",
       sql`${t.dealYm} ~ '^\\d{4}-(0[1-9]|1[0-2])$'`,
     ),
-    unique("re_trades_natural_key").on(
-      t.lawdCd,
-      t.dealYm,
-      t.dong,
-      t.dealOn,
-      t.amountWon,
-    ),
+    unique("re_trades_natural_key")
+      .on(t.lawdCd, t.dealYm, t.dong, t.dealOn, t.amountWon)
+      .nullsNotDistinct(),
     index("re_trades_lawd_deal_ym_idx").on(t.lawdCd, t.dealYm),
   ],
 );
@@ -347,6 +343,7 @@ export const monitorEvents = pgTable(
       "monitor_events_kind_check",
       sql`${t.kind} in ('no_amendment','amendment_detected','detection_failed')`,
     ),
+    index("monitor_events_monitor_run_id_idx").on(t.monitorRunId),
     index("monitor_events_offer_kind_idx").on(t.offerSlug, t.kind),
   ],
 );

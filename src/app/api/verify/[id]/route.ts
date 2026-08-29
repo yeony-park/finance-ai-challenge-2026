@@ -1,4 +1,4 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { NextResponse, after, type NextRequest } from "next/server";
 
 import { isPublishedOfferId } from "@/components/site/offers";
 import { resolveAuctionPriceAdapter } from "@/lib/verify/adapters/auction-price-fake";
@@ -54,10 +54,11 @@ export async function POST(
   );
 
   if ("summary" in result.body) {
-    void recordVerificationRun(
-      buildVerificationRunRecordFromLiveBody(result.body, result.status),
-      { connection: "runtime" },
+    const runRecord = buildVerificationRunRecordFromLiveBody(
+      result.body,
+      result.status,
     );
+    after(() => recordVerificationRun(runRecord, { connection: "runtime" }));
   }
 
   return NextResponse.json(result.body, {

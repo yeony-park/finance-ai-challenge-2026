@@ -113,7 +113,7 @@ export const buildReTradeRows = async (
           lawdCd: cache.lawdCd,
           dealYm: cache.month,
           buildingUse: trade.buildingUse || null,
-          dong: trade.dong || null,
+          dong: trade.dong,
           amountWon: trade.amountWon,
           dealOn: trade.dealOn,
           buildingType: trade.buildingType || null,

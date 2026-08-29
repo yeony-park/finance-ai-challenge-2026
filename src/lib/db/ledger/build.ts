@@ -100,7 +100,6 @@ export const buildLedgerObservation = (
     fields: params.fields,
   });
 
-// R-STO-20: farmerName·farmAddress(PII)는 매핑에서 제외 — 구조화 필드만 옮긴다.
 export const buildLedgerObservationFromTrace = (
   record: LivestockTraceRecord,
   input: { readonly traceNo: string; readonly sourceId: string },

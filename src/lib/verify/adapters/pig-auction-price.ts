@@ -67,7 +67,29 @@ const metricField = (
   return undefined;
 };
 
-const splitRow = (line: string): readonly string[] => line.split(",");
+const splitRow = (line: string): readonly string[] => {
+  const cells: string[] = [];
+  let current = "";
+  let inQuotes = false;
+  for (let i = 0; i < line.length; i += 1) {
+    const ch = line[i];
+    if (ch === '"') {
+      if (inQuotes && line[i + 1] === '"') {
+        current += '"';
+        i += 1;
+      } else {
+        inQuotes = !inQuotes;
+      }
+    } else if (ch === "," && !inQuotes) {
+      cells.push(current);
+      current = "";
+    } else {
+      current += ch;
+    }
+  }
+  cells.push(current);
+  return cells;
+};
 
 export const parsePigAuctionCsv = (
   csv: string,

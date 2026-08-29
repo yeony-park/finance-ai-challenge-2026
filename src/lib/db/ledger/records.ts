@@ -32,7 +32,6 @@ export type VerificationRunRecord = z.infer<
   typeof verificationRunRecordSchema
 >;
 
-// R-STO-20: strict 구조화 화이트리스트만 (farmerNm·farmAddr 등 미선언 키 거부).
 export const ledgerFieldsSchema = z
   .object({
     birthYmd: z.string().optional(),
