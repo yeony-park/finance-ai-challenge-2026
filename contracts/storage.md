@@ -49,7 +49,7 @@ rationale: docs/spec/09-stack-and-storage.md
 ## 실행 이력·원장 관측 (09 §5)
 
 - **R-STO-19 (MUST)** 모든 검증 실행(cli·cron·api)은 `verification_runs`에 기록한다 — run_key 멱등, 판정은 건수 집계(jsonb)만. 라이브 API 경로는 best-effort 비동기(DB 실패가 응답을 실패시키지 않는다). DB 미설정(file 모드) 시 기록 생략이 정직한 동작.
-- **R-STO-20 (MUST)** `ledger_observations.fields`는 Zod strict 화이트리스트만 — `Evidence.observed` 자유문장 복사 금지, `farmerNm`·`farmAddr` 계열 필드명 리터럴 금지, `subject_key`는 공개 마스킹 규칙과 동일(원문 이력번호 금지).
+- **R-STO-20 (MUST)** `ledger_observations.fields`는 Zod strict 화이트리스트만 — `Evidence.observed` 자유문장 복사 금지, `farmerNm`·`farmAddr` 계열 필드명 리터럴 금지, `subject_key`는 공개 마스킹 규칙과 동일(원문 이력번호 금지). **배선(2026-08-30)**: 축산물이력제 어댑터에 `withLedgerObservationRecording` 데코레이터를 씌워 대조 시점(trace.lookup)에 best-effort 기록한다 — judge 파이프라인 무수정. CLI(직결)에서 활성, DB 미설정 시 no-op. 라이브 API 경로 기록은 런타임 역할에 `ledger_observations` INSERT가 없어(R-STO-16) 미배선 — 필요 시 역할 확장은 오너 결정(M2+).
 - **R-STO-21 (MUST)** synthetic 레코드의 `offer_slug`는 `ex-` 프리픽스 의무 — 실측 데이터 slug 공간과 네임스페이스 분리(09 §3.1). 표기명 `예시 ` 프리픽스(R-STO-07a)와 쌍.
 - **R-STO-22 (MUST)** 파일→DB 참조 원장 적재는 `db:seed`(synthetic)와 분리된 `db:ingest` 계열 CLI로 — 원천은 커밋 가능 경로(`data/reference/`·`data/offers/`)만(R-STO-03a 가드 동일 적용).
 
