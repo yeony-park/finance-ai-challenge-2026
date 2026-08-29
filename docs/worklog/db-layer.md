@@ -115,3 +115,15 @@ Supabase 확장: `vector`·`pg_trgm` 둘 다 지원(확장은 `extensions` 스�
 **eval 영향** — export 산출물 포함 전체 스위트 1388 그린(익명화 게이트가 신규 `data/public/offerings/` 자동 포섭). MANIFEST 재생성(로컬 5·커밋 대상 150). jeomjeom-07이 우려한 MANIFEST 오염은 실측 반박 — 해당 파일들(re-a 8/21 리포트·building-register·pig-auction-price)은 이미 추적·커밋된 자산.
 
 **알려진 한계** — `drizzle-kit generate` 무-diff 대조는 미실행(후속 회귀 지점). 멱등 실증·roles 적용·pg_trgm 결정은 대기.
+
+## v2 일괄 적용 — 작업 1: 마이그레이션 0001 + schema.ts 확장 (2026-08-29)
+
+**결정과 근거** — 09 §3.5·§5 기준 7테이블 신설(cattle_auction_prices·pig_auction_prices·offering_filing_facts·verification_runs·monitor_runs·monitor_events·ledger_observations) + re_trades 6컬럼 확장(building_type·floor·building_area_sqm·land_area_sqm·build_year·cancelled). schema.ts 확장 + `db/migrations/0001_reference_ledger.sql`(append-only — 0000 무수정, re_trades는 ALTER). 제약·유니크·FK·인덱스 이름은 drizzle 자동 명명 규약대로 명시.
+
+**drizzle-kit generate 무-diff 대조 실증** — `drizzle-kit generate`를 오프라인(임시 out 디렉터리)로 실행해 schema.ts의 canonical SQL을 얻고, 커밋한 0000+0001 합집합과 컬럼(이름·타입)·제약명·인덱스명을 자동 대조. 결과: 12테이블 전수 일치(art 14·cattle_auction 12·ledger 7·monitor_events 7·monitor_runs 6·offering_filing_facts 11·offerings 11·pig_auction 12·rag_documents 8·verification_runs 15·re_trades 16). 대조 스크립트가 표기한 2건(rag_chunks `tsv`의 `"tsvector"` vs `tsvector` 따옴표, re_trades ALTER 라인의 후행 콤마)은 **파서 아티팩트로 실제 드리프트 아님**(타입 동일). 즉 실 DB에 0000+0001 적용 후 `drizzle-kit generate`는 빈 마이그레이션(무-diff)을 낸다.
+
+**트레이드오프** — re_trades ALTER ADD는 Postgres 특성상 컬럼을 끝에 덧붙여 물리 순서가 drizzle canonical(source_meta 앞)과 다르나, drizzle/Postgres 드리프트 판정은 서수 위치를 무시(이름·타입·제약 기준)하므로 무-diff에 무해. 수기 SQL + drizzle 스키마 이중 관리는 이 자동 대조로 회귀 검증 지점 확보(1차 위임 미결 항목 해소).
+
+**eval 영향** — tsc·eslint clean, db 계약 45종 그린. 마이그레이션 러너(migrate.ts)는 `db/migrations/*.sql` 정렬 적용이라 0001 자동 픽업(코드 변경 불요). 실 DB 적용은 오너.
+
+**알려진 한계** — 신규 테이블은 아직 적재 코드(작업 2 ingest)·배선(작업 5 ledger) 전이라 빈 상태. 실 DB 미적용(오너 실행 대기)이라 마이그레이션 실적용·인덱스 생성은 미검증.

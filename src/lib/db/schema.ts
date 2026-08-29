@@ -1,6 +1,7 @@
 import { sql } from "drizzle-orm";
 import {
   bigint,
+  boolean,
   check,
   customType,
   date,
@@ -102,6 +103,12 @@ export const reTrades = pgTable(
     dong: text("dong"),
     amountWon: bigint("amount_won", { mode: "number" }).notNull(),
     dealOn: date("deal_on").notNull(),
+    buildingType: text("building_type"),
+    floor: integer("floor"),
+    buildingAreaSqm: numeric("building_area_sqm", { precision: 12, scale: 2 }),
+    landAreaSqm: numeric("land_area_sqm", { precision: 12, scale: 2 }),
+    buildYear: integer("build_year"),
+    cancelled: boolean("cancelled").notNull().default(false),
     sourceMeta: jsonb("source_meta").$type<Record<string, unknown>>().notNull(),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
@@ -171,5 +178,206 @@ export const ragChunks = pgTable(
       t.embedding.op("vector_cosine_ops"),
     ),
     index("rag_chunks_tsv_gin").using("gin", t.tsv),
+  ],
+);
+
+export const cattleAuctionPrices = pgTable(
+  "cattle_auction_prices",
+  {
+    id: bigint("id", { mode: "bigint" }).primaryKey().generatedAlwaysAsIdentity(),
+    month: text("month").notNull(),
+    breedCd: text("breed_cd").notNull(),
+    sexCd: text("sex_cd").notNull(),
+    gradeCd: text("grade_cd").notNull(),
+    pricePerKg: numeric("price_per_kg", { precision: 12, scale: 2 }),
+    headCount: integer("head_count"),
+    avgPricePerKg: numeric("avg_price_per_kg", { precision: 12, scale: 2 }),
+    sampleSize: integer("sample_size"),
+    partial: boolean("partial").notNull().default(false),
+    sourceMeta: jsonb("source_meta").$type<Record<string, unknown>>().notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [
+    unique("cattle_auction_prices_natural_key").on(
+      t.month,
+      t.breedCd,
+      t.sexCd,
+      t.gradeCd,
+    ),
+    index("cattle_auction_prices_month_idx").on(t.month),
+  ],
+);
+
+export const pigAuctionPrices = pgTable(
+  "pig_auction_prices",
+  {
+    id: bigint("id", { mode: "bigint" }).primaryKey().generatedAlwaysAsIdentity(),
+    month: text("month").notNull(),
+    skinType: text("skin_type").notNull(),
+    sex: text("sex").notNull(),
+    grade: text("grade").notNull(),
+    region: text("region").notNull(),
+    headCount: integer("head_count"),
+    priceWonPerKg: numeric("price_won_per_kg", { precision: 12, scale: 2 }),
+    amountWon: bigint("amount_won", { mode: "number" }),
+    weightKg: bigint("weight_kg", { mode: "number" }),
+    sourceMeta: jsonb("source_meta").$type<Record<string, unknown>>().notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [
+    unique("pig_auction_prices_natural_key").on(
+      t.month,
+      t.skinType,
+      t.sex,
+      t.grade,
+      t.region,
+    ),
+    index("pig_auction_prices_month_idx").on(t.month),
+  ],
+);
+
+export const offeringFilingFacts = pgTable(
+  "offering_filing_facts",
+  {
+    id: bigint("id", { mode: "bigint" }).primaryKey().generatedAlwaysAsIdentity(),
+    offerSlug: text("offer_slug").notNull(),
+    rcpNo: text("rcp_no").notNull(),
+    submittedOn: text("submitted_on").notNull(),
+    factId: text("fact_id").notNull(),
+    label: text("label").notNull(),
+    value: text("value").notNull(),
+    section: text("section").notNull(),
+    short: text("short"),
+    sourceMeta: jsonb("source_meta").$type<Record<string, unknown>>().notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [
+    unique("offering_filing_facts_natural_key").on(
+      t.offerSlug,
+      t.rcpNo,
+      t.factId,
+    ),
+    index("offering_filing_facts_offer_slug_idx").on(t.offerSlug),
+  ],
+);
+
+export const verificationRuns = pgTable(
+  "verification_runs",
+  {
+    id: bigint("id", { mode: "bigint" }).primaryKey().generatedAlwaysAsIdentity(),
+    runKey: text("run_key").notNull().unique(),
+    offerSlug: text("offer_slug").notNull(),
+    rcpNo: text("rcp_no"),
+    trigger: text("trigger").notNull(),
+    mode: text("mode").notNull(),
+    extractionMode: text("extraction_mode"),
+    generatedAt: timestamp("generated_at", { withTimezone: true }).notNull(),
+    status: text("status").notNull(),
+    verdictCounts: jsonb("verdict_counts")
+      .$type<Record<string, number>>()
+      .notNull()
+      .default({}),
+    sourceIds: text("source_ids").array().notNull().default([]),
+    artifactName: text("artifact_name"),
+    artifactSha256: text("artifact_sha256"),
+    ledgerCalls: integer("ledger_calls"),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [
+    check(
+      "verification_runs_trigger_check",
+      sql`${t.trigger} in ('cli','cron','api')`,
+    ),
+    check(
+      "verification_runs_mode_check",
+      sql`${t.mode} in ('fake','live','snapshot')`,
+    ),
+    check(
+      "verification_runs_status_check",
+      sql`${t.status} in ('ok','failed','degraded')`,
+    ),
+    index("verification_runs_offer_generated_idx").on(
+      t.offerSlug,
+      t.generatedAt,
+    ),
+    index("verification_runs_trigger_created_idx").on(t.trigger, t.createdAt),
+  ],
+);
+
+export const monitorRuns = pgTable(
+  "monitor_runs",
+  {
+    id: bigint("id", { mode: "bigint" }).primaryKey().generatedAlwaysAsIdentity(),
+    checkedAt: timestamp("checked_at", { withTimezone: true }).notNull().unique(),
+    source: text("source").notNull(),
+    eventCounts: jsonb("event_counts")
+      .$type<Record<string, number>>()
+      .notNull()
+      .default({}),
+    blobKey: text("blob_key"),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+);
+
+export const monitorEvents = pgTable(
+  "monitor_events",
+  {
+    id: bigint("id", { mode: "bigint" }).primaryKey().generatedAlwaysAsIdentity(),
+    monitorRunId: bigint("monitor_run_id", { mode: "bigint" })
+      .notNull()
+      .references(() => monitorRuns.id, { onDelete: "cascade" }),
+    offerSlug: text("offer_slug").notNull(),
+    kind: text("kind").notNull(),
+    baseRcpNo: text("base_rcp_no"),
+    checkedThrough: text("checked_through"),
+    amendmentRcpNos: text("amendment_rcp_nos").array().notNull().default([]),
+  },
+  (t) => [
+    check(
+      "monitor_events_kind_check",
+      sql`${t.kind} in ('no_amendment','amendment_detected','detection_failed')`,
+    ),
+    index("monitor_events_offer_kind_idx").on(t.offerSlug, t.kind),
+  ],
+);
+
+export const ledgerObservations = pgTable(
+  "ledger_observations",
+  {
+    id: bigint("id", { mode: "bigint" }).primaryKey().generatedAlwaysAsIdentity(),
+    categoryId: text("category_id").notNull(),
+    subjectKey: text("subject_key").notNull(),
+    sourceId: text("source_id").notNull(),
+    observedAt: timestamp("observed_at", { withTimezone: true }).notNull(),
+    subjectExists: boolean("subject_exists"),
+    fields: jsonb("fields")
+      .$type<Record<string, unknown>>()
+      .notNull()
+      .default({}),
+  },
+  (t) => [
+    check(
+      "ledger_observations_category_check",
+      sql`${t.categoryId} in ('cattle','pig','art','real-estate')`,
+    ),
+    unique("ledger_observations_natural_key").on(
+      t.subjectKey,
+      t.sourceId,
+      t.observedAt,
+    ),
+    index("ledger_observations_subject_observed_idx").on(
+      t.subjectKey,
+      t.observedAt,
+    ),
   ],
 );
