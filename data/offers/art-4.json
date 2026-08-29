@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "offerId": "art-4",
+  "publicAlias": "상품 4",
+  "assetKind": "art",
+  "license": "green",
+  "offer": {
+    "amountWon": 685000000
+  },
+  "art": {
+    "acquisitionWon": 600000000,
+    "issuanceCostWon": null,
+    "lifecycle": "청약 완료 · 작품보관",
+    "asOf": "2026-08-08"
+  },
+  "sources": [
+    {
+      "label": "DART 정정신고서",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260512000391",
+      "retrievedOn": "2026-05-12"
+    },
+    {
+      "label": "DART 투자설명서",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260513000002",
+      "retrievedOn": "2026-05-13"
+    },
+    {
+      "label": "DART 발행실적보고서",
+      "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260529000528",
+      "retrievedOn": "2026-05-29"
+    }
+  ]
+}

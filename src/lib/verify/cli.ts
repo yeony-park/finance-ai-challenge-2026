@@ -14,6 +14,8 @@ import { runVerification } from "./pipeline";
 import { writeReport } from "./report/build";
 import { writePublicReport } from "./report/public-report";
 import type { VerifyReport } from "./types";
+import { buildVerificationRunRecord } from "@/lib/db/ledger/build";
+import { recordVerificationRun } from "@/lib/db/ledger/record";
 
 const DEFAULT_RCP_NO = "20260806000159";
 
@@ -146,6 +148,16 @@ const main = async (): Promise<void> => {
   }
   const internal = await writeReport(report, effectiveDataDir);
   const published = await writePublicReport(report, effectiveDataDir);
+  await recordVerificationRun(
+    buildVerificationRunRecord(report, {
+      trigger: "cli",
+      rcpNo: options.rcpNo,
+      extractionMode: options.extractionMode ?? null,
+      sourceIds: [trace.sourceId, auction.sourceId],
+      artifactName: path.basename(internal),
+    }),
+    { connection: "direct" },
+  );
   printSummary(report, { internal, published });
 };
 

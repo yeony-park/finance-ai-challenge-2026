@@ -1,4 +1,4 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { NextResponse, after, type NextRequest } from "next/server";
 
 import { isPublishedOfferId } from "@/components/site/offers";
 import { resolveAuctionPriceAdapter } from "@/lib/verify/adapters/auction-price-fake";
@@ -9,6 +9,8 @@ import { revalidateOffer } from "@/lib/verify/live/revalidate";
 import { loadLatestReport } from "@/lib/verify/report/load";
 import type { ReportSnapshot } from "@/lib/verify/report/snapshot";
 import { rcpNoForOffer } from "@/lib/verify/pipeline";
+import { buildVerificationRunRecordFromLiveBody } from "@/lib/db/ledger/build";
+import { recordVerificationRun } from "@/lib/db/ledger/record";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -50,6 +52,14 @@ export async function POST(
       now: () => new Date(),
     },
   );
+
+  if ("summary" in result.body) {
+    const runRecord = buildVerificationRunRecordFromLiveBody(
+      result.body,
+      result.status,
+    );
+    after(() => recordVerificationRun(runRecord, { connection: "runtime" }));
+  }
 
   return NextResponse.json(result.body, {
     status: result.status,

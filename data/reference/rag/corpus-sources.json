@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "documents": [
+    {
+      "sourceId": "dart-viewer",
+      "title": "전자공시시스템 DART — 증권신고서·정정신고서 원문",
+      "url": "https://dart.fss.or.kr",
+      "license": "green",
+      "retrievedOn": "2026-08-29",
+      "chunks": [
+        {
+          "chunkIndex": 0,
+          "content": "투자계약증권 공모의 증권신고서와 정정신고서 원문을 열람할 수 있다. 발행사가 제시한 기초자산 명세·공모 조건·수익 배분 구조는 모두 이 원문이 기준이며, 대조 결과에 붙는 좌표(문서 위치)도 이 원문을 가리킨다."
+        }
+      ]
+    },
+    {
+      "sourceId": "opendart-filings",
+      "title": "OpenDART 공시검색 API (list.json · document.xml)",
+      "url": "https://opendart.fss.or.kr",
+      "license": "green",
+      "retrievedOn": "2026-08-29",
+      "chunks": [
+        {
+          "chunkIndex": 0,
+          "content": "공시 목록 조회(list.json)와 원문 문서 조회(document.xml)를 제공한다. 투자계약증권은 구조화 API 대상이 아니라 목록 조회 후 원문을 직접 파싱해야 한다. 정정신고서는 같은 공모의 후속 접수 건으로 조회되며, 정정 계보 추적과 재검증의 입력이 된다."
+        }
+      ]
+    },
+    {
+      "sourceId": "livestock-trace",
+      "title": "축산물이력제 개체정보 (이력번호 조회)",
+      "url": "https://www.mtrace.go.kr",
+      "license": "green",
+      "retrievedOn": "2026-08-29",
+      "chunks": [
+        {
+          "chunkIndex": 0,
+          "content": "개체 이력번호로 출생일·품종·성별·사육 농장 등록 이력을 조회한다. 오픈API는 data.go.kr 15058923으로 제공된다. 신고서에 적힌 개체가 공적 원장에 실재하는지 대조하는 근거이며, 원장 기재와 값이 다르면 '원장 불일치', 조회 자체가 안 되면 '대조 불가'로 표시할 뿐 허위로 단정하지 않는다."
+        }
+      ]
+    },
+    {
+      "sourceId": "ekape-auction-price",
+      "title": "축산물등급판정정보 — 소도체 등급별 경락가격",
+      "url": "https://www.ekapepia.com",
+      "license": "green",
+      "retrievedOn": "2026-08-29",
+      "chunks": [
+        {
+          "chunkIndex": 0,
+          "content": "품종·성별·등급·월별 소도체 경락가격을 제공한다. 오픈API는 data.go.kr 15058822이며 개발계정 호출 한도 때문에 월 집계를 사전 수집해 캐시로 사용한다. 발행사 제시 가격이 같은 조건 분포의 어느 위치(백분위)에 있는지 표시하는 데 쓰이며, 위치 제시일 뿐 가격 적정성 판단이 아니다."
+        }
+      ]
+    },
+    {
+      "sourceId": "kape-pig-auction-price",
+      "title": "축산물등급판정정보 — 돼지 대표가격 (등급별 경락가격)",
+      "url": "https://www.data.go.kr/data/15148902/fileData.do",
+      "license": "green",
+      "retrievedOn": "2026-08-29",
+      "chunks": [
+        {
+          "chunkIndex": 0,
+          "content": "돈피·성별·등급·지역·월별 돼지 대표가격(경락가격)을 제공한다. 공공데이터포털 15148902 공식 파일 다운로드본이며 Green 라이선스로 이용 제한이 없다. 탕박·등외제외·전국(제주제외) 월 집계를 사전 수집해 캐시로 사용하며, 발행사 공시 기준가가 같은 조건 시장 분포의 어느 위치인지 표시하는 데 쓰일 뿐 가격 적정성 판단이 아니다."
+        }
+      ]
+    },
+    {
+      "sourceId": "molit-rtms-nrg-trade",
+      "title": "국토교통부 상업업무용 부동산 매매 실거래가",
+      "url": "https://rt.molit.go.kr",
+      "license": "green",
+      "retrievedOn": "2026-08-29",
+      "chunks": [
+        {
+          "chunkIndex": 0,
+          "content": "상업업무용 부동산의 신고된 매매 실거래 내역을 제공한다. 오픈API는 data.go.kr RTMSDataSvcNrgTrade다. 동일 지역·용도 비교군의 단가 분포에서 공모가·매각가의 백분위 위치를 계산하며, 비교군 표본이 얇으면 '대조 불가'로 표시한다."
+        }
+      ]
+    },
+    {
+      "sourceId": "molit-bldrgst-title",
+      "title": "국토교통부 건축물대장 표제부 (건축HUB)",
+      "url": "https://www.hub.go.kr",
+      "license": "green",
+      "retrievedOn": "2026-08-29",
+      "chunks": [
+        {
+          "chunkIndex": 0,
+          "content": "건축물대장 표제부의 소재지·주용도·연면적·구조·사용승인일을 제공한다. 오픈API는 data.go.kr BldRgstHubService getBrTitleInfo다. 공시된 소재지 지번의 표제부 존재 여부를 대조하며, 수집본이 없으면 '대조 불가'로 표시한다."
+        }
+      ]
+    }
+  ]
+}

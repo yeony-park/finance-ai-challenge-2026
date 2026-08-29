@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "offerId": "art-5",
+  "publicAlias": "상품 5",
+  "assetKind": "art",
+  "license": "green",
+  "offer": {
+    "amountWon": 660000000
+  },
+  "art": {
+    "acquisitionWon": null,
+    "issuanceCostWon": null,
+    "lifecycle": "현재 상태 재확인 필요",
+    "asOf": "2025-12-31"
+  },
+  "sources": []
+}
