@@ -42,3 +42,23 @@
 **검증 영향** — repositories 테스트에 degraded 고정 테스트 추가. 전체 1441 그린·tsc·eslint clean. 손상 리포트·비-ENOENT I/O·MANIFEST 누락이 이제 로그로 관측된다.
 
 **알려진 한계** — 로그는 console.error/warn(구조화 로거 미도입 — 관측성 후속). 트랜잭션 실권한·부분 실패 롤백은 실 DB 적용 후 검증(오너).
+
+## 작업 4 — 연동 배선 소형 3건 (2026-08-30)
+
+**결정과 근거** — ① `/pig` 페이지 `descriptor={null}` → `PIG_CATEGORY` 주입(층위 표가 실재성 unsupported·가격/이행 partial을 실제 렌더). ② pig filing-facts(pig-1~3) 화면 노출 — 페이지가 loadFilingFacts로 로드해 PigLanding에 전달, 선택 회차의 사실 카드를 시맨틱 `<dl>` 섹션으로 렌더(기존 s.axes/sectionLabel/sectionTitle 재사용). 문안 PIG_FILING은 content/pig.ts 등재 + pigCopyStrings 필터 감사 편입. ③ watch:refresh npm 스크립트(monitor-cli) 등재 + WATCH_BAND_LEAD 정직화("자동 갱신"→"마지막 감시 확인 시점 기준·주 2회 주기").
+
+**트레이드오프** — **작업 4②는 build·tsc·필터 감사만 검증, 시각 확인 미수행(헤드리스 환경 제약)** — 레이아웃/스타일은 프론트 담당 시각 사인오프 필요(CLAUDE.md 시각 검증 규약). 최소·시맨틱 렌더(dl, 기존 클래스 재사용)로 시각 리스크 최소화. watch 구조 처방(export 경유)은 범위 밖 — 단기 처방(스크립트+문구)만.
+
+**검증 영향** — pig-copy·home-copy 필터 감사 332 그린(PIG_FILING·WATCH_BAND_LEAD 포함). build·tsc clean. next.config allowedDevOrigins IP는 미변경(팀원 것일 수 있어 워크로그 기록만 — 작업 7).
+
+**알려진 한계** — 4② 시각 확인 미완(프론트 사인오프 대기). watch:refresh는 DART 키 필요(없으면 not_configured).
+
+## 작업 5 — ledger_observations 실배선 (2026-08-30)
+
+**결정과 근거** — 3차 후속 "④ 관측 실배선": judge 파이프라인 무수정으로 배선. `withLedgerObservationRecording` 데코레이터가 축산물이력제 어댑터의 `lookup`을 감싸 대조 시점에 buildLedgerObservationFromTrace→recordLedgerObservations를 best-effort 기록(R-STO-20 화이트리스트·farmerName/farmAddress 제외·subject_key 마스킹). verify CLI에서 `directDatabaseUrl()` 게이트로 활성(DB 없으면 미래핑·no-op). R-STO-20에 배선 상태 명기.
+
+**트레이드오프** — 어댑터 경계 데코레이터라 judge/assess 순수성 보존(이전 회신에서 침습적이라 미룬 것을 어댑터 층에서 해소). 라이브 API 경로는 런타임 역할에 ledger_observations INSERT가 없어(R-STO-16) 미배선 — 역할 확장은 오너 결정(M2+). CLI 경로(직결)가 리포트 생성 주 경로라 관측 기록의 1차 소스로 충분.
+
+**검증 영향** — 데코레이터 통과 테스트(lookup 결과 그대로 반환·1회 호출). 기존 R-STO-20 화이트리스트·PII 제외 테스트가 기록 내용 계약 수호. 전체 1445 그린.
+
+**알려진 한계** — 실 관측 기록·멱등은 오너 실 DB verify 실행 후 검증. 라이브 API 관측은 역할 확장 전까지 미기록(CLI만).

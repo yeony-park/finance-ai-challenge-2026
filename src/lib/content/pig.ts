@@ -360,6 +360,13 @@ export const PIG_PRICE = {
   sourceLink: "축산물 등급별 경락가격 공식 자료",
 } as const;
 
+export const PIG_FILING = {
+  label: "공시 사실 카드",
+  title: "선택 회차 신고서 기재 사실",
+  description:
+    "발행사가 DART 신고서에 기재한 공모 사실을 항목별로 정리했습니다. 접수번호는 공시 좌표이며, 농장·지역 표기는 익명 라벨·도 단위입니다.",
+} as const;
+
 export const PIG_ISSUER = {
   label: "발행사 이력",
   title: "발행사의 한돈 STO 발행 이력",
@@ -388,6 +395,7 @@ export const pigCopyStrings = (): readonly string[] => {
     ...Object.values(PIG_DISEASE),
     ...Object.values(PIG_PRICE),
     ...Object.values(PIG_ISSUER),
+    ...Object.values(PIG_FILING),
     PIG_MARKET.limitation,
   ];
   for (const product of PIG_DISCLOSURE_PRODUCTS) {

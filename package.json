@@ -19,6 +19,7 @@
     "reference:rtms": "tsx --env-file-if-exists=.env src/lib/verify/reference/rtms-collect-cli.ts",
     "reference:building": "tsx --env-file-if-exists=.env src/lib/verify/reference/building-register-collect-cli.ts",
     "track-record": "tsx --env-file-if-exists=.env src/lib/verify/track-record/cli.ts",
+    "watch:refresh": "tsx --env-file-if-exists=.env src/lib/verify/amend/monitor-cli.ts",
     "goldset:prelabel": "tsx src/lib/verify/goldset/cli.ts prelabel",
     "goldset:score": "tsx src/lib/verify/goldset/cli.ts score",
     "db:migrate": "tsx --env-file-if-exists=.env src/lib/db/cli/migrate.ts",
