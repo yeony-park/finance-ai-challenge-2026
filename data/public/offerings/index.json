@@ -6,6 +6,96 @@
       "offerSlug": "art-1",
       "categoryId": "art",
       "assetLabel": "미술품",
+      "titlePublic": "상품 1",
+      "provenance": "manual_verified",
+      "isExample": false,
+      "amountWon": 1182000000,
+      "minimumInvestment": null,
+      "subscription": {
+        "opensOn": null,
+        "closesOn": null,
+        "precision": "day"
+      },
+      "detail": {
+        "hasImage": false
+      }
+    },
+    {
+      "offerSlug": "art-2",
+      "categoryId": "art",
+      "assetLabel": "미술품",
+      "titlePublic": "상품 2",
+      "provenance": "manual_verified",
+      "isExample": false,
+      "amountWon": 1028000000,
+      "minimumInvestment": null,
+      "subscription": {
+        "opensOn": null,
+        "closesOn": null,
+        "precision": "day"
+      },
+      "detail": {
+        "hasImage": false
+      }
+    },
+    {
+      "offerSlug": "art-3",
+      "categoryId": "art",
+      "assetLabel": "미술품",
+      "titlePublic": "상품 3",
+      "provenance": "manual_verified",
+      "isExample": false,
+      "amountWon": 225000000,
+      "minimumInvestment": null,
+      "subscription": {
+        "opensOn": null,
+        "closesOn": null,
+        "precision": "day"
+      },
+      "detail": {
+        "hasImage": false
+      }
+    },
+    {
+      "offerSlug": "art-4",
+      "categoryId": "art",
+      "assetLabel": "미술품",
+      "titlePublic": "상품 4",
+      "provenance": "manual_verified",
+      "isExample": false,
+      "amountWon": 685000000,
+      "minimumInvestment": null,
+      "subscription": {
+        "opensOn": null,
+        "closesOn": null,
+        "precision": "day"
+      },
+      "detail": {
+        "hasImage": false
+      }
+    },
+    {
+      "offerSlug": "art-5",
+      "categoryId": "art",
+      "assetLabel": "미술품",
+      "titlePublic": "상품 5",
+      "provenance": "manual_verified",
+      "isExample": false,
+      "amountWon": 660000000,
+      "minimumInvestment": null,
+      "subscription": {
+        "opensOn": null,
+        "closesOn": null,
+        "precision": "day"
+      },
+      "detail": {
+        "hasImage": false
+      }
+    },
+    {
+      "offerSlug": "ex-art-1",
+      "categoryId": "art",
+      "assetLabel": "미술품",
       "titlePublic": "예시 회화 A",
       "provenance": "synthetic",
       "isExample": true,
@@ -24,7 +114,7 @@
       }
     },
     {
-      "offerSlug": "art-2",
+      "offerSlug": "ex-art-2",
       "categoryId": "art",
       "assetLabel": "미술품",
       "titlePublic": "예시 회화 B",
@@ -45,7 +135,7 @@
       }
     },
     {
-      "offerSlug": "art-3",
+      "offerSlug": "ex-art-3",
       "categoryId": "art",
       "assetLabel": "미술품",
       "titlePublic": "예시 조각 C",
@@ -66,7 +156,7 @@
       }
     },
     {
-      "offerSlug": "re-1",
+      "offerSlug": "ex-re-1",
       "categoryId": "real-estate",
       "assetLabel": "부동산",
       "titlePublic": "예시 오피스 A",
@@ -85,7 +175,7 @@
       }
     },
     {
-      "offerSlug": "re-2",
+      "offerSlug": "ex-re-2",
       "categoryId": "real-estate",
       "assetLabel": "부동산",
       "titlePublic": "예시 근린상가 B",
@@ -104,7 +194,7 @@
       }
     },
     {
-      "offerSlug": "re-3",
+      "offerSlug": "ex-re-3",
       "categoryId": "real-estate",
       "assetLabel": "부동산",
       "titlePublic": "예시 물류센터 C",
@@ -123,6 +213,54 @@
       }
     },
     {
+      "offerSlug": "pig-1",
+      "categoryId": "pig",
+      "assetLabel": "한돈",
+      "titlePublic": "가축투자계약증권 제1호",
+      "provenance": "manual_verified",
+      "isExample": false,
+      "amountWon": 216240000,
+      "minimumInvestment": 20000,
+      "subscription": {
+        "opensOn": "2026-01-29",
+        "closesOn": "2026-02-11",
+        "precision": "day"
+      },
+      "detail": {}
+    },
+    {
+      "offerSlug": "pig-2",
+      "categoryId": "pig",
+      "assetLabel": "한돈",
+      "titlePublic": "가축투자계약증권 제2호",
+      "provenance": "manual_verified",
+      "isExample": false,
+      "amountWon": 212800000,
+      "minimumInvestment": 20000,
+      "subscription": {
+        "opensOn": "2026-05-14",
+        "closesOn": "2026-05-27",
+        "precision": "day"
+      },
+      "detail": {}
+    },
+    {
+      "offerSlug": "pig-3",
+      "categoryId": "pig",
+      "assetLabel": "한돈",
+      "titlePublic": "가축투자계약증권 제3호",
+      "provenance": "manual_verified",
+      "isExample": false,
+      "amountWon": 229000000,
+      "minimumInvestment": 20000,
+      "subscription": {
+        "opensOn": "2026-06-29",
+        "closesOn": "2026-07-10",
+        "precision": "day"
+      },
+      "detail": {}
+    },
+    {
       "offerSlug": "real-estate-a",
       "categoryId": "real-estate",
       "assetLabel": "부동산",
@@ -136,7 +274,9 @@
         "closesOn": "2021-07-15",
         "precision": "day"
       },
-      "detail": {}
+      "detail": {
+        "buildingUse": "상업업무용(사무소)"
+      }
     }
   ]
 }

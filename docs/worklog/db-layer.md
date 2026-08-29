@@ -204,3 +204,23 @@ Supabase 확장: `vector`·`pg_trgm` 둘 다 지원(확장은 `extensions` 스�
 **eval 영향** — R-STO-08 멱등 정의에 "플랜 외 synthetic 잔존 없음" 포함: prune 타깃 계약 테스트 2종(synthetic offer slug=ex- 6건뿐·manual_verified 불가침, art_auction_records 전 플랜분 keep·개칭 없음). db 72 그린·전체 통과.
 
 **알려진 한계** — 실 DELETE·멱등 재현은 오너 재시드 시 검증. prune은 slug/external_ref 자연키 기준 — 플랜 정의가 유일 진실.
+
+## 저장 계층 v2 실 DB 적용 완주 (2026-08-29, 통합 세션 — 오너 실행)
+
+**결정과 근거** — migrate 0001~0003(12테이블) → db/roles.sql + DATABASE_URL 읽기 전용
+역할(jeomjeom_rag_ro) 재발급 → ingest(458/839/176/18 — 예측치 정합) → seed → export(15건)
+전 단계 완주. 역할 경계 실측: rag SELECT·runs INSERT 허용, 원장 SELECT·runs SELECT·DDL
+차단 — R-STO-16 개정 그대로. 적용 중 **slug 개칭 잔존 발견**(구 re-1~3 synthetic 3행,
+멱등 upsert가 플랜 이탈분을 정리하지 않는 전형적 rename 잔존) → 수동 DELETE 대신
+db:seed prune(b1cd35b)으로 코드 수정 후 재시드로 정리 실증(비ex synthetic 0).
+
+**트레이드오프** — prune은 synthetic provenance 전유를 전제로 한 파괴적 정리:
+manual_verified·public_record 불가침 필터가 유일한 방어라 provenance 오기입 시
+위험이 커진다(기존 CHECK+Zod 이중 강제가 전제 조건).
+
+**검증 영향** — R-STO-08 멱등 정의에 "플랜 외 synthetic 잔존 없음" 편입(계약 테스트).
+최종 인덱스: 15건(manual 9 + ex- synthetic 6), 금지 필드·실명 잔존 0, 스위트 1438 그린.
+
+**알려진 한계** — Run Ledger는 배선만 완료 — verification_runs 실기록은 다음 verify/
+cron 실행부터 쌓인다(현재 0행). ledger_observations ④ 관측 실배선은 judge 경로
+표면화 후속. 기존 Blob 축적분 소급 없음.
