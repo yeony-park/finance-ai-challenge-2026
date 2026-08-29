@@ -9,6 +9,8 @@ import { revalidateOffer } from "@/lib/verify/live/revalidate";
 import { loadLatestReport } from "@/lib/verify/report/load";
 import type { ReportSnapshot } from "@/lib/verify/report/snapshot";
 import { rcpNoForOffer } from "@/lib/verify/pipeline";
+import { buildVerificationRunRecordFromLiveBody } from "@/lib/db/ledger/build";
+import { recordVerificationRun } from "@/lib/db/ledger/record";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -50,6 +52,13 @@ export async function POST(
       now: () => new Date(),
     },
   );
+
+  if ("summary" in result.body) {
+    void recordVerificationRun(
+      buildVerificationRunRecordFromLiveBody(result.body, result.status),
+      { connection: "runtime" },
+    );
+  }
 
   return NextResponse.json(result.body, {
     status: result.status,

@@ -157,3 +157,13 @@ Supabase 확장: `vector`·`pg_trgm` 둘 다 지원(확장은 `extensions` 스�
 **eval 영향** — `ingest.test.ts`(6종): MANIFEST sha256 조인·cattle source_meta 5필드·re_trades 확장 컬럼·pig 전 조합·filing_facts 자연키 무중복·원천 경로 가드. 전체 1430 그린. not_configured 실행 확인(cattle 458·re_trades 839·pig 176·filing_facts 18).
 
 **알려진 한계** — 실 DB 미적용(오너 실행 대기)이라 삽입·멱등·자연키 충돌은 미검증(빌더까지 실증). pig는 전국제주제외 1개 지역만 적재(타 6지역은 스키마상 가능하나 이번 미적재 — 대표 지역 우선). 라이선스는 green 고정(참조 파일 전부 Green 공공) — MANIFEST에 license 열 부재라 sha256만 조인.
+
+## v2 일괄 적용 — 작업 5: Run Ledger 배선 (2026-08-29)
+
+**결정과 근거** — 09 §5 집행 규칙 4개. 핵심 모듈 `src/lib/db/ledger/`(records·build·record): verification_runs·monitor_runs/events·ledger_observations 레코드 Zod + 순수 매퍼 + best-effort 레코더(DB 미설정 시 no-op, 예외 무전파). ① verify CLI: writeReport 후 `recordVerificationRun`(trigger cli, 직결, run_key 멱등, verdict_counts=report.summary 건수만). ② POST /api/verify: 응답 후 fire-and-forget `recordVerificationRun`(trigger api, 런타임 역할, DB 실패 무영향). ③ cron monitor: Blob 기존 유지 + `recordMonitorRun`(monitor_runs/events, kind별 건수). ④ ledger_observations: `buildLedgerObservationFromTrace`가 축산물이력제 레코드에서 구조화 필드(birthYmd·breed·sex·currentFarmNo)만 옮기고 **farmerName·farmAddress(PII) 제외**, subject_key는 maskTraceNo 마스킹(원문 이력번호 금지) — R-STO-20.
+
+**트레이드오프** — verdict_counts는 report.summary(숫자 3값)만 복사 — 자유문장·판정 본문 미기록(R-STO-11·R-STO-19). ledger_observations.fields는 strict 화이트리스트라 farmerNm/farmAddr 미선언 키가 원천 차단. best-effort no-op으로 file 모드 완주 불변(테스트는 DB 없이 통과). ④의 **실제 대조 시점 기록 배선(judge 경로가 트레이스 레코드를 표면화)** 은 이번 미완 — 매퍼·레코더·R-STO-20 테스트는 완비, judge outcome이 LivestockTraceRecord를 반환하도록 파이프라인 표면화하는 것은 침습적이라 후속. run_key 멱등은 ON CONFLICT DO NOTHING(런타임 INSERT 전용 역할과 호환 — SELECT 불요).
+
+**eval 영향** — `ledger.test.ts`(8종): run_key 형식·verdict_counts 숫자만·fields 금지 필드명 거부·subject_key 마스킹·트레이스 PII 제외·file 모드 no-op. 전체 1436 그린·build 통과·eslint clean.
+
+**알려진 한계** — ④ 관측 기록의 실 배선(대조 실행 중 자동 기록)은 후속(파이프라인 트레이스 표면화 필요). monitor_runs.blob_key는 현재 null(Blob 스토어 반환 키 형태 미확정) — Blob 아카이브 링크는 후속. 실 DB 미적용이라 삽입·역할 권한(런타임 INSERT 전용)은 미검증.

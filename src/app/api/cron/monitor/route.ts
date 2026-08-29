@@ -10,6 +10,8 @@ import {
   type MonitorTarget,
 } from "@/lib/verify/amend/monitor";
 import { fetchAmendmentLineage } from "@/lib/verify/dart/amendment-lineage";
+import { buildMonitorRunRecord } from "@/lib/db/ledger/build";
+import { recordMonitorRun } from "@/lib/db/ledger/record";
 import { fetchDocumentXmlInMemory } from "@/lib/verify/dart/fetch-document";
 import { rcpNoForOffer, runVerification } from "@/lib/verify/pipeline";
 import { loadLatestReport } from "@/lib/verify/report/load";
@@ -99,6 +101,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
   const storage = await createBlobEventStore(
     process.env.BLOB_READ_WRITE_TOKEN,
   )(run);
+
+  await recordMonitorRun(buildMonitorRunRecord(run));
 
   return NextResponse.json(
     {
