@@ -1,3 +1,5 @@
+import { and, eq, notInArray } from "drizzle-orm";
+
 import { closeConnections, getDirectDb } from "../client";
 import { directDatabaseUrl } from "../env";
 import {
@@ -10,7 +12,12 @@ import {
   assertSeedSourcePathsAllowed,
   assertSyntheticNamesClean,
 } from "../seed/guards";
-import { type SeedPlan, buildSeedPlan } from "../seed/plan";
+import {
+  type SeedPlan,
+  buildSeedPlan,
+  syntheticArtRefs,
+  syntheticOfferSlugs,
+} from "../seed/plan";
 
 const seedOfferings = async (
   db: ReturnType<typeof getDirectDb>,
@@ -114,6 +121,34 @@ const seedRag = async (
   }
 };
 
+const pruneStaleSynthetic = async (
+  db: ReturnType<typeof getDirectDb>,
+  plan: SeedPlan,
+): Promise<void> => {
+  const slugs = syntheticOfferSlugs(plan);
+  if (slugs.length > 0) {
+    await db
+      .delete(offeringsTable)
+      .where(
+        and(
+          eq(offeringsTable.provenance, "synthetic"),
+          notInArray(offeringsTable.offerSlug, [...slugs]),
+        ),
+      );
+  }
+  const refs = syntheticArtRefs(plan);
+  if (refs.length > 0) {
+    await db
+      .delete(artAuctionRecords)
+      .where(
+        and(
+          eq(artAuctionRecords.provenance, "synthetic"),
+          notInArray(artAuctionRecords.externalRef, [...refs]),
+        ),
+      );
+  }
+};
+
 const main = async (): Promise<void> => {
   const plan = await buildSeedPlan();
 
@@ -131,9 +166,10 @@ const main = async (): Promise<void> => {
   await seedOfferings(db, plan);
   await seedArtRecords(db, plan);
   await seedRag(db, plan);
+  await pruneStaleSynthetic(db, plan);
 
   console.log(
-    `[db:seed] 완료 — offerings ${plan.offerings.length} · art_records ${plan.artRecords.length} · rag_docs ${plan.ragDocuments.length} (멱등 ON CONFLICT).`,
+    `[db:seed] 완료 — offerings ${plan.offerings.length} · art_records ${plan.artRecords.length} · rag_docs ${plan.ragDocuments.length} (멱등 ON CONFLICT + 플랜 외 synthetic prune).`,
   );
 };
 

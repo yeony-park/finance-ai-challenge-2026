@@ -129,6 +129,16 @@ const syntheticNamesOf = (
     ]),
 ];
 
+export const syntheticOfferSlugs = (plan: SeedPlan): readonly string[] =>
+  plan.offerings
+    .filter((offering) => offering.provenance === "synthetic")
+    .map((offering) => offering.offerSlug);
+
+export const syntheticArtRefs = (plan: SeedPlan): readonly string[] =>
+  plan.artRecords
+    .filter((record) => record.provenance === "synthetic")
+    .map((record) => record.externalRef);
+
 export const buildSeedPlan = async (
   dataDir = "data",
 ): Promise<SeedPlan> => {

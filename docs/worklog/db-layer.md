@@ -194,3 +194,13 @@ Supabase 확장: `vector`·`pg_trgm` 둘 다 지원(확장은 `extensions` 스�
 **eval 영향** — 전체 1436 그린·tsc·eslint·build clean. drizzle 무-diff 재확인(re_trades UNIQUE NULLS NOT DISTINCT·monitor FK idx canonical 일치). pig 디스크립터 계약 테스트가 등록·바인딩 검증으로 전환, 코퍼스 등록 9건.
 
 **알려진 한계** — 실 DB 미적용이라 0002·0003·NULLS NOT DISTINCT·ingest 멱등은 오너 실 적용 후 검증. 후속 항목(배치·CHECK·로깅·④ 배선)은 위 트레이드오프에 등재.
+
+## v2 후속 — db:seed 플랜 외 synthetic prune (2026-08-29, 실 DB 적용 중 발견)
+
+**결정과 근거** — 실 DB 적용 중 통합 세션 발견: ex- 개칭 전 synthetic 행(re-1~3 구 slug)이 ex-re-1~3과 공존(offerings 18행=시드 15+잔존 3). art는 실측 5건이 art-1~3을 upsert로 덮어 잔존 없음. synthetic은 시드가 전유하는 provenance이고 "손으로 DB를 고치지 않는다"(09 §3.1)라 코드가 정리해야 재현 가능. 수정: `db:seed`가 upsert 후 `pruneStaleSynthetic` — 플랜의 synthetic slug/external_ref에 없는 synthetic 행을 DELETE(provenance='synthetic' AND slug NOT IN 플랜). manual_verified·public_record 불가침(provenance 필터). art_auction_records도 동일 패턴 방어(external_ref는 개칭 안 됐음을 확인 — sha256(art-rec-N) 불변이라 실제 잔존 없으나 방어심화로 prune 포함).
+
+**트레이드오프** — prune은 DB 모드에서만(not_configured 가드 뒤), file 모드 무관. synthetic 전유 규약(R-STO-06·07a) 덕에 DELETE가 안전 — manual_verified/public_record는 다른 provenance라 절대 미삭제. 순수 헬퍼(syntheticOfferSlugs·syntheticArtRefs)로 prune 타깃을 분리해 file 모드 테스트 가능.
+
+**eval 영향** — R-STO-08 멱등 정의에 "플랜 외 synthetic 잔존 없음" 포함: prune 타깃 계약 테스트 2종(synthetic offer slug=ex- 6건뿐·manual_verified 불가침, art_auction_records 전 플랜분 keep·개칭 없음). db 72 그린·전체 통과.
+
+**알려진 한계** — 실 DELETE·멱등 재현은 오너 재시드 시 검증. prune은 slug/external_ref 자연키 기준 — 플랜 정의가 유일 진실.

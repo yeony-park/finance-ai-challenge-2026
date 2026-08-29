@@ -12,7 +12,11 @@ import {
   resolveRagSearchRepository,
 } from "../repositories/rag-search";
 import { resolveOfferingsRepository } from "../repositories/offerings";
-import { buildSeedPlan } from "../seed/plan";
+import {
+  buildSeedPlan,
+  syntheticArtRefs,
+  syntheticOfferSlugs,
+} from "../seed/plan";
 
 const savedUrl = process.env.DATABASE_URL;
 
@@ -94,6 +98,32 @@ describe("③ rag_documents.source_id 미등록 id 거부 (R-STO-12)", () => {
     for (const hit of result.hits) {
       expect(isRegisteredSource(hit.sourceId)).toBe(true);
     }
+  });
+
+  test("R-STO-08 prune 타깃: synthetic offer slug는 ex- 6건뿐, manual_verified 불가침", async () => {
+    const plan = await buildSeedPlan();
+    const slugs = syntheticOfferSlugs(plan);
+    expect([...slugs].sort()).toEqual([
+      "ex-art-1",
+      "ex-art-2",
+      "ex-art-3",
+      "ex-re-1",
+      "ex-re-2",
+      "ex-re-3",
+    ]);
+    expect(slugs.every((slug) => slug.startsWith("ex-"))).toBe(true);
+    // manual_verified(art-N·pig-N·real-estate-a)는 prune 타깃에 들어가지 않는다
+    for (const manual of ["art-1", "pig-1", "real-estate-a"]) {
+      expect(slugs).not.toContain(manual);
+    }
+  });
+
+  test("R-STO-08 prune 타깃: synthetic art_auction_records는 개칭 없이 전 플랜분이 keep", async () => {
+    const plan = await buildSeedPlan();
+    const refs = syntheticArtRefs(plan);
+    expect(refs.length).toBe(plan.artRecords.length);
+    expect(plan.artRecords.every((r) => r.provenance === "synthetic")).toBe(true);
+    expect(new Set(refs).size).toBe(refs.length);
   });
 
   test("시드 계획의 rag 문서 source_id는 전부 등록분이다", async () => {
