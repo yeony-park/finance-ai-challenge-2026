@@ -11,9 +11,9 @@
   "sourceUrl": "/scenario-documents/operator-a-history.pdf",
   "asOf": "2026-08-24",
   "page": 1,
-  "text": "가상 시나리오 문서 · scenario-input 운영그룹 A 완료 이력보고서 이력보고서 안내 데모 데이터 안내 : 이 화면의 투자조건은 실제 건축물의 공개정보를 기반으로 구성한 시나리오이며 , 실제 청약 · 판 매 중인 상품이 아닙니다 . 운영그룹 A 의 아래 이력은 모두 가상 scenario-input 입니다 . 실제 법인 · 플랫폼 · 은행 · 소유자 · 임차인 · 성과와 연결 하지 않습니다 . 데모 데이터 안내 : 이 화면의 투자조건은 실제 건축물의 공개정보를 기반으로 구성한 시나리오이며 , 실제 청약 · 판매 중인 상품이 아닙니다 .",
-  "sourceHash": "bcb93230e06b1e550bd3d68e21606291aa071279b63aceffcd9ca6fc58f5b82f",
-  "chunkHash": "276270ddba279e127661c1e155dcf21da6203e090f374be4fc03974a18e939bd",
+  "text": "가상 시나리오 문서 · scenario-input\n운영그룹 A 완료 이력보고서\n이력보고서 안내\n운영그룹 A의 아래 이력은 모두 가상 scenario-input입니다. 실제 법인·플랫폼·은행·소유자·임차인·성과와\n연결하지 않습니다.\n시나리오 데이터 안내: 이 화면의 투자조건은 실제 건축물의 공개정보를 기반으로 구성한 시나리오이며, 실제 청약·판매 중인 상품이 아닙니다.",
+  "sourceHash": "51e8524d60b8a3c67d4b77fe2a796bdd6fb7369069156cfb465ce4d9407c1aa0",
+  "chunkHash": "57dd5c80a62b80fc01663c2b4ad7822f150353bde749aa6be4e163dc68f10151",
   "approvedForPublic": true,
   "status": "ready",
   "limitations": [

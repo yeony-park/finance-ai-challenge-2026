@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "request": {
+    "sigunguCd": "11680",
+    "bjdongCd": "10600",
+    "platGbCd": "0",
+    "bun": "0892",
+    "ji": "0000"
+  },
+  "collectedAt": "2026-08-24T16:46:23.774Z",
+  "sourceId": "molit-building-register-hub",
+  "sourceName": "국토교통부 건축물대장 표제부 조회 서비스 (국토교통부 · data.go.kr)",
+  "sourceUrl": "https://apis.data.go.kr/1613000/BldRgstHubService/getBrTitleInfo?sigunguCd=11680&bjdongCd=10600&platGbCd=0&bun=0892&ji=0000&numOfRows=100&pageNo=1&_type=json",
+  "status": "ok",
+  "totalCount": 1,
+  "records": [
+    {
+      "managementKey": "1024123365",
+      "parcelAddress": "서울특별시 강남구 대치동 892번지",
+      "roadAddress": "서울특별시 강남구 테헤란로 440 (대치동)",
+      "buildingName": "포스코센터",
+      "mainPurpose": "업무시설",
+      "otherPurpose": "업무시설,근린생활시설,문화및집회시설",
+      "parcelAreaSqm": 17453.8,
+      "buildingAreaSqm": 7350.36,
+      "totalAreaSqm": 181061.23,
+      "floorAreaRatioEstimatedTotalSqm": 103971.32,
+      "structure": "철골철근콘크리트구조",
+      "householdCount": 0,
+      "useApprovedOn": "1995-07-14",
+      "recordedOn": "2026-07-01"
+    }
+  ]
+}

@@ -10,7 +10,7 @@
   "approvedForPublic": true,
   "status": "approved",
   "disclosure": {
-    "text": "데모 데이터 안내: 이 화면의 투자조건은 실제 건축물의 공개정보를 기반으로 구성한 시나리오이며, 실제 청약·판매 중인 상품이 아닙니다.",
+    "text": "시나리오 데이터 안내: 이 화면의 투자조건은 실제 건축물의 공개정보를 기반으로 구성한 시나리오이며, 실제 청약·판매 중인 상품이 아닙니다.",
     "createdOn": "2026-08-24",
     "purpose": "부동산 검토 흐름과 출처 연결 기능의 데모"
   },
@@ -26,6 +26,8 @@
       {
         "field": "building-name",
         "status": "unknown",
+        "dataNature": "observed",
+        "basis": "source",
         "limitations": [
           "후보 주소만으로 BuildingHUB 표제부의 정확 레코드를 확인하지 못했습니다. 값은 추정하지 않습니다."
         ]
@@ -33,6 +35,8 @@
       {
         "field": "main-use",
         "status": "unknown",
+        "dataNature": "observed",
+        "basis": "source",
         "limitations": [
           "후보 주소만으로 BuildingHUB 표제부의 정확 레코드를 확인하지 못했습니다. 값은 추정하지 않습니다."
         ]
@@ -41,6 +45,8 @@
         "field": "gross-floor-area",
         "unit": "m2",
         "status": "unknown",
+        "dataNature": "observed",
+        "basis": "source",
         "limitations": [
           "후보 주소만으로 BuildingHUB 표제부의 정확 레코드를 확인하지 못했습니다. 값은 추정하지 않습니다."
         ]
@@ -49,6 +55,8 @@
         "field": "land-area",
         "unit": "m2",
         "status": "unknown",
+        "dataNature": "observed",
+        "basis": "source",
         "limitations": [
           "후보 주소만으로 BuildingHUB 표제부의 정확 레코드를 확인하지 못했습니다. 값은 추정하지 않습니다."
         ]
@@ -56,12 +64,15 @@
       {
         "field": "use-approval-date",
         "status": "unknown",
+        "dataNature": "observed",
+        "basis": "source",
         "limitations": [
           "후보 주소만으로 BuildingHUB 표제부의 정확 레코드를 확인하지 못했습니다. 값은 추정하지 않습니다."
         ]
       }
     ]
   },
+  "claimedAssetFacts": [],
   "sources": [
     {
       "sourceId": "seoul-building-title-info",
@@ -96,6 +107,64 @@
       "dataNature": "scenario"
     }
   },
+  "investorProtection": {
+    "dataNature": "scenario",
+    "basis": "scenario-input",
+    "rightForm": {
+      "statement": "시나리오 조건상 권리 형태와 행사 범위를 별도 절차로 정한 가정입니다.",
+      "status": "confirmed-in-scenario",
+      "dataNature": "scenario",
+      "basis": "scenario-input",
+      "limitations": [
+        "실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다."
+      ]
+    },
+    "fundsSafekeeping": {
+      "statement": "시나리오 조건상 투자금 보관 절차를 별도 절차로 정한 가정입니다.",
+      "status": "confirmed-in-scenario",
+      "dataNature": "scenario",
+      "basis": "scenario-input",
+      "limitations": [
+        "실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다."
+      ]
+    },
+    "bankruptcyRemoteness": {
+      "statement": "시나리오 조건상 운영주체와의 재산 분리 조건을 별도 절차로 정한 가정입니다.",
+      "status": "confirmed-in-scenario",
+      "dataNature": "scenario",
+      "basis": "scenario-input",
+      "limitations": [
+        "실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다."
+      ]
+    },
+    "rightsAdministration": {
+      "statement": "시나리오 조건상 권리자 명부와 분배 내역 관리를 별도 절차로 정한 가정입니다.",
+      "status": "confirmed-in-scenario",
+      "dataNature": "scenario",
+      "basis": "scenario-input",
+      "limitations": [
+        "실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다."
+      ]
+    },
+    "disputeResolution": {
+      "statement": "시나리오 조건상 이의 제기·분쟁 조정 절차를 별도 절차로 정한 가정입니다.",
+      "status": "confirmed-in-scenario",
+      "dataNature": "scenario",
+      "basis": "scenario-input",
+      "limitations": [
+        "실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다."
+      ]
+    },
+    "issuanceDistributionSeparation": {
+      "statement": "시나리오 조건상 발행·배정과 운용·분배 절차의 구분을 별도 절차로 정한 가정입니다.",
+      "status": "attention",
+      "dataNature": "scenario",
+      "basis": "scenario-input",
+      "limitations": [
+        "시나리오 조건상 주의 표시이며 실제 계약·법률·운영 상태를 확인한 사실이 아닙니다."
+      ]
+    }
+  },
   "offering": {
     "phase": "settled",
     "opensOn": "2024-03-11",
@@ -124,11 +193,34 @@
     ],
     "liquidationPriority": "시나리오상 자산 처분대금에서 차입금·처분비용을 우선 반영한 뒤 남은 금액을 단위 기준으로 배분합니다.",
     "financing": {
+      "dataNature": "scenario",
+      "basis": "scenario-input",
       "ltvPercent": 45,
       "annualInterestRatePercent": 4.5,
       "maturityOn": "2030-12-31",
+      "rateType": "fixed",
+      "resetOn": null,
       "limitations": [
         "실제 대출·담보·금리 조건이 아닌 시나리오 가정입니다."
+      ]
+    },
+    "cashFlowReview": {
+      "dataNature": "scenario",
+      "basis": "scenario-input",
+      "annualRentalIncomeWon": 2000000000,
+      "annualOperatingExpenseWon": 800000000,
+      "annualDebtServiceWon": 600000000,
+      "limitations": [
+        "임대수익·운영비·부채상환액은 실제 건물의 재무정보가 아닌 세전 시나리오 입력입니다."
+      ]
+    },
+    "exitReview": {
+      "dataNature": "scenario",
+      "basis": "scenario-input",
+      "decisionAuthority": "시나리오 운영위원회",
+      "maximumExtensionMonths": 12,
+      "limitations": [
+        "회수 결정·연장 조건은 실제 계약 또는 권리관계가 아닌 시나리오 입력입니다."
       ]
     },
     "leaseAssumptions": {
@@ -145,7 +237,11 @@
     "actualExitOn": "2026-02-15",
     "cumulativeDistributionWon": 900000000,
     "saleProceedsWon": 10300000000,
+    "additionalContributionsWon": 0,
+    "refundsWon": 0,
     "feesWon": 100000000,
+    "cashFlowCompleteness": "complete",
+    "taxBasis": "pre-tax",
     "returnOutcome": "profit",
     "scheduleOutcome": "early",
     "assumptionTags": [

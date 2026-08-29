@@ -7,7 +7,7 @@
   "question": "운영그룹의 과거이력은 무엇인가요?",
   "normalizedQuestion": "운영그룹의 과거이력은 무엇인가요",
   "outcome": "answer",
-  "answer": "등록된 공개 근거에서 확인한 내용입니다.\n- 완료 이력 종로타워 : 원금 7,600,000,000 원 , 누적분배 400,000,000 원 , 매각회수 7,250,000,000 원 , 비용 50,000,000 원 , 순회수 7,600,000,000 원 , 보유 785 일 , 단순 총회수 기준 ( 세전 가정 ; 분배시점 · 세금 미반영 ) 총수익률 0.00%, 회 수 결과 손익분기 , 일정 결과 정시 , 목표 종료 2026-03-31, 실제 종료 2026-03-31. 디타워 광화문 : 원금 11,600,000,000 원 , 누적분배 610,000,000 원 , 매각회수 10,900,000,000 원 , 비용 80",
+  "answer": "이 상품에 연결된 공식 문서와 공개정보에서 확인한 내용입니다.\n- 완료 이력 종로타워: 원금(최초 투자금) 7,600,000,000원, 추가납입 0원, 누적분배 400,000,000원, 매각회수 7,250,000,000원, 환급 0원, 비용 50,000,000원, 총투입 7,600,000,000원, 순회수 7,600,000,000원, 보유 785일, 현금흐름 완전성 complete·세전 기준, 단순 총회수 기준(분배시점·세금 미반영) 총수익률 0.00%, 회수 결과 손익분기, 일정 결과 정시, 목표 종료 2026-03-31, 실제 종료 2026-03-31. 디타워 광화문: 원금(최초 투자금) 11,600,000,000원, 추가납입",
   "chunkIds": [
     "operator-b-history-re-scenario-02-p2"
   ],
@@ -15,10 +15,10 @@
     "operator-b-history-re-scenario-02"
   ],
   "sourceHashes": {
-    "operator-b-history-re-scenario-02": "7aa96ec8d622449f619ff99c1e47fae0153a0df6dbf15f78c4e97470a6efacc5"
+    "operator-b-history-re-scenario-02": "db5b153f789f6beecc8c65c0eaebece18f4c469f39533d5a6b8e941fa819ce52"
   },
   "chunkHashes": {
-    "operator-b-history-re-scenario-02-p2": "cec2c85af15b6dbb2f8209b39db5c3aea8199ec6273fdfc9c8375f1f0f02429c"
+    "operator-b-history-re-scenario-02-p2": "501f88263f92d989b7a8bf8d6e4e35ad4b2ff8e32d4750f48b1f418e41c7fd81"
   },
   "createdAt": "2026-08-24T09:00:00+09:00",
   "generator": "deterministic-template",

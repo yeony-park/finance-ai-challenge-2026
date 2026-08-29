@@ -11,9 +11,9 @@
   "sourceUrl": "/scenario-documents/operator-c-history.pdf",
   "asOf": "2026-08-24",
   "page": 1,
-  "text": "가상 시나리오 문서 · scenario-input 운영그룹 C 완료 이력보고서 이력보고서 안내 데모 데이터 안내 : 이 화면의 투자조건은 실제 건축물의 공개정보를 기반으로 구성한 시나리오이며 , 실제 청약 · 판 매 중인 상품이 아닙니다 . 운영그룹 C 의 아래 이력은 모두 가상 scenario-input 입니다 . 실제 법인 · 플랫폼 · 은행 · 소유자 · 임차인 · 성과와 연결 하지 않습니다 . 데모 데이터 안내 : 이 화면의 투자조건은 실제 건축물의 공개정보를 기반으로 구성한 시나리오이며 , 실제 청약 · 판매 중인 상품이 아닙니다 .",
-  "sourceHash": "71a7c1d52edc72217d68d4bf405f15f5fc00bdb30d21815fa3302f8fbe36d68b",
-  "chunkHash": "50ca6f8842895f63cf651b4000a34a958aac2ba74282eddf77b3d5a90abbc39c",
+  "text": "가상 시나리오 문서 · scenario-input\n운영그룹 C 완료 이력보고서\n이력보고서 안내\n운영그룹 C의 아래 이력은 모두 가상 scenario-input입니다. 실제 법인·플랫폼·은행·소유자·임차인·성과와\n연결하지 않습니다.\n시나리오 데이터 안내: 이 화면의 투자조건은 실제 건축물의 공개정보를 기반으로 구성한 시나리오이며, 실제 청약·판매 중인 상품이 아닙니다.",
+  "sourceHash": "f74fcfc7c85c4d290c086c3a8034c63c28fe95d1c41bf34e598badb8b08bfc9b",
+  "chunkHash": "8c44d7c49b08f19d2f4c059805a7d805120984420cab2d0d5b35f1cd4be188f6",
   "approvedForPublic": true,
   "status": "ready",
   "limitations": [

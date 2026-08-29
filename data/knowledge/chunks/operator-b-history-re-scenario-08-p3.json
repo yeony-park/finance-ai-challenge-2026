@@ -11,9 +11,9 @@
   "sourceUrl": "/scenario-documents/operator-b-history.pdf",
   "asOf": "2026-08-24",
   "page": 3,
-  "text": "시나리오 가정과 해석 한계 종로타워 : 시나리오 가정상 매각대금과 비용을 반영한 순회수가 원금과 같았습니다 . 시나리오 가정 태그 : market- conditions. 디타워 광화문 : 시나리오 가정상 매수자 확보가 지연되어 목표일 이후에 매각 · 정산했습니다 . 시나리오 가정 태그 : liquidity, interest-rate. 포스코센터 : 시나리오 가정상 임차 안정성과 매각회수로 순회수가 원금을 웃돌았습니다 . 시나리오 가정 태그 : tenant, market-conditions. 데모 데이터 안내 : 이 화면의 투자조건은 실제 건축물의 공개정보를 기반으로 구성한 시나리오이며 , 실제 청약 · 판매 중인 상품이 아닙니다 . 데모 데이터 안내 : 이 화면의 투자조건은 실제 건축물의 공개정보를 기반으로 구성한 시나리오이며 , 실제 청약 · 판매 중인 상품이 아닙니다 .",
-  "sourceHash": "7aa96ec8d622449f619ff99c1e47fae0153a0df6dbf15f78c4e97470a6efacc5",
-  "chunkHash": "5f77229eabfd5437ebabe5202471daeaaffe08f0f6c794946649170850fe968b",
+  "text": "시나리오 가정과 해석 한계\n종로타워: 시나리오 가정상 매각대금과 비용을 반영한 순회수가 원금과 같았습니다. 시나리오 가정 태그: market-\nconditions.\n디타워 광화문: 시나리오 가정상 매수자 확보가 지연되어 목표일 이후에 매각·정산했습니다. 시나리오 가정 태그:\nliquidity, interest-rate.\n포스코센터: 시나리오 가정상 임차 안정성과 매각회수로 순회수가 원금을 웃돌았습니다. 시나리오 가정 태그:\ntenant, market-conditions.\n시나리오 데이터 안내: 이 화면의 투자조건은 실제 건축물의 공개정보를 기반으로 구성한 시나리오이며, 실제 청약·판매 중인 상품이 아닙니다.",
+  "sourceHash": "db5b153f789f6beecc8c65c0eaebece18f4c469f39533d5a6b8e941fa819ce52",
+  "chunkHash": "72cb6b6b2c7205b5aabb030ac8845758a5dbcdd4ccf214f2fbfb431782bb4b40",
   "approvedForPublic": true,
   "status": "ready",
   "limitations": [

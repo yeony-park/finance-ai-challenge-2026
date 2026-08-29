@@ -13,7 +13,7 @@ const dataRoot = path.join(workspaceRoot, "data");
 const AS_OF = "2026-08-24";
 const ISO_TIME = "2026-08-24T09:00:00+09:00";
 const DISCLOSURE =
-  "데모 데이터 안내: 이 화면의 투자조건은 실제 건축물의 공개정보를 기반으로 구성한 시나리오이며, 실제 청약·판매 중인 상품이 아닙니다.";
+  "시나리오 데이터 안내: 이 화면의 투자조건은 실제 건축물의 공개정보를 기반으로 구성한 시나리오이며, 실제 청약·판매 중인 상품이 아닙니다.";
 const OFFICIAL_SOURCE_URL = "https://data.seoul.go.kr/bsp/wgs/dataView/data300View/630.do";
 const UNKNOWN_FACT_LIMITATION =
   "후보 주소만으로 BuildingHUB 표제부의 정확 레코드를 확인하지 못했습니다. 값은 추정하지 않습니다.";
@@ -21,6 +21,7 @@ let currentRunRoot = null;
 
 const won = (value) => `${new Intl.NumberFormat("ko-KR").format(value)}원`;
 const percent = (value) => `${value.toFixed(2)}%`;
+const token = (value) => `<span class="token">${value}</span>`;
 const scenarioUrl = (fileName) => `/scenario-documents/${fileName}`;
 
 const candidates = [
@@ -38,6 +39,18 @@ const candidates = [
   ["센터필드", "서울 강남구 테헤란로 231", "서울 강남구", "operator-c", "settled", 12_500_000_000, "2024-08-12", "2024-08-22"],
   ["파크원 타워1", "서울 영등포구 여의대로 108", "서울 영등포구", "operator-c", "settled", 10_800_000_000, "2024-09-09", "2024-09-19"],
 ];
+
+const confirmedAssets = {
+  0: { buildingName: "서울스퀘어", mainUse: "업무시설", grossFloorAreaM2: 132792.56, landAreaM2: 10583.4, approvedOn: "1970-12-23", asOf: "2025-07-01", collectedAt: "2026-08-24T16:39:46.568Z", limitations: ["같은 정확 필지에서 표제부 2건이 반환됐습니다. 후보 건물명과 도로명이 함께 일치하는 주 표제부만 연결했으며, 다른 표제부의 용도·면적은 합산하지 않았습니다."] },
+  1: { buildingName: "미래에셋 센터원(Mirae Asset CENTER1)", mainUse: "업무시설", grossFloorAreaM2: 168050.01, landAreaM2: 9097.3, approvedOn: "2010-12-13", asOf: "2023-12-14", collectedAt: "2026-08-24T16:46:18.607Z", limitations: ["후보 도로명과 정확 지번의 표제부 1건을 연결했습니다."] },
+  2: { buildingName: "FERRUM TOWER", mainUse: "업무시설", grossFloorAreaM2: 55694.62, landAreaM2: 3749.4, approvedOn: "2010-07-21", asOf: "2025-08-13", collectedAt: "2026-08-24T16:46:19.330Z", limitations: ["후보 도로명과 정확 지번의 표제부 1건을 연결했습니다."] },
+  4: { buildingName: "시그니쳐타워", mainUse: "업무시설", grossFloorAreaM2: 99997.1, landAreaM2: 6937.6, approvedOn: "2011-06-29", asOf: "2022-08-13", collectedAt: "2026-08-24T16:46:20.689Z", limitations: ["후보 도로명과 정확 지번의 표제부 1건을 연결했습니다."] },
+  6: { buildingName: "그랑서울", mainUse: "업무시설", grossFloorAreaM2: 175537.3, landAreaM2: 11522.7, approvedOn: "2014-02-14", asOf: "2022-08-13", collectedAt: "2026-08-24T16:46:21.502Z", limitations: ["후보 도로명과 정확 지번의 표제부 1건을 연결했습니다."] },
+  7: { buildingName: "종로타워", mainUse: "업무시설", grossFloorAreaM2: 60600.56, landAreaM2: 5007.9, approvedOn: "1999-09-02", asOf: "2022-08-13", collectedAt: "2026-08-24T16:46:22.265Z", limitations: ["후보 도로명과 정확 지번의 표제부 1건을 연결했습니다."] },
+  8: { buildingName: "D타워", mainUse: "업무시설", grossFloorAreaM2: 105450.49, landAreaM2: 7075.6, approvedOn: "2015-01-09", asOf: "2022-08-13", collectedAt: "2026-08-24T16:46:23.030Z", limitations: ["후보 도로명과 정확 지번의 표제부 1건을 연결했습니다."] },
+  9: { buildingName: "포스코센터", mainUse: "업무시설", grossFloorAreaM2: 181061.23, landAreaM2: 17453.8, approvedOn: "1995-07-14", asOf: "2026-07-01", collectedAt: "2026-08-24T16:46:23.774Z", limitations: ["후보 도로명과 정확 지번의 표제부 1건을 연결했습니다."] },
+  11: { buildingName: "센터필드", mainUse: "업무시설", grossFloorAreaM2: 239267.1, landAreaM2: 18489.7, approvedOn: "2021-01-30", asOf: "2025-10-27", collectedAt: "2026-08-24T16:46:25.218Z", limitations: ["후보 도로명과 정확 지번의 표제부 1건을 연결했습니다."] },
+};
 
 const completions = [
   ["2025-12-31", "2025-12-31", 450_000_000, 7_150_000_000, 50_000_000, "profit", "on-time", ["tenant", "market-conditions"], "시나리오 가정상 임차 수요가 유지되어 목표일에 매각·정산했습니다."],
@@ -65,16 +78,84 @@ const source = () => ({
   limitations: ["후보별 BuildingHUB 정확 레코드를 수집하지 않았으므로 개별 건물 사실을 확정하지 않습니다."],
 });
 
+const buildingHubSource = (asset) => ({
+  sourceId: "molit-building-hub-title",
+  dataNature: "observed",
+  sourceKind: "official-document",
+  label: "국토교통부 건축HUB 건축물대장 표제부",
+  url: "https://www.data.go.kr/data/15134735/openapi.do",
+  asOf: asset.asOf,
+  collectedAt: asset.collectedAt,
+  method: "공식 주소정보로 정확 지번을 확인한 뒤 표제부 1회 조회 결과에서 후보 건물명·도로명이 일치하는 레코드를 연결",
+  limitations: asset.limitations,
+});
+
 const unknownFacts = () => [
-  { field: "building-name", status: "unknown", limitations: [UNKNOWN_FACT_LIMITATION] },
-  { field: "main-use", status: "unknown", limitations: [UNKNOWN_FACT_LIMITATION] },
-  { field: "gross-floor-area", unit: "m2", status: "unknown", limitations: [UNKNOWN_FACT_LIMITATION] },
-  { field: "land-area", unit: "m2", status: "unknown", limitations: [UNKNOWN_FACT_LIMITATION] },
-  { field: "use-approval-date", status: "unknown", limitations: [UNKNOWN_FACT_LIMITATION] },
+  { field: "building-name", status: "unknown", dataNature: "observed", basis: "source", limitations: [UNKNOWN_FACT_LIMITATION] },
+  { field: "main-use", status: "unknown", dataNature: "observed", basis: "source", limitations: [UNKNOWN_FACT_LIMITATION] },
+  { field: "gross-floor-area", unit: "m2", status: "unknown", dataNature: "observed", basis: "source", limitations: [UNKNOWN_FACT_LIMITATION] },
+  { field: "land-area", unit: "m2", status: "unknown", dataNature: "observed", basis: "source", limitations: [UNKNOWN_FACT_LIMITATION] },
+  { field: "use-approval-date", status: "unknown", dataNature: "observed", basis: "source", limitations: [UNKNOWN_FACT_LIMITATION] },
 ];
+
+const confirmedFacts = (asset) => [
+  { field: "building-name", value: asset.buildingName, status: "confirmed", dataNature: "observed", basis: "source", sourceId: "molit-building-hub-title", validThrough: null, limitations: asset.limitations },
+  { field: "main-use", value: asset.mainUse, status: "confirmed", dataNature: "observed", basis: "source", sourceId: "molit-building-hub-title", validThrough: null, limitations: asset.limitations },
+  { field: "gross-floor-area", value: asset.grossFloorAreaM2, unit: "m2", status: "confirmed", dataNature: "observed", basis: "source", sourceId: "molit-building-hub-title", validThrough: null, limitations: asset.limitations },
+  { field: "land-area", value: asset.landAreaM2, unit: "m2", status: "confirmed", dataNature: "observed", basis: "source", sourceId: "molit-building-hub-title", validThrough: null, limitations: asset.limitations },
+  { field: "use-approval-date", value: asset.approvedOn, status: "confirmed", dataNature: "observed", basis: "source", sourceId: "molit-building-hub-title", validThrough: null, limitations: asset.limitations },
+];
+
+const claimsFor = (index, asset) => {
+  if (!asset) return [];
+  const claim = (field, value, unit) => ({ field, value, ...(unit ? { unit } : {}), dataNature: "scenario", basis: "scenario-input", limitations: ["실제 건축물 공개정보와 별도로 구성한 시나리오 주장입니다."] });
+  if (index === 1) return [claim("gross-floor-area", 150000, "m2")];
+  return [
+    claim("building-name", asset.buildingName),
+    claim("main-use", asset.mainUse),
+    claim("gross-floor-area", asset.grossFloorAreaM2, "m2"),
+    claim("land-area", asset.landAreaM2, "m2"),
+    claim("use-approval-date", asset.approvedOn),
+  ];
+};
+
+const INVESTOR_PROTECTION = {
+  rightForm: "권리 형태와 행사 범위",
+  fundsSafekeeping: "투자금 보관 절차",
+  bankruptcyRemoteness: "운영주체와의 재산 분리 조건",
+  rightsAdministration: "권리자 명부와 분배 내역 관리",
+  disputeResolution: "이의 제기·분쟁 조정 절차",
+  issuanceDistributionSeparation: "발행·배정과 운용·분배 절차의 구분",
+};
+
+const investorProtectionFor = (index) => {
+  const statuses = Object.fromEntries(Object.keys(INVESTOR_PROTECTION).map((key) => [key, "confirmed-in-scenario"]));
+  if (index === 3) for (const key of Object.keys(statuses)) statuses[key] = "unknown";
+  if (index === 2 || index === 5) statuses.issuanceDistributionSeparation = "attention";
+  if (index === 6) statuses.disputeResolution = "attention";
+  if (index === 7) statuses.rightForm = "unknown";
+  if (index === 8) statuses.fundsSafekeeping = "attention";
+  if (index === 10) statuses.bankruptcyRemoteness = "unknown";
+  if (index === 12) statuses.rightsAdministration = "attention";
+  const objectParticle = (value) => {
+    const code = value.charCodeAt(value.length - 1) - 0xac00;
+    return code >= 0 && code <= 11_171 && code % 28 !== 0 ? "을" : "를";
+  };
+  const statement = (key, status) => status === "unknown"
+    ? `시나리오 조건상 ${INVESTOR_PROTECTION[key]}의 세부 기준은 아직 입력하지 않았습니다.`
+    : `시나리오 조건상 ${INVESTOR_PROTECTION[key]}${objectParticle(INVESTOR_PROTECTION[key])} 별도 절차로 정한 가정입니다.`;
+  const item = (key) => ({
+    statement: statement(key, statuses[key]), status: statuses[key], dataNature: "scenario", basis: "scenario-input",
+    limitations: [statuses[key] === "attention"
+      ? "시나리오 조건상 주의 표시이며 실제 계약·법률·운영 상태를 확인한 사실이 아닙니다."
+      : "실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다."],
+  });
+  return { dataNature: "scenario", basis: "scenario-input", ...Object.fromEntries(Object.keys(INVESTOR_PROTECTION).map((key) => [key, item(key)])) };
+};
 
 const makeScenario = (candidate, index) => {
   const [name, roadAddress, region, operatorGroupId, phase, amountWon, opensOn, closesOn] = candidate;
+  const observedAsset = confirmedAssets[index];
   const unitPriceWon = 5_000;
   const scenarioId = `re-scenario-${String(index + 1).padStart(2, "0")}`;
   const offerId = `re-offer-${String(index + 1).padStart(2, "0")}`;
@@ -102,7 +183,24 @@ const makeScenario = (candidate, index) => {
     allocationRefundPolicy: "가상 배정은 신청 단위 기준으로 가정하며 미배정분·취소분은 시나리오상 전액 환불로 처리합니다.",
     extensionConditions: ["매수자 확보 지연, 임대차 변경 또는 자금조달 조건 변화가 있으면 목표 보유기간 연장을 검토하는 시나리오 가정입니다."],
     liquidationPriority: "시나리오상 자산 처분대금에서 차입금·처분비용을 우선 반영한 뒤 남은 금액을 단위 기준으로 배분합니다.",
-    financing: { ltvPercent: 45, annualInterestRatePercent: 4.5, maturityOn: "2030-12-31", limitations: ["실제 대출·담보·금리 조건이 아닌 시나리오 가정입니다."] },
+    financing: {
+      dataNature: "scenario", basis: "scenario-input", ltvPercent: 45, annualInterestRatePercent: 4.5, maturityOn: "2030-12-31",
+      rateType: index === 2 ? "floating" : "fixed", resetOn: index === 2 ? "2027-08-24" : null,
+      limitations: ["실제 대출·담보·금리 조건이 아닌 시나리오 가정입니다."],
+    },
+    cashFlowReview: {
+      dataNature: "scenario", basis: "scenario-input",
+      annualRentalIncomeWon: index === 2 ? 1_032_000_000 : 2_000_000_000,
+      annualOperatingExpenseWon: index === 2 ? 240_000_000 : 800_000_000,
+      annualDebtServiceWon: index === 2 ? 600_000_000 : 600_000_000,
+      limitations: ["임대수익·운영비·부채상환액은 실제 건물의 재무정보가 아닌 세전 시나리오 입력입니다."],
+    },
+    exitReview: {
+      dataNature: "scenario", basis: "scenario-input",
+      decisionAuthority: index === 3 ? null : "시나리오 운영위원회",
+      maximumExtensionMonths: index === 3 ? null : 12,
+      limitations: ["회수 결정·연장 조건은 실제 계약 또는 권리관계가 아닌 시나리오 입력입니다."],
+    },
     leaseAssumptions: { vacancyRatePercent: 5, tenantConcentrationNote: "특정 실제 임차인과 연결하지 않은 가상 임차 집중도 가정입니다.", limitations: ["실제 임대차·공실·임차인 정보를 확인하지 않았습니다."] },
     tradabilityStatus: phase === "subscription-open" ? "not-listed" : phase === "settled" ? "ended" : "available",
   };
@@ -120,7 +218,8 @@ const makeScenario = (candidate, index) => {
   const completion = completionInput
     ? {
         targetExitOn: completionInput[0], actualExitOn: completionInput[1], cumulativeDistributionWon: completionInput[2],
-        saleProceedsWon: completionInput[3], feesWon: completionInput[4], returnOutcome: completionInput[5], scheduleOutcome: completionInput[6],
+        saleProceedsWon: completionInput[3], additionalContributionsWon: 0, refundsWon: 0, feesWon: completionInput[4],
+        cashFlowCompleteness: "complete", taxBasis: "pre-tax", returnOutcome: completionInput[5], scheduleOutcome: completionInput[6],
         assumptionTags: completionInput[7], assumptionSummary: completionInput[8], dataNature: "scenario",
       }
     : undefined;
@@ -128,15 +227,25 @@ const makeScenario = (candidate, index) => {
     schemaVersion: 1, categoryId: "real-estate", scenarioId, offerId, dataNature: "scenario", sourceKind: "scenario-input", title: name,
     asOf: AS_OF, approvedForPublic: true, status: "approved",
     disclosure: { text: DISCLOSURE, createdOn: AS_OF, purpose: "부동산 검토 흐름과 출처 연결 기능의 데모" },
-    asset: { publicName: name, roadAddress, region, mainUse: "미확인", grossFloorAreaM2: null, landAreaM2: null, approvedOn: null, facts: unknownFacts() },
-    sources: [source()], operatorGroupId,
+    asset: {
+      publicName: name, roadAddress, region,
+      mainUse: observedAsset?.mainUse ?? "미확인", grossFloorAreaM2: observedAsset?.grossFloorAreaM2 ?? null,
+      landAreaM2: observedAsset?.landAreaM2 ?? null, approvedOn: observedAsset?.approvedOn ?? null,
+      facts: observedAsset ? confirmedFacts(observedAsset) : unknownFacts(),
+    },
+    claimedAssetFacts: claimsFor(index, observedAsset),
+    sources: [observedAsset ? buildingHubSource(observedAsset) : source()], operatorGroupId,
     participants: {
       issuer: { label: `${groupLabel(operatorGroupId)} 시나리오 발행주체`, dataNature: "scenario" }, platformOperator: { label: `${groupLabel(operatorGroupId)} 시나리오 플랫폼`, dataNature: "scenario" },
       assetManager: { label: `${groupLabel(operatorGroupId)} 시나리오 운용주체`, dataNature: "scenario" }, trustee: { label: `${groupLabel(operatorGroupId)} 시나리오 수탁주체`, dataNature: "scenario" },
     },
+    investorProtection: investorProtectionFor(index),
     offering, ...(completion ? { completion } : {}),
     assumptions: ["공모·배당·거래·매각·정산 조건과 운영그룹은 모두 scenario-input입니다.", "실제 법인·플랫폼·은행·소유자·임차인과 연결하지 않습니다."],
-    limitations: [UNKNOWN_FACT_LIMITATION, "이 시나리오는 실제 청약·판매 상태나 실제 건물 거래·운영 성과를 나타내지 않습니다."],
+    limitations: [
+      ...(observedAsset ? [] : [UNKNOWN_FACT_LIMITATION]),
+      "이 시나리오는 실제 청약·판매 상태나 실제 건물 거래·운영 성과를 나타내지 않습니다.",
+    ],
   };
 };
 
@@ -150,21 +259,32 @@ const isWeekday = (date) => {
 const metricsOf = (scenario) => {
   const completion = scenario.completion;
   if (!completion) return null;
-  const netCash = completion.cumulativeDistributionWon + completion.saleProceedsWon - completion.feesWon;
+  const netCash = completion.cumulativeDistributionWon + completion.saleProceedsWon + completion.refundsWon - completion.feesWon;
+  const investedCash = scenario.offering.amountWon + completion.additionalContributionsWon;
   const holdingDays = Math.round((Date.parse(`${completion.actualExitOn}T00:00:00Z`) - Date.parse(`${scenario.offering.opensOn}T00:00:00Z`)) / 86_400_000);
-  const totalReturnRatePercent = (netCash / scenario.offering.amountWon - 1) * 100;
-  return { netCash, holdingDays, totalReturnRatePercent };
+  const totalReturnRatePercent = ((netCash - investedCash) / investedCash) * 100;
+  return { netCash, investedCash, holdingDays, totalReturnRatePercent };
 };
 
 const productSections = (scenario) => {
   const { offering } = scenario;
   const phaseText = offering.phase === "subscription-open" ? "청약중" : "상장 후 거래 가능 시나리오";
   const topic = scenario.title === "센터원" ? "센터원은" : `${scenario.title}는`;
+  const confirmed = scenario.asset.facts.filter((fact) => fact.status === "confirmed");
+  const publicFactSummary = confirmed.length === 0
+    ? "개별 BuildingHUB 정확 레코드를 확인하지 않아 건물명·주용도·연면적·대지면적·사용승인일은 미확인입니다."
+    : `공식 표제부에서 확인한 건물명 ${scenario.asset.facts.find((fact) => fact.field === "building-name").value}, 주용도 ${scenario.asset.mainUse}, 연면적 ${token(`${new Intl.NumberFormat("ko-KR").format(scenario.asset.grossFloorAreaM2)}㎡`)}, 대지면적 ${token(`${new Intl.NumberFormat("ko-KR").format(scenario.asset.landAreaM2)}㎡`)}, 사용승인일 ${token(scenario.asset.approvedOn)}입니다. ${confirmed[0].limitations.join(" ")}`;
+  const protectionStatus = { "confirmed-in-scenario": "시나리오 입력됨", attention: "주의", unknown: "미입력" };
+  const protectionSummary = Object.entries(scenario.investorProtection)
+    .filter(([key]) => key !== "dataNature" && key !== "basis")
+    .map(([key, item]) => `${INVESTOR_PROTECTION[key]}: ${protectionStatus[item.status]} — ${item.statement}`)
+    .join("\n");
   return [
-    { heading: "시나리오 안내", text: `${DISCLOSURE}\n\n${topic} ${phaseText} 상태를 가정한 가상 시나리오입니다. 공모총액·분배·수수료·회수 조건은 모두 scenario-input이며 실제 상품 조건이 아닙니다.` },
+    { heading: "시나리오 안내", text: `${topic} ${phaseText} 상태를 가정한 가상 시나리오입니다. 공모총액·분배·수수료·회수 조건은 모두 scenario-input이며 실제 상품 조건이 아닙니다.` },
     { heading: "가상 투자조건", text: `공모총액 ${won(offering.amountWon)} = 단가 ${won(offering.unitPriceWon)} × 수량 ${new Intl.NumberFormat("ko-KR").format(offering.unitCount)}좌. 최소투자금 ${won(offering.minimumInvestmentWon)}(20단위). 예상 연 분배율 ${percent(offering.expectedAnnualDistributionRatePercent)}, 분배 주기 ${offering.distributionCycleMonths}개월, 거래 수수료율 ${percent(offering.tradingFeeRatePercent)}, 총비용률 ${percent(offering.totalExpenseRatePercent)}, 목표 보유기간 ${offering.targetHoldingMonths}개월. ${offering.unitRightsSummary} ${offering.distributionBasis} ${offering.feeScope} ${offering.taxNotice}` },
-    { heading: "거래·회수 조건", text: `${offering.exitConditions.join(" ")} ${offering.phase === "listed-trading" ? `가상 거래 가능 상태의 기준 유효일은 ${offering.tradabilityValidThrough}입니다.` : "청약 상태는 이 문서의 기준일에만 적용한 가정입니다."} ${offering.allocationRefundPolicy} ${offering.extensionConditions.join(" ")} ${offering.liquidationPriority} 차입 가정: LTV ${percent(offering.financing.ltvPercent)}, 연이율 ${percent(offering.financing.annualInterestRatePercent)}, 만기 ${offering.financing.maturityOn}. ${offering.financing.limitations.join(" ")} 임대 가정: 공실률 ${percent(offering.leaseAssumptions.vacancyRatePercent)}. ${offering.leaseAssumptions.tenantConcentrationNote} ${offering.leaseAssumptions.limitations.join(" ")}` },
-    { heading: "공개 사실과 한계", text: `후보 건물명과 도로명 주소는 상품 화면용 후보 입력입니다. 개별 BuildingHUB 정확 레코드를 확인하지 않아 건물명·주용도·연면적·대지면적·사용승인일은 unknown입니다. 공식 데이터셋 출처: ${OFFICIAL_SOURCE_URL}` },
+    { heading: "거래·회수 조건", text: `${offering.exitConditions.join(" ")} ${offering.phase === "listed-trading" ? `가상 거래 가능 상태의 기준 유효일은 ${offering.tradabilityValidThrough}입니다.` : "청약 상태는 이 문서의 기준일에만 적용한 가정입니다."} ${offering.allocationRefundPolicy} ${offering.extensionConditions.join(" ")} ${offering.liquidationPriority} 차입 가정: LTV ${percent(offering.financing.ltvPercent)}, 연이율 ${percent(offering.financing.annualInterestRatePercent)}, ${offering.financing.rateType === "floating" ? `변동금리·다음 재설정일 ${offering.financing.resetOn}` : "고정금리"}, 만기 ${offering.financing.maturityOn}. 연 임대수익 ${won(offering.cashFlowReview.annualRentalIncomeWon)}, 연 운영비 ${won(offering.cashFlowReview.annualOperatingExpenseWon)}, 연 부채상환액 ${won(offering.cashFlowReview.annualDebtServiceWon)}은 모두 세전 시나리오 입력입니다. 회수 결정권 ${offering.exitReview.decisionAuthority ?? "미확인"}, 최대 연장 ${offering.exitReview.maximumExtensionMonths === null ? "미확인" : `${offering.exitReview.maximumExtensionMonths}개월`}. ${offering.financing.limitations.join(" ")} ${offering.cashFlowReview.limitations.join(" ")} ${offering.exitReview.limitations.join(" ")} 임대 가정: 공실률 ${percent(offering.leaseAssumptions.vacancyRatePercent)}. ${offering.leaseAssumptions.tenantConcentrationNote} ${offering.leaseAssumptions.limitations.join(" ")}` },
+    { heading: "공개 사실과 한계", text: `후보 건물명과 도로명 주소는 상품 화면용 후보 입력입니다. ${publicFactSummary} 공식 데이터셋 안내 출처: ${scenario.sources[0].url}` },
+    { heading: "투자자 보호구조 시나리오", text: `아래 항목은 모두 scenario-input이며 실제 회사·건물·계약의 확인 사실이나 보호 효과 보장이 아닙니다.\n${protectionSummary}` },
   ];
 };
 
@@ -174,10 +294,10 @@ const groupSections = (groupId) => {
     const metrics = metricsOf(scenario);
     const returnLabel = { profit: "수익", loss: "손실", breakeven: "손익분기" }[scenario.completion.returnOutcome];
     const scheduleLabel = { early: "조기", "on-time": "정시", delayed: "지연" }[scenario.completion.scheduleOutcome];
-    return `${scenario.title}: 원금 ${won(scenario.offering.amountWon)}, 누적분배 ${won(scenario.completion.cumulativeDistributionWon)}, 매각회수 ${won(scenario.completion.saleProceedsWon)}, 비용 ${won(scenario.completion.feesWon)}, 순회수 ${won(metrics.netCash)}, 보유 ${metrics.holdingDays}일, 단순 총회수 기준(세전 가정; 분배시점·세금 미반영) 총수익률 ${percent(metrics.totalReturnRatePercent)}, 회수 결과 ${returnLabel}, 일정 결과 ${scheduleLabel}, 목표 종료 ${scenario.completion.targetExitOn}, 실제 종료 ${scenario.completion.actualExitOn}.`;
+    return `${scenario.title}: 원금(최초 투자금) ${won(scenario.offering.amountWon)}, 추가납입 ${won(scenario.completion.additionalContributionsWon)}, 누적분배 ${won(scenario.completion.cumulativeDistributionWon)}, 매각회수 ${won(scenario.completion.saleProceedsWon)}, 환급 ${won(scenario.completion.refundsWon)}, 비용 ${won(scenario.completion.feesWon)}, 총투입 ${won(metrics.investedCash)}, 순회수 ${won(metrics.netCash)}, 보유 ${metrics.holdingDays}일, 현금흐름 완전성 complete·세전 기준, 단순 총회수 기준(분배시점·세금 미반영) 총수익률 ${percent(metrics.totalReturnRatePercent)}, 회수 결과 ${returnLabel}, 일정 결과 ${scheduleLabel}, 목표 종료 ${scenario.completion.targetExitOn}, 실제 종료 ${scenario.completion.actualExitOn}.`;
   });
   return [
-    { heading: "이력보고서 안내", text: `${DISCLOSURE}\n\n${groupLabel(groupId)}의 아래 이력은 모두 가상 scenario-input입니다. 실제 법인·플랫폼·은행·소유자·임차인·성과와 연결하지 않습니다.` },
+    { heading: "이력보고서 안내", text: `${groupLabel(groupId)}의 아래 이력은 모두 가상 scenario-input입니다. 실제 법인·플랫폼·은행·소유자·임차인·성과와 연결하지 않습니다.` },
     { heading: "완료 이력", text: rows.join("\n\n") },
     { heading: "시나리오 가정과 해석 한계", text: members.map((scenario) => `${scenario.title}: ${scenario.completion.assumptionSummary} 시나리오 가정 태그: ${scenario.completion.assumptionTags.join(", ")}.`).join("\n\n") },
   ];
@@ -185,13 +305,12 @@ const groupSections = (groupId) => {
 
 const htmlFor = (title, sections) => `<!doctype html><html lang="ko"><head><meta charset="utf-8"><style>
 @page { size: A4; margin: 18mm 16mm 22mm; }
-body { font-family: Arial, 'Noto Sans KR', sans-serif; color: #1a1a1a; font-size: 11pt; line-height: 1.6; }
+body { font-family: Arial, 'Noto Sans KR', sans-serif; color: #1a1a1a; font-size: 11pt; line-height: 1.6; word-break: keep-all; overflow-wrap: normal; line-break: strict; }
 h1 { color: #024ad8; font-size: 22pt; font-weight: 500; margin: 0 0 14px; } h2 { font-size: 14pt; font-weight: 500; margin: 20px 0 8px; }
 p { white-space: pre-line; margin: 0; } .badge { color: #024ad8; font-size: 9pt; margin-bottom: 8px; }
-footer { position: fixed; bottom: -15mm; left: 0; right: 0; font-size: 8pt; color: #636363; border-top: 1px solid #e8e8e8; padding-top: 4mm; }
-.page-disclosure { margin-top: 14mm; padding-top: 4mm; border-top: 1px solid #e8e8e8; color: #636363; font-size: 8pt; }
+.token { white-space: nowrap; } .page-disclosure { margin-top: 14mm; padding-top: 4mm; border-top: 1px solid #e8e8e8; color: #636363; font-size: 8pt; line-height: 1.35; }
 section { break-after: page; } section:last-of-type { break-after: auto; }
-</style></head><body><footer>${DISCLOSURE}</footer><div class="badge">가상 시나리오 문서 · scenario-input</div><h1>${title}</h1>${sections.map((section) => `<section><h2>${section.heading}</h2><p>${section.text}</p><p class="page-disclosure">${DISCLOSURE}</p></section>`).join("")}</body></html>`;
+</style></head><body><div class="badge">가상 시나리오 문서 · scenario-input</div><h1>${title}</h1>${sections.map((section) => `<section><h2>${section.heading}</h2><p>${section.text}</p><p class="page-disclosure">${DISCLOSURE}</p></section>`).join("")}</body></html>`;
 
 const writeJson = async (file, value) => writeFile(file, `${JSON.stringify(value, null, 2)}\n`, "utf8");
 const withoutPositions = (chunk) => {
