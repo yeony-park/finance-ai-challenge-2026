@@ -8,6 +8,14 @@ import {
   calculateCompletionMetrics,
 } from "../schema";
 
+const protectionItem = (statement: string) => ({
+  statement,
+  status: "confirmed-in-scenario" as const,
+  dataNature: "scenario" as const,
+  basis: "scenario-input" as const,
+  limitations: ["실제 법률 상태를 확인한 내용이 아닙니다."],
+});
+
 const baseOffer = () => ({
   schemaVersion: 1 as const,
   categoryId: "real-estate" as const,
@@ -37,6 +45,8 @@ const baseOffer = () => ({
         field: "main-use",
         value: "업무시설",
         status: "confirmed" as const,
+        dataNature: "observed" as const,
+        basis: "source" as const,
         sourceId: "source-001",
         limitations: [],
       },
@@ -44,10 +54,21 @@ const baseOffer = () => ({
         field: "land-area",
         unit: "m2",
         status: "unknown" as const,
+        dataNature: "observed" as const,
+        basis: "source" as const,
         limitations: ["공개 근거에서 확인하지 못했습니다."],
       },
     ],
   },
+  claimedAssetFacts: [
+    {
+      field: "main-use",
+      value: "업무시설",
+      dataNature: "scenario" as const,
+      basis: "scenario-input" as const,
+      limitations: [],
+    },
+  ],
   sources: [
     {
       sourceId: "source-001",
@@ -67,6 +88,16 @@ const baseOffer = () => ({
     platformOperator: { label: "시나리오 플랫폼 A", dataNature: "scenario" as const },
     assetManager: { label: "시나리오 운용자 A", dataNature: "scenario" as const },
     trustee: { label: "시나리오 수탁자 A", dataNature: "scenario" as const },
+  },
+  investorProtection: {
+    dataNature: "scenario" as const,
+    basis: "scenario-input" as const,
+    rightForm: protectionItem("시나리오상 권리 형태를 등록했습니다."),
+    fundsSafekeeping: protectionItem("시나리오상 투자금 보관 조건을 등록했습니다."),
+    bankruptcyRemoteness: protectionItem("시나리오상 재산 분리 조건을 등록했습니다."),
+    rightsAdministration: protectionItem("시나리오상 권리 관리 조건을 등록했습니다."),
+    disputeResolution: protectionItem("시나리오상 분쟁 해결 절차를 등록했습니다."),
+    issuanceDistributionSeparation: protectionItem("시나리오상 발행·유통 역할 분리를 등록했습니다."),
   },
   offering: {
     phase: "subscription-open" as const,
@@ -90,10 +121,29 @@ const baseOffer = () => ({
     extensionConditions: ["매각 지연 시 시나리오 보유기간을 연장할 수 있습니다."],
     liquidationPriority: "비용과 채무를 먼저 정산한 뒤 잔여금을 분배합니다.",
     financing: {
+      dataNature: "scenario" as const,
+      basis: "scenario-input" as const,
       ltvPercent: 40,
       annualInterestRatePercent: 4.5,
       maturityOn: "2028-08-20",
+      rateType: "fixed" as const,
+      resetOn: null,
       limitations: ["실제 대출 조건이 아닙니다."],
+    },
+    cashFlowReview: {
+      dataNature: "scenario" as const,
+      basis: "scenario-input" as const,
+      annualRentalIncomeWon: 80_000_000,
+      annualOperatingExpenseWon: 20_000_000,
+      annualDebtServiceWon: 40_000_000,
+      limitations: ["검토용 시나리오 현금흐름입니다."],
+    },
+    exitReview: {
+      dataNature: "scenario" as const,
+      basis: "scenario-input" as const,
+      decisionAuthority: "시나리오 자산관리자",
+      maximumExtensionMonths: 6,
+      limitations: ["실제 의사결정 권한이 아닙니다."],
     },
     leaseAssumptions: {
       vacancyRatePercent: 5,
@@ -263,14 +313,57 @@ describe("공개 문서·캐시 계약", () => {
 });
 
 describe("ScenarioOfferSchema", () => {
-  it("사용자 확정 데모 안내 문구를 정확히 고정한다", () => {
+  it("사용자 확정 시나리오 안내 문구를 정확히 고정한다", () => {
     expect(SCENARIO_DEMO_DISCLOSURE).toBe(
-      "데모 데이터 안내: 이 화면의 투자조건은 실제 건축물의 공개정보를 기반으로 구성한 시나리오이며, 실제 청약·판매 중인 상품이 아닙니다.",
+      "시나리오 데이터 안내: 이 화면의 투자조건은 실제 건축물의 공개정보를 기반으로 구성한 시나리오이며, 실제 청약·판매 중인 상품이 아닙니다.",
     );
   });
 
   it("공개 근거와 시나리오 입력을 분리한 유효한 상품을 허용한다", () => {
-    expect(ScenarioOfferSchema.parse(baseOffer()).asset.facts).toHaveLength(2);
+    const parsed = ScenarioOfferSchema.parse(baseOffer());
+    expect(parsed.asset.facts).toHaveLength(2);
+    expect(parsed.asset.facts[0]).toMatchObject({ dataNature: "observed", basis: "source" });
+    expect(parsed.claimedAssetFacts[0]).toMatchObject({
+      dataNature: "scenario",
+      basis: "scenario-input",
+    });
+  });
+
+  it("자산 주장과 cash-flow·financing·exit 검토 입력의 provenance를 강제한다", () => {
+    const wrongClaim = baseOffer();
+    wrongClaim.claimedAssetFacts[0].dataNature = "observed" as never;
+    expect(ScenarioOfferSchema.safeParse(wrongClaim).success).toBe(false);
+
+    const wrongCashFlow = baseOffer();
+    wrongCashFlow.offering.cashFlowReview.basis = "source" as never;
+    expect(ScenarioOfferSchema.safeParse(wrongCashFlow).success).toBe(false);
+
+    const missingReviewValues = baseOffer();
+    missingReviewValues.offering.cashFlowReview.annualRentalIncomeWon = null as never;
+    missingReviewValues.offering.financing.rateType = null as never;
+    missingReviewValues.offering.exitReview.decisionAuthority = null as never;
+    expect(ScenarioOfferSchema.safeParse(missingReviewValues).success).toBe(true);
+  });
+
+  it("투자자보호 문장은 시나리오 입력 provenance와 제한사항을 필수로 요구한다", () => {
+    const parsed = ScenarioOfferSchema.parse(baseOffer());
+    expect(parsed.investorProtection.fundsSafekeeping).toMatchObject({
+      status: "confirmed-in-scenario",
+      dataNature: "scenario",
+      basis: "scenario-input",
+      limitations: [expect.stringContaining("실제 법률 상태")],
+    });
+    const observed = baseOffer();
+    observed.investorProtection.fundsSafekeeping.dataNature = "observed" as never;
+    expect(ScenarioOfferSchema.safeParse(observed).success).toBe(false);
+    const missingStatement = baseOffer();
+    missingStatement.investorProtection.rightsAdministration.statement = "";
+    expect(ScenarioOfferSchema.safeParse(missingStatement).success).toBe(false);
+    const missingLimitations = baseOffer();
+    delete (missingLimitations.investorProtection.disputeResolution as Partial<
+      typeof missingLimitations.investorProtection.disputeResolution
+    >).limitations;
+    expect(ScenarioOfferSchema.safeParse(missingLimitations).success).toBe(false);
   });
 
   it("unknown fact에 값이나 출처가 있으면 거부하고 confirmed 출처를 검증한다", () => {
@@ -356,7 +449,11 @@ describe("ScenarioOfferSchema", () => {
       actualExitOn: "2028-08-20",
       cumulativeDistributionWon: 100_000_000,
       saleProceedsWon: 1_000_000_000,
+      additionalContributionsWon: 10_000_000,
+      refundsWon: 10_000_000,
       feesWon: 20_000_000,
+      cashFlowCompleteness: "complete",
+      taxBasis: "pre-tax",
       returnOutcome: "profit",
       scheduleOutcome: "on-time",
       assumptionTags: ["market-conditions"],
@@ -365,13 +462,42 @@ describe("ScenarioOfferSchema", () => {
     };
     const parsed = ScenarioOfferSchema.parse(settled);
     expect(calculateCompletionMetrics(parsed)).toMatchObject({
-      netCash: 1_080_000_000,
-      totalReturnRatePercent: 8,
+      netCash: 1_090_000_000,
+      investedCash: 1_010_000_000,
+      profitLoss: 80_000_000,
+      totalReturnRatePercent: 7.9208,
     });
     expect(calculateCompletionMetrics(parsed)).not.toHaveProperty(
       "annualizedReturnRatePercent",
     );
     expect(parsed).not.toHaveProperty("netCashReturnedWon");
+    expect(
+      ScenarioOfferSchema.safeParse({
+        ...settled,
+        completion: { ...settled.completion, cashFlowCompleteness: undefined },
+      }).success,
+    ).toBe(false);
+    expect(
+      ScenarioOfferSchema.safeParse({
+        ...settled,
+        completion: { ...settled.completion, targetExitOn: "2026-08-29" },
+      }).success,
+    ).toBe(false);
+    expect(
+      ScenarioOfferSchema.safeParse({
+        ...settled,
+        completion: { ...settled.completion, actualExitOn: "2026-08-29" },
+      }).success,
+    ).toBe(false);
+    expect(
+      ScenarioOfferSchema.safeParse({
+        ...settled,
+        completion: {
+          ...settled.completion,
+          additionalContributionsWon: Number.MAX_SAFE_INTEGER,
+        },
+      }).success,
+    ).toBe(false);
   });
 
   it("수익 결과와 일정 결과를 독립적으로 검증한다", () => {
@@ -389,7 +515,11 @@ describe("ScenarioOfferSchema", () => {
       actualExitOn: "2028-09-01",
       cumulativeDistributionWon: 50_000_000,
       saleProceedsWon: 870_000_000,
+      additionalContributionsWon: 0,
+      refundsWon: 0,
       feesWon: 20_000_000,
+      cashFlowCompleteness: "complete",
+      taxBasis: "pre-tax",
       returnOutcome: "loss",
       scheduleOutcome: "delayed",
       assumptionTags: ["vacancy"],
@@ -418,6 +548,42 @@ describe("ScenarioOfferSchema", () => {
       ScenarioOfferSchema.safeParse({
         ...early,
         completion: { ...early.completion, scheduleOutcome: "delayed" },
+      }).success,
+    ).toBe(false);
+  });
+
+  it("추가납입을 투자기준금액에만 반영해 returnOutcome을 판정한다", () => {
+    const settled = baseOffer() as ReturnType<typeof baseOffer> & {
+      completion?: Record<string, unknown>;
+    };
+    settled.asOf = "2028-09-10";
+    settled.offering = {
+      ...settled.offering,
+      phase: "settled",
+      tradabilityStatus: "ended",
+    } as never;
+    settled.completion = {
+      targetExitOn: "2028-08-20",
+      actualExitOn: "2028-08-20",
+      cumulativeDistributionWon: 100_000_000,
+      saleProceedsWon: 1_000_000_000,
+      additionalContributionsWon: 100_000_000,
+      refundsWon: 0,
+      feesWon: 0,
+      cashFlowCompleteness: "complete",
+      taxBasis: "pre-tax",
+      returnOutcome: "breakeven",
+      scheduleOutcome: "on-time",
+      assumptionTags: ["market-conditions"],
+      assumptionSummary: "완전 현금흐름 판정 테스트용 가상 입력",
+      dataNature: "scenario",
+    };
+
+    expect(ScenarioOfferSchema.safeParse(settled).success).toBe(true);
+    expect(
+      ScenarioOfferSchema.safeParse({
+        ...settled,
+        completion: { ...settled.completion, returnOutcome: "loss" },
       }).success,
     ).toBe(false);
   });

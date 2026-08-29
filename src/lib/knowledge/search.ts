@@ -1,4 +1,4 @@
-import type { ChunkRecord } from "./schema";
+import type { ChunkRecord, CommonChunkRecord } from "./schema";
 
 const SYNONYMS: Readonly<Record<string, readonly string[]>> = {
   건물: ["건축물", "부동산"],
@@ -21,12 +21,12 @@ const SYNONYMS: Readonly<Record<string, readonly string[]>> = {
 };
 
 const STANDARD_QUERY_TERMS: Readonly<Record<string, readonly string[]>> = {
-  "최소투자금은 얼마인가요": ["최소투자금"],
-  "예상배당과 분배 주기는 어떻게 되나요": ["예상", "분배", "주기"],
-  "수수료는 어떻게 되나요": ["수수료율"],
-  "운용기간과 매각조건은 무엇인가요": ["보유기간", "매각"],
-  "건물정보는 어디까지 확인됐나요": ["건물명", "연면적"],
-  "운영그룹의 과거이력은 무엇인가요": ["원금", "순회수", "총수익률"],
+  "최소투자금": ["최소투자금"],
+  "예상배당 분배 주기": ["예상", "분배", "주기"],
+  "수수료": ["수수료율"],
+  "운용기간 매각조건": ["보유기간", "매각"],
+  "건물정보 어디 확인됐나요": ["건물명", "연면적"],
+  "운영그룹 과거이력": ["투자금", "순회수", "총수익률"],
 };
 
 export const normalizeKorean = (value: string): string =>
@@ -37,8 +37,44 @@ export const normalizeKorean = (value: string): string =>
     .trim()
     .replace(/\s+/g, " ");
 
+const REQUEST_WORDS = new Set([
+  "찾아줘",
+  "찾아주세요",
+  "찾아",
+  "보여줘",
+  "보여주세요",
+  "보여",
+  "알려줘",
+  "알려주세요",
+  "알려",
+  "줘",
+  "주세요",
+  "어떻게",
+  "되나요",
+  "인가요",
+  "무엇인가요",
+  "얼마인가요",
+]);
+const PARTICLES = ["에서는", "으로", "에서", "에게", "까지", "부터", "처럼", "보다", "은", "는", "이", "가", "을", "를", "의", "에", "와", "과", "로", "도", "인"];
+
+export const normalizeSearchQuery = (value: string): string =>
+  normalizeKorean(value)
+    .split(" ")
+    .filter((token) => token && !REQUEST_WORDS.has(token))
+    .map((token) => {
+      const particle = PARTICLES.find((item) => token.length > item.length + 1 && token.endsWith(item));
+      return particle ? token.slice(0, -particle.length) : token;
+    })
+    .filter(Boolean)
+    .join(" ");
+
+export const isRankingRequest = (value: string): boolean =>
+  normalizeKorean(value)
+    .split(" ")
+    .some((token) => ["추천", "안전", "최고", "적정가"].some((term) => token.startsWith(term)));
+
 const termGroupsOf = (query: string): readonly (readonly string[])[] => {
-  const normalized = normalizeKorean(query);
+  const normalized = normalizeSearchQuery(query);
   const terms = STANDARD_QUERY_TERMS[normalized] ?? normalized.split(" ").filter(Boolean);
   return terms.map((term) => [...new Set([term, ...(SYNONYMS[term] ?? [])])]);
 };
@@ -72,18 +108,18 @@ export interface SearchHit {
   readonly excerpt: string;
   readonly sourceUrl: string;
   readonly asOf: string;
-  readonly dataNature: ChunkRecord["dataNature"];
-  readonly sourceKind: ChunkRecord["sourceKind"];
+  readonly dataNature: ChunkRecord["dataNature"] | CommonChunkRecord["dataNature"];
+  readonly sourceKind: ChunkRecord["sourceKind"] | CommonChunkRecord["sourceKind"];
   readonly limitations: readonly string[];
   readonly score: number;
 }
 
 export const searchChunks = (
-  chunks: readonly ChunkRecord[],
+  chunks: readonly (ChunkRecord | CommonChunkRecord)[],
   query: string,
   limit: number,
 ): readonly SearchHit[] => {
-  const normalizedQuery = normalizeKorean(query);
+  const normalizedQuery = normalizeSearchQuery(query);
   if (!normalizedQuery) return [];
   const termGroups = termGroupsOf(query);
   const terms = [...new Set(termGroups.flat())];
@@ -91,7 +127,7 @@ export const searchChunks = (
   return chunks
     .map((chunk) => {
       const title = normalizeKorean(chunk.title);
-      const body = normalizeKorean(chunk.text);
+      const body = normalizeKorean("canonicalText" in chunk ? chunk.canonicalText : chunk.text);
       const status = normalizeKorean(
         `${chunk.status} 공개 승인 ${chunk.dataNature} ${
           chunk.dataNature === "observed" ? "관측" : "시나리오"
@@ -100,7 +136,11 @@ export const searchChunks = (
             ? "공식 문서"
             : chunk.sourceKind === "external-observation"
               ? "외부 관측"
-              : "시나리오 입력"
+              : chunk.sourceKind === "issuer-claim"
+                ? "발행인 주장"
+                : chunk.sourceKind === "platform-claim"
+                  ? "플랫폼 주장"
+                  : "시나리오 입력"
         }`,
       );
       const phraseScore =

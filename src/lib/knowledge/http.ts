@@ -1,4 +1,9 @@
-import { KnowledgeQuerySchema, type KnowledgeQuery } from "./schema";
+import {
+  CommonKnowledgeQuerySchema,
+  KnowledgeQuerySchema,
+  type CommonKnowledgeQuery,
+  type KnowledgeQuery,
+} from "./schema";
 
 const MAX_BODY_BYTES = 32_768;
 
@@ -49,6 +54,19 @@ export const parseKnowledgeRequest = async (
   if (!body.ok) return null;
   const parsed = KnowledgeQuerySchema.safeParse(body.value);
   return parsed.success ? parsed.data : null;
+};
+
+export type EvidenceQuery = KnowledgeQuery | CommonKnowledgeQuery;
+
+export const parseEvidenceRequest = async (
+  request: Request,
+): Promise<EvidenceQuery | null> => {
+  const body = await readJsonBody(request);
+  if (!body.ok) return null;
+  const legacy = KnowledgeQuerySchema.safeParse(body.value);
+  if (legacy.success) return legacy.data;
+  const common = CommonKnowledgeQuerySchema.safeParse(body.value);
+  return common.success ? common.data : null;
 };
 
 export const invalidRequest = (): Response =>

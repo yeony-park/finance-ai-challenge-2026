@@ -1,10 +1,22 @@
 import { describe, expect, it } from "vitest";
 import { buildDeterministicCachedAnswer, answerFromEvidence } from "../evidence";
 import { loadKnowledgeScope } from "../loader";
-import { searchChunks } from "../search";
+import { isRankingRequest, normalizeSearchQuery, searchChunks } from "../search";
 import { validChunk } from "./fixtures";
 
 describe("knowledge chunk search", () => {
+  it("자유질문 요청어를 제거해 lexical 후보를 유지한다", () => {
+    expect(searchChunks([validChunk()], "제곱미터가 어떻게 되나요", 5)[0]?.chunkId).toBe("chunk-001");
+  });
+
+  it("요청어와 조사를 보수적으로 제거하고 순위 요청을 구분한다", () => {
+    expect(normalizeSearchQuery("서울스퀘어를 찾아줘")).toBe("서울스퀘어");
+    expect(normalizeSearchQuery("연면적을 보여주세요")).toBe("연면적");
+    expect(normalizeSearchQuery("청약 중")).toBe("청약 중");
+    expect(isRankingRequest("가장 안전한 최고 상품 추천해줘")).toBe(true);
+    expect(isRankingRequest("부동산 청약 상품 보여줘")).toBe(false);
+  });
+
   it("원 query 토큰별 동의어 그룹을 모두 만족한 chunk만 반환한다", () => {
     const relevant = {
       ...validChunk(),
@@ -21,6 +33,8 @@ describe("knowledge chunk search", () => {
     expect(searchChunks([irrelevant, relevant], "건물 연면적", 20).map((hit) => hit.chunkId))
       .toEqual(["chunk-relevant"]);
     expect(searchChunks([irrelevant, relevant], "건물", 20).length).toBe(2);
+    expect(searchChunks([irrelevant, relevant], "연면적을 보여주세요", 20).map((hit) => hit.chunkId))
+      .toEqual(["chunk-relevant"]);
   });
 
   it("승인 표준 질문을 실제 PDF의 관련 쪽에 연결하고 재생성 cache를 사용한다", async () => {
@@ -48,8 +62,8 @@ describe("knowledge chunk search", () => {
       });
       expect(cached.outcome, q).toBe("answer");
       expect(
-        answerFromEvidence({ ...scope, cachedAnswers: [cached] }, query),
-      ).toMatchObject({ outcome: "answer", cached: true });
+        await answerFromEvidence({ ...scope, cachedAnswers: [cached] }, query),
+      ).toMatchObject({ outcome: "answer", answerSource: "structured" });
     }
 
     const history = searchChunks(scope.chunks, cases[5][0], 5);

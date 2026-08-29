@@ -8,13 +8,23 @@ const Hash = z.string().regex(/^[a-f0-9]{64}$/);
 const Money = z.number().int().nonnegative().max(Number.MAX_SAFE_INTEGER);
 const Ratio = z.number().finite().nonnegative();
 const Limitations = z.array(z.string().trim().min(1).max(500)).max(100).default([]);
+const FactValue = z.union([z.string().trim().max(2_000), z.number().finite(), z.null()]);
+const InvestorProtectionScenarioItem = z.strictObject({
+  statement: z.string().trim().min(1).max(2_000),
+  status: z.enum(["confirmed-in-scenario", "attention", "unknown"]),
+  dataNature: z.literal("scenario"),
+  basis: z.literal("scenario-input"),
+  limitations: Limitations.unwrap(),
+});
 
 export const SCENARIO_DEMO_DISCLOSURE =
-  "데모 데이터 안내: 이 화면의 투자조건은 실제 건축물의 공개정보를 기반으로 구성한 시나리오이며, 실제 청약·판매 중인 상품이 아닙니다.";
+  "시나리오 데이터 안내: 이 화면의 투자조건은 실제 건축물의 공개정보를 기반으로 구성한 시나리오이며, 실제 청약·판매 중인 상품이 아닙니다.";
 
 export const DataNature = z.enum(["observed", "scenario"]);
 export const CategoryId = z.enum(["cattle", "pig", "art", "real-estate"]);
 export const SourceKind = z.enum([
+  "issuer-claim",
+  "platform-claim",
   "official-document",
   "external-observation",
   "scenario-input",
@@ -81,6 +91,40 @@ const validateRecordSourceUrl = (
   }
 };
 
+const validateOptionalScenarioId = (
+  value: { dataNature: z.infer<typeof DataNature>; scenarioId?: string },
+  context: z.RefinementCtx,
+) => {
+  if (value.dataNature === "observed" && value.scenarioId !== undefined) {
+    context.addIssue({
+      code: "custom",
+      path: ["scenarioId"],
+      message: "실제 상품 범위에는 scenarioId를 입력할 수 없습니다.",
+    });
+  }
+};
+
+const validateCommonCitationSourceUrl = (
+  value: {
+    dataNature: z.infer<typeof DataNature>;
+    sourceKind: z.infer<typeof SourceKind>;
+    sourceUrl: string;
+  },
+  context: z.RefinementCtx,
+) => {
+  validateRecordSourceUrl(value, context);
+  if (value.sourceUrl.startsWith("https://")) {
+    const url = new URL(value.sourceUrl);
+    if (url.search || url.hash) {
+      context.addIssue({
+        code: "custom",
+        path: ["sourceUrl"],
+        message: "공통 공개 인용 URL에는 query 또는 hash를 사용할 수 없습니다.",
+      });
+    }
+  }
+};
+
 export const ScenarioOfferSchema = z
   .strictObject({
     ...scopedRecord,
@@ -109,21 +153,34 @@ export const ScenarioOfferSchema = z
         z.discriminatedUnion("status", [
           z.strictObject({
             field: Id,
-            value: z.union([z.string().max(2_000), z.number().finite(), z.null()]),
+            value: FactValue,
             unit: z.string().trim().min(1).max(80).optional(),
             status: z.literal("confirmed"),
+            dataNature: z.literal("observed"),
+            basis: z.literal("source"),
             sourceId: Id,
+            validThrough: DateValue.nullable().optional(),
             limitations: Limitations,
           }),
           z.strictObject({
             field: Id,
             unit: z.string().trim().min(1).max(80).optional(),
             status: z.literal("unknown"),
+            dataNature: z.literal("observed"),
+            basis: z.literal("source"),
             limitations: Limitations,
           }),
         ]),
       ).max(200),
     }),
+    claimedAssetFacts: z.array(z.strictObject({
+      field: Id,
+      value: FactValue,
+      unit: z.string().trim().min(1).max(80).optional(),
+      dataNature: z.literal("scenario"),
+      basis: z.literal("scenario-input"),
+      limitations: Limitations,
+    })).max(200),
     sources: z.array(
       z.strictObject({
         sourceId: Id,
@@ -158,6 +215,16 @@ export const ScenarioOfferSchema = z
         dataNature: z.literal("scenario"),
       }),
     }),
+    investorProtection: z.strictObject({
+      dataNature: z.literal("scenario"),
+      basis: z.literal("scenario-input"),
+      rightForm: InvestorProtectionScenarioItem,
+      fundsSafekeeping: InvestorProtectionScenarioItem,
+      bankruptcyRemoteness: InvestorProtectionScenarioItem,
+      rightsAdministration: InvestorProtectionScenarioItem,
+      disputeResolution: InvestorProtectionScenarioItem,
+      issuanceDistributionSeparation: InvestorProtectionScenarioItem,
+    }),
     offering: z.strictObject({
       phase: z.enum(["subscription-open", "listed-trading", "settled"]),
       opensOn: DateValue,
@@ -181,9 +248,28 @@ export const ScenarioOfferSchema = z
       extensionConditions: z.array(z.string().trim().min(1).max(500)).min(1).max(100),
       liquidationPriority: z.string().trim().min(1).max(2_000),
       financing: z.strictObject({
+        dataNature: z.literal("scenario"),
+        basis: z.literal("scenario-input"),
         ltvPercent: Ratio,
         annualInterestRatePercent: Ratio,
         maturityOn: DateValue,
+        rateType: z.enum(["fixed", "floating"]).nullable(),
+        resetOn: DateValue.nullable(),
+        limitations: Limitations,
+      }),
+      cashFlowReview: z.strictObject({
+        dataNature: z.literal("scenario"),
+        basis: z.literal("scenario-input"),
+        annualRentalIncomeWon: Money.nullable(),
+        annualOperatingExpenseWon: Money.nullable(),
+        annualDebtServiceWon: Money.nullable(),
+        limitations: Limitations,
+      }),
+      exitReview: z.strictObject({
+        dataNature: z.literal("scenario"),
+        basis: z.literal("scenario-input"),
+        decisionAuthority: z.string().trim().min(1).max(500).nullable(),
+        maximumExtensionMonths: z.number().int().nonnegative().max(1_200).nullable(),
         limitations: Limitations,
       }),
       leaseAssumptions: z.strictObject({
@@ -201,7 +287,11 @@ export const ScenarioOfferSchema = z
       actualExitOn: DateValue,
       cumulativeDistributionWon: Money,
       saleProceedsWon: Money,
+      additionalContributionsWon: Money,
+      refundsWon: Money,
       feesWon: Money,
+      cashFlowCompleteness: z.literal("complete"),
+      taxBasis: z.literal("pre-tax"),
       returnOutcome: z.enum(["profit", "loss", "breakeven"]),
       scheduleOutcome: z.enum(["early", "on-time", "delayed"]),
       assumptionTags: z.array(
@@ -319,28 +409,45 @@ export const ScenarioOfferSchema = z
       });
     }
     if (value.completion) {
+      if (value.completion.targetExitOn < closesOn) {
+        context.addIssue({
+          code: "custom",
+          path: ["completion", "targetExitOn"],
+          message: "targetExitOn은 청약 종료일보다 빠를 수 없습니다.",
+        });
+      }
+      if (value.completion.actualExitOn < closesOn) {
+        context.addIssue({
+          code: "custom",
+          path: ["completion", "actualExitOn"],
+          message: "actualExitOn은 청약 종료일보다 빠를 수 없습니다.",
+        });
+      }
       const netCash =
         value.completion.cumulativeDistributionWon +
-        value.completion.saleProceedsWon -
+        value.completion.saleProceedsWon +
+        value.completion.refundsWon -
         value.completion.feesWon;
-      if (!Number.isSafeInteger(netCash)) {
+      const investedCash =
+        value.offering.amountWon + value.completion.additionalContributionsWon;
+      if (!Number.isSafeInteger(netCash) || !Number.isSafeInteger(investedCash)) {
         context.addIssue({
           code: "custom",
           path: ["completion"],
-          message: "completion 현금흐름 합계는 안전한 정수 범위여야 합니다.",
+          message: "completion 순회수액과 투자기준금액은 안전한 정수 범위여야 합니다.",
         });
       } else {
         const expectedReturnOutcome =
-          netCash > value.offering.amountWon
+          netCash > investedCash
             ? "profit"
-            : netCash < value.offering.amountWon
+            : netCash < investedCash
               ? "loss"
               : "breakeven";
         if (value.completion.returnOutcome !== expectedReturnOutcome) {
           context.addIssue({
             code: "custom",
             path: ["completion", "returnOutcome"],
-            message: "returnOutcome이 순현금 회수액과 일치하지 않습니다.",
+            message: "returnOutcome이 순현금 회수액과 투자기준금액 비교에 일치하지 않습니다.",
           });
         }
       }
@@ -363,6 +470,7 @@ export const ScenarioOfferSchema = z
 
 export const DocumentStatus = z.enum([
   "ready",
+  "partial",
   "ocr_required",
   "damaged",
   "encrypted",
@@ -507,6 +615,7 @@ export const KnowledgeQuerySchema = z.strictObject({
 export const GlobalSearchQuerySchema = z.strictObject({
   q: z.string().trim().min(1).max(200),
   assetKind: z.enum(["livestock", "real-estate"]).optional(),
+  categoryId: CategoryId.optional(),
   phase: z.enum([
     "upcoming",
     "subscription-open",
@@ -517,15 +626,194 @@ export const GlobalSearchQuerySchema = z.strictObject({
   limit: z.number().int().min(1).max(20).default(10),
 });
 
+export const ProductPhase = z.enum([
+  "upcoming",
+  "subscription-open",
+  "closed",
+  "listed-trading",
+  "settled",
+]);
+
+export const CommonProductRecordSchema = z.strictObject({
+  schemaVersion: z.literal(1),
+  categoryId: CategoryId,
+  productId: Id,
+  scenarioId: Id.optional(),
+  title: z.string().trim().min(1).max(240),
+  aliases: z.array(z.string().trim().min(1).max(240)).max(50).default([]),
+  dataNature: DataNature,
+  asOf: DateValue,
+  status: z.string().trim().min(1).max(80).optional(),
+  phase: ProductPhase.optional(),
+  approvedForPublic: z.boolean(),
+}).superRefine((value, context) => {
+  validateOptionalScenarioId(value, context);
+});
+
+export const RightsStatus = z.enum([
+  "public-domain",
+  "licensed",
+  "permission-confirmed",
+  "restricted",
+  "unknown",
+]);
+
+export const CommonDocumentType = z.enum([
+  "product-description",
+  "disclosure",
+  "valuation-report",
+  "registry",
+  "other",
+]);
+
+export const SourceManifestSchema = z.strictObject({
+  schemaVersion: z.literal(1).default(1),
+  documentId: Id,
+  categoryId: CategoryId,
+  productId: Id,
+  scenarioId: Id.optional(),
+  title: z.string().trim().min(1).max(500),
+  publisher: z.string().trim().min(1).max(240),
+  documentType: CommonDocumentType,
+  approvedForExternalAi: z.boolean().default(false),
+  piiReviewStatus: z.enum(["passed", "not-reviewed"]).default("not-reviewed"),
+  sourceKind: SourceKind,
+  sourceUrl: z.string().max(2_000),
+  localPath: z.string().trim().min(1).max(1_000),
+  sourceHash: Hash.optional(),
+  asOf: DateValue,
+  collectedAt: z.string().datetime({ offset: true }),
+  dataNature: DataNature,
+  rightsStatus: RightsStatus,
+  approvedForPublic: z.boolean(),
+  limitations: Limitations,
+}).superRefine((value, context) => {
+  validateProvenance(value, context);
+  validateCommonCitationSourceUrl(value, context);
+  validateOptionalScenarioId(value, context);
+  const normalized = value.localPath.replaceAll("\\", "/");
+  if (
+    normalized.startsWith("/") ||
+    normalized.split("/").some((part) => part === "" || part === "." || part === "..") ||
+    !normalized.toLowerCase().endsWith(".pdf")
+  ) {
+    context.addIssue({
+      code: "custom",
+      path: ["localPath"],
+      message: "localPath는 sources 루트 내부 PDF 상대경로여야 합니다.",
+    });
+  }
+});
+
+export const PageQuality = z.enum(["ready", "text_insufficient", "unsupported_scan"]);
+
+export const CommonDocumentRecordSchema = z.strictObject({
+  schemaVersion: z.literal(1),
+  categoryId: CategoryId,
+  productId: Id,
+  scenarioId: Id.optional(),
+  documentId: Id,
+  title: z.string().trim().min(1).max(500),
+  publisher: z.string().trim().min(1).max(240),
+  sourceKind: SourceKind,
+  sourceUrl: z.string().max(2_000),
+  asOf: DateValue,
+  collectedAt: z.string().datetime({ offset: true }),
+  dataNature: DataNature,
+  rightsStatus: RightsStatus,
+  approvedForPublic: z.boolean(),
+  sourceHash: Hash,
+  status: z.enum(["ready", "partial", "ocr_required", "damaged", "encrypted", "failed"]),
+  pages: z.array(z.strictObject({
+    page: z.number().int().positive(),
+    quality: PageQuality,
+    reasonCodes: z.array(z.string().trim().min(1).max(80)).optional(),
+    metrics: z.strictObject({
+      itemCount: z.number().int().nonnegative(),
+      characterCount: z.number().int().nonnegative(),
+      density: z.number().finite().nonnegative(),
+    }).optional(),
+    limitations: Limitations,
+  })).max(250),
+  limitations: Limitations,
+}).superRefine((value, context) => {
+  validateProvenance(value, context);
+  validateCommonCitationSourceUrl(value, context);
+  validateOptionalScenarioId(value, context);
+});
+
+export const CommonChunkRecordSchema = z.strictObject({
+  schemaVersion: z.literal(1),
+  categoryId: CategoryId,
+  productId: Id,
+  scenarioId: Id.optional(),
+  documentId: Id,
+  chunkId: Id,
+  title: z.string().trim().min(1).max(500),
+  sourceKind: SourceKind,
+  sourceUrl: z.string().max(2_000),
+  asOf: DateValue,
+  dataNature: DataNature,
+  page: z.number().int().positive(),
+  text: z.string().trim().min(1).max(100_000),
+  canonicalText: z.string().trim().min(1).max(100_000),
+  positions: z.array(TextPositionSchema).max(20_000),
+  pageQuality: z.literal("ready"),
+  sourceHash: Hash,
+  chunkHash: Hash,
+  approvedForPublic: z.boolean(),
+  status: z.literal("ready"),
+  limitations: Limitations,
+}).superRefine((value, context) => {
+  validateProvenance(value, context);
+  validateCommonCitationSourceUrl(value, context);
+  validateOptionalScenarioId(value, context);
+});
+
+export const CommonKnowledgeIndexSchema = z.strictObject({
+  schemaVersion: z.literal(1),
+  generatedAt: z.string().datetime({ offset: true }),
+  products: z.array(CommonProductRecordSchema),
+  documents: z.array(CommonDocumentRecordSchema),
+  chunks: z.array(CommonChunkRecordSchema),
+});
+
+export const CommonKnowledgeQuerySchema = z.strictObject({
+  categoryId: CategoryId,
+  productId: Id,
+  dataNature: DataNature,
+  namespace: z.enum(["common", "legacy-scenario"]).optional(),
+  q: z.string().trim().min(1).max(200),
+  limit: z.number().int().min(1).max(20).default(5),
+}).superRefine((value, context) => {
+  if (value.namespace === "legacy-scenario" && value.dataNature !== "scenario") {
+    context.addIssue({
+      code: "custom",
+      path: ["namespace"],
+      message: "legacy-scenario namespace는 scenario dataNature만 허용합니다.",
+    });
+  }
+});
+
 export type ScenarioOffer = z.infer<typeof ScenarioOfferSchema>;
 export type DocumentRecord = z.infer<typeof DocumentRecordSchema>;
 export type ChunkRecord = z.infer<typeof ChunkRecordSchema>;
 export type CachedAnswer = z.infer<typeof CachedAnswerSchema>;
 export type KnowledgeQuery = z.infer<typeof KnowledgeQuerySchema>;
 export type GlobalSearchQuery = z.infer<typeof GlobalSearchQuerySchema>;
+export type CommonProductRecord = z.infer<typeof CommonProductRecordSchema>;
+export type SourceManifest = z.infer<typeof SourceManifestSchema>;
+export type CommonDocumentRecord = z.infer<typeof CommonDocumentRecordSchema>;
+export type CommonChunkRecord = z.infer<typeof CommonChunkRecordSchema>;
+export type CommonKnowledgeIndex = z.infer<typeof CommonKnowledgeIndexSchema>;
+export type CommonKnowledgeQuery = z.infer<typeof CommonKnowledgeQuerySchema>;
 
 export interface CompletionMetrics {
+  /** 분배금·매각대금·환급금에서 수수료를 뺀 세전 순회수액입니다. */
   readonly netCash: number;
+  /** 최초 공모액과 추가납입금을 합한 투자기준금액입니다. */
+  readonly investedCash: number;
+  readonly profitLoss: number;
   readonly totalReturnRatePercent: number;
   /** 청약 시작일부터 실제 종료일까지의 단순 달력 일수이며 IRR 기간이 아닙니다. */
   readonly holdingDays: number;
@@ -539,8 +827,12 @@ export const calculateCompletionMetrics = (
   if (!offer.completion) return null;
   const netCash =
     offer.completion.cumulativeDistributionWon +
-    offer.completion.saleProceedsWon -
+    offer.completion.saleProceedsWon +
+    offer.completion.refundsWon -
     offer.completion.feesWon;
+  const investedCash =
+    offer.offering.amountWon + offer.completion.additionalContributionsWon;
+  const profitLoss = netCash - investedCash;
   const holdingDays = Math.max(
     1,
     Math.round(
@@ -551,8 +843,10 @@ export const calculateCompletionMetrics = (
   );
   return {
     netCash,
+    investedCash,
+    profitLoss,
     totalReturnRatePercent: round4(
-      ((netCash - offer.offering.amountWon) / offer.offering.amountWon) * 100,
+      (profitLoss / investedCash) * 100,
     ),
     holdingDays,
   };

@@ -38,10 +38,13 @@ describe("PDF batch parser", () => {
     expect(parsed.sourceHash).toBe(sha256(bytes));
     expect(parsed.pages[0].text).toContain("Public evidence text");
     expect(parsed.pages[0].positions[0]).toMatchObject({ text: expect.any(String) });
+    expect(parsed.pages[0]).toMatchObject({ quality: "ready", reasonCodes: [], metrics: { itemCount: expect.any(Number), characterCount: expect.any(Number), density: expect.any(Number) } });
   });
 
   it("텍스트가 비어 있으면 OCR 필요 상태로 반환한다", async () => {
-    expect((await parsePdf(pdfBytes(""))).status).toBe("ocr_required");
+    const parsed = await parsePdf(pdfBytes(""));
+    expect(parsed.status).toBe("ocr_required");
+    expect(parsed.pages[0]).toMatchObject({ quality: "unsupported_scan", canonicalText: "", reasonCodes: ["no-text-layer"], metrics: { characterCount: 0 } });
   });
 
   it("최대 입력 바이트를 넘으면 파서를 시작하지 않고 실패한다", async () => {

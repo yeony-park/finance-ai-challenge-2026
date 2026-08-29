@@ -3,7 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "knowledge:index": "tsx src/lib/knowledge/index-cli.ts",
+    "knowledge:extract": "tsx --env-file-if-exists=.env src/lib/knowledge/extract-cli.ts",
+    "predev": "npm run knowledge:index",
     "dev": "next dev",
+    "prebuild": "npm run knowledge:index",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -28,6 +32,7 @@
   },
   "dependencies": {
     "@ai-sdk/openai": "^4.0.41",
+    "@napi-rs/canvas": "1.0.8",
     "@vercel/blob": "^2.8.0",
     "ai": "^7.0.44",
     "fast-xml-parser": "^5.10.1",

@@ -8,6 +8,7 @@ data/raw
 data/reports
 data/snapshots
 data/scratch-fake
+data/knowledge/review
 # 빌드에 불필요한 내부 자료 — 업로드 표면 축소
 .claude
 docs

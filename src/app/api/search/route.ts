@@ -11,7 +11,7 @@ export const POST = async (request: Request): Promise<Response> => {
   if (!parsed.success) return invalidRequest();
 
   try {
-    return Response.json({ results: await searchOffers(parsed.data) });
+    return Response.json(await searchOffers(parsed.data));
   } catch {
     return internalError();
   }

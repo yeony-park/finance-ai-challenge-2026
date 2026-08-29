@@ -29,7 +29,18 @@ describe("knowledge JSON loader", () => {
       path.join(root, "scenarios/real-estate/scenario.json"),
       validScenarioOffer(),
     );
-    await writeJson(path.join(root, "knowledge/documents/document.json"), validDocument());
+    await writeJson(
+      path.join(root, "scenarios/real-estate/scenario-002.json"),
+      {
+        ...validScenarioOffer(),
+        scenarioId: "scenario-002",
+        offerId: "offer-002",
+      },
+    );
+    await writeJson(path.join(root, "knowledge/documents/document.json"), {
+      ...validDocument(),
+      status: "partial",
+    });
     await writeJson(path.join(root, "knowledge/chunks/public.json"), validChunk());
     await writeJson(path.join(root, "knowledge/chunks/tampered.json"), {
       ...validChunk(),
@@ -84,6 +95,7 @@ describe("knowledge JSON loader", () => {
     });
 
     const loaded = await loadKnowledgeScope("scenario-001", "offer-001", root);
+    expect(loaded.documents[0].status).toBe("partial");
     expect(loaded.chunks.map((chunk) => chunk.chunkId)).toEqual(["chunk-001"]);
     expect(loaded.cachedAnswers.map((item) => item.cacheKey)).toEqual(["cache-001"]);
 
@@ -96,6 +108,12 @@ describe("knowledge JSON loader", () => {
     expect(await loadKnowledgeScope("scenario-001", "other-offer", root)).toMatchObject({
       scenario: null,
       chunks: [],
+    });
+    expect(await loadKnowledgeScope("scenario-001", "offer-002", root)).toMatchObject({
+      scenario: null,
+      documents: [],
+      chunks: [],
+      cachedAnswers: [],
     });
   });
 });
