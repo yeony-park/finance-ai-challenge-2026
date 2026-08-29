@@ -1,7 +1,13 @@
 import { closeConnections, getDirectDb } from "../client";
 import { directDatabaseUrl } from "../env";
 import { buildIngestPlan, type IngestPlan } from "../ingest/build";
+import { buildKnowledgeIngestPlan } from "../ingest/knowledge";
 import { loadManifestIndex } from "../ingest/manifest";
+import {
+  KNOWLEDGE_FULL_SNAPSHOT,
+  createDrizzleKnowledgeWriteExecutor,
+  writeKnowledgeIngestPlan,
+} from "../ingest/write-knowledge";
 import {
   cattleAuctionPrices,
   offeringFilingFacts,
@@ -152,12 +158,21 @@ const ingestFilingFacts = async (db: Db, plan: IngestPlan): Promise<void> => {
 };
 
 const main = async (): Promise<void> => {
-  const index = await loadManifestIndex();
+  const [index, knowledgePlan] = await Promise.all([
+    loadManifestIndex(),
+    buildKnowledgeIngestPlan("data"),
+  ]);
   const plan = await buildIngestPlan("data", index);
 
-  assertSeedSourcePathsAllowed(plan.sourcePaths);
+  assertSeedSourcePathsAllowed([
+    ...plan.sourcePaths,
+    "data/knowledge/generated/index.json",
+    "data/knowledge/documents",
+    "data/knowledge/chunks",
+    "data/scenarios/real-estate",
+  ]);
 
-  const counts = `cattle ${plan.cattleAuction.length} · re_trades ${plan.reTrades.length} · pig ${plan.pigAuction.length} · filing_facts ${plan.filingFacts.length}`;
+  const counts = `cattle ${plan.cattleAuction.length} · re_trades ${plan.reTrades.length} · pig ${plan.pigAuction.length} · filing_facts ${plan.filingFacts.length} · knowledge_docs ${knowledgePlan.documents.length} · knowledge_chunks ${knowledgePlan.chunks.length}`;
 
   if (!directDatabaseUrl()) {
     console.log(
@@ -167,6 +182,11 @@ const main = async (): Promise<void> => {
   }
 
   const db = getDirectDb();
+  await writeKnowledgeIngestPlan(
+    knowledgePlan,
+    createDrizzleKnowledgeWriteExecutor(db),
+    KNOWLEDGE_FULL_SNAPSHOT,
+  );
   await ingestCattle(db, plan);
   await ingestReTrades(db, plan);
   await ingestPig(db, plan);

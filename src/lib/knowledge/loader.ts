@@ -151,15 +151,23 @@ export const loadApprovedCommonProducts = async (
 export const loadCommonKnowledgeScope = async (
   categoryId: CommonProductRecord["categoryId"],
   productId: string,
-  dataNature?: CommonProductRecord["dataNature"],
+  dataNature: CommonProductRecord["dataNature"],
   dataRoot = DEFAULT_DATA_ROOT,
+  scenarioId?: string,
 ): Promise<CommonKnowledgeScope> => {
+  if (
+    (dataNature === "scenario" && scenarioId === undefined) ||
+    (dataNature === "observed" && scenarioId !== undefined)
+  ) {
+    return { product: null, documents: [], chunks: [] };
+  }
   const index = await loadCommonIndex(dataRoot);
   const product = index.products.find((item) =>
     item.categoryId === categoryId &&
     item.productId === productId &&
     item.approvedForPublic &&
-    (!dataNature || item.dataNature === dataNature),
+    item.dataNature === dataNature &&
+    item.scenarioId === scenarioId,
   ) ?? null;
   if (!product) return { product: null, documents: [], chunks: [] };
   const sameScope = <T extends { categoryId: string; productId: string; dataNature: string; scenarioId?: string }>(item: T) =>
@@ -191,6 +199,40 @@ export const loadApprovedScenarios = async (
     (record) => record.status === "approved" && record.approvedForPublic,
   );
 
+export const routableLegacyScenarios = <T extends Pick<ScenarioOffer, "scenarioId" | "offerId">>(
+  scenarios: readonly T[],
+  blockedOfferIds: readonly string[] = [],
+): readonly T[] => {
+  const counts = new Map<string, number>();
+  for (const scenario of scenarios) {
+    counts.set(scenario.offerId, (counts.get(scenario.offerId) ?? 0) + 1);
+  }
+  const blocked = new Set(blockedOfferIds);
+  return scenarios.filter(
+    (scenario) => counts.get(scenario.offerId) === 1 && !blocked.has(scenario.offerId),
+  );
+};
+
+export const findRoutableLegacyScenario = <T extends Pick<ScenarioOffer, "scenarioId" | "offerId">>(
+  scenarios: readonly T[],
+  offerId: string,
+  blockedOfferIds: readonly string[] = [],
+): T | null =>
+  routableLegacyScenarios(scenarios, blockedOfferIds)
+    .find((scenario) => scenario.offerId === offerId) ?? null;
+
+export const findLegacyScenarioScope = <T extends Pick<ScenarioOffer, "categoryId" | "scenarioId" | "offerId">>(
+  scenarios: readonly T[],
+  scope: { readonly categoryId: string; readonly scenarioId: string; readonly offerId: string },
+): T | null => {
+  const matches = scenarios.filter((scenario) =>
+    scenario.categoryId === scope.categoryId &&
+    scenario.scenarioId === scope.scenarioId &&
+    scenario.offerId === scope.offerId,
+  );
+  return matches.length === 1 ? matches[0] : null;
+};
+
 export const loadKnowledgeScope = async (
   scenarioId: string,
   offerId: string,
@@ -199,10 +241,10 @@ export const loadKnowledgeScope = async (
   const { scenarios, documents, chunks, cachedAnswers } = await loadIndex(dataRoot);
   const sameIds = <T extends { scenarioId: string; offerId: string }>(record: T) =>
     record.scenarioId === scenarioId && record.offerId === offerId;
-  const scenario =
-    scenarios.find(
-      (record) => sameIds(record) && record.status === "approved" && record.approvedForPublic,
-    ) ?? null;
+  const matchingScenarios = scenarios.filter(
+    (record) => sameIds(record) && record.status === "approved" && record.approvedForPublic,
+  );
+  const scenario = matchingScenarios.length === 1 ? matchingScenarios[0] : null;
 
   if (!scenario) {
     return { scenario: null, documents: [], chunks: [], cachedAnswers: [] };

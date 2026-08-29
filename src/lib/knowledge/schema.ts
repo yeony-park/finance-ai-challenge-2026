@@ -102,6 +102,13 @@ const validateOptionalScenarioId = (
       message: "실제 상품 범위에는 scenarioId를 입력할 수 없습니다.",
     });
   }
+  if (value.dataNature === "scenario" && value.scenarioId === undefined) {
+    context.addIssue({
+      code: "custom",
+      path: ["scenarioId"],
+      message: "시나리오 상품 범위에는 scenarioId가 필요합니다.",
+    });
+  }
 };
 
 const validateCommonCitationSourceUrl = (
@@ -626,6 +633,39 @@ export const GlobalSearchQuerySchema = z.strictObject({
   limit: z.number().int().min(1).max(20).default(10),
 });
 
+const CanonicalQueryFields = {
+  q: z.string().trim().min(1).max(200).optional(),
+  query: z.string().trim().min(1).max(200).optional(),
+};
+
+const validateCanonicalQuery = (
+  value: { readonly q?: string; readonly query?: string },
+  context: z.RefinementCtx,
+): void => {
+  if (!value.q && !value.query) {
+    context.addIssue({ code: "custom", path: ["query"], message: "q 또는 query가 필요합니다." });
+  } else if (value.q && value.query && value.q !== value.query) {
+    context.addIssue({ code: "custom", path: ["query"], message: "q와 query가 일치해야 합니다." });
+  }
+};
+
+export const GlobalSearchRequestSchema = z.strictObject({
+  ...CanonicalQueryFields,
+  assetKind: z.enum(["livestock", "real-estate"]).optional(),
+  categoryId: CategoryId.optional(),
+  phase: z.enum([
+    "upcoming",
+    "subscription-open",
+    "closed",
+    "listed-trading",
+    "settled",
+  ]).optional(),
+  limit: z.number().int().min(1).max(20).default(10),
+}).superRefine(validateCanonicalQuery).transform(({ q, query, ...rest }) => ({
+  ...rest,
+  query: query ?? q!,
+}));
+
 export const ProductPhase = z.enum([
   "upcoming",
   "subscription-open",
@@ -722,6 +762,8 @@ export const CommonDocumentRecordSchema = z.strictObject({
   dataNature: DataNature,
   rightsStatus: RightsStatus,
   approvedForPublic: z.boolean(),
+  approvedForExternalAi: z.boolean().default(false),
+  piiReviewStatus: z.enum(["passed", "not-reviewed"]).default("not-reviewed"),
   sourceHash: Hash,
   status: z.enum(["ready", "partial", "ocr_required", "damaged", "encrypted", "failed"]),
   pages: z.array(z.strictObject({
@@ -740,6 +782,9 @@ export const CommonDocumentRecordSchema = z.strictObject({
   validateProvenance(value, context);
   validateCommonCitationSourceUrl(value, context);
   validateOptionalScenarioId(value, context);
+  if (value.approvedForExternalAi && value.piiReviewStatus !== "passed") {
+    context.addIssue({ code: "custom", path: ["approvedForExternalAi"], message: "외부 AI 승인은 PII 검토 통과 후에만 가능합니다." });
+  }
 });
 
 export const CommonChunkRecordSchema = z.strictObject({
@@ -762,12 +807,17 @@ export const CommonChunkRecordSchema = z.strictObject({
   sourceHash: Hash,
   chunkHash: Hash,
   approvedForPublic: z.boolean(),
+  approvedForExternalAi: z.boolean().default(false),
+  piiReviewStatus: z.enum(["passed", "not-reviewed"]).default("not-reviewed"),
   status: z.literal("ready"),
   limitations: Limitations,
 }).superRefine((value, context) => {
   validateProvenance(value, context);
   validateCommonCitationSourceUrl(value, context);
   validateOptionalScenarioId(value, context);
+  if (value.approvedForExternalAi && value.piiReviewStatus !== "passed") {
+    context.addIssue({ code: "custom", path: ["approvedForExternalAi"], message: "외부 AI 승인은 PII 검토 통과 후에만 가능합니다." });
+  }
 });
 
 export const CommonKnowledgeIndexSchema = z.strictObject({
@@ -781,11 +831,13 @@ export const CommonKnowledgeIndexSchema = z.strictObject({
 export const CommonKnowledgeQuerySchema = z.strictObject({
   categoryId: CategoryId,
   productId: Id,
+  scenarioId: Id.optional(),
   dataNature: DataNature,
-  namespace: z.enum(["common", "legacy-scenario"]).optional(),
+  namespace: z.enum(["common", "legacy-scenario", "published-offer"]).optional(),
   q: z.string().trim().min(1).max(200),
   limit: z.number().int().min(1).max(20).default(5),
 }).superRefine((value, context) => {
+  validateOptionalScenarioId(value, context);
   if (value.namespace === "legacy-scenario" && value.dataNature !== "scenario") {
     context.addIssue({
       code: "custom",
@@ -793,7 +845,46 @@ export const CommonKnowledgeQuerySchema = z.strictObject({
       message: "legacy-scenario namespace는 scenario dataNature만 허용합니다.",
     });
   }
+  if (value.namespace === "published-offer" && value.dataNature !== "observed") {
+    context.addIssue({
+      code: "custom",
+      path: ["namespace"],
+      message: "published-offer namespace는 observed dataNature만 허용합니다.",
+    });
+  }
 });
+
+export const KnowledgeRequestSchema = z.strictObject({
+  scenarioId: Id,
+  offerId: Id,
+  ...CanonicalQueryFields,
+  limit: z.number().int().min(1).max(20).default(5),
+}).superRefine(validateCanonicalQuery).transform(({ q, query, ...rest }) => ({
+  ...rest,
+  query: query ?? q!,
+}));
+
+export const CommonKnowledgeRequestSchema = z.strictObject({
+  categoryId: CategoryId,
+  productId: Id,
+  scenarioId: Id.optional(),
+  dataNature: DataNature,
+  namespace: z.enum(["common", "legacy-scenario", "published-offer"]).optional(),
+  ...CanonicalQueryFields,
+  limit: z.number().int().min(1).max(20).default(5),
+}).superRefine((value, context) => {
+  validateCanonicalQuery(value, context);
+  validateOptionalScenarioId(value, context);
+  if (value.namespace === "legacy-scenario" && value.dataNature !== "scenario") {
+    context.addIssue({ code: "custom", path: ["namespace"], message: "legacy-scenario namespace는 scenario dataNature만 허용합니다." });
+  }
+  if (value.namespace === "published-offer" && value.dataNature !== "observed") {
+    context.addIssue({ code: "custom", path: ["namespace"], message: "published-offer namespace는 observed dataNature만 허용합니다." });
+  }
+}).transform(({ q, query, ...rest }) => ({
+  ...rest,
+  query: query ?? q!,
+}));
 
 export type ScenarioOffer = z.infer<typeof ScenarioOfferSchema>;
 export type DocumentRecord = z.infer<typeof DocumentRecordSchema>;
@@ -801,12 +892,24 @@ export type ChunkRecord = z.infer<typeof ChunkRecordSchema>;
 export type CachedAnswer = z.infer<typeof CachedAnswerSchema>;
 export type KnowledgeQuery = z.infer<typeof KnowledgeQuerySchema>;
 export type GlobalSearchQuery = z.infer<typeof GlobalSearchQuerySchema>;
+export type GlobalSearchRequest = z.infer<typeof GlobalSearchRequestSchema>;
 export type CommonProductRecord = z.infer<typeof CommonProductRecordSchema>;
 export type SourceManifest = z.infer<typeof SourceManifestSchema>;
-export type CommonDocumentRecord = z.infer<typeof CommonDocumentRecordSchema>;
-export type CommonChunkRecord = z.infer<typeof CommonChunkRecordSchema>;
+type ParsedCommonDocumentRecord = z.infer<typeof CommonDocumentRecordSchema>;
+type ParsedCommonChunkRecord = z.infer<typeof CommonChunkRecordSchema>;
+// Hand-built callers may omit the gate metadata; parsing/search always treats omission as fail-closed.
+export type CommonDocumentRecord = Omit<ParsedCommonDocumentRecord, "approvedForExternalAi" | "piiReviewStatus"> & {
+  readonly approvedForExternalAi?: boolean;
+  readonly piiReviewStatus?: "passed" | "not-reviewed";
+};
+export type CommonChunkRecord = Omit<ParsedCommonChunkRecord, "approvedForExternalAi" | "piiReviewStatus"> & {
+  readonly approvedForExternalAi?: boolean;
+  readonly piiReviewStatus?: "passed" | "not-reviewed";
+};
 export type CommonKnowledgeIndex = z.infer<typeof CommonKnowledgeIndexSchema>;
 export type CommonKnowledgeQuery = z.infer<typeof CommonKnowledgeQuerySchema>;
+export type KnowledgeRequest = z.infer<typeof KnowledgeRequestSchema>;
+export type CommonKnowledgeRequest = z.infer<typeof CommonKnowledgeRequestSchema>;
 
 export interface CompletionMetrics {
   /** 분배금·매각대금·환급금에서 수수료를 뺀 세전 순회수액입니다. */

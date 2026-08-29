@@ -1,6 +1,6 @@
 # 기술 스택 · 저장 계층 (Stack & Storage)
 
-> **상태: v1-draft (팀 리뷰 요청)** · 2026-08-23 초안 · **2026-08-29 3관점 리뷰(DB·정합성·보안) 반영 + DB 호스팅 Supabase 오너 확정** · 근거: `05-data-policy.md`(신호등·크롤링 금지가 더미 데이터 필요의 원전), `06-ai-guardrails.md`(RAG·캐시 경계), postgres-patterns 스킬 규약.
+> **상태: 통합 RAG 아키텍처 MVP 계약 반영** · 2026-08-23 초안 · 2026-08-30 file/DB repository·product scope·API 통합 반영. Supabase·vector·embedding·live provider 연결은 이 구현 검증에서 수행하지 않았다. 근거: `05-data-policy.md`, `06-ai-guardrails.md`, `contracts/storage.md`.
 > DB 스키마의 단일 진실은 도입 후 `src/lib/db/schema.ts`가 된다 — 문서와 다르면 코드를 따르고 문서를 정정한다.
 
 ## 1. 확정 스택 (현행 — 변경은 오너 합의 필수)
@@ -24,26 +24,26 @@
 
 | 층 | 저장소 | 용도 | 화면 접근 |
 |---|---|---|---|
-| ① 파일 캐시 | `data/public/`·`data/reference/`·`data/offers/` (커밋) | 검증 리포트·시장 통계·공모 좌표 — **모든 화면 수치·근거의 유일한 원천** (사용자 대면 문안의 단일 진실은 `src/lib/content/` — R-INV-01) | 서버 컴포넌트 직독 (유지) |
+| ① 파일 캐시 | `data/public/`·`data/reference/`·`data/offers/`·승인 scenario/common knowledge index | 검증 리포트·시장 통계·공모 좌표·승인 문서 인덱스 | 서버 컴포넌트 및 file repository 직독 |
 | ② Vercel Blob | 정정 감시 이벤트 스토어 | cron 간 상태 보존 | 불가 |
-| ③ Postgres (신설) | **Supabase (관리형 Postgres) + pgvector — 2026-08-29 오너 확정** | §3 더미·참조 데이터 원장 + §4 RAG 코퍼스 + **§5 검증 실행 이력·원장 관측** | **불가 — 렌더 경로에서 DB 조회 금지** (§5 라이브 이력 기록은 쓰기 전용 예외) |
+| ③ Postgres | **Supabase (관리형 Postgres) + pgvector — 구성 대상** | §3 더미·참조 데이터 원장 + §4 generic/product RAG + §5 실행 이력 | 서버 컴포넌트 직독 불가; repository를 통한 search/evidence API만 |
 
 호스팅 비교 근거 (2026-08-29 실측): Neon(0.5GB·100 CU-h·연결 시 자동 기상) / Supabase(500MB·pgvector 전 플랜·**7일 무활동 시 일시정지 — 대시보드 수동 복구, 90일 초과 시 인프라 회수**·테이블/SQL 대시보드) / Oracle Always Free(관리형 Postgres 없음·VM 셀프호스팅은 idle 회수 정책과 충돌 — 탈락). Supabase 채택 사유: 팀원이 적재 데이터를 눈으로 확인할 대시보드 + 챗 개통 후 대화 로그 저장으로 상시 활동 예상. **일시정지 방어**: 챗 개통 전 구간은 cron(`/api/cron/monitor`, 주 2회)에 경량 DB ping 1쿼리를 포함해 7일 무활동을 구조적으로 차단한다 — ping 실패는 cron 결과에 정직 표기하되 cron 본 임무를 중단시키지 않는다.
 
 **구속 원칙: Postgres 도입은 "화면은 캐시만 읽는다"를 바꾸지 않는다.** DB에 접근하는 경로는 두 개뿐이다:
 
-1. **수집·생성 파이프라인(CLI)** — DB에 적재하고, 화면용 산출물을 `data/public/`으로 **내보낸다**(export). 화면은 그 파일을 읽는다.
-2. **`POST /api/search` RAG 검색(M2+)** — 스파인 경유 유일한 런타임 DB 읽기. `08-api-contract.md` §4.
+1. **수집·생성 파이프라인(CLI)** — DB 유래 화면 자료는 export하고, common PDF는 `knowledge:index`가 승인 manifest만 검증·파싱해 generated index를 만든다. 원천 manifest/PDF와 review candidate는 화면·API에 직접 노출하지 않는다.
+2. **런타임 retrieval API** — `POST /api/search`는 공개 offering과 generic keyword RAG를, `POST /api/evidence/query`의 published-offer 경로는 구조화 항목과 exact product PDF 근거를 repository로 읽는다. 상품 질의에 generic corpus를 섞지 않는다.
 
-이 구조 덕에 DB 장애·미설정은 검색 열화(`degraded: true`)만 만들고 검증 리포트·목록 화면은 무사하다 — URL 무중단 요건의 방어선이다.
+`DATABASE_URL` 미설정은 file mode와 `degraded` 메타데이터로 정직하게 동작한다. 반대로 DB가 설정된 뒤 조회가 실패하면 file로 조용히 폴백하지 않고 API 오류로 전파한다. 두 경우 모두 서버 컴포넌트의 파일 기반 화면은 DB와 독립적이다.
 
 ### 2.1 접근 계층·페일 모드
 
 - 드라이버: **postgres-js(`postgres`) + drizzle-orm** (스키마 = `src/lib/db/schema.ts`, 마이그레이션 = drizzle-kit → `db/migrations/` 커밋). drizzle 대신 직 SQL 여부는 `[팀 결정 대기]` — 단 §2.2 파라미터화 의무는 선택과 무관하게 적용.
 - **연결 문자열 2종 분리 (의무)**:
-  - `DATABASE_URL` — Supavisor **transaction 풀러**(포트 6543) 경유, 런타임(`/api/search`) 전용. 서버리스 동시 인보케이션의 직결 커넥션 고갈 방지.
+  - `DATABASE_URL` — Supavisor **transaction 풀러**(포트 6543) 경유, 런타임 search/evidence repository 전용. 설정 후 조회 실패를 file 폴백으로 숨기지 않는다.
   - `DATABASE_URL_DIRECT` — 세션 모드 연결(포트 5432), CLI 전용(마이그레이션·시드·export). drizzle-kit은 반드시 이쪽을 쓴다(트랜잭션 풀링 모드에서 DDL·세션 기능 제약). **2026-08-29 오너 실측 정정**: 이 프로젝트의 진짜 직결 호스트(`db.*.supabase.co`)는 IPv6 전용이라 로컬에서 도달 불가 → **세션 풀러(5432)로 대체**한다. 세션 모드라 DDL·마이그레이션·`CREATE ROLE`이 호환된다("직결"이라는 표기는 세션 풀러를 포함하는 뜻으로 읽는다).
-- **자격증명 역할 분리 (의무)**: 런타임 `DATABASE_URL`에는 `rag_documents`·`rag_chunks` **SELECT 전용 Postgres 역할**을 부여한다. 원장 쓰기·마이그레이션 권한은 CLI 전용 자격증명에만. 공개 검색 경로의 취약점이 원장 쓰기로 확대되는 것을 차단하는 유일한 방어선이다(Supabase 무료 플랜에는 IP allow가 없음). Supabase의 `service_role`·`anon` 키는 PostgREST용 — 이 프로젝트는 PostgREST를 쓰지 않으므로 두 키를 코드에 들여오지 않는다. **역할 생성은 마이그레이션과 분리한 운영 스크립트 `db/roles.sql`**로 준비돼 있다(마이그레이션이 아님 — `db:migrate`가 실행하지 않는다). **적용 순서·시점(오너 결정)**: `db:migrate`로 스키마 적용 후 → `db/roles.sql`(비밀번호 실행 시 주입, 커밋 금지) → `DATABASE_URL`을 이 역할로 재발급. 그 전까지는 런타임·CLI 둘 다 `postgres` 사용자지만 `/api/search`가 없어 노출 표면이 없다.
+- **자격증명 역할 분리 (의무)**: `db/roles.sql`의 런타임 역할은 `rag_documents`·`rag_chunks` SELECT, `offerings` 공개 9열 SELECT, 기존 `verification_runs` INSERT만 갖는다. `offerings.id/created_at`과 다른 원장·모든 쓰기·마이그레이션 권한은 주지 않는다. 원장 쓰기와 DDL은 `DATABASE_URL_DIRECT` 전용이며 런타임 repository는 DIRECT를 읽지 않는다. 역할 스크립트는 migration이 아니므로 `db:migrate` 뒤 별도로 적용한다.
 - **확장 가용 실측 (2026-08-29 오너)**: `vector` 0.8.2 · `pg_trgm` 1.6 · `unaccent` 1.1 모두 사용 가능. `CREATE EXTENSION`은 마이그레이션에서 수행한다(`vector`는 `0000_init.sql` 선두에 이미 포함; `pg_trgm`은 §4 한국어 보강 [팀 결정 대기] 확정 후 별도 마이그레이션으로 추가).
 - `DATABASE_URL` 미설정이면 **file 모드** — 어댑터 fake 트윈 관례(`01` §1) 그대로, DB 리포지토리의 트윈이 `data/` JSON을 읽어 같은 인터페이스로 응답한다. 팀원 로컬·CI에서 DB 불필요 원칙.
 - 금액은 원화 정수 `bigint`(won), 시각은 `timestamptz`, 문자열은 `text`, id는 `bigint identity` + 공개 슬러그 별도 열. 외래키에는 인덱스 필수.
@@ -68,6 +68,14 @@ interface RagSearchRepository {
   search(query: string, opts?: { categoryId?: CategoryId }): Promise<RagHit[]>
   // RagHit = { sourceId, content, score, asOf } — file 모드는 사전 작성 콘텐츠 키워드 매칭으로
   // 같은 형태를 반환하고 응답의 degraded: true 와 연동된다 (06 §4)
+}
+interface ProductKnowledgeRepository {
+  findExact(scope: {
+    categoryId: CategoryId
+    productId: string
+    dataNature: "observed" | "scenario"
+    scenarioId?: string
+  }): Promise<ProductKnowledgeResult>
 }
 ```
 
@@ -198,11 +206,11 @@ npm run db:export      # DB → data/public/·data/reference/ 화면용 산출�
 | 공통 | 공모 좌표 (`data/offers/*.json`) | `offerings` **확장 파싱** — `asset` jsonb(lawd_cd·bjdong_cd·dong 등 조인 키)·`sale` jsonb·`limits` — 현행 rawOfferSchema가 6개 필드군을 유실 중 | detail 화이트리스트 확장(스키마 컬럼 불변) 또는 컬럼 추가 — 구현 시 확정 |
 | RAG | 코퍼스 미적재 6건 + 교육 콘텐츠(1,464줄, 검색 밖) | `rag_documents/chunks` | `data/reference/rag/`에 청크 추가(코드 변경 불필요). 교육 콘텐츠는 청크 **미러**만 — 컴포넌트 직독 구조 유지 |
 
-파일은 계속 **수집 원본이자 화면 원천**이다(R-STO-03) — DB는 대조·질의·감사용 원장이고, 화면 데이터는 여전히 export 산출물만. 파일→DB 적재는 `db:seed`가 아니라 **`db:ingest` 계열 CLI**(참조 원장 적재 전용, 시드와 분리)로 명명해 synthetic 시드와 실데이터 적재를 구분한다.
+파일은 계속 **수집 원본이자 기본 화면 원천**이다(R-STO-03). DB 유래 화면 자료는 export 산출물, PDF 지식은 `knowledge:index`의 공개 승인 generated index만 사용한다. 파일→DB 적재는 `db:seed`가 아니라 **`db:ingest` 계열 CLI**로 분리해 synthetic 시드와 승인 지식 snapshot을 구분한다.
 
-## 4. RAG 저장소 (pgvector)
+## 4. RAG 저장소 — 통합 RAG 아키텍처 MVP
 
-용도: `POST /api/search`(08 §4)의 ①입문 교육 ④범위 밖 판별 근거 검색. **검증 사실(③유형)은 RAG가 아니라 리포트 캐시가 원천**이다 — RAG로 판정·수치를 검색해 답하지 않는다.
+현재 런타임은 keyword 검색만 구현했다. generic corpus는 상품 결과가 없는 일반 개념 질문에만 사용하고, product corpus는 exact 상품 근거질의에만 사용한다. 모든 응답은 `semantic:false`를 명시한다. 아래 vector DDL은 목표 스키마의 기존 열을 설명할 뿐, vector/embedding 경로가 검증 완료됐다는 뜻이 아니다.
 
 ```sql
 CREATE TABLE rag_documents (
@@ -230,11 +238,19 @@ CREATE INDEX ON rag_chunks USING hnsw (embedding vector_cosine_ops);
 CREATE INDEX ON rag_chunks USING gin (tsv);
 ```
 
+### 4.1 `0004_rag_product_scope.sql` 확장
+
+- 기존 행은 근거 없이 상품 scope를 만들지 않고 `scope_kind='generic'`으로만 백필한다.
+- product 행에는 `ingest_owner`, `category_id`, `product_id`, `data_nature`, `source_kind`, URL·기준일·hash·상태·한계가 필수다. scenario product에는 `scenario_id`가 필수다.
+- document/chunk의 생성 `scope_key`와 복합 FK로 scope 혼합을 막고 public/ready exact 조회 인덱스를 둔다.
+- `approved_for_external_ai`와 `pii_review_status`를 document/chunk에 함께 저장하며 PII 검토가 `passed`가 아니면 외부 AI 승인을 허용하지 않는다.
+- ETL은 고정 `ingest_owner`의 active snapshot만 upsert하고 같은 owner에서 사라진 행을 transaction 안에서 `revoked` 처리한다. generic 및 다른 owner 행은 보존한다.
+
 **한국어 키워드 검색 한계 (인지된 리스크)**: `to_tsvector('simple', …)`은 형태소 분석이 없어 조사 결합형("공모는"/"공모가")이 서로 다른 토큰이 된다 — 한국어 본문에 대한 tsvector 단독 키워드 검색은 정확도가 매우 낮고, **fake 모드(키·DB 없는 환경)의 검색 품질 전체가 이 경로에 의존**하므로 방치 불가. 보강 기본값: ① `pg_trgm` + GIN 인덱스를 키워드 폴백에 병행(형태소 없이 부분 문자열 유사도로 동작 — Supabase 확장 지원 목록에서 확인) ② 적재 CLI에서 조사 스트리핑 등 사전 토큰화 후 `simple`에 투입. 채택 조합은 `[팀 결정 대기]` — 구현 spike로 정확도 비교 후 결정.
 
-- **출처 강제와 접합**: 검색 결과의 `source_id`가 스파인 코퍼스 등록분이 아니면 인용 불가 — RAG 적재가 곧 출처 등록이 아니다. 등록은 여전히 오너 일괄(`01` §2). RAG 테이블은 등록된 출처의 **본문 확장**일 뿐이다.
-- 하이브리드 검색 기본값: tsvector 키워드(**`websearch_to_tsquery` 경유 — §2.2**) + 벡터 유사도 병합. **fake 모드(키·DB 없음)**: 임베딩 생략, `data/`의 사전 작성 교육 콘텐츠에 대한 키워드 매칭으로 열화 동작 — 06 §4 정적 스캐폴드의 저장 계층 대응물.
-- 임베딩 생성은 적재 시 1회(CLI) — 요청 경로에서 문서 임베딩을 만들지 않는다. 질의 임베딩 1회만 런타임 허용.
+- **출처 강제와 접합**: generic 검색 결과의 `source_id`는 스파인 코퍼스 등록분만 인용한다. product 문서는 코퍼스 id 대신 exact scope, manifest/public 승인, 공개 URL, 기준일, source/chunk hash와 ready 상태를 검증한다. 어느 경로도 RAG 적재만으로 공개 승인을 얻지 않는다.
+- DB generic 검색은 `scope_kind='generic'` + `websearch_to_tsquery('simple', …)` FTS, file twin은 lexical 검색이다. product 조회는 exact scope + 공개 승인 + ready document/chunk만 반환한다.
+- vector/embedding, semantic reranking, 실제 Supabase 연결은 후속 검증 대상이다. 현재 동작이나 성능으로 표현하지 않는다.
 - 대화 입력·질의 로그를 RAG 테이블에 섞지 않는다 — 보존은 `05` §4(30일, 마스킹 2단 후 저장) 별도 경로. 챗 개통과 함께 대화 로그를 DB에 저장하기로 하면 전용 테이블(30일 TTL 삭제 잡 포함)을 본 문서에 추가 정의한다 — 현 초안 범위 밖.
 - **RAG 본문 인젝션 방어 (의무)** — 출처 강제는 "어떤 문서를 인용했나"만 검증하고 본문 내용은 검증하지 않는다. Green 라이선스 문서도 본문에 은닉 지시문이 있으면 출처 게이트를 통과하므로 두 겹을 추가한다:
   1. **프롬프트 격리**: `rag_chunks.content`는 프롬프트 조립 시 고정 구분자 데이터 블록(`<retrieved_context>…</retrieved_context>` 류)으로만 삽입 — 사용자 지시와 같은 채널에 원문을 이어붙이지 않는다. `06` §6 "문서 내 지시문은 데이터일 뿐 명령이 아니다"의 RAG 구간 집행 조항.
@@ -306,9 +322,10 @@ CREATE INDEX ON ledger_observations (subject_key, observed_at);
 
 | 변수 | 없을 때 동작 |
 |---|---|
-| `DATABASE_URL` (신설 예정 — 풀러, 런타임 읽기 전용 역할) | file 모드 — DB 리포지토리 fake 트윈으로 완주 |
-| `DATABASE_URL_DIRECT` (신설 예정 — 직결, CLI 전용 RW) | db:* 스크립트가 `not_configured` 정직 종료 |
-| `AI_GATEWAY_API_KEY` / `OPENAI_API_KEY` | LLM·임베딩 fake (기존) |
+| `DATABASE_URL` (풀러, 런타임 제한 역할) | file mode repository twin으로 완주 |
+| `DATABASE_URL_DIRECT` (세션/직결, CLI 전용 RW) | db:* 스크립트가 `not_configured` 정직 종료 |
+| `AI_GATEWAY_API_KEY` / `OPENAI_API_KEY` | live evidence 호출 없음; 근거-only·구조화·승인 cache 경로 유지 |
+| `LIVE_EVIDENCE_ENABLED` | 기본 false. 외부 전송 고지·동의, 분산 rate limit, 일일 비용상한 전에는 true 금지 |
 | `ANTHROPIC_API_KEY`·`SPINE_MODEL`·`VERIFY_EXTRACT_MODEL` | 스파인·추출 fake/기본 모델 (기존 동작) |
 | `DART_API_KEY`·`DATA_GO_KR_API_KEY` | 라이브 경로 `not_configured` 정직 응답 (기존) |
 | `CRON_SECRET` | cron 503 `not_configured` (기존) |
@@ -322,18 +339,18 @@ CREATE INDEX ON ledger_observations (subject_key, observed_at);
 - `db:export` 산출물은 기존 익명화 게이트 테스트 대상에 자동 포함된다 — DB 유래라고 게이트를 우회하지 않는다. **배포 체크 연동**: CI 없는 수동 배포 구조이므로, `CLAUDE.md` 배포 절에 "직전 `db:export` 실행분이 익명화 게이트를 그린으로 통과했는가"를 체크 항목으로 명기한다(DB 도입 PR에서 반영).
 - 스키마 변경은 worklog 4섹션 기록 대상이다 (특히 마스킹·공개 경로에 닿는 변경).
 
-## 확정 (2026-08-29 오너)
+## 구성 결정 (2026-08-29 오너)
 
 | 항목 | 확정값 | 근거 |
 |---|---|---|
-| DB 호스팅 | **Supabase** | §2 비교 근거 참조 — 대시보드 가시성 + 챗 개통 후 상시 활동 예상. 일시정지는 cron ping으로 방어 |
+| DB 호스팅 대상 | **Supabase** | §2 비교 근거 참조. 이번 통합 RAG MVP 검증에서는 live DB 연결을 수행하지 않음 |
 
 ## 팀 결정 대기 (기본값 병기)
 
 | 항목 | 기본값 | 근거 |
 |---|---|---|
 | 접근 계층 | drizzle-orm + drizzle-kit | 타입 안전 + 마이그레이션 파일 커밋. 대안: postgres-js 직 SQL — 어느 쪽이든 §2.2 파라미터화 의무 |
-| 임베딩 모델·차원 | text-embedding-3-small (1536) | claim 추출 프로덕션 경로(OpenAI 직결)와 동일 제공자 — 스파인 기본 모델은 Anthropic이므로 "스파인과 동일"이 아님(2026-08-29 정정). 변경 시 재적재 필요 |
+| 임베딩 모델·차원 | 미구현; 스키마 열은 vector(1536) | 실제 골드셋 recall과 live DB 검증 후 결정. 현재 API는 `semantic:false` |
 | 한국어 키워드 검색 보강 | `pg_trgm` 병행 (대안: 적재 시 사전 토큰화) | §4 한계 절 — fake 모드 검색 품질 직결, spike로 비교 후 확정 |
 | RAG 도입 범위 | 검색(①④유형)만 — 리포트 서술 생성에는 미사용 | 검증 사실 오염 방지 (06 §3) |
 | synthetic 고지 문구 | "예시 데이터로 구성한 화면입니다" 계열 — 문안은 `src/lib/content/` 등재 후 출력 필터 감사 | 04 표현 규칙 |

@@ -7,6 +7,7 @@ import { z } from "zod";
 import type { CategoryId } from "@/lib/verify/contract/category";
 
 import { type OfferingRow, offeringRowSchema } from "../records";
+import { storageMode } from "../env";
 import { assertSeedSourcePathAllowed } from "../seed/guards";
 import { syntheticOfferings } from "../seed/synthetic";
 import type { Offering, OfferingsRepository } from "./types";
@@ -158,8 +159,15 @@ export const createFileOfferingsRepository = (
 
 export const resolveOfferingsRepository = async (options: {
   readonly dataDir?: string;
-} = {}): Promise<OfferingsRepository> =>
-  createFileOfferingsRepository(await loadFileModeOfferings(options.dataDir));
+  readonly createDb?: () => Promise<OfferingsRepository> | OfferingsRepository;
+} = {}): Promise<OfferingsRepository> => {
+  if (storageMode() === "db") {
+    if (options.createDb) return options.createDb();
+    const { createDbOfferingsRepository } = await import("./offerings-db");
+    return createDbOfferingsRepository();
+  }
+  return createFileOfferingsRepository(await loadFileModeOfferings(options.dataDir));
+};
 
 export type { Offering, OfferingsRepository };
 export type { CategoryId };

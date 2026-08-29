@@ -33,7 +33,13 @@ const loadProduct = cache(async (categoryId: string, productId: string) => {
 const loadScope = cache(async (categoryId: string, productId: string) => {
   const product = await loadProduct(categoryId, productId);
   return product
-    ? loadCommonKnowledgeScope(product.categoryId, product.productId, product.dataNature)
+    ? loadCommonKnowledgeScope(
+        product.categoryId,
+        product.productId,
+        product.dataNature,
+        undefined,
+        product.scenarioId,
+      )
     : null;
 });
 

@@ -214,26 +214,30 @@ describe("batch evidence answer", () => {
     }
   });
 
-  it("근거가 있으면 의도적으로 structured/cache보다 검증된 live 답변을 먼저 사용한다", async () => {
+  it("외부 AI 미승인 legacy 근거는 live를 호출하지 않고 구조화 답변을 사용한다", async () => {
     const exactQuote = "최소투자금은 10,000원입니다.";
+    let calls = 0;
     const scope = scopeOf({
       scenario: ScenarioOfferSchema.parse(validScenarioOffer()),
       chunks: [{ ...validChunk(), text: exactQuote }],
     });
     const result = await answerFromEvidence(scope, { ...query, q: "최소투자금 알려줘" }, {
-      liveAnswer: async () => ({
-        answer: exactQuote,
-        citations: [{ chunkId: "chunk-001", page: 1, exactQuote }],
-      }),
+      liveAnswer: async () => {
+        calls += 1;
+        return {
+          answer: exactQuote,
+          citations: [{ chunkId: "chunk-001", page: 1, exactQuote }],
+        };
+      },
     });
+    expect(calls).toBe(0);
     expect(result).toMatchObject({
       outcome: "answer",
-      answerSource: "live_llm",
-      answer: exactQuote,
+      answerSource: "structured",
     });
   });
 
-  it("동일 범위·동일 dataNature cache miss에서 유효한 LLM 답변을 한 번만 사용한다", async () => {
+  it("필드가 없는 legacy 근거는 fail-closed하여 LLM을 호출하지 않는다", async () => {
     let calls = 0;
     const scope = scopeOf({ scenario: ScenarioOfferSchema.parse(validScenarioOffer()) });
     const result = await answerFromEvidence(scope, { ...query, q: "제곱미터가 어떻게 되나요" }, {
@@ -249,16 +253,10 @@ describe("batch evidence answer", () => {
         };
       },
     });
-    expect(calls).toBe(1);
+    expect(calls).toBe(0);
     expect(result).toMatchObject({
-      outcome: "answer",
-      answerSource: "live_llm",
-      answer: "연면적은 1,000 제곱미터입니다.",
-      citations: [{
-        chunkId: "chunk-001",
-        page: 1,
-        exactQuote: "연면적은 1,000 제곱미터입니다.",
-      }],
+      outcome: "evidence_only",
+      answerSource: "none",
     });
   });
 

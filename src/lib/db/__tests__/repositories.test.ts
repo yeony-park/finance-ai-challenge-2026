@@ -3,6 +3,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 
 import { afterAll, beforeAll, describe, expect, test } from "vitest";
+import { PgDialect } from "drizzle-orm/pg-core";
 
 import { isRegisteredSource } from "@/lib/spine/rag/corpus";
 
@@ -11,6 +12,7 @@ import {
   keywordScore,
   resolveRagSearchRepository,
 } from "../repositories/rag-search";
+import { createDbRagSearchRepository } from "../repositories/rag-search-db";
 import { resolveOfferingsRepository } from "../repositories/offerings";
 import {
   buildSeedPlan,
@@ -90,6 +92,25 @@ describe("④ DATABASE_URL 없이 file 모드 완주 (R-STO-02·R-INV-05)", () =
   });
 });
 
+describe("DATABASE_URL offerings runtime 분기", () => {
+  test("설정 시 DB repository를 선택하고 생성 실패를 file로 숨기지 않는다", async () => {
+    process.env.DATABASE_URL = "postgres://runtime.invalid/test";
+    try {
+      const dbRepository = {
+        mode: "db" as const,
+        async findBySlug() { return null; },
+        async listByCategory() { return []; },
+      };
+      await expect(resolveOfferingsRepository({ createDb: () => dbRepository }))
+        .resolves.toBe(dbRepository);
+      await expect(resolveOfferingsRepository({ createDb: () => { throw new Error("db unavailable"); } }))
+        .rejects.toThrow("db unavailable");
+    } finally {
+      delete process.env.DATABASE_URL;
+    }
+  });
+});
+
 describe("③ rag_documents.source_id 미등록 id 거부 (R-STO-12)", () => {
   test("file 트윈이 반환하는 모든 hit의 source_id는 코퍼스 등록분이다", async () => {
     const repository = await resolveRagSearchRepository();
@@ -158,6 +179,14 @@ describe("③ rag_documents.source_id 미등록 id 거부 (R-STO-12)", () => {
               retrievedOn: "2026-08-29",
               chunks: [{ chunkIndex: 0, content: "검증 판정 침투 시도" }],
             },
+            {
+              sourceId: "verification-methodology",
+              title: "상품 전용 문서",
+              license: "green",
+              retrievedOn: "2026-08-29",
+              scopeKind: "product",
+              chunks: [{ chunkIndex: 0, content: "검증 판정 상품 전용", scopeKind: "product" }],
+            },
           ],
         }),
       );
@@ -168,6 +197,7 @@ describe("③ rag_documents.source_id 미등록 id 거부 (R-STO-12)", () => {
       expect(
         result.hits.some((hit) => hit.sourceId === "bogus-unregistered-source"),
       ).toBe(false);
+      expect(result.hits.some((hit) => hit.content.includes("상품 전용"))).toBe(false);
 
       const plan = await buildSeedPlan(dataDir);
       expect(
@@ -183,6 +213,23 @@ describe("③ rag_documents.source_id 미등록 id 거부 (R-STO-12)", () => {
     } finally {
       rmSync(dataDir, { recursive: true, force: true });
     }
+  });
+});
+
+describe("generic RAG DB scope", () => {
+  test("SQL이 product rows를 제외하는 generic scope를 강제한다", async () => {
+    let sqlText = "";
+    let params: readonly unknown[] = [];
+    const repository = createDbRagSearchRepository(async (statement) => {
+      const rendered = new PgDialect().sqlToQuery(statement);
+      sqlText = rendered.sql;
+      params = rendered.params;
+      return [];
+    });
+    await repository.search("공시 대조");
+    expect(sqlText).toContain("c.scope_kind = 'generic'");
+    expect(sqlText).toContain("d.scope_kind = 'generic'");
+    expect(params).toContain("공시 대조");
   });
 });
 

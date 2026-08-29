@@ -2,6 +2,8 @@ import { createOpenAI } from "@ai-sdk/openai";
 import { generateObject } from "ai";
 import { z } from "zod";
 import { filterOutput } from "@/lib/spine/guardrail/output-filter";
+import { isSensitiveCredentialKey } from "@/lib/verify/real-estate/source-url";
+import { containsObviousPii } from "./document-extraction";
 import type { SearchHit } from "./search";
 
 export const LIVE_ANSWER_MAX_OUTPUT_TOKENS = 800;
@@ -56,12 +58,28 @@ export const isLiveEvidenceEnabled = (
   value = process.env.LIVE_EVIDENCE_ENABLED,
 ): boolean => value === "true";
 
+export const containsCredentialLikeSecret = (value: string): boolean => {
+  const assignments = value.matchAll(/([a-z][a-z0-9_-]{1,80})\s*[:=]\s*([^\s,;]+)/gi);
+  for (const [, key] of assignments) {
+    if (isSensitiveCredentialKey(key)) return true;
+  }
+  return /\b(?:authorization\s*:\s*bearer|bearer\s+[a-z0-9._~-]{8,}|sk-[a-z0-9_-]{8,})/i.test(value);
+};
+
+export const isLiveAnswerInputEligible = (input: LiveAnswerInput): boolean =>
+  input.evidence.length > 0 &&
+  !containsObviousPii(input.question) &&
+  !containsCredentialLikeSecret(input.question) &&
+  input.evidence.every((item) =>
+    item.approvedForExternalAi === true && item.piiReviewStatus === "passed"
+  );
+
 export const validateLiveAnswerDraft = (
   draft: unknown,
   input: LiveAnswerInput,
 ): ValidatedLiveAnswer | null => {
   const parsed = LiveDraftSchema.safeParse(draft);
-  if (!parsed.success) return null;
+  if (!parsed.success || !isLiveAnswerInputEligible(input)) return null;
   const evidenceById = new Map(input.evidence.map((item) => [item.chunkId, item]));
   const citedChunkIds = parsed.data.citations.map((item) => item.chunkId);
   if (
@@ -97,6 +115,7 @@ let processLimitState: LiveLimitState = { calls: [] };
 
 export const generateLiveEvidenceAnswer: LiveAnswerGenerator = async (input) => {
   if (!isLiveEvidenceEnabled() || (!process.env.AI_GATEWAY_API_KEY && !process.env.OPENAI_API_KEY)) return null;
+  if (!isLiveAnswerInputEligible(input)) return null;
   const nature = input.evidence[0]?.dataNature;
   if (!nature || input.evidence.some((item) => item.dataNature !== nature)) return null;
   const decision = checkLiveAnswerLimit(processLimitState, Date.now());

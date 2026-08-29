@@ -6,6 +6,7 @@ import type { CommonProductRecord } from "@/lib/knowledge/schema";
 import {
   COMMON_EVIDENCE_EXAMPLES,
   EvidenceQuery,
+  type EvidenceQueryScope,
   safeCitationUrl,
 } from "../real-estate-scenario/ScenarioEvidenceQuery";
 import s from "../real-estate-scenario/scenario.module.css";
@@ -41,6 +42,25 @@ export const commonProductMetadata = (product: CommonProductRecord): Metadata =>
     description,
     robots: { index: false, follow: false },
     openGraph: { type: "article", locale: "ko_KR", title: product.title, description },
+  };
+};
+
+export const commonEvidenceScope = (product: CommonProductRecord): EvidenceQueryScope => {
+  if (product.dataNature === "observed") {
+    return {
+      categoryId: product.categoryId,
+      productId: product.productId,
+      dataNature: "observed",
+      namespace: "common",
+    };
+  }
+  if (!product.scenarioId) throw new Error("시나리오 상품에 scenarioId가 없습니다.");
+  return {
+    categoryId: product.categoryId,
+    productId: product.productId,
+    scenarioId: product.scenarioId,
+    dataNature: "scenario",
+    namespace: "common",
   };
 };
 
@@ -138,12 +158,7 @@ export function CommonProductDetail({ scope }: { readonly scope: CommonKnowledge
 
       <div className={s.detailWrap}>
         <EvidenceQuery
-          scope={{
-            categoryId: product.categoryId,
-            productId: product.productId,
-            dataNature: product.dataNature,
-            namespace: "common",
-          }}
+          scope={commonEvidenceScope(product)}
           examples={COMMON_EVIDENCE_EXAMPLES}
           lead="해당 상품에 정확히 연결된 공개 문서 범위에서만 찾습니다. 확인 자료가 없으면 답을 만들지 않고 보류합니다."
         />

@@ -1,7 +1,10 @@
 import { createHash } from "node:crypto";
+import type { Offering } from "@/lib/db/repositories/offerings";
+import type { ProductKnowledgeResult } from "@/lib/db/repositories/types";
 import { filterOutput } from "@/lib/spine/guardrail/output-filter";
 import {
   generateLiveEvidenceAnswer,
+  isLiveAnswerInputEligible,
   validateLiveAnswerDraft,
   type LiveAnswerGenerator,
 } from "./live-answer";
@@ -19,6 +22,7 @@ import {
   type SearchHit,
 } from "./search";
 import { CachedAnswerSchema, type CachedAnswer, type CommonKnowledgeQuery, type KnowledgeQuery } from "./schema";
+import { isSafePublicSourceUrl, sanitizePublicSourceUrl } from "@/lib/verify/real-estate/source-url";
 
 const ABSTAIN_TEXT =
   "이 상품에 연결된 공식 문서와 공개정보에서는 질문에 답할 내용을 확인하지 못했습니다. 판정을 보류합니다.";
@@ -43,6 +47,39 @@ export interface EvidenceAnswer {
   }[];
   readonly review?: ScenarioReview;
   readonly structuredSources?: readonly StructuredSource[];
+  readonly structuredClaims?: readonly OfferingStructuredClaim[];
+  readonly conflicts?: readonly EvidenceConflict[];
+}
+
+export interface EvidenceConflict {
+  readonly claim: OfferingStructuredClaim["claim"];
+  readonly structuredValue: string | number;
+  readonly documentValue: string;
+  readonly sourceId: string;
+  readonly documentId: string;
+  readonly chunkId: string;
+  readonly page: number;
+}
+
+export interface OfferingStructuredClaim {
+  readonly claim: "title" | "amountWon" | "opensOn" | "closesOn" | "unitCount" | "unitPriceWon";
+  readonly value: string | number;
+  readonly unit?: "원" | "개";
+  readonly categoryId: Offering["categoryId"];
+  readonly productId: string;
+  readonly dataNature: "observed";
+  readonly status: "confirmed";
+  readonly source: {
+    readonly sourceId: null;
+    readonly documentId: null;
+    readonly chunkId: null;
+    readonly page: null;
+    readonly sourceKind: null;
+    readonly url: string | null;
+    readonly asOf: string;
+    readonly hash: string;
+    readonly status: "confirmed";
+  };
 }
 
 export interface StructuredSource {
@@ -58,6 +95,226 @@ export interface DeterministicCacheMetadata {
   readonly generatorVersion: string;
   readonly promptVersion: string;
 }
+
+const safeOfferingSourceUrl = (value: string): string | null => {
+  const sanitized = sanitizePublicSourceUrl(value, "");
+  if (!sanitized || !isSafePublicSourceUrl(sanitized)) return null;
+  return new URL(sanitized).protocol === "https:" ? sanitized : null;
+};
+
+export const answerFromOfferingFacts = (
+  offering: Offering,
+  query: string,
+): EvidenceAnswer => {
+  const normalized = normalizeSearchQuery(query);
+  const sourceUrl = safeOfferingSourceUrl(offering.sourceMeta.sourceUrl);
+  const completeProvenance = sourceUrl !== null &&
+    /^\d{4}-\d{2}-\d{2}$/.test(offering.sourceMeta.retrievedAt) &&
+    /^[a-f0-9]{64}$/.test(offering.sourceMeta.sha256);
+  if (!completeProvenance) {
+    return {
+      outcome: "abstain",
+      answer: ABSTAIN_TEXT,
+      evidence: [],
+      limitations: ["이 상품의 공개 출처·기준일·원문 해시를 모두 확인하지 못해 구조화값 답변을 보류했습니다."],
+      cached: false,
+      answerSource: "none",
+    };
+  }
+  const source = {
+    sourceId: null,
+    documentId: null,
+    chunkId: null,
+    page: null,
+    sourceKind: null,
+    url: sourceUrl,
+    asOf: offering.sourceMeta.retrievedAt,
+    hash: offering.sourceMeta.sha256,
+    status: "confirmed" as const,
+  };
+  const candidates: OfferingStructuredClaim[] = [
+    ...(/(?:상품명|이름|제목)/.test(normalized) ? [{ claim: "title" as const, value: offering.titlePublic }] : []),
+    ...(/(?:공모금액|금액)/.test(normalized) && offering.amountWon !== null
+      ? [{ claim: "amountWon" as const, value: offering.amountWon, unit: "원" as const }]
+      : []),
+    ...(/(?:청약|공모).*(?:시작|개시)|(?:시작|개시).*(?:청약|공모)/.test(normalized) && offering.opensOn
+      ? [{ claim: "opensOn" as const, value: offering.opensOn }]
+      : []),
+    ...(/(?:청약|공모).*(?:종료|마감)|(?:종료|마감).*(?:청약|공모)/.test(normalized) && offering.closesOn
+      ? [{ claim: "closesOn" as const, value: offering.closesOn }]
+      : []),
+    ...(/(?:수량|좌수)/.test(normalized) && typeof offering.detail.unitCount === "number"
+      ? [{ claim: "unitCount" as const, value: offering.detail.unitCount, unit: "개" as const }]
+      : []),
+    ...(/(?:단가|1좌)/.test(normalized) && typeof offering.detail.unitPriceWon === "number"
+      ? [{ claim: "unitPriceWon" as const, value: offering.detail.unitPriceWon, unit: "원" as const }]
+      : []),
+  ].map((fact) => ({
+    ...fact,
+    categoryId: offering.categoryId,
+    productId: offering.offerSlug,
+    dataNature: "observed" as const,
+    status: "confirmed" as const,
+    source,
+  }));
+  if (isRankingRequest(query)) {
+    return {
+      outcome: "abstain",
+      answer: "상품 추천이나 안전성 순위를 제공하지 않습니다. 공개된 상품 조건과 원문 근거를 직접 확인해 주세요.",
+      evidence: [],
+      limitations: ["상품 간 추천·순위·적정가 판단에는 사용하지 않습니다."],
+      cached: false,
+      answerSource: "none",
+    };
+  }
+  if (candidates.length === 0) {
+    return {
+      outcome: "abstain",
+      answer: ABSTAIN_TEXT,
+      evidence: [],
+      limitations: ["이 상품 범위의 공개 구조화 항목에서 질문에 맞는 값을 확인하지 못했습니다. 다른 상품이나 일반 문서로 보충하지 않았습니다."],
+      cached: false,
+      answerSource: "none",
+    };
+  }
+  const answer = candidates.map((fact) => {
+    const value = typeof fact.value === "number" ? fact.value.toLocaleString("ko-KR") : fact.value;
+    const labels: Readonly<Record<OfferingStructuredClaim["claim"], string>> = {
+      title: "상품명",
+      amountWon: "공모금액",
+      opensOn: "청약 시작일",
+      closesOn: "청약 종료일",
+      unitCount: "발행 수량",
+      unitPriceWon: "단가",
+    };
+    return `${labels[fact.claim]}은 ${value}${fact.unit ?? ""}입니다.`;
+  }).join(" ");
+  return filtered({
+    outcome: "answer",
+    answer,
+    evidence: [],
+    limitations: ["등록된 공개 상품의 허용된 구조화 항목만 사용했으며 다른 상품이나 일반 문서 내용을 합치지 않았습니다."],
+    cached: false,
+    answerSource: "structured",
+    structuredClaims: candidates,
+  });
+};
+
+const claimLabels: Readonly<Partial<Record<OfferingStructuredClaim["claim"], RegExp>>> = {
+  amountWon: /(?:공모금액|모집금액|발행금액)/,
+  opensOn: /(?:청약|공모).*(?:시작|개시)/,
+  closesOn: /(?:청약|공모).*(?:종료|마감)/,
+  unitCount: /(?:발행수량|수량|좌수)/,
+  unitPriceWon: /(?:단가|1좌|좌당)/,
+};
+
+const numericValues = (value: string): readonly number[] =>
+  [...value.matchAll(/(?<![\d.])\d[\d,]*(?:\.\d+)?(?![\d.])/g)]
+    .map((match) => Number(match[0].replaceAll(",", "")))
+    .filter(Number.isFinite);
+
+const conflictsFor = (
+  claims: readonly OfferingStructuredClaim[],
+  evidence: readonly SearchHit[],
+): readonly EvidenceConflict[] => claims.flatMap((claim) => {
+  const label = claimLabels[claim.claim];
+  if (!label) return [];
+  return evidence.flatMap((hit) => {
+    if (!label.test(hit.excerpt)) return [];
+    const documentValues = typeof claim.value === "number"
+      ? numericValues(hit.excerpt).map(String)
+      : hit.excerpt.match(/\d{4}-\d{2}-\d{2}/g) ?? [];
+    const matches = typeof claim.value === "number"
+      ? documentValues.some((value) => Number(value) === claim.value)
+      : documentValues.includes(claim.value);
+    if (documentValues.length === 0 || matches) return [];
+    return [{
+      claim: claim.claim,
+      structuredValue: claim.value,
+      documentValue: documentValues.join(", "),
+      sourceId: hit.sourceId,
+      documentId: hit.documentId,
+      chunkId: hit.chunkId,
+      page: hit.page,
+    }];
+  });
+});
+
+export const answerFromOfferingKnowledge = async (
+  offering: Offering,
+  query: string,
+  knowledge: ProductKnowledgeResult,
+  options: { readonly limit?: number; readonly liveAnswer?: LiveAnswerGenerator } = {},
+): Promise<EvidenceAnswer> => {
+  const structured = answerFromOfferingFacts(offering, query);
+  const exactChunks = knowledge.chunks.filter((chunk) =>
+    chunk.categoryId === offering.categoryId &&
+    chunk.productId === offering.offerSlug &&
+    chunk.dataNature === "observed" &&
+    chunk.scenarioId === undefined &&
+    chunk.status === "ready",
+  );
+  const evidence = searchChunks(exactChunks, query, options.limit ?? 5);
+  const pdfLimitation = knowledge.documents.length === 0
+    ? "이 상품에 등록된 공개 PDF가 없어 구조화된 공개 항목만 확인했습니다."
+    : evidence.length === 0
+      ? "이 상품의 등록된 공개 PDF에서 질문과 관련된 문단을 찾지 못했습니다."
+      : null;
+
+  if (structured.answerSource === "structured") {
+    const conflicts = conflictsFor(structured.structuredClaims ?? [], evidence);
+    return filtered({
+      ...structured,
+      evidence,
+      limitations: [
+        ...structured.limitations,
+        ...new Set(evidence.flatMap((item) => item.limitations)),
+        ...(pdfLimitation ? [pdfLimitation] : []),
+        ...(conflicts.length > 0
+          ? ["구조화된 공개 항목과 연결된 PDF의 값이 일치하지 않아 두 값을 함께 보존했습니다."]
+          : []),
+      ],
+      ...(conflicts.length > 0 ? { conflicts } : {}),
+    });
+  }
+  if (evidence.length === 0 || isRankingRequest(query)) {
+    return {
+      ...structured,
+      limitations: [...structured.limitations, ...(pdfLimitation ? [pdfLimitation] : [])],
+    };
+  }
+
+  const liveInput = { question: query, evidence };
+  if (isLiveAnswerInputEligible(liveInput)) {
+    try {
+      const validated = validateLiveAnswerDraft(
+        await (options.liveAnswer ?? generateLiveEvidenceAnswer)(liveInput),
+        liveInput,
+      );
+      if (validated) {
+        return filtered({
+          outcome: "answer",
+          answer: validated.answer,
+          evidence: evidence.filter((item) => validated.citedChunkIds.includes(item.chunkId)),
+          limitations: [...new Set(evidence.flatMap((item) => item.limitations))],
+          cached: false,
+          answerSource: "live_llm",
+          citations: validated.citations,
+        });
+      }
+    } catch {
+      // Provider/auth/quota/timeout failures intentionally degrade to evidence_only.
+    }
+  }
+  return {
+    outcome: "evidence_only",
+    answer: EVIDENCE_ONLY_TEXT,
+    evidence,
+    limitations: [...new Set(evidence.flatMap((item) => item.limitations))],
+    cached: false,
+    answerSource: "none",
+  };
+};
 
 export const buildDeterministicCachedAnswer = (
   scope: KnowledgeScope,
@@ -157,8 +414,12 @@ const evidenceForCache = (
     const chunk = chunks.get(id);
     if (!chunk) return [];
     return [{
+      sourceId: chunk.documentId,
       chunkId: chunk.chunkId,
       documentId: chunk.documentId,
+      categoryId: chunk.categoryId,
+      productId: chunk.offerId,
+      scenarioId: chunk.scenarioId,
       title: chunk.title,
       page: chunk.page,
       excerpt: chunk.text.replace(/\s+/g, " ").trim().slice(0, 320),
@@ -166,6 +427,11 @@ const evidenceForCache = (
       asOf: chunk.asOf,
       dataNature: chunk.dataNature,
       sourceKind: chunk.sourceKind,
+      sourceHash: chunk.sourceHash,
+      chunkHash: chunk.chunkHash,
+      status: "ready" as const,
+      approvedForExternalAi: false,
+      piiReviewStatus: "not-reviewed" as const,
       limitations: chunk.limitations,
       score: 0,
     }];
@@ -351,24 +617,26 @@ export const answerFromEvidence = async (
   // Product contract: grounded live extraction is intentionally attempted before structured/cache fallbacks.
   if (eligibleForLive) {
     const liveInput = { question: query.q, evidence };
-    try {
-      const validated = validateLiveAnswerDraft(
-        await (options.liveAnswer ?? generateLiveEvidenceAnswer)(liveInput),
-        liveInput,
-      );
-      if (validated) {
-        return filtered({
-          outcome: "answer",
-          answer: validated.answer,
-          evidence: evidence.filter((item) => validated.citedChunkIds.includes(item.chunkId)),
-          limitations: [...new Set(evidence.flatMap((item) => item.limitations))],
-          cached: false,
-          answerSource: "live_llm",
-          citations: validated.citations,
-        });
+    if (isLiveAnswerInputEligible(liveInput)) {
+      try {
+        const validated = validateLiveAnswerDraft(
+          await (options.liveAnswer ?? generateLiveEvidenceAnswer)(liveInput),
+          liveInput,
+        );
+        if (validated) {
+          return filtered({
+            outcome: "answer",
+            answer: validated.answer,
+            evidence: evidence.filter((item) => validated.citedChunkIds.includes(item.chunkId)),
+            limitations: [...new Set(evidence.flatMap((item) => item.limitations))],
+            cached: false,
+            answerSource: "live_llm",
+            citations: validated.citations,
+          });
+        }
+      } catch {
+        // Provider/auth/quota/timeout failures intentionally fall through.
       }
-    } catch {
-      // Provider/auth/quota/timeout failures intentionally fall through.
     }
   }
 
@@ -431,7 +699,13 @@ export const answerFromCommonEvidence = async (
   query: CommonKnowledgeQuery,
   options: Pick<EvidenceAnswerOptions, "liveAnswer"> = {},
 ): Promise<EvidenceAnswer> => {
-  if (!scope.product) {
+  if (
+    !scope.product ||
+    scope.product.categoryId !== query.categoryId ||
+    scope.product.productId !== query.productId ||
+    scope.product.dataNature !== query.dataNature ||
+    scope.product.scenarioId !== query.scenarioId
+  ) {
     return {
       outcome: "abstain",
       answer: ABSTAIN_TEXT,
@@ -466,10 +740,12 @@ export const answerFromCommonEvidence = async (
     if (exactScope) {
       const liveInput = { question: query.q, evidence };
       let generated = null;
-      try {
-        generated = await (options.liveAnswer ?? generateLiveEvidenceAnswer)(liveInput);
-      } catch {
-        // Provider/auth/quota/timeout failures intentionally degrade to evidence_only.
+      if (isLiveAnswerInputEligible(liveInput)) {
+        try {
+          generated = await (options.liveAnswer ?? generateLiveEvidenceAnswer)(liveInput);
+        } catch {
+          // Provider/auth/quota/timeout failures intentionally degrade to evidence_only.
+        }
       }
       const validated = validateLiveAnswerDraft(generated, liveInput);
       if (validated) {

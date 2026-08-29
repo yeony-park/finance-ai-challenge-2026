@@ -11,13 +11,14 @@ rationale: docs/spec/09-stack-and-storage.md
 
 | 층 | 저장소 | 화면 접근 |
 |---|---|---|
-| ① 파일 캐시 (`data/public/`·`data/reference/`·`data/offers/`) | 커밋 | 서버 컴포넌트 직독 — 유일한 화면 원천 |
+| ① 파일 캐시 (`data/public/`·`data/reference/`·`data/offers/`·승인 scenario/common knowledge index) | 커밋 또는 prebuild 생성 | 서버 컴포넌트·file repository가 읽는 기본 원천 |
 | ② Vercel Blob | 정정 감시 이벤트 스토어 | 불가 |
-| ③ Postgres (**Supabase** + pgvector — 2026-08-29 오너 확정) | 더미·참조 원장 + RAG 코퍼스 | **불가** |
+| ③ Postgres (**Supabase** + pgvector — 구성 대상) | 더미·참조 원장 + RAG 코퍼스 | 서버 컴포넌트 직독 불가; repository를 통한 search/evidence API만 |
 
-- **R-STO-01 (MUST)** DB 접근 경로는 둘뿐: ①수집·생성 CLI(적재 후 `db:export`로 파일 캐시에 내보냄) ②`POST /api/search` RAG 검색(M2+). 렌더 경로·서버 컴포넌트에서 DB 조회 금지.
+- **R-STO-01 (MUST)** DB 접근 경로는 둘뿐: ①`DATABASE_URL_DIRECT`를 쓰는 수집·생성·migration/seed/ingest/export CLI ②`DATABASE_URL`을 쓰는 `/api/search`와 published-offer `/api/evidence/query` repository 조회. 렌더 경로·서버 컴포넌트 직조회는 금지한다.
 - **R-STO-02 (MUST)** `DATABASE_URL` 미설정 = file 모드. DB 리포지토리마다 `data/` JSON을 읽는 fake 트윈이 같은 인터페이스로 응답해야 하며, DB 없이 빌드·테스트·verify 완주(R-INV-05).
-- **R-STO-03 (MUST)** `db:export`만이 화면 데이터를 만든다. export 산출물은 마스킹 2단 + 익명화 게이트(R-INV-03)를 동일 통과. DB에서 화면 JSON으로 가는 다른 경로 금지.
+- **R-STO-02a (MUST)** `DATABASE_URL`이 설정됐는데 런타임 DB 조회가 실패하면 file로 조용히 폴백하지 않는다. `DATABASE_URL_DIRECT`는 런타임 repository에서 읽지 않는다.
+- **R-STO-03 (MUST)** DB 유래 화면 데이터는 `db:export`, PDF knowledge 화면 데이터는 승인 manifest를 검증하는 `knowledge:index`만 만든다. 두 산출 경로 모두 공개 승인·마스킹/익명화·scope 검증을 통과해야 하며 원천 manifest/PDF와 review candidate는 API·화면에 직접 노출하지 않는다.
 - **R-STO-03a (MUST)** `db:seed`는 원천 경로가 `data/raw/`·`data/snapshots/`·`data/reports/`(로컬 전용)이면 즉시 실패 — CLI 진입점 하드코딩. R-STO-04의 유일한 기계 강제 지점.
 - **R-STO-04 (MUST)** 마스킹 전·개인정보 포함 데이터는 DB에도 적재 금지 — Supabase는 팀 공유 저장소다. `data/raw/` 로컬 전용 원칙이 DB에 그대로 적용된다.
 
@@ -38,13 +39,14 @@ rationale: docs/spec/09-stack-and-storage.md
 
 ## RAG
 
-- **R-STO-12 (MUST)** `rag_documents.source_id`는 스파인 코퍼스(`spine/rag/corpus.ts`) 등록 id와 1:1. RAG 적재 ≠ 출처 등록 — 등록은 오너 일괄(R-INV-13). 미등록 id 적재는 계약 테스트가 거부한다.
+- **R-STO-12 (MUST)** generic `rag_documents.source_id`는 스파인 코퍼스(`spine/rag/corpus.ts`) 등록 id만 허용한다. product 문서는 대신 exact scope, manifest/public 승인, 출처 URL, 기준일, hash와 상태를 필수 provenance로 가진다. RAG 적재 자체가 generic 출처 등록을 뜻하지 않는다.
 - **R-STO-13 (MUST)** `license`는 `green | yellow_confirmed`만 적재 가능. red·yellow 미확인 금지.
-- **R-STO-14 (MUST)** RAG 용도는 검색(교육·범위 밖 판별)만 — 검증 사실·수치의 원천은 리포트 캐시(R-API-11). 문서 임베딩은 적재 CLI에서 1회, 런타임은 질의 임베딩 1회만. 대화 입력 로그를 RAG 테이블에 혼입 금지.
-- **R-STO-15 (기본값)** 임베딩 text-embedding-3-small(1536) + 하이브리드 검색(tsvector + vector cosine, HNSW). fake 모드는 임베딩 생략, 사전 작성 콘텐츠 키워드 매칭으로 열화. 키워드 질의는 `websearch_to_tsquery`만(`to_tsquery` 금지). `simple` 설정은 한국어 형태소 미지원 — `pg_trgm` 병행 등 보강은 09 §4 [팀 결정 대기].
-- **R-STO-16 (MUST, 2026-08-29 개정)** 자격증명 역할 분리: 런타임 `DATABASE_URL`은 rag 2테이블 SELECT + `verification_runs` INSERT 전용(SELECT 불가) 역할. 원장 쓰기·마이그레이션은 CLI 전용 `DATABASE_URL_DIRECT`에만. Supabase `service_role`·`anon` 키는 코드에 들여오지 않는다(PostgREST 미사용).
+- **R-STO-14 (MUST)** generic RAG는 일반 개념 질문에만 사용하고 `scope_kind='generic'`으로 제한한다. 상품 근거는 exact `category_id+product_id+data_nature+scenario_id`와 `scope_kind='product'`, public/ready 문서·청크만 조회하며 다른 상품·generic corpus로 보충하지 않는다. 대화 입력 로그를 RAG 테이블에 혼입 금지.
+- **R-STO-15 (현재 구현)** 통합 RAG 아키텍처 MVP는 file lexical 검색과 DB `websearch_to_tsquery('simple', ...)` FTS만 사용한다. 응답은 `semantic:false`와 keyword 전략을 명시한다. vector/embedding 생성·검색 및 실제 Supabase 연결은 구현 완료로 간주하지 않는다.
+- **R-STO-16 (MUST, 2026-08-30 개정)** 자격증명 역할 분리: 런타임 `DATABASE_URL` 역할은 `rag_documents`·`rag_chunks` SELECT, `offerings`의 공개 9열(`offer_slug,category_id,provenance,title_public,amount_won,opens_on,closes_on,detail,source_meta`) SELECT, 기존 `verification_runs` INSERT만 갖는다. 원장 쓰기·마이그레이션은 CLI 전용 `DATABASE_URL_DIRECT`에만 둔다. Supabase `service_role`·`anon` 키는 코드에 들여오지 않는다(PostgREST 미사용).
 - **R-STO-17 (MUST)** RAG 청크는 프롬프트 조립 시 고정 구분자 데이터 블록으로만 삽입 — 사용자 지시 채널에 원문 이어붙이기 금지(06 §6의 RAG 집행 조항).
 - **R-STO-18 (MUST)** RAG 적재 CLI는 인젝션 휴리스틱 스캔 통과분만 등록 — 실패분은 license 등급 무관 보류. 챗 게이트 다턴 레드팀에 "RAG 소스 내 인젝션" 시나리오 포함.
+- **R-STO-18a (MUST)** `0004_rag_product_scope.sql`은 generic/product scope, `ingest_owner`, product provenance, public/ready 상태, external-AI 승인과 PII 검토 상태, document/chunk scope FK를 추가한다. file knowledge ETL은 고정 owner 범위만 upsert하고 같은 owner의 사라진 문서·청크를 transaction 안에서 `revoked` 처리하며 다른 owner와 generic 행은 보존한다. 외부 AI 승인은 PII 검토 `passed` 없이는 활성화할 수 없다.
 
 ## 실행 이력·원장 관측 (09 §5)
 
@@ -58,6 +60,7 @@ rationale: docs/spec/09-stack-and-storage.md
 ```bash
 npm run db:migrate   # drizzle-kit 적용
 npm run db:seed      # 결정적·멱등 시드
+npm run db:ingest    # 승인 file knowledge snapshot → DB product scope
 npm run db:export    # DB → data/public/·data/reference/ (마스킹 게이트 경유)
 ```
 
@@ -67,7 +70,8 @@ npm run db:export    # DB → data/public/·data/reference/ (마스킹 게이트
 |---|---|
 | `DATABASE_URL` (풀러·읽기 전용 역할) | file 모드 (R-STO-02) |
 | `DATABASE_URL_DIRECT` (직결·CLI 전용 RW) | db:* 스크립트 `not_configured` 정직 종료 |
-| `AI_GATEWAY_API_KEY`/`OPENAI_API_KEY` | LLM·임베딩 fake |
+| `AI_GATEWAY_API_KEY`/`OPENAI_API_KEY` | live evidence 호출 없음; deterministic/근거-only 경로 유지 |
+| `LIVE_EVIDENCE_ENABLED` | 기본 false; 외부 전송 고지·동의와 분산 제한·비용상한 전에는 활성화 금지 |
 | `ANTHROPIC_API_KEY`·`SPINE_MODEL`·`VERIFY_EXTRACT_MODEL` | 스파인·추출 fake/기본 모델 |
 | `DART_API_KEY`·`DATA_GO_KR_API_KEY` | 라이브 경로 `not_configured` 정직 응답 |
 | `CRON_SECRET` | cron 503 `not_configured` |

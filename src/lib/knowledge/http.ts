@@ -1,8 +1,10 @@
 import {
-  CommonKnowledgeQuerySchema,
-  KnowledgeQuerySchema,
-  type CommonKnowledgeQuery,
-  type KnowledgeQuery,
+  CommonKnowledgeRequestSchema,
+  GlobalSearchRequestSchema,
+  KnowledgeRequestSchema,
+  type CommonKnowledgeRequest,
+  type GlobalSearchRequest,
+  type KnowledgeRequest,
 } from "./schema";
 
 const MAX_BODY_BYTES = 32_768;
@@ -49,23 +51,32 @@ export const readJsonBody = async (request: Request): Promise<JsonBodyResult> =>
 
 export const parseKnowledgeRequest = async (
   request: Request,
-): Promise<KnowledgeQuery | null> => {
+): Promise<KnowledgeRequest | null> => {
   const body = await readJsonBody(request);
   if (!body.ok) return null;
-  const parsed = KnowledgeQuerySchema.safeParse(body.value);
+  const parsed = KnowledgeRequestSchema.safeParse(body.value);
   return parsed.success ? parsed.data : null;
 };
 
-export type EvidenceQuery = KnowledgeQuery | CommonKnowledgeQuery;
+export const parseGlobalSearchRequest = async (
+  request: Request,
+): Promise<GlobalSearchRequest | null> => {
+  const body = await readJsonBody(request);
+  if (!body.ok) return null;
+  const parsed = GlobalSearchRequestSchema.safeParse(body.value);
+  return parsed.success ? parsed.data : null;
+};
+
+export type EvidenceQuery = KnowledgeRequest | CommonKnowledgeRequest;
 
 export const parseEvidenceRequest = async (
   request: Request,
 ): Promise<EvidenceQuery | null> => {
   const body = await readJsonBody(request);
   if (!body.ok) return null;
-  const legacy = KnowledgeQuerySchema.safeParse(body.value);
+  const legacy = KnowledgeRequestSchema.safeParse(body.value);
   if (legacy.success) return legacy.data;
-  const common = CommonKnowledgeQuerySchema.safeParse(body.value);
+  const common = CommonKnowledgeRequestSchema.safeParse(body.value);
   return common.success ? common.data : null;
 };
 

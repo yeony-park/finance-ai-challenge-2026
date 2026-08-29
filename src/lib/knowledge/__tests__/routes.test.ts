@@ -50,13 +50,42 @@ describe("knowledge API routes", () => {
     expect(body.results[0].matchedFields).toContain("title");
   });
 
-  it("전역 검색의 q 길이와 limit 상한을 검증한다", async () => {
+  it("Home UI 호환 200자 상한은 contracts/api의 예약 500자 계약과 다름을 고정한다", async () => {
     expect(
       (await searchPost(request("http://localhost/api/search", { q: "x".repeat(201) }))).status,
     ).toBe(400);
     expect(
       (await searchPost(request("http://localhost/api/search", { q: "가축", limit: 21 }))).status,
     ).toBe(400);
+  });
+
+  it("q/query alias를 내부 query로 통일하고 서로 다르면 두 API 모두 거부한다", async () => {
+    for (const body of [
+      { query: "가축 1호" },
+      { q: " 가축 1호 ", query: "가축 1호" },
+    ]) {
+      const response = await searchPost(request("http://localhost/api/search", body));
+      expect(response.status).toBe(200);
+      expect((await response.json()).results[0]?.id).toBe("livestock-1");
+    }
+    expect((await searchPost(request("http://localhost/api/search", {
+      q: "가축 1호",
+      query: "가축 2호",
+    }))).status).toBe(400);
+
+    const evidence = await evidencePost(request("http://localhost/api/evidence/query", {
+      scenarioId: "re-scenario-01",
+      offerId: "re-offer-01",
+      query: "최소투자금 알려줘",
+    }));
+    expect(evidence.status).toBe(200);
+    expect(await evidence.json()).toMatchObject({ answerSource: "structured" });
+    expect((await evidencePost(request("http://localhost/api/evidence/query", {
+      scenarioId: "re-scenario-01",
+      offerId: "re-offer-01",
+      q: "연면적",
+      query: "최소투자금",
+    }))).status).toBe(400);
   });
 
   it("단일 음절 category alias를 주소·소개 substring으로 오인하지 않는다", async () => {
@@ -241,6 +270,7 @@ describe("knowledge API routes", () => {
     const legacy = await evidencePost(request("http://localhost/api/evidence/query", {
       categoryId: "real-estate",
       productId: "re-offer-01",
+      scenarioId: "re-scenario-01",
       dataNature: "scenario",
       namespace: "legacy-scenario",
       q: "최소투자금은 얼마인가요?",
@@ -256,6 +286,7 @@ describe("knowledge API routes", () => {
     const common = await evidencePost(request("http://localhost/api/evidence/query", {
       categoryId: "real-estate",
       productId: "re-offer-01",
+      scenarioId: "re-scenario-01",
       dataNature: "scenario",
       namespace: "common",
       q: "최소투자금은 얼마인가요?",
@@ -267,6 +298,14 @@ describe("knowledge API routes", () => {
       namespace: "common",
       outcome: "abstain",
     });
+
+    expect((await evidencePost(request("http://localhost/api/evidence/query", {
+      categoryId: "real-estate",
+      productId: "re-offer-01",
+      dataNature: "scenario",
+      namespace: "legacy-scenario",
+      q: "최소투자금",
+    }))).status).toBe(400);
   });
 
   it("표준 근거질의는 구조화값과 5영역 검토를 직접 반환한다", async () => {

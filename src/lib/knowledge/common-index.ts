@@ -342,6 +342,8 @@ export const buildCommonKnowledgeIndex = async (
         dataNature: manifest.dataNature,
         sourceHash: parsed.sourceHash,
         approvedForPublic: manifest.approvedForPublic,
+        approvedForExternalAi: manifest.approvedForExternalAi,
+        piiReviewStatus: manifest.piiReviewStatus,
         limitations: [...manifest.limitations, ...(parsed.limitation ? [parsed.limitation] : [])],
       };
       documents.push(CommonDocumentRecordSchema.parse({

@@ -5,6 +5,7 @@ import {
   check,
   customType,
   date,
+  foreignKey,
   index,
   integer,
   jsonb,
@@ -138,6 +139,24 @@ export const ragDocuments = pgTable(
     license: text("license").notNull(),
     retrievedOn: date("retrieved_on").notNull(),
     provenance: text("provenance").notNull().default("public_record"),
+    scopeKind: text("scope_kind").notNull().default("generic"),
+    ingestOwner: text("ingest_owner"),
+    categoryId: text("category_id"),
+    productId: text("product_id"),
+    scenarioId: text("scenario_id"),
+    dataNature: text("data_nature"),
+    sourceKind: text("source_kind"),
+    sourceUrl: text("source_url"),
+    asOf: date("as_of"),
+    sourceHash: text("source_hash"),
+    approvedForPublic: boolean("approved_for_public"),
+    approvedForExternalAi: boolean("approved_for_external_ai").default(false),
+    piiReviewStatus: text("pii_review_status").default("not-reviewed"),
+    status: text("status"),
+    limitations: text("limitations").array(),
+    scopeKey: text("scope_key").generatedAlwaysAs(
+      sql`scope_kind || ':' || coalesce(ingest_owner, '') || ':' || coalesce(category_id, '') || ':' || coalesce(product_id, '') || ':' || coalesce(scenario_id, '') || ':' || coalesce(data_nature, '') || ':' || coalesce(source_kind, '')`,
+    ),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
       .defaultNow(),
@@ -148,6 +167,85 @@ export const ragDocuments = pgTable(
       "rag_documents_license_check",
       sql`${t.license} in ('green','yellow_confirmed')`,
     ),
+    check(
+      "rag_documents_scope_kind_check",
+      sql`${t.scopeKind} in ('generic','product')`,
+    ),
+    check(
+      "rag_documents_category_check",
+      sql`${t.categoryId} is null or ${t.categoryId} in ('cattle','pig','art','real-estate')`,
+    ),
+    check(
+      "rag_documents_ingest_owner_check",
+      sql`${t.ingestOwner} is null or ${t.ingestOwner} ~ '^[a-zA-Z0-9][a-zA-Z0-9._-]{0,119}$'`,
+    ),
+    check(
+      "rag_documents_data_nature_check",
+      sql`${t.dataNature} is null or ${t.dataNature} in ('observed','scenario')`,
+    ),
+    check(
+      "rag_documents_product_id_check",
+      sql`${t.productId} is null or ${t.productId} ~ '^[a-zA-Z0-9][a-zA-Z0-9._-]{0,119}$'`,
+    ),
+    check(
+      "rag_documents_scenario_id_check",
+      sql`${t.scenarioId} is null or ${t.scenarioId} ~ '^[a-zA-Z0-9][a-zA-Z0-9._-]{0,119}$'`,
+    ),
+    check(
+      "rag_documents_source_kind_check",
+      sql`${t.sourceKind} is null or ${t.sourceKind} in ('issuer-claim','platform-claim','official-document','external-observation','scenario-input')`,
+    ),
+    check(
+      "rag_documents_nature_source_check",
+      sql`${t.dataNature} is null or ${t.sourceKind} is null or (${t.dataNature} = 'scenario' and ${t.sourceKind} = 'scenario-input') or (${t.dataNature} = 'observed' and ${t.sourceKind} <> 'scenario-input')`,
+    ),
+    check(
+      "rag_documents_observed_scenario_check",
+      sql`${t.dataNature} is null or ${t.dataNature} <> 'observed' or ${t.scenarioId} is null`,
+    ),
+    check(
+      "rag_documents_scenario_scope_check",
+      sql`${t.scopeKind} <> 'product' or ${t.dataNature} <> 'scenario' or ${t.scenarioId} is not null`,
+    ),
+    check(
+      "rag_documents_status_check",
+      sql`${t.status} is null or ${t.status} in ('ready','partial','ocr_required','damaged','encrypted','failed','revoked')`,
+    ),
+    check(
+      "rag_documents_source_hash_check",
+      sql`${t.sourceHash} is null or ${t.sourceHash} ~ '^[a-f0-9]{64}$'`,
+    ),
+    check(
+      "rag_documents_pii_review_status_check",
+      sql`${t.piiReviewStatus} is null or ${t.piiReviewStatus} in ('passed','not-reviewed')`,
+    ),
+    check(
+      "rag_documents_external_ai_gate_check",
+      sql`${t.approvedForExternalAi} is distinct from true or ${t.piiReviewStatus} is not distinct from 'passed'`,
+    ),
+    check(
+      "rag_documents_limitations_check",
+      sql`${t.limitations} is null or (cardinality(${t.limitations}) <= 100 and array_position(${t.limitations}, null) is null)`,
+    ),
+    check(
+      "rag_documents_product_scope_check",
+      sql`(${t.scopeKind} = 'generic' and ${t.ingestOwner} is null and ${t.productId} is null and ${t.scenarioId} is null) or (${t.scopeKind} = 'product' and ${t.ingestOwner} is not null and ${t.categoryId} is not null and ${t.productId} is not null and length(${t.productId}) > 0 and ${t.dataNature} is not null and ${t.sourceKind} is not null and ${t.sourceUrl} is not null and length(${t.sourceUrl}) > 0 and ${t.asOf} is not null and ${t.sourceHash} is not null and ${t.approvedForPublic} is not null and ${t.approvedForExternalAi} is not null and ${t.piiReviewStatus} is not null and ${t.status} is not null and ${t.limitations} is not null)`,
+    ),
+    unique("rag_documents_id_scope_key").on(t.id, t.scopeKey),
+    index("rag_documents_product_scope_idx")
+      .on(
+        t.scopeKind,
+        t.categoryId,
+        t.productId,
+        t.dataNature,
+        t.scenarioId,
+        t.approvedForPublic,
+        t.status,
+      )
+      .where(sql`${t.scopeKind} = 'product'`),
+    index("rag_documents_ingest_owner_idx")
+      .on(t.scopeKind, t.ingestOwner, t.sourceId)
+      .where(sql`${t.scopeKind} = 'product' and ${t.ingestOwner} is not null`),
   ],
 );
 
@@ -160,6 +258,27 @@ export const ragChunks = pgTable(
       .references(() => ragDocuments.id, { onDelete: "cascade" }),
     chunkIndex: integer("chunk_index").notNull(),
     content: text("content").notNull(),
+    scopeKind: text("scope_kind").notNull().default("generic"),
+    ingestOwner: text("ingest_owner"),
+    categoryId: text("category_id"),
+    productId: text("product_id"),
+    scenarioId: text("scenario_id"),
+    dataNature: text("data_nature"),
+    sourceKind: text("source_kind"),
+    sourceUrl: text("source_url"),
+    asOf: date("as_of"),
+    sourceHash: text("source_hash"),
+    approvedForPublic: boolean("approved_for_public"),
+    approvedForExternalAi: boolean("approved_for_external_ai").default(false),
+    piiReviewStatus: text("pii_review_status").default("not-reviewed"),
+    status: text("status"),
+    limitations: text("limitations").array(),
+    page: integer("page"),
+    chunkHash: text("chunk_hash"),
+    canonicalText: text("canonical_text"),
+    scopeKey: text("scope_key").generatedAlwaysAs(
+      sql`scope_kind || ':' || coalesce(ingest_owner, '') || ':' || coalesce(category_id, '') || ':' || coalesce(product_id, '') || ':' || coalesce(scenario_id, '') || ':' || coalesce(data_nature, '') || ':' || coalesce(source_kind, '')`,
+    ),
     embedding: vector("embedding", { dimensions: 1536 }),
     tsv: tsvector("tsv").generatedAlwaysAs(
       sql`to_tsvector('simple', content)`,
@@ -167,8 +286,96 @@ export const ragChunks = pgTable(
   },
   (t) => [
     check("rag_chunks_chunk_index_check", sql`${t.chunkIndex} >= 0`),
+    check(
+      "rag_chunks_scope_kind_check",
+      sql`${t.scopeKind} in ('generic','product')`,
+    ),
+    check(
+      "rag_chunks_category_check",
+      sql`${t.categoryId} is null or ${t.categoryId} in ('cattle','pig','art','real-estate')`,
+    ),
+    check(
+      "rag_chunks_ingest_owner_check",
+      sql`${t.ingestOwner} is null or ${t.ingestOwner} ~ '^[a-zA-Z0-9][a-zA-Z0-9._-]{0,119}$'`,
+    ),
+    check(
+      "rag_chunks_data_nature_check",
+      sql`${t.dataNature} is null or ${t.dataNature} in ('observed','scenario')`,
+    ),
+    check(
+      "rag_chunks_product_id_check",
+      sql`${t.productId} is null or ${t.productId} ~ '^[a-zA-Z0-9][a-zA-Z0-9._-]{0,119}$'`,
+    ),
+    check(
+      "rag_chunks_scenario_id_check",
+      sql`${t.scenarioId} is null or ${t.scenarioId} ~ '^[a-zA-Z0-9][a-zA-Z0-9._-]{0,119}$'`,
+    ),
+    check(
+      "rag_chunks_source_kind_check",
+      sql`${t.sourceKind} is null or ${t.sourceKind} in ('issuer-claim','platform-claim','official-document','external-observation','scenario-input')`,
+    ),
+    check(
+      "rag_chunks_nature_source_check",
+      sql`${t.dataNature} is null or ${t.sourceKind} is null or (${t.dataNature} = 'scenario' and ${t.sourceKind} = 'scenario-input') or (${t.dataNature} = 'observed' and ${t.sourceKind} <> 'scenario-input')`,
+    ),
+    check(
+      "rag_chunks_observed_scenario_check",
+      sql`${t.dataNature} is null or ${t.dataNature} <> 'observed' or ${t.scenarioId} is null`,
+    ),
+    check(
+      "rag_chunks_scenario_scope_check",
+      sql`${t.scopeKind} <> 'product' or ${t.dataNature} <> 'scenario' or ${t.scenarioId} is not null`,
+    ),
+    check(
+      "rag_chunks_status_check",
+      sql`${t.status} is null or ${t.status} in ('ready','ocr_required','revoked')`,
+    ),
+    check(
+      "rag_chunks_source_hash_check",
+      sql`${t.sourceHash} is null or ${t.sourceHash} ~ '^[a-f0-9]{64}$'`,
+    ),
+    check(
+      "rag_chunks_pii_review_status_check",
+      sql`${t.piiReviewStatus} is null or ${t.piiReviewStatus} in ('passed','not-reviewed')`,
+    ),
+    check(
+      "rag_chunks_external_ai_gate_check",
+      sql`${t.approvedForExternalAi} is distinct from true or ${t.piiReviewStatus} is not distinct from 'passed'`,
+    ),
+    check(
+      "rag_chunks_chunk_hash_check",
+      sql`${t.chunkHash} is null or ${t.chunkHash} ~ '^[a-f0-9]{64}$'`,
+    ),
+    check(
+      "rag_chunks_limitations_check",
+      sql`${t.limitations} is null or (cardinality(${t.limitations}) <= 100 and array_position(${t.limitations}, null) is null)`,
+    ),
+    check(
+      "rag_chunks_product_scope_check",
+      sql`(${t.scopeKind} = 'generic' and ${t.ingestOwner} is null and ${t.productId} is null and ${t.scenarioId} is null) or (${t.scopeKind} = 'product' and ${t.ingestOwner} is not null and ${t.categoryId} is not null and ${t.productId} is not null and length(${t.productId}) > 0 and ${t.dataNature} is not null and ${t.sourceKind} is not null and ${t.sourceUrl} is not null and length(${t.sourceUrl}) > 0 and ${t.asOf} is not null and ${t.sourceHash} is not null and ${t.approvedForPublic} is not null and ${t.approvedForExternalAi} is not null and ${t.piiReviewStatus} is not null and ${t.status} is not null and ${t.limitations} is not null and ${t.page} is not null and ${t.page} > 0 and ${t.chunkHash} is not null and ${t.canonicalText} is not null and length(${t.canonicalText}) > 0)`,
+    ),
     unique("rag_chunks_document_chunk_key").on(t.documentId, t.chunkIndex),
+    foreignKey({
+      name: "rag_chunks_document_scope_rag_documents_fk",
+      columns: [t.documentId, t.scopeKey],
+      foreignColumns: [ragDocuments.id, ragDocuments.scopeKey],
+    }).onDelete("cascade"),
     index("rag_chunks_document_id_idx").on(t.documentId),
+    index("rag_chunks_product_scope_idx")
+      .on(
+        t.scopeKind,
+        t.categoryId,
+        t.productId,
+        t.dataNature,
+        t.scenarioId,
+        t.documentId,
+      )
+      .where(
+        sql`${t.scopeKind} = 'product' and ${t.approvedForPublic} = true and ${t.status} = 'ready'`,
+      ),
+    index("rag_chunks_ingest_owner_idx")
+      .on(t.scopeKind, t.ingestOwner, t.documentId)
+      .where(sql`${t.scopeKind} = 'product' and ${t.ingestOwner} is not null`),
     index("rag_chunks_embedding_hnsw").using(
       "hnsw",
       t.embedding.op("vector_cosine_ops"),

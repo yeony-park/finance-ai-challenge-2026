@@ -16,7 +16,11 @@ import {
   EvidenceQuery,
   evidenceRequestBody,
 } from "../../real-estate-scenario/ScenarioEvidenceQuery";
-import { CommonProductDetail, commonProductMetadata } from "../CommonProductDetail";
+import {
+  CommonProductDetail,
+  commonEvidenceScope,
+  commonProductMetadata,
+} from "../CommonProductDetail";
 
 const CATEGORIES = ["cattle", "pig", "art", "real-estate"] as const;
 const CATEGORY_LABEL = { cattle: "한우", pig: "돼지", art: "미술품", "real-estate": "부동산" } as const;
@@ -125,12 +129,7 @@ describe("공통 상품 자동 상세 UI", () => {
   test("common 질의는 exact scope body를 쓰고 legacy scenario body는 유지한다", () => {
     for (const categoryId of CATEGORIES) {
       const product = productFixture(categoryId);
-      expect(evidenceRequestBody({
-        categoryId,
-        productId: product.productId,
-        dataNature: product.dataNature,
-        namespace: "common",
-      }, "  핵심 조건  ")).toEqual({
+      expect(evidenceRequestBody(commonEvidenceScope(product), "  핵심 조건  ")).toEqual({
         categoryId,
         productId: product.productId,
         dataNature: "observed",
@@ -139,6 +138,24 @@ describe("공통 상품 자동 상세 UI", () => {
         limit: 5,
       });
     }
+    const scenarioProduct: CommonProductRecord = {
+      ...productFixture("real-estate"),
+      productId: "real-estate-scenario-fixture",
+      scenarioId: "scenario-fixture",
+      dataNature: "scenario",
+    };
+    expect(evidenceRequestBody(commonEvidenceScope(scenarioProduct), "위험 요인"))
+      .toEqual({
+        categoryId: "real-estate",
+        productId: "real-estate-scenario-fixture",
+        scenarioId: "scenario-fixture",
+        dataNature: "scenario",
+        namespace: "common",
+        q: "위험 요인",
+        limit: 5,
+      });
+    expect(evidenceRequestBody(commonEvidenceScope(productFixture("cattle")), "핵심 조건"))
+      .not.toHaveProperty("scenarioId");
     expect(evidenceRequestBody({ scenarioId: "scenario-1", offerId: "offer-1" }, "수수료"))
       .toEqual({ scenarioId: "scenario-1", offerId: "offer-1", q: "수수료", limit: 5 });
     const markup = renderToStaticMarkup(createElement(EvidenceQuery, {

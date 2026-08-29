@@ -116,4 +116,19 @@ describe("knowledge JSON loader", () => {
       cachedAnswers: [],
     });
   });
+
+  it("동일 scenarioId+offerId 승인 레코드가 중복되면 첫 항목을 선택하지 않는다", async () => {
+    const root = await mkdtemp(path.join(os.tmpdir(), "knowledge-loader-duplicate-"));
+    roots.push(root);
+    await Promise.all([
+      writeJson(path.join(root, "scenarios/real-estate/a.json"), validScenarioOffer()),
+      writeJson(path.join(root, "scenarios/real-estate/b.json"), validScenarioOffer()),
+    ]);
+    await expect(loadKnowledgeScope("scenario-001", "offer-001", root)).resolves.toEqual({
+      scenario: null,
+      documents: [],
+      chunks: [],
+      cachedAnswers: [],
+    });
+  });
 });

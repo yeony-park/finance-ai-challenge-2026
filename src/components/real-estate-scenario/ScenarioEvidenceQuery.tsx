@@ -103,8 +103,16 @@ export type EvidenceQueryScope =
   | {
       readonly categoryId: "cattle" | "pig" | "art" | "real-estate";
       readonly productId: string;
-      readonly dataNature: "observed" | "scenario";
+      readonly dataNature: "observed";
       readonly namespace: "common";
+      readonly scenarioId?: never;
+    }
+  | {
+      readonly categoryId: "cattle" | "pig" | "art" | "real-estate";
+      readonly productId: string;
+      readonly dataNature: "scenario";
+      readonly namespace: "common";
+      readonly scenarioId: string;
     };
 
 export const evidenceRequestBody = (scope: EvidenceQueryScope, q: string) => ({

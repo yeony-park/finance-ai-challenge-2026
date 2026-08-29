@@ -1,4 +1,5 @@
 import type { ChunkRecord, CommonChunkRecord } from "./schema";
+import type { ProductKnowledgeChunk } from "@/lib/db/repositories/types";
 
 const SYNONYMS: Readonly<Record<string, readonly string[]>> = {
   건물: ["건축물", "부동산"],
@@ -101,8 +102,12 @@ const snippetOf = (text: string, terms: readonly string[]): string => {
 };
 
 export interface SearchHit {
+  readonly sourceId: string;
   readonly chunkId: string;
   readonly documentId: string;
+  readonly categoryId: ChunkRecord["categoryId"] | CommonChunkRecord["categoryId"];
+  readonly productId: string;
+  readonly scenarioId?: string;
   readonly title: string;
   readonly page: number;
   readonly excerpt: string;
@@ -110,12 +115,17 @@ export interface SearchHit {
   readonly asOf: string;
   readonly dataNature: ChunkRecord["dataNature"] | CommonChunkRecord["dataNature"];
   readonly sourceKind: ChunkRecord["sourceKind"] | CommonChunkRecord["sourceKind"];
+  readonly sourceHash: string;
+  readonly chunkHash: string;
+  readonly status: "ready";
+  readonly approvedForExternalAi: boolean;
+  readonly piiReviewStatus: "passed" | "not-reviewed";
   readonly limitations: readonly string[];
   readonly score: number;
 }
 
 export const searchChunks = (
-  chunks: readonly (ChunkRecord | CommonChunkRecord)[],
+  chunks: readonly (ChunkRecord | CommonChunkRecord | ProductKnowledgeChunk)[],
   query: string,
   limit: number,
 ): readonly SearchHit[] => {
@@ -169,8 +179,12 @@ export const searchChunks = (
     .sort((left, right) => right.score - left.score || left.chunk.chunkId.localeCompare(right.chunk.chunkId))
     .slice(0, limit)
     .map(({ chunk, score }) => ({
+      sourceId: "sourceId" in chunk ? chunk.sourceId : chunk.documentId,
       chunkId: chunk.chunkId,
       documentId: chunk.documentId,
+      categoryId: chunk.categoryId,
+      productId: "productId" in chunk ? chunk.productId : chunk.offerId,
+      ...(chunk.scenarioId ? { scenarioId: chunk.scenarioId } : {}),
       title: chunk.title,
       page: chunk.page,
       excerpt: snippetOf(chunk.text, terms),
@@ -178,6 +192,11 @@ export const searchChunks = (
       asOf: chunk.asOf,
       dataNature: chunk.dataNature,
       sourceKind: chunk.sourceKind,
+      sourceHash: chunk.sourceHash,
+      chunkHash: chunk.chunkHash,
+      status: "ready" as const,
+      approvedForExternalAi: "approvedForExternalAi" in chunk && chunk.approvedForExternalAi === true,
+      piiReviewStatus: "piiReviewStatus" in chunk && chunk.piiReviewStatus === "passed" ? "passed" : "not-reviewed",
       limitations: chunk.limitations,
       score,
     }));

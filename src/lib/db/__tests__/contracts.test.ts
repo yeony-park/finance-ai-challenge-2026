@@ -5,6 +5,10 @@ import {
   offeringRowSchema,
   ragDocumentRowSchema,
 } from "../records";
+import {
+  isSafePublicSourceUrl,
+  sanitizePublicSourceUrl,
+} from "@/lib/verify/real-estate/source-url";
 
 const baseSourceMeta = {
   sourceUrl: "synthetic://generator/x",
@@ -41,6 +45,9 @@ describe("① provenance 3값 외 거부 (R-STO-05)", () => {
       const result = offeringRowSchema.safeParse({
         ...baseOffering,
         provenance,
+        ...(provenance === "synthetic" ? {} : {
+          sourceMeta: { ...baseSourceMeta, sourceUrl: "https://example.com/landing" },
+        }),
         titlePublic:
           provenance === "synthetic" ? "예시 회화 X" : "부동산 A",
       });
@@ -63,6 +70,7 @@ describe("⑤ synthetic '예시 ' 프리픽스 강제 (R-STO-07a)", () => {
       ...baseOffering,
       provenance: "public_record",
       titlePublic: "부동산 A",
+      sourceMeta: { ...baseSourceMeta, sourceUrl: "https://example.com/landing" },
     });
     expect(result.success).toBe(true);
   });
@@ -122,6 +130,7 @@ describe("R-STO-21 synthetic slug ex- 프리픽스 강제", () => {
       provenance: "manual_verified",
       titlePublic: "부동산 A",
       offerSlug: "real-estate-a",
+      sourceMeta: { ...baseSourceMeta, sourceUrl: "https://example.com/landing" },
     });
     expect(result.success).toBe(true);
   });
@@ -135,6 +144,52 @@ describe("closes_on ≥ opens_on CHECK 미러 (R-STO 스키마)", () => {
       closesOn: "2026-05-01",
     });
     expect(result.success).toBe(false);
+  });
+});
+
+describe("공개 offering sourceMeta URL", () => {
+  const publicOffering = {
+    ...baseOffering,
+    provenance: "manual_verified" as const,
+    offerSlug: "actual-offer",
+    titlePublic: "실제 상품",
+  };
+
+  test("비민감 landing query는 ingest와 sanitizer에서 유지한다", () => {
+    const sourceUrl = "https://example.com/landing?rcept_no=20260830000001&page=2&category=art";
+    expect(offeringRowSchema.safeParse({
+      ...publicOffering,
+      sourceMeta: { ...baseSourceMeta, sourceUrl },
+    }).success).toBe(true);
+    expect(isSafePublicSourceUrl(sourceUrl)).toBe(true);
+    expect(sanitizePublicSourceUrl(sourceUrl, "fallback")).toBe(sourceUrl);
+  });
+
+  test.each(["client_secret", "access_key", "key", "sig", "password"])(
+    "%s credential query는 거부하고 sanitizer가 query를 제거한다",
+    (name) => {
+      const sourceUrl = `https://example.com/landing?page=2&${name}=value`;
+      expect(offeringRowSchema.safeParse({
+        ...publicOffering,
+        sourceMeta: { ...baseSourceMeta, sourceUrl },
+      }).success).toBe(false);
+      expect(isSafePublicSourceUrl(sourceUrl)).toBe(false);
+      expect(sanitizePublicSourceUrl(sourceUrl, "fallback")).toBe("https://example.com/landing");
+    },
+  );
+
+  test.each([
+    "http://example.com/landing",
+    "ftp://example.com/landing",
+    "not-a-public-url",
+    "https://user:pass@example.com/landing",
+    "https://example.com/landing?api_key=secret",
+    "https://example.com/landing#private",
+  ])("비공개 URL %s를 ingest에서 거부한다", (sourceUrl) => {
+    expect(offeringRowSchema.safeParse({
+      ...publicOffering,
+      sourceMeta: { ...baseSourceMeta, sourceUrl },
+    }).success).toBe(false);
   });
 });
 

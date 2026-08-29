@@ -1,10 +1,15 @@
 export const isSensitiveCredentialKey = (key: string): boolean => {
   const lower = key.toLowerCase();
-  const compact = lower.replace(/[-_]/g, "");
+  const compact = lower.replace(/[^a-z0-9]/g, "");
   return (
     lower.startsWith("x-amz-") ||
+    ["key", "sig", "secret", "password"].includes(compact) ||
     compact === "servicekey" ||
     compact === "apikey" ||
+    compact.endsWith("accesskey") ||
+    compact.endsWith("clientsecret") ||
+    compact.endsWith("secret") ||
+    compact.endsWith("password") ||
     compact.endsWith("token") ||
     compact.endsWith("auth") ||
     compact.endsWith("authorization") ||
@@ -20,6 +25,7 @@ export const isSafePublicSourceUrl = (value: string): boolean => {
       ["http:", "https:"].includes(url.protocol) &&
       url.username === "" &&
       url.password === "" &&
+      url.hash === "" &&
       ![...url.searchParams.keys()].some(isSensitiveCredentialKey)
     );
   } catch {
@@ -37,6 +43,7 @@ export const sanitizePublicSourceUrl = (
     if (!["http:", "https:"].includes(url.protocol)) return fallback;
     url.username = "";
     url.password = "";
+    url.hash = "";
     if ([...url.searchParams.keys()].some(isSensitiveCredentialKey)) {
       url.search = "";
     }

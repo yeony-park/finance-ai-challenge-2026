@@ -20,7 +20,11 @@ import {
   PUBLISHED_OFFER_IDS,
 } from "@/components/site/offers";
 import { loadFilingFacts } from "@/lib/verify/report/filing-facts";
-import { loadApprovedScenarios } from "@/lib/knowledge/loader";
+import {
+  findRoutableLegacyScenario,
+  loadApprovedScenarios,
+  routableLegacyScenarios,
+} from "@/lib/knowledge/loader";
 import { loadLatestReplayDiff } from "@/lib/verify/amend/replay-load";
 import {
   toAmendmentReplayView,
@@ -48,7 +52,7 @@ interface OfferPageProps {
 const loadScenarios = cache(loadApprovedScenarios);
 
 const loadScenarioOffer = cache(async (offerId: string) =>
-  (await loadScenarios()).find((entry) => entry.offerId === offerId) ?? null,
+  findRoutableLegacyScenario(await loadScenarios(), offerId, PUBLISHED_OFFER_IDS),
 );
 
 const loadProductSummary = cache(
@@ -118,10 +122,11 @@ const loadTrackRecordCard = cache(
 );
 
 export async function generateStaticParams() {
-  return [
-    ...PUBLISHED_OFFER_IDS.map((id) => ({ id })),
-    ...(await loadScenarios()).map((scenario) => ({ id: scenario.offerId })),
-  ];
+  const scenarioIds = routableLegacyScenarios(
+    await loadScenarios(),
+    PUBLISHED_OFFER_IDS,
+  ).map((scenario) => scenario.offerId);
+  return [...new Set([...PUBLISHED_OFFER_IDS, ...scenarioIds])].map((id) => ({ id }));
 }
 
 export const dynamicParams = false;

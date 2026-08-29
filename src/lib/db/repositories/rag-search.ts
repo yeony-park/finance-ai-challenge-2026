@@ -23,10 +23,12 @@ const fixtureSchema = z.object({
       title: z.string().min(1),
       license: z.enum(["green", "yellow_confirmed"]),
       retrievedOn: z.string(),
+      scopeKind: z.enum(["generic", "product"]).default("generic"),
       chunks: z.array(
         z.object({
           chunkIndex: z.number().int().min(0),
           content: z.string().min(1),
+          scopeKind: z.enum(["generic", "product"]).default("generic"),
         }),
       ),
     }),
@@ -57,8 +59,10 @@ const loadFixtureChunks = async (
     );
     if (!parsed.success) continue;
     for (const doc of parsed.data.documents) {
+      if (doc.scopeKind !== "generic") continue;
       if (!isRegisteredSource(doc.sourceId)) continue;
       for (const chunk of doc.chunks) {
+        if (chunk.scopeKind !== "generic") continue;
         chunks.push({
           sourceId: doc.sourceId,
           content: chunk.content,

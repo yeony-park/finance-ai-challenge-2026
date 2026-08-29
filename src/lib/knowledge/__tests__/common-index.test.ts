@@ -17,7 +17,11 @@ import {
 } from "../common-index";
 import { answerFromCommonEvidence } from "../evidence";
 import { searchOffers } from "../global-search";
-import { loadCommonKnowledgeScope } from "../loader";
+import {
+  findLegacyScenarioScope,
+  loadCommonKnowledgeScope,
+  routableLegacyScenarios,
+} from "../loader";
 import {
   assemblePdfTextItems,
   buildKnowledgeRecordsFromPdf,
@@ -27,6 +31,8 @@ import {
 } from "../pdf";
 import {
   CommonKnowledgeQuerySchema,
+  CommonChunkRecordSchema,
+  CommonDocumentRecordSchema,
   CommonProductRecordSchema,
   SourceManifestSchema,
 } from "../schema";
@@ -213,12 +219,100 @@ describe("common knowledge index", () => {
     }
   });
 
+  it("공통 scenario 상품·manifest·document·chunk는 scenarioId 없이는 저장하지 않는다", () => {
+    const product = {
+      schemaVersion: 1,
+      categoryId: "real-estate",
+      productId: "scenario-product",
+      title: "시나리오 상품",
+      aliases: [],
+      dataNature: "scenario",
+      asOf: "2026-08-29",
+      approvedForPublic: true,
+    };
+    expect(CommonProductRecordSchema.safeParse(product).success).toBe(false);
+    expect(CommonProductRecordSchema.safeParse({ ...product, scenarioId: "scenario-001" }).success).toBe(true);
+
+    const manifest = {
+      schemaVersion: 1,
+      documentId: "scenario-document",
+      categoryId: "real-estate",
+      productId: "scenario-product",
+      title: "시나리오 설명서",
+      publisher: "시나리오 발행인",
+      documentType: "product-description",
+      sourceKind: "scenario-input",
+      sourceUrl: "/scenario-documents/scenario-product.pdf",
+      localPath: "real-estate/scenario-product/scenario-product.pdf",
+      asOf: "2026-08-29",
+      collectedAt: "2026-08-29T00:00:00.000Z",
+      dataNature: "scenario",
+      rightsStatus: "permission-confirmed",
+      approvedForPublic: true,
+      limitations: [],
+    };
+    expect(SourceManifestSchema.safeParse(manifest).success).toBe(false);
+    expect(SourceManifestSchema.safeParse({ ...manifest, scenarioId: "scenario-001" }).success).toBe(true);
+
+    const document = {
+      schemaVersion: 1,
+      categoryId: "real-estate",
+      productId: "scenario-product",
+      documentId: "scenario-document",
+      title: "시나리오 설명서",
+      publisher: "시나리오 발행인",
+      sourceKind: "scenario-input",
+      sourceUrl: "/scenario-documents/scenario-product.pdf",
+      asOf: "2026-08-29",
+      collectedAt: "2026-08-29T00:00:00.000Z",
+      dataNature: "scenario",
+      rightsStatus: "permission-confirmed",
+      approvedForPublic: true,
+      sourceHash: "a".repeat(64),
+      status: "ready",
+      pages: [{ page: 1, quality: "ready", limitations: [] }],
+      limitations: [],
+    };
+    const chunk = {
+      schemaVersion: 1,
+      categoryId: "real-estate",
+      productId: "scenario-product",
+      documentId: "scenario-document",
+      chunkId: "scenario-chunk",
+      title: "시나리오 설명서",
+      sourceKind: "scenario-input",
+      sourceUrl: "/scenario-documents/scenario-product.pdf",
+      asOf: "2026-08-29",
+      dataNature: "scenario",
+      page: 1,
+      text: "시나리오 조건",
+      canonicalText: "시나리오 조건",
+      positions: [],
+      pageQuality: "ready",
+      sourceHash: "a".repeat(64),
+      chunkHash: "b".repeat(64),
+      approvedForPublic: true,
+      status: "ready",
+      limitations: [],
+    };
+    expect(CommonDocumentRecordSchema.safeParse(document).success).toBe(false);
+    expect(CommonChunkRecordSchema.safeParse(chunk).success).toBe(false);
+    expect(CommonDocumentRecordSchema.safeParse({ ...document, scenarioId: "scenario-001" }).success).toBe(true);
+    expect(CommonChunkRecordSchema.safeParse({ ...chunk, scenarioId: "scenario-001" }).success).toBe(true);
+  });
+
   it("4개 category 원천을 검증·페이지 파싱하고 실제 상품 근거질의를 격리한다", async () => {
     const root = await fixtureRoot();
     const report = await buildFixtureIndex(root, "2026-08-29T01:00:00.000Z");
     expect(report.errors).toEqual([]);
     expect(report).toMatchObject({ products: 4, documents: 4, chunks: 4 });
     expect(report.pages.ready).toBe(4);
+    expect(report.index.documents.every((item) =>
+      item.approvedForExternalAi === false && item.piiReviewStatus === "not-reviewed"
+    )).toBe(true);
+    expect(report.index.chunks.every((item) =>
+      item.approvedForExternalAi === false && item.piiReviewStatus === "not-reviewed"
+    )).toBe(true);
     await writeCommonKnowledgeIndex(root, report.index);
 
     for (const categoryId of ["cattle", "pig", "art", "real-estate"] as const) {
@@ -235,6 +329,10 @@ describe("common knowledge index", () => {
       expect(answer.outcome).toBe("evidence_only");
       expect(answer.evidence).toHaveLength(1);
       expect(answer.evidence[0].sourceUrl).toMatch(/^https:/);
+      expect(answer.evidence[0]).toMatchObject({
+        approvedForExternalAi: false,
+        piiReviewStatus: "not-reviewed",
+      });
       expect(answer.evidence[0]).not.toHaveProperty("localPath");
       expect((await loadCommonKnowledgeScope(categoryId, productId, "scenario", root)).product).toBeNull();
     }
@@ -462,6 +560,19 @@ describe("common knowledge index", () => {
       namespace: "legacy-scenario",
       q: "근거",
     }).success).toBe(false);
+    expect(CommonKnowledgeQuerySchema.safeParse({
+      categoryId: "real-estate",
+      productId: "scenario-fixture",
+      dataNature: "scenario",
+      q: "근거",
+    }).success).toBe(false);
+    expect(CommonKnowledgeQuerySchema.safeParse({
+      categoryId: "real-estate",
+      productId: "scenario-fixture",
+      scenarioId: "scenario-001",
+      dataNature: "scenario",
+      q: "근거",
+    }).success).toBe(true);
   });
 
   it("같은 productId의 common actual과 legacy scenario를 namespace별로 모두 유지한다", async () => {
@@ -490,6 +601,47 @@ describe("common knowledge index", () => {
       }),
     ]));
     expect(matches).toHaveLength(2);
+  });
+
+  it("legacy offerId 중복과 published ID 충돌은 검색·정적 경로 후보에서 모두 제외한다", async () => {
+    const root = await fixtureRoot();
+    const scenarioRoot = path.join(root, "scenarios", "real-estate");
+    await mkdir(scenarioRoot, { recursive: true });
+    const duplicateA = validScenarioOffer();
+    duplicateA.scenarioId = "duplicate-scenario-a";
+    duplicateA.offerId = "duplicate-offer";
+    duplicateA.title = "중복 경로 후보 A";
+    const duplicateB = validScenarioOffer();
+    duplicateB.scenarioId = "duplicate-scenario-b";
+    duplicateB.offerId = "duplicate-offer";
+    duplicateB.title = "중복 경로 후보 B";
+    const publishedCollision = validScenarioOffer();
+    publishedCollision.scenarioId = "published-collision-scenario";
+    publishedCollision.offerId = "livestock-1";
+    publishedCollision.title = "공개 경로 충돌 후보";
+    await Promise.all([
+      writeFile(path.join(scenarioRoot, "duplicate-a.json"), JSON.stringify(duplicateA)),
+      writeFile(path.join(scenarioRoot, "duplicate-b.json"), JSON.stringify(duplicateB)),
+      writeFile(path.join(scenarioRoot, "published-collision.json"), JSON.stringify(publishedCollision)),
+    ]);
+
+    const scenarios = [duplicateA, duplicateB, publishedCollision];
+    expect(routableLegacyScenarios(scenarios, ["livestock-1"])).toEqual([]);
+    expect(findLegacyScenarioScope(scenarios, {
+      categoryId: "real-estate",
+      scenarioId: "duplicate-scenario-b",
+      offerId: "duplicate-offer",
+    })?.title).toBe("중복 경로 후보 B");
+    expect(findLegacyScenarioScope([...scenarios, duplicateB], {
+      categoryId: "real-estate",
+      scenarioId: "duplicate-scenario-b",
+      offerId: "duplicate-offer",
+    })).toBeNull();
+
+    for (const q of ["중복 경로 후보", "공개 경로 충돌 후보"]) {
+      const results = (await searchOffers({ q, limit: 20 }, root)).results;
+      expect(results.some((item) => item.namespace === "legacy-scenario")).toBe(false);
+    }
   });
 
   it("같은 productId가 common category별로 있어도 canonical href를 구분한다", async () => {

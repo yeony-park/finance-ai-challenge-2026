@@ -1,9 +1,21 @@
 import { OFFERS, buildOfferSchedule } from "@/components/site/offers";
 import { commonProductHref } from "@/lib/knowledge/common-route";
-import { loadApprovedCommonProducts, loadApprovedScenarios } from "./loader";
+import {
+  loadApprovedCommonProducts,
+  loadApprovedScenarios,
+  routableLegacyScenarios,
+} from "./loader";
+import {
+  isGenericKnowledgeQuery,
+  listPublishedRepositoryOfferings,
+  resolveRetrievalRepositories,
+  retrieveGenericKnowledge,
+  type GenericKnowledgeEvidence,
+  type RetrievalRepositories,
+} from "./retrieval";
 import { evaluateScenarioReview, type ReviewAreaId } from "./scenario-review";
 import { isRankingRequest, normalizeKorean, normalizeSearchQuery } from "./search";
-import type { GlobalSearchQuery } from "./schema";
+import type { GlobalSearchQuery, GlobalSearchRequest } from "./schema";
 
 export interface GlobalSearchResult {
   readonly id: string;
@@ -31,6 +43,16 @@ export interface GlobalSearchResponse {
   readonly guidance?: {
     readonly message: string;
     readonly reviewAreas: readonly ReviewAreaId[];
+  };
+  readonly genericEvidence?: readonly GenericKnowledgeEvidence[];
+  readonly retrieval: {
+    readonly storage: {
+      readonly offerings: "db" | "file" | "not-used";
+      readonly rag: "db" | "file" | "not-used";
+    };
+    readonly degraded: boolean;
+    readonly semantic: false;
+    readonly strategy: "keyword";
   };
 }
 
@@ -115,10 +137,12 @@ const assetKindOf = (categoryId: GlobalSearchResult["categoryId"]): GlobalSearch
   categoryId === "real-estate" ? "real-estate" : "livestock";
 
 export const searchOffers = async (
-  query: GlobalSearchQuery,
+  query: GlobalSearchQuery | GlobalSearchRequest,
   dataRoot?: string,
+  repositories?: RetrievalRepositories,
 ): Promise<GlobalSearchResponse> => {
-  if (isRankingRequest(query.q)) {
+  const queryText = "query" in query ? query.query : query.q;
+  if (isRankingRequest(queryText)) {
     return {
       mode: "review-guidance",
       results: [],
@@ -126,11 +150,27 @@ export const searchOffers = async (
         message: "상품 추천·안전성·최고 상품·적정가 순위 대신 확인할 투자검토 기준을 안내합니다.",
         reviewAreas: ["asset", "return-cost", "financing", "exit", "operator-history"],
       },
+      retrieval: {
+        storage: { offerings: "not-used", rag: "not-used" },
+        degraded: false,
+        semantic: false,
+        strategy: "keyword",
+      },
     };
   }
-  const intent = intentsOf(query.q);
+  const intent = intentsOf(queryText);
   const normalized = intent.query;
   const now = new Date();
+  const [population, commonProducts, resolvedRepositories] = await Promise.all([
+    loadApprovedScenarios(dataRoot),
+    loadApprovedCommonProducts(dataRoot),
+    repositories ?? resolveRetrievalRepositories({ dataDir: dataRoot }),
+  ]);
+  const repositoryOfferings = await listPublishedRepositoryOfferings(
+    resolvedRepositories.offerings,
+    query.categoryId ?? intent.categoryId,
+  );
+  const repositoryById = new Map(repositoryOfferings.map((item) => [item.entry.id, item.offering]));
   const published = OFFERS.map((offer) => {
     const schedulePhase = buildOfferSchedule(offer, now).phase;
     const phase: GlobalSearchResult["phase"] =
@@ -140,6 +180,8 @@ export const searchOffers = async (
       title: offer.title,
       assetKind: offer.assetLabel,
       phase: `${phase} ${PHASE_ALIASES[phase]}`,
+      repositoryTitle: repositoryById.get(offer.id)?.titlePublic ?? "",
+      repositoryAmount: repositoryById.get(offer.id)?.amountWon?.toString() ?? "",
     });
     return {
       id: offer.id,
@@ -156,11 +198,10 @@ export const searchOffers = async (
       score: match.score,
     };
   });
-  const [population, commonProducts] = await Promise.all([
-    loadApprovedScenarios(dataRoot),
-    loadApprovedCommonProducts(dataRoot),
-  ]);
-  const scenarios = population.map((offer) => {
+  const scenarios = routableLegacyScenarios(
+    population,
+    OFFERS.map((offer) => offer.id),
+  ).map((offer) => {
     const phase = offer.offering.phase;
     const review = evaluateScenarioReview(offer, population);
     const match = matchFields(normalized, {
@@ -262,5 +303,21 @@ export const searchOffers = async (
       dataNature: item.dataNature,
       namespace: item.namespace,
     }));
-  return { mode: "matches", results };
+  const generic = results.length === 0 && isGenericKnowledgeQuery(queryText)
+    ? await retrieveGenericKnowledge(resolvedRepositories.rag, queryText, query.categoryId ?? intent.categoryId)
+    : { evidence: [], degraded: false };
+  return {
+    mode: "matches",
+    results,
+    ...(generic.evidence.length ? { genericEvidence: generic.evidence } : {}),
+    retrieval: {
+      storage: {
+        offerings: resolvedRepositories.offerings.mode,
+        rag: resolvedRepositories.rag.mode,
+      },
+      degraded: true,
+      semantic: false,
+      strategy: "keyword",
+    },
+  };
 };
