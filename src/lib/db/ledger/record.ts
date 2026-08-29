@@ -10,6 +10,13 @@ type Connection = "direct" | "runtime";
 const configuredUrl = (connection: Connection): string | undefined =>
   connection === "direct" ? directDatabaseUrl() : runtimeDatabaseUrl();
 
+const errorMessage = (error: unknown): string =>
+  error instanceof Error ? error.message : String(error);
+
+const logRecordFailure = (context: string, error: unknown): void => {
+  console.error(`[ledger] ${context} 기록 실패: ${errorMessage(error)}`);
+};
+
 export const recordVerificationRun = async (
   record: VerificationRunRecord,
   opts: { readonly connection: Connection },
@@ -37,43 +44,48 @@ export const recordVerificationRun = async (
         ledgerCalls: record.ledgerCalls,
       })
       .onConflictDoNothing({ target: verificationRuns.runKey });
-  } catch {
-    return;
+  } catch (error) {
+    logRecordFailure(
+      `verification_runs (runKey=${record.runKey}, offerSlug=${record.offerSlug})`,
+      error,
+    );
   }
 };
 
 export const recordMonitorRun = async (
   record: MonitorRunRecord,
 ): Promise<void> => {
-  if (!directDatabaseUrl()) return;
+  if (!runtimeDatabaseUrl()) return;
   try {
-    const { getDirectDb } = await import("../client");
+    const { getRuntimeDb } = await import("../client");
     const { monitorRuns, monitorEvents } = await import("../schema");
-    const db = getDirectDb();
-    const inserted = await db
-      .insert(monitorRuns)
-      .values({
-        checkedAt: new Date(record.checkedAt),
-        source: record.source,
-        eventCounts: record.eventCounts,
-        blobKey: record.blobKey,
-      })
-      .onConflictDoNothing({ target: monitorRuns.checkedAt })
-      .returning({ id: monitorRuns.id });
-    const runId = inserted[0]?.id;
-    if (runId === undefined) return;
-    for (const event of record.events) {
-      await db.insert(monitorEvents).values({
-        monitorRunId: runId,
-        offerSlug: event.offerSlug,
-        kind: event.kind,
-        baseRcpNo: event.baseRcpNo,
-        checkedThrough: event.checkedThrough,
-        amendmentRcpNos: [...event.amendmentRcpNos],
-      });
-    }
-  } catch {
-    return;
+    const db = getRuntimeDb();
+    await db.transaction(async (tx) => {
+      const inserted = await tx
+        .insert(monitorRuns)
+        .values({
+          checkedAt: new Date(record.checkedAt),
+          source: record.source,
+          eventCounts: record.eventCounts,
+          blobKey: record.blobKey,
+        })
+        .onConflictDoNothing({ target: monitorRuns.checkedAt })
+        .returning({ id: monitorRuns.id });
+      const runId = inserted[0]?.id;
+      if (runId === undefined) return;
+      for (const event of record.events) {
+        await tx.insert(monitorEvents).values({
+          monitorRunId: runId,
+          offerSlug: event.offerSlug,
+          kind: event.kind,
+          baseRcpNo: event.baseRcpNo,
+          checkedThrough: event.checkedThrough,
+          amendmentRcpNos: [...event.amendmentRcpNos],
+        });
+      }
+    });
+  } catch (error) {
+    logRecordFailure(`monitor_runs (checkedAt=${record.checkedAt})`, error);
   }
 };
 
@@ -104,7 +116,7 @@ export const recordLedgerObservations = async (
           ],
         });
     }
-  } catch {
-    return;
+  } catch (error) {
+    logRecordFailure(`ledger_observations (${records.length}건)`, error);
   }
 };

@@ -13,10 +13,15 @@ CREATE ROLE jeomjeom_rag_ro LOGIN PASSWORD :ro_password;
 GRANT USAGE ON SCHEMA public TO jeomjeom_rag_ro;
 GRANT SELECT ON rag_documents, rag_chunks TO jeomjeom_rag_ro;
 
--- R-STO-16 개정(09 §5): 런타임은 verification_runs에 INSERT만 — SELECT는 부여하지 않는다.
--- 라이브 API(POST /api/verify)의 best-effort 실행 이력 기록용. 공개 경로가 이력을 읽거나
--- 타 테이블(원장·monitor·ledger_observations)을 쓰는 것은 계속 차단된다.
+-- R-STO-16 개정(09 §5): 런타임은 실행 이력 테이블에 INSERT만 — 이력을 읽지 못한다.
+-- 라이브 API(POST /api/verify)·cron(GET /api/cron/monitor)은 프로덕션에서 런타임 자격증명만
+-- 갖는다(DATABASE_URL_DIRECT는 CLI 전용, 배포 안 함). 따라서 best-effort 기록은 런타임 역할로 한다.
 GRANT INSERT ON verification_runs TO jeomjeom_rag_ro;
+GRANT INSERT ON monitor_runs, monitor_events TO jeomjeom_rag_ro;
+-- monitor_events는 monitor_runs.id FK가 필요해 INSERT ... RETURNING id로 링크한다.
+-- Postgres RETURNING은 해당 컬럼 SELECT 권한이 필요하므로 monitor_runs에 한해 SELECT를 부여한다
+-- (monitor_runs는 집계 메타·PII 없음 · monitor_events·verification_runs·원장은 SELECT 불가 유지).
+GRANT SELECT ON monitor_runs TO jeomjeom_rag_ro;
 
 -- 하이브리드 검색(벡터, M2+) 도입 시 vector 연산자 스키마 사용 권한이 필요할 수 있다:
 --   GRANT USAGE ON SCHEMA extensions TO jeomjeom_rag_ro;

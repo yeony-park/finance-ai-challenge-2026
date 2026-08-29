@@ -42,7 +42,7 @@ rationale: docs/spec/09-stack-and-storage.md
 - **R-STO-13 (MUST)** `license`는 `green | yellow_confirmed`만 적재 가능. red·yellow 미확인 금지.
 - **R-STO-14 (MUST)** RAG 용도는 검색(교육·범위 밖 판별)만 — 검증 사실·수치의 원천은 리포트 캐시(R-API-11). 문서 임베딩은 적재 CLI에서 1회, 런타임은 질의 임베딩 1회만. 대화 입력 로그를 RAG 테이블에 혼입 금지.
 - **R-STO-15 (기본값)** 임베딩 text-embedding-3-small(1536) + 하이브리드 검색(tsvector + vector cosine, HNSW). fake 모드는 임베딩 생략, 사전 작성 콘텐츠 키워드 매칭으로 열화. 키워드 질의는 `websearch_to_tsquery`만(`to_tsquery` 금지). `simple` 설정은 한국어 형태소 미지원 — `pg_trgm` 병행 등 보강은 09 §4 [팀 결정 대기].
-- **R-STO-16 (MUST, 2026-08-29 개정)** 자격증명 역할 분리: 런타임 `DATABASE_URL`은 rag 2테이블 SELECT + `verification_runs` INSERT 전용(SELECT 불가) 역할. 원장 쓰기·마이그레이션은 CLI 전용 `DATABASE_URL_DIRECT`에만. Supabase `service_role`·`anon` 키는 코드에 들여오지 않는다(PostgREST 미사용).
+- **R-STO-16 (MUST, 2026-08-30 재개정)** 자격증명 역할 분리: 런타임 `DATABASE_URL`은 ①rag 2테이블 SELECT ②`verification_runs`·`monitor_runs`·`monitor_events` INSERT 역할. 이력 읽기는 불가하되, `monitor_events`가 `monitor_runs.id` FK를 링크하려면 `INSERT ... RETURNING id`가 필요하고 RETURNING은 SELECT 권한을 요구하므로 **`monitor_runs`에 한해 SELECT 예외**(집계 메타·PII 없음). `monitor_events`·`verification_runs`·원장 테이블은 SELECT 불가 유지. **근거**: 라이브 API(`POST /api/verify`)와 cron(`GET /api/cron/monitor`)은 프로덕션에서 런타임 자격증명만 갖는다(직결은 CLI 전용, 배포 안 함) — 직결을 요구하면 cron 이력이 영구 무기록되므로 런타임 역할로 기록한다. 원장 쓰기·마이그레이션은 여전히 `DATABASE_URL_DIRECT`에만. Supabase `service_role`·`anon` 키는 코드에 들여오지 않는다(PostgREST 미사용).
 - **R-STO-17 (MUST)** RAG 청크는 프롬프트 조립 시 고정 구분자 데이터 블록으로만 삽입 — 사용자 지시 채널에 원문 이어붙이기 금지(06 §6의 RAG 집행 조항).
 - **R-STO-18 (MUST)** RAG 적재 CLI는 인젝션 휴리스틱 스캔 통과분만 등록 — 실패분은 license 등급 무관 보류. 챗 게이트 다턴 레드팀에 "RAG 소스 내 인젝션" 시나리오 포함.
 

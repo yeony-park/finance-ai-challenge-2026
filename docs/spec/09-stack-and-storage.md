@@ -297,8 +297,8 @@ CREATE INDEX ON ledger_observations (subject_key, observed_at);
 
 **집행 규칙**:
 1. **자유문장 금지**: `Evidence.observed` 원문 문자열을 어떤 컬럼에도 복사하지 않는다 — 마스킹 전 실명·주소가 따라 들어가는 경로다. `fields`는 Zod strict 화이트리스트만, `farmerNm`·`farmAddr` 계열 필드명은 리터럴 금지어.
-2. **기록 주체**: CLI·cron은 `DATABASE_URL_DIRECT`로 기록. 라이브 API(`POST /api/verify`)는 **best-effort 비동기 기록** — DB 실패가 응답을 실패시키지 않는다(무중단 요건). DB 미설정(file 모드)이면 기록 생략이 정직한 동작.
-3. **런타임 역할 확장 (R-STO-16 개정)**: 런타임 자격증명 = rag 2테이블 SELECT + **`verification_runs` INSERT 전용**(SELECT 불가) — 공개 경로가 이력을 읽거나 타 테이블을 쓰는 것은 계속 차단.
+2. **기록 주체 (2026-08-30 정정)**: CLI는 `DATABASE_URL_DIRECT`로 기록. **cron·라이브 API는 런타임 자격증명으로 기록** — 프로덕션에서 이 경로들은 직결을 갖지 않으므로(직결은 CLI 전용, 배포 안 함) 직결을 요구하면 영구 무기록이 된다. 라이브 API(`POST /api/verify`)는 응답 후 `after()`로 실행 보장, cron(`monitor_runs/events`)은 요청 내 트랜잭션으로 기록. DB 실패가 응답을 실패시키지 않는다(무중단 요건, 실패는 loud 로그). DB 미설정(file 모드)이면 기록 생략이 정직한 동작.
+3. **런타임 역할 확장 (R-STO-16 재개정)**: 런타임 자격증명 = rag 2테이블 SELECT + `verification_runs`·`monitor_runs`·`monitor_events` INSERT. 이력 읽기 불가이되 `monitor_events`의 FK 링크(`INSERT ... RETURNING id`)를 위해 `monitor_runs`에 한해 SELECT 예외(집계 메타·PII 없음). 공개 경로가 그 밖의 이력을 읽거나 타 테이블을 쓰는 것은 계속 차단.
 4. **watch 이중 경로 정리**: cron은 Blob(원본 아카이브) + `monitor_runs/events`(질의용) 이중 기록. 화면의 `data/public/watch/` 파일은 CLI 산출 유지 — 캐시 전용 원칙 불변.
 5. 골드셋 **점수**(라벨 본문 제외)의 DB 기록은 `[팀 결정 대기]` — 현재 stdout 증발 문제만 명세에 기록해 둔다.
 
