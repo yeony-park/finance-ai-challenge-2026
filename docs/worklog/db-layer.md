@@ -147,3 +147,13 @@ Supabase 확장: `vector`·`pg_trgm` 둘 다 지원(확장은 `extensions` 스�
 **eval 영향** — `offer-ledger-drift.test.ts`(11종): art 5·pig 3 파일↔상수 amount·acquisition·일정·heads 일치 + 원문 실명 0건 + 시드 원장 manual_verified 적재 확인. tsc·58 그린. MANIFEST 갱신(offer 파일 8건).
 
 **알려진 한계** — 파일↔상수 이중 관리는 정합 테스트로만 방어(단일화는 화면 전환 결정 후). manual_verified art의 detail.art(acquisition 등)는 원장에만 — v2 인덱스 art 카드 필드(artistName 등)와 별개(실측 art 화면은 content/art.ts 직독).
+
+## v2 일괄 적용 — 작업 2: db:ingest CLI (참조 원장 적재) (2026-08-29)
+
+**결정과 근거** — R-STO-22: synthetic 시드와 분리된 `db:ingest` CLI 신설. 커밋 참조 파일 → 신규 원장 행 빌더 4종: cattle(auction-price 33파일 → cattle_auction_prices 458행)·re_trades(rtms 8파일 → 839행, 확장 6컬럼 채움)·pig(CSV → pig_auction_prices 176행, 전국제주제외 전 조합 월×돈피×성별×등급)·filing_facts(offers/filing-facts 4파일 → 18행). source_meta 5필드: sha256를 data/MANIFEST.md 표에서 relpath 조인(pig CSV만 자체 .meta.json 보유), license green·method·retrievedAt는 캐시/메타에서. 멱등: 자연키 ON CONFLICT(09 DDL의 UNIQUE 미러). R-STO-03a 원천 경로 가드 동일 적용. DATABASE_URL_DIRECT 미설정 시 가드·빌드는 수행하고 적재만 not_configured 생략.
+
+**트레이드오프** — 빌더는 순수 함수(file 모드 테스트 가능), CLI가 DB 삽입 배선(R-API-10 미러). 기존 파서 재사용(parseAuctionMonthCache·parseRtmsMonthCache·parseFilingFacts) + pig는 `parsePigAuctionRows`(전 데이터행 매트릭스) 신설해 대표 스냅샷(3점, 어댑터용)과 전량 적재(176행, 원장용)를 분리. numeric 컬럼은 삽입 시 number→string 매핑(drizzle numeric). 60 CSV 데이터행 중 전국제주제외 완비 조합만 → 176행(일부 조합 metric 결측 제외). art 실데이터 338건은 라이선스 재판정(팀 안건 6) 전 적재 보류(09 §3.5) — ingest 대상 아님.
+
+**eval 영향** — `ingest.test.ts`(6종): MANIFEST sha256 조인·cattle source_meta 5필드·re_trades 확장 컬럼·pig 전 조합·filing_facts 자연키 무중복·원천 경로 가드. 전체 1430 그린. not_configured 실행 확인(cattle 458·re_trades 839·pig 176·filing_facts 18).
+
+**알려진 한계** — 실 DB 미적용(오너 실행 대기)이라 삽입·멱등·자연키 충돌은 미검증(빌더까지 실증). pig는 전국제주제외 1개 지역만 적재(타 6지역은 스키마상 가능하나 이번 미적재 — 대표 지역 우선). 라이선스는 green 고정(참조 파일 전부 Green 공공) — MANIFEST에 license 열 부재라 sha256만 조인.

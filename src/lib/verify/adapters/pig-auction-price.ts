@@ -123,12 +123,81 @@ export const parsePigAuctionCsv = (
     .sort((a, b) => a.month.localeCompare(b.month));
 };
 
+export interface PigAuctionMatrixRow extends PigAuctionPoint {
+  readonly skinType: string;
+  readonly sex: string;
+  readonly grade: string;
+  readonly region: string;
+}
+
+export const parsePigAuctionRows = (
+  csv: string,
+  region: string = DEFAULT_PIG_AUCTION_FILTERS.region,
+): readonly PigAuctionMatrixRow[] => {
+  const rows = csv
+    .split(/\r?\n/)
+    .filter((line) => line.trim().length > 0)
+    .map(splitRow);
+  if (rows.length < 4) {
+    throw new Error("돼지 경락가 CSV에 헤더 3행 + 데이터가 없습니다.");
+  }
+  const [monthRow, regionRow, metricRow, ...dataRows] = rows;
+
+  const out: PigAuctionMatrixRow[] = [];
+  for (const dataRow of dataRows) {
+    const skinType = unquote(dataRow[0] ?? "");
+    const sex = unquote(dataRow[1] ?? "");
+    const grade = unquote(dataRow[2] ?? "");
+    if (!skinType || !sex || !grade) continue;
+    const byMonth = new Map<string, Record<string, number>>();
+    for (let col = 3; col < monthRow.length; col += 1) {
+      if (unquote(regionRow[col] ?? "") !== region) continue;
+      const field = metricField(metricRow[col] ?? "");
+      if (!field) continue;
+      const month = normalizeMonth(monthRow[col] ?? "");
+      const value = toNumber(dataRow[col] ?? "");
+      if (month.length === 0 || value === undefined) continue;
+      const bucket = byMonth.get(month) ?? {};
+      bucket[field] = value;
+      byMonth.set(month, bucket);
+    }
+    for (const [month, b] of byMonth) {
+      if (
+        !["headCount", "priceWonPerKg", "amountWon", "weightKg"].every(
+          (f) => f in b,
+        )
+      ) {
+        continue;
+      }
+      out.push({
+        month,
+        skinType,
+        sex,
+        grade,
+        region,
+        headCount: b.headCount,
+        priceWonPerKg: b.priceWonPerKg,
+        amountWon: b.amountWon,
+        weightKg: b.weightKg,
+      });
+    }
+  }
+  return out.sort(
+    (a, b) =>
+      a.month.localeCompare(b.month) ||
+      a.skinType.localeCompare(b.skinType) ||
+      a.sex.localeCompare(b.sex) ||
+      a.grade.localeCompare(b.grade),
+  );
+};
+
 export const pigAuctionMetaSchema = z.object({
   schemaVersion: z.literal(1),
   sourceId: z.string(),
   sourceName: z.string(),
   sourceUrl: z.string(),
   sourceFile: z.string(),
+  method: z.string(),
   filters: z.object({
     skinType: z.string(),
     sex: z.string(),

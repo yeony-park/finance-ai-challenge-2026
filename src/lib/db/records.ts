@@ -128,6 +128,12 @@ export const reTradeRowSchema = z
     dong: z.string().nullable(),
     amountWon: wonSchema,
     dealOn: isoDateSchema,
+    buildingType: z.string().nullable().default(null),
+    floor: z.number().int().nullable().default(null),
+    buildingAreaSqm: z.number().nullable().default(null),
+    landAreaSqm: z.number().nullable().default(null),
+    buildYear: z.number().int().nullable().default(null),
+    cancelled: z.boolean().default(false),
     sourceMeta: sourceMetaSchema,
   })
   .strict();
