@@ -13,6 +13,11 @@ CREATE ROLE jeomjeom_rag_ro LOGIN PASSWORD :ro_password;
 GRANT USAGE ON SCHEMA public TO jeomjeom_rag_ro;
 GRANT SELECT ON rag_documents, rag_chunks TO jeomjeom_rag_ro;
 
+-- R-STO-16 개정(09 §5): 런타임은 verification_runs에 INSERT만 — SELECT는 부여하지 않는다.
+-- 라이브 API(POST /api/verify)의 best-effort 실행 이력 기록용. 공개 경로가 이력을 읽거나
+-- 타 테이블(원장·monitor·ledger_observations)을 쓰는 것은 계속 차단된다.
+GRANT INSERT ON verification_runs TO jeomjeom_rag_ro;
+
 -- 하이브리드 검색(벡터, M2+) 도입 시 vector 연산자 스키마 사용 권한이 필요할 수 있다:
 --   GRANT USAGE ON SCHEMA extensions TO jeomjeom_rag_ro;
 -- 신규 rag 테이블 추가 시 본 스크립트에 SELECT 를 명시적으로 추가한다(기본은 무권한).

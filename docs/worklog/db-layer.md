@@ -167,3 +167,13 @@ Supabase 확장: `vector`·`pg_trgm` 둘 다 지원(확장은 `extensions` 스�
 **eval 영향** — `ledger.test.ts`(8종): run_key 형식·verdict_counts 숫자만·fields 금지 필드명 거부·subject_key 마스킹·트레이스 PII 제외·file 모드 no-op. 전체 1436 그린·build 통과·eslint clean.
 
 **알려진 한계** — ④ 관측 기록의 실 배선(대조 실행 중 자동 기록)은 후속(파이프라인 트레이스 표면화 필요). monitor_runs.blob_key는 현재 null(Blob 스토어 반환 키 형태 미확정) — Blob 아카이브 링크는 후속. 실 DB 미적용이라 삽입·역할 권한(런타임 INSERT 전용)은 미검증.
+
+## v2 일괄 적용 — 작업 6·7: RAG 코퍼스 확대 + roles.sql 개정 (2026-08-29)
+
+**결정과 근거** — 작업 6: `data/reference/rag/corpus-sources.json` 신설 — 코퍼스 등록 6건(dart-viewer·opendart-filings·livestock-trace·ekape-auction-price·molit-rtms-nrg-trade·molit-bldrgst-title)의 문서·청크를 corpus.ts content 원문으로 추가. 기존 onboarding.json(verification-methodology·capital-markets-decree-2026 2건)과 합쳐 등록 8건 전수 적재(seed plan rag docs 8 확인). 코드 변경 불요(seed loadRagFixture가 isRegisteredSource 필터 후 자동 적재 — R-STO-12). **교육 콘텐츠 미러는 범위 밖이라 미실시**(컴포넌트 직독 구조 유지). 작업 7: `db/roles.sql`에 R-STO-16 개정 반영 — 런타임 역할에 `GRANT INSERT ON verification_runs`(SELECT 미부여). 라이브 API best-effort 이력 기록용, 공개 경로의 이력 읽기·타 테이블 쓰기는 계속 차단.
+
+**트레이드오프** — RAG 청크는 corpus content 1청크/문서(짧은 참조 설명) — 본문 확장은 실 문서 수집 시 후속. 등록 8건은 검색 fake 모드 키워드 매칭 표본을 넓힌다. verification_runs INSERT 전용 역할은 ON CONFLICT DO NOTHING이 SELECT 불요라 호환.
+
+**eval 영향** — seed plan rag docs 2→8, R-STO-12 미등록 거부 테스트는 그대로 통과(전부 등록분). db 70종 그린. MANIFEST 갱신(corpus-sources.json).
+
+**알려진 한계** — RAG 인젝션 스캔(R-STO-18)은 적재 CLI(M2+) 몫 — 현 fixture는 큐레이션 corpus content라 안전하나 자동 스캔 미적용. roles.sql 실적용·권한 검증은 오너 실행 후.
