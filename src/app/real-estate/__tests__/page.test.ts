@@ -21,7 +21,7 @@ describe("부동산 승인 시나리오 목록", () => {
     expect(markup).not.toContain("real-estate-sou-daejeon-startup");
     expect(markup).not.toContain("real-estate-a");
     expect(markup).not.toContain("한강대로 416");
-    expect(markup).toContain("공개 승인된 검토 데이터 13개");
+    expect(markup).toContain("검토 대상 13개");
     expect(markup.split("검토용 시나리오 · 실제 청약·판매 상품이 아닙니다.")).toHaveLength(2);
     expect(markup.split(SCENARIO_DEMO_DISCLOSURE)).toHaveLength(2);
     expect(metadata.robots).toEqual({ index: false, follow: false });

@@ -168,16 +168,14 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
         (entry) =>
           entry.operatorGroupId === scenario.operatorGroupId &&
           entry.offering.phase === "settled",
-      )
-      .toSorted((a, b) =>
-        (b.completion?.actualExitOn ?? "").localeCompare(a.completion?.actualExitOn ?? ""),
-      )
-      .slice(0, 3);
+      );
     return <ScenarioDetail offer={scenario} operatorHistory={operatorHistory} />;
   }
   const view = await loadOfferView(id);
 
-  if (!view) notFound();
+  if (!view) {
+    notFound();
+  }
 
   const [
     watch,

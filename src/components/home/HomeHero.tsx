@@ -20,6 +20,7 @@ import {
   type GuideTarget,
 } from "@/lib/content/home";
 import { matchScaffold, type ScaffoldMatch } from "@/lib/content/scaffold-match";
+import type { GlobalSearchResponse, GlobalSearchResult } from "@/lib/knowledge/global-search";
 
 import { HeroShards } from "./HeroShards";
 import s from "./home.module.css";
@@ -43,12 +44,11 @@ const HERO_CHIPS = HERO_CHIP_LABELS.map((label) =>
   question !== undefined,
 );
 
-interface SearchResult {
-  readonly id: string;
-  readonly title: string;
-  readonly phase: "upcoming" | "subscription-open" | "closed" | "listed-trading" | "settled";
-  readonly href: string;
-}
+type SearchResult = Pick<GlobalSearchResult, "id" | "title" | "isScenario" | "phase" | "href">;
+type SearchResponse = Pick<GlobalSearchResponse, "mode" | "guidance"> & {
+  readonly results: readonly SearchResult[];
+};
+type ReviewArea = NonNullable<GlobalSearchResponse["guidance"]>["reviewAreas"][number];
 
 const SEARCH_PHASE_LABEL: Readonly<Record<SearchResult["phase"], string>> = {
   upcoming: "청약 예정",
@@ -58,7 +58,23 @@ const SEARCH_PHASE_LABEL: Readonly<Record<SearchResult["phase"], string>> = {
   settled: "종료",
 };
 
-function SearchResultsPanel({ results }: { readonly results: readonly SearchResult[] }) {
+const SCENARIO_PHASE_LABEL: Readonly<Record<SearchResult["phase"], string>> = {
+  upcoming: "가상 청약 예정 시나리오",
+  "subscription-open": "가상 청약 시나리오",
+  closed: "가상 청약 종료 시나리오",
+  "listed-trading": "가상 상장 거래 시나리오",
+  settled: "가상 종료 사례",
+};
+
+const REVIEW_AREA_LABEL: Readonly<Record<ReviewArea, string>> = {
+  asset: "건물 기본정보",
+  "return-cost": "수익·비용",
+  financing: "금융",
+  exit: "회수",
+  "operator-history": "운영그룹 완료 이력",
+};
+
+export function SearchResultsPanel({ results }: { readonly results: readonly SearchResult[] }) {
   return (
     <div className={s.panel}>
       <h3 className={s.panelTitle}>검색 결과</h3>
@@ -66,10 +82,38 @@ function SearchResultsPanel({ results }: { readonly results: readonly SearchResu
         {results.map((result) => (
           <li key={result.id}>
             <Link href={result.href} className={s.searchResultLink}>{result.title}</Link>
-            <span>{SEARCH_PHASE_LABEL[result.phase]}</span>
+            <span>
+              {result.isScenario
+                ? `가상 시나리오 · ${SCENARIO_PHASE_LABEL[result.phase]}`
+                : SEARCH_PHASE_LABEL[result.phase]}
+            </span>
           </li>
         ))}
       </ul>
+    </div>
+  );
+}
+
+export function ReviewGuidancePanel({ guidance }: { readonly guidance: NonNullable<SearchResponse["guidance"]> }) {
+  return (
+    <div className={s.panel}>
+      <h3 className={s.panelTitle}>상품 순위 대신 확인할 기준</h3>
+      <div className={s.panelBody}><p>{guidance.message}</p></div>
+      <div className={s.panelBody}>
+        <p>확인 영역 · {guidance.reviewAreas.map((area) => REVIEW_AREA_LABEL[area]).join(" · ")}</p>
+      </div>
+      <Link href="/real-estate" className={s.panelLink}>부동산 검토 데이터 보기</Link>
+    </div>
+  );
+}
+
+export function NoSearchResultsPanel() {
+  return (
+    <div className={s.panel}>
+      <h3 className={s.panelTitle}>검색 결과 없음</h3>
+      <div className={s.panelBody}>
+        <p>상품명이나 청약·상장 거래·종료 같은 단계로 다시 검색해 주세요.</p>
+      </div>
     </div>
   );
 }
@@ -163,11 +207,14 @@ export function HomeHero() {
   const [match, setMatch] = useState<ScaffoldMatch | null>(null);
   const [activeChip, setActiveChip] = useState<string | null>(null);
   const [results, setResults] = useState<readonly SearchResult[] | null>(null);
+  const [guidance, setGuidance] = useState<SearchResponse["guidance"] | null>(null);
+  const [hasEmptyResults, setHasEmptyResults] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setActiveChip(null);
+    setHasEmptyResults(false);
     setIsSearching(true);
     try {
       const response = await fetch("/api/search", {
@@ -176,12 +223,17 @@ export function HomeHero() {
         body: JSON.stringify({ q: query, limit: 10 }),
       });
       if (!response.ok) throw new Error("search failed");
-      const body = (await response.json()) as { readonly results?: readonly SearchResult[] };
+      const body = (await response.json()) as SearchResponse;
       const found = body.results ?? [];
-      setResults(found.length > 0 ? found : null);
-      setMatch(found.length > 0 ? null : matchScaffold(query));
+      const reviewGuidance = body.mode === "review-guidance" ? body.guidance ?? null : null;
+      setResults(body.mode === "matches" && found.length > 0 ? found : null);
+      setGuidance(reviewGuidance);
+      setHasEmptyResults(body.mode === "matches" && found.length === 0);
+      setMatch(null);
     } catch {
       setResults(null);
+      setGuidance(null);
+      setHasEmptyResults(false);
       setMatch(matchScaffold(query));
     } finally {
       setIsSearching(false);
@@ -192,6 +244,8 @@ export function HomeHero() {
     setActiveChip(label);
     setQuery(label);
     setResults(null);
+    setGuidance(null);
+    setHasEmptyResults(false);
     setMatch(
       target === "reports"
         ? { kind: "reports" }
@@ -253,6 +307,8 @@ export function HomeHero() {
 
             <div aria-live="polite">
               {results ? <SearchResultsPanel results={results} /> : null}
+              {guidance ? <ReviewGuidancePanel guidance={guidance} /> : null}
+              {hasEmptyResults ? <NoSearchResultsPanel /> : null}
               {match ? <ScaffoldPanel match={match} /> : null}
               {(() => {
                 const key = match ? followUpKeyOf(match) : null;
