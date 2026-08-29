@@ -31,7 +31,7 @@ export interface SeedPlan {
 }
 
 const RAG_DIR = "reference/rag";
-const OFFERS_DIR = "data/offers";
+const OFFERS_SUBDIR = "offers";
 
 const ragFixtureSchema = z.object({
   schemaVersion: z.literal(1),
@@ -150,6 +150,9 @@ export const buildSeedPlan = async (
     artRecords,
     ragDocuments,
     syntheticNames: syntheticNamesOf(offerings, artRecords),
-    sourcePaths: [OFFERS_DIR, path.join(dataDir, RAG_DIR)],
+    sourcePaths: [
+      path.join(dataDir, OFFERS_SUBDIR),
+      path.join(dataDir, RAG_DIR),
+    ],
   };
 };

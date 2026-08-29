@@ -62,3 +62,23 @@
 **검증 영향** — 데코레이터 통과 테스트(lookup 결과 그대로 반환·1회 호출). 기존 R-STO-20 화이트리스트·PII 제외 테스트가 기록 내용 계약 수호. 전체 1445 그린.
 
 **알려진 한계** — 실 관측 기록·멱등은 오너 실 DB verify 실행 후 검증. 라이브 API 관측은 역할 확장 전까지 미기록(CLI만).
+
+## 작업 6 — 계약·문서 실물 정합 (2026-08-30)
+
+**결정과 근거** — ① R-STO-09를 실물(수기 SQL + 자체 러너 migrate.ts, `_migrations` 추적)로 정정, drizzle.config.ts out을 `db/generated/`(스크래치, gitignore)로 분리해 정본 db/migrations/ 미클로버 — generate는 드리프트 spike 전용 명시. ② storage.md 명령어 블록에 db:ingest 추가, frontmatter source-of-truth 조건절("도입 후/생기기 전까지") 제거. ④ README 구조표에 src/lib/db/ 저장 계층 v2 항목. ⑤ .env.example VERIFY_NARRATIVE_MODEL 등재. ⑥ .vercelignore 주석 현행화(data/reference·offers 배포 허용, goldset·db 제외 명시).
+
+**트레이드오프** — ③ CLAUDE.md 명령어/아키텍처 절 갱신은 **미수행** — CLAUDE.md는 프로젝트 지시 파일이라 피어 요청만으로 편집하지 않는다(하니스 경계). 오너 직접 확인·반영 필요로 회신.
+
+**검증 영향** — drizzle-kit generate가 db/generated/에 정상 생성(정본 미클로버) 실측. tsc clean.
+
+**알려진 한계** — CLAUDE.md 갱신 오너 대기.
+
+## 작업 7 — 데드 코드 정리 (2026-08-30)
+
+**결정과 근거** — ① seed/plan.ts OFFERS_DIR가 dataDir를 무시하던 버그 수정(`path.join(dataDir, "offers")` — RAG_DIR와 일관). ② provenance.ts 완전 미참조 export 4건 제거(isSynthetic·hasSyntheticPrefix·IngestibleLicense·AuctionResultValue — 내부·외부 참조 0 재확인). ③ next.config allowedDevOrigins IP(192.168.140.132)는 팀원 개발 origin일 수 있어 **미제거**, 워크로그 기록만.
+
+**트레이드오프** — **미수행(안전 판단)**: synthetic-version.ts/replay-view.ts 합성 배지 분기 제거는 replay 데모 서브시스템(경쟁 시연 후보·amend 테스트 보유)에 닿고 "watch-state 생성 경로 보존" 제약이 얽혀 있어, 정확한 스코프 확인 없이 제거 시 replay:actual·데모 파손 위험 — 통합 세션 스코프 확정 후로 이연. 나머지 미참조 export(≈7건, 본 세션 미작성 코드)는 knip 부재 + 정확 목록 부재로 오제거 위험이 있어 통합 세션의 실측 목록 필요 — 임의 제거 안 함.
+
+**검증 영향** — provenance.ts 4건 제거 후 tsc clean·전체 그린(참조 0 확인). OFFERS_DIR 수정으로 비-기본 dataDir 시드 가드 정합.
+
+**알려진 한계** — 합성 배지 분기 제거·잔여 미참조 export 정리는 스코프 확정 후 후속(통합 세션).
