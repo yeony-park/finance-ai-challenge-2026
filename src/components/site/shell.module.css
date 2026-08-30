@@ -56,7 +56,8 @@
   will-change: background-color, color;
 }
 
-.headerHome .navLink {
+.headerHome .navLink,
+.headerHome .watchlistLink {
   color: color-mix(
     in srgb,
     var(--ds-ink-muted) var(--home-header-ink, 0%),
@@ -65,7 +66,10 @@
 }
 
 .headerHome .navLink:hover,
-.headerHome .navLink[aria-current="page"] {
+.headerHome .navLink[aria-current="page"],
+.headerHome .watchlistLink:hover,
+.headerHome .watchlistLink[aria-current="page"],
+.headerHome .watchlistLink[data-has-items="true"] {
   color: color-mix(
     in srgb,
     var(--ds-ink) var(--home-header-ink, 0%),
@@ -168,9 +172,26 @@
   background: var(--ds-accent);
 }
 
+.watchlistLink {
+  grid-column: 3;
+  justify-self: end;
+  border-radius: var(--ds-radius-sm);
+}
+
+.watchlistLink:hover,
+.watchlistLink[aria-current="page"],
+.watchlistLink[data-has-items="true"] {
+  color: var(--ds-ink);
+}
+
+.watchlistLink:focus-visible {
+  outline: none;
+  box-shadow: var(--ds-focus-ring);
+}
+
 @media (max-width: 760px) {
   .headerRow {
-    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-columns: auto minmax(0, 1fr) auto;
     gap: var(--ds-space-3);
   }
 

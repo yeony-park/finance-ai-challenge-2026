@@ -19,7 +19,6 @@ export const SEARCH_TRANSITION_MS = 260;
 export const HOME_STAGE_SECTION_IDS = [
   "category-grid-title",
   "intro-band-title",
-  "watch-band-title",
   "checklist-title",
 ] as const;
 
@@ -27,7 +26,6 @@ export const HOME_DIAL_SECTIONS = [
   { label: "처음 화면", targetId: null },
   { label: "카테고리별 확인 현황", targetId: "category-grid-title" },
   { label: "조각투자 첫걸음", targetId: "intro-band-title" },
-  { label: "검증 리포트", targetId: "watch-band-title" },
   { label: "확인 질문 8가지", targetId: "checklist-title" },
 ] as const;
 

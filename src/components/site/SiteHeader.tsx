@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 
 import { SiteNav } from "./SiteNav";
 import { SERVICE_NAME } from "./service";
+import { WatchlistNavLink } from "./WatchlistNavLink";
 import s from "./shell.module.css";
 
 export function SiteHeader() {
@@ -34,6 +35,7 @@ export function SiteHeader() {
           <span className={s.wordmarkName}>{SERVICE_NAME}</span>
         </Link>
         <SiteNav />
+        <WatchlistNavLink />
       </div>
     </header>
   );
