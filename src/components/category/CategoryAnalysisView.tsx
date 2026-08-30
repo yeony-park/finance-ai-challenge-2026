@@ -61,8 +61,6 @@ export function CategoryAnalysisView({
               title={title}
               evidence={model.evidence}
               visibleEvidence={model.visibleEvidence}
-              activeEvidence={model.activeEvidence}
-              closedEvidence={model.closedEvidence}
               analysisStatus={analysisStatus}
               analysisVerdict={analysisVerdict}
               preview={preview}

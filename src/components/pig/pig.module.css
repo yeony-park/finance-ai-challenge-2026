@@ -317,16 +317,8 @@
 
 .gallerySection {
   display: grid;
-  gap: var(--ds-space-5);
+  gap: var(--ds-space-4);
   padding-block: var(--ds-section-y-tight);
-}
-
-.galleryTitle {
-  margin: 0;
-  font-size: var(--ds-section-title);
-  font-weight: var(--ds-weight-bold);
-  letter-spacing: var(--ds-tracking-tight);
-  line-height: var(--ds-leading-tight);
 }
 
 .galleryEmpty {
