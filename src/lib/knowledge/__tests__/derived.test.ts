@@ -49,10 +49,10 @@ const manifest = () => SourceManifestSchema.parse({
   limitations: ["가상 상품설명서입니다."],
 });
 
-const payloadAndCitations = () => {
+const payloadAndCitations = (scenario = validScenarioOffer()) => {
   const systemFields = new Set(["schemaVersion", "categoryId", "scenarioId", "offerId", "dataNature", "sourceKind", "approvedForPublic", "status"]);
   const product = Object.fromEntries(
-    Object.entries(validScenarioOffer()).filter(([key]) => !systemFields.has(key)),
+    Object.entries(scenario).filter(([key]) => !systemFields.has(key)),
   );
   const leaves: { path: string; value: string | number | boolean | null }[] = [];
   const visit = (value: unknown, prefix = ""): void => {
@@ -310,6 +310,53 @@ describe("PDF-first real-estate derived artifacts", () => {
     expect(revalidated?.status).toBe("needs-review");
     expect(revalidated?.fieldCitations.some((citation) => citation.fieldPath === "offering.unitPriceWon")).toBe(false);
     expect(revalidated?.fieldCitations.some((citation) => citation.fieldPath === "operatorGroupId")).toBe(false);
+  });
+
+  it("fact numeric value는 같은 항목의 허용된 sibling unit이 PDF에 있을 때만 보완한다", async () => {
+    const scenario = structuredClone(validScenarioOffer());
+    const claim = scenario.claimedAssetFacts[0] as { value: string | number; unit?: string };
+    claim.value = 1_000;
+    claim.unit = "m2";
+    const draft = payloadAndCitations(scenario);
+    const valuePath = "claimedAssetFacts.0.value";
+    const pageText = `${draft.text}\n[${valuePath}]: value raw=1000㎡`;
+    const base = artifact();
+    const parsed = ParsedDocumentArtifactSchema.parse({
+      ...base,
+      pages: base.pages.map((page) => ({
+        ...page,
+        native: { ...page.native, text: pageText, canonicalText: pageText },
+        selected: { ...page.selected, text: pageText, canonicalText: pageText },
+      })),
+    });
+    const withoutValue = draft.fieldCitations.filter((citation) => citation.fieldPath !== valuePath);
+    const candidate = await deriveRealEstateScenarioProduct({
+      manifest: manifest(),
+      artifact: parsed,
+      client: { model: "fake:gpt-4.1-mini", async extract() { return { product: draft.product, fieldCitations: withoutValue, warnings: [] }; } },
+    });
+    const promoted = revalidateDerivedScenarioProduct(candidate, parsed, "fake:gpt-4.1-mini");
+    expect(promoted?.status).toBe("auto-approved");
+    expect(promoted?.fieldCitations.find((citation) => citation.fieldPath === valuePath)).toMatchObject({
+      value: 1_000,
+      unit: "m2",
+      exactQuote: `[${valuePath}]: value raw=1000㎡`,
+    });
+
+    const unknownScenario = structuredClone(scenario);
+    (unknownScenario.claimedAssetFacts[0] as { unit?: string }).unit = "sqm-unknown";
+    const unknownDraft = payloadAndCitations(unknownScenario);
+    const unknownCandidate = await deriveRealEstateScenarioProduct({
+      manifest: manifest(),
+      artifact: parsed,
+      client: {
+        model: "fake:gpt-4.1-mini",
+        async extract() {
+          return { product: unknownDraft.product, fieldCitations: unknownDraft.fieldCitations.filter((citation) => citation.fieldPath !== valuePath), warnings: [] };
+        },
+      },
+    });
+    expect(revalidateDerivedScenarioProduct(unknownCandidate, parsed, "fake:gpt-4.1-mini")?.status).toBe("needs-review");
   });
 
   it("runtime은 seed/legacy가 아니라 auto-approved derived registry 한 건만 읽는다", async () => {

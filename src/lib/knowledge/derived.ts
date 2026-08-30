@@ -560,6 +560,7 @@ const validateDerivedCandidate = (
 const appendixCitation = (
   fieldPath: string,
   value: unknown,
+  product: ScenarioOffer,
   artifact: ParsedDocumentArtifact,
 ): DerivedFieldCitation | null => {
   if (typeof value !== "string" && typeof value !== "number" && typeof value !== "boolean" && value !== null) return null;
@@ -585,7 +586,7 @@ const appendixCitation = (
   const exactQuote = page.selected.text
     .slice(index, Math.min(quoteEnd, index + 2_000))
     .trim();
-  const unit = typeof value === "number" ? unitForFieldPath(fieldPath) : null;
+  const unit = typeof value === "number" ? unitForNumericCitation(fieldPath, product) : null;
   if (typeof value === "number" && unit === null) return null;
   const evidenceText = exactQuote.slice(marker.length);
   if (!exactQuote || !isCitationValueExplicitInQuote(value, unit, evidenceText)) return null;
@@ -608,6 +609,30 @@ const unitForFieldPath = (fieldPath: string): string | null => {
   return null;
 };
 
+const unitForNumericCitation = (fieldPath: string, product: ScenarioOffer): string | null => {
+  const direct = unitForFieldPath(fieldPath);
+  if (direct) return direct;
+  if (!/^(?:asset\.facts|claimedAssetFacts)\.\d+\.value$/.test(fieldPath)) return null;
+  const sibling = valueAtPath(product, fieldPath.replace(/\.value$/, ".unit"));
+  if (typeof sibling !== "string") return null;
+  const aliases: Readonly<Record<string, string>> = {
+    krw: "KRW",
+    won: "KRW",
+    원: "KRW",
+    m2: "m2",
+    "㎡": "m2",
+    제곱미터: "m2",
+    percent: "%",
+    "%": "%",
+    퍼센트: "%",
+    months: "months",
+    개월: "months",
+    units: "units",
+    개: "units",
+  };
+  return aliases[sibling.normalize("NFKC").trim().toLocaleLowerCase()] ?? null;
+};
+
 const repairAppendixCitations = (
   product: ScenarioOffer,
   citations: readonly DerivedFieldCitation[],
@@ -622,7 +647,7 @@ const repairAppendixCitations = (
   const present = new Set(repaired.map((citation) => citation.fieldPath));
   for (const fieldPath of required) {
     if (present.has(fieldPath)) continue;
-    const citation = appendixCitation(fieldPath, valueAtPath(product, fieldPath), artifact);
+    const citation = appendixCitation(fieldPath, valueAtPath(product, fieldPath), product, artifact);
     if (citation) {
       repaired.push(citation);
       present.add(fieldPath);
