@@ -46,6 +46,11 @@ class SyntheticDataTest(unittest.TestCase):
         self.assertTrue(all(item["isDemo"] and item["recordScope"] == "current" for item in self.offerings.values()))
         self.assertTrue(all(item["recordScope"] == "historical" for item in self.records))
 
+    def test_current_offerings_use_uniform_unit_and_minimum_prices(self):
+        for offering in self.offerings.values():
+            self.assertEqual(offering["unitPrice"], 100000, offering["id"])
+            self.assertEqual(offering["minimumInvestment"], 100000, offering["id"])
+
     def test_relationships_are_closed_over_fixture_collections(self):
         for platform in self.platforms.values():
             self.assertTrue(set(platform["issuerIds"]) <= set(self.issuers))
