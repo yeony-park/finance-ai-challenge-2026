@@ -12,13 +12,14 @@ import {
   isCitationValueExplicitInQuote,
   isValidAutoApprovedEnvelope,
   parsedArtifactHash,
+  revalidateDerivedScenarioProduct,
   RealEstateProductDraftSchema,
   RealEstateProviderDraftSchema,
 } from "../derived";
 import { runKnowledgeDerive } from "../derive-cli";
 import { loadApprovedScenarios, loadKnowledgeScope } from "../loader";
 import { sha256, type ParsedPdf } from "../pdf";
-import { SourceManifestSchema } from "../schema";
+import { ParsedDocumentArtifactSchema, SourceManifestSchema } from "../schema";
 import { buildKnowledgeIngestPlan } from "@/lib/db/ingest/knowledge";
 import { hashA, validScenarioOffer } from "./fixtures";
 
@@ -223,6 +224,66 @@ describe("PDF-first real-estate derived artifacts", () => {
     expect(envelope.validation.failures).toContain("citation-coverage");
   });
 
+  it("공백 줄바꿈 인용과 단일 appendix string 누락을 로컬 보완하고 product는 바꾸지 않는다", async () => {
+    const draft = payloadAndCitations();
+    const titleQuote = draft.fieldCitations.find((citation) => citation.fieldPath === "title")!.exactQuote;
+    const pageText = `${draft.text.replace(titleQuote, titleQuote.replace("업무시설 시나리오", "업무시설\n 시나리오"))}\n[operatorGroupId]:\noperator-a`;
+    const base = artifact();
+    const parsed = ParsedDocumentArtifactSchema.parse({
+      ...base,
+      pages: base.pages.map((page) => ({
+        ...page,
+        native: { ...page.native, text: pageText, canonicalText: pageText, metrics: { ...page.native.metrics, characterCount: pageText.length, density: pageText.length } },
+        selected: { ...page.selected, text: pageText, canonicalText: pageText },
+      })),
+    });
+    const withoutOperator = draft.fieldCitations.filter((citation) => citation.fieldPath !== "operatorGroupId");
+    const candidate = await deriveRealEstateScenarioProduct({
+      manifest: manifest(),
+      artifact: parsed,
+      client: { model: "fake:gpt-4.1-mini", async extract() { return { product: draft.product, fieldCitations: withoutOperator, warnings: [] }; } },
+    });
+    expect(candidate.status).toBe("needs-review");
+    expect(candidate.validation.exactQuotes).toBe(true);
+    const originalProduct = JSON.stringify(candidate.product);
+    const promoted = revalidateDerivedScenarioProduct(candidate, parsed, "fake:gpt-4.1-mini");
+    expect(promoted?.status).toBe("auto-approved");
+    expect(promoted?.fieldCitations.find((citation) => citation.fieldPath === "operatorGroupId")).toMatchObject({
+      exactQuote: "[operatorGroupId]:\noperator-a",
+      value: "operator-a",
+      origin: "native_text",
+    });
+    expect(JSON.stringify(promoted?.product)).toBe(originalProduct);
+    expect(revalidateDerivedScenarioProduct({ ...candidate, productHash: "b".repeat(64) }, parsed, "fake:gpt-4.1-mini")).toBeNull();
+  });
+
+  it("appendix에 있어도 numeric 누락은 로컬 보완하지 않는다", async () => {
+    const draft = payloadAndCitations();
+    const pageText = `${draft.text}\n[offering.unitPriceWon]: 5000원`;
+    const base = artifact();
+    const parsed = ParsedDocumentArtifactSchema.parse({
+      ...base,
+      pages: base.pages.map((page) => ({
+        ...page,
+        native: { ...page.native, text: pageText, canonicalText: pageText },
+        selected: { ...page.selected, text: pageText, canonicalText: pageText },
+      })),
+    });
+    const candidate = await deriveRealEstateScenarioProduct({
+      manifest: manifest(),
+      artifact: parsed,
+      client: {
+        model: "fake:gpt-4.1-mini",
+        async extract() {
+          return { product: draft.product, fieldCitations: draft.fieldCitations.filter((citation) => citation.fieldPath !== "offering.unitPriceWon"), warnings: [] };
+        },
+      },
+    });
+    const revalidated = revalidateDerivedScenarioProduct(candidate, parsed, "fake:gpt-4.1-mini");
+    expect(revalidated?.status).toBe("needs-review");
+    expect(revalidated?.fieldCitations.some((citation) => citation.fieldPath === "offering.unitPriceWon")).toBe(false);
+  });
+
   it("runtime은 seed/legacy가 아니라 auto-approved derived registry 한 건만 읽는다", async () => {
     const root = await mkdtemp(path.join(os.tmpdir(), "derived-registry-"));
     roots.push(root);
@@ -267,6 +328,8 @@ describe("PDF-first real-estate derived artifacts", () => {
       sourceHash,
     }));
     const draft = payloadAndCitations();
+    const pageText = `${draft.text}\n[operatorGroupId]: operator-a`;
+    const citationsWithoutOperator = draft.fieldCitations.filter((citation) => citation.fieldPath !== "operatorGroupId");
     let parseCalls = 0;
     let extractCalls = 0;
     const options = {
@@ -279,18 +342,18 @@ describe("PDF-first real-estate derived artifacts", () => {
           status: "ready",
           sourceHash,
           limitation: null,
-          pages: [{ page: 1, text: draft.text, canonicalText: draft.text, positions: [], quality: "ready" as const, reasonCodes: [], metrics: { itemCount: 1, characterCount: draft.text.length, density: draft.text.length }, limitations: [] }],
+          pages: [{ page: 1, text: pageText, canonicalText: pageText, positions: [], quality: "ready" as const, reasonCodes: [], metrics: { itemCount: 1, characterCount: pageText.length, density: pageText.length }, limitations: [] }],
         };
       },
       client: {
         model: "fake:gpt-4.1-mini",
         async extract() {
           extractCalls += 1;
-          return { product: draft.product, fieldCitations: draft.fieldCitations, warnings: [] };
+          return { product: draft.product, fieldCitations: citationsWithoutOperator, warnings: [] };
         },
       },
     };
-    await expect(runKnowledgeDerive(options)).resolves.toMatchObject({ code: 0, derived: 1, reused: 0 });
+    await expect(runKnowledgeDerive(options)).resolves.toMatchObject({ code: 1, derived: 1, reused: 0, reviewRequired: 1 });
     await expect(runKnowledgeDerive(options)).resolves.toMatchObject({ code: 0, derived: 1, reused: 1 });
     expect({ parseCalls, extractCalls }).toEqual({ parseCalls: 1, extractCalls: 1 });
     await expect(runKnowledgeDerive({ dataRoot: root, checkOnly: true })).resolves.toMatchObject({ code: 0, derived: 1 });

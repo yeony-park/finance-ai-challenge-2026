@@ -439,8 +439,12 @@ const citationMatches = (
     citation.unit,
     citation.exactQuote,
   );
+  const normalizedPage = page?.selected.text.normalize("NFKC").replace(/\s+/g, "");
+  const normalizedQuote = citation.exactQuote.normalize("NFKC").replace(/\s+/g, "");
+  const quoteIsPresent = page?.selected.text.includes(citation.exactQuote) ||
+    (normalizedQuote.length > 0 && normalizedPage?.includes(normalizedQuote));
   return page?.selected.origin === citation.origin &&
-    page.selected.text.includes(citation.exactQuote) &&
+    quoteIsPresent === true &&
     valueMatches && quoteMatchesValue;
 };
 
@@ -509,6 +513,104 @@ const emptyValidation = (failures: readonly string[]) => ({
   citationsComplete: false,
   failures: [...failures],
 });
+
+const validateDerivedCandidate = (
+  product: ScenarioOffer,
+  citations: readonly DerivedFieldCitation[],
+  artifact: ParsedDocumentArtifact,
+  manifest: SourceManifest,
+) => {
+  const citationsValid = citations.every((citation) => citationMatches(citation, product, artifact));
+  const citationsComplete = citationsCoverProduct(citations, product);
+  const { document, chunks } = buildKnowledgeRecordsFromParsedDocument(artifact, manifest);
+  const productHash = sha256(JSON.stringify(product));
+  const chunkHashes = Object.fromEntries(chunks.map((chunk) => [chunk.chunkId, chunk.chunkHash]));
+  const offeringEquation = product.offering.unitPriceWon * product.offering.unitCount === product.offering.amountWon;
+  const dateOrder = product.offering.opensOn <= product.offering.closesOn &&
+    (!product.offering.listedOn || product.offering.listedOn >= product.offering.closesOn);
+  const scope = product.offerId === manifest.productId && product.scenarioId === manifest.scenarioId &&
+    document.documentId === manifest.documentId;
+  const ocrNativeConflictFree = !artifact.pages.some((page) => page.ocr?.conflict);
+  const sourceHashes = artifact.sourceHash === manifest.sourceHash &&
+    artifact.manifestHash === calculateExtractionManifestHash(manifest) && chunks.length > 0;
+  const validation = {
+    schema: true,
+    exactQuotes: citationsValid,
+    valuesAndUnits: citationsValid,
+    offeringEquation,
+    dateOrder,
+    requiredFields: true,
+    scope,
+    ocrNativeConflictFree,
+    sourceHashes,
+    citationsComplete,
+    failures: [
+      ...(!citationsValid ? ["citations"] : []),
+      ...(!citationsComplete ? ["citation-coverage"] : []),
+      ...(!offeringEquation ? ["offering-equation"] : []),
+      ...(!dateOrder ? ["date-order"] : []),
+      ...(!scope ? ["scope"] : []),
+      ...(!ocrNativeConflictFree ? ["ocr-native-conflict"] : []),
+      ...(!sourceHashes ? ["source-hashes"] : []),
+    ],
+  };
+  return { document, chunks, productHash, chunkHashes, validation, valid: validation.failures.length === 0 };
+};
+
+const appendixCitation = (
+  fieldPath: string,
+  value: unknown,
+  artifact: ParsedDocumentArtifact,
+): DerivedFieldCitation | null => {
+  if (typeof value === "number" || (typeof value !== "string" && typeof value !== "boolean" && value !== null)) return null;
+  const marker = `[${fieldPath}]:`;
+  const matches: { page: ParsedDocumentArtifact["pages"][number]; index: number }[] = [];
+  for (const page of artifact.pages) {
+    if (page.selected.origin === "none") continue;
+    let from = 0;
+    while (from < page.selected.text.length) {
+      const index = page.selected.text.indexOf(marker, from);
+      if (index < 0) break;
+      matches.push({ page, index });
+      from = index + marker.length;
+    }
+  }
+  if (matches.length !== 1) return null;
+  const [{ page, index }] = matches;
+  const nextMarker = page.selected.text.indexOf("\n[", index + marker.length);
+  const exactQuote = page.selected.text
+    .slice(index, Math.min(nextMarker < 0 ? page.selected.text.length : nextMarker, index + 2_000))
+    .trim();
+  if (!exactQuote || !isCitationValueExplicitInQuote(value, null, exactQuote)) return null;
+  return DerivedFieldCitationSchema.parse({
+    fieldPath,
+    page: page.page,
+    exactQuote,
+    origin: page.selected.origin,
+    value,
+    unit: null,
+  });
+};
+
+const repairAppendixCitations = (
+  product: ScenarioOffer,
+  citations: readonly DerivedFieldCitation[],
+  artifact: ParsedDocumentArtifact,
+): readonly DerivedFieldCitation[] => {
+  const paths = citations.map((citation) => citation.fieldPath);
+  if (paths.length !== new Set(paths).size || !citations.every((citation) => citationMatches(citation, product, artifact))) return citations;
+  const repaired = [...citations];
+  const present = new Set(paths);
+  for (const fieldPath of scalarLeafPaths(product).filter((field) => !MANIFEST_ASSIGNED_PRODUCT_PATHS.has(field))) {
+    if (present.has(fieldPath)) continue;
+    const citation = appendixCitation(fieldPath, valueAtPath(product, fieldPath), artifact);
+    if (citation) {
+      repaired.push(citation);
+      present.add(fieldPath);
+    }
+  }
+  return repaired;
+};
 
 const failedEnvelope = (
   base: ReturnType<typeof baseEnvelope>,
@@ -593,41 +695,8 @@ export const deriveRealEstateScenarioProduct = async (input: {
   if (!productResult.success) return failedEnvelope(base, "scenario-schema", draft.fieldCitations);
   const product = productResult.data;
   try {
-    const citationsValid = draft.fieldCitations.every((citation) => citationMatches(citation, product, artifact));
-    const citationsComplete = citationsCoverProduct(draft.fieldCitations, product);
-    const { document, chunks } = buildKnowledgeRecordsFromParsedDocument(artifact, manifest);
-    const productHash = sha256(JSON.stringify(product));
-    const chunkHashes = Object.fromEntries(chunks.map((chunk) => [chunk.chunkId, chunk.chunkHash]));
-    const offeringEquation = product.offering.unitPriceWon * product.offering.unitCount === product.offering.amountWon;
-    const dateOrder = product.offering.opensOn <= product.offering.closesOn &&
-      (!product.offering.listedOn || product.offering.listedOn >= product.offering.closesOn);
-    const scope = product.offerId === manifest.productId && product.scenarioId === manifest.scenarioId &&
-      document.documentId === manifest.documentId;
-    const ocrNativeConflictFree = !artifact.pages.some((page) => page.ocr?.conflict);
-    const sourceHashes = artifact.sourceHash === manifest.sourceHash &&
-      artifact.manifestHash === calculateExtractionManifestHash(manifest) && chunks.length > 0;
-    const validation = {
-      schema: true,
-      exactQuotes: citationsValid,
-      valuesAndUnits: citationsValid,
-      offeringEquation,
-      dateOrder,
-      requiredFields: true,
-      scope,
-      ocrNativeConflictFree,
-      sourceHashes,
-      citationsComplete,
-      failures: [
-        ...(!citationsValid ? ["citations"] : []),
-        ...(!citationsComplete ? ["citation-coverage"] : []),
-        ...(!offeringEquation ? ["offering-equation"] : []),
-        ...(!dateOrder ? ["date-order"] : []),
-        ...(!scope ? ["scope"] : []),
-        ...(!ocrNativeConflictFree ? ["ocr-native-conflict"] : []),
-        ...(!sourceHashes ? ["source-hashes"] : []),
-      ],
-    };
-    const valid = validation.failures.length === 0;
+    const { document, chunks, productHash, chunkHashes, validation, valid } =
+      validateDerivedCandidate(product, draft.fieldCitations, artifact, manifest);
     return DerivedScenarioProductEnvelopeSchema.parse({
       ...base,
       status: valid ? "auto-approved" : "needs-review",
@@ -655,8 +724,8 @@ export const deriveRealEstateScenarioProduct = async (input: {
       fieldCitations: draft.fieldCitations,
       limitations: [
         ...draft.warnings,
-        ...(!citationsValid ? ["필드 인용이 선택된 PDF 텍스트와 일치하지 않습니다."] : []),
-        ...(!citationsComplete ? ["자동 승인에 필요한 전체 필드 인용이 누락되었습니다."] : []),
+        ...(!validation.exactQuotes ? ["필드 인용이 선택된 PDF 텍스트와 일치하지 않습니다."] : []),
+        ...(!validation.citationsComplete ? ["자동 승인에 필요한 전체 필드 인용이 누락되었습니다."] : []),
       ],
     });
   } catch {
@@ -667,6 +736,56 @@ export const deriveRealEstateScenarioProduct = async (input: {
 export const realEstateCategoryExtractor: CategoryExtractorAdapter = {
   categoryId: "real-estate",
   derive: deriveRealEstateScenarioProduct,
+};
+
+export const revalidateDerivedScenarioProduct = (
+  envelopeInput: unknown,
+  artifactInput: unknown,
+  expectedModel: string,
+): DerivedScenarioProductEnvelope | null => {
+  const envelopeResult = DerivedScenarioProductEnvelopeSchema.safeParse(envelopeInput);
+  const artifactResult = ParsedDocumentArtifactSchema.safeParse(artifactInput);
+  if (!envelopeResult.success || !artifactResult.success || envelopeResult.data.status !== "needs-review") return null;
+  const envelope = envelopeResult.data;
+  const artifact = artifactResult.data;
+  if (
+    envelope.model !== expectedModel || envelope.promptVersion !== DERIVED_EXTRACTION_PROMPT_VERSION ||
+    envelope.extractionSchemaVersion !== DERIVED_EXTRACTION_SCHEMA_VERSION || !envelope.manifest ||
+    !envelope.product || !envelope.productHash || !envelope.document || !envelope.searchRecord ||
+    envelope.categoryId !== artifact.categoryId || envelope.productId !== artifact.productId ||
+    envelope.scenarioId !== artifact.scenarioId || envelope.documentId !== artifact.documentId ||
+    envelope.sourceHash !== artifact.sourceHash || envelope.parsedArtifactHash !== parsedArtifactHash(artifact) ||
+    envelope.manifestHash !== calculateExtractionManifestHash(envelope.manifest) ||
+    artifact.manifestHash !== envelope.manifestHash ||
+    envelope.productHash !== sha256(JSON.stringify(envelope.product))
+  ) return null;
+  let rebuilt: ReturnType<typeof buildKnowledgeRecordsFromParsedDocument>;
+  try {
+    rebuilt = buildKnowledgeRecordsFromParsedDocument(artifact, envelope.manifest);
+  } catch {
+    return null;
+  }
+  const expectedChunkHashes = Object.fromEntries(rebuilt.chunks.map((chunk) => [chunk.chunkId, chunk.chunkHash]));
+  if (
+    JSON.stringify(envelope.document) !== JSON.stringify(rebuilt.document) ||
+    JSON.stringify(envelope.chunks) !== JSON.stringify(rebuilt.chunks) ||
+    JSON.stringify(envelope.chunkHashes) !== JSON.stringify(expectedChunkHashes) ||
+    !envelope.fieldCitations.every((citation) => citationMatches(citation, envelope.product!, artifact))
+  ) return null;
+  const fieldCitations = repairAppendixCitations(envelope.product, envelope.fieldCitations, artifact);
+  const evaluated = validateDerivedCandidate(envelope.product, fieldCitations, artifact, envelope.manifest);
+  const limitations = envelope.limitations.filter((limitation) =>
+    limitation !== "필드 인용이 선택된 PDF 텍스트와 일치하지 않습니다." &&
+    limitation !== "자동 승인에 필요한 전체 필드 인용이 누락되었습니다.");
+  if (!evaluated.validation.exactQuotes) limitations.push("필드 인용이 선택된 PDF 텍스트와 일치하지 않습니다.");
+  if (!evaluated.validation.citationsComplete) limitations.push("자동 승인에 필요한 전체 필드 인용이 누락되었습니다.");
+  return DerivedScenarioProductEnvelopeSchema.parse({
+    ...envelope,
+    status: evaluated.valid ? "auto-approved" : "needs-review",
+    fieldCitations,
+    validation: evaluated.validation,
+    limitations: [...new Set(limitations)],
+  });
 };
 
 export const isValidAutoApprovedEnvelope = (

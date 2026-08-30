@@ -10,6 +10,7 @@ import {
   createAiSdkRealEstateProductClient,
   deriveRealEstateScenarioProduct,
   isValidAutoApprovedEnvelope,
+  revalidateDerivedScenarioProduct,
   type RealEstateProductExtractionClient,
 } from "./derived";
 import { resolveWithin } from "./loader";
@@ -184,10 +185,16 @@ const deriveOne = async (
   const productFile = resolveWithin(derivedRoot, "product.json");
   const cached = await readJsonFile(productFile).catch(() => null);
   if (isValidAutoApprovedEnvelope(cached, artifact.data)) return { reused: true, reviewRequired: false };
+  const client = options.client ?? createAiSdkRealEstateProductClient();
+  const revalidated = revalidateDerivedScenarioProduct(cached, artifact.data, client.model);
+  if (revalidated) {
+    if (JSON.stringify(revalidated) !== JSON.stringify(cached)) await atomicWrite(derivedRoot, "product.json", revalidated);
+    return { reused: true, reviewRequired: revalidated.status !== "auto-approved" };
+  }
   const envelope = await deriveRealEstateScenarioProduct({
     manifest,
     artifact: artifact.data,
-    client: options.client ?? createAiSdkRealEstateProductClient(),
+    client,
     createdAt: options.createdAt,
   });
   await atomicWrite(derivedRoot, "product.json", envelope);
