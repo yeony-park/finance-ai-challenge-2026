@@ -1,19 +1,14 @@
-import { lstat, readFile, readdir } from "node:fs/promises";
+import { lstat, readFile } from "node:fs/promises";
 import path from "node:path";
 
 import {
-  ChunkRecordSchema,
   CommonKnowledgeIndexSchema,
-  DocumentRecordSchema,
-  ScenarioOfferSchema,
-  type ChunkRecord,
   type CommonChunkRecord,
   type CommonDocumentRecord,
   type CommonKnowledgeIndex,
-  type DocumentRecord,
-  type ScenarioOffer,
 } from "@/lib/knowledge/schema";
-import { calculateChunkHash, calculateCommonChunkHash } from "@/lib/knowledge/pdf";
+import { calculateCommonChunkHash } from "@/lib/knowledge/pdf";
+import { loadDerivedRealEstateRegistry } from "@/lib/knowledge/loader";
 
 type DataNature = "observed" | "scenario";
 type SourceKind = "issuer-claim" | "platform-claim" | "official-document" | "external-observation" | "scenario-input";
@@ -94,7 +89,7 @@ type Scope = {
 };
 
 type InputDocument = Scope & {
-  readonly origin: "common" | "legacy";
+  readonly origin: "common" | "derived";
   readonly categoryId: KnowledgeDocumentRowPlan["categoryId"];
   readonly productId: string;
   readonly scenarioId: string | null;
@@ -153,31 +148,6 @@ const externalAiGate = (value: object): {
   };
 };
 
-const requiredLegacyScope = (scenario: ScenarioOffer, document: DocumentRecord): void => {
-  if (
-    scenario.categoryId !== document.categoryId ||
-    scenario.scenarioId !== document.scenarioId ||
-    scenario.offerId !== document.offerId ||
-    document.dataNature !== "scenario"
-  ) throw new KnowledgeIngestError(`legacy document scope mismatch: ${document.documentId}`);
-};
-
-const readRecords = async <T>(directory: string, schema: { parse(input: unknown): T }): Promise<readonly T[]> => {
-  const names = await readdir(directory).catch((error: unknown) => {
-    if ((error as NodeJS.ErrnoException).code === "ENOENT") return [] as string[];
-    throw error;
-  });
-  const values: T[] = [];
-  for (const name of names.sort()) {
-    if (!name.endsWith(".json") || path.basename(name) !== name) continue;
-    const file = path.join(directory, name);
-    const stat = await lstat(file);
-    if (!stat.isFile() || stat.isSymbolicLink()) throw new KnowledgeIngestError(`unsafe knowledge input: ${file}`);
-    values.push(schema.parse(JSON.parse(await readFile(file, "utf8"))));
-  }
-  return values;
-};
-
 const readCommonIndex = async (dataRoot: string): Promise<CommonKnowledgeIndex> => {
   const file = path.join(dataRoot, "knowledge", "generated", "index.json");
   try {
@@ -192,8 +162,8 @@ const readCommonIndex = async (dataRoot: string): Promise<CommonKnowledgeIndex> 
   }
 };
 
-const commonDocument = (document: CommonDocumentRecord): InputDocument => ({
-  origin: "common",
+const commonDocument = (document: CommonDocumentRecord, origin: InputDocument["origin"] = "common"): InputDocument => ({
+  origin,
   categoryId: document.categoryId,
   productId: document.productId,
   scenarioId: document.scenarioId ?? null,
@@ -232,46 +202,6 @@ const commonChunk = (
   limitations: chunk.limitations,
   approvedForExternalAi: document.approvedForExternalAi,
   piiReviewStatus: document.piiReviewStatus,
-});
-
-const legacyDocument = (document: DocumentRecord): InputDocument => ({
-  origin: "legacy",
-  categoryId: document.categoryId,
-  productId: document.offerId,
-  scenarioId: document.scenarioId,
-  dataNature: document.dataNature,
-  sourceKind: document.sourceKind,
-  documentId: document.documentId,
-  title: document.title,
-  sourceUrl: document.sourceUrl,
-  asOf: document.asOf,
-  sourceHash: document.sourceHash,
-  status: document.status === "ready" ? "ready" : "partial",
-  limitations: document.limitations,
-  approvedForExternalAi: false,
-  piiReviewStatus: "not-reviewed",
-});
-
-const legacyChunk = (chunk: ChunkRecord): InputChunk => ({
-  origin: "legacy",
-  categoryId: chunk.categoryId,
-  productId: chunk.offerId,
-  scenarioId: chunk.scenarioId,
-  dataNature: chunk.dataNature,
-  sourceKind: chunk.sourceKind,
-  documentId: chunk.documentId,
-  title: chunk.title,
-  sourceUrl: chunk.sourceUrl,
-  asOf: chunk.asOf,
-  sourceHash: chunk.sourceHash,
-  chunkId: chunk.chunkId,
-  page: chunk.page,
-  text: chunk.text,
-  canonicalText: chunk.text,
-  chunkHash: chunk.chunkHash,
-  limitations: chunk.limitations,
-  approvedForExternalAi: false,
-  piiReviewStatus: "not-reviewed",
 });
 
 const assertUniqueIds = (documents: readonly InputDocument[], chunks: readonly InputChunk[]): void => {
@@ -366,18 +296,16 @@ const toPlan = (documents: readonly InputDocument[], chunks: readonly InputChunk
 
 export const buildKnowledgeIngestPlan = async (dataRoot = "data"): Promise<KnowledgeIngestPlan> => {
   const root = path.resolve(dataRoot);
-  const [common, scenarios, legacyDocumentRecords, legacyChunkRecords] = await Promise.all([
+  const [common, derived] = await Promise.all([
     readCommonIndex(root),
-    readRecords(path.join(root, "scenarios", "real-estate"), ScenarioOfferSchema),
-    readRecords(path.join(root, "knowledge", "documents"), DocumentRecordSchema),
-    readRecords(path.join(root, "knowledge", "chunks"), ChunkRecordSchema),
+    loadDerivedRealEstateRegistry(root),
   ]);
   const publicProducts = new Set(common.products
     .filter((product) => product.approvedForPublic)
     .map((product) => `${product.categoryId}:${product.productId}:${product.scenarioId ?? ""}:${product.dataNature}`));
   const commonDocuments = common.documents
     .filter((document) => document.approvedForPublic && (document.status === "ready" || document.status === "partial"))
-    .map(commonDocument);
+    .map((document) => commonDocument(document));
   for (const document of commonDocuments) {
     const productKey = `${document.categoryId}:${document.productId}:${document.scenarioId ?? ""}:${document.dataNature}`;
     if (!publicProducts.has(productKey)) throw new KnowledgeIngestError(`common document scope without approved product: ${document.documentId}`);
@@ -400,29 +328,19 @@ export const buildKnowledgeIngestPlan = async (dataRoot = "data"): Promise<Knowl
       throw new KnowledgeIngestError(`common chunk hash or scope mismatch: ${chunk.chunkId}`);
     }
   }
-  const publicScenarios = new Map(scenarios
-    .filter((scenario) => scenario.approvedForPublic && scenario.status === "approved")
-    .map((scenario) => [`${scenario.scenarioId}:${scenario.offerId}`, scenario]));
-  const selectedLegacyDocuments = legacyDocumentRecords
-    .filter((document) => document.approvedForPublic && (document.status === "ready" || document.status === "partial"));
-  for (const document of selectedLegacyDocuments) {
-    const scenario = publicScenarios.get(`${document.scenarioId}:${document.offerId}`);
-    if (!scenario) throw new KnowledgeIngestError(`legacy document scope without approved scenario: ${document.documentId}`);
-    requiredLegacyScope(scenario, document);
-  }
-  const legacyDocuments = selectedLegacyDocuments.map(legacyDocument);
-  const legacyById = new Map(legacyDocuments.map((document) => [document.documentId, document]));
-  const legacyRawById = new Map(legacyChunkRecords.map((chunk) => [chunk.chunkId, chunk]));
-  const legacyChunks = legacyChunkRecords
-    .filter((chunk) => chunk.approvedForPublic && chunk.status === "ready")
-    .map(legacyChunk);
-  for (const chunk of legacyChunks) {
-    const document = legacyById.get(chunk.documentId);
-    if (!document) throw new KnowledgeIngestError(`orphan legacy chunk: ${chunk.chunkId}`);
-    const raw = legacyRawById.get(chunk.chunkId)!;
-    if (!sameScope(document, chunk) || calculateChunkHash(raw) !== chunk.chunkHash) {
-      throw new KnowledgeIngestError(`legacy chunk hash or scope mismatch: ${chunk.chunkId}`);
+  const derivedDocuments = derived.map((envelope) => commonDocument(envelope.document!, "derived"));
+  const derivedChunks = derived.flatMap((envelope) => {
+    const document = derivedDocuments.find((candidate) =>
+      candidate.documentId === envelope.documentId && candidate.productId === envelope.productId &&
+      candidate.scenarioId === envelope.scenarioId);
+    if (!document) throw new KnowledgeIngestError(`derived document scope missing: ${envelope.documentId}`);
+    return envelope.chunks.map((chunk) => commonChunk(chunk, document));
+  });
+  for (const chunk of derivedChunks) {
+    const document = derivedDocuments.find((candidate) => candidate.documentId === chunk.documentId);
+    if (!document || !sameScope(document, chunk)) {
+      throw new KnowledgeIngestError(`derived chunk scope mismatch: ${chunk.chunkId}`);
     }
   }
-  return toPlan([...commonDocuments, ...legacyDocuments], [...commonChunks, ...legacyChunks]);
+  return toPlan([...commonDocuments, ...derivedDocuments], [...commonChunks, ...derivedChunks]);
 };

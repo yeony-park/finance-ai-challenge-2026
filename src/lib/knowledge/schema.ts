@@ -828,6 +828,154 @@ export const CommonKnowledgeIndexSchema = z.strictObject({
   chunks: z.array(CommonChunkRecordSchema),
 });
 
+export const ParsedDocumentArtifactSchema = z.strictObject({
+  schemaVersion: z.literal(1),
+  artifactVersion: z.literal("parsed-document-v1"),
+  categoryId: CategoryId,
+  productId: Id,
+  scenarioId: Id.optional(),
+  documentId: Id,
+  dataNature: DataNature,
+  sourceKind: SourceKind,
+  sourceHash: Hash,
+  manifestHash: Hash,
+  status: DocumentStatus,
+  createdAt: z.string().datetime({ offset: true }),
+  pages: z.array(z.strictObject({
+    page: z.number().int().positive(),
+    native: z.strictObject({
+      quality: PageQuality,
+      text: z.string().max(100_000),
+      canonicalText: z.string().max(100_000),
+      positions: z.array(TextPositionSchema).max(20_000).default([]),
+      reasonCodes: z.array(z.string().trim().min(1).max(80)).default([]),
+      metrics: z.strictObject({
+        itemCount: z.number().int().nonnegative(),
+        characterCount: z.number().int().nonnegative(),
+        density: z.number().finite().nonnegative(),
+      }),
+      limitations: Limitations,
+    }),
+    selected: z.strictObject({
+      origin: z.enum(["native_text", "vision_transcription", "none"]),
+      text: z.string().max(100_000),
+      canonicalText: z.string().max(100_000),
+    }),
+    ocr: z.strictObject({
+      model: z.string().trim().min(1).max(200),
+      promptVersion: z.string().trim().min(1).max(80),
+      schemaVersion: z.number().int().positive(),
+      renderVersion: z.string().trim().min(1).max(80),
+      renderHash: Hash,
+      transcriptionHash: Hash,
+      conflict: z.boolean(),
+      blockingReasonCodes: z.array(z.string().trim().min(1).max(80)),
+      limitations: Limitations,
+    }).optional(),
+    limitations: Limitations,
+  })).max(250),
+  limitations: Limitations,
+}).superRefine((value, context) => {
+  validateProvenance(value, context);
+  validateOptionalScenarioId(value, context);
+  for (const [index, page] of value.pages.entries()) {
+    if (page.selected.origin === "none" && (page.selected.text || page.selected.canonicalText)) {
+      context.addIssue({ code: "custom", path: ["pages", index, "selected"], message: "선택하지 않은 페이지에는 텍스트를 저장할 수 없습니다." });
+    }
+    if (page.selected.origin === "native_text" && page.native.quality !== "ready") {
+      context.addIssue({ code: "custom", path: ["pages", index, "selected", "origin"], message: "ready native 페이지만 자동 선택할 수 있습니다." });
+    }
+    if (page.selected.origin === "vision_transcription" && (!page.ocr || page.ocr.conflict)) {
+      context.addIssue({ code: "custom", path: ["pages", index, "selected", "origin"], message: "충돌 없는 Vision provenance가 필요합니다." });
+    }
+  }
+});
+
+export const DerivedFieldCitationSchema = z.strictObject({
+  fieldPath: z.string().trim().min(1).max(240),
+  page: z.number().int().positive(),
+  exactQuote: z.string().trim().min(1).max(2_000),
+  origin: z.enum(["native_text", "vision_transcription"]),
+  value: z.union([z.string().max(2_000), z.number().finite(), z.boolean(), z.null()]),
+  unit: z.string().trim().min(1).max(80).nullable(),
+});
+
+export const DerivedSearchRecordSchema = z.strictObject({
+  categoryId: z.literal("real-estate"),
+  productId: Id,
+  scenarioId: Id,
+  dataNature: z.literal("scenario"),
+  title: z.string().trim().min(1).max(240),
+  aliases: z.array(z.string().trim().min(1).max(240)).max(50),
+  phase: ProductPhase,
+  asOf: DateValue,
+});
+
+export const DerivedProductValidationSchema = z.strictObject({
+  schema: z.boolean(),
+  exactQuotes: z.boolean(),
+  valuesAndUnits: z.boolean(),
+  offeringEquation: z.boolean(),
+  dateOrder: z.boolean(),
+  requiredFields: z.boolean(),
+  scope: z.boolean(),
+  ocrNativeConflictFree: z.boolean(),
+  sourceHashes: z.boolean(),
+  citationsComplete: z.boolean(),
+  failures: z.array(z.string().trim().min(1).max(240)).max(100),
+});
+
+export const DerivedScenarioProductEnvelopeSchema = z.strictObject({
+  schemaVersion: z.literal(1),
+  artifactVersion: z.literal("derived-real-estate-product-v1"),
+  status: z.enum(["auto-approved", "needs-review", "failed"]),
+  categoryId: z.literal("real-estate"),
+  productId: Id,
+  scenarioId: Id,
+  documentId: Id,
+  sourceHash: Hash,
+  manifestHash: Hash,
+  parsedArtifactHash: Hash,
+  productHash: Hash.optional(),
+  chunkHashes: z.record(Id, Hash),
+  model: z.string().trim().min(1).max(200),
+  promptVersion: z.string().trim().min(1).max(80),
+  extractionSchemaVersion: z.number().int().positive(),
+  createdAt: z.string().datetime({ offset: true }),
+  manifest: SourceManifestSchema.optional(),
+  product: ScenarioOfferSchema.optional(),
+  searchRecord: DerivedSearchRecordSchema.optional(),
+  document: CommonDocumentRecordSchema.optional(),
+  chunks: z.array(CommonChunkRecordSchema).max(250),
+  fieldCitations: z.array(DerivedFieldCitationSchema).max(500),
+  validation: DerivedProductValidationSchema,
+  limitations: Limitations,
+}).superRefine((value, context) => {
+  if (value.status !== "auto-approved") return;
+  if (!value.manifest || !value.product || !value.searchRecord || !value.document || value.chunks.length === 0 || !value.productHash) {
+    context.addIssue({ code: "custom", path: ["status"], message: "auto-approved 상품에는 검증된 상품·검색·문서·청크가 필요합니다." });
+    return;
+  }
+  const sameScope = value.product.categoryId === value.categoryId &&
+    value.product.offerId === value.productId && value.product.scenarioId === value.scenarioId &&
+    value.document.categoryId === value.categoryId && value.document.productId === value.productId &&
+    value.document.scenarioId === value.scenarioId && value.document.documentId === value.documentId &&
+    value.document.sourceHash === value.sourceHash &&
+    value.manifest.categoryId === value.categoryId && value.manifest.productId === value.productId &&
+    value.manifest.scenarioId === value.scenarioId && value.manifest.documentId === value.documentId &&
+    value.searchRecord.productId === value.productId && value.searchRecord.scenarioId === value.scenarioId;
+  if (!sameScope || value.chunks.some((chunk) =>
+    chunk.categoryId !== value.categoryId || chunk.productId !== value.productId ||
+    chunk.scenarioId !== value.scenarioId || chunk.documentId !== value.documentId ||
+    chunk.sourceHash !== value.sourceHash
+  )) {
+    context.addIssue({ code: "custom", path: ["status"], message: "derived 상품 범위가 일치하지 않습니다." });
+  }
+  if (Object.entries(value.validation).some(([key, result]) => key !== "failures" && result !== true) || value.validation.failures.length > 0) {
+    context.addIssue({ code: "custom", path: ["validation"], message: "auto-approved 상품은 모든 검증을 통과해야 합니다." });
+  }
+});
+
 export const CommonKnowledgeQuerySchema = z.strictObject({
   categoryId: CategoryId,
   productId: Id,
@@ -907,6 +1055,9 @@ export type CommonChunkRecord = Omit<ParsedCommonChunkRecord, "approvedForExtern
   readonly piiReviewStatus?: "passed" | "not-reviewed";
 };
 export type CommonKnowledgeIndex = z.infer<typeof CommonKnowledgeIndexSchema>;
+export type ParsedDocumentArtifact = z.infer<typeof ParsedDocumentArtifactSchema>;
+export type DerivedFieldCitation = z.infer<typeof DerivedFieldCitationSchema>;
+export type DerivedScenarioProductEnvelope = z.infer<typeof DerivedScenarioProductEnvelopeSchema>;
 export type CommonKnowledgeQuery = z.infer<typeof CommonKnowledgeQuerySchema>;
 export type KnowledgeRequest = z.infer<typeof KnowledgeRequestSchema>;
 export type CommonKnowledgeRequest = z.infer<typeof CommonKnowledgeRequestSchema>;

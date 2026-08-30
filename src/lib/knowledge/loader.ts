@@ -1,13 +1,13 @@
 import { lstat, readFile, readdir } from "node:fs/promises";
 import path from "node:path";
-import type { ZodType } from "zod";
 import { calculateChunkHash, calculateCommonChunkHash } from "./pdf";
+import { isValidAutoApprovedEnvelope } from "./derived";
 import {
-  CachedAnswerSchema,
   ChunkRecordSchema,
   DocumentRecordSchema,
-  ScenarioOfferSchema,
   CommonKnowledgeIndexSchema,
+  DerivedScenarioProductEnvelopeSchema,
+  ParsedDocumentArtifactSchema,
   type CommonChunkRecord,
   type CommonDocumentRecord,
   type CommonKnowledgeIndex,
@@ -16,6 +16,7 @@ import {
   type ChunkRecord,
   type DocumentRecord,
   type ScenarioOffer,
+  type DerivedScenarioProductEnvelope,
 } from "./schema";
 
 export interface KnowledgeScope {
@@ -59,40 +60,80 @@ export const resolveWithin = (root: string, relativePath: string): string => {
   return resolved;
 };
 
-const readDirectory = async <T>(root: string, schema: ZodType<T>): Promise<T[]> => {
-  const names = await readdir(root).catch((error: unknown) => {
-    if ((error as NodeJS.ErrnoException).code === "ENOENT") return [] as string[];
-    throw error;
-  });
-  const records: T[] = [];
-
-  for (const name of names.sort()) {
-    if (path.extname(name) !== ".json" || path.basename(name) !== name) continue;
-    const file = resolveWithin(root, name);
-    const info = await lstat(file);
-    if (!info.isFile() || info.isSymbolicLink()) continue;
-    const raw = await readFile(file, "utf8");
-    const parsed = schema.safeParse(JSON.parse(raw));
-    if (parsed.success) records.push(parsed.data);
-  }
-  return records;
-};
-
 const readIndex = async (dataRoot: string): Promise<KnowledgeIndex> => {
-  const scenarioRoot = resolveWithin(dataRoot, path.join("scenarios", "real-estate"));
-  const knowledgeRoot = resolveWithin(dataRoot, "knowledge");
-  const [scenarios, documents, chunks, cachedAnswers] = await Promise.all([
-    readDirectory(scenarioRoot, ScenarioOfferSchema),
-    readDirectory(resolveWithin(knowledgeRoot, "documents"), DocumentRecordSchema),
-    readDirectory(resolveWithin(knowledgeRoot, "chunks"), ChunkRecordSchema),
-    readDirectory(resolveWithin(knowledgeRoot, "cache"), CachedAnswerSchema),
-  ]);
+  const envelopes = await loadDerivedRealEstateRegistry(dataRoot);
+  const scenarios = envelopes.map((envelope) => envelope.product!);
+  const documents = envelopes.map((envelope) => DocumentRecordSchema.parse({
+    schemaVersion: 1,
+    categoryId: envelope.categoryId,
+    scenarioId: envelope.scenarioId,
+    offerId: envelope.productId,
+    dataNature: "scenario",
+    sourceKind: "scenario-input",
+    documentId: envelope.documentId,
+    title: envelope.document!.title,
+    sourceUrl: envelope.document!.sourceUrl,
+    asOf: envelope.document!.asOf,
+    sourceHash: envelope.sourceHash,
+    approvedForPublic: true,
+    status: envelope.document!.status,
+    limitations: envelope.document!.limitations,
+  }));
+  const chunks = envelopes.flatMap((envelope) => envelope.chunks.map((chunk) => ChunkRecordSchema.parse({
+    schemaVersion: 1,
+    categoryId: envelope.categoryId,
+    scenarioId: envelope.scenarioId,
+    offerId: envelope.productId,
+    dataNature: "scenario",
+    sourceKind: "scenario-input",
+    chunkId: chunk.chunkId,
+    documentId: chunk.documentId,
+    title: chunk.title,
+    sourceUrl: chunk.sourceUrl,
+    asOf: chunk.asOf,
+    page: chunk.page,
+    text: chunk.text,
+    positions: [],
+    sourceHash: chunk.sourceHash,
+    chunkHash: calculateChunkHash({ page: chunk.page, text: chunk.text, positions: [] }),
+    approvedForPublic: true,
+    status: "ready",
+    limitations: chunk.limitations,
+  })));
+  const cachedAnswers: CachedAnswer[] = [];
   return Object.freeze({
     scenarios: Object.freeze(scenarios),
     documents: Object.freeze(documents),
     chunks: Object.freeze(chunks),
     cachedAnswers: Object.freeze(cachedAnswers),
   });
+};
+
+export const loadDerivedRealEstateRegistry = async (
+  dataRoot = DEFAULT_DATA_ROOT,
+): Promise<readonly DerivedScenarioProductEnvelope[]> => {
+  const root = resolveWithin(dataRoot, path.join("knowledge", "derived", "real-estate"));
+  const entries = await readdir(root, { withFileTypes: true }).catch((error: unknown) => {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") return [];
+    throw error;
+  });
+  const records: DerivedScenarioProductEnvelope[] = [];
+  for (const entry of entries.sort((left, right) => left.name.localeCompare(right.name))) {
+    if (!entry.isDirectory() || entry.isSymbolicLink() || path.basename(entry.name) !== entry.name) continue;
+    const directory = resolveWithin(root, entry.name);
+    const productFile = resolveWithin(directory, "product.json");
+    const productStat = await lstat(productFile).catch(() => null);
+    if (!productStat?.isFile() || productStat.isSymbolicLink()) continue;
+    const envelope = DerivedScenarioProductEnvelopeSchema.safeParse(JSON.parse(await readFile(productFile, "utf8")));
+    if (!envelope.success || envelope.data.status !== "auto-approved" || envelope.data.scenarioId !== entry.name) continue;
+    const parsedFile = resolveWithin(directory, `parsed-${envelope.data.sourceHash}.json`);
+    const parsedStat = await lstat(parsedFile).catch(() => null);
+    if (!parsedStat?.isFile() || parsedStat.isSymbolicLink()) continue;
+    const artifact = ParsedDocumentArtifactSchema.safeParse(JSON.parse(await readFile(parsedFile, "utf8")));
+    if (!artifact.success || !isValidAutoApprovedEnvelope(envelope.data, artifact.data)) continue;
+    records.push(envelope.data);
+  }
+  return Object.freeze(records);
 };
 
 const loadIndex = (dataRoot: string): Promise<KnowledgeIndex> => {

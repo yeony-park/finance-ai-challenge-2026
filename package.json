@@ -5,9 +5,11 @@
   "scripts": {
     "knowledge:index": "tsx src/lib/knowledge/index-cli.ts",
     "knowledge:extract": "tsx --env-file-if-exists=.env src/lib/knowledge/extract-cli.ts",
-    "predev": "npm run knowledge:index",
+    "knowledge:derive": "tsx --env-file-if-exists=.env src/lib/knowledge/derive-cli.ts",
+    "knowledge:derived:check": "tsx src/lib/knowledge/derive-cli.ts --check",
+    "predev": "npm run knowledge:index && npm run knowledge:derived:check",
     "dev": "next dev",
-    "prebuild": "npm run knowledge:index",
+    "prebuild": "npm run knowledge:index && npm run knowledge:derived:check",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
