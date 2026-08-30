@@ -21,7 +21,7 @@ source-of-truth: src/lib/verify/types.ts · report/mask.ts · docs/spec/02·04·
 - **R-INV-08 (MUST)** 검증 리포트·공모 목록 화면 문장의 주어는 공모·자산이다 — 서비스 자기보고("저희가 검증했습니다" 류) 금지. 시작 촉구·권유 문안 금지. 서비스 서술은 `/methodology`와 홈 한정, `docs/spec/04` 준수.
 - **R-INV-09 (MUST)** 신규 사용자 대면 문안은 `src/lib/content/`에 두고 출력 필터 감사 테스트를 통과시킨다. 컴포넌트에 문안 하드코딩 금지.
 - **R-INV-10 (MUST)** 실명은 `05-data-policy.md` 예외 목록(법정 공시 법인 발행인명 등)만. 자연인 비공시 정보는 화면·외부 AI 모델 어디에도 금지. 공개 슬러그는 중립 id(`cattle-N`·`art-N` 형식).
-- **R-INV-11 (금지)** 크롤링·스크린 스크래핑 수집(신호등 Red), Yellow 미확인분의 화면 재표시, 제3자 호스팅 이미지 렌더링(핫링크 포함), 외부 페이지 iframe.
+- **R-INV-11 (금지)** 크롤링·스크린 스크래핑 수집(신호등 Red), Yellow 미확인분의 화면 재표시, 제3자 호스팅 이미지 렌더링(핫링크 포함), 외부 페이지 iframe. 단, [ADR-0001](../docs/decisions/ADR-0001-temporary-art-image-exception.md)에 기록된 미술품 4건의 정확한 URL은 사용자 승인에 따른 임시 데모 예외이며 다른 호스트·경로로 확장하지 않는다.
 
 ## AI 경계
 

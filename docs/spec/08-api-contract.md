@@ -10,12 +10,15 @@
 - **화면 내부 소비는 API를 만들지 않는다.** 목록·리포트·카테고리 착지 화면은 서버 컴포넌트가
   `data/public/{offerId}/report-*.json` 등 사전 생성 산출물을 직접 읽는다. "프론트가 백엔드 API를
   호출한다"는 통상 구조를 여기서는 채택하지 않는다 — 내부 화면용 REST CRUD를 제안하는 PR은 계약 위반이다.
-- API 라우트는 다음 3가지 예외에만 존재한다:
+- API 라우트는 다음 4가지 예외에만 존재한다:
   1. **라이브 예외** — 사용자가 명시적으로 요청한 실시간 재대조 (`POST /api/verify/{id}`)
   2. **운영 자동화** — cron·헬스체크 (`/api/cron/*`, `/api/health`)
   3. **AI 표면** — 대화형 검색 등 스파인 경유 표면 (M2+, §4)
+  4. **사용자 승인 공개 조회** — Evidence Copilot에 전달할 공개 상품 문맥 (`GET /api/products`,
+     `GET /api/products/{id}`). 현재는 수동 검증한 미술품 5건만 허용하며 화면 내부의 일반 데이터 경로로
+     확장하지 않는다.
 
-새 엔드포인트가 이 3분류에 들어가지 않으면 만들지 않는다. 필요해 보이면 계약의 결함으로 보고 이 문서를 먼저 고친다.
+새 엔드포인트가 이 4분류에 들어가지 않으면 만들지 않는다. 필요해 보이면 계약의 결함으로 보고 이 문서를 먼저 고친다.
 
 ## 1. 공통 규약 (전 엔드포인트 의무)
 
@@ -47,6 +50,7 @@
 | `unauthorized` | 401 | cron 인증 실패 등 |
 | `not_found` | 404 | 미공개·미존재 offerId 등 |
 | `rate_limited` | 429 | 레이트리밋 — `Retry-After` 헤더 필수 |
+| `internal_error` | 500 | 요청 처리 중 예기치 않은 내부 오류 (세부 정보 비공개) |
 | `upstream_failed` | 502 | 외부 원장(DART·공공 API) 호출 실패, 스냅샷도 없음 |
 | `not_configured` | 503 | 실키 미설정으로 실행 불가 (정직 표기 — 500으로 뭉개지 않는다) |
 
@@ -78,6 +82,21 @@
 // 200
 { "ok": true, "uptimeSeconds": 123, "checks": { "corpusDocs": 7 } }
 ```
+
+### GET `/api/products` · GET `/api/products/{id}` — 공개 상품 문맥
+
+- 사용자가 승인한 Evidence Copilot 상품 문맥 조회 예외다. 인증 없음 · `Cache-Control: no-store`.
+- 목록 쿼리는 `category=art`, `q`, `page`, `pageSize`만 허용하고 Zod 경계에서 검증한다. `pageSize`는
+  최대 100이다. 목록 바디는 `{ items, total, pagination: { page, pageSize, totalPages } }`다.
+- 상세 id는 `art-{양의 정수}` 형식과 길이를 검증한다. 형식 오류는 400 `validation_error`, 공개 목록에
+  없는 id는 404 `not_found`다.
+- 공개 대상은 `data/offers/art-1..5.json`의 `manual_verified` 5건뿐이다. synthetic·과거 338건·legacy
+  저장본은 결합하지 않으며 외부 원장을 실시간 호출하지 않는다.
+- 공개 DTO는 일반명, 금액, 공시 상태·판정 문구와 검증된 HTTPS DART 링크를 포함한다. `media`는
+  사용자 승인 임시 예외에 포함된 4상품의 `official_remote` 이미지·상품 원문 URL 또는 이미지가 없는
+  상품 5의 `missing`·`null` 값만 허용한다([ADR-0001](../decisions/ADR-0001-temporary-art-image-exception.md)). 내부
+  `sourceMeta`, 해시, 원본 payload와 실명 식별자는 직렬화하지 않는다. 상품별 접수번호 allowlist를
+  통과하지 않은 관련 상품의 문서는 공개 근거에서 제외한다.
 
 ### POST `/api/verify/{offerId}` — 라이브 재대조
 
