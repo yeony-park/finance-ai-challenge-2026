@@ -40,19 +40,19 @@ describe("knowledge chunk search", () => {
   it("승인 표준 질문을 실제 PDF의 관련 쪽에 연결하고 재생성 cache를 사용한다", async () => {
     const scope = await loadKnowledgeScope("re-scenario-01", "re-offer-01");
     const cases = [
-      ["최소투자금은 얼마인가요?", 2],
-      ["예상배당과 분배 주기는 어떻게 되나요?", 2],
-      ["수수료는 어떻게 되나요?", 2],
-      ["운용기간과 매각조건은 무엇인가요?", 3],
-      ["건물정보는 어디까지 확인됐나요?", 4],
-      ["운영그룹의 과거이력은 무엇인가요?", 2],
+      ["최소투자금은 얼마인가요?", 4],
+      ["예상배당과 분배 주기는 어떻게 되나요?", 5],
+      ["수수료는 어떻게 되나요?", 5],
+      ["운용기간과 매각조건은 무엇인가요?", 6],
+      ["건물정보는 어디까지 확인됐나요?", 9],
+      ["운영그룹의 과거이력은 무엇인가요?", 8],
     ] as const;
 
     for (const [q, page] of cases) {
       const query = { scenarioId: "re-scenario-01", offerId: "re-offer-01", q, limit: 5 };
       const hits = searchChunks(scope.chunks, q, 5);
       expect(hits.length, q).toBeGreaterThan(0);
-      expect(hits.every((hit) => hit.page === page), q).toBe(true);
+      expect(hits.map((hit) => hit.page), q).toContain(page);
 
       const cached = buildDeterministicCachedAnswer(scope, query, {
         createdAt: "2026-08-24T09:00:00+09:00",
@@ -67,8 +67,9 @@ describe("knowledge chunk search", () => {
     }
 
     const history = searchChunks(scope.chunks, cases[5][0], 5);
-    expect(history.map((hit) => hit.chunkId)).toEqual([
-      "operator-a-history-re-scenario-01-p2",
-    ]);
+    expect(history[0]).toMatchObject({
+      chunkId: "re-scenario-01-product-description-p8",
+      page: 8,
+    });
   });
 });

@@ -9,11 +9,11 @@ import {
   buildParsedDocumentArtifact,
   createAiSdkRealEstateProductClient,
   deriveRealEstateScenarioProduct,
-  isValidAutoApprovedEnvelope,
   revalidateDerivedScenarioProduct,
   resolveReviewedDerivedScenarioProduct,
   type RealEstateProductExtractionClient,
 } from "./derived";
+import { isValidAutoApprovedEnvelope } from "./derived-records";
 import { resolveWithin } from "./loader";
 import { renderPdfPagesIsolated } from "./ocr-render-isolation";
 import { parsePdfIsolated } from "./pdf-isolation";

@@ -1,7 +1,7 @@
 import { lstat, readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import { calculateChunkHash, calculateCommonChunkHash } from "./pdf";
-import { isValidAutoApprovedEnvelope } from "./derived";
+import { isValidAutoApprovedEnvelope } from "./derived-records";
 import {
   ChunkRecordSchema,
   DocumentRecordSchema,

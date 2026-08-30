@@ -1,7 +1,11 @@
 import { createOpenAI, type OpenAILanguageModelResponsesOptions } from "@ai-sdk/openai";
 import { generateObject } from "ai";
 import { z } from "zod";
-import { sha256, type ParsedPdf } from "./pdf";
+import type { ParsedPdf } from "./pdf";
+import {
+  calculateExtractionManifestHash,
+  isExtractionValueInQuote,
+} from "./derived-records";
 import {
   CategoryId,
   CommonDocumentType,
@@ -141,56 +145,7 @@ export const createAiSdkDocumentExtractionClient = (): DocumentExtractionClient 
   };
 };
 
-const compact = (value: string): string => value.normalize("NFKC").replace(/[\s,]/g, "");
-const numericValue = /^[+-]?(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?$/;
-const canonicalNumber = (value: string): string | null => {
-  const normalized = value.replaceAll(",", "");
-  if (!/^[+-]?\d+(?:\.\d+)?$/.test(normalized)) return null;
-  const negative = normalized.startsWith("-");
-  const unsigned = normalized.replace(/^[+-]/, "");
-  const [integer, fraction = ""] = unsigned.split(".");
-  const canonicalInteger = integer.replace(/^0+(?=\d)/, "");
-  const canonicalFraction = fraction.replace(/0+$/, "");
-  const magnitude = `${canonicalInteger}${canonicalFraction}`.replace(/^0+$/, "");
-  return `${negative && magnitude ? "-" : ""}${canonicalInteger}${canonicalFraction ? `.${canonicalFraction}` : ""}`;
-};
-
-export const isExtractionValueInQuote = (
-  value: string | number,
-  unit: string | null,
-  quote: string,
-): boolean => {
-  const source = compact(quote);
-  const numericExpected = typeof value === "number"
-    ? canonicalNumber(String(value))
-    : numericValue.test(value) ? canonicalNumber(value) : null;
-  if (numericExpected !== null) {
-    const quoteNumbers = [...quote.normalize("NFKC").matchAll(
-      /(?<![\d.,])[-+]?(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?(?![\d.,])/g,
-    )].map(([token]) => canonicalNumber(token));
-    if (!quoteNumbers.includes(numericExpected)) return false;
-  } else if (typeof value === "number" || !source.includes(compact(value))) {
-    return false;
-  }
-  if (!unit) return true;
-  const units: Readonly<Record<string, readonly string[]>> = {
-    krw: ["krw", "won", "원"],
-    won: ["krw", "won", "원"],
-    percent: ["percent", "%", "퍼센트"],
-    "%": ["percent", "%", "퍼센트"],
-    m2: ["m2", "㎡", "제곱미터"],
-    months: ["months", "개월"],
-    units: ["units", "개"],
-  };
-  const unitSource = source.toLocaleLowerCase();
-  return (units[unit.toLocaleLowerCase()] ?? [unit]).some((item) =>
-    item === "개"
-      ? /개(?!월)/.test(unitSource)
-      : unitSource.includes(compact(item).toLocaleLowerCase()));
-};
-
-export const calculateExtractionManifestHash = (manifestInput: unknown): string =>
-  sha256(JSON.stringify(SourceManifestSchema.parse(manifestInput)));
+export { calculateExtractionManifestHash, isExtractionValueInQuote } from "./derived-records";
 
 export const containsObviousPii = (text: string): boolean => [
   /\b\d{6}[- ]?[1-4]\d{6}\b/,

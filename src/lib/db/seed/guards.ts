@@ -8,6 +8,7 @@ export const LOCAL_ONLY_DIRS = [
   "data/snapshots",
   "data/reports",
   "data/goldset",
+  "data/scenarios/real-estate",
 ] as const;
 
 export class LocalOnlySourceError extends Error {

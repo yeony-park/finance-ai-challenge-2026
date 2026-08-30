@@ -133,6 +133,7 @@ describe("db:ingest 빌더 — 커밋 참조 파일 → 원장 행 (R-STO-22)", 
     for (const sourcePath of plan.sourcePaths) {
       expect(sourcePath).not.toContain("data/raw");
       expect(sourcePath).not.toContain("data/snapshots");
+      expect(sourcePath).not.toContain("data/scenarios/real-estate");
     }
   });
 });

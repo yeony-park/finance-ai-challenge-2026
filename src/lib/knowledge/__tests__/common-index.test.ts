@@ -1,4 +1,4 @@
-import { access, mkdir, mkdtemp, readFile, rm, symlink, writeFile } from "node:fs/promises";
+import { access, cp, mkdir, mkdtemp, readFile, rm, symlink, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -535,16 +535,18 @@ describe("common knowledge index", () => {
   it("dev/build 전에 index를 만들고 생성 index 하나만 Git에서 제외한다", async () => {
     const packageJson = JSON.parse(await readFile(path.join(process.cwd(), "package.json"), "utf8"));
     expect(packageJson.scripts).toMatchObject({
-      predev: "npm run knowledge:index",
-      prebuild: "npm run knowledge:index",
+      predev: "npm run knowledge:index && npm run knowledge:derived:check",
+      prebuild: "npm run knowledge:index && npm run knowledge:derived:check",
     });
     expect((await readFile(path.join(process.cwd(), ".gitignore"), "utf8")).split("\n"))
       .toContain("/data/knowledge/generated/index.json");
     const nextConfig = await readFile(path.join(process.cwd(), "next.config.ts"), "utf8");
     expect(nextConfig).toContain('"data/knowledge/generated/index.json"');
-    expect(nextConfig).toContain('"data/knowledge/documents/*.json"');
+    expect(nextConfig).toContain('"data/knowledge/derived/**/*.json"');
+    expect(nextConfig).not.toContain('"data/knowledge/documents/*.json"');
     expect(nextConfig).not.toContain('"data/knowledge/**/*.json"');
     expect(nextConfig).toContain('"data/knowledge/sources/**/*"');
+    expect(nextConfig).not.toContain('"data/scenarios/real-estate/**/*"');
   });
 
   it("공통 evidence query는 dataNature를 필수로 받고 legacy namespace를 제한한다", () => {
@@ -577,27 +579,32 @@ describe("common knowledge index", () => {
 
   it("같은 productId의 common actual과 legacy scenario를 namespace별로 모두 유지한다", async () => {
     const root = await fixtureRoot();
-    const scenario = validScenarioOffer();
-    scenario.offerId = "real-estate-fixture";
-    await mkdir(path.join(root, "scenarios", "real-estate"), { recursive: true });
-    await writeFile(
-      path.join(root, "scenarios", "real-estate", "collision.json"),
-      JSON.stringify(scenario),
+    await cp(
+      path.join(process.cwd(), "data", "knowledge", "derived", "real-estate", "re-scenario-01"),
+      path.join(root, "knowledge", "derived", "real-estate", "re-scenario-01"),
+      { recursive: true },
     );
     const report = await buildFixtureIndex(root, "2026-08-29T01:00:00.000Z");
-    await writeCommonKnowledgeIndex(root, report.index);
+    const actual = report.index.products.find((product) => product.categoryId === "real-estate")!;
+    await writeCommonKnowledgeIndex(root, {
+      ...report.index,
+      products: [
+        ...report.index.products,
+        { ...actual, productId: "re-offer-01", title: "서울스퀘어 공개 상품" },
+      ],
+    });
     const matches = (await searchOffers({ q: "진행 중 부동산", limit: 20 }, root)).results
-      .filter((item) => item.productId === "real-estate-fixture");
+      .filter((item) => item.productId === "re-offer-01");
     expect(matches).toEqual(expect.arrayContaining([
       expect.objectContaining({
         dataNature: "observed",
         namespace: "common",
-        href: "/offers/common/real-estate/real-estate-fixture",
+        href: "/offers/common/real-estate/re-offer-01",
       }),
       expect.objectContaining({
         dataNature: "scenario",
         namespace: "legacy-scenario",
-        href: "/offers/real-estate-fixture",
+        href: "/offers/re-offer-01",
       }),
     ]));
     expect(matches).toHaveLength(2);

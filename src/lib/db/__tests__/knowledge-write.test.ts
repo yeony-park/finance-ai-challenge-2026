@@ -171,28 +171,32 @@ const externallyAiVisible = (executor: MemoryKnowledgeExecutor): string[] => {
 };
 
 describe("product knowledge DB write", () => {
-  test("17 documents를 먼저 쓰고 59 chunks를 같은 transaction에서 멱등 upsert한다", async () => {
+  test("derived documents를 먼저 쓰고 모든 chunks를 같은 transaction에서 멱등 upsert한다", async () => {
     const plan = await buildKnowledgeIngestPlan("data");
     const executor = new MemoryKnowledgeExecutor();
+    const documentCount = plan.documents.length;
+    const chunkCount = plan.chunks.length;
 
     await writeKnowledgeIngestPlan(plan, executor, KNOWLEDGE_FULL_SNAPSHOT);
     await writeKnowledgeIngestPlan(plan, executor, KNOWLEDGE_FULL_SNAPSHOT);
 
-    expect(executor.documents).toHaveLength(17);
-    expect(executor.chunks).toHaveLength(59);
-    expect(executor.events).toHaveLength((17 + 59 + 1) * 2);
-    for (const offset of [0, 77]) {
+    expect({ documentCount, chunkCount }).toEqual({ documentCount: 13, chunkCount: 190 });
+    expect(executor.documents).toHaveLength(documentCount);
+    expect(executor.chunks).toHaveLength(chunkCount);
+    const transactionEventCount = documentCount + chunkCount + 1;
+    expect(executor.events).toHaveLength(transactionEventCount * 2);
+    for (const offset of [0, transactionEventCount]) {
       expect(
         executor.events
-          .slice(offset, offset + 17)
+          .slice(offset, offset + documentCount)
           .every((event) => event.startsWith("document:")),
       ).toBe(true);
       expect(
         executor.events
-          .slice(offset + 17, offset + 76)
+          .slice(offset + documentCount, offset + documentCount + chunkCount)
           .every((event) => event.startsWith("chunk:")),
       ).toBe(true);
-      expect(executor.events[offset + 76]).toBe(
+      expect(executor.events[offset + documentCount + chunkCount]).toBe(
         `revoke:${KNOWLEDGE_ETL_OWNER}`,
       );
     }
@@ -295,8 +299,8 @@ describe("product knowledge DB write", () => {
       ),
     ).toMatchObject({
       approvedForPublic: true,
-      approvedForExternalAi: false,
-      piiReviewStatus: "not-reviewed",
+      approvedForExternalAi: removedChunk.approvedForExternalAi,
+      piiReviewStatus: removedChunk.piiReviewStatus,
       status: "ready",
     });
     expect(
@@ -401,14 +405,15 @@ describe("product knowledge DB write", () => {
     expect(documentSql.sql).not.toContain(document.sourceId);
     expect(documentSql.params).toContain(document.sourceId);
     expect(documentSql.params).toContain(KNOWLEDGE_ETL_OWNER);
-    expect(documentSql.params).toContain(false);
-    expect(documentSql.params).toContain("not-reviewed");
+    expect(documentSql.params).toContain(document.approvedForExternalAi);
+    expect(documentSql.params).toContain(document.piiReviewStatus);
     expect(documentSql.sql).toContain('"approved_for_external_ai"');
     expect(documentSql.sql).toContain('"pii_review_status"');
     expect(chunkSql.sql).not.toContain(chunk.content);
     expect(chunkSql.params).toContain(chunk.content);
     expect(chunkSql.params).toContain(chunk.chunkHash);
-    expect(chunkSql.params).toContain("not-reviewed");
+    expect(chunkSql.params).toContain(chunk.approvedForExternalAi);
+    expect(chunkSql.params).toContain(chunk.piiReviewStatus);
     expect(revokeSql.sql).not.toContain(document.sourceId);
     expect(revokeSql.params).toContain(document.sourceId);
     expect(revokeSql.params).toContain(KNOWLEDGE_ETL_OWNER);

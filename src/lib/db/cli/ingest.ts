@@ -170,7 +170,6 @@ const main = async (): Promise<void> => {
     "data/knowledge/generated/index.json",
     "data/knowledge/documents",
     "data/knowledge/chunks",
-    "data/scenarios/real-estate",
   ]);
 
   const counts = `cattle ${plan.cattleAuction.length} · re_trades ${plan.reTrades.length} · pig ${plan.pigAuction.length} · filing_facts ${plan.filingFacts.length} · knowledge_docs ${knowledgePlan.documents.length} · knowledge_chunks ${knowledgePlan.chunks.length}`;

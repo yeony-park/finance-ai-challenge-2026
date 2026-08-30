@@ -1,12 +1,11 @@
-import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
+import { cp, mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 
 import { PgDialect } from "drizzle-orm/pg-core";
 import { afterEach, describe, expect, test } from "vitest";
 
-import { calculateChunkHash, calculateCommonChunkHash } from "@/lib/knowledge/pdf";
-import { validScenarioOffer } from "@/lib/knowledge/__tests__/fixtures";
+import { calculateCommonChunkHash } from "@/lib/knowledge/pdf";
 import { createDbProductKnowledgeRepository } from "../repositories/product-knowledge-db";
 import {
   createFileProductKnowledgeRepository,
@@ -212,53 +211,31 @@ describe("file product knowledge adapter", () => {
     })).rejects.toThrow("db unavailable");
   });
 
-  test("scenarioId가 명시된 경우에만 legacy loader를 exact adapter로 재사용한다", async () => {
-    const root = await mkdtemp(path.join(tmpdir(), "legacy-product-knowledge-"));
+  test("scenarioId가 명시된 경우에만 derived registry를 exact adapter로 재사용한다", async () => {
+    const root = await mkdtemp(path.join(tmpdir(), "derived-product-knowledge-"));
     roots.push(root);
-    const scenarioRoot = path.join(root, "scenarios", "real-estate");
-    const documentsRoot = path.join(root, "knowledge", "documents");
-    const chunksRoot = path.join(root, "knowledge", "chunks");
-    await Promise.all([
-      mkdir(scenarioRoot, { recursive: true }),
-      mkdir(documentsRoot, { recursive: true }),
-      mkdir(chunksRoot, { recursive: true }),
-    ]);
-    const scenario = validScenarioOffer();
-    const document = {
-      schemaVersion: 1,
-      categoryId: "real-estate",
-      scenarioId: "scenario-001",
-      offerId: "offer-001",
-      dataNature: "scenario",
-      sourceKind: "scenario-input",
-      documentId: "scenario-document-1",
-      title: "시나리오 설명서",
-      sourceUrl: "/scenario-documents/scenario-document-1.pdf",
-      asOf: "2026-08-24",
-      sourceHash: hash,
-      approvedForPublic: true,
-      status: "ready",
-      limitations: [],
-    };
-    const text = "시나리오 분배 조건입니다.";
-    const legacyHash = calculateChunkHash({ page: 1, text, positions: [] });
-    const chunk = { ...document, chunkId: "scenario-chunk-1", page: 1, text, positions: [], chunkHash: legacyHash };
-    await Promise.all([
-      writeFile(path.join(scenarioRoot, "scenario.json"), JSON.stringify(scenario)),
-      writeFile(path.join(documentsRoot, "document.json"), JSON.stringify(document)),
-      writeFile(path.join(chunksRoot, "chunk.json"), JSON.stringify(chunk)),
-    ]);
+    await cp(
+      path.join(process.cwd(), "data", "knowledge", "derived", "real-estate", "re-scenario-01"),
+      path.join(root, "knowledge", "derived", "real-estate", "re-scenario-01"),
+      { recursive: true },
+    );
 
     const repository = createFileProductKnowledgeRepository(root);
-    await expect(repository.findExact({
+    const exact = await repository.findExact({
       categoryId: "real-estate",
-      productId: "offer-001",
-      scenarioId: "scenario-001",
+      productId: "re-offer-01",
+      scenarioId: "re-scenario-01",
       dataNature: "scenario",
-    })).resolves.toMatchObject({ chunks: [expect.objectContaining({ chunkId: "scenario-chunk-1" })] });
+    });
+    expect(exact.documents).toEqual([
+      expect.objectContaining({ documentId: "re-scenario-01-product-description" }),
+    ]);
+    expect(exact.chunks).toContainEqual(
+      expect.objectContaining({ chunkId: "re-scenario-01-product-description-p1" }),
+    );
     await expect(repository.findExact({
       categoryId: "real-estate",
-      productId: "offer-001",
+      productId: "re-offer-01",
       dataNature: "scenario",
     })).resolves.toEqual({ documents: [], chunks: [] });
   });

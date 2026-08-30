@@ -27,7 +27,7 @@ const STANDARD_QUERY_TERMS: Readonly<Record<string, readonly string[]>> = {
   "수수료": ["수수료율"],
   "운용기간 매각조건": ["보유기간", "매각"],
   "건물정보 어디 확인됐나요": ["건물명", "연면적"],
-  "운영그룹 과거이력": ["투자금", "순회수", "총수익률"],
+  "운영그룹 과거이력": ["운영그룹", "완료", "이력"],
 };
 
 export const normalizeKorean = (value: string): string =>
