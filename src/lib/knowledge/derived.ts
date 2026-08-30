@@ -600,6 +600,7 @@ const appendixCitation = (
 };
 
 const unitForFieldPath = (fieldPath: string): string | null => {
+  if (fieldPath === "offering.unitCount") return "units";
   if (fieldPath.endsWith("Won")) return "KRW";
   if (fieldPath.endsWith("M2")) return "m2";
   if (fieldPath.endsWith("Percent")) return "%";

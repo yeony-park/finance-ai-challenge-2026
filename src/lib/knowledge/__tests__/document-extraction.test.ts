@@ -84,6 +84,10 @@ describe("common PDF AI extraction candidate", () => {
     [1_000_000, "공모금액 1,000,000원", "원", true],
     [3.25, "예상 분배율 3.250%", "%", true],
     [12, "운용기간 12개월", "개월", true],
+    [200_000, "발행수량 200,000개", "units", true],
+    [200_000, "발행수량 200,000 units", "units", true],
+    [200_000, "발행수량 200,000", "units", false],
+    [200_000, "운용기간 200,000개월", "units", false],
     [100_000_000, "공모금액 1억원", "원", false],
   ])("숫자 token 경계와 정규화 동등성을 검증한다: %s / %s", (value, quote, unit, expected) => {
     expect(isExtractionValueInQuote(value, unit, quote)).toBe(expected);

@@ -174,10 +174,13 @@ export const isExtractionValueInQuote = (
     "%": ["percent", "%", "퍼센트"],
     m2: ["m2", "㎡", "제곱미터"],
     months: ["months", "개월"],
+    units: ["units", "개"],
   };
   const unitSource = source.toLocaleLowerCase();
   return (units[unit.toLocaleLowerCase()] ?? [unit]).some((item) =>
-    unitSource.includes(compact(item).toLocaleLowerCase()));
+    item === "개"
+      ? /개(?!월)/.test(unitSource)
+      : unitSource.includes(compact(item).toLocaleLowerCase()));
 };
 
 export const calculateExtractionManifestHash = (manifestInput: unknown): string =>

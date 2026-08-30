@@ -230,6 +230,7 @@ describe("PDF-first real-estate derived artifacts", () => {
     const numericAppendix = [
       "[asset.grossFloorAreaM2]: value raw=1000㎡",
       "[offering.unitPriceWon]: value raw=5000 KRW",
+      "[offering.unitCount]: value raw=200000개",
       "[offering.targetHoldingMonths]: value raw=24개월",
       "[offering.financing.annualInterestRatePercent]: value raw=4.5%",
       "[offering.exitReview.maximumExtensionMonths]: value raw=6개월",
