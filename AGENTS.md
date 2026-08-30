@@ -43,18 +43,21 @@
 
 - `.env` 값을 읽거나 출력하거나 Git에 추가하지 않는다. 인증키를 브라우저, 응답 JSON, URL에 노출하지 않는다.
 - Next.js UI는 `npm run dev`로 실행하고 `http://localhost:3000`에서 확인한다.
-- 기존 데이터·검색 서버는 `python3 server.py`로 `127.0.0.1:8000`에서만 실행한다.
-- 정적 저장본은 `python3 scripts/build_live_static.py`로 생성한 `/live`만 제공한다. 프로젝트 루트를 정적 서버로 공개하지 않는다.
-- 외부 API 실패 시 검증된 저장본과 실패 상태를 유지하며 확인되지 않은 값으로 채우지 않는다.
+- 합성 데이터 서버는 `python3 server.py`로 `127.0.0.1:8000`에서만 실행한다.
+- 정적 산출물은 `python3 scripts/build_live_static.py`로 생성한 합성 전용 `/live`만 제공한다. 프로젝트 루트를 정적 서버로 공개하지 않는다.
+- 운영 코드·Docker context·API·UI는 `data/synthetic/art-investment.json`과 허용된 OpenDART 경계만 사용한다.
+- 합성 상품을 실제 OpenDART 접수번호와 연결하지 않는다.
 
 ## 파일 안내
 
 - 기본 UI : `app/`, `components/`, `app/globals.css`
-- 데이터 서버·API adapter : `server.py`
-- 기존 검색 UI : `index.html`, `search.html`, `suitability.html`, `styles.css`, `js/`
-- 데이터 : `data/products.json`, `data/issuers.json`, `data/artnguide_track_records.json`, `data/weshareart_research.json`, `data/tessa_sale_records.json`
-- 데이터 생성 : `scripts/build_artnguide_track_records.py`, `scripts/build_artnguide_due_diligence.py`, `scripts/build_weshareart_research.py`
-- 기존 검증 : `tests/`
+- 합성 데이터 서버 : `server.py`
+- 합성 검색 UI : `index.html`, `search.html`, `suitability.html`, `styles.css`, `js/`
+- 운영 데이터 : `data/synthetic/art-investment.json`
+- 합성 이미지 : `public/synthetic-art/`
+- OpenDART 제어 정보 : `data/art/dart-filing-manifest.json`
+- 데이터 경계 검사 : `scripts/check_synthetic_boundary.py`
+- 검증 : `tests/`
 
 ## 변경 후 검증
 
@@ -66,19 +69,16 @@ npm run typecheck
 npm run build
 ```
 
-데이터·기존 검색 UI 변경은 관련 범위에 맞춰 아래 명령을 실행한다.
+데이터·합성 검색 UI 변경은 관련 범위에 맞춰 아래 명령을 실행한다.
 
 ```bash
 python3 tests/validate_data.py
-python3 scripts/build_artnguide_track_records.py --check
-python3 -m unittest tests/test_artnguide_data.py
-python3 scripts/build_artnguide_due_diligence.py --check
-python3 -m unittest tests/test_artnguide_due_diligence.py
-python3 scripts/build_weshareart_research.py --check
-python3 -m unittest tests/test_weshareart_data.py tests/test_tessa_data.py
+python3 -m unittest tests/test_synthetic_data.py tests/test_server.py tests/test_live_static.py
 npm run test:js
-python3 -m unittest tests/test_server.py tests/test_live_static.py
+npm run build:live
 npm run check:live
+npm run check:synthetic-source
+npm run check:synthetic-artifact
 ```
 
 네트워크 smoke test는 결정적 회귀 테스트와 구분한다.

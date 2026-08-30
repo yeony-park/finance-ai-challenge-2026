@@ -1,22 +1,22 @@
 #!/usr/bin/env node
-/** Remove .env* entries from a Next standalone bundle without opening their contents. */
+/** Remove secrets and source maps from a Next standalone bundle without opening secret contents. */
 import { lstat, readdir, rm } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const standaloneRoot = fileURLToPath(new URL("../.next/standalone/", import.meta.url));
 
-async function envArtifacts(directory) {
+async function forbiddenArtifacts(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
   const found = [];
   for (const entry of entries) {
     const path = join(directory, entry.name);
-    if (entry.name.startsWith(".env")) {
+    if (entry.name.startsWith(".env") || entry.name.endsWith(".map")) {
       found.push(path);
       continue;
     }
     // Do not follow symlinks outside the bundle.
-    if (entry.isDirectory() && !(await lstat(path)).isSymbolicLink()) found.push(...await envArtifacts(path));
+    if (entry.isDirectory() && !(await lstat(path)).isSymbolicLink()) found.push(...await forbiddenArtifacts(path));
   }
   return found;
 }
@@ -28,10 +28,10 @@ async function main() {
     if (process.argv.includes("--check")) throw new Error("Next standalone output is missing");
     return;
   }
-  const found = await envArtifacts(standaloneRoot);
+  const found = await forbiddenArtifacts(standaloneRoot);
   if (!process.argv.includes("--check")) await Promise.all(found.map((path) => rm(path, { recursive: true, force: true })));
-  const remaining = await envArtifacts(standaloneRoot);
-  if (remaining.length) throw new Error("Next standalone output contains forbidden .env artifacts");
+  const remaining = await forbiddenArtifacts(standaloneRoot);
+  if (remaining.length) throw new Error("Next standalone output contains forbidden secret or source-map artifacts");
 }
 
 await main();

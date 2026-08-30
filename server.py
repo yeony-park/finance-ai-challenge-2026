@@ -1,4 +1,8 @@
-"""Read-only local server for the checked-in art research snapshots."""
+"""Read-only local server for the synthetic art-investment fixture.
+
+This server deliberately has no live-data adapter.  Its API and static file
+allowlist expose only the synthetic fixture and the small static demo shell.
+"""
 from __future__ import annotations
 
 import json
@@ -7,13 +11,12 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parent
-ARTNGUIDE_TRACK_RECORDS_PATH = Path("data/artnguide_track_records.json")
-WESHAREART_RESEARCH_PATH = Path("data/weshareart_research.json")
-TESSA_SALE_RECORDS_PATH = Path("data/tessa_sale_records.json")
+SYNTHETIC_DATA_PATH = Path("data/synthetic/art-investment.json")
+SYNTHETIC_ART_PATHS = frozenset(f"/synthetic-art/synthetic-artwork-{index:02d}.svg" for index in range(1, 10))
 
 
-def read_fixed_json(path: Path) -> dict:
-    """Read a fixed, repository-relative JSON snapshot without path traversal."""
+def read_fixed_json(path: Path) -> object:
+    """Read one fixed, repository-relative JSON file without path traversal."""
     if path.is_absolute() or any(part in (".", "..") for part in path.parts):
         raise ValueError("invalid fixed path")
     candidate = ROOT.joinpath(*path.parts)
@@ -22,26 +25,46 @@ def read_fixed_json(path: Path) -> dict:
     return json.loads(candidate.read_text(encoding="utf-8"))
 
 
+def read_synthetic_data() -> dict:
+    data = read_fixed_json(SYNTHETIC_DATA_PATH)
+    if not isinstance(data, dict):
+        raise ValueError("synthetic fixture must be an object")
+    return data
+
+
 def catalog() -> dict:
-    products = read_fixed_json(Path("data/products.json"))
-    issuers = read_fixed_json(Path("data/issuers.json"))
-    return {
-        "products": products["products"],
-        "issuers": issuers["issuers"],
-        "live_status": {"message": "검증 저장본 · 외부 상품 API 미연결"},
-        "api_status": {"products": {}, "global": {}},
-    }
+    """Return the fixture as a catalog with an explicit synthetic marker."""
+    data = read_synthetic_data()
+    return {**data, "synthetic": True}
+
+
+def synthetic_history() -> dict:
+    """Return the fixture's optional history collection without other sources."""
+    data = read_synthetic_data()
+    history = data.get("history", data.get("trackRecords", data.get("events", [])))
+    if not isinstance(history, (list, dict)):
+        history = []
+    return {"synthetic": True, "history": history}
 
 
 class Handler(BaseHTTPRequestHandler):
     def log_message(self, *_: object) -> None:
         pass
 
-    def _send(self, status: int, body: bytes = b"", content_type: str = "text/plain; charset=utf-8", head: bool = False) -> None:
+    def _send(
+        self,
+        status: int,
+        body: bytes = b"",
+        content_type: str = "text/plain; charset=utf-8",
+        head: bool = False,
+    ) -> None:
         self.send_response(status)
         self.send_header("Content-Type", content_type)
         self.send_header("X-Content-Type-Options", "nosniff")
-        self.send_header("Content-Security-Policy", "default-src 'self'; connect-src 'self'; style-src 'self'; script-src 'self'; base-uri 'none'")
+        self.send_header(
+            "Content-Security-Policy",
+            "default-src 'self'; connect-src 'self'; style-src 'self'; script-src 'self'; base-uri 'none'",
+        )
         self.send_header("Cache-Control", "no-store" if self.path.startswith("/api/") else "public, max-age=300")
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
@@ -55,36 +78,37 @@ class Handler(BaseHTTPRequestHandler):
         self._route(True)
 
     def _json(self, body: dict, head: bool) -> None:
-        self._send(200, json.dumps(body, ensure_ascii=False).encode(), "application/json; charset=utf-8", head)
+        encoded = json.dumps(body, ensure_ascii=False).encode("utf-8")
+        self._send(200, encoded, "application/json; charset=utf-8", head)
 
     def _route(self, head: bool) -> None:
         path = urlparse(self.path).path
         if path == "/api/health":
-            return self._send(200, b'{"ok":true}', "application/json; charset=utf-8", head)
-        fixed_apis = {
-            "/api/track-records/artnguide": ARTNGUIDE_TRACK_RECORDS_PATH,
-            "/api/research/weshareart": WESHAREART_RESEARCH_PATH,
-            "/api/track-records/tessa": TESSA_SALE_RECORDS_PATH,
-        }
+            return self._send(200, b'{"ok":true,"synthetic":true}', "application/json; charset=utf-8", head)
         if path == "/api/catalog":
             try:
                 return self._json(catalog(), head)
             except (OSError, ValueError, KeyError, json.JSONDecodeError):
-                return self._send(503, b'{"error":"catalog unavailable"}', "application/json; charset=utf-8", head)
-        if path in fixed_apis:
+                return self._send(503, b'{"error":"synthetic catalog unavailable"}', "application/json; charset=utf-8", head)
+        if path == "/api/synthetic/history":
             try:
-                return self._json(read_fixed_json(fixed_apis[path]), head)
-            except (OSError, ValueError, json.JSONDecodeError):
-                return self._send(503, b'{"error":"snapshot unavailable"}', "application/json; charset=utf-8", head)
+                return self._json(synthetic_history(), head)
+            except (OSError, ValueError, KeyError, json.JSONDecodeError):
+                return self._send(503, b'{"error":"synthetic history unavailable"}', "application/json; charset=utf-8", head)
         if path == "/":
             path = "/index.html"
         allowed = {
-            "/index.html", "/search.html", "/suitability.html", "/styles.css",
-            "/js/app.js", "/js/api.js", "/js/calculations.js", "/js/track-records.js",
-            "/data/products.json", "/data/issuers.json", "/data/artnguide_track_records.json",
-            "/data/weshareart_research.json", "/data/tessa_sale_records.json",
+            "/index.html",
+            "/search.html",
+            "/suitability.html",
+            "/styles.css",
+            "/js/app.js",
+            "/js/api.js",
+            "/data/synthetic/art-investment.json",
+            *SYNTHETIC_ART_PATHS,
         }
-        candidate = ROOT / path.lstrip("/")
+        relative = f"public{path}" if path in SYNTHETIC_ART_PATHS else path
+        candidate = ROOT / relative.lstrip("/")
         try:
             target = candidate.resolve(strict=True)
             within_root = ROOT in target.parents
@@ -93,7 +117,13 @@ class Handler(BaseHTTPRequestHandler):
             within_root = False
         if path not in allowed or candidate.is_symlink() or not within_root or not target.is_file():
             return self._send(404, b"not found", head=head)
-        types = {".html": "text/html; charset=utf-8", ".css": "text/css; charset=utf-8", ".js": "application/javascript; charset=utf-8", ".json": "application/json; charset=utf-8"}
+        types = {
+            ".html": "text/html; charset=utf-8",
+            ".css": "text/css; charset=utf-8",
+            ".js": "application/javascript; charset=utf-8",
+            ".json": "application/json; charset=utf-8",
+            ".svg": "image/svg+xml",
+        }
         return self._send(200, target.read_bytes(), types[target.suffix], head)
 
     def do_POST(self) -> None:

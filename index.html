@@ -3,41 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="국내 조각투자 상품과 공개 근거를 검색하는 DAKER">
-  <title>DAKER | 조각투자 공개 근거 검색</title>
-  <link rel="stylesheet" href="styles.css?v=20260811-catalog">
+  <meta name="description" content="합성 데이터로 동작하는 조각투자 검토 화면">
+  <title>DAKER | 합성 데이터 카탈로그</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="home">
-  <header class="site-header">
-    <nav class="wrap site-nav" aria-label="주요 메뉴"><a class="brand" href="index.html">DAKER</a><a href="suitability.html">적합성 테스트 자료</a></nav>
-  </header>
+  <header class="site-header"><nav class="wrap site-nav" aria-label="주요 메뉴"><a class="brand" href="index.html">DAKER</a><span class="badge">SYNTHETIC ONLY</span><a href="search.html">카탈로그 검색</a></nav></header>
   <main>
-    <section class="landing-hero">
-      <div class="wrap">
-        <p class="eyebrow">PUBLIC EVIDENCE SEARCH</p>
-        <h1>조각투자 상품과 공개 근거를 검색합니다.</h1>
-        <p>상품 조건, 운용 기록, 플랫폼 자체 게시 트랙레코드를 검색 결과에서 구분해 확인합니다.</p>
-        <form class="search-form" action="search.html" method="get" role="search">
-          <label for="search-input">상품·작가·작품·상태 검색</label>
-          <div class="search-row"><input id="search-input" name="q" type="search" autocomplete="off" placeholder="예 : 김환기 매각완료" required><button type="submit">검색</button></div>
-          <p class="search-examples">예 : 김환기 미술품 · 하종현 작품 · 매각완료</p>
-        </form>
-        <p class="hero-disclaimer">검색 결과는 공개 자료와 검증 저장본을 구분해 표시합니다. 투자 권유나 감정평가가 아니며 직접 주문 기능을 제공하지 않습니다.</p>
-      </div>
-    </section>
-    <section class="wrap landing-section" aria-labelledby="browse-title">
-      <div class="section-heading"><h2 id="browse-title">상품 분류로 보기</h2><p class="muted">선택한 분류의 검색 결과 페이지로 이동합니다.</p></div>
-      <div class="tile-grid">
-        <a class="tile" href="search.html?asset=%EB%AF%B8%EC%88%A0%ED%92%88"><strong>미술품</strong><span>작가·작품·공개 거래 근거 확인</span></a>
-        <a class="tile" href="search.html"><strong>전체 상품</strong><span>수집 범위 내 등록 상품 확인</span></a>
-      </div>
-    </section>
-    <section class="wrap database-note" aria-labelledby="database-title">
-      <p class="eyebrow">PLATFORM DATABASE</p>
-      <h2 id="database-title">플랫폼 자체 게시 트랙레코드는 검색할 때만 표시합니다.</h2>
-      <p>전체 목록을 메인에 나열하지 않습니다. 작가, 작품, 상태, 식별자를 검색하면 일치하는 저장본만 검색 결과에 표시합니다.</p>
-    </section>
+    <section class="landing-hero"><div class="wrap"><p class="eyebrow">SYNTHETIC CATALOG</p><h1>합성 데이터로 검토 흐름을 확인합니다.</h1><p>이 화면은 실제 상품, 개인 정보, 외부 서비스 연결 없이 기능과 표시 규칙만 검증합니다.</p><a class="button" href="search.html">카탈로그 열기</a></div></section>
+    <section class="wrap landing-section"><div class="section-heading"><h2>안전한 데모 범위</h2></div><div class="tile-grid"><article class="tile"><strong>합성 항목</strong><span>식별 가능한 실제 거래 정보가 없는 예시입니다.</span></article><article class="tile"><strong>읽기 전용</strong><span>검색과 표시만 제공하며 상태를 변경하지 않습니다.</span></article><article class="tile"><strong>근거 분리</strong><span>검증 대기와 확인 불가 상태를 그대로 표시합니다.</span></article></div></section>
   </main>
-  <footer class="footer">DAKER는 공개 자료를 정리한 상품 검토 서비스입니다. 투자 권유·감정평가가 아니며 직접 주문 기능을 제공하지 않습니다.</footer>
+  <footer class="footer">합성 데이터 전용 화면입니다. 투자 권유나 실제 거래 기능을 제공하지 않습니다.</footer>
+  <script type="module" src="js/app.js"></script>
 </body>
 </html>

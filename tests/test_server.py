@@ -1,12 +1,18 @@
 import http.client
 import json
-import sys
 import threading
 import unittest
 from pathlib import Path
 from http.server import ThreadingHTTPServer
+from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
+DATA_PATH = ROOT / "data/synthetic/art-investment.json"
+DATA = json.loads(DATA_PATH.read_text(encoding="utf-8"))
+OPEN_DART_HOSTS = {"dart.fss.or.kr", "englishdart.fss.or.kr", "opendart.fss.or.kr", "api.odcloud.kr"}
+FORBIDDEN_KEYS = {"sourcePayload", "dueDiligencePayload", "sourceSnapshot", "legacySourceRef"}
+
+import sys
 sys.path.insert(0, str(ROOT))
 import server
 
@@ -32,39 +38,63 @@ class ServerTest(unittest.TestCase):
         connection.close()
         return response.status, body, headers
 
-    def test_art_only_catalog(self):
+    def assert_synthetic_payload(self, value):
+        if isinstance(value, dict):
+            for key, child in value.items():
+                self.assertNotIn(key, FORBIDDEN_KEYS)
+                self.assert_synthetic_payload(child)
+        elif isinstance(value, list):
+            for child in value:
+                self.assert_synthetic_payload(child)
+        elif isinstance(value, str) and value.startswith(("http://", "https://")):
+            host = (urlparse(value).hostname or "").lower().rstrip(".")
+            self.assertTrue(host in OPEN_DART_HOSTS or host.endswith(".dart.fss.or.kr"), value)
+
+    def test_catalog_is_the_synthetic_fixture(self):
+        catalog = server.catalog()
+        self.assertTrue(catalog["synthetic"])
+        self.assertEqual(len(catalog["offerings"]), len(DATA["offerings"]))
+        self.assertEqual(len(catalog["trackRecords"]), len(DATA["trackRecords"]))
+        self.assert_synthetic_payload(catalog)
         status, body, headers = self.request("/api/catalog")
         self.assertEqual(status, 200)
         self.assertEqual(headers["Cache-Control"], "no-store")
-        catalog = json.loads(body)
-        self.assertEqual(len(catalog["products"]), 5)
-        self.assertTrue(all(item["category"] == "미술품" for item in catalog["products"]))
-        self.assertEqual([item["id"] for item in catalog["issuers"]], ["togetherart"])
+        self.assertEqual(json.loads(body), catalog)
 
-    def test_snapshot_endpoints_and_allowlist(self):
-        for path, key, count in [
-            ("/api/track-records/artnguide", "records", 187),
-            ("/api/research/weshareart", None, 145),
-            ("/api/track-records/tessa", "records", 6),
-        ]:
-            status, body, _ = self.request(path)
-            self.assertEqual(status, 200, path)
-            data = json.loads(body)
-            actual = len(data["track_records"]["records"]) if key is None else len(data[key])
-            self.assertEqual(actual, count)
-        for path in ("/server.py", "/data/source_snapshots.json", "/.env", "/../.env"):
-            self.assertEqual(self.request(path)[0], 404, path)
+    def test_history_endpoint_and_static_fixture(self):
+        status, body, headers = self.request("/api/synthetic/history")
+        self.assertEqual(status, 200)
+        self.assertEqual(headers["Cache-Control"], "no-store")
+        history = json.loads(body)
+        self.assertTrue(history["synthetic"])
+        self.assertEqual(len(history["history"]), len(DATA["trackRecords"]))
+        self.assert_synthetic_payload(history)
+        status, body, headers = self.request("/data/synthetic/art-investment.json")
+        self.assertEqual(status, 200)
+        self.assertEqual(headers["Cache-Control"], "public, max-age=300")
+        self.assertEqual(body, DATA_PATH.read_bytes())
+        status, body, headers = self.request("/synthetic-art/synthetic-artwork-01.svg")
+        self.assertEqual(status, 200)
+        self.assertEqual(headers["Content-Type"], "image/svg+xml")
+        self.assertEqual(body, (ROOT / "public/synthetic-art/synthetic-artwork-01.svg").read_bytes())
+        self.assertEqual(self.request("/synthetic-art/synthetic-artwork-10.svg")[0], 404)
 
-    def test_head_and_write_methods(self):
-        status, body, headers = self.request("/api/health", "HEAD")
+    def test_health_methods_and_allowlist(self):
+        status, body, headers = self.request("/api/health")
+        self.assertEqual(status, 200)
+        self.assertEqual(json.loads(body), {"ok": True, "synthetic": True})
+        self.assertEqual(headers["X-Content-Type-Options"], "nosniff")
+        status, body, _ = self.request("/api/health", "HEAD")
         self.assertEqual(status, 200)
         self.assertEqual(body, b"")
-        self.assertEqual(headers["X-Content-Type-Options"], "nosniff")
         self.assertEqual(self.request("/api/catalog", "POST")[0], 405)
+        for path in ("/server.py", "/data", "/data/", "/.env", "/../.env", "/data/synthetic/../art-investment.json"):
+            self.assertEqual(self.request(path)[0], 404, path)
 
-    def test_fixed_reader_rejects_paths(self):
+    def test_fixed_reader_rejects_paths_and_symlinks(self):
         with self.assertRaises(ValueError):
-            server.read_fixed_json(Path("../data/products.json"))
+            server.read_fixed_json(Path("../data/synthetic/art-investment.json"))
+        self.assertEqual(server.read_fixed_json(server.SYNTHETIC_DATA_PATH), DATA)
 
 
 if __name__ == "__main__":

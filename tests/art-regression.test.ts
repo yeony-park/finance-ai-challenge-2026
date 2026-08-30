@@ -29,24 +29,22 @@ test("라이브 공시 분석은 검증된 DART artifact와 grounded AI 경계�
   assert.doesNotMatch(server, /NEXT_PUBLIC_OPENAI/);
 });
 
-type DemoData = {
-  offerings: Array<{ id: string; acquisitionPrice: number | null; disclosedCosts: unknown[] }>;
+type SyntheticData = {
+  offerings: Array<{ id: string; isDemo: boolean; recordScope: string; platformId: string }>;
   artists: Array<{ id: string }>;
-  analyses: Array<{ verdict: string }>;
+  analyses: Array<{ offeringId: string; verdict: string }>;
   annualMetrics: Record<string, Array<{ offered: number }>>;
-  trackRecords: Array<{ platformId: string; status: string; delayDays: number | null }>;
+  trackRecords: Array<{ id: string; platformId: string; status: string; delayDays: number | null }>;
 };
 
-test("보정된 4개 데모 상품의 거래량·지연·비공개 값", () => {
-  const data = JSON.parse(read("data/demo/art-investment.json")) as DemoData;
-  assert.equal(data.offerings.length, 4);
-  assert.deepEqual(data.analyses.map((item) => item.verdict), ["worth_considering", "conditional", "caution", "danger"]);
-  assert.deepEqual(data.artists.map((artist) => data.annualMetrics[artist.id].slice(-3).reduce((sum, metric) => sum + metric.offered, 0)), [42, 26, 12, 7]);
-  const betaDelays = data.trackRecords.filter((item) => item.platformId === "demo-platform-002" && item.status === "delayed").map((item) => item.delayDays);
-  const gammaDelays = data.trackRecords.filter((item) => item.platformId === "demo-platform-003" && item.status === "delayed").map((item) => item.delayDays);
-  assert.ok(betaDelays.every((days) => days === 120));
-  assert.ok(gammaDelays.every((days) => days === 210));
-  const danger = data.offerings.find((item) => item.id === "demo-art-004");
-  assert.equal(danger?.acquisitionPrice, null);
-  assert.equal(danger?.disclosedCosts.length, 2);
+test("synthetic fixture connects the current catalog and historical cohorts", () => {
+  const data = JSON.parse(read("data/synthetic/art-investment.json")) as SyntheticData;
+  assert.equal(data.offerings.length, 9);
+  assert.equal(data.trackRecords.length, 318);
+  assert.ok(data.offerings.every((item) => item.id.startsWith("synthetic-") && item.isDemo && item.recordScope === "current"));
+  assert.ok(data.trackRecords.every((item) => item.id.startsWith("synthetic-")));
+  assert.equal(data.analyses.length, data.offerings.length);
+  assert.ok(data.analyses.every((item) => item.offeringId.startsWith("synthetic-")));
+  assert.ok(data.artists.every((artist) => data.annualMetrics[artist.id]?.length));
+  assert.ok(data.trackRecords.some((item) => item.status === "delayed" && (item.delayDays ?? 0) > 0));
 });

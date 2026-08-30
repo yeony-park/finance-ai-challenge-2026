@@ -1,5 +1,7 @@
 # 미술품 조각투자 서비스 QA 명세와 검수 기록
 
+> **2026-08-30 전환 고지:** 아래의 외부 플랫폼 연결·legacy payload·실데이터 건수 설명은 과거 설계 기록입니다. 현재 운영 구현은 `data/synthetic/art-investment.json`만 사용하며, 실제 계약은 `lib/art/types.ts`, `lib/repositories/art-repositories.ts`, `lib/art/dtos.ts`를 기준으로 합니다.
+
 - 문서 상태: **CURRENT · CANONICAL**
 - 방법론 버전: `art-mvp-v1.0`
 - 최종 회귀 상태: **FINAL_VALIDATED_WITH_DATABASE_CONTINUITY_AND_HISTORICAL_DISCOVERY** — 비교함 전체 기능까지 구현·재검증 완료

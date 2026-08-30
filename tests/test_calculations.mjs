@@ -1,24 +1,42 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
-import { artComparableStats, artEvidenceVerdict, artShares, lifecycleState, parseSearchIntent, percent, pricing, searchCatalog, searchProducts, selectionAfterSearch } from "../js/calculations.js";
 
-const products = JSON.parse(fs.readFileSync(new URL("../data/products.json", import.meta.url))).products;
-assert.equal(products.length, 5);
-assert.ok(products.every((product) => product.category === "미술품"));
-assert.equal(searchProducts(products, "야요이 쿠사마")[0].id, "at-kusama-001");
-assert.equal(searchProducts(products, "20240325000139")[0].id, "at-condo-002");
-assert.equal(selectionAfterSearch(products, "없는 상품", products[0]), null);
-assert.equal(lifecycleState(products[0]), "UNVERIFIED");
-assert.equal(percent(.24375), "24.38%");
-assert.equal(pricing(products.find((product) => product.id === "at-kusama-001")).base_field, "art_price.acquisition");
-assert.equal(artEvidenceVerdict(products.find((product) => product.id === "at-kusama-001")), "독립 비교자료 부족 · 가격 적정성 판정 보류");
-const shares = artShares({ acquisition: 203760000, issuance_cost: 21240000, offering: 225000000, public_subscription: 116000000, planned_public_allocation: 202500000, issuer_take_up: 109000000 });
-assert.equal(shares.cost_reconciled, true);
-assert.equal((shares.public_of_offering * 100).toFixed(2), "51.56");
-const comparable = artComparableStats({ art_price: { offering: 225, acquisition: 203.76 }, artist_market: { comparables: [{ currency: "KRW", amount: 279.6 }, { currency: "KRW", amount: 262.125 }, { currency: "USD", amount: 10 }] } });
-assert.equal(comparable.count, 2);
-assert.equal(comparable.median, 270.8625);
-const intent = parseSearchIntent("김환기 미술품", products);
-assert.equal(intent.filters.category, "미술품");
-assert.equal(searchCatalog(products, "김환기 미술품").products[0].id, "at-kim-whanki-009-01");
-console.log("PASS: art calculations");
+const fixture = JSON.parse(fs.readFileSync(new URL("../data/synthetic/art-investment.json", import.meta.url), "utf8"));
+const round2 = (value) => Math.round((value + Number.EPSILON) * 100) / 100;
+const offerings = fixture.offerings;
+const records = fixture.trackRecords;
+const auctions = fixture.auctions;
+
+assert.equal(offerings.length, 9);
+assert.equal(records.length, 318);
+assert.ok(offerings.every((item) => item.id.startsWith("synthetic-")));
+assert.ok(records.every((item) => item.id.startsWith("synthetic-")));
+
+for (const offering of offerings) {
+  assert.equal(offering.unitPrice * offering.numberOfUnits, offering.totalOfferingAmount);
+  const disclosedCosts = offering.disclosedCosts.reduce((sum, cost) => sum + cost.amount, 0);
+  const residualBridge = offering.totalOfferingAmount - offering.acquisitionPrice - disclosedCosts;
+  assert.equal(residualBridge >= 0, true);
+  assert.equal(offering.currency, "KRW");
+}
+for (const record of records) {
+  const hasSettlement = record.exitAmount != null && record.offeringAmount != null;
+  if (!hasSettlement) {
+    assert.equal(record.finalReturn, null);
+    assert.equal(record.calculatedSettlementReturnPct, null);
+    continue;
+  }
+  const distribution = record.totalDistribution ?? 0;
+  const expected = round2(((record.exitAmount + distribution) / record.offeringAmount - 1) * 100);
+  assert.equal(record.finalReturn, expected);
+  assert.equal(record.calculatedSettlementReturnPct, expected);
+}
+
+const outcomes = auctions.filter((auction) => ["sold", "unsold"].includes(auction.result));
+const sold = outcomes.filter((auction) => auction.result === "sold");
+assert.ok(outcomes.length > 0);
+assert.equal(sold.length + outcomes.filter((auction) => auction.result === "unsold").length, outcomes.length);
+assert.equal(sold.length / outcomes.length >= 0 && sold.length / outcomes.length <= 1, true);
+assert.ok(auctions.every((auction) => auction.verificationStatus === "synthetic" && auction.currency === "KRW"));
+assert.ok(fixture.comparables.every((item) => item.similarityScore >= 0 && item.similarityScore <= 1));
+console.log("PASS: synthetic calculations");

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { serializeCurrentProduct, serializeHistoricalProduct, serializePlatform, syntheticDataMode } from "@/lib/art/dtos";
 import { historicalOfferingRepository, platformRepository } from "@/lib/repositories/art-repositories";
 import type { TrackStatus } from "@/lib/art/types";
 
@@ -9,7 +10,6 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
   const id = (await params).id;
   const platform = platformRepository.getById(id);
   if (!platform) return NextResponse.json({ error: "not found" }, { status: 404 });
-
   const query = new URL(request.url).searchParams;
   const statusValue = query.get("status") ?? "";
   const status = statuses.includes(statusValue as TrackStatus) ? statusValue as TrackStatus : undefined;
@@ -20,26 +20,5 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
   const result = platformRepository.getHistoryPage(id, page, 25, { keyword: query.get("q")?.trim() || undefined, artistId: query.get("artist") || undefined, status: status ? [status] : undefined, sort });
   const aggregate = historicalOfferingRepository.getAggregate({ platformId: id });
   const current = platformRepository.getProducts(id);
-  const isDemo = platformRepository.isDemo(id);
-  return NextResponse.json({
-    platform,
-    isDemo,
-    currentProducts: current,
-    items: result.items,
-    total: result.total,
-    page: result.page,
-    pageSize: result.pageSize,
-    pageCount: result.pageCount,
-    filters: { q: query.get("q") ?? "", artist: query.get("artist") ?? "", status: status ?? "", sort },
-    counts: {
-      current: current.length,
-      historical: history.length,
-      byLifecycle: aggregate.byLifecycle,
-      byStatus: aggregate.byStatus,
-      bySourceDataset: aggregate.bySourceDataset,
-      platformReportedReturn: history.filter((item) => item.trackRecord.sourceReportedReturnPct != null).length,
-      calculatedSettlementReturn: history.filter((item) => item.trackRecord.calculatedSettlementReturnPct != null).length,
-    },
-    mode: isDemo ? "demo_platform" : "historical_repository",
-  });
+  return NextResponse.json({ dataMode: syntheticDataMode, platform: serializePlatform(platform), isDemo: true, currentProducts: current.map(serializeCurrentProduct), items: result.items.map(serializeHistoricalProduct), total: result.total, page: result.page, pageSize: result.pageSize, pageCount: result.pageCount, filters: { q: query.get("q") ?? "", artist: query.get("artist") ?? "", status: status ?? "", sort }, counts: { current: current.length, historical: history.length, byLifecycle: aggregate.byLifecycle, byStatus: aggregate.byStatus, bySourceDataset: aggregate.bySourceDataset, platformReportedReturn: history.filter((item) => item.trackRecord.sourceReportedReturnPct != null).length, calculatedSettlementReturn: history.filter((item) => item.trackRecord.calculatedSettlementReturnPct != null).length }, mode: syntheticDataMode });
 }

@@ -7,8 +7,21 @@ services:
       - "3000:3000"
     environment:
       WATCHPACK_POLLING: "true"
+    # Mount only approved application inputs.  Never bind the repository root:
+    # it contains private archives and legacy data.
     volumes:
-      - .:/app
+      - ./app:/app/app:ro
+      - ./components:/app/components:ro
+      - ./lib:/app/lib:ro
+      - ./public:/app/public:ro
+      - ./styles:/app/styles:ro
+      - ./data/synthetic:/app/data/synthetic:ro
+      - ./data/art/dart-filing-manifest.json:/app/data/art/dart-filing-manifest.json:ro
+      - ./next.config.ts:/app/next.config.ts:ro
+      - ./next-env.d.ts:/app/next-env.d.ts:ro
+      - ./tsconfig.json:/app/tsconfig.json:ro
+      - ./package.json:/app/package.json:ro
+      - ./package-lock.json:/app/package-lock.json:ro
       - node_modules:/app/node_modules
 
 volumes:

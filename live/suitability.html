@@ -3,25 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="공개 JavaScript에서 확인한 투자계약증권 적합성 테스트 구조">
-  <title>적합성 테스트 자료 | DAKER</title>
-  <link rel="stylesheet" href="styles.css?v=20260811-catalog">
+  <meta name="description" content="합성 데이터 경계 안내">
+  <title>데이터 경계 | DAKER</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="suitability">
-  <header class="site-header">
-    <nav class="wrap site-nav" aria-label="주요 메뉴"><a class="brand" href="index.html">DAKER</a><a href="search.html">상품 검색</a></nav>
-    <div class="wrap page-header"><p class="eyebrow">SUITABILITY TEST REFERENCE</p><h1>투자계약증권 적합성 테스트 공개 구조</h1><p>공개 client JavaScript에서 확인한 문항 구조를 별도 자료로 표시합니다.</p></div>
-  </header>
-  <main class="wrap">
-    <section id="suitability-test" class="research-panel" aria-labelledby="suitability-title">
-      <div class="section-heading"><h2 id="suitability-title">적합성 테스트 자료</h2><p class="muted">개인 답안·계정·만기일 미수집</p></div>
-      <p class="notice">현재 client JavaScript에 공개된 문항과 정답 위치를 정리한 자료입니다. 법률 정답을 독립 검증한 결과가 아니며, 이 화면은 테스트를 제출하거나 회원 상태를 변경하지 않습니다.</p>
-      <div id="suitability-summary"></div>
-      <div id="suitability-questions" class="suitability-list"></div>
-      <p id="suitability-empty" class="empty">자료를 불러오는 중입니다.</p>
-    </section>
-  </main>
-  <footer class="footer">공개 저장본 기준 자료이며 개인 적합성 판정이나 투자 권유를 제공하지 않습니다.</footer>
-  <script type="module" src="js/app.js?v=20260811-catalog2"></script>
+  <header class="site-header"><nav class="wrap site-nav" aria-label="주요 메뉴"><a class="brand" href="index.html">DAKER</a><span class="badge">SYNTHETIC ONLY</span><a href="search.html">카탈로그 검색</a></nav><div class="wrap page-header"><p class="eyebrow">DATA BOUNDARY</p><h1>합성 데이터 경계</h1><p>데모 검증에 필요한 최소 데이터만 읽습니다. 개인 답안, 계정 정보, 외부 조회는 포함하지 않습니다.</p></div></header>
+  <main class="wrap"><section class="results" aria-labelledby="boundary-title"><div class="section-heading"><h2 id="boundary-title">현재 저장본</h2></div><div id="synthetic-summary"></div><p id="load-state" class="muted" role="status" aria-live="polite">합성 저장본을 불러오는 중입니다.</p><p id="load-error" class="notice" hidden>합성 저장본을 불러오지 못했습니다.</p></section></main>
+  <footer class="footer">합성 데이터 전용 화면입니다. 투자 권유나 실제 거래 기능을 제공하지 않습니다.</footer>
+  <script type="module" src="js/app.js"></script>
 </body>
 </html>

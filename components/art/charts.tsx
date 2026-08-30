@@ -22,10 +22,6 @@ function trackStatusLabel(record: TrackRecord) {
   return labels[record.status];
 }
 
-function rawStatusEvidence(record: TrackRecord) {
-  const values = [record.rawStatus ? `코드 : ${record.rawStatus}` : null, record.rawStatusLabel ? `표기 : ${record.rawStatusLabel}` : null, record.statusConflict ? "상태 표기 충돌" : null].filter(Boolean);
-  return values.length ? values.join(" · ") : null;
-}
 
 export function ComparablePriceChart({ product }: { product: ProductView }) {
   const sold = product.comparables.filter((comparable) => comparable.auction.result === "sold" && comparable.auction.normalizedPriceKRW != null);
@@ -80,13 +76,13 @@ export function TrackRecordTable({ product }: { product: ProductView }) {
       <caption className="sr-only">플랫폼 과거 상품 목록</caption>
       <thead><tr><th>상품명</th><th>기초 작품·작가</th><th>공모금액</th><th>목표/실제</th><th>총 배당</th><th>매각금액</th><th>최종 상태</th></tr></thead>
       <tbody>{rows.map((record) => <tr key={record.id}>
-        <td>{record.sourceUrl ? <a href={record.sourceUrl} target="_blank" rel="noopener noreferrer">{record.productName} ↗</a> : record.productName}</td>
+        <td>{record.productName}</td>
         <td>{record.artworkTitle}<br /><small>{record.artistName}</small></td>
         <td>{trackOfferingAmount(record)}</td>
         <td>{record.targetHoldingMonths ?? "-"}/{record.actualHoldingMonths == null ? "-" : record.actualHoldingMonths.toFixed(1)}개월</td>
         <td>{formatKrw(record.totalDistribution)}</td>
         <td>{record.exitAmount == null ? "공개되지 않음" : record.exitCurrency === "KRW" || !record.exitCurrency ? formatKrw(record.exitAmount) : `${record.exitAmount.toLocaleString("ko-KR")} ${record.exitCurrency}`}</td>
-        <td>{trackStatusLabel(record)}{rawStatusEvidence(record) ? <><br /><small>원문 : {rawStatusEvidence(record)}</small></> : null}</td>
+        <td>{trackStatusLabel(record)}</td>
       </tr>)}</tbody>
     </table></div>
     {product.trackRecords.length > rows.length ? <p className="table-note">최근 연결 레코드 {rows.length}건만 표시합니다. 전체 {product.trackRecords.length}건은 플랫폼 상세에서 확인할 수 있습니다.</p> : null}
@@ -112,39 +108,13 @@ export function PlatformRecordOutcomeChart({ records }: { records: TrackRecord[]
     <figcaption><strong>연결 DB 상태 분포</strong><span>총 {records.length}건</span></figcaption>
     <div className="outcome-bar">{populated.map((group, index) => <span key={group.key} className={`outcome-${index % 4 === 0 ? "good" : index % 4 === 1 ? "warn" : index % 4 === 2 ? "neutral" : "danger"}`} style={{ width: `${group.count / total * 100}%` }}>{group.label} {group.count}</span>)}</div>
     <ul className="chart-data-list">{populated.map((group) => <li key={group.key}><span>{group.label}</span><strong>{group.count}건</strong></li>)}</ul>
-    <p className="chart-summary">매각 완료·반환·청산 완료를 분리하며, 상태 표기 충돌은 원문 상태와 함께 보존합니다.</p>
+    <p className="chart-summary">합성 이력의 상태를 분리해 시뮬레이션 결과를 비교합니다.</p>
   </figure>;
-}
-
-function platformName(id: string) {
-  return id === "platform-arttogether" ? "아트투게더" : id === "platform-artnguide" ? "ArtNGuide" : id === "platform-tessa" ? "TESSA" : id;
 }
 
 export function PlatformTrackRecordTable({ records, total, page, pageSize }: { records: TrackRecord[]; total: number; page: number; pageSize: number }) {
   const rangeStart = total === 0 ? 0 : (page - 1) * pageSize + 1;
-  return <>
-    <div className="table-wrap"><table>
-      <caption className="sr-only">플랫폼 과거 공동구매 기록</caption>
-      <thead><tr><th>상품·작품</th><th>작가</th><th>플랫폼</th><th>공모·공동구매 금액</th><th>청약 시작일</th><th>청약 종료일</th><th>원문 매각일</th><th>청산일</th><th>실제 보유기간</th><th>플랫폼 기재 수익률</th><th>DAKER 계산 수익률</th><th>매각 경로</th><th>최종 상태</th><th>원문 보기</th></tr></thead>
-      <tbody>{records.map((record) => <tr key={record.id}>
-        <td><Link href={`/products/historical-offering-${record.id}`}>{record.productName}</Link><br /><small>{record.artworkTitle}</small></td>
-        <td>{record.artistName}</td>
-        <td>{platformName(record.platformId)}</td>
-        <td>{trackOfferingAmount(record)}</td>
-        <td>{record.subscriptionStart ?? "미기재"}</td>
-        <td>{record.subscriptionEnd ?? "미기재"}</td>
-        <td>{record.soldAt ?? "미기재"}</td>
-        <td>{record.liquidatedAt ?? "미기재"}</td>
-        <td>{record.actualHoldingMonths == null ? "미기재" : `${record.actualHoldingMonths.toFixed(1)}개월`}</td>
-        <td>{record.sourceReportedReturnPct == null ? "미기재" : `${record.sourceReportedReturnPct.toFixed(2)}%`}<br /><small>플랫폼 기재값</small></td>
-        <td>{record.calculatedSettlementReturnPct == null ? "미기재" : `${record.calculatedSettlementReturnPct.toFixed(2)}%`}<br /><small>DAKER 계산값</small></td>
-        <td>{record.soldPlace ?? "미기재"}</td>
-        <td>{trackStatusLabel(record)}{rawStatusEvidence(record) ? <><br /><small>원문 : {rawStatusEvidence(record)}</small></> : null}</td>
-        <td>{record.sourceUrl ? <a href={record.sourceUrl} target="_blank" rel="noopener noreferrer">{record.sourceLabel ?? "원문"} ↗</a> : record.sourceLabel ?? "원문 링크 없음"}{record.identityStatus ? <><br /><small>식별 : {record.identityStatus}</small></> : null}</td>
-      </tr>)}</tbody>
-    </table></div>
-    <p className="table-note">검색 결과 {total}건 중 {rangeStart}–{Math.min(page * pageSize, total)}건. 플랫폼 기재 수익률과 DAKER 계산 수익률은 서로 대체하지 않습니다.</p>
-  </>;
+  return <><div className="table-wrap"><table><caption className="sr-only">합성 플랫폼 이력</caption><thead><tr><th>상품·작품</th><th>작가</th><th>시뮬레이션 금액</th><th>청약 시작일</th><th>청약 종료일</th><th>청산일</th><th>보유기간</th><th>시뮬레이션 수익률</th><th>최종 상태</th></tr></thead><tbody>{records.map((record) => <tr key={record.id}><td><Link href={`/products/historical-offering-${record.id}`}>{record.productName}</Link><br /><small>{record.artworkTitle}</small></td><td>{record.artistName}</td><td>{trackOfferingAmount(record)}</td><td>{record.subscriptionStart ?? "미기재"}</td><td>{record.subscriptionEnd ?? "미기재"}</td><td>{record.liquidatedAt ?? "미기재"}</td><td>{record.actualHoldingMonths == null ? "미기재" : `${record.actualHoldingMonths.toFixed(1)}개월`}</td><td>{record.sourceReportedReturnPct == null ? "미기재" : `${record.sourceReportedReturnPct.toFixed(2)}%`}</td><td>{trackStatusLabel(record)}</td></tr>)}</tbody></table></div><p className="table-note">검색 결과 {total}건 중 {rangeStart}–{Math.min(page * pageSize, total)}건. 실제 투자 실적이 아닌 합성 시뮬레이션 값입니다.</p></>;
 }
 
 export function ExitTimelineChart({ product }: { product: ProductView }) {

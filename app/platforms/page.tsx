@@ -4,48 +4,7 @@ import type { Platform } from "@/lib/art/types";
 import { historicalOfferingRepository, platformRepository } from "@/lib/repositories/art-repositories";
 
 function PlatformCard({ platform }: { platform: Platform }) {
-  const current = platformRepository.getProducts(platform.id);
-  const history = platformRepository.getHistory(platform.id);
-  const aggregate = historicalOfferingRepository.getAggregate({ platformId: platform.id });
-  const isDemo = platformRepository.isDemo(platform.id);
-  const sourceReportedReturn = history.filter((item) => item.trackRecord.sourceReportedReturnPct != null).length;
-
-  return <Link className="platform-card" href={`/platforms/${platform.id}`}>
-    <DataModeBadge isDemo={isDemo} />
-    <h2>{platform.name}</h2>
-    <p>운영사 : {platform.operatorName ?? "공개 자료 미확인"}</p>
-    <dl>
-      <div><dt>현재 연결 상품</dt><dd>{current.length}건</dd></div>
-      <div><dt>과거 상품</dt><dd>{history.length}건</dd></div>
-      <div><dt>매각 진행</dt><dd>{aggregate.byLifecycle.exit_in_progress}건</dd></div>
-      <div><dt>매각 완료</dt><dd>{aggregate.byLifecycle.sold}건</dd></div>
-      <div><dt>반환</dt><dd>{aggregate.byLifecycle.returned}건</dd></div>
-      <div><dt>플랫폼 기재 수익률</dt><dd>{sourceReportedReturn}건</dd></div>
-      <div><dt>발행사 identity</dt><dd>{isDemo ? "DEMO" : platform.id === "platform-arttogether" ? "현재 상품만 확인" : "레코드별 미검증"}</dd></div>
-    </dl>
-    <strong>{isDemo ? "DEMO 상품 상세 보기 →" : "전체 이력과 원문 보기 →"}</strong>
-  </Link>;
+  const current = platformRepository.getProducts(platform.id); const history = platformRepository.getHistory(platform.id); const aggregate = historicalOfferingRepository.getAggregate({ platformId: platform.id }); const simulatedReturn = history.filter((item) => item.trackRecord.sourceReportedReturnPct != null).length;
+  return <Link className="platform-card" href={`/platforms/${platform.id}`}><DataModeBadge isDemo /><h2>{platform.name}</h2><p>운영 주체 : {platform.operatorName ?? "가상 운영 주체"}</p><dl><div><dt>현재 합성 상품</dt><dd>{current.length}건</dd></div><div><dt>합성 과거 이력</dt><dd>{history.length}건</dd></div><div><dt>매각 진행</dt><dd>{aggregate.byLifecycle.exit_in_progress}건</dd></div><div><dt>매각 완료</dt><dd>{aggregate.byLifecycle.sold}건</dd></div><div><dt>반환</dt><dd>{aggregate.byLifecycle.returned}건</dd></div><div><dt>시뮬레이션 수익률</dt><dd>{simulatedReturn}건</dd></div><div><dt>데이터 모드</dt><dd>합성</dd></div></dl><strong>합성 이력 보기 →</strong></Link>;
 }
-
-export default function PlatformsPage() {
-  const platforms = platformRepository.getList();
-  const realPlatforms = platforms.filter((platform) => !platformRepository.isDemo(platform.id));
-  const demoPlatforms = platforms.filter((platform) => platformRepository.isDemo(platform.id));
-
-  return <main id="main-content" className="listing-page"><PageContainer>
-    <header className="page-title">
-      <p className="section-kicker">PLATFORMS</p>
-      <h1>플랫폼별 상품·과거 이력</h1>
-      <p>아트투게더 실데이터 플랫폼은 하나의 canonical 항목으로 유지하고, DEMO 플랫폼 4개는 별도 표시합니다.</p>
-    </header>
-    <div className="database-connection-banner"><strong>실데이터 플랫폼 {realPlatforms.length}개 · DEMO 플랫폼 {demoPlatforms.length}개</strong><span>실데이터 과거 이력과 DEMO 상품을 같은 플랫폼으로 합치지 않습니다.</span></div>
-    <section className="content-section">
-      <div className="section-heading-art"><div><p className="section-kicker">REAL DATA</p><h2>실데이터 플랫폼</h2></div></div>
-      <div className="platform-grid">{realPlatforms.map((platform) => <PlatformCard key={platform.id} platform={platform} />)}</div>
-    </section>
-    <section className="content-section">
-      <div className="section-heading-art"><div><p className="section-kicker">DEMO</p><h2>DEMO 플랫폼</h2><p>DEMO 상품 링크와 상세 API는 유지하되, 실데이터 이력으로 표시하지 않습니다.</p></div></div>
-      <div className="platform-grid">{demoPlatforms.map((platform) => <PlatformCard key={platform.id} platform={platform} />)}</div>
-    </section>
-  </PageContainer></main>;
-}
+export default function PlatformsPage() { const platforms = platformRepository.getList(); return <main id="main-content" className="listing-page"><PageContainer><header className="page-title"><p className="section-kicker">SYNTHETIC PLATFORMS</p><h1>가상 플랫폼별 상품·이력</h1><p>세 개의 가상 플랫폼과 모든 연결 이력은 합성 데이터입니다. 실제 운영사, 투자 상품, 거래 기록과 무관합니다.</p></header><div className="database-connection-banner"><strong>합성 플랫폼 {platforms.length}개</strong><span>실제 플랫폼 데이터나 외부 원문을 연결하지 않습니다.</span></div><section className="content-section"><div className="section-heading-art"><div><p className="section-kicker">SYNTHETIC DATA</p><h2>가상 플랫폼</h2></div></div><div className="platform-grid">{platforms.map((platform) => <PlatformCard key={platform.id} platform={platform} />)}</div></section></PageContainer></main>; }

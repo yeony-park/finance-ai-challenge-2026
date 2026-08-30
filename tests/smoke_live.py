@@ -1,13 +1,19 @@
-"""Deterministic local smoke for checked-in art snapshots; no external API calls."""
+"""Deterministic local smoke for the checked-in synthetic fixture; no external API calls."""
+import json
 from pathlib import Path
 import sys
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 import server
 
+fixture = json.loads((ROOT / "data/synthetic/art-investment.json").read_text(encoding="utf-8"))
 catalog = server.catalog()
-assert len(catalog["products"]) == 5
-assert all(product["category"] == "미술품" for product in catalog["products"])
-assert len(server.read_fixed_json(server.ARTNGUIDE_TRACK_RECORDS_PATH)["records"]) == 187
-assert len(server.read_fixed_json(server.WESHAREART_RESEARCH_PATH)["track_records"]["records"]) == 145
-assert len(server.read_fixed_json(server.TESSA_SALE_RECORDS_PATH)["records"]) == 6
-print("PASS: local art snapshots")
+assert catalog["synthetic"] is True
+assert len(catalog["offerings"]) == len(fixture["offerings"]) == 9
+assert len(catalog["trackRecords"]) == len(fixture["trackRecords"]) == 318
+history = server.synthetic_history()
+assert history["synthetic"] is True
+assert len(history["history"]) == len(fixture["trackRecords"])
+assert all(item["id"].startswith("synthetic-") for item in fixture["offerings"] + fixture["trackRecords"])
+print("PASS: local synthetic fixture")

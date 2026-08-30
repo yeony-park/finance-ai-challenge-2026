@@ -27,8 +27,8 @@ const statusLabels: Record<TrackStatus, string> = {
 const sortOptions: ReadonlyArray<{ value: HistoricalSort; label: string }> = [
   { value: "date_desc", label: "날짜 최신순" },
   { value: "date_asc", label: "날짜 오래된순" },
-  { value: "return_desc", label: "플랫폼 기재 수익률 높은순" },
-  { value: "return_asc", label: "플랫폼 기재 수익률 낮은순" },
+  { value: "return_desc", label: "시뮬레이션 수익률 높은순" },
+  { value: "return_asc", label: "시뮬레이션 수익률 낮은순" },
   { value: "status", label: "상태순" },
   { value: "artist", label: "작가순" },
 ];
@@ -81,39 +81,39 @@ export default async function PlatformDetail({ params, searchParams }: Props) {
     <header className="entity-header">
       <DataModeBadge isDemo={isDemo} />
       <h1>{platform.name}</h1>
-      <p>운영사 : {platform.operatorName ?? "공개 자료 미확인"}</p>
-      <p>법적 발행사 : {isDemo ? "DEMO 데이터" : id === "platform-arttogether" ? "현재 상품 5건만 확인; 과거 레코드는 미검증" : "레코드별 미검증"}</p>
-      <p>{isDemo ? "DEMO 플랫폼이며 과거 실데이터 이력은 연결하지 않았습니다." : `저장본 기준일 : ${summary?.asOf.slice(0, 10) ?? "미기재"} · 과거 상품 ${history.length}건`}</p>
+      <p>운영 주체 : {platform.operatorName ?? "가상 운영 주체"}</p>
+      <p>데이터 모드 : 합성 시뮬레이션</p>
+      <p>기준일 : {summary?.asOf.slice(0, 10) ?? "미기재"} · 합성 이력 {history.length}건</p>
     </header>
     <section className="insight-box">
-      <p className="section-kicker">{isDemo ? "DEMO BOUNDARY" : "TRACK RECORD BOUNDARY"}</p>
-      <h2>{isDemo ? "DEMO 플랫폼과 실데이터 이력을 분리합니다." : "과거 상품을 숨기지 않고 원문 상태와 함께 표시합니다."}</h2>
-      <p>{isDemo ? "DEMO 상품은 탐색·상세 경로를 제공하지만 실데이터 플랫폼의 과거 이력, 수익률, 발행사 기록으로 사용하지 않습니다." : summary?.limitation ?? "플랫폼 자체 게시값을 독립 검증된 정산 실적으로 바꾸지 않습니다."}</p>
+      <p className="section-kicker">SYNTHETIC DATA</p>
+      <h2>가상 플랫폼의 합성 이력을 표시합니다.</h2>
+      <p>{summary?.limitation ?? "모든 값은 실제 투자, 발행사, 거래 기록과 연결되지 않은 시뮬레이션입니다."}</p>
     </section>
     <div className="metric-grid-art">
-      <MetricCard label="현재 연결 상품" value={`${current.length}건`} />
-      <MetricCard label="과거 상품" value={`${history.length}건`} />
+      <MetricCard label="현재 합성 상품" value={`${current.length}건`} />
+      <MetricCard label="합성 과거 이력" value={`${history.length}건`} />
       <MetricCard label="매각 진행" value={`${aggregate.byLifecycle.exit_in_progress}건`} />
       <MetricCard label="매각 완료" value={`${aggregate.byLifecycle.sold}건`} />
       <MetricCard label="반환" value={`${aggregate.byLifecycle.returned}건`} />
-      <MetricCard label="플랫폼 기재 수익률" value={`${platformReportedReturn}건`} note="source_reported_return_pct 또는 플랫폼 원문값" />
-      <MetricCard label="DAKER 계산 수익률" value={`${calculatedSettlementReturn}건`} note="calculated_settlement_return_pct" />
+      <MetricCard label="시뮬레이션 수익률" value={`${platformReportedReturn}건`} note="합성 시뮬레이션 값" />
+      <MetricCard label="계산 수익률" value={`${calculatedSettlementReturn}건`} note="calculated_settlement_return_pct" />
     </div>
     {history.length ? <div className="chart-grid">
       <PlatformRecordOutcomeChart records={tracks} />
-      <section className="dataset-boundary"><h2>데이터 연결 범위</h2><dl>
-        <div><dt>데이터셋</dt><dd>{summary?.title ?? "저장본"}</dd></div>
-        <div><dt>원본 레코드</dt><dd>{history.length}건</dd></div>
-        <div><dt>법적 발행사 매핑</dt><dd>{summary?.legalIssuerMappingStatus ?? "미검증"}</dd></div>
-        <div><dt>독립 매각 검증</dt><dd>수행하지 않음</dd></div>
+      <section className="dataset-boundary"><h2>데이터 범위</h2><dl>
+        <div><dt>데이터셋</dt><dd>{summary?.title ?? "합성 데이터"}</dd></div>
+        <div><dt>합성 레코드</dt><dd>{history.length}건</dd></div>
+        <div><dt>데이터 모드</dt><dd>synthetic</dd></div>
+        <div><dt>외부 원문 연결</dt><dd>제공하지 않음</dd></div>
       </dl></section>
-    </div> : <section className="chart-empty"><strong>연결된 과거 플랫폼 이력 없음</strong><p>DEMO 플랫폼의 현재 상품은 아래에서 확인할 수 있습니다.</p></section>}
-    {current.length ? <section className="content-section"><h2>{isDemo ? "DEMO 현재 상품" : "현재 연결 상품"}</h2><div className="product-grid-art">{current.map((product) => <ProductCard compact product={product} key={product.offering.id} />)}</div></section> : null}
+    </div> : <section className="chart-empty"><strong>연결된 합성 플랫폼 이력 없음</strong><p>가상 플랫폼의 현재 합성 상품은 아래에서 확인할 수 있습니다.</p></section>}
+    {current.length ? <section className="content-section"><h2>현재 합성 상품</h2><div className="product-grid-art">{current.map((product) => <ProductCard compact product={product} key={product.offering.id} />)}</div></section> : null}
     {history.length ? <section className="content-section">
-      <div className="section-heading-art"><div><p className="section-kicker">FULL HISTORY</p><h2>과거 상품 이력</h2><p>검색 결과 {historyPage.total}건 · 페이지당 25건</p></div><strong>전체 {history.length}건</strong></div>
+      <div className="section-heading-art"><div><p className="section-kicker">SYNTHETIC HISTORY</p><h2>합성 과거 이력 이력</h2><p>검색 결과 {historyPage.total}건 · 페이지당 25건</p></div><strong>전체 {history.length}건</strong></div>
       <form className="history-filter-form" role="search">
-        <label htmlFor="record-query">작품·작가·상태·매각 경로 검색</label>
-        <input id="record-query" name="q" defaultValue={queryText} placeholder="예 : 이우환, TRANSFER, Collector" />
+        <label htmlFor="record-query">작품·가상 작가·상태 검색</label>
+        <input id="record-query" name="q" defaultValue={queryText} placeholder="예 : 가상 작가, 청산 완료" />
         <label htmlFor="record-status">상태</label>
         <select id="record-status" name="status" defaultValue={status}>
           <option value="">전체 상태</option>
@@ -126,7 +126,7 @@ export default async function PlatformDetail({ params, searchParams }: Props) {
         <button className="button button-primary">적용</button>
         <Link className="filter-reset" href={`/platforms/${id}`}>초기화</Link>
       </form>
-      {pageTracks.length ? <PlatformTrackRecordTable records={pageTracks} total={historyPage.total} page={historyPage.page} pageSize={historyPage.pageSize} /> : <p className="state-panel">검색 조건에 맞는 과거 상품이 없습니다.</p>}
+      {pageTracks.length ? <PlatformTrackRecordTable records={pageTracks} total={historyPage.total} page={historyPage.page} pageSize={historyPage.pageSize} /> : <p className="state-panel">검색 조건에 맞는 합성 과거 이력이 없습니다.</p>}
       {historyPage.pageCount > 1 ? <nav className="pagination pagination-numbers" aria-label="플랫폼 기록 페이지">
         <Link aria-label="첫 페이지" href={linkFor(id, filters, 1)}>처음</Link>
         <Link aria-label="이전 페이지" aria-disabled={historyPage.page === 1} className={historyPage.page === 1 ? "is-disabled" : ""} href={linkFor(id, filters, Math.max(1, historyPage.page - 1))}>이전</Link>

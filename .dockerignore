@@ -1,7 +1,53 @@
-.git
-.next
-node_modules
+# Keep the Docker build context narrow.  The Dockerfile has its own explicit
+# COPY allowlist; these rules also prevent accidental context leaks.
+.git/
+.gitignore
+node_modules/
+.next/
+.next/**
+*.map
+**/*.map
+*.tsbuildinfo
+**/*.tsbuildinfo
 npm-debug.log*
-.env*
-__pycache__
+
+# Secrets and local state.
+.env
+.env.*
+!.env.example
+__pycache__/
+**/__pycache__/
 *.pyc
+
+# Private/archive and non-runtime material.
+raw/
+**/raw/**
+archive/
+archives/
+**/archive/**
+**/archives/**
+deliverables/
+docs/
+tests/
+tmp/
+_workspace/
+legacy/
+**/legacy/**
+audit/
+audit_*.md
+audit*.md
+live/
+
+# Legacy data is not part of any image.  Re-include only the approved
+# synthetic fixture and the OpenDART filing manifest below.
+data/products.json
+data/issuers.json
+data/artnguide_*.json
+data/weshareart_*.json
+data/tessa_*.json
+data/demo/
+data/art/*
+!data/art/
+!data/art/dart-filing-manifest.json
+!data/synthetic/
+!data/synthetic/**

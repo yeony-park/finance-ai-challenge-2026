@@ -1,169 +1,118 @@
-import {artComparableStats,artEvidenceVerdict,artGap,artShares,lifecycleLabel,lifecycleState,percent,searchCatalog,sourceExpired,won} from "./calculations.js?v=20260811-landing";
-import {loadCatalog,loadResearch} from "./api.js?v=20260811-landing";
-import {filterTrackRecords,normalizeTrackDatasets,paginateTrackRecords,statusOptions} from "./track-records.js?v=20260811-landing";
+import { loadCatalog, loadHistory } from "./api.js";
 
-const $=id=>document.getElementById(id);
-const page=document.body.dataset.page;
-const S={products:[],issuers:[],apiStatus:{},catalogMessage:"",lifecycle:"ALL",asset:"ALL",query:"",selected:null,page:1,pageSize:6,loadError:false,track:{datasets:{artnguide:[],weshareart:[],tessa:[]},payloads:{},source:"artnguide",status:"ALL",query:"",page:1,pageSize:12,selected:null,loadError:false,loadErrors:{},loaded:false}};
-let detailTrigger=null;
-const missing=value=>value==null||value===""?"공개 자료에서 확인되지 않음":value;
-const cardMissing=value=>value==null||value===""?"-":value;
-const text=(node,value)=>(node.textContent=value??"공개 자료에서 확인되지 않음",node);
-function el(tag,klass,value){const node=document.createElement(tag);if(klass)node.className=klass;if(value!=null)text(node,value);return node}
-function kst(value){if(!value)return "공개 자료에서 확인되지 않음";if(/^\d{4}-\d{2}-\d{2}$/.test(value))return value;const date=new Date(value);return Number.isNaN(date.getTime())?String(value):new Intl.DateTimeFormat("ko-KR",{timeZone:"Asia/Seoul",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hour12:false}).format(date).replace(/\. /g,"-").replace(/\.$/,"")+" KST"}
-function validHttp(value){try{return ["http:","https:"].includes(new URL(value).protocol)}catch{return false}}
-function directSubscriptionPage(value){try{return /(?:^|\/)(?:subscribe|subscription)(?:\/|$)/.test(new URL(value).pathname.toLowerCase())}catch{return false}}
-function link(label,url,asOf){if(!validHttp(url))return el("span","muted",`${label} : 공개 자료에서 확인되지 않음`);if(directSubscriptionPage(url))return el("span","muted",`${label}${asOf?` · ${kst(asOf)}`:""} : 직접 청약 페이지 링크는 제공하지 않습니다`);const a=el("a",null,label);a.href=new URL(url).href;a.target="_blank";a.rel="noopener noreferrer";return a}
-function facts(rows){const out=el("dl","fact-grid");rows.forEach(([name,value])=>{const box=el("div","fact");box.append(el("dt",null,name),el("dd",null,value));out.append(box)});return out}
-function section(title,...children){const node=el("section","detail-section");node.append(el("h3",null,title),...children.filter(Boolean));return node}
-function details(summary,...children){const node=document.createElement("details");node.className="technical";node.append(el("summary",null,summary),...children.filter(Boolean));return node}
-function rawDetails(summary,value){const pre=el("pre","raw-json",JSON.stringify(value,null,2));pre.tabIndex=0;pre.setAttribute("role","region");pre.setAttribute("aria-label",summary);return details(summary,pre)}
-function motionBehavior(){return matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"}
-function table(caption,headers,rows){const wrap=el("div","table-scroll"),t=document.createElement("table"),thead=document.createElement("thead"),tr=document.createElement("tr"),tbody=document.createElement("tbody");t.append(el("caption",null,caption));headers.forEach(header=>{const th=el("th",null,header);th.scope="col";tr.append(th)});thead.append(tr);rows.forEach(values=>{const row=document.createElement("tr");values.forEach(value=>row.append(el("td",null,value)));tbody.append(row)});t.append(thead,tbody);wrap.append(t);return wrap}
-function model(p){return p.common_model||{}}
-function terms(p){return model(p).investment_terms||{}}
-function schedule(p){return model(p).schedule||{}}
-function statusClass(value){return value.includes("중단")||value.includes("주의")?"status warn":value.includes("불가")||value==="-"?"status unknown":"status"}
-function assetLabel(p){return cardMissing([p.asset?.artist,p.asset?.title].filter(Boolean).join(" · "))}
-function dividendValue(value){if(!value||typeof value!=="object")return null;const parts=[];if(Number.isFinite(value.amount_krw))parts.push(won(value.amount_krw));if(Number.isFinite(value.rate_pct))parts.push(`${value.rate_pct}%`);return parts.length?parts.join(" · "):null}
-function dividend(p){const t=terms(p),actual=dividendValue(t.actual_dividend),expected=dividendValue(t.expected_dividend),actualAsOf=actual&&t.actual_dividend?.as_of?` · ${kst(t.actual_dividend.as_of)}`:"",parts=[];if(actual)parts.push(`실제 ${actual}${actualAsOf}`);if(expected)parts.push(`예상 ${expected}`);return parts.join(" / ")||(t.dividend_confirmed===true?"배당 공시 확인 · 금액·비율 확인 불가":"-")}
-function targetPeriod(p){const months=schedule(p).target_operating_period_months;return Number.isFinite(months)?`${months}개월`:"-"}
-function platform(p){return cardMissing(model(p).service?.platform)}
-function review(p){return cardMissing(model(p).review_status?.value)}
-function legalIssuerStatus(legal){return legal?.verification_status==="verified"?"확인됨":"미확인"}
-function focusChoice(rootId,value){[...$(rootId).querySelectorAll("[data-value]")].find(button=>button.dataset.value===value)?.focus()}
-function catalogSearchActive(){return Boolean(S.query.trim())||S.asset!=="ALL"||S.lifecycle!=="ALL"}
-function allTrackRecords(){return Object.values(S.track.datasets).flat()}
-function recordLifecycleState(record){return ["TRANSFER","RETURNED_PRODUCT","DISTRIBUTED","SETTLED"].includes(record.statusCode)?"COMPLETED":record.statusCode==="EXPECTED_TRANSFER"?"OPERATING":"UNVERIFIED"}
-function trackQueryTokens(){return S.query.trim().toLocaleLowerCase("ko-KR").split(/\s+/).filter(token=>token&&!['미술품','상품','트랙레코드','플랫폼'].includes(token))}
-function baseVisibleProducts(){if(!catalogSearchActive())return [];const searched=searchCatalog(S.products,S.query).products;return searched.filter(p=>S.asset==="ALL"||p.category===S.asset)}
-function baseVisibleTrackRecords(){if(!catalogSearchActive())return [];const tokens=trackQueryTokens();return allTrackRecords().filter(record=>tokens.every(token=>filterTrackRecords([record],token,"ALL").length>0))}
-function baseCatalogEntries(){return [...baseVisibleProducts().map(product=>({kind:"product",product})),...baseVisibleTrackRecords().map(record=>({kind:"track",record}))]}
-function entryLifecycle(entry){return entry.kind==="product"?lifecycleState(entry.product):recordLifecycleState(entry.record)}
-function entryKey(entry){return entry.kind==="product"?entry.product.id:entry.record.key}
-function visibleEntries(){return baseCatalogEntries().filter(entry=>S.lifecycle==="ALL"||entryLifecycle(entry)===S.lifecycle)}
-function productPage(){const entries=visibleEntries(),totalPages=Math.max(1,Math.ceil(entries.length/S.pageSize));S.page=Math.min(Math.max(S.page,1),totalPages);const start=(S.page-1)*S.pageSize;return {entries:entries.slice(start,start+S.pageSize),totalProducts:entries.length,totalPages,currentPage:S.page}}
-function resetProductPage(){S.page=1}
-function searchResult(){return searchCatalog(S.products,S.query)}
+const state = { catalog: null, history: [], query: "" };
+const page = document.body?.dataset.page || "home";
 
-const lifecycleTabs=[["ALL","전체"],["UPCOMING","모집 예정"],["SUBSCRIPTION","청약 중"],["OPERATING","운용 중"],["COMPLETED","완료"],["UNVERIFIED","상태 확인 불가"]];
-const assetTiles=[["ALL","전체 상품","수집 범위 내 모든 등록 상품"],["미술품","미술품","작가·작품·공개 거래 근거 확인"]];
-function renderAssetTiles(){const root=$("asset-filter");root.replaceChildren();assetTiles.forEach(([value,label,description])=>{const button=el("button","tile");button.type="button";button.dataset.value=value;button.setAttribute("aria-pressed",String(S.asset===value));button.append(el("strong",null,label),el("span",null,description));button.onclick=()=>{S.asset=value;S.selected=null;resetProductPage();render();focusChoice("asset-filter",value)};root.append(button)})}
-function renderIntent(){const root=$("intent-tags"),intent=searchResult().intent;root.replaceChildren();intent.recognized_tags.forEach(tag=>root.append(el("span","intent-tag",tag.label)));if(intent.remaining_keywords)root.append(el("span","intent-tag",`일반 검색 : ${intent.remaining_keywords}`));if(intent.query&&!intent.recognized_tags.length&&!intent.remaining_keywords)root.append(el("span","intent-tag","인식한 조건 없음"))}
-function renderFilters(){const root=$("lifecycle-tabs"),entries=baseCatalogEntries();root.replaceChildren();lifecycleTabs.forEach(([value,label])=>{const count=value==="ALL"?entries.length:entries.filter(entry=>entryLifecycle(entry)===value).length,button=el("button","filter-button",`${label} ${count}`);button.type="button";button.dataset.value=value;button.setAttribute("aria-pressed",String(S.lifecycle===value));button.onclick=()=>{S.lifecycle=value;S.selected=null;resetProductPage();render();focusChoice("lifecycle-tabs",value)};root.append(button)});$("result-summary").textContent=catalogSearchActive()?`검색 조건에 일치하는 등록 자료 ${visibleEntries().length}건`:`검색 전 · 등록 자료는 검색할 때만 표시합니다.`}
-function card(p){const article=el("article","product-card"),top=el("div","card-top"),open=el("button","card-open","검토 보기");article.dataset.productId=p.id;if(S.selected===p.id){article.classList.add("selected");article.setAttribute("aria-current","true")}open.type="button";open.setAttribute("aria-haspopup","dialog");open.setAttribute("aria-controls","detail");open.onclick=event=>openDetail(p,event.currentTarget);top.append(el("h3",null,p.name),open);article.append(top,el("p","card-category",`${p.category} · ${assetLabel(p)}`),el("p",statusClass(lifecycleLabel(lifecycleState(p))),lifecycleLabel(lifecycleState(p))),facts([["최소 투자금액",cardMissing(terms(p).minimum_investment_amount_krw==null?null:won(terms(p).minimum_investment_amount_krw))],["목표 기간",targetPeriod(p)],["배당",dividend(p)],["검토 상태",review(p)],["플랫폼",platform(p)]]),commentEvidence(p,model(p).comments?.card,"p"));return article}
-function trackCatalogCard(record){const article=el("article","product-card database-card"),top=el("div","card-top"),open=el("button","card-open","자료 보기"),asOf=record.dataset?.as_of||record.dataset?.verified_at||record.dataset?.collected_at?.source_text;article.dataset.productId=record.key;if(S.selected===record.key){article.classList.add("selected");article.setAttribute("aria-current","true")}open.type="button";open.setAttribute("aria-haspopup","dialog");open.setAttribute("aria-controls","detail");open.onclick=event=>openTrackDetail(record,event.currentTarget);top.append(el("h3",null,`${record.author} · ${record.title}`),open);article.append(top,el("p","card-category",`미술품 · ${record.sourceLabel} 플랫폼 DB`),el("p",statusClass(record.statusLabel),record.statusLabel),facts([["작가",record.author],["작품",record.title],["제작연도",missing(record.year)],["식별자",missing(record.id)],["자료 기준일",kst(asOf)]]),el("p","card-comment","플랫폼 자체 게시 저장본이며 외부 거래 원자료로 독립 검증한 결과가 아닙니다."));return article}
-function renderCards(){const root=$("product-cards"),resultPage=productPage(),empty=$("cards-empty");root.replaceChildren();empty.hidden=resultPage.totalProducts>0;empty.textContent=S.loadError?"자료를 불러오지 못했습니다.":catalogSearchActive()?"검색 조건에 일치하는 등록 자료가 없습니다.":"검색어를 입력하거나 상품 분류를 선택하세요.";resultPage.entries.forEach(entry=>root.append(entry.kind==="product"?card(entry.product):trackCatalogCard(entry.record)));$("product-pagination").hidden=resultPage.totalProducts===0;$("product-page-state").textContent=`${resultPage.currentPage} / ${resultPage.totalPages}페이지 · 페이지당 ${S.pageSize}개`;$("product-prev").disabled=resultPage.currentPage<=1;$("product-next").disabled=resultPage.currentPage>=resultPage.totalPages}
-
-function sourceBadges(p){const out=el("div","sources");(p.sources||[]).forEach(source=>{const expired=sourceExpired(source.as_of,new Date()),state=expired===null?"unknown":expired?"expired":"";out.append(el("span",`source ${state}`,`${source.label} · ${kst(source.as_of)}`))});return out}
-function commentEvidence(p,comment,tag="li"){const sourceIds=comment?.source_ids||[],sources=(p.sources||[]).filter(source=>sourceIds.includes(source.id)),out=el(tag,tag==="li"?null:"card-comment");out.append(el("span","comment-text",missing(comment?.text)),el("span","comment-version",`근거 버전 : ${missing(comment?.evidence_version)}`));if(sources.length)sources.forEach(source=>out.append(link(`근거 : ${source.label}`,source.url,source.as_of)));else out.append(el("span","muted","근거 원문 : 공개 자료에서 확인되지 않음"));return out}
-function reviewSummary(p){const m=model(p),comments=m.comments?.detail||[],reason=missing(m.review_status?.reason),statusDetail=missing(m.status?.status_detail??p.status_detail),risk=comments.find(x=>String(x.text).includes("[AI 해석]")),pending=m.validation?.reason||"공개 자료에서 확인되지 않음";const grid=el("div","review-grid"),items=[["장점",el("p",null,"공개 자료에서 확인되지 않음")],["위험",risk?commentEvidence(p,risk,"div"):el("p",null,"공개 자료에서 확인되지 않음")],["추가 확인사항",el("p",null,pending)]];items.forEach(([title,content])=>{const item=el("div","review-item");item.append(el("h4",null,title),content);grid.append(item)});const list=el("ul","comment-list");if(comments.length){comments.slice(0,4).forEach(comment=>list.append(commentEvidence(p,comment)))}else list.append(commentEvidence(p,{text:"공개 자료에서 확인되지 않음"}));return section("상품 검토 요약",facts([["현재 상태",lifecycleLabel(lifecycleState(p))],["검토 상태",review(p)],["판정 근거",reason],["상태 확인 맥락",statusDetail]]),grid,list,el("p","data-rule","투자 권유·감정평가가 아니며, 직접 주문 기능을 제공하지 않습니다."))}
-function coreTerms(p){const t=terms(p),s=schedule(p),service=model(p).service||{},legal=model(p).legal_issuer||{};return section("핵심 조건",facts([["최소 투자금액",missing(t.minimum_investment_amount_krw==null?null:won(t.minimum_investment_amount_krw))],["모집금액",missing(t.fundraising_amount_krw==null?null:won(t.fundraising_amount_krw))],["목표 운용기간",missing(Number.isFinite(s.target_operating_period_months)?`${s.target_operating_period_months}개월`:null)],["법적 발행사",missing(legal.display_name)],["법적 발행사 확인 상태",legalIssuerStatus(legal)],["서비스·운영 참고",[service.brand,service.operator].filter(Boolean).join(" · ")||"공개 자료에서 확인되지 않음"],["청약 플랫폼",missing(service.platform)]]),legal.verification_status!=="verified"?el("p","notice",`법적 발행사는 미확인입니다. 서비스·운영 참고는 법적 발행사 이력과 분리하며, 이를 법적 발행사 이력으로 대체하지 않습니다.`):null)}
-function expectedActual(p){const t=terms(p),s=schedule(p),expected=dividendValue(t.expected_dividend),actual=dividendValue(t.actual_dividend),actualAsOf=actual&&t.actual_dividend?.as_of?` · ${kst(t.actual_dividend.as_of)}`:"",actualDisplay=actual?`${actual}${actualAsOf}`:t.dividend_confirmed===true&&!expected?"배당 공시 확인 · 금액·비율 확인 불가":null;return section("예상값과 실제값",facts([["예상 배당",missing(expected)],["실제 배당",missing(actualDisplay)],["목표 운용기간",missing(Number.isFinite(s.target_operating_period_months)?`${s.target_operating_period_months}개월`:null)],["실제 운용기간",missing(Number.isFinite(s.actual_operating_period_months)?`${s.actual_operating_period_months}개월`:null)]]))}
-function recoveryStructure(p){const completed=lifecycleState(p)==="COMPLETED",sale=p.sale_list_check||p.completion_check||p.disposition_check;return section("회수 구조",facts([["상태",lifecycleLabel(lifecycleState(p))],["예상 회수 방식",missing(p.recovery?.expected_method||p.offering?.recovery_method)],["실제 매각가격",missing(p.recovery?.actual_sale_price_krw==null?null:won(p.recovery.actual_sale_price_krw))],["완료 확인",completed?"확인": "공개 자료에서 확인되지 않음"]]),sale?.source_url?link("완료·매각 확인 원문",sale.source_url):el("p","muted","완료·매각 확인 원문 : 공개 자료에서 확인되지 않음"))}
-
-function artPrice(p){const art=p.art_price||{},stats=artComparableStats(p),shares=art.planned_public_allocation?artShares(art):null,body=[facts([["공모가",missing(art.offering==null?null:won(art.offering))],["취득가",missing(art.acquisition==null?null:won(art.acquisition))],["낙찰가",missing(art.hammer==null?null:`${won(art.hammer)}${art.hammer_date?` · ${kst(art.hammer_date)}`:""}`)],["낙찰가 대비 공모",missing(artGap(art)==null?null:percent(artGap(art)))],["KRW 비교 표본",stats.available?`${stats.count}건 · 중위값 ${won(stats.median)}`:"공개 자료에서 확인되지 않음"],["가격 검토",artEvidenceVerdict(p)]])];if(shares)body.push(el("p","muted",`일반청약 / 공모 : ${percent(shares.public_of_offering)} · 비용 합계 : ${shares.cost_reconciled===true?"일치":shares.cost_reconciled===false?"불일치":"공개 자료에서 확인되지 않음"}`));if(art.chain_note)body.push(el("p","notice",art.chain_note));if(art.warning)body.push(el("p","notice stop",art.warning));if(art.exact_work_evidence?.row_url)body.push(link("동일 작품 보고 행 원문",art.exact_work_evidence.row_url));body.push(artComps(p));return section("자산 가격 근거",...body)}
-
-function artComps(p){const market=p.artist_market||{},art=p.art_price||{},children=[];if(market.source_note)children.push(el("p","notice",market.source_note));if(art.independent_comparables==="insufficient")children.push(el("p","notice stop","독립 비교 자료가 부족합니다."));if(market.comparables?.length)children.push(details("작품 비교 원문 행",table("비교 행",["작품 / 크기","일자","경매사","금액"],market.comparables.map(x=>[`${x.work} / ${x.size}`,x.date,x.venue,`${new Intl.NumberFormat("ko-KR").format(x.amount)} ${x.currency}`])),...market.comparables.map(x=>link(`${x.work} 원문`,x.source_url))));const dart=p.dart_verification;if(dart){const receipts=dart.receipts||[];children.push(details("DART 원문 확인",el("p",null,dart.monetary_facts||"공개 자료에서 확인되지 않음"),receipts.length?table("원문 접수번호",["접수번호","원문 수신"],receipts.map(x=>[x.receipt_no||"-",x.original_document_received?"ZIP 원문 수신":"수신 확인 실패"])):el("p","muted","접수번호 : 공개 자료에서 확인되지 않음"),...receipts.map(x=>link(`${x.receipt_no||"DART"} 원문`,x.source_url))));}return children.length?details("미술품 비교·DART 근거",...children):el("p","muted","작품 비교·DART 근거 : 공개 자료에서 확인되지 않음")}
-function nonemptyString(value){return typeof value==="string"&&value.trim()?value.trim():null}
-function legalIssuerMatch(legal,issuer){const legalId=legal?.verification_status==="verified"?nonemptyString(legal.id):null,legalName=legal?.verification_status==="verified"?nonemptyString(legal.name):null;return Boolean((legalId||legalName)&&issuer?.legal_issuer?.verification_status==="verified"&&((legalId&&legalId===nonemptyString(issuer.legal_issuer.id))||(legalName&&legalName===nonemptyString(issuer.legal_issuer.name))))}
-function serviceIssuerReferences(p){const service=model(p).service||{},brand=nonemptyString(service.brand),operator=nonemptyString(service.operator);if(!brand&&!operator)return [];return S.issuers.filter(item=>[brand,operator].filter(Boolean).some(value=>value===nonemptyString(item.service?.brand)||value===nonemptyString(item.service?.operator)))}
-function issuerLinks(issuer){const links=el("div","links");(issuer.sources||[]).forEach(source=>links.append(link(`${source.label} · ${kst(source.as_of)}`,source.url)));return links}
-function issuerHistory(p){const legal=model(p).legal_issuer||{},issuer=S.issuers.find(item=>legalIssuerMatch(legal,item));if(issuer)return section("발행사 또는 서비스 참고 트랙레코드",facts([["법적 발행사",missing(issuer.legal_issuer?.display_name)],["서비스·운영 참고",[issuer.service?.brand,issuer.service?.operator].filter(Boolean).join(" · ")||"공개 자료에서 확인되지 않음"]]),table("법적 발행사 원문 이력",["기준일","구분","확인된 사실"],(issuer.records||[]).map(record=>[record.date,record.type,record.fact])),issuerLinks(issuer));const service=model(p).service||{},references=serviceIssuerReferences(p),serviceName=[service.brand,service.operator].filter(Boolean).join(" · ")||"서비스";const children=[el("p","notice",`법적 발행사 : 미확인. ${serviceName} 이력은 서비스·운영 참고이며 법적 발행사 이력으로 합산하지 않습니다.`)];references.forEach(reference=>children.push(table("서비스·운영 참고 원문 이력",["기준일","구분","확인된 사실"],(reference.records||[]).map(record=>[record.date,record.type,record.fact])),issuerLinks(reference)));return section("발행사 또는 서비스 참고 트랙레코드",...children)}
-function reviewEvidence(p){const m=model(p),history=m.change_history||[];return section("검토 근거와 변경 이력",facts([["검토 상태",review(p)],["판정 사유",missing(m.review_status?.reason)],["근거 버전",missing(m.evidence?.version)],["검증 대기",m.validation?.pending===true?`예 · ${missing(m.validation.reason)}`:"아니오"]]),history.length?table("변경 이력",["일자","변경 내용","근거"],history.map(row=>[row.date||"-",row.summary||row.change||"-",row.source_id||"-"])):el("p","muted","변경 이력 : 공개 자료에서 확인되지 않음"),el("p","muted","그래픽은 최소 표본 기준이 아직 공개되지 않아 표시하지 않습니다."))}
-function sourceEvidence(p){const links=el("div","links");(p.sources||[]).forEach(source=>links.append(link(`${source.label} · ${kst(source.as_of)}`,source.url)));const scoped=S.apiStatus?.products?.[p.id]||{},global=p.category==="미술품"?(S.apiStatus?.global||{}):{},rows=Object.entries({...scoped,...global});return section("출처와 확인일",sourceBadges(p),links,details("검색·API 상태",rows.length?table("출처별 API 상태",["출처","상태"],rows.map(([key,value])=>[key,`${value.message||"공개 자료에서 확인되지 않음"} · ${kst(value.as_of)}`])):el("p","muted","별도 API 상태 저장본이 없습니다.")))}
-function renderDetail(){const root=$("detail-content"),p=S.products.find(item=>item.id===S.selected);root.replaceChildren();if(!p){root.append(el("p","empty","상품을 선택하세요."));return}const heading=el("div","detail-heading");const title=el("h2",null,p.name);title.id="detail-title";heading.append(title,sourceBadges(p));root.append(heading,reviewSummary(p),coreTerms(p),expectedActual(p),recoveryStructure(p),artPrice(p),issuerHistory(p),reviewEvidence(p),sourceEvidence(p))}
-function markSelectedProduct(productId){$("product-cards").querySelectorAll(".product-card").forEach(article=>{const selected=article.dataset.productId===productId;article.classList.toggle("selected",selected);if(selected)article.setAttribute("aria-current","true");else article.removeAttribute("aria-current")})}
-function openDetail(product,trigger){S.selected=product.id;detailTrigger=trigger;markSelectedProduct(product.id);renderDetail();const dialog=$("detail");document.body.classList.add("dialog-open");if(!dialog.open)dialog.showModal();$("detail-close").focus({preventScroll:true})}
-function openTrackDetail(record,trigger){S.selected=record.key;detailTrigger=trigger;markSelectedProduct(record.key);const root=$("detail-content"),heading=el("div","detail-heading"),title=el("h2",null,`${record.author} · ${record.title}`);title.id="detail-title";heading.append(title,el("p","card-category",`${record.sourceLabel} 플랫폼 DB · ${record.statusLabel}`));root.replaceChildren(heading,...trackDetailChildren(record));const dialog=$("detail");document.body.classList.add("dialog-open");if(!dialog.open)dialog.showModal();$("detail-close").focus({preventScroll:true})}
-function closeDetail(){const dialog=$("detail");if(dialog.open)dialog.close()}
-function render(){const entries=visibleEntries();if(!entries.some(entry=>entryKey(entry)===S.selected))S.selected=null;renderIntent();renderAssetTiles();renderFilters();renderCards();if(!S.selected||S.products.some(product=>product.id===S.selected))renderDetail()}
-
-const trackSourceLabels={artnguide:"아트앤가이드",weshareart:"아트투게더",tessa:"TESSA"};
-function formatRawNumber(value){return Number.isFinite(value)?new Intl.NumberFormat("ko-KR").format(value):"공개 자료에서 확인되지 않음"}
-function formatFixedNumber(value,digits){return Number.isFinite(value)?new Intl.NumberFormat("ko-KR",{minimumFractionDigits:digits,maximumFractionDigits:digits}).format(value):"공개 자료에서 확인되지 않음"}
-function trackRecords(){return S.track.datasets[S.track.source]||[]}
-function filteredTrackRecords(){return S.track.query.trim()?filterTrackRecords(trackRecords(),S.track.query,S.track.status):[]}
-function trackPage(){return paginateTrackRecords(filteredTrackRecords(),S.track.page,S.track.pageSize)}
-function trackButton(record){const button=el("button","track-record"),meta=record.source==="tessa"?`${record.artworkCode||"작품 코드 확인 불가"} · 보유 ${Number.isFinite(record.holdingDays)?`${formatRawNumber(record.holdingDays)}일`:"기간 확인 불가"} · 공시 ${record.id}`:`${record.sequence}번 · ${record.year||"연도 확인 불가"} · 식별자 ${record.id}`;button.type="button";button.dataset.trackKey=record.key;button.setAttribute("aria-current",String(S.track.selected===record.key));button.append(el("strong",null,`${record.author} · ${record.title}`),el("span","track-meta",meta),el("span",statusClass(record.statusLabel),record.statusLabel));button.onclick=()=>{S.track.selected=record.key;renderTrackList();renderTrackDetail(true)};return button}
-function renderTrackSourceTabs(){const root=$("track-source-tabs"),hasQuery=Boolean(S.track.query.trim());root.replaceChildren();for(const source of ["artnguide","weshareart","tessa"]){const count=hasQuery?filterTrackRecords(S.track.datasets[source]||[],S.track.query,"ALL").length:null,button=el("button","filter-button",`${trackSourceLabels[source]}${count==null?"":` ${count}`}`);button.type="button";button.dataset.value=source;button.setAttribute("aria-pressed",String(S.track.source===source));button.onclick=()=>{S.track.source=source;S.track.status="ALL";S.track.page=1;S.track.selected=null;renderTrackRecords();focusChoice("track-source-tabs",source)};root.append(button)}}
-function renderTrackStatusTabs(){const root=$("track-status-tabs");root.replaceChildren();if(!S.track.query.trim())return;statusOptions(filterTrackRecords(trackRecords(),S.track.query,"ALL")).forEach(option=>{const button=el("button","filter-button",`${option.label} ${option.count}`);button.type="button";button.dataset.value=option.value;button.setAttribute("aria-pressed",String(S.track.status===option.value));button.onclick=()=>{S.track.status=option.value;S.track.page=1;S.track.selected=null;renderTrackRecords();focusChoice("track-status-tabs",option.value)};root.append(button)})}
-function sourceLoadError(){return S.track.loadError||Boolean(S.track.loadErrors?.[S.track.source])}
-function renderTrackList(){const root=$("track-list"),empty=$("track-empty"),resultPage=trackPage(),hasQuery=Boolean(S.track.query.trim());S.track.page=resultPage.currentPage;if(!resultPage.records.some(record=>record.key===S.track.selected))S.track.selected=resultPage.records[0]?.key||null;root.replaceChildren(...resultPage.records.map(trackButton));empty.hidden=resultPage.totalRecords>0;empty.textContent=sourceLoadError()?"이 출처의 트랙레코드 저장본을 불러오지 못했습니다.":hasQuery?"검색 결과가 없습니다.":"검색어를 입력하세요. 전체 데이터는 표시하지 않습니다.";$("track-pagination").hidden=!hasQuery||resultPage.totalRecords===0;$("track-page-state").textContent=`${resultPage.currentPage} / ${resultPage.totalPages}페이지`;$("track-prev").disabled=resultPage.currentPage<=1;$("track-next").disabled=resultPage.currentPage>=resultPage.totalPages;$("track-result-summary").textContent=hasQuery?`${trackSourceLabels[S.track.source]} · 검색 결과 ${resultPage.totalRecords}건 · 원문 응답 순서`:"검색 전에는 트랙레코드를 표시하지 않습니다.";}
-function trackLinks(record){const out=el("div","links");record.links.forEach(source=>out.append(link(source.label,source.url)));return out}
-function displayWithRaw(displayValue,rawValue){return displayValue==="-"&&Number.isFinite(rawValue)?`- (API 원값 ${rawValue})`:displayValue||"공개 자료에서 확인되지 않음"}
-function artNGuideTrackDetail(record){const raw=record.raw,annotation=record.annotation||{},display=annotation.display||{},children=[facts([["작가",record.author],["작품",record.title],["제작연도",missing(record.year)],["재료·크기",[record.material,record.size].filter(Boolean).join(" · ")||"공개 자료에서 확인되지 않음"],["공동구매·모집일",missing(record.startDisplay||record.startAt)],["공동구매·모집금액",Number.isFinite(record.purchaseAmount)?won(record.purchaseAmount):"공개 자료에서 확인되지 않음"],["매각일",missing(record.soldDisplay||record.soldAt)],["매각금액",record.statusCode==="EXPECTED_TRANSFER"?"매각예정 · 0원 매각으로 해석하지 않음":Number.isFinite(record.soldAmount)?won(record.soldAmount):"공개 자료에서 확인되지 않음"],["상태",record.statusLabel],["가격상승률 화면 표시",displayWithRaw(display.profit,record.profit)],["보관기간",Number.isFinite(record.holdingDays)?`${record.holdingDays}일`:"공개 자료에서 확인되지 않음"],["기간별 환산 화면 표시",displayWithRaw(display.year_profit,record.yearProfit)]]),trackLinks(record),el("p","notice stop","플랫폼 자체 게시값이며 거래를 외부 원자료로 독립 검증하지 않았습니다. 상단 집계 188건과 목록 187건의 차이는 공개 자료만으로 원인을 확인할 수 없습니다."),rawDetails("19개 원필드와 화면 표시값",{record:raw,display:display||null})];return children}
-function weshareYield(record){if(record.statusCode==="RECRUITED")return `매각 수익률 확인 불가${Number.isFinite(record.saleYieldPercent)?` (API 원값 ${record.saleYieldPercent})`:""}`;return Number.isFinite(record.saleYieldPercent)?`${record.saleYieldPercent}%`:"공개 자료에서 확인되지 않음"}
-function weshareTrackDetail(record){const detail=record.detail||{},art=detail.artwork||{};return [facts([["작가",record.author],["작품",record.title],["제작연도",missing(record.year)],["재료·크기 원문 조합",[record.material,record.size].filter(Boolean).join(" · ")||"공개 자료에서 확인되지 않음"],["모집 시작 원문",missing(record.startAt)],["모집 종료 원문",missing(record.endAt)],["상태",record.statusLabel],["매각 수익률",weshareYield(record)],["수량 원값",formatRawNumber(record.quantity)],["조각당 금액 원값",formatRawNumber(record.pieceAmount)],["추정 범위 원값",`${formatRawNumber(record.estimateMinAmount)} ~ ${formatRawNumber(record.estimateMaxAmount)}`],["소장이력",missing(record.provenance)]]),trackLinks(record),el("p","notice stop","통화 code와 timestamp timezone이 API에 없어 임의로 붙이지 않았습니다. 매각일·매각가·분배내역은 비로그인 endpoint가 HTTP 401을 반환해 확인 불가입니다."),rawDetails("목록 18개 필드·개인정보 제거 상세 원값",{list:record.raw,detail:{...detail,artwork:{...art}}})];}
-function currencyAmount(amount,currency){return Number.isFinite(amount)?`${formatRawNumber(amount)} ${currency||"통화 확인 불가"}`:"공개 자료에서 확인되지 않음"}
-function tessaSalePrice(record){const sale=record.salePrice||{},parts=[currencyAmount(sale.amount,sale.currency)];if(Number.isFinite(sale.reference_foreign_amount))parts.push(`참고 ${currencyAmount(sale.reference_foreign_amount,sale.reference_foreign_currency)}`);if(Number.isFinite(sale.net_after_expenses_amount))parts.push(`제반비용 차감 후 ${currencyAmount(sale.net_after_expenses_amount,sale.net_after_expenses_currency)}`);if(Number.isFinite(sale.final_sale_amount_krw))parts.push(`최종매각대금 ${won(sale.final_sale_amount_krw)}`);if(Number.isFinite(sale.conversion_rate_krw_per_currency))parts.push(`공시 환율 1 ${sale.currency} = ${formatRawNumber(sale.conversion_rate_krw_per_currency)} KRW`);return parts.join(" · ")}
-function tessaExpenseRows(record){return (record.expenses||[]).map(item=>[item.label,item.amount==null?item.raw_value||"공개 자료에서 확인되지 않음":currencyAmount(item.amount,item.currency),Number.isFinite(item.reference_foreign_amount)?currencyAmount(item.reference_foreign_amount,item.reference_foreign_currency):"-"])}
-function tessaReportedReturn(record){if(!Number.isFinite(record.sourceReportedReturnPct))return "공시 원문에 수익률 미기재";const check=record.sourceReportedReturnRecalculation||{};if(Number.isFinite(check.arithmetic_pct)&&Number.isFinite(check.difference_from_reported_pct_point))return `공시 표시값 ${record.sourceReportedReturnPct}% · 산술값 ${check.arithmetic_display||`${formatFixedNumber(check.arithmetic_pct,6)}%`} · 차이 ${formatFixedNumber(check.difference_from_reported_pct_point,6)}%p · 원문 소수점 처리 규칙 미기재`;return `${record.sourceReportedReturnPct}% · ${missing(record.sourceReportedReturnBasis)}`}
-function tessaExchangeCheck(record){const sale=record.salePrice||{},settlement=record.settlement||{};if(!Number.isFinite(sale.net_after_expenses_amount)||!Number.isFinite(sale.conversion_rate_krw_per_currency)||!Number.isFinite(settlement.amount_krw))return "해당 외화 환산 원문 없음";const converted=sale.net_after_expenses_amount*sale.conversion_rate_krw_per_currency,difference=converted-settlement.amount_krw;return `산술 환산 ${formatFixedNumber(converted,3)}원 · 원문 정산액과 ${formatFixedNumber(difference,3)}원 차이 · 원문 소수점 처리 방식 미기재`}
-function tessaTrackDetail(record){
-  const initial=record.initialPrice||{};
-  const sale=record.salePrice||{};
-  const profit=record.saleProfit||{};
-  const fee=record.saleFee||{};
-  const settlement=record.settlement||{};
-  const corrections=record.corrections||[];
-  const reported=tessaReportedReturn(record);
-  const registered=`${missing(record.registrationTimestamp)} · timezone 미기재`;
-  const identity=`TESSA[${record.artworkCode||"코드 확인 불가"}]${Number.isFinite(record.editionIndex)?` [${record.editionIndex}]`:""}`;
-  const fixedDateLabel=settlement.recipient_fixed_date_label||"정산대상자 확정일";
-  const children=[
-    facts([
-      ["식별",identity],
-      ["공시 ID",record.id],
-      ["작가",record.author],
-      ["작품",record.title],
-      ["게시판 등록시각",registered],
-      ["본문 기재 원작성일",missing(record.originalWrittenDate)],
-      ["상품 보유기간",Number.isFinite(record.holdingDays)?`${formatRawNumber(record.holdingDays)}일 · 이용자 개인 보유기간 아님`:"공개 자료에서 확인되지 않음"],
-      ["매각 방식",missing(record.saleMethod)],
-      [initial.label||"공모·판매 가격",Number.isFinite(initial.amount_krw)?won(initial.amount_krw):"공개 자료에서 확인되지 않음"],
-      [sale.label||"매각대금",tessaSalePrice(record)],
-      ["외화 환산 산술 대조",tessaExchangeCheck(record)],
-      [profit.label||"매각 수익",Number.isFinite(profit.amount_krw)?won(profit.amount_krw):"공개 자료에서 확인되지 않음"],
-      ["매각 수수료",Number.isFinite(fee.amount_krw)?won(fee.amount_krw):"공개 자료에서 확인되지 않음"],
-      [settlement.label||"정산·지급 총액",Number.isFinite(settlement.amount_krw)?won(settlement.amount_krw):"공개 자료에서 확인되지 않음"],
-      ["총 좌수",Number.isFinite(settlement.total_units)?`${formatRawNumber(settlement.total_units)}좌`:"공개 자료에서 확인되지 않음"],
-      [settlement.per_unit_label||"1좌당 정산·지급액",Number.isFinite(settlement.per_unit_krw)?`${formatFixedNumber(settlement.per_unit_krw,6)}원`:"공개 자료에서 확인되지 않음"],
-      ["1좌당 원문 표기",[settlement.per_unit_calculation_raw,settlement.per_unit_report_raw].filter(Boolean).join(" · ")||"공개 자료에서 확인되지 않음"],
-      [`${fixedDateLabel}·지급일`,`${missing(settlement.recipient_fixed_date)} · ${missing(settlement.payout_date)}`],
-      ["지급 방법 원문",missing(settlement.payment_method_raw)],
-      ["공시 기재 판매가격 대비 가치 상승률",reported],
-      ["[DAKER 계산] 단순 세전 정산수익률",missing(record.calculatedSettlementReturnDisplay)],
-    ]),
-    el("p","notice stop","TESSA 자체 공시에 게시된 값입니다. 매각계약서·경매 결과·입금·개인별 지급 내역을 외부 자료로 독립 검증하지 않았습니다. 법적 발행사 연결은 확인되지 않았으며 법적 발행사 이행 실적으로 합산하지 않습니다. 회원·투자자 개인정보는 수집·표시하지 않습니다."),
-    el("p","notice","TESSA 공시 원문은 현재 암호화되지 않은 HTTP 외부 링크로 제공됩니다."),
-    el("p","notice","[DAKER 계산] 정산 대상 금액 또는 지급 총액 ÷ 공모시 자산가격 또는 TESSA 판매 가격 - 1. 기간 전체 세전 수익률이며 연환산 수익률이 아닙니다. 공모·판매 가격은 작품 취득가로 확인된 값이 아닙니다."),
-    trackLinks(record),
-  ];
-  if((record.expenses||[]).length)children.push(details("제반비용",table("공시 기재 제반비용",["항목","원문 통화 금액","참고 외화"],tessaExpenseRows(record))));
-  children.push(details("수익·수수료·세금 원문",facts([["매각 수익 산식",missing(profit.formula)],["매각 수수료 산식",missing(fee.formula)],["매각 수수료 주석",missing(fee.note)],["세금 관련 역사적 원문 기재",missing(record.taxNote)]])));
-  if(corrections.length)children.push(details("정정 이력",table("공시 정정 이력",["정정일","항목","정정 전","정정 후"],corrections.map(item=>[item.date,item.field,item.before,item.after]))));
-  children.push(rawDetails("정규화 데이터 원값",record.raw));
-  return children;
+const one = (selector) => document.querySelector(selector);
+function node(tag, text = "", className = "") {
+  const element = document.createElement(tag);
+  if (className) element.className = className;
+  element.textContent = text;
+  return element;
 }
-function trackDetailChildren(record){if(record.source==="artnguide")return artNGuideTrackDetail(record);if(record.source==="tessa")return tessaTrackDetail(record);return weshareTrackDetail(record)}
-function renderTrackDetail(focus=false){const root=$("track-detail"),record=trackRecords().find(item=>item.key===S.track.selected);root.replaceChildren();root.setAttribute("role","region");root.setAttribute("tabindex","-1");if(!record){root.setAttribute("aria-label","트랙레코드 상세");root.append(el("p","empty","트랙레코드를 선택하세요."));return}root.setAttribute("aria-label",`${record.author} ${record.title} 트랙레코드 상세`);root.append(el("h3",null,`${record.author} · ${record.title}`),el("p",statusClass(record.statusLabel),record.statusLabel),...trackDetailChildren(record));if(focus)root.focus({preventScroll:true})}
-function researchAsOf(){const dataset=S.track.payloads[S.track.source]?.dataset||{},value=dataset.as_of;if(typeof value==="string")return value.replace("T"," ").replace(/\+09:00$/, " KST");return dataset.verified_at||dataset.collected_at?.source_text||"검증 시점 확인 불가"}
-function updateIndexScope(){if(page!=="search")return;const counts={artnguide:S.track.datasets.artnguide.length,weshareart:S.track.datasets.weshareart.length,tessa:S.track.datasets.tessa.length},total=S.products.length+counts.artnguide+counts.weshareart+counts.tessa;$("load-state").textContent=S.track.loaded?`검색 인덱스 ${total}건 · 상품·플랫폼 DB 연결됨`:S.catalogMessage||"검색 자료를 불러오는 중입니다.";$("index-scope").textContent=S.track.loaded?`등록 범위 ${total}건 · 기본 상품 ${S.products.length}건 · 아트앤가이드 ${counts.artnguide}건 (${researchDatasetAsOf("artnguide")}) · 아트투게더 ${counts.weshareart}건 (${researchDatasetAsOf("weshareart")}) · TESSA ${counts.tessa}건 (${researchDatasetAsOf("tessa")}) · 검색 조건에 맞는 자료만 아래에 표시합니다.`:"상품과 플랫폼 DB 검색 인덱스를 불러오는 중입니다."}
-function researchDatasetAsOf(source){const dataset=S.track.payloads[source]?.dataset||{},value=dataset.as_of;if(typeof value==="string")return value.replace("T"," ").replace(/\+09:00$/, " KST");return dataset.verified_at||dataset.collected_at?.source_text||"기준일 확인 불가"}
-function renderTrackRecords(){renderTrackSourceTabs();renderTrackStatusTabs();renderTrackList();renderTrackDetail();$("track-query-guide").hidden=Boolean(S.track.query.trim());$("track-load-state").textContent=sourceLoadError()?`${trackSourceLabels[S.track.source]} 저장본을 불러오지 못했습니다.`:`${trackSourceLabels[S.track.source]} · ${researchAsOf()} 저장본`}
-function suitabilityOptionText(option){return typeof option==="string"?option:option?.text||option?.meaning||option?.label||"선택지 확인 불가"}
-function suitabilitySourceLinks(sources){if(Array.isArray(sources))return sources;return Object.entries(sources||{}).map(([label,url])=>({label:{page:"공개 페이지",question_bundle:"문항 JavaScript",api_bundle:"공통 API JavaScript"}[label]||label,url}))}
-function renderSuitability(){const payload=S.track.payloads.weshareart,test=payload?.suitability_test||{},questions=test.questions||[],root=$("suitability-questions"),empty=$("suitability-empty"),summary=$("suitability-summary");root.replaceChildren();const answerSequence=questions.map(question=>question.correct_option).join(", "),validity=Number.isFinite(test.validity_years)?`${test.validity_years}년`:"확인 불가",submission=test.behavior?.requires_all_correct===true?"전 문항 정답":"확인 불가";const summaryGrid=facts([["문항",`${questions.length}개`],["문항별 선택지",questions.length?`${questions[0]?.options?.length||2}개`:"확인 불가"],["client 정답 순서",answerSequence||"확인 불가"],["유효기간 화면 안내",validity],["제출 조건",submission],["개인정보", "수집·표시하지 않음"]]);summary.replaceChildren(summaryGrid);questions.forEach((question,index)=>{const item=el("article","suitability-item"),options=question.options||[];item.append(el("h3",null,`${question.index||index+1}. ${question.question}`));options.forEach((option,optionIndex)=>{const number=optionIndex+1,isCorrect=number===question.correct_option,node=el("p",`suitability-option${isCorrect?" correct":""}`,`${number}. ${suitabilityOptionText(option)}`);if(isCorrect)node.append(el("span","suitability-note"," · 현재 client 정답 위치"));item.append(node)});root.append(item)});const sources=suitabilitySourceLinks(test.sources);if(sources.length){const sourceRoot=el("div","links");sources.forEach(source=>sourceRoot.append(link(source.label||"원문",source.url)));root.append(sourceRoot)}empty.hidden=questions.length>0;empty.textContent=S.track.loadError||S.track.loadErrors?.weshareart?"적합성 테스트 저장본을 불러오지 못했습니다.":"등록 문항이 없습니다."}
-async function hydrateCatalog(){try{const catalog=await loadCatalog();S.products=catalog.products;S.issuers=catalog.issuers;S.apiStatus=catalog.api_status||{};S.catalogMessage=catalog.live_status?.message||"저장본 기준"}catch{S.loadError=true;S.catalogMessage="상품 자료를 불러오지 못했습니다."}finally{updateIndexScope();render()}}
-async function hydrateResearch(){try{const research=await loadResearch();S.track.payloads=research;S.track.loadErrors=research.errors||{};S.track.datasets=normalizeTrackDatasets(research.artnguide,research.weshareart,research.tessa)}catch{S.track.loadError=true}finally{S.track.loaded=true;if(page==="search"){updateIndexScope();render();renderTrackRecords()}if(page==="suitability")renderSuitability()}}
-function updateSearchUrl(){const params=new URLSearchParams();if(S.query.trim())params.set("q",S.query.trim());if(S.asset!=="ALL")params.set("asset",S.asset);if(S.lifecycle!=="ALL")params.set("lifecycle",S.lifecycle);history.replaceState(null,"",`search.html${params.size?`?${params}`:""}`)}
-if(page==="search"){
-  const params=new URLSearchParams(location.search),asset=params.get("asset"),lifecycle=params.get("lifecycle");S.query=params.get("q")||"";S.track.query=S.query;if(assetTiles.some(([value])=>value===asset))S.asset=asset;if(lifecycleTabs.some(([value])=>value===lifecycle))S.lifecycle=lifecycle;$("search-input").value=S.query;
-  $("search-form").addEventListener("submit",event=>{event.preventDefault();S.query=$("search-input").value;S.track.query=S.query;S.selected=null;S.track.selected=null;S.track.status="ALL";S.track.page=1;resetProductPage();updateSearchUrl();render();renderTrackRecords()});
-  $("search-input").addEventListener("input",event=>{S.query=event.target.value;S.track.query=S.query;S.selected=null;S.track.selected=null;S.track.status="ALL";S.track.page=1;resetProductPage();render();renderTrackRecords()});
-  $("product-prev").addEventListener("click",()=>{S.page=Math.max(1,S.page-1);S.selected=null;render();$("products-title").scrollIntoView({behavior:motionBehavior(),block:"start"})});$("product-next").addEventListener("click",()=>{S.page+=1;S.selected=null;render();$("products-title").scrollIntoView({behavior:motionBehavior(),block:"start"})});$("detail-close").addEventListener("click",closeDetail);$("detail").addEventListener("cancel",event=>{event.preventDefault();closeDetail()});$("detail").addEventListener("click",event=>{if(event.target===$("detail"))closeDetail()});$("detail").addEventListener("close",()=>{const trigger=detailTrigger;detailTrigger=null;document.body.classList.remove("dialog-open");requestAnimationFrame(()=>trigger?.focus({preventScroll:true}))});
-  $("track-prev").addEventListener("click",()=>{S.track.page=Math.max(1,S.track.page-1);S.track.selected=null;renderTrackRecords();$("track-records-title").scrollIntoView({behavior:motionBehavior(),block:"start"})});$("track-next").addEventListener("click",()=>{S.track.page+=1;S.track.selected=null;renderTrackRecords();$("track-records-title").scrollIntoView({behavior:motionBehavior(),block:"start"})});
-  render();renderTrackRecords();await Promise.allSettled([hydrateCatalog(),hydrateResearch()]);
+function list(value) {
+  return Array.isArray(value) ? value : [];
 }
-if(page==="suitability"){renderSuitability();await hydrateResearch()}
+function label(item) {
+  return String(item?.title ?? item?.name ?? item?.productName ?? item?.artworkTitle ?? item?.id ?? "합성 데이터 항목");
+}
+function value(item, keys, fallback = "확인 불가") {
+  for (const key of keys) {
+    if (item && item[key] !== null && item[key] !== undefined && item[key] !== "") return item[key];
+  }
+  return fallback;
+}
+function display(valueToFormat) {
+  if (typeof valueToFormat === "number") return valueToFormat.toLocaleString("ko-KR");
+  if (typeof valueToFormat === "boolean") return valueToFormat ? "예" : "아니오";
+  return String(valueToFormat);
+}
+function collections(catalog) {
+  return {
+    offerings: list(catalog?.offerings ?? catalog?.items),
+    artworks: list(catalog?.artworks),
+    artists: list(catalog?.artists),
+  };
+}
+function searchable(item) {
+  return [item?.id, item?.slug, item?.title, item?.name, item?.status, item?.lifecycle, item?.artworkId, item?.artistId]
+    .filter(Boolean).join(" ").toLocaleLowerCase();
+}
+function offeringCard(item) {
+  const card = node("article", "", "card");
+  const top = node("div", "", "card-top");
+  top.append(node("h3", label(item)), node("span", display(value(item, ["status", "lifecycle"])), "status"));
+  card.append(top);
+  const facts = node("dl", "", "facts");
+  for (const [title, keys] of [["기준일", ["asOfDate", "as_of", "updatedAt"]], ["단위 금액", ["unitPrice", "unit_price"]], ["최소 금액", ["minimumInvestment", "minimum_investment"]], ["데이터 범위", ["recordScope", "scope"]]]) {
+    const row = node("div");
+    row.append(node("dt", title), node("dd", display(value(item, keys))));
+    facts.append(row);
+  }
+  card.append(facts, node("p", "이 항목은 기능 검증을 위한 합성 데이터입니다. 실제 거래나 추천을 뜻하지 않습니다.", "muted"));
+  return card;
+}
+function historyCard(item) {
+  const card = node("article", "", "history-card");
+  card.append(node("h3", label(item)));
+  card.append(node("p", `${display(value(item, ["date", "asOfDate", "as_of", "timestamp"]))} · ${display(value(item, ["status", "type", "kind"]))}`, "muted"));
+  return card;
+}
+function renderCatalog() {
+  const result = one("#result-list");
+  if (!result) return;
+  const { offerings } = collections(state.catalog);
+  const filtered = offerings.filter((item) => !state.query || searchable(item).includes(state.query));
+  result.replaceChildren(...filtered.map(offeringCard));
+  const empty = one("#result-empty");
+  if (empty) empty.hidden = filtered.length > 0;
+  const summary = one("#result-summary");
+  if (summary) summary.textContent = `${filtered.length}개 항목 · 합성 데이터 전용`;
+}
+function renderHistory() {
+  const result = one("#history-list");
+  if (!result) return;
+  const history = list(state.history);
+  result.replaceChildren(...history.map(historyCard));
+  const empty = one("#history-empty");
+  if (empty) empty.hidden = history.length > 0;
+}
+function renderSuitability() {
+  const summary = one("#synthetic-summary");
+  if (!summary) return;
+  const { offerings, artworks, artists } = collections(state.catalog);
+  summary.replaceChildren(
+    node("p", `항목 ${offerings.length}개 · 작품 ${artworks.length}개 · 작성자 ${artists.length}명`, "summary-number"),
+    node("p", "이 정적 화면에는 개인 답안, 계정 정보, 외부 조회 기능이 없습니다.", "muted"),
+  );
+}
+async function start() {
+  try {
+    state.catalog = await loadCatalog();
+    state.history = await loadHistory();
+    const count = collections(state.catalog).offerings.length;
+    const status = one("#load-state");
+    if (status) status.textContent = `합성 저장본 ${count}개를 불러왔습니다.`;
+    renderCatalog();
+    renderHistory();
+    renderSuitability();
+  } catch {
+    const status = one("#load-state");
+    if (status) status.textContent = "합성 저장본을 불러오지 못했습니다.";
+    const error = one("#load-error");
+    if (error) error.hidden = false;
+  }
+}
+const form = one("#search-form");
+if (form) form.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const input = one("#search-input");
+  state.query = input?.value.trim().toLocaleLowerCase() || "";
+  renderCatalog();
+});
+const input = one("#search-input");
+if (input) input.addEventListener("input", () => {
+  state.query = input.value.trim().toLocaleLowerCase();
+  if (page === "search") renderCatalog();
+});
+if (["home", "search", "suitability"].includes(page)) start();

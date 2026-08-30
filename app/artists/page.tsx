@@ -17,9 +17,9 @@ export default async function ArtistsPage({ searchParams }: Props) {
   const totalHistory = allArtists.reduce((sum, artist) => sum + artistRepository.getHistoricalProducts(artist.id).length, 0);
 
   return <main id="main-content" className="listing-page"><PageContainer>
-    <header className="page-title"><p className="section-kicker">NORMALIZED ARTISTS</p><h1>작가별 연결 기록</h1><p>공백·괄호 표기만 정규화한 작가명으로 현재 상품과 과거 플랫폼 기록을 함께 찾습니다. 이름 alias는 자동으로 합치지 않았습니다.</p></header>
-    <div className="entity-summary-row"><span>정규화 작가 {allArtists.length}명</span><span>과거 연결 기록 {totalHistory}건</span><span>검색 결과 {artists.length}명</span></div>
-    <form className="simple-search" role="search"><label htmlFor="artist">작가명 검색</label><input id="artist" name="q" defaultValue={query} placeholder="예 : 김환기" /><button className="button button-primary">검색</button></form>
+    <header className="page-title"><p className="section-kicker">SYNTHETIC ARTISTS</p><h1>가상 작가별 연결 이력</h1><p>가상 작가명으로 현재 합성 상품과 합성 플랫폼 이력을 함께 찾습니다. 실제 작가나 거래 기록을 나타내지 않습니다.</p></header>
+    <div className="entity-summary-row"><span>가상 작가 {allArtists.length}명</span><span>합성 과거 이력 {totalHistory}건</span><span>검색 결과 {artists.length}명</span></div>
+    <form className="simple-search" role="search"><label htmlFor="artist">작가명 검색</label><input id="artist" name="q" defaultValue={query} placeholder="예 : 가상 작가" /><button className="button button-primary">검색</button></form>
     <div className="artist-grid">{artists.map((artist) => {
       const current = artistRepository.getCurrentProducts(artist.id);
       const history = artistRepository.getHistoricalProducts(artist.id);
@@ -38,18 +38,18 @@ export default async function ArtistsPage({ searchParams }: Props) {
           <h2>{artist.nameKo}</h2>
           {artist.nameEn ? <p>{artist.nameEn}</p> : null}
           <dl>
-            <div><dt>현재 상품</dt><dd>{current.length}건</dd></div>
+            <div><dt>현재 합성 상품</dt><dd>{current.length}건</dd></div>
             <div><dt>운용·매각 진행</dt><dd>{operating.length}건</dd></div>
-            <div><dt>과거 기록</dt><dd>{history.length}건</dd></div>
-            <div><dt>플랫폼 기재 수익률</dt><dd>{platformReportedReturn.length}건</dd></div>
-            <div><dt>DAKER 계산 수익률</dt><dd>{calculatedSettlementReturn.length}건</dd></div>
+            <div><dt>합성 이력</dt><dd>{history.length}건</dd></div>
+            <div><dt>시뮬레이션 수익률</dt><dd>{platformReportedReturn.length}건</dd></div>
+            <div><dt>계산 수익률</dt><dd>{calculatedSettlementReturn.length}건</dd></div>
             <div><dt>낙찰률</dt><dd>{rate == null ? "미기재" : `${rate.toFixed(1)}%`}</dd></div>
             <div><dt>중위 낙찰가</dt><dd>{formatKrw(medianAuctionPrice(auctions))}</dd></div>
           </dl>
-          <p className="entity-platforms">연결 플랫폼 : {platforms.length ? platforms.join(" · ") : "미기재"}</p>
+          <p className="entity-platforms">가상 플랫폼 : {platforms.length ? platforms.join(" · ") : "미기재"}</p>
         </div>
       </Link>;
     })}</div>
-    {artists.length === 0 ? <p className="state-panel">검색어와 일치하는 정규화 작가가 없습니다.</p> : null}
+    {artists.length === 0 ? <p className="state-panel">검색어와 일치하는 가상 작가가 없습니다.</p> : null}
   </PageContainer></main>;
 }

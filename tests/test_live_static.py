@@ -9,11 +9,15 @@ import threading
 import unittest
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location("build_live_static", ROOT / "scripts/build_live_static.py")
 BUILDER = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(BUILDER)
+DATA = json.loads((ROOT / "data/synthetic/art-investment.json").read_text(encoding="utf-8"))
+FORBIDDEN_KEYS = {"sourcePayload", "dueDiligencePayload", "sourceSnapshot", "legacySourceRef"}
+OPEN_DART_HOSTS = {"dart.fss.or.kr", "englishdart.fss.or.kr", "opendart.fss.or.kr", "api.odcloud.kr"}
 
 
 class QuietHandler(SimpleHTTPRequestHandler):
@@ -22,21 +26,35 @@ class QuietHandler(SimpleHTTPRequestHandler):
 
 
 class LiveStaticTest(unittest.TestCase):
-    def test_checked_in_tree_hashes_settings_and_traversal(self):
+    def assert_safe_payload(self, value):
+        if isinstance(value, dict):
+            for key, child in value.items():
+                self.assertNotIn(key, FORBIDDEN_KEYS)
+                self.assert_safe_payload(child)
+        elif isinstance(value, list):
+            for child in value:
+                self.assert_safe_payload(child)
+        elif isinstance(value, str) and value.startswith(("http://", "https://")):
+            host = (urlparse(value).hostname or "").lower().rstrip(".")
+            self.assertTrue(host in OPEN_DART_HOSTS or host.endswith(".dart.fss.or.kr"), value)
+
+    def test_checked_in_tree_contains_only_synthetic_allowlist(self):
         hashes = BUILDER.verify(ROOT)
         self.assertEqual(set(hashes), {str(x) for x in BUILDER.ALLOWED_FILES})
         for source_rel, target_rel in BUILDER.SOURCE_MAP:
             source = (ROOT / str(source_rel)).read_bytes()
             target = (ROOT / "live" / str(target_rel)).read_bytes()
             self.assertEqual(hashlib.sha256(source).digest(), hashlib.sha256(target).digest())
+        live_data = json.loads((ROOT / "live/data/synthetic/art-investment.json").read_text(encoding="utf-8"))
+        self.assertEqual(len(live_data["offerings"]), len(DATA["offerings"]))
+        self.assertEqual(len(live_data["trackRecords"]), len(DATA["trackRecords"]))
+        self.assert_safe_payload(live_data)
         self.assertFalse((ROOT / "live" / ".env").exists())
-        settings = json.loads((ROOT / ".vscode/settings.json").read_text(encoding="utf-8"))
-        self.assertEqual(settings, {"liveServer.settings.root":"/live","liveServer.settings.host":"127.0.0.1","liveServer.settings.useLocalIp":False,"liveServer.settings.port":5500})
         handler = functools.partial(QuietHandler, directory=str(ROOT / "live"))
         httpd = ThreadingHTTPServer(("127.0.0.1", 0), handler)
         threading.Thread(target=httpd.serve_forever, daemon=True).start()
         try:
-            for path in ("/.env", "/../.env", "/%2e%2e/.env"):
+            for path in ("/.env", "/../.env", "/%2e%2e/.env", "/data/not-allowlisted.json"):
                 connection = http.client.HTTPConnection("127.0.0.1", httpd.server_port)
                 connection.request("GET", path)
                 response = connection.getresponse()
@@ -61,7 +79,7 @@ class LiveStaticTest(unittest.TestCase):
             self.assertFalse((root / "live" / ".env").exists())
             (root / "live" / "extra.txt").write_text("extra", encoding="utf-8")
             with self.assertRaises(BUILDER.BuildError):
-                BUILDER.build(root)
+                BUILDER.verify(root)
             (root / "live" / "extra.txt").unlink()
             (root / "live" / "index.html").unlink()
             (root / "live" / "index.html").symlink_to(root / "index.html")

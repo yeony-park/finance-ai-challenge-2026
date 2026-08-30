@@ -8,14 +8,13 @@ import { exactObject, readBoundedJson } from "../lib/art/review/request-guard.ts
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (path: string) => readFileSync(join(root, path), "utf8");
 const manifest = JSON.parse(read("data/art/dart-filing-manifest.json")) as { policy: { automaticPublication: boolean }; entries: Array<{ productId: string; declaredRole: string; lineageReviewStatus: string; allowAutomaticPublication: boolean }> };
-const productId = "at-chonghyun-009-02";
+const productId = "synthetic-offering-01";
 
-test("curated manifest keeps Ha final, correction, and result receipts unpublished", () => {
-  const entries = manifest.entries.filter((item) => item.productId === productId);
-  assert.deepEqual(entries.map((item) => item.declaredRole), ["final", "correction", "result"]);
+test("OpenDART manifest remains candidate-only and unpublished", () => {
   assert.equal(manifest.policy.automaticPublication, false);
-  assert.ok(entries.every((item) => item.lineageReviewStatus === "unreviewed"));
-  assert.ok(entries.every((item) => item.allowAutomaticPublication === false));
+  assert.ok(manifest.entries.length > 0);
+  assert.ok(manifest.entries.every((item) => item.lineageReviewStatus === "unreviewed"));
+  assert.ok(manifest.entries.every((item) => item.allowAutomaticPublication === false));
 });
 
 test("bounded JSON guard rejects extra schema keys at the route boundary", async () => {
