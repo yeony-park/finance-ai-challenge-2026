@@ -1,0 +1,579 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "boardUrl": "https://www.mafra.go.kr/FMD-AI2/2216/subview.do",
+    "listUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/artclList.do?page=1&row=100",
+    "collectedAt": "2026-08-30T05:43:25.422Z"
+  },
+  "postCount": 28,
+  "attachmentCount": 28,
+  "mapData": {
+    "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+    "localPath": "data/raw/mafra-fmd/mafra_fmd_map_data.js",
+    "bytes": 4007,
+    "sha256": "d5d2e6c6c72506eb4fc8140e256bdc2fddc81d1292cd14997082ef68f59d1c2a",
+    "pointCount": 42
+  },
+  "documents": [
+    {
+      "articleId": "578352",
+      "title": "가축전염병(구제역) 발생 현황에 대한 정보공개('26.7.3.기준)",
+      "publishedAt": "2026-07-03",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/578352/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "598556",
+          "fileName": "260703 기준 구제역 발생 현황(1).hwpx",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/598556/download.do",
+          "localPath": "data/raw/mafra-fmd/578352-598556-260703 기준 구제역 발생 현황(1).hwpx",
+          "bytes": 54807,
+          "sha256": "298e124d73a2bb2bfcf398f495b45eee6fb632c922ac3d4d13592445ca71e16e",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 10,
+          "parsedEventCount": 6
+        }
+      ]
+    },
+    {
+      "articleId": "577155",
+      "title": "가축전염병(구제역) 발생 현황에 대한 정보공개('26.2.28.기준)",
+      "publishedAt": "2026-02-28",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/577155/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "596865",
+          "fileName": "250228 기준 구제역 발생 현황.hwpx",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/596865/download.do",
+          "localPath": "data/raw/mafra-fmd/577155-596865-250228 기준 구제역 발생 현황.hwpx",
+          "bytes": 46791,
+          "sha256": "005d389af7e28c271e6cd9520ae1c0787ab1f5dccba3c58e51b9f8ce4a0d90ca",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 7,
+          "parsedEventCount": 3
+        }
+      ]
+    },
+    {
+      "articleId": "577041",
+      "title": "가축전염병(구제역) 발생 현황에 대한 정보공개('26.2.20.기준)",
+      "publishedAt": "2026-02-20",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/577041/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "594976",
+          "fileName": "250220 기준 구제역 발생 현황(1).hwpx",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/594976/download.do",
+          "localPath": "data/raw/mafra-fmd/577041-594976-250220 기준 구제역 발생 현황(1).hwpx",
+          "bytes": 44683,
+          "sha256": "0385e718814c653b3d1ff0bef14b50bf163cc4c2c3c8532b90d669db95a321b4",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 6,
+          "parsedEventCount": 2
+        }
+      ]
+    },
+    {
+      "articleId": "576760",
+      "title": "가축전염병(구제역) 발생 현황에 대한 정보공개('26.1.31.기준)",
+      "publishedAt": "2026-01-31",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/576760/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "594147",
+          "fileName": "250131 기준 구제역 발생 현황.hwpx",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/594147/download.do",
+          "localPath": "data/raw/mafra-fmd/576760-594147-250131 기준 구제역 발생 현황.hwpx",
+          "bytes": 42552,
+          "sha256": "bb4bfb981f49bd23975aaeccdc772cb5e43e10b863d23bf7560a71df89174e9d",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 5,
+          "parsedEventCount": 1
+        }
+      ]
+    },
+    {
+      "articleId": "573895",
+      "title": "가축전염병(구제역) 발생 현황에 대한 정보공개('25.4.14.기준)",
+      "publishedAt": "2025-04-14",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/573895/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "593129",
+          "fileName": "250414 기준 구제역 발생 현황.hwp",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/593129/download.do",
+          "localPath": "data/raw/mafra-fmd/573895-593129-250414 기준 구제역 발생 현황.hwp",
+          "bytes": 68096,
+          "sha256": "b1e5282a4e6fc9d11aa1bf9acedfb2de84594ecd854c55ce383723521e7b83e6",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 20,
+          "parsedEventCount": 15
+        }
+      ]
+    },
+    {
+      "articleId": "573885",
+      "title": "가축전염병(구제역) 발생 현황에 대한 정보공개('25.4.11.기준)",
+      "publishedAt": "2025-04-11",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/573885/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "587081",
+          "fileName": "250411 기준 구제역 발생 현황.hwp",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/587081/download.do",
+          "localPath": "data/raw/mafra-fmd/573885-587081-250411 기준 구제역 발생 현황.hwp",
+          "bytes": 68096,
+          "sha256": "8810fe7c81e1d6ee11d8afb3b542e9400bc56ca6b5cf32a0a9ffa8bb6617dba9",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 20,
+          "parsedEventCount": 15
+        }
+      ]
+    },
+    {
+      "articleId": "573704",
+      "title": "가축전염병(구제역) 발생 현황에 대한 정보공개('25.3.26기준)",
+      "publishedAt": "2025-03-26",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/573704/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "586582",
+          "fileName": "250326 기준 구제역 발생 현황.hwp",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/586582/download.do",
+          "localPath": "data/raw/mafra-fmd/573704-586582-250326 기준 구제역 발생 현황.hwp",
+          "bytes": 64512,
+          "sha256": "eb34957fcd1727942678e6a248de73caf4ce21d464d36fafdace47f69ad69c33",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 18,
+          "parsedEventCount": 14
+        }
+      ]
+    },
+    {
+      "articleId": "573690",
+      "title": "가축전염병(구제역) 발생 현황에 대한 정보공개('25.3.25.기준)",
+      "publishedAt": "2025-03-25",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/573690/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "586554",
+          "fileName": "250325 기준 구제역 발생 현황.hwp",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/586554/download.do",
+          "localPath": "data/raw/mafra-fmd/573690-586554-250325 기준 구제역 발생 현황.hwp",
+          "bytes": 64000,
+          "sha256": "09cc914c3ff9093a256d6398e05b6f22927c3c3fb4587284d158cf03c46650f6",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 18,
+          "parsedEventCount": 14
+        }
+      ]
+    },
+    {
+      "articleId": "573678",
+      "title": "가축전염병(구제역) 발생 현황에 대한 정보공개('25.3.24.기준)",
+      "publishedAt": "2025-03-24",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/573678/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "586527",
+          "fileName": "250324 기준 구제역 발생 현황.hwp",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/586527/download.do",
+          "localPath": "data/raw/mafra-fmd/573678-586527-250324 기준 구제역 발생 현황.hwp",
+          "bytes": 65024,
+          "sha256": "8087859f444ed4763e1372dd000a0eb36023be4d818e8650114a2f6325eafc3f",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 18,
+          "parsedEventCount": 14
+        }
+      ]
+    },
+    {
+      "articleId": "573646",
+      "title": "가축전염병(구제역) 발생 현황에 대한 정보공개('25.3.23.기준)",
+      "publishedAt": "2025-03-23",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/573646/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "586439",
+          "fileName": "250323 기준 구제역 발생 현황.hwp",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/586439/download.do",
+          "localPath": "data/raw/mafra-fmd/573646-586439-250323 기준 구제역 발생 현황.hwp",
+          "bytes": 68096,
+          "sha256": "86d528d753e0634da3b2699161ef7ac383587c6bd4aa4dae4f0ae5dad4502017",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 18,
+          "parsedEventCount": 14
+        }
+      ]
+    },
+    {
+      "articleId": "573645",
+      "title": "가축전염병(구제역) 발생 현황에 대한 정보공개('25.3.22.기준)",
+      "publishedAt": "2025-03-22",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/573645/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "586438",
+          "fileName": "250322 기준 구제역 발생 현황.hwp",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/586438/download.do",
+          "localPath": "data/raw/mafra-fmd/573645-586438-250322 기준 구제역 발생 현황.hwp",
+          "bytes": 124416,
+          "sha256": "b81c008d7773af87f4555c179a34d2099402eb2d331d56af531f2a64f1e13432",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 17,
+          "parsedEventCount": 13
+        }
+      ]
+    },
+    {
+      "articleId": "573643",
+      "title": "가축전염병(구제역) 발생 현황에 대한 정보공개('25.3.21.기준)",
+      "publishedAt": "2025-03-21",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/573643/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "586436",
+          "fileName": "250321 기준 구제역 발생 현황.hwp",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/586436/download.do",
+          "localPath": "data/raw/mafra-fmd/573643-586436-250321 기준 구제역 발생 현황.hwp",
+          "bytes": 62976,
+          "sha256": "59b0e5de3d988c441a218679eb8a1d52934fc889dd3241dc522307cc177e4912",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 17,
+          "parsedEventCount": 13
+        }
+      ]
+    },
+    {
+      "articleId": "573605",
+      "title": "가축전염병(구제역) 발생 현황에 대한 정보공개('25.3.19.기준)",
+      "publishedAt": "2025-03-19",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/573605/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "586332",
+          "fileName": "250319 기준 구제역 발생 현황.hwp",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/586332/download.do",
+          "localPath": "data/raw/mafra-fmd/573605-586332-250319 기준 구제역 발생 현황.hwp",
+          "bytes": 60416,
+          "sha256": "b930335e9ebb2ac55f76f68828cebc27537bd7642a8aa741333a32aec4c0c74d",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 16,
+          "parsedEventCount": 8
+        }
+      ]
+    },
+    {
+      "articleId": "573595",
+      "title": "가축전염병(구제역) 발생 현황에 대한 정보공개('25.3.18.기준)",
+      "publishedAt": "2025-03-19",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/573595/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "586306",
+          "fileName": "250318 기준 구제역 발생 현황.hwp",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/586306/download.do",
+          "localPath": "data/raw/mafra-fmd/573595-586306-250318 기준 구제역 발생 현황.hwp",
+          "bytes": 111104,
+          "sha256": "98fbd0286eef071cbbd445cd3d1a872658d5b57fbdb628fb11511ba01baae907",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 14,
+          "parsedEventCount": 8
+        }
+      ]
+    },
+    {
+      "articleId": "573584",
+      "title": "가축전염병(구제역) 발생 현황에 대한 정보공개('25.3.17.기준)",
+      "publishedAt": "2025-03-18",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/573584/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "586275",
+          "fileName": "250317 기준 구제역 발생 현황.hwp",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/586275/download.do",
+          "localPath": "data/raw/mafra-fmd/573584-586275-250317 기준 구제역 발생 현황.hwp",
+          "bytes": 104960,
+          "sha256": "b50a6afe090b1fb4e51090e0347be3c90c09c1209a4e7e7eec966b8260ebabaa",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 12,
+          "parsedEventCount": 8
+        }
+      ]
+    },
+    {
+      "articleId": "573558",
+      "title": "가축전염병(구제역) 발생 현황에 대한 정보공개('25.3.16.기준)",
+      "publishedAt": "2025-03-16",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/573558/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "586193",
+          "fileName": "250316 기준 구제역 발생 현황.hwp",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/586193/download.do",
+          "localPath": "data/raw/mafra-fmd/573558-586193-250316 기준 구제역 발생 현황.hwp",
+          "bytes": 92672,
+          "sha256": "1ebec9fb20af9034334fae8a6c86213aca7ecec4e4ce05c9b27b67242c09466a",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 9,
+          "parsedEventCount": 5
+        }
+      ]
+    },
+    {
+      "articleId": "573557",
+      "title": "가축전염병(구제역) 발생 현황에 대한 정보공개('25.3.15.기준)",
+      "publishedAt": "2025-03-15",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/573557/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "586192",
+          "fileName": "250315 기준 구제역 발생 현황.hwp",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/586192/download.do",
+          "localPath": "data/raw/mafra-fmd/573557-586192-250315 기준 구제역 발생 현황.hwp",
+          "bytes": 45568,
+          "sha256": "0fecd9bd8c8ca346baa00dc271d5572f8d3ad8a06bf55e79f60755ef5ae15ffa",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 8,
+          "parsedEventCount": 4
+        }
+      ]
+    },
+    {
+      "articleId": "573549",
+      "title": "가축전염병(구제역) 발생 현황에 대한 정보공개('25.3.14.기준)",
+      "publishedAt": "2025-03-14",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/573549/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "586174",
+          "fileName": "250313 기준 구제역 발생 현황.hwp",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/586174/download.do",
+          "localPath": "data/raw/mafra-fmd/573549-586174-250313 기준 구제역 발생 현황.hwp",
+          "bytes": 77312,
+          "sha256": "3d0c0145b28a8e1304d969465d600af32424368b878e44fce9f9cd2417e263dd",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 5,
+          "parsedEventCount": 1
+        }
+      ]
+    },
+    {
+      "articleId": "566441",
+      "title": "구제역 발생 현황('23.5.19기준)",
+      "publishedAt": "2023-05-19",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/566441/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "568444",
+          "fileName": "230526 기준 구제역 발생 현황.hwp",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/568444/download.do",
+          "localPath": "data/raw/mafra-fmd/566441-568444-230526 기준 구제역 발생 현황.hwp",
+          "bytes": 44032,
+          "sha256": "ee1b6b94570240d3203de3a4793f711cd561639125d82d1a428044843bab7edd",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 12,
+          "parsedEventCount": 11
+        }
+      ]
+    },
+    {
+      "articleId": "323000",
+      "title": "가축전염병(구제역) 발생 현황에 대한 정보공개('19.01.31.기준)",
+      "publishedAt": "2019-01-31",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/323000/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241272",
+          "fileName": "190131 가축전염병 발생 현황에 대한 정보공개.hwp",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/241272/download.do",
+          "localPath": "data/raw/mafra-fmd/323000-241272-190131 가축전염병 발생 현황에 대한 정보공개.hwp",
+          "bytes": 11264,
+          "sha256": "43ef5808f42052de29c3131ca6024c45aee8d1154b383b4392e286ef4d323e1c",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 2,
+          "parsedEventCount": 1
+        }
+      ]
+    },
+    {
+      "articleId": "322999",
+      "title": "가축전염병(구제역) 발생 현황에 대한 정보공개('19.1.29일 기준)",
+      "publishedAt": "2019-01-31",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/322999/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241271",
+          "fileName": "190129 가축전염병 발생 현황에 대한 정보공개.hwp",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/241271/download.do",
+          "localPath": "data/raw/mafra-fmd/322999-241271-190129 가축전염병 발생 현황에 대한 정보공개.hwp",
+          "bytes": 11264,
+          "sha256": "1abb42d3903e8cb1e96eedf4f8c0ea41de24030b5a9914a8c8f6ed6112fa1344",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 2,
+          "parsedEventCount": 1
+        }
+      ]
+    },
+    {
+      "articleId": "322998",
+      "title": "가축전염병(구제역) 발생현황에 대한 정보공개(’19.1.28.기준)",
+      "publishedAt": "2019-01-29",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/322998/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241270",
+          "fileName": "190128 가축전염병 발생 현황에 대한 정보공개.hwp",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/241270/download.do",
+          "localPath": "data/raw/mafra-fmd/322998-241270-190128 가축전염병 발생 현황에 대한 정보공개.hwp",
+          "bytes": 11264,
+          "sha256": "db904fee338178674bae2bfae2ccff07dae3e36cd8147f4626e8b2ca6a07279a",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 2,
+          "parsedEventCount": 1
+        }
+      ]
+    },
+    {
+      "articleId": "322997",
+      "title": "가축전염병(구제역) 발생현황에 대한 정보공개(’18.4.3.기준)",
+      "publishedAt": "2018-04-04",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/322997/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241269",
+          "fileName": "180401 가축전염병 발생 현황에 대한 정보공개.hwp",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/241269/download.do",
+          "localPath": "data/raw/mafra-fmd/322997-241269-180401 가축전염병 발생 현황에 대한 정보공개.hwp",
+          "bytes": 11776,
+          "sha256": "d5ec13b75f3ce4a5dc85a2bffe3eb3588185cdd0021ad15eb81dc700fb5f960d",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 2,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322996",
+      "title": "가축전염병(구제역) 발생현황에 대한 정보공개(’18.3.27.기준)",
+      "publishedAt": "2018-03-28",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/322996/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241268",
+          "fileName": "180327 가축전염병 발생 현황에 대한 정보공개.hwp",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/241268/download.do",
+          "localPath": "data/raw/mafra-fmd/322996-241268-180327 가축전염병 발생 현황에 대한 정보공개.hwp",
+          "bytes": 11264,
+          "sha256": "8b35c7672f9c1747b92181155f1d9f78e9a29d7dc5554c9fcd70f67a6cdf39da",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 2,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322995",
+      "title": "가축전염병(구제역) 발생현황에 대한 정보공개(’17.2.14기준)",
+      "publishedAt": "2017-02-14",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/322995/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241267",
+          "fileName": "170214-가축전염병 발생현황정보-구제역 발생1.hwp",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/241267/download.do",
+          "localPath": "data/raw/mafra-fmd/322995-241267-170214-가축전염병 발생현황정보-구제역 발생1.hwp",
+          "bytes": 15360,
+          "sha256": "00df1a8b9726223326fac1d14f4b112c9ded01399bad24c1e73812193487b63b",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 10,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322994",
+      "title": "가축전염병(구제역) 발생현황에 대한 정보공개(’17.2.13기준)",
+      "publishedAt": "2017-02-13",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/322994/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241266",
+          "fileName": "170213-가축전염병 발생현황정보-구제역 발생.hwp",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/241266/download.do",
+          "localPath": "data/raw/mafra-fmd/322994-241266-170213-가축전염병 발생현황정보-구제역 발생.hwp",
+          "bytes": 14336,
+          "sha256": "e1e8cc4a7fd9d4e6e6f9e62f4df63cb33d79a0160ad5caf9f746dfebddf7f534",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 7,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322993",
+      "title": "가축전염병(구제역) 발생현황에 대한 정보공개(’17.2.9)",
+      "publishedAt": "2017-02-09",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/322993/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241265",
+          "fileName": "170209-가축전염병 발생현황정보-구제역 발생 - 복사본.hwp",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/241265/download.do",
+          "localPath": "data/raw/mafra-fmd/322993-241265-170209-가축전염병 발생현황정보-구제역 발생 - 복사본.hwp",
+          "bytes": 24064,
+          "sha256": "6f511780fcda39f01b4430a6ec9c7b1caf3e690f1fc877801430017ccf691a0c",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 5,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322991",
+      "title": "가축전염병(구제역) 발생현황에 대한 정보공개(’17.2.7)",
+      "publishedAt": "2017-02-07",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/322991/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241264",
+          "fileName": "170207-가축전염병 발생현황정보-구제역 발생.hwp",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/241264/download.do",
+          "localPath": "data/raw/mafra-fmd/322991-241264-170207-가축전염병 발생현황정보-구제역 발생.hwp",
+          "bytes": 12800,
+          "sha256": "71e7ea339e1157174c9fd0b938caa187b772a581a5e432ebc1ba2acc3b63466c",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 3,
+          "parsedEventCount": 0
+        }
+      ]
+    }
+  ]
+}

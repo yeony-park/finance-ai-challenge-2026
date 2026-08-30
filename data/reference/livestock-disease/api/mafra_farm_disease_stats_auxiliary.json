@@ -1,0 +1,491 @@
+{
+  "schemaVersion": 1,
+  "role": "auxiliary",
+  "collectedAt": "2026-08-30T05:38:29.485Z",
+  "source": {
+    "name": "농림축산식품부 대상질병별 농장 통계 API",
+    "documentationUrl": "https://data.mafra.go.kr/opendata/data/indexOpenDataDetail.do?data_id=20220823000000002326",
+    "service": "Grid_20220823000000000636_1"
+  },
+  "note": "발생 건수가 아니라 대상질병별 농장 현황이므로 지도 핀에는 사용하지 않고 지역 노출도 참고에만 사용함.",
+  "rawRowCount": 24395,
+  "processing": "읍면동 행을 저장하지 않고 질병·축종·시도 단위로 합산함. 발생 건수가 아닌 대상 농장 통계임.",
+  "stats": [
+    {
+      "disease": "구제역",
+      "species": "pig",
+      "province": "경남",
+      "farmCount": 68758999,
+      "municipalityCount": 28
+    },
+    {
+      "disease": "구제역",
+      "species": "goat",
+      "province": "경북",
+      "farmCount": 1502547,
+      "municipalityCount": 24
+    },
+    {
+      "disease": "구제역",
+      "species": "cattle",
+      "province": "충남",
+      "farmCount": 444312,
+      "municipalityCount": 16
+    },
+    {
+      "disease": "구제역",
+      "species": "pig",
+      "province": "강원",
+      "farmCount": 32850908,
+      "municipalityCount": 17
+    },
+    {
+      "disease": "구제역",
+      "species": "goat",
+      "province": "전남",
+      "farmCount": 1856547,
+      "municipalityCount": 22
+    },
+    {
+      "disease": "구제역",
+      "species": "goat",
+      "province": "충북",
+      "farmCount": 385127,
+      "municipalityCount": 15
+    },
+    {
+      "disease": "구제역",
+      "species": "cattle",
+      "province": "경북",
+      "farmCount": 706765,
+      "municipalityCount": 24
+    },
+    {
+      "disease": "구제역",
+      "species": "goat",
+      "province": "경남",
+      "farmCount": 917262,
+      "municipalityCount": 26
+    },
+    {
+      "disease": "구제역",
+      "species": "goat",
+      "province": "전북",
+      "farmCount": 1786234,
+      "municipalityCount": 15
+    },
+    {
+      "disease": "구제역",
+      "species": "goat",
+      "province": "충남",
+      "farmCount": 934448,
+      "municipalityCount": 17
+    },
+    {
+      "disease": "구제역",
+      "species": "cattle",
+      "province": "강원",
+      "farmCount": 247919,
+      "municipalityCount": 18
+    },
+    {
+      "disease": "구제역",
+      "species": "other",
+      "province": "강원",
+      "farmCount": 78716,
+      "municipalityCount": 18
+    },
+    {
+      "disease": "구제역",
+      "species": "goat",
+      "province": "경기",
+      "farmCount": 550785,
+      "municipalityCount": 41
+    },
+    {
+      "disease": "구제역",
+      "species": "pig",
+      "province": "충북",
+      "farmCount": 30735749,
+      "municipalityCount": 15
+    },
+    {
+      "disease": "구제역",
+      "species": "goat",
+      "province": "강원",
+      "farmCount": 502296,
+      "municipalityCount": 18
+    },
+    {
+      "disease": "구제역",
+      "species": "pig",
+      "province": "충남",
+      "farmCount": 128330663,
+      "municipalityCount": 17
+    },
+    {
+      "disease": "구제역",
+      "species": "cattle",
+      "province": "전북",
+      "farmCount": 400047,
+      "municipalityCount": 15
+    },
+    {
+      "disease": "구제역",
+      "species": "goat",
+      "province": "인천",
+      "farmCount": 61484,
+      "municipalityCount": 8
+    },
+    {
+      "disease": "구제역",
+      "species": "cattle",
+      "province": "전남",
+      "farmCount": 542044,
+      "municipalityCount": 22
+    },
+    {
+      "disease": "구제역",
+      "species": "cattle",
+      "province": "충북",
+      "farmCount": 228950,
+      "municipalityCount": 14
+    },
+    {
+      "disease": "구제역",
+      "species": "cattle",
+      "province": "경남",
+      "farmCount": 323191,
+      "municipalityCount": 22
+    },
+    {
+      "disease": "구제역",
+      "species": "cattle",
+      "province": "인천",
+      "farmCount": 22369,
+      "municipalityCount": 8
+    },
+    {
+      "disease": "구제역",
+      "species": "other",
+      "province": "충북",
+      "farmCount": 8796,
+      "municipalityCount": 15
+    },
+    {
+      "disease": "구제역",
+      "species": "cattle",
+      "province": "경기",
+      "farmCount": 446131,
+      "municipalityCount": 38
+    },
+    {
+      "disease": "구제역",
+      "species": "pig",
+      "province": "전북",
+      "farmCount": 74010314,
+      "municipalityCount": 16
+    },
+    {
+      "disease": "구제역",
+      "species": "cattle",
+      "province": "제주",
+      "farmCount": 38143,
+      "municipalityCount": 2
+    },
+    {
+      "disease": "구제역",
+      "species": "pig",
+      "province": "경기",
+      "farmCount": 94446887,
+      "municipalityCount": 36
+    },
+    {
+      "disease": "구제역",
+      "species": "cattle",
+      "province": "울산",
+      "farmCount": 30727,
+      "municipalityCount": 4
+    },
+    {
+      "disease": "구제역",
+      "species": "other",
+      "province": "경기",
+      "farmCount": 104344,
+      "municipalityCount": 40
+    },
+    {
+      "disease": "구제역",
+      "species": "cattle",
+      "province": "세종",
+      "farmCount": 27689,
+      "municipalityCount": 0
+    },
+    {
+      "disease": "구제역",
+      "species": "other",
+      "province": "전북",
+      "farmCount": 59872,
+      "municipalityCount": 15
+    },
+    {
+      "disease": "구제역",
+      "species": "other",
+      "province": "충남",
+      "farmCount": 122160,
+      "municipalityCount": 17
+    },
+    {
+      "disease": "구제역",
+      "species": "goat",
+      "province": "대전",
+      "farmCount": 25630,
+      "municipalityCount": 5
+    },
+    {
+      "disease": "구제역",
+      "species": "pig",
+      "province": "전남",
+      "farmCount": 67116960,
+      "municipalityCount": 23
+    },
+    {
+      "disease": "구제역",
+      "species": "other",
+      "province": "경남",
+      "farmCount": 77875,
+      "municipalityCount": 25
+    },
+    {
+      "disease": "구제역",
+      "species": "goat",
+      "province": "부산",
+      "farmCount": 26351,
+      "municipalityCount": 6
+    },
+    {
+      "disease": "구제역",
+      "species": "pig",
+      "province": "제주",
+      "farmCount": 31000375,
+      "municipalityCount": 2
+    },
+    {
+      "disease": "구제역",
+      "species": "pig",
+      "province": "경북",
+      "farmCount": 82112108,
+      "municipalityCount": 24
+    },
+    {
+      "disease": "구제역",
+      "species": "goat",
+      "province": "울산",
+      "farmCount": 96382,
+      "municipalityCount": 5
+    },
+    {
+      "disease": "구제역",
+      "species": "other",
+      "province": "인천",
+      "farmCount": 6178,
+      "municipalityCount": 8
+    },
+    {
+      "disease": "구제역",
+      "species": "goat",
+      "province": "세종",
+      "farmCount": 22581,
+      "municipalityCount": 0
+    },
+    {
+      "disease": "구제역",
+      "species": "goat",
+      "province": "제주",
+      "farmCount": 104615,
+      "municipalityCount": 2
+    },
+    {
+      "disease": "구제역",
+      "species": "other",
+      "province": "경북",
+      "farmCount": 79018,
+      "municipalityCount": 24
+    },
+    {
+      "disease": "구제역",
+      "species": "goat",
+      "province": "대구",
+      "farmCount": 39643,
+      "municipalityCount": 5
+    },
+    {
+      "disease": "구제역",
+      "species": "other",
+      "province": "울산",
+      "farmCount": 13496,
+      "municipalityCount": 5
+    },
+    {
+      "disease": "구제역",
+      "species": "cattle",
+      "province": "대전",
+      "farmCount": 4319,
+      "municipalityCount": 5
+    },
+    {
+      "disease": "구제역",
+      "species": "other",
+      "province": "광주",
+      "farmCount": 2118,
+      "municipalityCount": 3
+    },
+    {
+      "disease": "구제역",
+      "species": "cattle",
+      "province": "부산",
+      "farmCount": 1638,
+      "municipalityCount": 4
+    },
+    {
+      "disease": "구제역",
+      "species": "pig",
+      "province": "세종",
+      "farmCount": 6617839,
+      "municipalityCount": 0
+    },
+    {
+      "disease": "구제역",
+      "species": "cattle",
+      "province": "대구",
+      "farmCount": 12889,
+      "municipalityCount": 4
+    },
+    {
+      "disease": "구제역",
+      "species": "pig",
+      "province": "인천",
+      "farmCount": 776326,
+      "municipalityCount": 8
+    },
+    {
+      "disease": "구제역",
+      "species": "pig",
+      "province": "대전",
+      "farmCount": 25512,
+      "municipalityCount": 5
+    },
+    {
+      "disease": "구제역",
+      "species": "other",
+      "province": "전남",
+      "farmCount": 58829,
+      "municipalityCount": 21
+    },
+    {
+      "disease": "구제역",
+      "species": "other",
+      "province": "대전",
+      "farmCount": 1037,
+      "municipalityCount": 5
+    },
+    {
+      "disease": "구제역",
+      "species": "cattle",
+      "province": "광주",
+      "farmCount": 5021,
+      "municipalityCount": 4
+    },
+    {
+      "disease": "구제역",
+      "species": "cattle",
+      "province": "서울",
+      "farmCount": 62,
+      "municipalityCount": 2
+    },
+    {
+      "disease": "구제역",
+      "species": "pig",
+      "province": "울산",
+      "farmCount": 1985192,
+      "municipalityCount": 4
+    },
+    {
+      "disease": "구제역",
+      "species": "goat",
+      "province": "광주",
+      "farmCount": 20421,
+      "municipalityCount": 5
+    },
+    {
+      "disease": "구제역",
+      "species": "other",
+      "province": "대구",
+      "farmCount": 2295,
+      "municipalityCount": 5
+    },
+    {
+      "disease": "구제역",
+      "species": "pig",
+      "province": "부산",
+      "farmCount": 416814,
+      "municipalityCount": 4
+    },
+    {
+      "disease": "구제역",
+      "species": "other",
+      "province": "부산",
+      "farmCount": 1721,
+      "municipalityCount": 4
+    },
+    {
+      "disease": "구제역",
+      "species": "other",
+      "province": "제주",
+      "farmCount": 16139,
+      "municipalityCount": 2
+    },
+    {
+      "disease": "구제역",
+      "species": "pig",
+      "province": "대구",
+      "farmCount": 711688,
+      "municipalityCount": 4
+    },
+    {
+      "disease": "구제역",
+      "species": "goat",
+      "province": "서울",
+      "farmCount": 159,
+      "municipalityCount": 3
+    },
+    {
+      "disease": "구제역",
+      "species": "pig",
+      "province": "광주",
+      "farmCount": 658465,
+      "municipalityCount": 4
+    },
+    {
+      "disease": "구제역",
+      "species": "pig",
+      "province": "서울",
+      "farmCount": 0,
+      "municipalityCount": 3
+    },
+    {
+      "disease": "구제역",
+      "species": "other",
+      "province": "서울",
+      "farmCount": 638,
+      "municipalityCount": 4
+    },
+    {
+      "disease": "구제역",
+      "species": "other",
+      "province": "세종",
+      "farmCount": 3600,
+      "municipalityCount": 0
+    }
+  ]
+}

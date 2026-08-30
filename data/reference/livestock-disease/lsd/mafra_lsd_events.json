@@ -1,0 +1,2674 @@
+{
+  "schemaVersion": 1,
+  "asOf": "2026-07-20",
+  "source": {
+    "name": "농림축산식품부 럼피스킨병 발생 현황 정보공개(`23~)",
+    "boardUrl": "https://www.mafra.go.kr/FMD-AI2/5434/subview.do",
+    "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/843/598988/download.do",
+    "sourceSha256": "66ff5887f6080f0dee78806bc3d7f614694a9d2d5acb8fbfd18069b48cbdd3af",
+    "collectedAt": "2026-08-30T06:17:26.347341Z",
+    "processing": "공식 PDF에서 발생일·시도·시군구·살처분 규모만 추출하고 OpenStreetMap 행정구역 대표 좌표를 결합. 농장명·농장주·읍면동 이하 상세주소는 결과 JSON에 포함하지 않음."
+  },
+  "coverage": {
+    "eventCount": 132,
+    "municipalityCount": 48,
+    "firstOccurredAt": "2023-10-19",
+    "lastOccurredAt": "2026-07-10",
+    "yearCounts": {
+      "2023": 107,
+      "2024": 24,
+      "2025": 0,
+      "2026": 1
+    }
+  },
+  "validation": {
+    "expectedEventCount": 132,
+    "eventCountMatches": true,
+    "expectedMunicipalityCount": 48,
+    "municipalityCountMatches": true,
+    "coordinatePointCount": 48,
+    "coordinatePrecision": "시·군·구 행정구역 대표 좌표이며 실제 발생 농장 좌표가 아님"
+  },
+  "events": [
+    {
+      "id": "lsd-2023-001",
+      "disease": "LSD",
+      "occurredAt": "2023-10-19",
+      "sourceSequence": 1,
+      "species": "cattle",
+      "culledHeadCount": 46,
+      "province": "충남",
+      "cityCounty": "서산시",
+      "region": "충남 서산시",
+      "coordinates": {
+        "latitude": 36.784499,
+        "longitude": 126.450317,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "서산시, 충청남도, 대한민국",
+        "placeName": "서산시, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-002",
+      "disease": "LSD",
+      "occurredAt": "2023-10-20",
+      "sourceSequence": 2,
+      "species": "cattle",
+      "culledHeadCount": 48,
+      "province": "충남",
+      "cityCounty": "당진시",
+      "region": "충남 당진시",
+      "coordinates": {
+        "latitude": 36.8904083,
+        "longitude": 126.6461833,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "당진시, 충청남도, 대한민국",
+        "placeName": "당진시, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-003",
+      "disease": "LSD",
+      "occurredAt": "2023-10-20",
+      "sourceSequence": 3,
+      "species": "cattle",
+      "culledHeadCount": 95,
+      "province": "경기",
+      "cityCounty": "평택시",
+      "region": "경기 평택시",
+      "coordinates": {
+        "latitude": 36.9924966,
+        "longitude": 127.1127168,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "평택시, 경기도, 대한민국",
+        "placeName": "평택시, 경기도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-004",
+      "disease": "LSD",
+      "occurredAt": "2023-10-20",
+      "sourceSequence": 4,
+      "species": "cattle",
+      "culledHeadCount": 117,
+      "province": "충남",
+      "cityCounty": "서산시",
+      "region": "충남 서산시",
+      "coordinates": {
+        "latitude": 36.784499,
+        "longitude": 126.450317,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "서산시, 충청남도, 대한민국",
+        "placeName": "서산시, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-005",
+      "disease": "LSD",
+      "occurredAt": "2023-10-21",
+      "sourceSequence": 5,
+      "species": "cattle",
+      "culledHeadCount": 55,
+      "province": "경기",
+      "cityCounty": "김포시",
+      "region": "경기 김포시",
+      "coordinates": {
+        "latitude": 37.6155683,
+        "longitude": 126.7157798,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "김포시, 경기도, 대한민국",
+        "placeName": "김포시, 경기도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-006",
+      "disease": "LSD",
+      "occurredAt": "2023-10-21",
+      "sourceSequence": 6,
+      "species": "cattle",
+      "culledHeadCount": 107,
+      "province": "경기",
+      "cityCounty": "평택시",
+      "region": "경기 평택시",
+      "coordinates": {
+        "latitude": 36.9924966,
+        "longitude": 127.1127168,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "평택시, 경기도, 대한민국",
+        "placeName": "평택시, 경기도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-007",
+      "disease": "LSD",
+      "occurredAt": "2023-10-21",
+      "sourceSequence": 7,
+      "species": "cattle",
+      "culledHeadCount": 11,
+      "province": "충남",
+      "cityCounty": "태안군",
+      "region": "충남 태안군",
+      "coordinates": {
+        "latitude": 36.7454236,
+        "longitude": 126.29836,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "태안군, 충청남도, 대한민국",
+        "placeName": "태안군, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-008",
+      "disease": "LSD",
+      "occurredAt": "2023-10-21",
+      "sourceSequence": 8,
+      "species": "cattle",
+      "culledHeadCount": 24,
+      "province": "충남",
+      "cityCounty": "서산시",
+      "region": "충남 서산시",
+      "coordinates": {
+        "latitude": 36.784499,
+        "longitude": 126.450317,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "서산시, 충청남도, 대한민국",
+        "placeName": "서산시, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-009",
+      "disease": "LSD",
+      "occurredAt": "2023-10-21",
+      "sourceSequence": 9,
+      "species": "cattle",
+      "culledHeadCount": 78,
+      "province": "충남",
+      "cityCounty": "서산시",
+      "region": "충남 서산시",
+      "coordinates": {
+        "latitude": 36.784499,
+        "longitude": 126.450317,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "서산시, 충청남도, 대한민국",
+        "placeName": "서산시, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-010",
+      "disease": "LSD",
+      "occurredAt": "2023-10-21",
+      "sourceSequence": 10,
+      "species": "cattle",
+      "culledHeadCount": 72,
+      "province": "충남",
+      "cityCounty": "서산시",
+      "region": "충남 서산시",
+      "coordinates": {
+        "latitude": 36.784499,
+        "longitude": 126.450317,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "서산시, 충청남도, 대한민국",
+        "placeName": "서산시, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-011",
+      "disease": "LSD",
+      "occurredAt": "2023-10-22",
+      "sourceSequence": 11,
+      "species": "cattle",
+      "culledHeadCount": 109,
+      "province": "경기",
+      "cityCounty": "김포시",
+      "region": "경기 김포시",
+      "coordinates": {
+        "latitude": 37.6155683,
+        "longitude": 126.7157798,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "김포시, 경기도, 대한민국",
+        "placeName": "김포시, 경기도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-012",
+      "disease": "LSD",
+      "occurredAt": "2023-10-22",
+      "sourceSequence": 12,
+      "species": "cattle",
+      "culledHeadCount": 21,
+      "province": "충남",
+      "cityCounty": "서산시",
+      "region": "충남 서산시",
+      "coordinates": {
+        "latitude": 36.784499,
+        "longitude": 126.450317,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "서산시, 충청남도, 대한민국",
+        "placeName": "서산시, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-013",
+      "disease": "LSD",
+      "occurredAt": "2023-10-22",
+      "sourceSequence": 13,
+      "species": "cattle",
+      "culledHeadCount": 40,
+      "province": "충남",
+      "cityCounty": "당진시",
+      "region": "충남 당진시",
+      "coordinates": {
+        "latitude": 36.8904083,
+        "longitude": 126.6461833,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "당진시, 충청남도, 대한민국",
+        "placeName": "당진시, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-014",
+      "disease": "LSD",
+      "occurredAt": "2023-10-22",
+      "sourceSequence": 14,
+      "species": "cattle",
+      "culledHeadCount": 9,
+      "province": "충북",
+      "cityCounty": "음성군",
+      "region": "충북 음성군",
+      "coordinates": {
+        "latitude": 36.94,
+        "longitude": 127.6906,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "음성군, 충청북도, 대한민국",
+        "placeName": "음성군, 충청북도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-015",
+      "disease": "LSD",
+      "occurredAt": "2023-10-22",
+      "sourceSequence": 15,
+      "species": "cattle",
+      "culledHeadCount": 84,
+      "province": "경기",
+      "cityCounty": "평택시",
+      "region": "경기 평택시",
+      "coordinates": {
+        "latitude": 36.9924966,
+        "longitude": 127.1127168,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "평택시, 경기도, 대한민국",
+        "placeName": "평택시, 경기도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-016",
+      "disease": "LSD",
+      "occurredAt": "2023-10-22",
+      "sourceSequence": 16,
+      "species": "cattle",
+      "culledHeadCount": 92,
+      "province": "경기",
+      "cityCounty": "화성시",
+      "region": "경기 화성시",
+      "coordinates": {
+        "latitude": 37.1994653,
+        "longitude": 126.8312632,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "화성시, 경기도, 대한민국",
+        "placeName": "화성시, 경기도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-017",
+      "disease": "LSD",
+      "occurredAt": "2023-10-22",
+      "sourceSequence": 17,
+      "species": "cattle",
+      "culledHeadCount": 73,
+      "province": "경기",
+      "cityCounty": "화성시",
+      "region": "경기 화성시",
+      "coordinates": {
+        "latitude": 37.1994653,
+        "longitude": 126.8312632,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "화성시, 경기도, 대한민국",
+        "placeName": "화성시, 경기도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-018",
+      "disease": "LSD",
+      "occurredAt": "2023-10-23",
+      "sourceSequence": 18,
+      "species": "cattle",
+      "culledHeadCount": 37,
+      "province": "충남",
+      "cityCounty": "서산시",
+      "region": "충남 서산시",
+      "coordinates": {
+        "latitude": 36.784499,
+        "longitude": 126.450317,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "서산시, 충청남도, 대한민국",
+        "placeName": "서산시, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-019",
+      "disease": "LSD",
+      "occurredAt": "2023-10-23",
+      "sourceSequence": 19,
+      "species": "cattle",
+      "culledHeadCount": 22,
+      "province": "충남",
+      "cityCounty": "당진시",
+      "region": "충남 당진시",
+      "coordinates": {
+        "latitude": 36.8904083,
+        "longitude": 126.6461833,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "당진시, 충청남도, 대한민국",
+        "placeName": "당진시, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-020",
+      "disease": "LSD",
+      "occurredAt": "2023-10-23",
+      "sourceSequence": 20,
+      "species": "cattle",
+      "culledHeadCount": 167,
+      "province": "충남",
+      "cityCounty": "당진시",
+      "region": "충남 당진시",
+      "coordinates": {
+        "latitude": 36.8904083,
+        "longitude": 126.6461833,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "당진시, 충청남도, 대한민국",
+        "placeName": "당진시, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-021",
+      "disease": "LSD",
+      "occurredAt": "2023-10-23",
+      "sourceSequence": 21,
+      "species": "cattle",
+      "culledHeadCount": 25,
+      "province": "충남",
+      "cityCounty": "당진시",
+      "region": "충남 당진시",
+      "coordinates": {
+        "latitude": 36.8904083,
+        "longitude": 126.6461833,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "당진시, 충청남도, 대한민국",
+        "placeName": "당진시, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-022",
+      "disease": "LSD",
+      "occurredAt": "2023-10-23",
+      "sourceSequence": 22,
+      "species": "cattle",
+      "culledHeadCount": 69,
+      "province": "충남",
+      "cityCounty": "당진시",
+      "region": "충남 당진시",
+      "coordinates": {
+        "latitude": 36.8904083,
+        "longitude": 126.6461833,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "당진시, 충청남도, 대한민국",
+        "placeName": "당진시, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-023",
+      "disease": "LSD",
+      "occurredAt": "2023-10-23",
+      "sourceSequence": 23,
+      "species": "cattle",
+      "culledHeadCount": 38,
+      "province": "경기",
+      "cityCounty": "수원시",
+      "region": "경기 수원시",
+      "coordinates": {
+        "latitude": 37.2633325,
+        "longitude": 127.0287472,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "수원시, 경기도, 대한민국",
+        "placeName": "수원시, 경기도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-024",
+      "disease": "LSD",
+      "occurredAt": "2023-10-23",
+      "sourceSequence": 24,
+      "species": "cattle",
+      "culledHeadCount": 88,
+      "province": "인천",
+      "cityCounty": "강화군",
+      "region": "인천 강화군",
+      "coordinates": {
+        "latitude": 37.746,
+        "longitude": 126.488,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "강화군, 인천광역시, 대한민국",
+        "placeName": "강화군, 인천광역시, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-025",
+      "disease": "LSD",
+      "occurredAt": "2023-10-23",
+      "sourceSequence": 25,
+      "species": "cattle",
+      "culledHeadCount": 20,
+      "province": "인천",
+      "cityCounty": "강화군",
+      "region": "인천 강화군",
+      "coordinates": {
+        "latitude": 37.746,
+        "longitude": 126.488,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "강화군, 인천광역시, 대한민국",
+        "placeName": "강화군, 인천광역시, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-026",
+      "disease": "LSD",
+      "occurredAt": "2023-10-23",
+      "sourceSequence": 26,
+      "species": "cattle",
+      "culledHeadCount": 47,
+      "province": "인천",
+      "cityCounty": "강화군",
+      "region": "인천 강화군",
+      "coordinates": {
+        "latitude": 37.746,
+        "longitude": 126.488,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "강화군, 인천광역시, 대한민국",
+        "placeName": "강화군, 인천광역시, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-027",
+      "disease": "LSD",
+      "occurredAt": "2023-10-23",
+      "sourceSequence": 27,
+      "species": "cattle",
+      "culledHeadCount": 30,
+      "province": "강원",
+      "cityCounty": "양구군",
+      "region": "강원 양구군",
+      "coordinates": {
+        "latitude": 38.1096812,
+        "longitude": 127.9900596,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "양구군, 강원특별자치도, 대한민국",
+        "placeName": "양구군, 강원특별자치도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-028",
+      "disease": "LSD",
+      "occurredAt": "2023-10-23",
+      "sourceSequence": 28,
+      "species": "cattle",
+      "culledHeadCount": 36,
+      "province": "충남",
+      "cityCounty": "서산시",
+      "region": "충남 서산시",
+      "coordinates": {
+        "latitude": 36.784499,
+        "longitude": 126.450317,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "서산시, 충청남도, 대한민국",
+        "placeName": "서산시, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-029",
+      "disease": "LSD",
+      "occurredAt": "2023-10-24",
+      "sourceSequence": 29,
+      "species": "cattle",
+      "culledHeadCount": 26,
+      "province": "충남",
+      "cityCounty": "홍성군",
+      "region": "충남 홍성군",
+      "coordinates": {
+        "latitude": 36.6010501,
+        "longitude": 126.6611667,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "홍성군, 충청남도, 대한민국",
+        "placeName": "홍성군, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-030",
+      "disease": "LSD",
+      "occurredAt": "2023-10-24",
+      "sourceSequence": 30,
+      "species": "cattle",
+      "culledHeadCount": 14,
+      "province": "경기",
+      "cityCounty": "화성시",
+      "region": "경기 화성시",
+      "coordinates": {
+        "latitude": 37.1994653,
+        "longitude": 126.8312632,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "화성시, 경기도, 대한민국",
+        "placeName": "화성시, 경기도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-031",
+      "disease": "LSD",
+      "occurredAt": "2023-10-24",
+      "sourceSequence": 31,
+      "species": "cattle",
+      "culledHeadCount": 436,
+      "province": "인천",
+      "cityCounty": "강화군",
+      "region": "인천 강화군",
+      "coordinates": {
+        "latitude": 37.746,
+        "longitude": 126.488,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "강화군, 인천광역시, 대한민국",
+        "placeName": "강화군, 인천광역시, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-032",
+      "disease": "LSD",
+      "occurredAt": "2023-10-24",
+      "sourceSequence": 32,
+      "species": "cattle",
+      "culledHeadCount": 72,
+      "province": "충남",
+      "cityCounty": "서산시",
+      "region": "충남 서산시",
+      "coordinates": {
+        "latitude": 36.784499,
+        "longitude": 126.450317,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "서산시, 충청남도, 대한민국",
+        "placeName": "서산시, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-033",
+      "disease": "LSD",
+      "occurredAt": "2023-10-24",
+      "sourceSequence": 33,
+      "species": "cattle",
+      "culledHeadCount": 15,
+      "province": "충남",
+      "cityCounty": "당진시",
+      "region": "충남 당진시",
+      "coordinates": {
+        "latitude": 36.8904083,
+        "longitude": 126.6461833,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "당진시, 충청남도, 대한민국",
+        "placeName": "당진시, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-034",
+      "disease": "LSD",
+      "occurredAt": "2023-10-24",
+      "sourceSequence": 34,
+      "species": "cattle",
+      "culledHeadCount": 142,
+      "province": "전북",
+      "cityCounty": "부안군",
+      "region": "전북 부안군",
+      "coordinates": {
+        "latitude": 35.7316783,
+        "longitude": 126.7330195,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "부안군, 전북특별자치도, 대한민국",
+        "placeName": "부안군, 전북특별자치도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-035",
+      "disease": "LSD",
+      "occurredAt": "2023-10-24",
+      "sourceSequence": 35,
+      "species": "cattle",
+      "culledHeadCount": 55,
+      "province": "경기",
+      "cityCounty": "김포시",
+      "region": "경기 김포시",
+      "coordinates": {
+        "latitude": 37.6155683,
+        "longitude": 126.7157798,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "김포시, 경기도, 대한민국",
+        "placeName": "김포시, 경기도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-036",
+      "disease": "LSD",
+      "occurredAt": "2023-10-24",
+      "sourceSequence": 36,
+      "species": "cattle",
+      "culledHeadCount": 16,
+      "province": "경기",
+      "cityCounty": "화성시",
+      "region": "경기 화성시",
+      "coordinates": {
+        "latitude": 37.1994653,
+        "longitude": 126.8312632,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "화성시, 경기도, 대한민국",
+        "placeName": "화성시, 경기도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-037",
+      "disease": "LSD",
+      "occurredAt": "2023-10-24",
+      "sourceSequence": 37,
+      "species": "cattle",
+      "culledHeadCount": 42,
+      "province": "경기",
+      "cityCounty": "화성시",
+      "region": "경기 화성시",
+      "coordinates": {
+        "latitude": 37.1994653,
+        "longitude": 126.8312632,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "화성시, 경기도, 대한민국",
+        "placeName": "화성시, 경기도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-038",
+      "disease": "LSD",
+      "occurredAt": "2023-10-24",
+      "sourceSequence": 38,
+      "species": "cattle",
+      "culledHeadCount": 126,
+      "province": "경기",
+      "cityCounty": "평택시",
+      "region": "경기 평택시",
+      "coordinates": {
+        "latitude": 36.9924966,
+        "longitude": 127.1127168,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "평택시, 경기도, 대한민국",
+        "placeName": "평택시, 경기도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-039",
+      "disease": "LSD",
+      "occurredAt": "2023-10-24",
+      "sourceSequence": 39,
+      "species": "cattle",
+      "culledHeadCount": 358,
+      "province": "경기",
+      "cityCounty": "김포시",
+      "region": "경기 김포시",
+      "coordinates": {
+        "latitude": 37.6155683,
+        "longitude": 126.7157798,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "김포시, 경기도, 대한민국",
+        "placeName": "김포시, 경기도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-040",
+      "disease": "LSD",
+      "occurredAt": "2023-10-25",
+      "sourceSequence": 40,
+      "species": "cattle",
+      "culledHeadCount": 73,
+      "province": "경기",
+      "cityCounty": "연천군",
+      "region": "경기 연천군",
+      "coordinates": {
+        "latitude": 38.0964,
+        "longitude": 127.0746,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "연천군, 경기도, 대한민국",
+        "placeName": "연천군, 경기도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-041",
+      "disease": "LSD",
+      "occurredAt": "2023-10-25",
+      "sourceSequence": 41,
+      "species": "cattle",
+      "culledHeadCount": 81,
+      "province": "경기",
+      "cityCounty": "연천군",
+      "region": "경기 연천군",
+      "coordinates": {
+        "latitude": 38.0964,
+        "longitude": 127.0746,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "연천군, 경기도, 대한민국",
+        "placeName": "연천군, 경기도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-042",
+      "disease": "LSD",
+      "occurredAt": "2023-10-25",
+      "sourceSequence": 42,
+      "species": "cattle",
+      "culledHeadCount": 43,
+      "province": "강원",
+      "cityCounty": "횡성군",
+      "region": "강원 횡성군",
+      "coordinates": {
+        "latitude": 37.4916,
+        "longitude": 127.985,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "횡성군, 강원특별자치도, 대한민국",
+        "placeName": "횡성군, 강원특별자치도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-043",
+      "disease": "LSD",
+      "occurredAt": "2023-10-25",
+      "sourceSequence": 43,
+      "species": "cattle",
+      "culledHeadCount": 86,
+      "province": "경기",
+      "cityCounty": "화성시",
+      "region": "경기 화성시",
+      "coordinates": {
+        "latitude": 37.1994653,
+        "longitude": 126.8312632,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "화성시, 경기도, 대한민국",
+        "placeName": "화성시, 경기도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-044",
+      "disease": "LSD",
+      "occurredAt": "2023-10-25",
+      "sourceSequence": 44,
+      "species": "cattle",
+      "culledHeadCount": 14,
+      "province": "충남",
+      "cityCounty": "서산시",
+      "region": "충남 서산시",
+      "coordinates": {
+        "latitude": 36.784499,
+        "longitude": 126.450317,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "서산시, 충청남도, 대한민국",
+        "placeName": "서산시, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-045",
+      "disease": "LSD",
+      "occurredAt": "2023-10-25",
+      "sourceSequence": 45,
+      "species": "cattle",
+      "culledHeadCount": 22,
+      "province": "인천",
+      "cityCounty": "강화군",
+      "region": "인천 강화군",
+      "coordinates": {
+        "latitude": 37.746,
+        "longitude": 126.488,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "강화군, 인천광역시, 대한민국",
+        "placeName": "강화군, 인천광역시, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-046",
+      "disease": "LSD",
+      "occurredAt": "2023-10-25",
+      "sourceSequence": 46,
+      "species": "cattle",
+      "culledHeadCount": 48,
+      "province": "인천",
+      "cityCounty": "강화군",
+      "region": "인천 강화군",
+      "coordinates": {
+        "latitude": 37.746,
+        "longitude": 126.488,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "강화군, 인천광역시, 대한민국",
+        "placeName": "강화군, 인천광역시, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-047",
+      "disease": "LSD",
+      "occurredAt": "2023-10-25",
+      "sourceSequence": 47,
+      "species": "cattle",
+      "culledHeadCount": 97,
+      "province": "인천",
+      "cityCounty": "강화군",
+      "region": "인천 강화군",
+      "coordinates": {
+        "latitude": 37.746,
+        "longitude": 126.488,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "강화군, 인천광역시, 대한민국",
+        "placeName": "강화군, 인천광역시, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-048",
+      "disease": "LSD",
+      "occurredAt": "2023-10-26",
+      "sourceSequence": 48,
+      "species": "cattle",
+      "culledHeadCount": 57,
+      "province": "경기",
+      "cityCounty": "파주시",
+      "region": "경기 파주시",
+      "coordinates": {
+        "latitude": 37.7598955,
+        "longitude": 126.7801502,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "파주시, 경기도, 대한민국",
+        "placeName": "파주시, 경기도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-049",
+      "disease": "LSD",
+      "occurredAt": "2023-10-26",
+      "sourceSequence": 49,
+      "species": "cattle",
+      "culledHeadCount": 96,
+      "province": "경기",
+      "cityCounty": "파주시",
+      "region": "경기 파주시",
+      "coordinates": {
+        "latitude": 37.7598955,
+        "longitude": 126.7801502,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "파주시, 경기도, 대한민국",
+        "placeName": "파주시, 경기도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-050",
+      "disease": "LSD",
+      "occurredAt": "2023-10-26",
+      "sourceSequence": 50,
+      "species": "cattle",
+      "culledHeadCount": 23,
+      "province": "충남",
+      "cityCounty": "논산시",
+      "region": "충남 논산시",
+      "coordinates": {
+        "latitude": 36.1868154,
+        "longitude": 127.0987538,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "논산시, 충청남도, 대한민국",
+        "placeName": "논산시, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-051",
+      "disease": "LSD",
+      "occurredAt": "2023-10-26",
+      "sourceSequence": 51,
+      "species": "cattle",
+      "culledHeadCount": 48,
+      "province": "충남",
+      "cityCounty": "아산시",
+      "region": "충남 아산시",
+      "coordinates": {
+        "latitude": 36.7899498,
+        "longitude": 127.0026769,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "아산시, 충청남도, 대한민국",
+        "placeName": "아산시, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-052",
+      "disease": "LSD",
+      "occurredAt": "2023-10-27",
+      "sourceSequence": 52,
+      "species": "cattle",
+      "culledHeadCount": 80,
+      "province": "경기",
+      "cityCounty": "포천시",
+      "region": "경기 포천시",
+      "coordinates": {
+        "latitude": 37.8948267,
+        "longitude": 127.2007295,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "포천시, 경기도, 대한민국",
+        "placeName": "포천시, 경기도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-053",
+      "disease": "LSD",
+      "occurredAt": "2023-10-27",
+      "sourceSequence": 53,
+      "species": "cattle",
+      "culledHeadCount": 55,
+      "province": "경기",
+      "cityCounty": "화성시",
+      "region": "경기 화성시",
+      "coordinates": {
+        "latitude": 37.1994653,
+        "longitude": 126.8312632,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "화성시, 경기도, 대한민국",
+        "placeName": "화성시, 경기도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-054",
+      "disease": "LSD",
+      "occurredAt": "2023-10-27",
+      "sourceSequence": 54,
+      "species": "cattle",
+      "culledHeadCount": 53,
+      "province": "충남",
+      "cityCounty": "서산시",
+      "region": "충남 서산시",
+      "coordinates": {
+        "latitude": 36.784499,
+        "longitude": 126.450317,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "서산시, 충청남도, 대한민국",
+        "placeName": "서산시, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-055",
+      "disease": "LSD",
+      "occurredAt": "2023-10-27",
+      "sourceSequence": 55,
+      "species": "cattle",
+      "culledHeadCount": 28,
+      "province": "강원",
+      "cityCounty": "양구군",
+      "region": "강원 양구군",
+      "coordinates": {
+        "latitude": 38.1096812,
+        "longitude": 127.9900596,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "양구군, 강원특별자치도, 대한민국",
+        "placeName": "양구군, 강원특별자치도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-056",
+      "disease": "LSD",
+      "occurredAt": "2023-10-27",
+      "sourceSequence": 56,
+      "species": "cattle",
+      "culledHeadCount": 5,
+      "province": "경기",
+      "cityCounty": "여주시",
+      "region": "경기 여주시",
+      "coordinates": {
+        "latitude": 37.2982901,
+        "longitude": 127.637033,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "여주시, 경기도, 대한민국",
+        "placeName": "여주시, 경기도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-057",
+      "disease": "LSD",
+      "occurredAt": "2023-10-27",
+      "sourceSequence": 57,
+      "species": "cattle",
+      "culledHeadCount": 4,
+      "province": "경기",
+      "cityCounty": "시흥시",
+      "region": "경기 시흥시",
+      "coordinates": {
+        "latitude": 37.3798891,
+        "longitude": 126.8032255,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "시흥시, 경기도, 대한민국",
+        "placeName": "시흥시, 경기도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-058",
+      "disease": "LSD",
+      "occurredAt": "2023-10-27",
+      "sourceSequence": 58,
+      "species": "cattle",
+      "culledHeadCount": 157,
+      "province": "충남",
+      "cityCounty": "아산시",
+      "region": "충남 아산시",
+      "coordinates": {
+        "latitude": 36.7899498,
+        "longitude": 127.0026769,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "아산시, 충청남도, 대한민국",
+        "placeName": "아산시, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-059",
+      "disease": "LSD",
+      "occurredAt": "2023-10-28",
+      "sourceSequence": 59,
+      "species": "cattle",
+      "culledHeadCount": 23,
+      "province": "강원",
+      "cityCounty": "고성군",
+      "region": "강원 고성군",
+      "coordinates": {
+        "latitude": 38.3808,
+        "longitude": 128.4678,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "고성군, 강원특별자치도, 대한민국",
+        "placeName": "고성군, 강원특별자치도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-060",
+      "disease": "LSD",
+      "occurredAt": "2023-10-28",
+      "sourceSequence": 60,
+      "species": "cattle",
+      "culledHeadCount": 31,
+      "province": "경기",
+      "cityCounty": "연천군",
+      "region": "경기 연천군",
+      "coordinates": {
+        "latitude": 38.0964,
+        "longitude": 127.0746,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "연천군, 경기도, 대한민국",
+        "placeName": "연천군, 경기도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-061",
+      "disease": "LSD",
+      "occurredAt": "2023-10-28",
+      "sourceSequence": 61,
+      "species": "cattle",
+      "culledHeadCount": 134,
+      "province": "전남",
+      "cityCounty": "무안군",
+      "region": "전남 무안군",
+      "coordinates": {
+        "latitude": 34.9905794,
+        "longitude": 126.4812377,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "무안군, 대한민국",
+        "placeName": "무안군, 전남광주통합특별시, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-062",
+      "disease": "LSD",
+      "occurredAt": "2023-10-29",
+      "sourceSequence": 62,
+      "species": "cattle",
+      "culledHeadCount": 35,
+      "province": "충남",
+      "cityCounty": "당진시",
+      "region": "충남 당진시",
+      "coordinates": {
+        "latitude": 36.8904083,
+        "longitude": 126.6461833,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "당진시, 충청남도, 대한민국",
+        "placeName": "당진시, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-063",
+      "disease": "LSD",
+      "occurredAt": "2023-10-29",
+      "sourceSequence": 63,
+      "species": "cattle",
+      "culledHeadCount": 54,
+      "province": "전북",
+      "cityCounty": "고창군",
+      "region": "전북 고창군",
+      "coordinates": {
+        "latitude": 35.4355,
+        "longitude": 126.7021,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "고창군, 전북특별자치도, 대한민국",
+        "placeName": "고창군, 전북특별자치도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-064",
+      "disease": "LSD",
+      "occurredAt": "2023-10-29",
+      "sourceSequence": 64,
+      "species": "cattle",
+      "culledHeadCount": 13,
+      "province": "강원",
+      "cityCounty": "철원군",
+      "region": "강원 철원군",
+      "coordinates": {
+        "latitude": 38.1468023,
+        "longitude": 127.3133,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "철원군, 강원특별자치도, 대한민국",
+        "placeName": "철원군, 강원특별자치도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-065",
+      "disease": "LSD",
+      "occurredAt": "2023-10-30",
+      "sourceSequence": 65,
+      "species": "cattle",
+      "culledHeadCount": 29,
+      "province": "경남",
+      "cityCounty": "창원시",
+      "region": "경남 창원시",
+      "coordinates": {
+        "latitude": 35.227956,
+        "longitude": 128.6818586,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "창원시, 경상남도, 대한민국",
+        "placeName": "창원시, 경상남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-066",
+      "disease": "LSD",
+      "occurredAt": "2023-10-30",
+      "sourceSequence": 66,
+      "species": "cattle",
+      "culledHeadCount": 29,
+      "province": "경기",
+      "cityCounty": "포천시",
+      "region": "경기 포천시",
+      "coordinates": {
+        "latitude": 37.8948267,
+        "longitude": 127.2007295,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "포천시, 경기도, 대한민국",
+        "placeName": "포천시, 경기도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-067",
+      "disease": "LSD",
+      "occurredAt": "2023-10-30",
+      "sourceSequence": 67,
+      "species": "cattle",
+      "culledHeadCount": 110,
+      "province": "경기",
+      "cityCounty": "포천시",
+      "region": "경기 포천시",
+      "coordinates": {
+        "latitude": 37.8948267,
+        "longitude": 127.2007295,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "포천시, 경기도, 대한민국",
+        "placeName": "포천시, 경기도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-068",
+      "disease": "LSD",
+      "occurredAt": "2023-10-30",
+      "sourceSequence": 68,
+      "species": "cattle",
+      "culledHeadCount": 228,
+      "province": "인천",
+      "cityCounty": "강화군",
+      "region": "인천 강화군",
+      "coordinates": {
+        "latitude": 37.746,
+        "longitude": 126.488,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "강화군, 인천광역시, 대한민국",
+        "placeName": "강화군, 인천광역시, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-069",
+      "disease": "LSD",
+      "occurredAt": "2023-10-30",
+      "sourceSequence": 69,
+      "species": "cattle",
+      "culledHeadCount": 283,
+      "province": "전북",
+      "cityCounty": "고창군",
+      "region": "전북 고창군",
+      "coordinates": {
+        "latitude": 35.4355,
+        "longitude": 126.7021,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "고창군, 전북특별자치도, 대한민국",
+        "placeName": "고창군, 전북특별자치도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-070",
+      "disease": "LSD",
+      "occurredAt": "2023-10-31",
+      "sourceSequence": 70,
+      "species": "cattle",
+      "culledHeadCount": 60,
+      "province": "전남",
+      "cityCounty": "신안군",
+      "region": "전남 신안군",
+      "coordinates": {
+        "latitude": 34.8331095,
+        "longitude": 126.3522531,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "신안군, 전라남도, 대한민국",
+        "placeName": "신안군, 전남광주통합특별시, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-071",
+      "disease": "LSD",
+      "occurredAt": "2023-10-31",
+      "sourceSequence": 71,
+      "species": "cattle",
+      "culledHeadCount": 9,
+      "province": "충남",
+      "cityCounty": "당진시",
+      "region": "충남 당진시",
+      "coordinates": {
+        "latitude": 36.8904083,
+        "longitude": 126.6461833,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "당진시, 충청남도, 대한민국",
+        "placeName": "당진시, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-072",
+      "disease": "LSD",
+      "occurredAt": "2023-10-31",
+      "sourceSequence": 72,
+      "species": "cattle",
+      "culledHeadCount": 4,
+      "province": "충남",
+      "cityCounty": "서산시",
+      "region": "충남 서산시",
+      "coordinates": {
+        "latitude": 36.784499,
+        "longitude": 126.450317,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "서산시, 충청남도, 대한민국",
+        "placeName": "서산시, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-073",
+      "disease": "LSD",
+      "occurredAt": "2023-10-31",
+      "sourceSequence": 73,
+      "species": "cattle",
+      "culledHeadCount": 6,
+      "province": "충남",
+      "cityCounty": "서산시",
+      "region": "충남 서산시",
+      "coordinates": {
+        "latitude": 36.784499,
+        "longitude": 126.450317,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "서산시, 충청남도, 대한민국",
+        "placeName": "서산시, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-074",
+      "disease": "LSD",
+      "occurredAt": "2023-10-31",
+      "sourceSequence": 74,
+      "species": "cattle",
+      "culledHeadCount": 49,
+      "province": "충남",
+      "cityCounty": "서산시",
+      "region": "충남 서산시",
+      "coordinates": {
+        "latitude": 36.784499,
+        "longitude": 126.450317,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "서산시, 충청남도, 대한민국",
+        "placeName": "서산시, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-075",
+      "disease": "LSD",
+      "occurredAt": "2023-11-01",
+      "sourceSequence": 75,
+      "species": "cattle",
+      "culledHeadCount": 17,
+      "province": "충남",
+      "cityCounty": "서산시",
+      "region": "충남 서산시",
+      "coordinates": {
+        "latitude": 36.784499,
+        "longitude": 126.450317,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "서산시, 충청남도, 대한민국",
+        "placeName": "서산시, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-076",
+      "disease": "LSD",
+      "occurredAt": "2023-11-02",
+      "sourceSequence": 76,
+      "species": "cattle",
+      "culledHeadCount": 9,
+      "province": "충남",
+      "cityCounty": "서산시",
+      "region": "충남 서산시",
+      "coordinates": {
+        "latitude": 36.784499,
+        "longitude": 126.450317,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "서산시, 충청남도, 대한민국",
+        "placeName": "서산시, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-077",
+      "disease": "LSD",
+      "occurredAt": "2023-11-03",
+      "sourceSequence": 77,
+      "species": "cattle",
+      "culledHeadCount": 86,
+      "province": "인천",
+      "cityCounty": "강화군",
+      "region": "인천 강화군",
+      "coordinates": {
+        "latitude": 37.746,
+        "longitude": 126.488,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "강화군, 인천광역시, 대한민국",
+        "placeName": "강화군, 인천광역시, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-078",
+      "disease": "LSD",
+      "occurredAt": "2023-11-03",
+      "sourceSequence": 78,
+      "species": "cattle",
+      "culledHeadCount": 11,
+      "province": "충남",
+      "cityCounty": "당진시",
+      "region": "충남 당진시",
+      "coordinates": {
+        "latitude": 36.8904083,
+        "longitude": 126.6461833,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "당진시, 충청남도, 대한민국",
+        "placeName": "당진시, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-079",
+      "disease": "LSD",
+      "occurredAt": "2023-11-05",
+      "sourceSequence": 79,
+      "species": "cattle",
+      "culledHeadCount": 20,
+      "province": "충남",
+      "cityCounty": "당진시",
+      "region": "충남 당진시",
+      "coordinates": {
+        "latitude": 36.8904083,
+        "longitude": 126.6461833,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "당진시, 충청남도, 대한민국",
+        "placeName": "당진시, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-080",
+      "disease": "LSD",
+      "occurredAt": "2023-11-06",
+      "sourceSequence": 80,
+      "species": "cattle",
+      "culledHeadCount": 13,
+      "province": "충북",
+      "cityCounty": "충주시",
+      "region": "충북 충주시",
+      "coordinates": {
+        "latitude": 36.9907334,
+        "longitude": 127.9259891,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "충주시, 충청북도, 대한민국",
+        "placeName": "충주시, 충청북도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-081",
+      "disease": "LSD",
+      "occurredAt": "2023-11-06",
+      "sourceSequence": 81,
+      "species": "cattle",
+      "culledHeadCount": 66,
+      "province": "강원",
+      "cityCounty": "고성군",
+      "region": "강원 고성군",
+      "coordinates": {
+        "latitude": 38.3808,
+        "longitude": 128.4678,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "고성군, 강원특별자치도, 대한민국",
+        "placeName": "고성군, 강원특별자치도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-082",
+      "disease": "LSD",
+      "occurredAt": "2023-11-06",
+      "sourceSequence": 82,
+      "species": "cattle",
+      "culledHeadCount": 188,
+      "province": "충남",
+      "cityCounty": "서산시",
+      "region": "충남 서산시",
+      "coordinates": {
+        "latitude": 36.784499,
+        "longitude": 126.450317,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "서산시, 충청남도, 대한민국",
+        "placeName": "서산시, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-083",
+      "disease": "LSD",
+      "occurredAt": "2023-11-06",
+      "sourceSequence": 83,
+      "species": "cattle",
+      "culledHeadCount": 23,
+      "province": "충남",
+      "cityCounty": "당진시",
+      "region": "충남 당진시",
+      "coordinates": {
+        "latitude": 36.8904083,
+        "longitude": 126.6461833,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "당진시, 충청남도, 대한민국",
+        "placeName": "당진시, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-084",
+      "disease": "LSD",
+      "occurredAt": "2023-11-06",
+      "sourceSequence": 84,
+      "species": "cattle",
+      "culledHeadCount": 56,
+      "province": "충남",
+      "cityCounty": "서산시",
+      "region": "충남 서산시",
+      "coordinates": {
+        "latitude": 36.784499,
+        "longitude": 126.450317,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "서산시, 충청남도, 대한민국",
+        "placeName": "서산시, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-085",
+      "disease": "LSD",
+      "occurredAt": "2023-11-07",
+      "sourceSequence": 85,
+      "species": "cattle",
+      "culledHeadCount": 123,
+      "province": "충남",
+      "cityCounty": "청양군",
+      "region": "충남 청양군",
+      "coordinates": {
+        "latitude": 36.4591386,
+        "longitude": 126.8021303,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "청양군, 충청남도, 대한민국",
+        "placeName": "청양군, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-086",
+      "disease": "LSD",
+      "occurredAt": "2023-11-08",
+      "sourceSequence": 86,
+      "species": "cattle",
+      "culledHeadCount": 9,
+      "province": "충남",
+      "cityCounty": "서산시",
+      "region": "충남 서산시",
+      "coordinates": {
+        "latitude": 36.784499,
+        "longitude": 126.450317,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "서산시, 충청남도, 대한민국",
+        "placeName": "서산시, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-087",
+      "disease": "LSD",
+      "occurredAt": "2023-11-08",
+      "sourceSequence": 87,
+      "species": "cattle",
+      "culledHeadCount": 31,
+      "province": "전북",
+      "cityCounty": "고창군",
+      "region": "전북 고창군",
+      "coordinates": {
+        "latitude": 35.4355,
+        "longitude": 126.7021,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "고창군, 전북특별자치도, 대한민국",
+        "placeName": "고창군, 전북특별자치도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-088",
+      "disease": "LSD",
+      "occurredAt": "2023-11-09",
+      "sourceSequence": 88,
+      "species": "cattle",
+      "culledHeadCount": 5,
+      "province": "충남",
+      "cityCounty": "서산시",
+      "region": "충남 서산시",
+      "coordinates": {
+        "latitude": 36.784499,
+        "longitude": 126.450317,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "서산시, 충청남도, 대한민국",
+        "placeName": "서산시, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-089",
+      "disease": "LSD",
+      "occurredAt": "2023-11-10",
+      "sourceSequence": 89,
+      "species": "cattle",
+      "culledHeadCount": 47,
+      "province": "충북",
+      "cityCounty": "충주시",
+      "region": "충북 충주시",
+      "coordinates": {
+        "latitude": 36.9907334,
+        "longitude": 127.9259891,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "충주시, 충청북도, 대한민국",
+        "placeName": "충주시, 충청북도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-090",
+      "disease": "LSD",
+      "occurredAt": "2023-11-10",
+      "sourceSequence": 90,
+      "species": "cattle",
+      "culledHeadCount": 8,
+      "province": "충남",
+      "cityCounty": "예산군",
+      "region": "충남 예산군",
+      "coordinates": {
+        "latitude": 36.6808989,
+        "longitude": 126.8448742,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "예산군, 충청남도, 대한민국",
+        "placeName": "예산군, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-091",
+      "disease": "LSD",
+      "occurredAt": "2023-11-10",
+      "sourceSequence": 91,
+      "species": "cattle",
+      "culledHeadCount": 97,
+      "province": "전북",
+      "cityCounty": "고창군",
+      "region": "전북 고창군",
+      "coordinates": {
+        "latitude": 35.4355,
+        "longitude": 126.7021,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "고창군, 전북특별자치도, 대한민국",
+        "placeName": "고창군, 전북특별자치도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-092",
+      "disease": "LSD",
+      "occurredAt": "2023-11-12",
+      "sourceSequence": 92,
+      "species": "cattle",
+      "culledHeadCount": 126,
+      "province": "전북",
+      "cityCounty": "고창군",
+      "region": "전북 고창군",
+      "coordinates": {
+        "latitude": 35.4355,
+        "longitude": 126.7021,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "고창군, 전북특별자치도, 대한민국",
+        "placeName": "고창군, 전북특별자치도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-093",
+      "disease": "LSD",
+      "occurredAt": "2023-11-12",
+      "sourceSequence": 93,
+      "species": "cattle",
+      "culledHeadCount": 82,
+      "province": "전북",
+      "cityCounty": "고창군",
+      "region": "전북 고창군",
+      "coordinates": {
+        "latitude": 35.4355,
+        "longitude": 126.7021,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "고창군, 전북특별자치도, 대한민국",
+        "placeName": "고창군, 전북특별자치도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-094",
+      "disease": "LSD",
+      "occurredAt": "2023-11-13",
+      "sourceSequence": 94,
+      "species": "cattle",
+      "culledHeadCount": 13,
+      "province": "경북",
+      "cityCounty": "김천시",
+      "region": "경북 김천시",
+      "coordinates": {
+        "latitude": 36.1398035,
+        "longitude": 128.1139534,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "김천시, 경상북도, 대한민국",
+        "placeName": "김천시, 경상북도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-095",
+      "disease": "LSD",
+      "occurredAt": "2023-11-13",
+      "sourceSequence": 95,
+      "species": "cattle",
+      "culledHeadCount": 1,
+      "province": "충북",
+      "cityCounty": "청주시",
+      "region": "충북 청주시",
+      "coordinates": {
+        "latitude": 36.6421169,
+        "longitude": 127.4891742,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "청주시, 충청북도, 대한민국",
+        "placeName": "청주시, 충청북도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-096",
+      "disease": "LSD",
+      "occurredAt": "2023-11-13",
+      "sourceSequence": 96,
+      "species": "cattle",
+      "culledHeadCount": 8,
+      "province": "전북",
+      "cityCounty": "고창군",
+      "region": "전북 고창군",
+      "coordinates": {
+        "latitude": 35.4355,
+        "longitude": 126.7021,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "고창군, 전북특별자치도, 대한민국",
+        "placeName": "고창군, 전북특별자치도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-097",
+      "disease": "LSD",
+      "occurredAt": "2023-11-13",
+      "sourceSequence": 97,
+      "species": "cattle",
+      "culledHeadCount": 31,
+      "province": "전북",
+      "cityCounty": "고창군",
+      "region": "전북 고창군",
+      "coordinates": {
+        "latitude": 35.4355,
+        "longitude": 126.7021,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "고창군, 전북특별자치도, 대한민국",
+        "placeName": "고창군, 전북특별자치도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-098",
+      "disease": "LSD",
+      "occurredAt": "2023-11-14",
+      "sourceSequence": 98,
+      "species": "cattle",
+      "culledHeadCount": 38,
+      "province": "전북",
+      "cityCounty": "고창군",
+      "region": "전북 고창군",
+      "coordinates": {
+        "latitude": 35.4355,
+        "longitude": 126.7021,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "고창군, 전북특별자치도, 대한민국",
+        "placeName": "고창군, 전북특별자치도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-099",
+      "disease": "LSD",
+      "occurredAt": "2023-11-15",
+      "sourceSequence": 99,
+      "species": "cattle",
+      "culledHeadCount": 4,
+      "province": "전북",
+      "cityCounty": "고창군",
+      "region": "전북 고창군",
+      "coordinates": {
+        "latitude": 35.4355,
+        "longitude": 126.7021,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "고창군, 전북특별자치도, 대한민국",
+        "placeName": "고창군, 전북특별자치도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-100",
+      "disease": "LSD",
+      "occurredAt": "2023-11-15",
+      "sourceSequence": 100,
+      "species": "cattle",
+      "culledHeadCount": 22,
+      "province": "충남",
+      "cityCounty": "부여군",
+      "region": "충남 부여군",
+      "coordinates": {
+        "latitude": 36.2753678,
+        "longitude": 126.910107,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "부여군, 충청남도, 대한민국",
+        "placeName": "부여군, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-101",
+      "disease": "LSD",
+      "occurredAt": "2023-11-15",
+      "sourceSequence": 101,
+      "species": "cattle",
+      "culledHeadCount": 143,
+      "province": "전북",
+      "cityCounty": "고창군",
+      "region": "전북 고창군",
+      "coordinates": {
+        "latitude": 35.4355,
+        "longitude": 126.7021,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "고창군, 전북특별자치도, 대한민국",
+        "placeName": "고창군, 전북특별자치도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-102",
+      "disease": "LSD",
+      "occurredAt": "2023-11-16",
+      "sourceSequence": 102,
+      "species": "cattle",
+      "culledHeadCount": 2,
+      "province": "충남",
+      "cityCounty": "부여군",
+      "region": "충남 부여군",
+      "coordinates": {
+        "latitude": 36.2753678,
+        "longitude": 126.910107,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "부여군, 충청남도, 대한민국",
+        "placeName": "부여군, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-103",
+      "disease": "LSD",
+      "occurredAt": "2023-11-16",
+      "sourceSequence": 103,
+      "species": "cattle",
+      "culledHeadCount": 1,
+      "province": "전북",
+      "cityCounty": "임실군",
+      "region": "전북 임실군",
+      "coordinates": {
+        "latitude": 35.6174,
+        "longitude": 127.2893,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "임실군, 전북특별자치도, 대한민국",
+        "placeName": "임실군, 전북특별자치도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-104",
+      "disease": "LSD",
+      "occurredAt": "2023-11-17",
+      "sourceSequence": 104,
+      "species": "cattle",
+      "culledHeadCount": 11,
+      "province": "충북",
+      "cityCounty": "청주시",
+      "region": "충북 청주시",
+      "coordinates": {
+        "latitude": 36.6421169,
+        "longitude": 127.4891742,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "청주시, 충청북도, 대한민국",
+        "placeName": "청주시, 충청북도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-105",
+      "disease": "LSD",
+      "occurredAt": "2023-11-17",
+      "sourceSequence": 105,
+      "species": "cattle",
+      "culledHeadCount": 10,
+      "province": "전북",
+      "cityCounty": "고창군",
+      "region": "전북 고창군",
+      "coordinates": {
+        "latitude": 35.4355,
+        "longitude": 126.7021,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "고창군, 전북특별자치도, 대한민국",
+        "placeName": "고창군, 전북특별자치도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-106",
+      "disease": "LSD",
+      "occurredAt": "2023-11-18",
+      "sourceSequence": 106,
+      "species": "cattle",
+      "culledHeadCount": 20,
+      "province": "강원",
+      "cityCounty": "고성군",
+      "region": "강원 고성군",
+      "coordinates": {
+        "latitude": 38.3808,
+        "longitude": 128.4678,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "고성군, 강원특별자치도, 대한민국",
+        "placeName": "고성군, 강원특별자치도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2023-107",
+      "disease": "LSD",
+      "occurredAt": "2023-11-20",
+      "sourceSequence": 107,
+      "species": "cattle",
+      "culledHeadCount": 5,
+      "province": "경북",
+      "cityCounty": "예천군",
+      "region": "경북 예천군",
+      "coordinates": {
+        "latitude": 36.6462999,
+        "longitude": 128.4376,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "예천군, 경상북도, 대한민국",
+        "placeName": "예천군, 경상북도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2024-001",
+      "disease": "LSD",
+      "occurredAt": "2024-08-12",
+      "sourceSequence": 1,
+      "species": "cattle",
+      "culledHeadCount": 28,
+      "province": "경기",
+      "cityCounty": "안성시",
+      "region": "경기 안성시",
+      "coordinates": {
+        "latitude": 37.007773,
+        "longitude": 127.279971,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "안성시, 경기도, 대한민국",
+        "placeName": "안성시, 경기도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2024-002",
+      "disease": "LSD",
+      "occurredAt": "2024-08-31",
+      "sourceSequence": 2,
+      "species": "cattle",
+      "culledHeadCount": 6,
+      "province": "경기",
+      "cityCounty": "이천시",
+      "region": "경기 이천시",
+      "coordinates": {
+        "latitude": 37.2808823,
+        "longitude": 127.4429132,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "이천시, 경기도, 대한민국",
+        "placeName": "이천시, 경기도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2024-003",
+      "disease": "LSD",
+      "occurredAt": "2024-09-11",
+      "sourceSequence": 3,
+      "species": "cattle",
+      "culledHeadCount": 3,
+      "province": "강원",
+      "cityCounty": "양구군",
+      "region": "강원 양구군",
+      "coordinates": {
+        "latitude": 38.1096812,
+        "longitude": 127.9900596,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "양구군, 강원특별자치도, 대한민국",
+        "placeName": "양구군, 강원특별자치도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2024-004",
+      "disease": "LSD",
+      "occurredAt": "2024-09-18",
+      "sourceSequence": 4,
+      "species": "cattle",
+      "culledHeadCount": 9,
+      "province": "경기",
+      "cityCounty": "여주시",
+      "region": "경기 여주시",
+      "coordinates": {
+        "latitude": 37.2982901,
+        "longitude": 127.637033,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "여주시, 경기도, 대한민국",
+        "placeName": "여주시, 경기도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2024-005",
+      "disease": "LSD",
+      "occurredAt": "2024-09-19",
+      "sourceSequence": 5,
+      "species": "cattle",
+      "culledHeadCount": 2,
+      "province": "충북",
+      "cityCounty": "충주시",
+      "region": "충북 충주시",
+      "coordinates": {
+        "latitude": 36.9907334,
+        "longitude": 127.9259891,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "충주시, 충청북도, 대한민국",
+        "placeName": "충주시, 충청북도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2024-006",
+      "disease": "LSD",
+      "occurredAt": "2024-10-02",
+      "sourceSequence": 6,
+      "species": "cattle",
+      "culledHeadCount": 3,
+      "province": "경기",
+      "cityCounty": "평택시",
+      "region": "경기 평택시",
+      "coordinates": {
+        "latitude": 36.9924966,
+        "longitude": 127.1127168,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "평택시, 경기도, 대한민국",
+        "placeName": "평택시, 경기도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2024-007",
+      "disease": "LSD",
+      "occurredAt": "2024-10-03",
+      "sourceSequence": 7,
+      "species": "cattle",
+      "culledHeadCount": 10,
+      "province": "강원",
+      "cityCounty": "양양군",
+      "region": "강원 양양군",
+      "coordinates": {
+        "latitude": 38.0751,
+        "longitude": 128.6191,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "양양군, 강원특별자치도, 대한민국",
+        "placeName": "양양군, 강원특별자치도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2024-008",
+      "disease": "LSD",
+      "occurredAt": "2024-10-04",
+      "sourceSequence": 8,
+      "species": "cattle",
+      "culledHeadCount": 3,
+      "province": "강원",
+      "cityCounty": "고성군",
+      "region": "강원 고성군",
+      "coordinates": {
+        "latitude": 38.3808,
+        "longitude": 128.4678,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "고성군, 강원특별자치도, 대한민국",
+        "placeName": "고성군, 강원특별자치도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2024-009",
+      "disease": "LSD",
+      "occurredAt": "2024-10-10",
+      "sourceSequence": 9,
+      "species": "cattle",
+      "culledHeadCount": 10,
+      "province": "강원",
+      "cityCounty": "양양군",
+      "region": "강원 양양군",
+      "coordinates": {
+        "latitude": 38.0751,
+        "longitude": 128.6191,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "양양군, 강원특별자치도, 대한민국",
+        "placeName": "양양군, 강원특별자치도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2024-010",
+      "disease": "LSD",
+      "occurredAt": "2024-10-19",
+      "sourceSequence": 10,
+      "species": "cattle",
+      "culledHeadCount": 12,
+      "province": "경북",
+      "cityCounty": "상주시",
+      "region": "경북 상주시",
+      "coordinates": {
+        "latitude": 36.4104478,
+        "longitude": 128.1590614,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "상주시, 경상북도, 대한민국",
+        "placeName": "상주시, 경상북도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2024-011",
+      "disease": "LSD",
+      "occurredAt": "2024-10-24",
+      "sourceSequence": 11,
+      "species": "cattle",
+      "culledHeadCount": 5,
+      "province": "강원",
+      "cityCounty": "인제군",
+      "region": "강원 인제군",
+      "coordinates": {
+        "latitude": 38.0694,
+        "longitude": 128.1706,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "인제군, 강원특별자치도, 대한민국",
+        "placeName": "인제군, 강원특별자치도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2024-012",
+      "disease": "LSD",
+      "occurredAt": "2024-10-24",
+      "sourceSequence": 12,
+      "species": "cattle",
+      "culledHeadCount": 17,
+      "province": "충남",
+      "cityCounty": "당진시",
+      "region": "충남 당진시",
+      "coordinates": {
+        "latitude": 36.8904083,
+        "longitude": 126.6461833,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "당진시, 충청남도, 대한민국",
+        "placeName": "당진시, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2024-013",
+      "disease": "LSD",
+      "occurredAt": "2024-10-25",
+      "sourceSequence": 13,
+      "species": "cattle",
+      "culledHeadCount": 5,
+      "province": "강원",
+      "cityCounty": "원주시",
+      "region": "강원 원주시",
+      "coordinates": {
+        "latitude": 37.3420996,
+        "longitude": 127.9197603,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "원주시, 강원특별자치도, 대한민국",
+        "placeName": "원주시, 강원특별자치도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2024-014",
+      "disease": "LSD",
+      "occurredAt": "2024-10-25",
+      "sourceSequence": 14,
+      "species": "cattle",
+      "culledHeadCount": 6,
+      "province": "경북",
+      "cityCounty": "문경시",
+      "region": "경북 문경시",
+      "coordinates": {
+        "latitude": 36.5858541,
+        "longitude": 128.1870612,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "문경시, 경상북도, 대한민국",
+        "placeName": "문경시, 경상북도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2024-015",
+      "disease": "LSD",
+      "occurredAt": "2024-10-27",
+      "sourceSequence": 15,
+      "species": "cattle",
+      "culledHeadCount": 43,
+      "province": "충북",
+      "cityCounty": "충주시",
+      "region": "충북 충주시",
+      "coordinates": {
+        "latitude": 36.9907334,
+        "longitude": 127.9259891,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "충주시, 충청북도, 대한민국",
+        "placeName": "충주시, 충청북도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2024-016",
+      "disease": "LSD",
+      "occurredAt": "2024-10-28",
+      "sourceSequence": 16,
+      "species": "cattle",
+      "culledHeadCount": 27,
+      "province": "강원",
+      "cityCounty": "원주시",
+      "region": "강원 원주시",
+      "coordinates": {
+        "latitude": 37.3420996,
+        "longitude": 127.9197603,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "원주시, 강원특별자치도, 대한민국",
+        "placeName": "원주시, 강원특별자치도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2024-017",
+      "disease": "LSD",
+      "occurredAt": "2024-10-29",
+      "sourceSequence": 17,
+      "species": "cattle",
+      "culledHeadCount": 43,
+      "province": "경기",
+      "cityCounty": "안성시",
+      "region": "경기 안성시",
+      "coordinates": {
+        "latitude": 37.007773,
+        "longitude": 127.279971,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "안성시, 경기도, 대한민국",
+        "placeName": "안성시, 경기도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2024-018",
+      "disease": "LSD",
+      "occurredAt": "2024-11-13",
+      "sourceSequence": 18,
+      "species": "cattle",
+      "culledHeadCount": 30,
+      "province": "대구",
+      "cityCounty": "군위군",
+      "region": "대구 군위군",
+      "coordinates": {
+        "latitude": 36.2425017,
+        "longitude": 128.5732027,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "군위군, 대구광역시, 대한민국",
+        "placeName": "군위군, 대구광역시, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2024-019",
+      "disease": "LSD",
+      "occurredAt": "2024-11-14",
+      "sourceSequence": 19,
+      "species": "cattle",
+      "culledHeadCount": 39,
+      "province": "충남",
+      "cityCounty": "아산시",
+      "region": "충남 아산시",
+      "coordinates": {
+        "latitude": 36.7899498,
+        "longitude": 127.0026769,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "아산시, 충청남도, 대한민국",
+        "placeName": "아산시, 충청남도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2024-020",
+      "disease": "LSD",
+      "occurredAt": "2024-11-17",
+      "sourceSequence": 20,
+      "species": "cattle",
+      "culledHeadCount": 2,
+      "province": "전남",
+      "cityCounty": "영암군",
+      "region": "전남 영암군",
+      "coordinates": {
+        "latitude": 34.800052,
+        "longitude": 126.6970381,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "영암군, 대한민국",
+        "placeName": "영암군, 전남광주통합특별시, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2024-021",
+      "disease": "LSD",
+      "occurredAt": "2024-11-25",
+      "sourceSequence": 21,
+      "species": "cattle",
+      "culledHeadCount": 1,
+      "province": "대구",
+      "cityCounty": "동구",
+      "region": "대구 동구",
+      "coordinates": {
+        "latitude": 35.8865,
+        "longitude": 128.6355,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "동구, 대구광역시, 대한민국",
+        "placeName": "동구, 대구광역시, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2024-022",
+      "disease": "LSD",
+      "occurredAt": "2024-12-03",
+      "sourceSequence": 22,
+      "species": "cattle",
+      "culledHeadCount": null,
+      "province": "충북",
+      "cityCounty": "보은군",
+      "region": "충북 보은군",
+      "coordinates": {
+        "latitude": 36.4890118,
+        "longitude": 127.729242,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "보은군, 충청북도, 대한민국",
+        "placeName": "보은군, 충청북도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2024-023",
+      "disease": "LSD",
+      "occurredAt": "2024-12-08",
+      "sourceSequence": 23,
+      "species": "cattle",
+      "culledHeadCount": null,
+      "province": "전남",
+      "cityCounty": "여수시",
+      "region": "전남 여수시",
+      "coordinates": {
+        "latitude": 34.7546257,
+        "longitude": 127.659859,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "여수시, 대한민국",
+        "placeName": "여수시, 전남광주통합특별시, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2024-024",
+      "disease": "LSD",
+      "occurredAt": "2024-12-23",
+      "sourceSequence": 24,
+      "species": "cattle",
+      "culledHeadCount": null,
+      "province": "전남",
+      "cityCounty": "고흥군",
+      "region": "전남 고흥군",
+      "coordinates": {
+        "latitude": 34.6044123,
+        "longitude": 127.276384,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "고흥군, 대한민국",
+        "placeName": "고흥군, 전남광주통합특별시, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    },
+    {
+      "id": "lsd-2026-001",
+      "disease": "LSD",
+      "occurredAt": "2026-07-10",
+      "sourceSequence": 1,
+      "species": "cattle",
+      "culledHeadCount": null,
+      "province": "전북",
+      "cityCounty": "순창군",
+      "region": "전북 순창군",
+      "coordinates": {
+        "latitude": 35.3741,
+        "longitude": 127.1374,
+        "precision": "OpenStreetMap 행정구역 대표 좌표",
+        "query": "순창군, 전북특별자치도, 대한민국",
+        "placeName": "순창군, 전북특별자치도, 대한민국",
+        "sourceUrl": "https://nominatim.openstreetmap.org/search",
+        "license": "OpenStreetMap contributors, ODbL 1.0"
+      }
+    }
+  ]
+}
