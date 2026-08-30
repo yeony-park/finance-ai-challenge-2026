@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import { access, readFile } from "node:fs/promises";
 import path from "node:path";
 
@@ -37,8 +38,8 @@ describe("한돈 ASF 정적 맥락 스냅샷", () => {
     expect(snapshot.validation.coordinateComparison.matchedCount).toBe(79);
   });
 
-  test("게시물 86건의 첨부 원본과 출처 메타데이터를 보존한다", async () => {
-    const documents = JSON.parse(
+  const loadDocuments = async () =>
+    JSON.parse(
       await readFile(
         path.join(SNAPSHOT_DIR, "mafra_asf_documents.json"),
         "utf8",
@@ -51,18 +52,30 @@ describe("한돈 ASF 정적 맥락 스냅샷", () => {
       }[];
     };
 
+  test("게시물 86건의 출처 메타데이터를 보존한다", async () => {
+    const documents = await loadDocuments();
+
     expect(documents.postCount).toBe(86);
     expect(documents.attachmentCount).toBe(86);
-    const attachments = documents.documents.flatMap(
-      (document) => document.attachments,
-    );
-    expect(attachments).toHaveLength(86);
-    await Promise.all(
-      attachments.map((attachment) =>
-        access(path.join(process.cwd(), attachment.localPath)),
-      ),
-    );
+    expect(
+      documents.documents.flatMap((document) => document.attachments),
+    ).toHaveLength(86);
   });
+
+  test.skipIf(!existsSync(path.join(SNAPSHOT_DIR, "raw")))(
+    "로컬 원문 보유 시 첨부 86건이 전부 실재한다",
+    async () => {
+      const documents = await loadDocuments();
+
+      await Promise.all(
+        documents.documents
+          .flatMap((document) => document.attachments)
+          .map((attachment) =>
+            access(path.join(process.cwd(), attachment.localPath)),
+          ),
+      );
+    },
+  );
 
   test("공개 사건 JSON에는 농장명·농장주·상세주소가 없다", () => {
     const serialized = JSON.stringify(PIG_ASF_DATA.events);
