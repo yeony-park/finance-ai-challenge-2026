@@ -58,3 +58,6 @@ data/goldset/*/
 *.tsbuildinfo
 next-env.d.ts
 data/scratch-fake/
+
+# drizzle-kit generate 드리프트 대조 스크래치 (정본은 db/migrations/)
+db/generated

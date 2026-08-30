@@ -38,6 +38,15 @@ export const SAMPLE_CORPUS: readonly CorpusDoc[] = [
       "품종·성별·등급·월별 소도체 경락가격을 제공한다. 오픈API는 data.go.kr 15058822이며 개발계정 호출 한도 때문에 월 집계를 사전 수집해 캐시로 사용한다. 발행사 제시 가격이 같은 조건 분포의 어느 위치(백분위)에 있는지 표시하는 데 쓰이며, 위치 제시일 뿐 가격 적정성 판단이 아니다.",
   },
   {
+    id: "kape-pig-auction-price",
+    kind: "public_record",
+    title: "축산물등급판정정보 — 돼지 대표가격 (등급별 경락가격)",
+    url: "https://www.data.go.kr/data/15148902/fileData.do",
+    issuer: "축산물품질평가원",
+    content:
+      "돈피·성별·등급·지역·월별 돼지 대표가격(경락가격)을 제공한다. 공공데이터포털 15148902 공식 파일 다운로드본이며 Green 라이선스로 이용 제한이 없다(메타는 data/reference/pig-auction-price/*.meta.json). 탕박·등외제외·전국(제주제외) 월 집계를 사전 수집해 캐시로 사용하며, 발행사 공시 기준가가 같은 조건 시장 분포의 어느 위치인지 표시하는 데 쓰일 뿐 가격 적정성 판단이 아니다.",
+  },
+  {
     id: "molit-rtms-nrg-trade",
     kind: "public_record",
     title: "국토교통부 상업업무용 부동산 매매 실거래가",

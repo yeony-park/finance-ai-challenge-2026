@@ -1,6 +1,7 @@
 # 서비스 API 명세 — 초안
 
 > **상태: draft** · 2026-08-27 · 구현 기준: `src/app/api/`
+> 상위 규범은 [`08-api-contract.md`](./08-api-contract.md), 집행 규칙은 [`../../contracts/api.md`](../../contracts/api.md)를 따른다. 본 문서는 현재 구현된 엔드포인트의 요청·응답을 상세히 기술한다.
 > 이 문서는 현재 배포된 서비스의 HTTP 계약을 설명한다. 구현과 충돌하면 구현·테스트를 우선하고 이 문서를 정정한다.
 > E2E 구성 요소와 요청 흐름은 [`../design/design.md`](../design/design.md)에서 설명한다.
 

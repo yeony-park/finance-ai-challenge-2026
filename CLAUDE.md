@@ -36,7 +36,20 @@ npm run reference:collect              # 경락가 월 집계 (일 1,000건 한�
 npm run reference:rtms                 # 국토부 실거래가 수집
 npm run track-record                   # 발행사 트랙레코드 (DART 공시검색)
 npm run narrative                      # LLM 눈높이 서술 생성
+npm run verify:realestate              # 부동산 검증 파이프라인
+npm run watch:refresh                  # 정정 감시 상태 파일 재생성 (data/public/watch/ — 커밋·재배포로 화면 반영)
 npm run data:manifest                  # data/MANIFEST.md 재생성 (직접 수정 금지)
+npm run goldset:prelabel               # 골드셋 선라벨 (산출물 로컬 전용 — PII)
+npm run goldset:score                  # 골드셋 채점
+```
+
+DB 스크립트(`DATABASE_URL_DIRECT` 필요 — 미설정 시 not_configured 정직 종료. 실 DB 상태 변경은 오너 실행):
+
+```bash
+npm run db:migrate   # 수기 SQL 마이그레이션 적용 (자체 러너, _migrations 추적)
+npm run db:ingest    # 참조 원장 적재 (커밋 파일 → 경락가·실거래·filing_facts)
+npm run db:seed      # 결정적·멱등 synthetic 시드 (+ 플랜 외 synthetic prune)
+npm run db:export    # DB → data/public/offerings/index.json (마스킹 게이트 경유)
 ```
 
 ## 아키텍처
@@ -50,6 +63,9 @@ npm run data:manifest                  # data/MANIFEST.md 재생성 (직접 수�
 - `src/app/` — App Router 화면(`/` 입문자 홈, `/offers` 목록, `/offers/[id]` 리포트,
   `/cattle`·`/pig`·`/art`·`/real-estate` 카테고리 착지, `/methodology`) + API
   (`/api/health`, `/api/verify/[id]`, `/api/cron/monitor` — vercel.json cron 주 2회)
+- `src/lib/db/` — Supabase Postgres 저장 계층(schema.ts=스키마 단일 진실, repositories/ file·DB 트윈,
+  seed/·ingest/·export/·cli/, ledger/=검증 실행 이력·원장 관측). 렌더 경로 DB 조회 금지 —
+  화면 데이터는 `db:export` 산출물만. 계약: `contracts/storage.md`(R-STO-*), 명세: `docs/spec/09`
 - `src/lib/content/` — 홈·체크리스트 문안의 단일 진실. 신규 사용자 대면 문안은 이 모듈에 두고
   출력 필터 감사 테스트(`content/__tests__/home-copy.test.ts`)를 통과해야 한다
 - **화면은 캐시만 읽는다** — 모든 수치·문구는 `data/public/{offerId}/report-*.json` 등
@@ -70,6 +86,9 @@ npm run data:manifest                  # data/MANIFEST.md 재생성 (직접 수�
 
 ## 프로젝트 규칙
 
+- **집행 계약 선독**: 코드·데이터 작업 전 `contracts/README.md`의 로딩 규칙을 따라 해당 계약
+  파일(`invariants.md`는 항상, API 작업 시 `api.md`, DB·데이터 작업 시 `storage.md`)을 읽는다.
+  규칙 ID(`R-INV-*` 등)로 준수 여부를 PR 본문에 명기한다. 아래 항목들은 계약의 요약이다
 - **판정 어휘**: match="일치", mismatch="원장 불일치", unverifiable="대조 불가"("미확인"은
   unverifiable 전용). 근거 0건이면 판정하지 않는다. 성별 수→거세는 예상된 상태 전이로 match
 - **UI 자기보고형 금지 (리포트 표면 한정)**: 검증 리포트·공모 목록 화면 문장의 주어는
@@ -84,6 +103,10 @@ npm run data:manifest                  # data/MANIFEST.md 재생성 (직접 수�
 - 커밋은 conventional commits(feat/fix/data/docs/…) + 한국어 설명
 
 ## 배포
+
+**배포 전 체크** (CI 없는 수동 배포 구조 — 사람이 확인):
+- [ ] `npm run build`·`npm test` 그린 (키·DB 없이 완주 — R-INV-05)
+- [ ] DB에서 화면 데이터를 새로 뽑았다면, **직전 `npm run db:export` 산출물이 익명화 게이트 테스트를 그린으로 통과**했는가 (R-STO-03 — DB 유래라고 마스킹 게이트 우회 금지). export는 `DATABASE_URL_DIRECT` 전용, 미설정이면 not_configured로 정직 종료하며 화면 데이터를 만들지 않는다.
 
 Vercel CLI 수동 배포 — git 연동 없음(푸시는 배포를 트리거하지 않는다):
 `npx -y vercel@58.9.2 deploy --prod --scope lostarkofzephyr`

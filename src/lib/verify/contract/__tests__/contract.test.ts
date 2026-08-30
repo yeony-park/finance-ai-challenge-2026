@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { isRegisteredSource } from "../../../spine/rag/corpus";
 import type { Verdict, Verifiability } from "../../types";
 import { CATTLE_CATEGORY } from "../cattle";
+import { PIG_CATEGORY } from "../pig";
 import { REAL_ESTATE_CATEGORY } from "../real-estate";
 import {
   REQUIRED_PAGE_SLOTS,
@@ -212,5 +213,69 @@ describe("real-estate 디스크립터 (01-category-contract)", () => {
     );
     expect(existence?.level).toBe("partial");
     expect(existence?.basis).toContain("층·호");
+  });
+});
+
+describe("pig 디스크립터 (01-category-contract)", () => {
+  it("실재성·가격·이행 3층 전부를 선언한다", () => {
+    expect(declaresAllLayers(PIG_CATEGORY)).toBe(true);
+  });
+
+  it("인용 출처는 전부 코퍼스 등록분 또는 proposedSources 선언분이다", () => {
+    expect(unknownSourceIds(PIG_CATEGORY, isRegisteredSource)).toEqual([]);
+  });
+
+  it("실재성 층은 unsupported로 정직하게 선언한다 (개체 이력 대조 경로 없음)", () => {
+    const existence = PIG_CATEGORY.layers.find(
+      (layer) => layer.layer === "existence",
+    );
+    expect(existence?.level).toBe("unsupported");
+    expect(existence?.publicSourceIds).toEqual([]);
+  });
+
+  it("이행 층 출처(dart)는 코퍼스 등록분이다", () => {
+    const performance = PIG_CATEGORY.layers.find(
+      (layer) => layer.layer === "performance",
+    );
+    expect(performance?.publicSourceIds.length).toBeGreaterThan(0);
+    for (const sourceId of performance?.publicSourceIds ?? []) {
+      expect(isRegisteredSource(sourceId)).toBe(true);
+    }
+  });
+
+  it("가격 층 경락가 출처는 오너 승인으로 코퍼스 등록됐다 (R-INV-13)", () => {
+    const price = PIG_CATEGORY.layers.find((layer) => layer.layer === "price");
+    expect(price?.publicSourceIds).toContain("kape-pig-auction-price");
+    expect(isRegisteredSource("kape-pig-auction-price")).toBe(true);
+    expect(PIG_CATEGORY.proposedSources).toEqual([]);
+  });
+
+  it("경락가 어댑터가 등록 출처로 정식 바인딩됐다 (implemented·fake 트윈)", () => {
+    for (const adapter of PIG_CATEGORY.adapters) {
+      expect(isRegisteredSource(adapter.sourceId)).toBe(true);
+      expect(adapter.status).toBe("implemented");
+      expect(adapter.hasFakeTwin).toBe(true);
+    }
+    expect(
+      PIG_CATEGORY.adapters.map((adapter) => adapter.sourceId),
+    ).toContain("kape-pig-auction-price");
+  });
+
+  it("claim kinds가 비어 있지 않고 중복이 없다", () => {
+    expect(PIG_CATEGORY.claimKinds.length).toBeGreaterThan(0);
+    expect(new Set(PIG_CATEGORY.claimKinds).size).toBe(
+      PIG_CATEGORY.claimKinds.length,
+    );
+  });
+
+  it("모든 층 선언이 근거 서술과 신선도 기준을 갖는다", () => {
+    for (const layer of PIG_CATEGORY.layers) {
+      expect(layer.basis.length).toBeGreaterThan(0);
+    }
+    expect(PIG_CATEGORY.freshnessNote.length).toBeGreaterThan(0);
+  });
+
+  it("unsupported가 아닌 층은 출처를 1개 이상 갖는다", () => {
+    expect(layerSourcesSatisfied(PIG_CATEGORY)).toBe(true);
   });
 });

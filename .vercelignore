@@ -1,6 +1,7 @@
 # Vercel CLI 업로드 제외 목록 — CLI는 .gitignore를 존중하지 않는다(실측: deploy --dry 매니페스트).
 # 보안 리뷰(2026-08-12) CRITICAL 대응: 실키 .env와 개인정보 원천 데이터를 업로드에서 차단한다.
-# 커밋·배포 허용 데이터는 data/public/(마스킹 완료)과 data/MANIFEST.md뿐이다.
+# 배포 허용 데이터: 마스킹 완료 data/public/·시장 통계 data/reference/·공모 좌표 data/offers/·
+# data/MANIFEST.md. 개인정보 원천(raw·reports·snapshots·goldset)과 DB 소스(db/)는 제외한다.
 .env
 .env.*
 !.env.example
@@ -8,6 +9,12 @@ data/raw
 data/reports
 data/snapshots
 data/scratch-fake
+# 골드셋 라벨은 이력번호·사육지(PII) — 로컬 전용, 업로드 차단
+data/goldset
 # 빌드에 불필요한 내부 자료 — 업로드 표면 축소
-.claude
-docs
+# 주의: 앵커(/) 필수 — 앵커 없는 `db`는 src/lib/db/까지 제외해 프로덕션 빌드를 깨뜨린다(2026-08-30 실사고)
+/.claude
+/docs
+/db
+/drizzle.config.ts
+/tsconfig.tsbuildinfo

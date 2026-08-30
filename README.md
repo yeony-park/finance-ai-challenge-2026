@@ -84,6 +84,7 @@ npm run track-record   # 실키 전용 · DART 공시검색 2회 + 증권발행�
 | 경로 | 내용 |
 |---|---|
 | `src/lib/spine/` | 신뢰 스파인: 인젝션 가드레일 · 출처 강제 RAG · HITL · 레이트리밋 · 레드팀 러너 ([README](src/lib/spine/README.md)) |
+| `src/lib/db/` | 저장 계층 v2 (Supabase Postgres + pgvector): drizzle 스키마 · 수기 마이그레이션 러너 · 리포지토리(file 모드 트윈) · `db:seed`(synthetic)/`db:ingest`(참조 원장)/`db:export` CLI · Run Ledger(실행 이력·원장 관측). **화면은 캐시만 읽는다 — DB 접근은 CLI·`/api/search`(M2+)뿐** ([계약](contracts/storage.md), [명세](docs/spec/09-stack-and-storage.md)) |
 | `src/app/` | Next.js App Router — 서비스 화면 + `/api/health`, `/api/verify/[id]`, `/api/cron/monitor` |
 | `docs/competition/` | 대회 규정·양식 분석 |
 | `docs/research/` | 리서치 스트림 1~4 + 종합 보고서 (주제 무관) |

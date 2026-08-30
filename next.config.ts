@@ -5,7 +5,12 @@ const nextConfig: NextConfig = {
     "/**": ["data/public/**/*.json", "data/reference/**/*.json"],
   },
   outputFileTracingExcludes: {
-    "/**": ["data/raw/**/*", "data/reports/**/*", "data/snapshots/**/*"],
+    "/**": [
+      "data/raw/**/*",
+      "data/reports/**/*",
+      "data/snapshots/**/*",
+      "data/goldset/**/*",
+    ],
   },
   allowedDevOrigins: ["192.168.140.132"],
   async headers() {
