@@ -104,8 +104,8 @@ npm run db:export    # DB → data/public/offerings/index.json (마스킹 게이
 
 ## 배포
 
-**배포 전 체크** (CI 없는 수동 배포 구조 — 사람이 확인):
-- [ ] `npm run build`·`npm test` 그린 (키·DB 없이 완주 — R-INV-05)
+**배포 전 체크** (PR CI + 수동 배포 구조 — CI는 검증만 수행하고 배포는 사람이 실행):
+- [ ] PR의 `Verify` 체크 그린 (`npm run lint`·`npx tsc --noEmit`·`npm test`·`npm run build`). PR을 거치지 않는 긴급 배포라면 같은 명령을 로컬에서 완주 (키·DB 없이 통과 — R-INV-05)
 - [ ] DB에서 화면 데이터를 새로 뽑았다면, **직전 `npm run db:export` 산출물이 익명화 게이트 테스트를 그린으로 통과**했는가 (R-STO-03 — DB 유래라고 마스킹 게이트 우회 금지). export는 `DATABASE_URL_DIRECT` 전용, 미설정이면 not_configured로 정직 종료하며 화면 데이터를 만들지 않는다.
 
 Vercel CLI 수동 배포 — git 연동 없음(푸시는 배포를 트리거하지 않는다):
