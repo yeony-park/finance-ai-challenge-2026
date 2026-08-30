@@ -38,6 +38,20 @@ export const ART_FACT_LEAD =
 export const ART_ABSENCE_NOTE =
   "독립 경매 낙찰·플랫폼 청산 대조 수치는 아직 연결되지 않아, 이 화면에는 경매·회수 관련 차트 대신 공시 원문에서 대조한 사실과 공모금액 구성만 싣습니다. 자료가 없는 항목은 대조 불가 또는 기재 없음으로 정직하게 표기합니다.";
 
+export const ART_GALLERY_TITLE = "분석할 미술품 선택";
+export const ART_GALLERY_LEAD =
+  "이미지를 선택하면 아래 상품 분석과 Evidence Copilot이 함께 바뀝니다.";
+export const ART_GALLERY_COUNT_UNIT = "개 상품";
+export const ART_GALLERY_SELECT_SUFFIX = "분석 선택";
+export const ART_IMAGE_ALT_SUFFIX = "공식 작품 이미지";
+export const ART_IMAGE_FALLBACK_PREFIX = "ART";
+export const ART_IMAGE_LOAD_FAILED = "이미지를 불러오지 못했습니다";
+export const ART_IMAGE_MISSING = "작품 이미지 미등록";
+export const ART_IMAGE_SOURCE_LINK = "작품 원문 ↗";
+export const ART_IMAGE_SOURCE_MISSING = "원문 이미지 미등록";
+export const ART_IMAGE_GALLERY_NOTE =
+  "공식 상품 원문에서 확인된 작품 이미지만 표시합니다. 이미지가 없는 상품은 식별용 표지를 유지하며, 상품 사실은 연결된 DART 근거에서 확인합니다.";
+
 export const ART_HISTORICAL_NOTE =
   "플랫폼 3곳의 과거 공개 이력 저장본 338건(플랫폼 A 187건 · 플랫폼 B 145건 · 플랫폼 C 6건)을 확보했으나, 이용 조건 확인 절차가 진행 중이라 이 화면에는 집계 건수만 싣습니다. 개별 항목과 원문은 각 플랫폼에서 직접 확인해야 합니다.";
 

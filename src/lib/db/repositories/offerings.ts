@@ -22,6 +22,16 @@ const assetSchema = z
   })
   .optional();
 
+const rawSourceSchema = z
+  .object({
+    label: z.string().min(1),
+    url: z.string().min(1),
+    retrievedOn: z
+      .string()
+      .regex(/^\d{4}-\d{2}-\d{2}$/, "날짜는 YYYY-MM-DD 형식이어야 합니다"),
+  })
+  .strict();
+
 const rawOfferSchema = z.object({
   offerId: z.string().min(1),
   publicAlias: z.string().min(1),
@@ -63,15 +73,7 @@ const rawOfferSchema = z.object({
     })
     .optional(),
   limits: z.array(z.string()).optional(),
-  sources: z
-    .array(
-      z.object({
-        label: z.string().optional(),
-        url: z.string().optional(),
-        retrievedOn: z.string().optional(),
-      }),
-    )
-    .optional(),
+  sources: z.array(rawSourceSchema).optional(),
 });
 
 const sha256Hex = (value: string): string =>
@@ -105,6 +107,7 @@ const mapRawOffer = (
       ...(raw.art === undefined ? {} : { art: raw.art }),
       ...(raw.pig === undefined ? {} : { pig: raw.pig }),
       ...(raw.limits === undefined ? {} : { limits: raw.limits }),
+      ...(raw.sources === undefined ? {} : { sources: raw.sources }),
     },
     sourceMeta: {
       sourceUrl: source?.url ?? "",
