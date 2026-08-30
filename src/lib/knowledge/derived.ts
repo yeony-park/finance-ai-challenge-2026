@@ -31,7 +31,7 @@ import { VisionOcrCandidateSchema } from "./vision-ocr";
 export const DERIVED_EXTRACTION_PROMPT_VERSION = "real-estate-product-v1";
 export const DERIVED_EXTRACTION_SCHEMA_VERSION = 1;
 export const DERIVED_EXTRACTION_MAX_OUTPUT_TOKENS = 30_000;
-export const DERIVED_EXTRACTION_TIMEOUT_MS = 60_000;
+export const DERIVED_EXTRACTION_TIMEOUT_MS = 180_000;
 
 const ScenarioOfferPayloadSchema = z.strictObject({
   title: ScenarioOfferSchema.shape.title,
@@ -129,6 +129,7 @@ export const RealEstateProviderDraftSchema = z.strictObject({
 
 export type DerivedExtractionFailureCode =
   | "provider-call"
+  | "provider-timeout"
   | "provider-structured-output"
   | "draft-schema"
   | "scenario-schema"
@@ -136,10 +137,17 @@ export type DerivedExtractionFailureCode =
 
 class DerivedExtractionClientError extends Error {
   override readonly name = "DerivedExtractionClientError";
-  constructor(readonly code: Extract<DerivedExtractionFailureCode, "provider-call" | "provider-structured-output">) {
+  constructor(readonly code: Extract<DerivedExtractionFailureCode, "provider-call" | "provider-timeout" | "provider-structured-output">) {
     super(code);
   }
 }
+
+const isProviderTimeout = (error: unknown, depth = 0): boolean => {
+  if (depth > 3 || !error || typeof error !== "object") return false;
+  const candidate = error as { readonly name?: unknown; readonly cause?: unknown };
+  if (candidate.name === "TimeoutError" || candidate.name === "AbortError") return true;
+  return isProviderTimeout(candidate.cause, depth + 1);
+};
 
 const normalizeProviderDraft = (
   input: z.infer<typeof RealEstateProviderDraftSchema>,
@@ -219,7 +227,11 @@ export const createAiSdkRealEstateProductClient = (): RealEstateProductExtractio
         }));
       } catch (error) {
         throw new DerivedExtractionClientError(
-          NoObjectGeneratedError.isInstance(error) ? "provider-structured-output" : "provider-call",
+          isProviderTimeout(error)
+            ? "provider-timeout"
+            : NoObjectGeneratedError.isInstance(error)
+              ? "provider-structured-output"
+              : "provider-call",
         );
       }
       try {
@@ -557,7 +569,11 @@ export const deriveRealEstateScenarioProduct = async (input: {
   } catch (error) {
     return failedEnvelope(
       base,
-      error instanceof DerivedExtractionClientError ? error.code : "provider-call",
+      error instanceof DerivedExtractionClientError
+        ? error.code
+        : isProviderTimeout(error)
+          ? "provider-timeout"
+          : "provider-call",
     );
   }
   const draftResult = RealEstateProductDraftSchema.safeParse(raw);

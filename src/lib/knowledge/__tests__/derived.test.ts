@@ -8,6 +8,7 @@ import {
   buildKnowledgeRecordsFromParsedDocument,
   buildParsedDocumentArtifact,
   deriveRealEstateScenarioProduct,
+  DERIVED_EXTRACTION_TIMEOUT_MS,
   isCitationValueExplicitInQuote,
   isValidAutoApprovedEnvelope,
   parsedArtifactHash,
@@ -168,6 +169,17 @@ describe("PDF-first real-estate derived artifacts", () => {
     });
     expect(providerFailure.validation.failures).toEqual(["provider-call"]);
     expect(JSON.stringify(providerFailure)).not.toContain("secret");
+
+    expect(DERIVED_EXTRACTION_TIMEOUT_MS).toBe(180_000);
+    for (const name of ["TimeoutError", "AbortError"]) {
+      const timeoutFailure = await deriveRealEstateScenarioProduct({
+        manifest: manifest(),
+        artifact: parsed,
+        client: { model: "fake", async extract() { throw new DOMException("secret provider body", name); } },
+      });
+      expect(timeoutFailure.validation.failures, name).toEqual(["provider-timeout"]);
+      expect(JSON.stringify(timeoutFailure)).not.toContain("secret provider body");
+    }
 
     const draftFailure = await deriveRealEstateScenarioProduct({
       manifest: manifest(),
