@@ -16,6 +16,8 @@ describe("⑥ db:seed 로컬 전용 경로 원천 즉시 실패 (R-STO-03a)", ()
     "data/raw/20260806000159",
     "data/snapshots/x.json",
     "data/reports/y.json",
+    "data/goldset",
+    "data/goldset/labels.json",
   ])("로컬 전용 경로 %s는 거부된다", (sourcePath) => {
     expect(() => assertSeedSourcePathAllowed(sourcePath)).toThrow(
       LocalOnlySourceError,

@@ -133,7 +133,16 @@ const loadCommittedOfferings = async (
     if (!file.endsWith(".json")) continue;
     const rawText = await readFile(path.join(dir, file), "utf8");
     const parsed = rawOfferSchema.safeParse(JSON.parse(rawText));
-    if (parsed.success) offerings.push(mapRawOffer(parsed.data, rawText));
+    if (parsed.success) {
+      offerings.push(mapRawOffer(parsed.data, rawText));
+    } else {
+      console.warn(
+        `[offerings] ${file} 스키마 불일치 — 건너뜀: ${parsed.error.issues
+          .slice(0, 3)
+          .map((issue) => `${issue.path.join(".") || "(root)"}: ${issue.message}`)
+          .join("; ")}`,
+      );
+    }
   }
   return offerings;
 };

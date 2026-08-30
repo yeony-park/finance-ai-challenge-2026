@@ -12,15 +12,7 @@ export const provenanceSchema = z.enum(PROVENANCE_VALUES);
 
 export const SYNTHETIC_NAME_PREFIX = "예시 ";
 
-export const isSynthetic = (provenance: Provenance): boolean =>
-  provenance === "synthetic";
-
-export const hasSyntheticPrefix = (name: string): boolean =>
-  name.startsWith(SYNTHETIC_NAME_PREFIX);
-
 export const LICENSE_VALUES = ["green", "yellow_confirmed"] as const;
-
-export type IngestibleLicense = (typeof LICENSE_VALUES)[number];
 
 export const licenseSchema = z.enum(LICENSE_VALUES);
 
@@ -30,8 +22,6 @@ export const AUCTION_RESULT_VALUES = [
   "withdrawn",
   "unknown",
 ] as const;
-
-export type AuctionResultValue = (typeof AUCTION_RESULT_VALUES)[number];
 
 export const verdictEligible = (
   provenances: readonly Provenance[],

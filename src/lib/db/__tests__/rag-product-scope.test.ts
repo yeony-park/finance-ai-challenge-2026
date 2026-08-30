@@ -228,4 +228,46 @@ describe("runtime DB role contract", () => {
       "opensOn", "closesOn", "detail", "sourceMeta",
     ]);
   });
+
+  test("실행 이력 INSERT에 필요한 열과 identity sequence만 최소 허용한다", async () => {
+    const [roles, ledgerDdl] = await Promise.all([
+      readFile("db/roles.sql", "utf8"),
+      readFile("db/migrations/0001_reference_ledger.sql", "utf8"),
+    ]);
+
+    expect(roles).toMatch(
+      /IF NOT EXISTS \(SELECT 1 FROM pg_roles WHERE rolname = 'jeomjeom_rag_ro'\)/,
+    );
+    expect(roles).toContain(
+      "GRANT INSERT ON verification_runs, monitor_runs, monitor_events TO jeomjeom_rag_ro;",
+    );
+    expect(roles).toMatch(
+      /GRANT SELECT \(run_key\) ON verification_runs TO jeomjeom_rag_ro;/,
+    );
+    expect(roles).toMatch(
+      /GRANT SELECT \(id, checked_at\) ON monitor_runs TO jeomjeom_rag_ro;/,
+    );
+    expect(roles).not.toMatch(
+      /GRANT SELECT ON (verification_runs|monitor_runs|monitor_events)/i,
+    );
+    expect(roles).toMatch(
+      /GRANT USAGE ON SEQUENCE\s+verification_runs_id_seq,\s+monitor_runs_id_seq,\s+monitor_events_id_seq\s+TO jeomjeom_rag_ro;/,
+    );
+    expect(roles).toMatch(
+      /REVOKE ALL PRIVILEGES ON SEQUENCE\s+verification_runs_id_seq,\s+monitor_runs_id_seq,\s+monitor_events_id_seq\s+FROM jeomjeom_rag_ro;/,
+    );
+    expect(roles).not.toMatch(/GRANT USAGE ON ALL SEQUENCES/i);
+    expect(roles).not.toContain("ledger_observations_id_seq");
+    for (const table of [
+      "verification_runs",
+      "monitor_runs",
+      "monitor_events",
+    ]) {
+      expect(ledgerDdl).toMatch(
+        new RegExp(
+          `CREATE TABLE ${table} \\(\\s*id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY`,
+        ),
+      );
+    }
+  });
 });

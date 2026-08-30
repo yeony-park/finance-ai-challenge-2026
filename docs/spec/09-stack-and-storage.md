@@ -39,11 +39,11 @@
 
 ### 2.1 접근 계층·페일 모드
 
-- 드라이버: **postgres-js(`postgres`) + drizzle-orm** (스키마 = `src/lib/db/schema.ts`, 마이그레이션 = drizzle-kit → `db/migrations/` 커밋). drizzle 대신 직 SQL 여부는 `[팀 결정 대기]` — 단 §2.2 파라미터화 의무는 선택과 무관하게 적용.
+- 드라이버: **postgres-js(`postgres`) + drizzle-orm**. 스키마 정본은 `src/lib/db/schema.ts`, 마이그레이션 정본은 수기 SQL `db/migrations/`이며 `db:migrate` 자체 러너가 `_migrations`로 적용을 추적한다. drizzle-kit generate는 `db/generated/` 드리프트 대조용일 뿐 실 적용 경로가 아니다.
 - **연결 문자열 2종 분리 (의무)**:
   - `DATABASE_URL` — Supavisor **transaction 풀러**(포트 6543) 경유, 런타임 search/evidence repository 전용. 설정 후 조회 실패를 file 폴백으로 숨기지 않는다.
-  - `DATABASE_URL_DIRECT` — 세션 모드 연결(포트 5432), CLI 전용(마이그레이션·시드·export). drizzle-kit은 반드시 이쪽을 쓴다(트랜잭션 풀링 모드에서 DDL·세션 기능 제약). **2026-08-29 오너 실측 정정**: 이 프로젝트의 진짜 직결 호스트(`db.*.supabase.co`)는 IPv6 전용이라 로컬에서 도달 불가 → **세션 풀러(5432)로 대체**한다. 세션 모드라 DDL·마이그레이션·`CREATE ROLE`이 호환된다("직결"이라는 표기는 세션 풀러를 포함하는 뜻으로 읽는다).
-- **자격증명 역할 분리 (의무)**: `db/roles.sql`의 런타임 역할은 `rag_documents`·`rag_chunks` SELECT, `offerings` 공개 9열 SELECT, 기존 `verification_runs` INSERT만 갖는다. `offerings.id/created_at`과 다른 원장·모든 쓰기·마이그레이션 권한은 주지 않는다. 원장 쓰기와 DDL은 `DATABASE_URL_DIRECT` 전용이며 런타임 repository는 DIRECT를 읽지 않는다. 역할 스크립트는 migration이 아니므로 `db:migrate` 뒤 별도로 적용한다.
+  - `DATABASE_URL_DIRECT` — 세션 모드 연결(포트 5432), migration·seed·ingest·export CLI 전용(트랜잭션 풀링 모드에서 DDL·세션 기능 제약). **2026-08-29 오너 실측 정정**: 이 프로젝트의 진짜 직결 호스트(`db.*.supabase.co`)는 IPv6 전용이라 로컬에서 도달 불가 → **세션 풀러(5432)로 대체**한다. 세션 모드라 DDL·마이그레이션·`CREATE ROLE`이 호환된다("직결"이라는 표기는 세션 풀러를 포함하는 뜻으로 읽는다).
+- **자격증명 역할 분리 (의무)**: `db/roles.sql`의 런타임 역할은 `rag_documents`·`rag_chunks` SELECT, `offerings` 공개 9열 SELECT, `verification_runs`·`monitor_runs`·`monitor_events` INSERT를 갖는다. 실행 이력 상세 열은 읽지 못하되 멱등 INSERT의 `ON CONFLICT` 타깃인 `verification_runs.run_key`·`monitor_runs.checked_at`, `INSERT ... RETURNING id`에 필요한 `monitor_runs.id`만 column-level SELECT하고 세 테이블 identity sequence의 USAGE만 예외로 허용한다. `offerings.id/created_at`, 다른 실행 이력 열·원장·sequence 읽기·쓰기·마이그레이션 권한은 주지 않는다. 원장 쓰기와 DDL은 `DATABASE_URL_DIRECT` 전용이며 런타임 repository는 DIRECT를 읽지 않는다. 역할 스크립트는 migration이 아니므로 `db:migrate` 뒤 별도로 적용한다.
 - **확장 가용 실측 (2026-08-29 오너)**: `vector` 0.8.2 · `pg_trgm` 1.6 · `unaccent` 1.1 모두 사용 가능. `CREATE EXTENSION`은 마이그레이션에서 수행한다(`vector`는 `0000_init.sql` 선두에 이미 포함; `pg_trgm`은 §4 한국어 보강 [팀 결정 대기] 확정 후 별도 마이그레이션으로 추가).
 - `DATABASE_URL` 미설정이면 **file 모드** — 어댑터 fake 트윈 관례(`01` §1) 그대로, DB 리포지토리의 트윈이 `data/` JSON을 읽어 같은 인터페이스로 응답한다. 팀원 로컬·CI에서 DB 불필요 원칙.
 - 금액은 원화 정수 `bigint`(won), 시각은 `timestamptz`, 문자열은 `text`, id는 `bigint identity` + 공개 슬러그 별도 열. 외래키에는 인덱스 필수.
@@ -153,7 +153,7 @@ CREATE INDEX ON re_trades (lawd_cd, deal_ym);
 ### 3.3 시드·내보내기 규약
 
 ```bash
-npm run db:migrate     # drizzle-kit — db/migrations/ 적용
+npm run db:migrate     # 수기 SQL db/migrations/ 적용 — 자체 러너, _migrations 추적
 npm run db:seed        # 결정적 시드 (idempotent — ON CONFLICT 처리, 재실행 안전)
 npm run db:export      # DB → data/public/·data/reference/ 화면용 산출물 생성 (마스킹 게이트 경유)
 ```
@@ -250,6 +250,7 @@ CREATE INDEX ON rag_chunks USING gin (tsv);
 
 - **출처 강제와 접합**: generic 검색 결과의 `source_id`는 스파인 코퍼스 등록분만 인용한다. product 문서는 코퍼스 id 대신 exact scope, manifest/public 승인, 공개 URL, 기준일, source/chunk hash와 ready 상태를 검증한다. 어느 경로도 RAG 적재만으로 공개 승인을 얻지 않는다.
 - DB generic 검색은 `scope_kind='generic'` + `websearch_to_tsquery('simple', …)` FTS, file twin은 lexical 검색이다. product 조회는 exact scope + 공개 승인 + ready document/chunk만 반환한다.
+- **`degraded: true`는 현재 고정값**(계약 테스트로 명시): file 모드 키워드 매칭이든 DB 키워드 전용 경로든 벡터 하이브리드가 아직 없어 항상 열화 표기다 — 하이브리드(질의 임베딩 + 벡터 코사인) 도입(M2+) 전까지 히트 유무와 무관하게 `true`. 도입 시 벡터 경로 성공을 `degraded: false`로 승격한다.
 - vector/embedding, semantic reranking, 실제 Supabase 연결은 후속 검증 대상이다. 현재 동작이나 성능으로 표현하지 않는다.
 - 대화 입력·질의 로그를 RAG 테이블에 섞지 않는다 — 보존은 `05` §4(30일, 마스킹 2단 후 저장) 별도 경로. 챗 개통과 함께 대화 로그를 DB에 저장하기로 하면 전용 테이블(30일 TTL 삭제 잡 포함)을 본 문서에 추가 정의한다 — 현 초안 범위 밖.
 - **RAG 본문 인젝션 방어 (의무)** — 출처 강제는 "어떤 문서를 인용했나"만 검증하고 본문 내용은 검증하지 않는다. Green 라이선스 문서도 본문에 은닉 지시문이 있으면 출처 게이트를 통과하므로 두 겹을 추가한다:
@@ -313,8 +314,8 @@ CREATE INDEX ON ledger_observations (subject_key, observed_at);
 
 **집행 규칙**:
 1. **자유문장 금지**: `Evidence.observed` 원문 문자열을 어떤 컬럼에도 복사하지 않는다 — 마스킹 전 실명·주소가 따라 들어가는 경로다. `fields`는 Zod strict 화이트리스트만, `farmerNm`·`farmAddr` 계열 필드명은 리터럴 금지어.
-2. **기록 주체**: CLI·cron은 `DATABASE_URL_DIRECT`로 기록. 라이브 API(`POST /api/verify`)는 **best-effort 비동기 기록** — DB 실패가 응답을 실패시키지 않는다(무중단 요건). DB 미설정(file 모드)이면 기록 생략이 정직한 동작.
-3. **런타임 역할 확장 (R-STO-16 개정)**: 런타임 자격증명 = rag 2테이블 SELECT + **`verification_runs` INSERT 전용**(SELECT 불가) — 공개 경로가 이력을 읽거나 타 테이블을 쓰는 것은 계속 차단.
+2. **기록 주체 (2026-08-30 정정)**: CLI는 `DATABASE_URL_DIRECT`로 기록. **cron·라이브 API는 런타임 자격증명으로 기록** — 프로덕션에서 이 경로들은 직결을 갖지 않으므로(직결은 CLI 전용, 배포 안 함) 직결을 요구하면 영구 무기록이 된다. 라이브 API(`POST /api/verify`)는 응답 후 `after()`로 실행 보장, cron(`monitor_runs/events`)은 요청 내 트랜잭션으로 기록. DB 실패가 응답을 실패시키지 않는다(무중단 요건, 실패는 loud 로그). DB 미설정(file 모드)이면 기록 생략이 정직한 동작.
+3. **런타임 역할 확장 (R-STO-16 재개정)**: 런타임 자격증명 = rag 2테이블 SELECT + `offerings` 공개 9열 SELECT + `verification_runs`·`monitor_runs`·`monitor_events` INSERT. `ON CONFLICT`의 `verification_runs.run_key`·`monitor_runs.checked_at`과 `RETURNING`의 `monitor_runs.id`만 column-level SELECT하고, 세 identity sequence의 USAGE만 허용한다. 공개 경로가 다른 실행 이력 열을 읽거나 타 원장·sequence를 사용하는 것은 계속 차단한다.
 4. **watch 이중 경로 정리**: cron은 Blob(원본 아카이브) + `monitor_runs/events`(질의용) 이중 기록. 화면의 `data/public/watch/` 파일은 CLI 산출 유지 — 캐시 전용 원칙 불변.
 5. 골드셋 **점수**(라벨 본문 제외)의 DB 기록은 `[팀 결정 대기]` — 현재 stdout 증발 문제만 명세에 기록해 둔다.
 
@@ -349,7 +350,7 @@ CREATE INDEX ON ledger_observations (subject_key, observed_at);
 
 | 항목 | 기본값 | 근거 |
 |---|---|---|
-| 접근 계층 | drizzle-orm + drizzle-kit | 타입 안전 + 마이그레이션 파일 커밋. 대안: postgres-js 직 SQL — 어느 쪽이든 §2.2 파라미터화 의무 |
+| 접근 계층 | postgres-js + drizzle-orm, 수기 SQL 자체 migration runner | 타입 안전 쿼리 + append-only SQL 적용 추적. drizzle-kit generate는 드리프트 대조 전용 |
 | 임베딩 모델·차원 | 미구현; 스키마 열은 vector(1536) | 실제 골드셋 recall과 live DB 검증 후 결정. 현재 API는 `semantic:false` |
 | 한국어 키워드 검색 보강 | `pg_trgm` 병행 (대안: 적재 시 사전 토큰화) | §4 한계 절 — fake 모드 검색 품질 직결, spike로 비교 후 확정 |
 | RAG 도입 범위 | 검색(①④유형)만 — 리포트 서술 생성에는 미사용 | 검증 사실 오염 방지 (06 §3) |

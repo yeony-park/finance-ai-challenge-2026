@@ -19,8 +19,11 @@ import {
   syntheticOfferSlugs,
 } from "../seed/plan";
 
+type Db = ReturnType<typeof getDirectDb>;
+type DbOrTx = Db | Parameters<Parameters<Db["transaction"]>[0]>[0];
+
 const seedOfferings = async (
-  db: ReturnType<typeof getDirectDb>,
+  db: DbOrTx,
   plan: SeedPlan,
 ): Promise<void> => {
   for (const row of plan.offerings) {
@@ -44,7 +47,7 @@ const seedOfferings = async (
 };
 
 const seedArtRecords = async (
-  db: ReturnType<typeof getDirectDb>,
+  db: DbOrTx,
   plan: SeedPlan,
 ): Promise<void> => {
   for (const row of plan.artRecords) {
@@ -84,7 +87,7 @@ const seedArtRecords = async (
 };
 
 const seedRag = async (
-  db: ReturnType<typeof getDirectDb>,
+  db: DbOrTx,
   plan: SeedPlan,
 ): Promise<void> => {
   for (const seed of plan.ragDocuments) {
@@ -103,7 +106,12 @@ const seedRag = async (
       })
       .returning({ id: ragDocuments.id });
     const documentId = inserted[0]?.id;
-    if (documentId === undefined) continue;
+    if (documentId === undefined) {
+      console.warn(
+        `[db:seed] rag 문서 ${seed.document.sourceId} id 회수 실패 — 청크 적재 건너뜀`,
+      );
+      continue;
+    }
     for (const chunk of seed.chunks) {
       await db
         .insert(ragChunks)
@@ -122,7 +130,7 @@ const seedRag = async (
 };
 
 const pruneStaleSynthetic = async (
-  db: ReturnType<typeof getDirectDb>,
+  db: DbOrTx,
   plan: SeedPlan,
 ): Promise<void> => {
   const slugs = syntheticOfferSlugs(plan);
@@ -163,10 +171,10 @@ const main = async (): Promise<void> => {
   }
 
   const db = getDirectDb();
-  await seedOfferings(db, plan);
-  await seedArtRecords(db, plan);
-  await seedRag(db, plan);
-  await pruneStaleSynthetic(db, plan);
+  await db.transaction((tx) => seedOfferings(tx, plan));
+  await db.transaction((tx) => seedArtRecords(tx, plan));
+  await db.transaction((tx) => seedRag(tx, plan));
+  await db.transaction((tx) => pruneStaleSynthetic(tx, plan));
 
   console.log(
     `[db:seed] 완료 — offerings ${plan.offerings.length} · art_records ${plan.artRecords.length} · rag_docs ${plan.ragDocuments.length} (멱등 ON CONFLICT + 플랜 외 synthetic prune).`,

@@ -11,6 +11,9 @@ import {
   verificationRunKey,
 } from "../ledger/build";
 import { ledgerFieldsSchema } from "../ledger/records";
+import type { LivestockTraceAdapter } from "@/lib/verify/adapters/livestock-trace";
+
+import { withLedgerObservationRecording } from "../ledger/observe-trace";
 import {
   recordLedgerObservations,
   recordVerificationRun,
@@ -122,5 +125,31 @@ describe("R-STO-19 best-effort 기록 — file 모드 no-op", () => {
       recordVerificationRun(record, { connection: "runtime" }),
     ).resolves.toBeUndefined();
     await expect(recordLedgerObservations([])).resolves.toBeUndefined();
+  });
+
+  test("withLedgerObservationRecording 데코레이터는 lookup 결과를 그대로 통과시킨다", async () => {
+    let calls = 0;
+    const traceRecord = {
+      traceNo: "002123456789",
+      exists: true,
+      breedName: "한우",
+      currentFarm: { farmNo: "1", farmerName: "홍길동", farmAddress: "강원 ..." },
+      observedAt: "2026-08-14T00:00:00.000Z",
+    } as unknown as Awaited<ReturnType<LivestockTraceAdapter["lookup"]>>;
+    const base = {
+      name: "fake",
+      sourceId: "livestock-trace",
+      sourceName: "test",
+      url: "test",
+      lookup: async () => {
+        calls += 1;
+        return traceRecord;
+      },
+    } as unknown as LivestockTraceAdapter;
+
+    const wrapped = withLedgerObservationRecording(base);
+    const result = await wrapped.lookup("002123456789");
+    expect(result).toBe(traceRecord);
+    expect(calls).toBe(1);
   });
 });

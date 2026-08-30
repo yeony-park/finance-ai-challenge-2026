@@ -14,7 +14,7 @@ import { buildMonitorRunRecord } from "@/lib/db/ledger/build";
 import { recordMonitorRun } from "@/lib/db/ledger/record";
 import { fetchDocumentXmlInMemory } from "@/lib/verify/dart/fetch-document";
 import { rcpNoForOffer, runVerification } from "@/lib/verify/pipeline";
-import { loadLatestReport } from "@/lib/verify/report/load";
+import { ReportCorruptError, loadLatestReport } from "@/lib/verify/report/load";
 import { toPublicReport } from "@/lib/verify/report/public-report";
 import type { ReportSnapshot } from "@/lib/verify/report/snapshot";
 
@@ -37,7 +37,10 @@ const loadReport = async (
 ): Promise<ReportSnapshot | undefined> => {
   try {
     return (await loadLatestReport(offerId)).report;
-  } catch {
+  } catch (error) {
+    if (error instanceof ReportCorruptError) {
+      console.error(`[cron] ${offerId} 리포트 손상 — 감시 폴백 생략: ${error.message}`);
+    }
     return undefined;
   }
 };

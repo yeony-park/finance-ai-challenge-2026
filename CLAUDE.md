@@ -36,7 +36,20 @@ npm run reference:collect              # 경락가 월 집계 (일 1,000건 한�
 npm run reference:rtms                 # 국토부 실거래가 수집
 npm run track-record                   # 발행사 트랙레코드 (DART 공시검색)
 npm run narrative                      # LLM 눈높이 서술 생성
+npm run verify:realestate              # 부동산 검증 파이프라인
+npm run watch:refresh                  # 정정 감시 상태 파일 재생성 (data/public/watch/ — 커밋·재배포로 화면 반영)
 npm run data:manifest                  # data/MANIFEST.md 재생성 (직접 수정 금지)
+npm run goldset:prelabel               # 골드셋 선라벨 (산출물 로컬 전용 — PII)
+npm run goldset:score                  # 골드셋 채점
+```
+
+DB 스크립트(`DATABASE_URL_DIRECT` 필요 — 미설정 시 not_configured 정직 종료. 실 DB 상태 변경은 오너 실행):
+
+```bash
+npm run db:migrate   # 수기 SQL 마이그레이션 적용 (자체 러너, _migrations 추적)
+npm run db:ingest    # 참조 원장 적재 (커밋 파일 → 경락가·실거래·filing_facts)
+npm run db:seed      # 결정적·멱등 synthetic 시드 (+ 플랜 외 synthetic prune)
+npm run db:export    # DB → data/public/offerings/index.json (마스킹 게이트 경유)
 ```
 
 ## 아키텍처
@@ -50,6 +63,9 @@ npm run data:manifest                  # data/MANIFEST.md 재생성 (직접 수�
 - `src/app/` — App Router 화면(`/` 입문자 홈, `/offers` 목록, `/offers/[id]` 리포트,
   `/cattle`·`/pig`·`/art`·`/real-estate` 카테고리 착지, `/methodology`) + API
   (`/api/health`, `/api/verify/[id]`, `/api/cron/monitor` — vercel.json cron 주 2회)
+- `src/lib/db/` — Supabase Postgres 저장 계층(schema.ts=스키마 단일 진실, repositories/ file·DB 트윈,
+  seed/·ingest/·export/·cli/, ledger/=검증 실행 이력·원장 관측). 렌더 경로 DB 조회 금지 —
+  화면 데이터는 `db:export` 산출물만. 계약: `contracts/storage.md`(R-STO-*), 명세: `docs/spec/09`
 - `src/lib/content/` — 홈·체크리스트 문안의 단일 진실. 신규 사용자 대면 문안은 이 모듈에 두고
   출력 필터 감사 테스트(`content/__tests__/home-copy.test.ts`)를 통과해야 한다
 - **화면은 캐시만 읽는다** — 모든 수치·문구는 `data/public/{offerId}/report-*.json` 등

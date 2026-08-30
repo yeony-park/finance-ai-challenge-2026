@@ -1,12 +1,16 @@
 #!/usr/bin/env node
 import { createHash } from "node:crypto";
+import { execFile } from "node:child_process";
 import { readdir, readFile, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
+import { promisify } from "node:util";
+import { fileURLToPath } from "node:url";
 
 const ROOT = process.cwd();
 const DATA_DIR = path.join(ROOT, "data");
 const MANIFEST_PATH = path.join(DATA_DIR, "MANIFEST.md");
+const execFileAsync = promisify(execFile);
 
 const LOCAL_ONLY_GROUPS = [
   {
@@ -60,6 +64,48 @@ const PUBLIC_GROUPS = [
   },
 ];
 
+const PUBLIC_ROOTS = PUBLIC_GROUPS.map((group) => `data/${group.dir}`);
+const runGitCommand = async (args, cwd) =>
+  (await execFileAsync("git", args, { cwd, encoding: "utf8" })).stdout;
+
+export const listTrackedPublicFiles = async (
+  root = ROOT,
+  runGit = runGitCommand,
+) => {
+  const output = await runGit(
+    ["ls-files", "--cached", "-z", "--", ...PUBLIC_ROOTS],
+    root,
+  );
+  return new Set(output.split("\0").filter(Boolean));
+};
+
+export const assertNoUnstagedPublicChanges = async (
+  root = ROOT,
+  runGit = runGitCommand,
+) => {
+  const output = await runGit(
+    ["diff", "--no-ext-diff", "--name-only", "-z", "--", ...PUBLIC_ROOTS],
+    root,
+  );
+  const changed = output.split("\0").filter(Boolean);
+  if (changed.length > 0) {
+    throw new Error(
+      `커밋 대상 데이터에 index 대비 unstaged 변경이 있습니다: ${changed.join(", ")}. 변경을 검토해 stage하거나 되돌린 뒤 다시 실행하세요.`,
+    );
+  }
+};
+
+export const assertPublicFilesTracked = (files, tracked, root = ROOT) => {
+  const untracked = files
+    .map((file) => path.relative(root, file).split(path.sep).join("/"))
+    .filter((file) => !tracked.has(file));
+  if (untracked.length > 0) {
+    throw new Error(
+      `커밋 대상 스캔 루트에 Git 미추적 파일이 있습니다: ${untracked.join(", ")}. 검토 후 stage하여 승인한 뒤 다시 실행하세요.`,
+    );
+  }
+};
+
 const listFilesRecursively = async (dir) => {
   let entries;
   try {
@@ -85,8 +131,9 @@ const describeFile = async (absolute) => {
   };
 };
 
-const describeGroup = async (group) => {
+const describeGroup = async (group, tracked) => {
   const files = await listFilesRecursively(path.join(DATA_DIR, group.dir));
+  if (tracked) assertPublicFilesTracked(files, tracked);
   const described = [];
   for (const file of files) described.push(await describeFile(file));
   return { ...group, files: described };
@@ -149,14 +196,21 @@ const render = (groups, publicGroups, generatedAt) =>
     ...publicGroups.map((group) => renderGroup(group, group.title)),
   ].join("\n");
 
-const main = async () => {
+export const main = async ({
+  runGit = runGitCommand,
+  writeManifest = writeFile,
+} = {}) => {
+  await assertNoUnstagedPublicChanges(ROOT, runGit);
+  const tracked = await listTrackedPublicFiles(ROOT, runGit);
   const groups = [];
   for (const group of LOCAL_ONLY_GROUPS) groups.push(await describeGroup(group));
   const publicGroups = [];
-  for (const group of PUBLIC_GROUPS) publicGroups.push(await describeGroup(group));
+  for (const group of PUBLIC_GROUPS) {
+    publicGroups.push(await describeGroup(group, tracked));
+  }
 
   const markdown = render(groups, publicGroups, new Date().toISOString());
-  await writeFile(MANIFEST_PATH, markdown, "utf8");
+  await writeManifest(MANIFEST_PATH, markdown, "utf8");
 
   const total = groups.reduce((sum, group) => sum + group.files.length, 0);
   const published = publicGroups.reduce(
@@ -168,10 +222,12 @@ const main = async () => {
   );
 };
 
-main().catch((error) => {
-  console.error(
-    "매니페스트 생성 실패:",
-    error instanceof Error ? error.message : error,
-  );
-  process.exitCode = 1;
-});
+if (path.resolve(process.argv[1] ?? "") === fileURLToPath(import.meta.url)) {
+  main().catch((error) => {
+    console.error(
+      "매니페스트 생성 실패:",
+      error instanceof Error ? error.message : error,
+    );
+    process.exitCode = 1;
+  });
+}
