@@ -5,9 +5,8 @@ import type { WatchStatusView } from "@/lib/verify/amend/watch-view";
 import { METHODOLOGY_ANCHOR } from "@/app/methodology/anchors";
 
 import { AmendmentReplay } from "./AmendmentReplay";
-import { IconInfo } from "./icons";
-import { WATCH_HEADING_ID } from "./ids";
-import { MethodologyLink } from "./MethodologyLink";
+import { reportSectionTitleId, WATCH_HEADING_ID } from "./ids";
+import { ReportSectionFooter } from "./ReportSectionFooter";
 import s from "./report.module.css";
 
 const UNCONNECTED_WATCH_TEXT =
@@ -35,30 +34,46 @@ interface WatchSectionProps {
 }
 
 export function WatchSection({ watch, replay }: WatchSectionProps) {
+  const latestAmendment = watch?.amendments.at(-1);
+  const titleId = reportSectionTitleId(WATCH_HEADING_ID);
+
   return (
     <section
-      className={`${s.section} ${s.sectionMuted}`}
-      aria-labelledby={WATCH_HEADING_ID}
+      className={`${s.section} ${s.sectionMuted} ${s.reportContentSection}`}
+      aria-labelledby={titleId}
     >
+      <span id={WATCH_HEADING_ID} className={s.sectionAnchor} aria-hidden="true" />
       <Reveal className={s.wrap}>
-        <header className={s.layerHead}>
-          <span className={s.layerNo}>정정 계보 · 재검증</span>
-          <h2 id={WATCH_HEADING_ID} className={s.layerTitle}>
-            이 공모의 정정 접수와 재대조 기록
+        <header className={`${s.layerHead} ${s.sectionHead}`}>
+          <h2 id={titleId} className={s.layerTitle}>
+            정정 이력
           </h2>
-          <span className={s.layerSource}>
-            정정신고서가 접수되면 이 공모는 같은 파이프라인으로 다시 대조됩니다
-          </span>
-          <MethodologyLink
-            anchor={METHODOLOGY_ANCHOR.amendment}
-            label="정정은 어떻게 다시 대조되나요?"
-          />
+          <p className={s.sectionLead}>
+            정정신고서가 접수되면 같은 절차로 다시 대조하고 변경 기록을 남깁니다.
+          </p>
         </header>
 
-        <div className={s.honesty}>
-          <IconInfo className={s.ic} />
-          <span>{watch ? watchStatusText(watch) : UNCONNECTED_WATCH_TEXT}</span>
-        </div>
+        <dl className={s.watchOverview}>
+          <div className={s.watchMetric} data-tone="accent">
+            <dt>정정신고서</dt>
+            <dd>
+              {watch?.isDetectionFailed ? "—" : (watch?.amendmentCount ?? 0)}
+              {!watch?.isDetectionFailed ? <small>건</small> : null}
+            </dd>
+            <p>
+              {watch?.isDetectionFailed
+                ? "조회 결과 확인 불가"
+                : latestAmendment
+                  ? `최근 접수 ${latestAmendment.receivedOnLabel}`
+                  : "접수 기록 없음"}
+            </p>
+          </div>
+          <div className={s.watchMetric}>
+            <dt>자동 재조회</dt>
+            <dd>주 2회</dd>
+            <p>월·목 기준으로 정정 접수를 다시 확인합니다.</p>
+          </div>
+        </dl>
 
         {replay ? (
           <AmendmentReplay replay={replay} />
@@ -66,10 +81,23 @@ export function WatchSection({ watch, replay }: WatchSectionProps) {
           <p className={s.watchPending}>{pendingText(watch)}</p>
         )}
 
-        <div className={s.honesty}>
-          <IconInfo className={s.ic} />
-          <span>{NOTIFY_CHANNEL_TEXT}</span>
-        </div>
+        <details className={s.supportingDetails}>
+          <summary className={s.supportingSummary}>조회·알림 운영 정보 보기</summary>
+          <div className={s.supportingTextBody}>
+            <p>{watch ? watchStatusText(watch) : UNCONNECTED_WATCH_TEXT}</p>
+            <p>{NOTIFY_CHANNEL_TEXT}</p>
+          </div>
+        </details>
+
+        <ReportSectionFooter
+          sources={[
+            watch
+              ? `조회 ${watch.checkedAtLabel} · ${watch.detail}`
+              : "정정 접수 조회 출처 미연결",
+          ]}
+          anchor={METHODOLOGY_ANCHOR.amendment}
+          label="정정은 어떻게 다시 대조되나요?"
+        />
       </Reveal>
     </section>
   );

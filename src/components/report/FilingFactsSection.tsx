@@ -1,26 +1,31 @@
 import {
-  FILING_NOTICE,
   FILING_SECTION_LEAD,
-  FILING_SECTION_TITLE,
   FILING_SOURCE_PREFIX,
   filingSourceLine,
 } from "@/lib/content/filing";
 import type { FilingFacts } from "@/lib/verify/report/filing-facts";
 
-import { IconInfo } from "./icons";
-import { FILING_HEADING_ID } from "./ids";
+import { METHODOLOGY_ANCHOR } from "@/app/methodology/anchors";
+
+import { FILING_HEADING_ID, reportSectionTitleId } from "./ids";
+import { ReportSectionFooter } from "./ReportSectionFooter";
 import s from "./report.module.css";
 
 export function FilingFactsSection({ facts }: { readonly facts: FilingFacts }) {
+  const titleId = reportSectionTitleId(FILING_HEADING_ID);
+
   return (
-    <section className={s.section} aria-labelledby={FILING_HEADING_ID}>
+    <section
+      className={`${s.section} ${s.reportContentSection}`}
+      aria-labelledby={titleId}
+    >
+      <span id={FILING_HEADING_ID} className={s.sectionAnchor} aria-hidden="true" />
       <div className={s.wrap}>
-        <header className={s.layerHead}>
-          <span className={s.layerNo}>신고서 기재</span>
-          <h2 id={FILING_HEADING_ID} className={s.layerTitle}>
-            {FILING_SECTION_TITLE}
+        <header className={`${s.layerHead} ${s.sectionHead}`}>
+          <h2 id={titleId} className={s.layerTitle}>
+            신고서 정보
           </h2>
-          <p className={s.filingLead}>{FILING_SECTION_LEAD}</p>
+          <p className={s.sectionLead}>{FILING_SECTION_LEAD}</p>
         </header>
 
         <dl className={s.filingList}>
@@ -35,12 +40,11 @@ export function FilingFactsSection({ facts }: { readonly facts: FilingFacts }) {
           ))}
         </dl>
 
-        <p className={s.filingSource}>{filingSourceLine(facts.rcpNo)}</p>
-
-        <div className={s.honesty}>
-          <IconInfo className={s.ic} />
-          <span>{FILING_NOTICE}</span>
-        </div>
+        <ReportSectionFooter
+          sources={[filingSourceLine(facts.rcpNo)]}
+          anchor={METHODOLOGY_ANCHOR.layers}
+          label="신고서 항목은 어떻게 구조화했나요?"
+        />
       </div>
     </section>
   );

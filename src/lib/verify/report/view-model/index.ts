@@ -19,6 +19,7 @@ export type {
   ExplainLevel,
   FocusView,
   NoteItemView,
+  PriceVisualView,
   RichSegment,
   RichText,
   SubjectCardView,

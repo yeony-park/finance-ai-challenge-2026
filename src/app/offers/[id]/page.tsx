@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 
@@ -36,6 +37,8 @@ import {
   toTrackRecordView,
   type TrackRecordCardView,
 } from "@/lib/verify/track-record/view";
+
+import s from "@/components/report/report.module.css";
 
 interface OfferPageProps {
   readonly params: Promise<{ readonly id: string }>;
@@ -144,22 +147,43 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
   const offerEntry = OFFERS.find((offer) => offer.id === id) ?? null;
 
   return (
-    <>
-      <ReportDocument view={view} narrative={narrative?.levels ?? null}>
-        <ReportChapterNav hasFilingFacts={filingFacts !== null} />
-        {offerEntry ? (
-          <LifecycleStrip
-            schedule={buildOfferSchedule(offerEntry, new Date())}
-            assetKind={offerEntry.assetKind}
-            isExitVerified={offerEntry.assetKind === "real-estate"}
-          />
-        ) : null}
+    <div className={s.reportPage}>
+      <div className={s.breadcrumbBar}>
+        <nav className={`${s.wrap} ${s.breadcrumb}`} aria-label="현재 위치">
+          <Link href="/offers" className={s.breadcrumbBack}>
+            <span aria-hidden="true">←</span>
+            검증 리포트
+          </Link>
+          <span className={s.breadcrumbDivider} aria-hidden="true">
+            /
+          </span>
+          <span className={s.breadcrumbCurrent} aria-current="page">
+            {view.offer.title}
+          </span>
+        </nav>
+      </div>
+
+      <ReportChapterNav hasFilingFacts={filingFacts !== null} />
+
+      <ReportDocument
+        view={view}
+        narrative={narrative?.levels ?? null}
+        lifecycle={
+          offerEntry ? (
+            <LifecycleStrip
+              schedule={buildOfferSchedule(offerEntry, new Date())}
+              assetKind={offerEntry.assetKind}
+              isExitVerified={offerEntry.assetKind === "real-estate"}
+            />
+          ) : null
+        }
+      >
         {filingFacts ? <FilingFactsSection facts={filingFacts} /> : null}
         <WatchSection watch={watch} replay={replay} />
         <HistorySection view={view} trackRecord={trackRecord} />
       </ReportDocument>
       <PriceSection view={view} />
       <ReportFoot />
-    </>
+    </div>
   );
 }

@@ -7,9 +7,17 @@ export interface TrackRecordFactView {
   readonly source: string;
 }
 
+export interface TrackRecordMetricView {
+  readonly id: string;
+  readonly label: string;
+  readonly value: number;
+  readonly tone: "base" | "accent";
+}
+
 export interface TrackRecordCardView {
   readonly title: string;
   readonly lead: string;
+  readonly metrics: readonly TrackRecordMetricView[];
   readonly facts: readonly TrackRecordFactView[];
   readonly notice: string;
   readonly meta: string;
@@ -107,8 +115,46 @@ export const toTrackRecordView = (record: TrackRecord): TrackRecordCardView => {
   }
 
   return {
-    title: "이 공모의 발행사 트랙레코드",
+    title: "발행사 트랙레코드",
     lead: "발행사가 공시로 남긴 기록을 회차 단위로 센 결과입니다. 판정이나 등급은 붙이지 않습니다.",
+    metrics: [
+      {
+        id: "offering-filings",
+        label: "증권신고서",
+        value: counts.offeringFilings,
+        tone: "base",
+      },
+      {
+        id: "offering-amendments",
+        label: "정정신고서",
+        value: counts.offeringAmendments,
+        tone: "base",
+      },
+      {
+        id: "series-checked",
+        label: "확인 회차",
+        value: counts.seriesChecked,
+        tone: "base",
+      },
+      {
+        id: "withdrawals",
+        label: "철회신고서",
+        value: counts.withdrawalFilings,
+        tone: "base",
+      },
+      {
+        id: "under-subscribed",
+        label: "청약 미달 회차",
+        value: counts.underSubscribedSeries,
+        tone: "accent",
+      },
+      {
+        id: "operator-unallocated",
+        label: "운영자 추가 배정",
+        value: counts.operatorTookUnallocatedSeries,
+        tone: "accent",
+      },
+    ],
     facts,
     notice: TRACK_RECORD_NOTICE,
     meta: `집계 시각 ${formatKstDateTime(record.collectedAt)} · ${record.sourceName}`,

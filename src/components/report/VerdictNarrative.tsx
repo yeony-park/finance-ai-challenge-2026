@@ -47,26 +47,30 @@ export function VerdictNarrative({ level }: { readonly level: NarrativeLevel }) 
         </ul>
       ) : null}
 
-      {layers.length > 0 ? (
-        <dl className={s.narrativeLayers}>
-          {layers.map((layer) => (
-            <div key={layer} className={s.narrativeLayer}>
-              <dt className={s.narrativeLayerLabel}>
-                {NARRATIVE_LAYER_LABEL[layer]}
-              </dt>
-              <dd>
-                <ul className={s.narrativeLayerList}>
-                  {level.layers[layer].map((sentence) => (
-                    <SentenceLine key={sentence.text} sentence={sentence} />
-                  ))}
-                </ul>
-              </dd>
-            </div>
-          ))}
-        </dl>
-      ) : null}
-
-      <p className={s.narrativeNotice}>{AI_NOTICE}</p>
+      <details className={`${s.supportingDetails} ${s.narrativeDetails}`}>
+        <summary className={s.supportingSummary}>판정 설명과 근거 구분 보기</summary>
+        <div className={s.supportingBody}>
+          {layers.length > 0 ? (
+            <dl className={s.narrativeLayers}>
+              {layers.map((layer) => (
+                <div key={layer} className={s.narrativeLayer}>
+                  <dt className={s.narrativeLayerLabel}>
+                    {NARRATIVE_LAYER_LABEL[layer]}
+                  </dt>
+                  <dd>
+                    <ul className={s.narrativeLayerList}>
+                      {level.layers[layer].map((sentence) => (
+                        <SentenceLine key={sentence.text} sentence={sentence} />
+                      ))}
+                    </ul>
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          ) : null}
+          <p className={s.narrativeNotice}>{AI_NOTICE}</p>
+        </div>
+      </details>
     </div>
   );
 }

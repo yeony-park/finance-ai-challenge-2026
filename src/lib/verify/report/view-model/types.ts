@@ -51,6 +51,28 @@ export interface NoteItemView {
   readonly meta: string;
 }
 
+export interface PriceVisualView {
+  readonly referenceMonth: string;
+  readonly breedName: string;
+  readonly sexName: string;
+  readonly averagePricePerKg: number;
+  readonly sampleSize: number;
+  readonly windowAveragePricePerKg: number | null;
+  readonly monthVsWindowPercent: number | null;
+  readonly grades: readonly {
+    readonly name: string;
+    readonly pricePerKg: number;
+    readonly headCount: number;
+  }[];
+  readonly acquisition: {
+    readonly prices: readonly number[];
+    readonly total: number;
+    readonly average: number;
+    readonly min: number;
+    readonly max: number;
+  };
+}
+
 export interface DemoView {
   readonly meta: { readonly badge: string; readonly items: readonly string[] };
   readonly offer: {
@@ -78,6 +100,7 @@ export interface DemoView {
     readonly source: string;
     readonly items: readonly NoteItemView[];
     readonly note: string;
+    readonly visual?: PriceVisualView;
   };
   readonly history: {
     readonly heading: string;

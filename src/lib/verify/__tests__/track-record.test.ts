@@ -219,6 +219,10 @@ describe("트랙레코드 화면 문구 — 사실 나열만 남긴다", () => {
     }),
   );
 
+  test("섹션 제목을 간결하게 표시한다", () => {
+    expect(view.title).toBe("발행사 트랙레코드");
+  });
+
   test("모든 사실에 출처가 붙는다", () => {
     expect(view.facts.length).toBeGreaterThan(0);
     expect(view.facts.every((fact) => fact.source.startsWith("출처 ·"))).toBe(true);
@@ -226,6 +230,18 @@ describe("트랙레코드 화면 문구 — 사실 나열만 남긴다", () => {
 
   test("사실 id가 유일하다", () => {
     expect(new Set(view.facts.map((fact) => fact.id)).size).toBe(view.facts.length);
+  });
+
+  test("핵심 집계는 시각화 가능한 수치로 제공한다", () => {
+    expect(view.metrics.map((metric) => metric.id)).toEqual([
+      "offering-filings",
+      "offering-amendments",
+      "series-checked",
+      "withdrawals",
+      "under-subscribed",
+      "operator-unallocated",
+    ]);
+    expect(view.metrics.every((metric) => Number.isFinite(metric.value))).toBe(true);
   });
 
   test("사실 문장에 평가·등급·경고 표현을 쓰지 않는다", () => {
