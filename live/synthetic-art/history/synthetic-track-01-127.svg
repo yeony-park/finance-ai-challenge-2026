@@ -1,10 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Synthetic flowing ribbon placeholder for synthetic-track-01-127" data-seed="synthetic-track-01-127" data-index="126">
-<rect width="800" height="1000" fill="#ecf6ea"/>
-<path d="M -70 174 C 92 75 454 273 405 174 S 734 75 870 209 L 870 246 C 734 278 454 144 405 211 S 92 347 -70 227 Z" fill="#22cea6" opacity=".58"/>
-<path d="M -70 537 C 92 617 454 457 410 564 S 734 617 870 515 L 870 557 C 734 499 454 659 410 531 S 92 499 -70 616 Z" fill="#c82898" opacity=".52"/>
-<path d="M -50 876 C 92 787 454 965 415 911 S 734 787 850 844" fill="none" stroke="#bfb41d" stroke-width="20" stroke-linecap="round" opacity=".72"/>
-<path d="M -40 326 C 92 398 454 200 420 331 S 734 398 850 315" fill="none" stroke="#e2db79" stroke-width="42" stroke-linecap="round" opacity=".78"/>
-<path d="M 535 154 A 270 270 0 0 0 265 67" fill="none" stroke="#235b15" stroke-width="37" stroke-linecap="round" opacity=".36"/>
-<circle cx="535" cy="154" r="18" fill="#235b15" opacity=".18"/>
-<text x="255" y="954" fill="#235b15" font-family="sans-serif" font-size="18" letter-spacing="6" opacity=".28">SYNTHETIC</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Byeolmuni Eno | 구름잠 청색 추상" data-record-id="synthetic-track-01-127" data-seed="5301" data-index="126">
+<title>구름잠의 파랑 — 구름 속에 잠긴 파랑 · Cloudsleep Blue / Blue Sleeping Inside Clouds</title>
+<rect x="0" y="0" width="800" height="1000" fill="#243B53"/>
+<path d="M-40 188 C100 112 205 255 344 190 S612 96 842 186 L842 300 C640 241 520 340 344 286 S96 224 -40 320Z" fill="#486581"/>
+<path d="M-30 344 C128 270 217 404 374 357 S646 272 830 376 L830 474 C640 425 514 508 359 457 S106 402 -30 500Z" fill="#829AB1" opacity=".72"/>
+<path d="M-60 655 C92 563 223 702 371 652 S625 571 850 665 L850 785 C635 722 504 812 360 752 S104 710 -60 815Z" fill="#243B53"/>
+<path d="M40 828 C190 761 300 830 415 842 S650 818 790 877" fill="none" stroke="#D9E2EC" stroke-width="7" stroke-linecap="round"/>
+<ellipse cx="646" cy="174" rx="52" ry="29" fill="#D6B370" opacity=".8"/>
+<ellipse cx="653" cy="169" rx="25" ry="13" fill="#D9E2EC"/>
+<circle cx="172" cy="734" r="11" fill="#D6B370"/>
+<text x="22" y="978" fill="#D9E2EC" font-family="sans-serif" font-size="8" letter-spacing="2">SYNTHETIC</text>
 </svg>

@@ -1,10 +1,34 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Synthetic flowing ribbon placeholder for synthetic-track-01-110" data-seed="synthetic-track-01-110" data-index="109">
-<rect width="800" height="1000" fill="#f4eaf6"/>
-<path d="M -70 291 C 144 192 434 390 405 291 S 662 192 870 310 L 870 355 C 662 405 434 287 405 336 S 144 419 -70 340 Z" fill="#ce2241" opacity=".58"/>
-<path d="M -70 566 C 144 639 434 493 410 535 S 662 639 870 530 L 870 570 C 662 533 434 679 410 566 S 144 533 -70 590 Z" fill="#28c842" opacity=".52"/>
-<path d="M -50 770 C 144 699 434 841 415 789 S 662 699 850 740" fill="none" stroke="#1d45bf" stroke-width="40" stroke-linecap="round" opacity=".72"/>
-<path d="M -40 385 C 144 515 434 317 420 466 S 662 515 850 420" fill="none" stroke="#79bfe2" stroke-width="40" stroke-linecap="round" opacity=".78"/>
-<path d="M 569 242 A 168 168 0 0 1 737 358" fill="none" stroke="#5b1552" stroke-width="45" stroke-linecap="round" opacity=".36"/>
-<circle cx="569" cy="242" r="22" fill="#5b1552" opacity=".18"/>
-<text x="211" y="939" fill="#5b1552" font-family="sans-serif" font-size="18" letter-spacing="6" opacity=".28">SYNTHETIC</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="바람결 — 빛씨앗 혼합표면" data-record-id="synthetic-track-01-110" data-index="109" data-seed="5104">
+<title>빛씨앗 표면 — 빛이 흩뿌린 껍질 · Lightseed Surface / Shell Sprinkled by Light</title>
+<rect x="0" y="0" width="800" height="1000" fill="#1B2845"/>
+<circle cx="400" cy="493" r="244" fill="#274C77"/>
+<circle cx="400" cy="493" r="181" fill="none" stroke="#A3CEF1" stroke-width="5"/>
+<circle cx="400" cy="493" r="77" fill="#1B2845" stroke="#D4A373" stroke-width="5"/>
+<circle cx="596" cy="493" r="13" fill="#A3CEF1"/>
+<circle cx="592" cy="488" r="3" fill="#F2E9E4"/>
+<circle cx="569.74" cy="591" r="18" fill="#6096BA"/>
+<circle cx="565.74" cy="586" r="4" fill="#F2E9E4"/>
+<circle cx="498" cy="662.74" r="23" fill="#A3CEF1"/>
+<circle cx="494" cy="657.74" r="5" fill="#F2E9E4"/>
+<circle cx="400" cy="689" r="13" fill="#6096BA"/>
+<circle cx="396" cy="684" r="3" fill="#F2E9E4"/>
+<circle cx="302" cy="662.74" r="18" fill="#A3CEF1"/>
+<circle cx="298" cy="657.74" r="4" fill="#F2E9E4"/>
+<circle cx="230.26" cy="591" r="23" fill="#6096BA"/>
+<circle cx="226.26" cy="586" r="5" fill="#F2E9E4"/>
+<circle cx="204" cy="493" r="13" fill="#A3CEF1"/>
+<circle cx="200" cy="488" r="3" fill="#F2E9E4"/>
+<circle cx="230.26" cy="395" r="18" fill="#6096BA"/>
+<circle cx="226.26" cy="390" r="4" fill="#F2E9E4"/>
+<circle cx="302" cy="323.26" r="23" fill="#A3CEF1"/>
+<circle cx="298" cy="318.26" r="5" fill="#F2E9E4"/>
+<circle cx="400" cy="297" r="13" fill="#6096BA"/>
+<circle cx="396" cy="292" r="3" fill="#F2E9E4"/>
+<circle cx="498" cy="323.26" r="18" fill="#A3CEF1"/>
+<circle cx="494" cy="318.26" r="4" fill="#F2E9E4"/>
+<circle cx="569.74" cy="395" r="23" fill="#6096BA"/>
+<circle cx="565.74" cy="390" r="5" fill="#F2E9E4"/>
+<line x1="114" y1="846" x2="686" y2="846" stroke="#F2E9E4" stroke-width="4"/>
+<polygon points="375,178 400,126 425,178" fill="#D4A373"/>
+<text x="34" y="968" fill="#D4A373" font-family="sans-serif" font-size="11" letter-spacing="3">SYNTHETIC</text>
 </svg>

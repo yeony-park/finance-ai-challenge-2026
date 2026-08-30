@@ -1,10 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Synthetic flowing ribbon placeholder for synthetic-track-01-106" data-seed="synthetic-track-01-106" data-index="105">
-<rect width="800" height="1000" fill="#eaf2f6"/>
-<path d="M -70 331 C 222 246 375 416 405 331 S 580 246 870 347 L 870 380 C 580 420 375 301 405 364 S 222 415 -70 320 Z" fill="#6f22ce" opacity=".58"/>
-<path d="M -70 496 C 222 617 375 375 410 452 S 580 617 870 492 L 870 520 C 580 403 375 645 410 483 S 222 403 -70 490 Z" fill="#c8283d" opacity=".52"/>
-<path d="M -50 875 C 222 810 375 940 415 891 S 580 810 850 846" fill="none" stroke="#1dbf25" stroke-width="28" stroke-linecap="round" opacity=".72"/>
-<path d="M -40 412 C 222 541 375 371 420 478 S 580 541 850 412" fill="none" stroke="#e2797d" stroke-width="28" stroke-linecap="round" opacity=".78"/>
-<path d="M 339 678 A 218 218 0 0 0 121 645" fill="none" stroke="#15575b" stroke-width="33" stroke-linecap="round" opacity=".36"/>
-<circle cx="339" cy="678" r="16" fill="#15575b" opacity=".18"/>
-<text x="251" y="945" fill="#15575b" font-family="sans-serif" font-size="18" letter-spacing="6" opacity=".28">SYNTHETIC</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="솔여울 — 조류 곡선 회화" data-record-id="synthetic-track-01-106" data-index="105" data-seed="5010">
+<title>조류의 곡선 — 물결이 남긴 호 · Tidal Curve / Arc Left by the Water</title>
+<rect x="0" y="0" width="800" height="1000" fill="#12343B"/>
+<path d="M -30 735 C 178 574 279 862 447 708 S 675 577 838 683" fill="none" stroke="#58A6A6" stroke-width="13"/>
+<path d="M -20 809 C 172 675 295 935 468 786 S 666 681 830 760" fill="none" stroke="#A8D5BA" stroke-width="4"/>
+<circle cx="401" cy="315" r="118" fill="none" stroke="#F4E9CD" stroke-width="5"/>
+<circle cx="401" cy="315" r="16" fill="#D9826B"/>
+<line x1="285" y1="315" x2="517" y2="315" stroke="#1F6F78" stroke-width="3"/>
+<text x="34" y="968" fill="#F4E9CD" font-family="sans-serif" font-size="11" letter-spacing="3">SYNTHETIC</text>
 </svg>

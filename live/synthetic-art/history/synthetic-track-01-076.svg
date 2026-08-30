@@ -1,10 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Synthetic flowing ribbon placeholder for synthetic-track-01-076" data-seed="synthetic-track-01-076" data-index="75">
-<rect width="800" height="1000" fill="#f6f3ea"/>
-<path d="M -70 290 C 168 115 492 465 405 290 S 733 115 870 321 L 870 366 C 733 487 492 172 405 335 S 168 470 -70 295 Z" fill="#67ce22" opacity=".58"/>
-<path d="M -70 507 C 168 624 492 390 410 541 S 733 624 870 552 L 870 604 C 733 442 492 676 410 590 S 168 442 -70 519 Z" fill="#287dc8" opacity=".52"/>
-<path d="M -50 806 C 168 726 492 886 415 837 S 733 726 850 783" fill="none" stroke="#bf1da9" stroke-width="27" stroke-linecap="round" opacity=".72"/>
-<path d="M -40 449 C 168 590 492 240 420 427 S 733 590 850 375" fill="none" stroke="#e2c979" stroke-width="52" stroke-linecap="round" opacity=".78"/>
-<path d="M 402 505 A 255 255 0 0 0 147 530" fill="none" stroke="#5b4415" stroke-width="45" stroke-linecap="round" opacity=".36"/>
-<circle cx="402" cy="505" r="22" fill="#5b4415" opacity=".18"/>
-<text x="211" y="945" fill="#5b4415" font-family="sans-serif" font-size="18" letter-spacing="6" opacity=".28">SYNTHETIC</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="나루온 — 밤숲 기호 회화" data-record-id="synthetic-track-01-076" data-index="75" data-seed="4710">
+<title>밤숲의 표식 — 숲이 남긴 검은 점 · Nightwood Mark / Black Dot Left by the Forest</title>
+<rect x="0" y="0" width="800" height="1000" fill="#17231B"/>
+<circle cx="402" cy="472" r="86" fill="none" stroke="#E6D9B8" stroke-width="3"/>
+<circle cx="402" cy="472" r="52" fill="none" stroke="#C8B77C" stroke-width="2"/>
+<polygon points="402,444 425,485 384,491" fill="#819A70"/>
+<line x1="402" y1="558" x2="402" y2="692" stroke="#4F7154" stroke-width="4"/>
+<line x1="330" y1="692" x2="474" y2="692" stroke="#4F7154" stroke-width="3"/>
+<circle cx="650" cy="820" r="8" fill="#E6D9B8"/>
+<circle cx="144" cy="164" r="6" fill="#C8B77C"/>
+<text x="34" y="968" fill="#C8B77C" font-family="sans-serif" font-size="11" letter-spacing="3">SYNTHETIC</text>
 </svg>

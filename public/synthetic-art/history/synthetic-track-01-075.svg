@@ -1,10 +1,29 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Synthetic flowing ribbon placeholder for synthetic-track-01-075" data-seed="synthetic-track-01-075" data-index="74">
-<rect width="800" height="1000" fill="#f6eaf1"/>
-<path d="M -70 339 C 124 249 422 429 405 339 S 688 249 870 308 L 870 360 C 688 482 422 316 405 391 S 124 509 -70 365 Z" fill="#ce5b22" opacity=".58"/>
-<path d="M -70 494 C 124 634 422 354 410 491 S 688 634 870 535 L 870 558 C 688 377 422 657 410 469 S 124 377 -70 545 Z" fill="#30c828" opacity=".52"/>
-<path d="M -50 764 C 124 636 422 892 415 733 S 688 636 850 765" fill="none" stroke="#1d45bf" stroke-width="25" stroke-linecap="round" opacity=".72"/>
-<path d="M -40 461 C 124 554 422 374 420 479 S 688 554 850 438" fill="none" stroke="#79e28e" stroke-width="23" stroke-linecap="round" opacity=".78"/>
-<path d="M 335 129 A 152 152 0 0 1 487 71" fill="none" stroke="#5b153d" stroke-width="52" stroke-linecap="round" opacity=".36"/>
-<circle cx="335" cy="129" r="26" fill="#5b153d" opacity=".18"/>
-<text x="187" y="935" fill="#5b153d" font-family="sans-serif" font-size="18" letter-spacing="6" opacity=".28">SYNTHETIC</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="나루온 — 밤숲 기호 회화" data-record-id="synthetic-track-01-075" data-index="74" data-seed="4709">
+<title>밤숲의 표식 — 밤의 가장자리에 선 · Nightwood Mark / Standing at Night's Edge</title>
+<rect x="0" y="0" width="800" height="1000" fill="#17231B"/>
+<path d="M 0 560 C 130 520 250 600 382 548 S 640 504 800 566" fill="none" stroke="#E6D9B8" stroke-width="8"/>
+<path d="M 0 604 C 168 568 256 632 410 596 S 658 563 800 615" fill="none" stroke="#4F7154" stroke-width="3"/>
+<line x1="54" y1="560" x2="54" y2="510" stroke="#819A70" stroke-width="3"/>
+<polygon points="37,510 54,480 73,510 54,529" fill="#819A70"/>
+<line x1="132" y1="560" x2="132" y2="485" stroke="#819A70" stroke-width="3"/>
+<polygon points="115,485 132,455 151,485 132,504" fill="#819A70"/>
+<line x1="210" y1="560" x2="210" y2="460" stroke="#819A70" stroke-width="3"/>
+<polygon points="193,460 210,430 229,460 210,479" fill="#C8B77C"/>
+<line x1="288" y1="560" x2="288" y2="435" stroke="#819A70" stroke-width="3"/>
+<polygon points="271,435 288,405 307,435 288,454" fill="#819A70"/>
+<line x1="366" y1="560" x2="366" y2="510" stroke="#819A70" stroke-width="3"/>
+<polygon points="349,510 366,480 385,510 366,529" fill="#819A70"/>
+<line x1="444" y1="560" x2="444" y2="485" stroke="#819A70" stroke-width="3"/>
+<polygon points="427,485 444,455 463,485 444,504" fill="#819A70"/>
+<line x1="522" y1="560" x2="522" y2="460" stroke="#819A70" stroke-width="3"/>
+<polygon points="505,460 522,430 541,460 522,479" fill="#819A70"/>
+<line x1="600" y1="560" x2="600" y2="435" stroke="#819A70" stroke-width="3"/>
+<polygon points="583,435 600,405 619,435 600,454" fill="#C8B77C"/>
+<line x1="678" y1="560" x2="678" y2="510" stroke="#819A70" stroke-width="3"/>
+<polygon points="661,510 678,480 697,510 678,529" fill="#819A70"/>
+<line x1="756" y1="560" x2="756" y2="485" stroke="#819A70" stroke-width="3"/>
+<polygon points="739,485 756,455 775,485 756,504" fill="#819A70"/>
+<circle cx="110" cy="180" r="37" fill="none" stroke="#E6D9B8" stroke-width="3"/>
+<circle cx="110" cy="180" r="8" fill="#E6D9B8"/>
+<text x="34" y="968" fill="#C8B77C" font-family="sans-serif" font-size="11" letter-spacing="3">SYNTHETIC</text>
 </svg>

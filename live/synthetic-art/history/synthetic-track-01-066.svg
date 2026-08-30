@@ -1,10 +1,24 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Synthetic flowing ribbon placeholder for synthetic-track-01-066" data-seed="synthetic-track-01-066" data-index="65">
-<rect width="800" height="1000" fill="#eaf5f6"/>
-<path d="M -70 275 C 99 119 431 431 405 275 S 690 119 870 238 L 870 309 C 690 509 431 183 405 346 S 99 511 -70 370 Z" fill="#7e22ce" opacity=".58"/>
-<path d="M -70 518 C 99 606 431 430 410 507 S 690 606 870 529 L 870 547 C 690 448 431 624 410 570 S 99 448 -70 545 Z" fill="#c86228" opacity=".52"/>
-<path d="M -50 796 C 99 686 431 906 415 759 S 690 686 850 803" fill="none" stroke="#50bf1d" stroke-width="32" stroke-linecap="round" opacity=".72"/>
-<path d="M -40 389 C 99 556 431 244 420 393 S 690 556 850 424" fill="none" stroke="#e2a879" stroke-width="18" stroke-linecap="round" opacity=".78"/>
-<path d="M 268 455 A 271 271 0 0 1 539 367" fill="none" stroke="#15545b" stroke-width="71" stroke-linecap="round" opacity=".36"/>
-<circle cx="268" cy="455" r="35" fill="#15545b" opacity=".18"/>
-<text x="273" y="946" fill="#15545b" font-family="sans-serif" font-size="18" letter-spacing="6" opacity=".28">SYNTHETIC</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-01-066" data-record-index="65" data-seed="4610">
+<title>유리결의 반사 — 맑음이 기운 각도 · Glassgrain Reflection / Angle Where Clarity Tilts</title>
+<rect x="0" y="0" width="800" height="1000" fill="#17324D"/>
+<g transform="rotate(90 400 500)">
+<polygon points="0,66 800,174 772,866 35,844" fill="#2D5873" opacity="0.18"/>
+<polygon points="54,90 746,150 718,890 89,820" fill="#5C8EA3" opacity="0.23"/>
+<polygon points="108,114 692,126 664,914 143,796" fill="#A9CDD0" opacity="0.29"/>
+<polygon points="162,66 638,174 610,866 197,844" fill="#E2F0EA" opacity="0.34"/>
+<polygon points="216,90 584,150 556,890 251,820" fill="#D6A85F" opacity="0.18"/>
+<polygon points="270,114 530,126 502,914 305,796" fill="#2D5873" opacity="0.23"/>
+<polygon points="324,66 476,174 448,866 359,844" fill="#5C8EA3" opacity="0.29"/>
+<polygon points="118,196 682,231 632,775 164,730" fill="none" stroke="#E2F0EA" stroke-width="5" stroke-opacity="0.74"/>
+<polygon points="280,340 530,360 508,648 307,625" fill="none" stroke="#A9CDD0" stroke-width="4" stroke-opacity="0.72"/>
+<polygon points="377,421 444,427 437,560 386,552" fill="#E2F0EA" opacity="0.68"/>
+<line x1="80" y1="78" x2="22" y2="918" stroke="#A9CDD0" stroke-width="2" stroke-opacity="0.5"/>
+<line x1="186" y1="78" x2="186" y2="918" stroke="#D6A85F" stroke-width="3" stroke-opacity="0.5"/>
+<line x1="292" y1="78" x2="350" y2="918" stroke="#A9CDD0" stroke-width="4" stroke-opacity="0.5"/>
+<line x1="398" y1="78" x2="340" y2="918" stroke="#D6A85F" stroke-width="2" stroke-opacity="0.5"/>
+<line x1="504" y1="78" x2="504" y2="918" stroke="#A9CDD0" stroke-width="3" stroke-opacity="0.5"/>
+<line x1="610" y1="78" x2="668" y2="918" stroke="#D6A85F" stroke-width="4" stroke-opacity="0.5"/>
+<line x1="716" y1="78" x2="658" y2="918" stroke="#A9CDD0" stroke-width="2" stroke-opacity="0.5"/>
+<text x="728" y="953" fill="#A9CDD0" font-family="sans-serif" font-size="9" letter-spacing="3" text-anchor="end" opacity="0.34">SYNTHETIC</text>
+</g>
 </svg>

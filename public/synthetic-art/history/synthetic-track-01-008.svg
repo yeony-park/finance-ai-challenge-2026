@@ -1,14 +1,26 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000">
-<rect width="800" height="1000" fill="#2d1b15"/>
-<rect x="42" y="52" width="716" height="896" rx="14" fill="none" stroke="#cee3e9" stroke-opacity="0.28" stroke-width="4"/>
-<rect x="74" y="88" width="572" height="18" fill="#e486a1" opacity="0.48"/>
-<rect x="115" y="123" width="340" height="186" fill="#edc568" opacity="0.92"/>
-<rect x="150" y="165" width="232" height="102" fill="#53df8d" opacity="0.72"/>
-<rect x="202" y="472" width="371" height="336" fill="#804de0" opacity="0.88"/>
-<rect x="251" y="502" width="295" height="244" fill="#2d1b15" opacity="0.64"/>
-<rect x="213" y="680" width="483" height="129" fill="#e486a1" opacity="0.82"/>
-<rect x="151" y="302" width="283" height="22" fill="#cee3e9" opacity="0.35" transform="rotate(-3 151 302)"/>
-<rect x="74" y="862" width="341" height="3" fill="#cee3e9" opacity="0.5"/>
-<text x="74" y="905" fill="#cee3e9" opacity="0.52" font-family="sans-serif" font-size="16" letter-spacing="4">SYNTHETIC</text>
-<text x="726" y="905" fill="#cee3e9" opacity="0.62" font-family="sans-serif" font-size="18" text-anchor="end">07</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-01-008" data-record-index="7" data-seed="4108">
+<title>맑은 격자 — 먼 빛의 방위 · Clear Lattice / Bearing of Distant Light</title>
+<rect x="0" y="0" width="800" height="1000" fill="#1E2A3A"/>
+<g transform="rotate(180 400 500)">
+<rect x="76" y="76" width="648" height="848" fill="#38566B" opacity="0.38"/>
+<rect x="134" y="126" width="502" height="706" fill="#6D8A99" opacity="0.34"/>
+<rect x="202" y="202" width="344" height="512" fill="#B8C4C0" opacity="0.36"/>
+<rect x="110" y="110" width="580" height="780" fill="none" stroke="#E6D7C4" stroke-width="2" stroke-opacity="0.3"/>
+<rect x="119" y="119" width="562" height="762" fill="none" stroke="#B8C4C0" stroke-width="3" stroke-opacity="0.37"/>
+<rect x="128" y="128" width="544" height="744" fill="none" stroke="#6D8A99" stroke-width="4" stroke-opacity="0.44"/>
+<rect x="137" y="137" width="526" height="726" fill="none" stroke="#E6D7C4" stroke-width="2" stroke-opacity="0.3"/>
+<rect x="146" y="146" width="508" height="708" fill="none" stroke="#B8C4C0" stroke-width="3" stroke-opacity="0.37"/>
+<rect x="155" y="155" width="490" height="690" fill="none" stroke="#6D8A99" stroke-width="4" stroke-opacity="0.44"/>
+<line x1="92" y1="189" x2="706" y2="189" stroke="#C58D6D" stroke-width="2" stroke-opacity="0.38"/>
+<line x1="92" y1="310" x2="706" y2="310" stroke="#C58D6D" stroke-width="2" stroke-opacity="0.38"/>
+<line x1="92" y1="431" x2="706" y2="431" stroke="#C58D6D" stroke-width="2" stroke-opacity="0.38"/>
+<line x1="202" y1="98" x2="202" y2="884" stroke="#E6D7C4" stroke-width="2" stroke-opacity="0.42"/>
+<line x1="358" y1="98" x2="358" y2="884" stroke="#E6D7C4" stroke-width="2" stroke-opacity="0.42"/>
+<line x1="514" y1="98" x2="514" y2="884" stroke="#E6D7C4" stroke-width="2" stroke-opacity="0.42"/>
+<line x1="670" y1="98" x2="670" y2="884" stroke="#E6D7C4" stroke-width="2" stroke-opacity="0.42"/>
+<rect x="298" y="354" width="190" height="206" fill="#1E2A3A" opacity="0.72"/>
+<rect x="318" y="376" width="150" height="162" fill="none" stroke="#E6D7C4" stroke-width="4" stroke-opacity="0.72"/>
+<line x1="318" y1="457" x2="468" y2="457" stroke="#B8C4C0" stroke-width="2"/>
+<text x="70" y="955" fill="#E6D7C4" font-family="sans-serif" font-size="9" letter-spacing="3" opacity="0.3">SYNTHETIC</text>
+</g>
 </svg>

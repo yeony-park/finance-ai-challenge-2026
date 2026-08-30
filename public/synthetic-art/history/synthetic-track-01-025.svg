@@ -1,14 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000">
-<rect width="800" height="1000" fill="#2a1d3a"/>
-<rect x="42" y="52" width="716" height="896" rx="14" fill="none" stroke="#cedcbc" stroke-opacity="0.28" stroke-width="4"/>
-<rect x="74" y="88" width="591" height="18" fill="#9cc3ed" opacity="0.48"/>
-<rect x="147" y="197" width="290" height="225" fill="#ea53d6" opacity="0.92"/>
-<rect x="200" y="263" width="204" height="140" fill="#e8e84a" opacity="0.72"/>
-<rect x="263" y="409" width="371" height="185" fill="#6be673" opacity="0.88"/>
-<rect x="318" y="460" width="261" height="90" fill="#2a1d3a" opacity="0.64"/>
-<rect x="244" y="740" width="364" height="223" fill="#9cc3ed" opacity="0.82"/>
-<rect x="139" y="236" width="314" height="22" fill="#cedcbc" opacity="0.35" transform="rotate(4 139 236)"/>
-<rect x="74" y="862" width="373" height="3" fill="#cedcbc" opacity="0.5"/>
-<text x="74" y="905" fill="#cedcbc" opacity="0.52" font-family="sans-serif" font-size="16" letter-spacing="4">SYNTHETIC</text>
-<text x="726" y="905" fill="#cedcbc" opacity="0.62" font-family="sans-serif" font-size="18" text-anchor="end">24</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-01-025" data-record-index="24" data-seed="4302">
+<title>달선의 문장 — 밤의 문장을 걷다 · Moonline Sentence / Walking Through a Sentence of Night</title>
+<rect x="0" y="0" width="800" height="1000" fill="#20252B"/>
+<circle cx="328" cy="511" r="70" fill="#E7D9C8" opacity="0.84"/>
+<circle cx="345" cy="503" r="70" fill="#20252B" opacity="0.94"/>
+<ellipse cx="328" cy="511" rx="88" ry="44" fill="none" stroke="#4A5862" stroke-width="2" stroke-opacity="0.5"/>
+<ellipse cx="328" cy="511" rx="131" ry="76" fill="none" stroke="#8797A0" stroke-width="3" stroke-opacity="0.56"/>
+<ellipse cx="328" cy="511" rx="174" ry="108" fill="none" stroke="#C9B7A5" stroke-width="4" stroke-opacity="0.62"/>
+<ellipse cx="328" cy="511" rx="217" ry="140" fill="none" stroke="#E7D9C8" stroke-width="2" stroke-opacity="0.5"/>
+<ellipse cx="328" cy="511" rx="260" ry="172" fill="none" stroke="#4A5862" stroke-width="3" stroke-opacity="0.56"/>
+<circle cx="480.79" cy="585.52" r="3" fill="#C9B7A5" opacity="0.78"/>
+<circle cx="429.69" cy="710.59" r="5" fill="#E7D9C8" opacity="0.78"/>
+<circle cx="279.73" cy="784.78" r="3" fill="#C9B7A5" opacity="0.78"/>
+<circle cx="203.67" cy="626.94" r="5" fill="#E7D9C8" opacity="0.78"/>
+<circle cx="105.23" cy="534.41" r="3" fill="#C9B7A5" opacity="0.78"/>
+<circle cx="89.71" cy="367.82" r="5" fill="#E7D9C8" opacity="0.78"/>
+<path d="M0 759 C198 651 218 421 308 357 C418 281 694 379 800 285" fill="none" stroke="#C9B7A5" stroke-width="5" stroke-linecap="round"/>
+<path d="M63 138 C101 113 142 169 175 138" fill="none" stroke="#8797A0" stroke-width="2" stroke-linecap="round"/>
+<path d="M211 279 C249 254 290 310 323 279" fill="none" stroke="#8797A0" stroke-width="2" stroke-linecap="round"/>
+<path d="M359 420 C397 395 438 451 471 420" fill="none" stroke="#8797A0" stroke-width="2" stroke-linecap="round"/>
+<path d="M507 561 C545 536 586 592 619 561" fill="none" stroke="#8797A0" stroke-width="2" stroke-linecap="round"/>
+<text x="54" y="954" fill="#8797A0" font-family="sans-serif" font-size="9" letter-spacing="3" opacity="0.32">SYNTHETIC</text>
 </svg>

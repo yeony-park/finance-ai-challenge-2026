@@ -1,10 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Synthetic flowing ribbon placeholder for synthetic-track-01-080" data-seed="synthetic-track-01-080" data-index="79">
-<rect width="800" height="1000" fill="#eaf1f6"/>
-<path d="M -70 189 C 208 85 459 293 405 189 S 712 85 870 183 L 870 219 C 712 295 459 141 405 225 S 208 318 -70 241 Z" fill="#a622ce" opacity=".58"/>
-<path d="M -70 541 C 208 668 459 414 410 554 S 712 668 870 539 L 870 565 C 712 440 459 694 410 584 S 208 440 -70 556 Z" fill="#c87b28" opacity=".52"/>
-<path d="M -50 811 C 208 731 459 891 415 805 S 712 731 850 777" fill="none" stroke="#1dbf45" stroke-width="39" stroke-linecap="round" opacity=".72"/>
-<path d="M -40 327 C 208 418 459 210 420 334 S 712 418 850 330" fill="none" stroke="#e29e79" stroke-width="26" stroke-linecap="round" opacity=".78"/>
-<path d="M 662 649 A 166 166 0 0 0 496 573" fill="none" stroke="#15485b" stroke-width="36" stroke-linecap="round" opacity=".36"/>
-<circle cx="662" cy="649" r="18" fill="#15485b" opacity=".18"/>
-<text x="235" y="954" fill="#15485b" font-family="sans-serif" font-size="18" letter-spacing="6" opacity=".28">SYNTHETIC</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="온새벽 — 조약돌 균형 구성" data-record-id="synthetic-track-01-080" data-index="79" data-seed="4804">
+<title>조약돌의 균형 — 돌과 공기의 사이 · Pebble Balance / Between Stone and Air</title>
+<rect x="0" y="0" width="800" height="1000" fill="#D8D0BC"/>
+<ellipse cx="178" cy="862" rx="143" ry="48" fill="#4B4B47" stroke="#222222" stroke-width="3"/>
+<ellipse cx="189" cy="790" rx="103" ry="66" fill="#77766C" stroke="#222222" stroke-width="3"/>
+<ellipse cx="178" cy="676" rx="93" ry="54" fill="#A9A79A" stroke="#222222" stroke-width="3"/>
+<ellipse cx="189" cy="566" rx="71" ry="49" fill="#D8D0BC" stroke="#222222" stroke-width="3"/>
+<ellipse cx="178" cy="472" rx="47" ry="39" fill="#222222" stroke="#222222" stroke-width="3"/>
+<line x1="102" y1="914" x2="309" y2="914" stroke="#222222" stroke-width="4"/>
+<circle cx="531" cy="227" r="19" fill="none" stroke="#B56D52" stroke-width="4"/>
+<line x1="531" y1="246" x2="531" y2="298" stroke="#B56D52" stroke-width="3"/>
+<text x="34" y="968" fill="#B56D52" font-family="sans-serif" font-size="11" letter-spacing="3">SYNTHETIC</text>
 </svg>

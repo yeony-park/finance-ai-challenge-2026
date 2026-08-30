@@ -1,14 +1,25 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000">
-<rect width="800" height="1000" fill="#163b31"/>
-<rect x="42" y="52" width="716" height="896" rx="14" fill="none" stroke="#edd4dc" stroke-opacity="0.28" stroke-width="4"/>
-<rect x="74" y="88" width="612" height="18" fill="#79e69e" opacity="0.48"/>
-<rect x="75" y="167" width="284" height="323" fill="#4ca6eb" opacity="0.92"/>
-<rect x="119" y="214" width="205" height="225" fill="#be57cb" opacity="0.72"/>
-<rect x="237" y="430" width="205" height="330" fill="#e49758" opacity="0.88"/>
-<rect x="295" y="460" width="95" height="246" fill="#163b31" opacity="0.64"/>
-<rect x="254" y="660" width="351" height="167" fill="#79e69e" opacity="0.82"/>
-<rect x="263" y="268" width="327" height="22" fill="#edd4dc" opacity="0.35" transform="rotate(1 263 268)"/>
-<rect x="74" y="862" width="301" height="3" fill="#edd4dc" opacity="0.5"/>
-<text x="74" y="905" fill="#edd4dc" opacity="0.52" font-family="sans-serif" font-size="16" letter-spacing="4">SYNTHETIC</text>
-<text x="726" y="905" fill="#edd4dc" opacity="0.62" font-family="sans-serif" font-size="18" text-anchor="end">50</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-01-051" data-record-index="50" data-seed="4506">
+<title>작은 흙언덕 — 흙결을 따라 난 빛 · Small Earth Rise / Light Growing Along Earth Grain</title>
+<rect x="0" y="0" width="800" height="1000" fill="#795548"/>
+<g transform="rotate(180 400 500)">
+<rect x="0" y="0" width="800" height="254" fill="#E4D1A6" opacity="0.85"/>
+<path d="M0 718 C105 626 206 660 285 586 C365 511 458 496 548 571 C635 645 706 616 800 687 L800 1000 L0 1000 Z" fill="#A97855"/>
+<path d="M0 850 C138 745 210 794 318 711 C411 640 519 648 610 715 C688 772 740 753 800 793 L800 1000 L0 1000 Z" fill="#3E2C24"/>
+<path d="M204 1000 C238 834 302 774 392 739 C458 713 548 757 608 1000 Z" fill="#C7A77B" opacity="0.64"/>
+<polygon points="370,642 392,610 422,636 401,659" fill="#6A7B58" opacity="0.82"/>
+<ellipse cx="459" cy="677" rx="29" ry="12" fill="#E4D1A6" opacity="0.72"/>
+<circle cx="512" cy="730" r="16" fill="#795548" opacity="0.8"/>
+<polygon points="583,801 605,769 635,795 614,818" fill="#6A7B58" opacity="0.82"/>
+<ellipse cx="672" cy="616" rx="24" ry="12" fill="#E4D1A6" opacity="0.72"/>
+<circle cx="355" cy="669" r="16" fill="#795548" opacity="0.8"/>
+<polygon points="426,740 448,708 478,734 457,757" fill="#6A7B58" opacity="0.82"/>
+<ellipse cx="515" cy="775" rx="39" ry="12" fill="#E4D1A6" opacity="0.72"/>
+<circle cx="568" cy="608" r="16" fill="#795548" opacity="0.8"/>
+<polygon points="639,679 661,647 691,673 670,696" fill="#6A7B58" opacity="0.82"/>
+<ellipse cx="358" cy="714" rx="34" ry="12" fill="#E4D1A6" opacity="0.72"/>
+<line x1="196" y1="872" x2="264" y2="854" stroke="#6A7B58" stroke-width="4" stroke-opacity="0.58" stroke-linecap="round"/>
+<line x1="373" y1="906" x2="441" y2="888" stroke="#6A7B58" stroke-width="4" stroke-opacity="0.58" stroke-linecap="round"/>
+<line x1="550" y1="872" x2="618" y2="854" stroke="#6A7B58" stroke-width="4" stroke-opacity="0.58" stroke-linecap="round"/>
+<text x="66" y="953" fill="#795548" font-family="sans-serif" font-size="9" letter-spacing="3" opacity="0.34">SYNTHETIC</text>
+</g>
 </svg>

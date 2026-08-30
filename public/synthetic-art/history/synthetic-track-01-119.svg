@@ -1,10 +1,49 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Synthetic flowing ribbon placeholder for synthetic-track-01-119" data-seed="synthetic-track-01-119" data-index="118">
-<rect width="800" height="1000" fill="#eaf3f6"/>
-<path d="M -70 230 C 165 114 497 346 405 230 S 739 114 870 251 L 870 299 C 739 391 497 211 405 278 S 165 414 -70 292 Z" fill="#8622ce" opacity=".58"/>
-<path d="M -70 567 C 165 720 497 414 410 591 S 739 720 870 525 L 870 560 C 739 449 497 755 410 613 S 165 449 -70 622 Z" fill="#c85a28" opacity=".52"/>
-<path d="M -50 780 C 165 631 497 929 415 801 S 739 631 850 777" fill="none" stroke="#7bbf1d" stroke-width="16" stroke-linecap="round" opacity=".72"/>
-<path d="M -40 379 C 165 471 497 239 420 404 S 739 471 850 369" fill="none" stroke="#79e2bf" stroke-width="35" stroke-linecap="round" opacity=".78"/>
-<path d="M 317 482 A 119 119 0 0 1 436 581" fill="none" stroke="#155b59" stroke-width="48" stroke-linecap="round" opacity=".36"/>
-<circle cx="317" cy="482" r="24" fill="#155b59" opacity=".18"/>
-<text x="68" y="946" fill="#155b59" font-family="sans-serif" font-size="18" letter-spacing="6" opacity=".28">SYNTHETIC</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="달포개 — 소리결 반복문양" data-record-id="synthetic-track-01-119" data-index="118" data-seed="5203">
+<title>소리결의 반복 — 되풀이되는 숨의 파장 · Soundgrain Refrain / Wavelength of a Repeating Breath</title>
+<rect x="0" y="0" width="800" height="1000" fill="#3B1F2B"/>
+<line x1="88" y1="214" x2="714" y2="214" stroke="#6C3A5B" stroke-width="4"/>
+<rect x="122" y="196" width="44" height="36" fill="#F1DABF"/>
+<circle cx="144" cy="170" r="9" fill="#637A7A"/>
+<rect x="296" y="196" width="44" height="36" fill="#A65D75"/>
+<circle cx="318" cy="170" r="9" fill="#637A7A"/>
+<line x1="88" y1="330" x2="714" y2="330" stroke="#D8A48F" stroke-width="4"/>
+<rect x="167" y="312" width="44" height="36" fill="#F1DABF"/>
+<circle cx="189" cy="286" r="9" fill="#637A7A"/>
+<rect x="341" y="312" width="44" height="36" fill="#A65D75"/>
+<circle cx="363" cy="286" r="9" fill="#637A7A"/>
+<rect x="515" y="312" width="44" height="36" fill="#F1DABF"/>
+<circle cx="537" cy="286" r="9" fill="#637A7A"/>
+<line x1="88" y1="446" x2="714" y2="446" stroke="#6C3A5B" stroke-width="4"/>
+<rect x="122" y="428" width="44" height="36" fill="#F1DABF"/>
+<circle cx="144" cy="402" r="9" fill="#637A7A"/>
+<rect x="296" y="428" width="44" height="36" fill="#A65D75"/>
+<circle cx="318" cy="402" r="9" fill="#637A7A"/>
+<rect x="470" y="428" width="44" height="36" fill="#F1DABF"/>
+<circle cx="492" cy="402" r="9" fill="#637A7A"/>
+<rect x="644" y="428" width="44" height="36" fill="#A65D75"/>
+<circle cx="666" cy="402" r="9" fill="#637A7A"/>
+<line x1="88" y1="562" x2="714" y2="562" stroke="#D8A48F" stroke-width="4"/>
+<rect x="167" y="544" width="44" height="36" fill="#F1DABF"/>
+<circle cx="189" cy="518" r="9" fill="#637A7A"/>
+<rect x="341" y="544" width="44" height="36" fill="#A65D75"/>
+<circle cx="363" cy="518" r="9" fill="#637A7A"/>
+<line x1="88" y1="678" x2="714" y2="678" stroke="#6C3A5B" stroke-width="4"/>
+<rect x="122" y="660" width="44" height="36" fill="#F1DABF"/>
+<circle cx="144" cy="634" r="9" fill="#637A7A"/>
+<rect x="296" y="660" width="44" height="36" fill="#A65D75"/>
+<circle cx="318" cy="634" r="9" fill="#637A7A"/>
+<rect x="470" y="660" width="44" height="36" fill="#F1DABF"/>
+<circle cx="492" cy="634" r="9" fill="#637A7A"/>
+<line x1="88" y1="794" x2="714" y2="794" stroke="#D8A48F" stroke-width="4"/>
+<rect x="167" y="776" width="44" height="36" fill="#F1DABF"/>
+<circle cx="189" cy="750" r="9" fill="#637A7A"/>
+<rect x="341" y="776" width="44" height="36" fill="#A65D75"/>
+<circle cx="363" cy="750" r="9" fill="#637A7A"/>
+<rect x="515" y="776" width="44" height="36" fill="#F1DABF"/>
+<circle cx="537" cy="750" r="9" fill="#637A7A"/>
+<rect x="689" y="776" width="44" height="36" fill="#A65D75"/>
+<circle cx="711" cy="750" r="9" fill="#637A7A"/>
+<circle cx="686" cy="132" r="28" fill="none" stroke="#F1DABF" stroke-width="3"/>
+<line x1="686" y1="160" x2="686" y2="248" stroke="#F1DABF" stroke-width="3"/>
+<text x="34" y="968" fill="#F1DABF" font-family="sans-serif" font-size="11" letter-spacing="3">SYNTHETIC</text>
 </svg>

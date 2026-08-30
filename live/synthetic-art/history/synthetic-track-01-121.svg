@@ -1,10 +1,35 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Synthetic flowing ribbon placeholder for synthetic-track-01-121" data-seed="synthetic-track-01-121" data-index="120">
-<rect width="800" height="1000" fill="#efeaf6"/>
-<path d="M -70 286 C 255 123 497 449 405 286 S 638 123 870 315 L 870 375 C 638 547 497 150 405 346 S 255 531 -70 354 Z" fill="#ce226c" opacity=".58"/>
-<path d="M -70 558 C 255 635 497 481 410 516 S 638 635 870 520 L 870 564 C 638 525 497 679 410 600 S 255 525 -70 624 Z" fill="#c5c828" opacity=".52"/>
-<path d="M -50 884 C 255 753 497 1015 415 913 S 638 753 850 922" fill="none" stroke="#1dacbf" stroke-width="30" stroke-linecap="round" opacity=".72"/>
-<path d="M -40 369 C 255 574 497 248 420 378 S 638 574 850 419" fill="none" stroke="#9079e2" stroke-width="44" stroke-linecap="round" opacity=".78"/>
-<path d="M 150 274 A 131 131 0 0 1 281 390" fill="none" stroke="#43155b" stroke-width="60" stroke-linecap="round" opacity=".36"/>
-<circle cx="150" cy="274" r="30" fill="#43155b" opacity=".18"/>
-<text x="278" y="958" fill="#43155b" font-family="sans-serif" font-size="18" letter-spacing="6" opacity=".28">SYNTHETIC</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="달포개 — 소리결 반복문양" data-record-id="synthetic-track-01-121" data-index="120" data-seed="5205">
+<title>소리결의 반복 — 리듬이 접힌 표면 · Soundgrain Refrain / Surface Where Rhythm Folded</title>
+<rect x="0" y="0" width="800" height="1000" fill="#3B1F2B"/>
+<circle cx="130" cy="180" r="39" fill="#F1DABF"/>
+<circle cx="130" cy="180" r="16" fill="#3B1F2B"/>
+<circle cx="402" cy="180" r="39" fill="#F1DABF"/>
+<circle cx="402" cy="180" r="16" fill="#3B1F2B"/>
+<circle cx="674" cy="180" r="39" fill="#F1DABF"/>
+<circle cx="674" cy="180" r="16" fill="#3B1F2B"/>
+<circle cx="266" cy="316" r="39" fill="#A65D75"/>
+<circle cx="266" cy="316" r="16" fill="#3B1F2B"/>
+<circle cx="538" cy="316" r="39" fill="#A65D75"/>
+<circle cx="538" cy="316" r="16" fill="#3B1F2B"/>
+<circle cx="130" cy="452" r="39" fill="#F1DABF"/>
+<circle cx="130" cy="452" r="16" fill="#3B1F2B"/>
+<circle cx="402" cy="452" r="39" fill="#F1DABF"/>
+<circle cx="402" cy="452" r="16" fill="#3B1F2B"/>
+<circle cx="674" cy="452" r="39" fill="#F1DABF"/>
+<circle cx="674" cy="452" r="16" fill="#3B1F2B"/>
+<circle cx="266" cy="588" r="39" fill="#A65D75"/>
+<circle cx="266" cy="588" r="16" fill="#3B1F2B"/>
+<circle cx="538" cy="588" r="39" fill="#A65D75"/>
+<circle cx="538" cy="588" r="16" fill="#3B1F2B"/>
+<circle cx="130" cy="724" r="39" fill="#F1DABF"/>
+<circle cx="130" cy="724" r="16" fill="#3B1F2B"/>
+<circle cx="402" cy="724" r="39" fill="#F1DABF"/>
+<circle cx="402" cy="724" r="16" fill="#3B1F2B"/>
+<circle cx="674" cy="724" r="39" fill="#F1DABF"/>
+<circle cx="674" cy="724" r="16" fill="#3B1F2B"/>
+<rect x="302" y="352" width="196" height="196" fill="none" stroke="#D8A48F" stroke-width="4"/>
+<circle cx="400" cy="450" r="30" fill="#637A7A"/>
+<line x1="400" y1="82" x2="400" y2="140" stroke="#F1DABF" stroke-width="2"/>
+<line x1="400" y1="758" x2="400" y2="918" stroke="#F1DABF" stroke-width="2"/>
+<text x="34" y="968" fill="#F1DABF" font-family="sans-serif" font-size="11" letter-spacing="3">SYNTHETIC</text>
 </svg>

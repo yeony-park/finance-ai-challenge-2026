@@ -1,10 +1,38 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Synthetic flowing ribbon placeholder for synthetic-track-01-124" data-seed="synthetic-track-01-124" data-index="123">
-<rect width="800" height="1000" fill="#f6f5ea"/>
-<path d="M -70 224 C 250 75 467 373 405 224 S 676 75 870 190 L 870 248 C 676 406 467 163 405 282 S 250 399 -70 332 Z" fill="#36ce22" opacity=".58"/>
-<path d="M -70 655 C 250 794 467 516 410 647 S 676 794 870 625 L 870 655 C 676 546 467 824 410 722 S 250 546 -70 653 Z" fill="#283dc8" opacity=".52"/>
-<path d="M -50 774 C 250 634 467 914 415 740 S 676 634 850 749" fill="none" stroke="#bf1d1f" stroke-width="30" stroke-linecap="round" opacity=".72"/>
-<path d="M -40 341 C 250 498 467 200 420 379 S 676 498 850 399" fill="none" stroke="#a879e2" stroke-width="30" stroke-linecap="round" opacity=".78"/>
-<path d="M 356 437 A 108 108 0 0 1 464 555" fill="none" stroke="#5b4f15" stroke-width="58" stroke-linecap="round" opacity=".36"/>
-<circle cx="356" cy="437" r="29" fill="#5b4f15" opacity=".18"/>
-<text x="122" y="959" fill="#5b4f15" font-family="sans-serif" font-size="18" letter-spacing="6" opacity=".28">SYNTHETIC</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="달포개 — 소리결 반복문양" data-record-id="synthetic-track-01-124" data-index="123" data-seed="5208">
+<title>소리결의 반복 — 울림을 따라 난 선 · Soundgrain Refrain / Line Growing Along Resonance</title>
+<rect x="0" y="0" width="800" height="1000" fill="#3B1F2B"/>
+<polygon points="164,157 217,210 164,263 111,210" fill="#D8A48F" stroke="#F1DABF" stroke-width="2"/>
+<circle cx="164" cy="210" r="9" fill="#637A7A"/>
+<polygon points="319,157 372,210 319,263 266,210" fill="#6C3A5B" stroke="#F1DABF" stroke-width="2"/>
+<circle cx="319" cy="210" r="9" fill="#637A7A"/>
+<polygon points="474,157 527,210 474,263 421,210" fill="#D8A48F" stroke="#F1DABF" stroke-width="2"/>
+<circle cx="474" cy="210" r="9" fill="#637A7A"/>
+<polygon points="629,157 682,210 629,263 576,210" fill="#6C3A5B" stroke="#F1DABF" stroke-width="2"/>
+<circle cx="629" cy="210" r="9" fill="#637A7A"/>
+<polygon points="164,312 217,365 164,418 111,365" fill="#6C3A5B" stroke="#F1DABF" stroke-width="2"/>
+<circle cx="164" cy="365" r="9" fill="#637A7A"/>
+<polygon points="319,312 372,365 319,418 266,365" fill="#D8A48F" stroke="#F1DABF" stroke-width="2"/>
+<circle cx="319" cy="365" r="9" fill="#637A7A"/>
+<polygon points="629,312 682,365 629,418 576,365" fill="#D8A48F" stroke="#F1DABF" stroke-width="2"/>
+<circle cx="629" cy="365" r="9" fill="#637A7A"/>
+<polygon points="164,467 217,520 164,573 111,520" fill="#D8A48F" stroke="#F1DABF" stroke-width="2"/>
+<circle cx="164" cy="520" r="9" fill="#637A7A"/>
+<polygon points="319,467 372,520 319,573 266,520" fill="#6C3A5B" stroke="#F1DABF" stroke-width="2"/>
+<circle cx="319" cy="520" r="9" fill="#637A7A"/>
+<polygon points="474,467 527,520 474,573 421,520" fill="#D8A48F" stroke="#F1DABF" stroke-width="2"/>
+<circle cx="474" cy="520" r="9" fill="#637A7A"/>
+<polygon points="629,467 682,520 629,573 576,520" fill="#6C3A5B" stroke="#F1DABF" stroke-width="2"/>
+<circle cx="629" cy="520" r="9" fill="#637A7A"/>
+<polygon points="164,622 217,675 164,728 111,675" fill="#6C3A5B" stroke="#F1DABF" stroke-width="2"/>
+<circle cx="164" cy="675" r="9" fill="#637A7A"/>
+<polygon points="319,622 372,675 319,728 266,675" fill="#D8A48F" stroke="#F1DABF" stroke-width="2"/>
+<circle cx="319" cy="675" r="9" fill="#637A7A"/>
+<polygon points="474,622 527,675 474,728 421,675" fill="#6C3A5B" stroke="#F1DABF" stroke-width="2"/>
+<circle cx="474" cy="675" r="9" fill="#637A7A"/>
+<polygon points="629,622 682,675 629,728 576,675" fill="#D8A48F" stroke="#F1DABF" stroke-width="2"/>
+<circle cx="629" cy="675" r="9" fill="#637A7A"/>
+<circle cx="400" cy="500" r="67" fill="none" stroke="#A65D75" stroke-width="5"/>
+<circle cx="400" cy="500" r="19" fill="#F1DABF"/>
+<line x1="94" y1="862" x2="706" y2="862" stroke="#F1DABF" stroke-width="3"/>
+<text x="34" y="968" fill="#F1DABF" font-family="sans-serif" font-size="11" letter-spacing="3">SYNTHETIC</text>
 </svg>

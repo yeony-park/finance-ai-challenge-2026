@@ -1,1 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="synthetic-track-02-013 synthetic geometric artwork"><title>synthetic-track-02-013</title><rect width="800" height="1000" fill="#111f1a"/><circle cx="360" cy="398" r="230" fill="#1b3827" opacity=".42"/><circle cx="360" cy="398" r="204" fill="none" stroke="#e0a375" stroke-width="3" opacity=".4"/><g><line x1="359.9" y1="320.0" x2="359.8" y2="256.0" stroke="#e0a375" stroke-width="3" opacity=".68"/><line x1="412.9" y1="344.9" x2="473.7" y2="284.0" stroke="#eb42c1" stroke-width="2" opacity=".68"/><line x1="439.0" y1="397.9" x2="495.0" y2="397.8" stroke="#eb42c1" stroke-width="2" opacity=".68"/><line x1="418.8" y1="456.6" x2="466.2" y2="503.9" stroke="#e0a375" stroke-width="1" opacity=".68"/><line x1="360.1" y1="486.0" x2="360.2" y2="531.0" stroke="#eb42c1" stroke-width="1" opacity=".68"/><line x1="310.6" y1="447.6" x2="264.7" y2="493.6" stroke="#eb42c1" stroke-width="2" opacity=".68"/><line x1="283.0" y1="398.1" x2="234.0" y2="398.2" stroke="#e0a375" stroke-width="2" opacity=".68"/><line x1="298.4" y1="336.6" x2="268.6" y2="306.9" stroke="#eb42c1" stroke-width="3" opacity=".68"/></g><g><ellipse cx="360" cy="398" rx="160" ry="72" transform="rotate(32 360 398)" fill="none" stroke="#eb42c1" stroke-width="3" opacity=".78"/><ellipse cx="360" cy="398" rx="139" ry="77" transform="rotate(53 360 398)" fill="none" stroke="#e0a375" stroke-width="3" opacity=".78"/><ellipse cx="360" cy="398" rx="122" ry="85" transform="rotate(89 360 398)" fill="none" stroke="#eb42c1" stroke-width="4" opacity=".78"/></g><g><circle cx="360" cy="398" r="59" fill="none" stroke="#eb42c1" stroke-width="5" opacity="0.75"/><circle cx="360" cy="398" r="78" fill="none" stroke="#abf5bb" stroke-width="2" opacity="0.66"/><circle cx="360" cy="398" r="97" fill="none" stroke="#eb42c1" stroke-width="2" opacity="0.57"/><circle cx="360" cy="398" r="116" fill="none" stroke="#abf5bb" stroke-width="2" opacity="0.48"/><circle cx="360" cy="398" r="135" fill="none" stroke="#eb42c1" stroke-width="2" opacity="0.39"/><circle cx="430.4" cy="297.1" r="8" fill="#abf5bb" stroke="#eb42c1" stroke-width="2" opacity=".9"/><circle cx="470.7" cy="475.3" r="10" fill="#abf5bb" stroke="#eb42c1" stroke-width="2" opacity=".9"/><circle cx="287.3" cy="502.2" r="11" fill="#abf5bb" stroke="#eb42c1" stroke-width="2" opacity=".9"/><circle cx="243.5" cy="316.7" r="7" fill="#abf5bb" stroke="#eb42c1" stroke-width="2" opacity=".9"/></g><text x="360" y="920" text-anchor="middle" fill="#abf5bb" opacity=".34" font-family="sans-serif" font-size="20" letter-spacing="6">SYNTHETIC</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-02-013" data-record-index="186" data-seed="5902">
+<title>비늘그림자의 면 — 겹친 비늘의 검은 틈 · Scaled Shadow Plane / Dark Gap Between Layered Scales</title>
+<rect x="0" y="0" width="800" height="1000" fill="#3A2D32"/>
+<path d="M40 120L690 890" fill="none" stroke="#687A8B" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity="0.38"/>
+<polygon points="65,108 161,108 171,134 135,220 112,242 89,220 53,134" fill="#704C5E"/>
+<polygon points="53,98 161,98 171,134 131,212 112,234 93,212 53,134" fill="#9E6A7A"/>
+<polygon points="253,108 349,108 359,134 323,220 300,242 277,220 241,134" fill="#704C5E"/>
+<polygon points="241,98 349,98 359,134 319,212 300,234 281,212 241,134" fill="#C8A2A8" stroke="#687A8B" stroke-width="3"/>
+<polygon points="441,108 537,108 547,134 511,220 488,242 465,220 429,134" fill="#704C5E"/>
+<polygon points="429,98 537,98 547,134 507,212 488,234 469,212 429,134" fill="#EBD8C3"/>
+<polygon points="95,296 191,296 201,322 165,408 142,430 119,408 83,322" fill="#704C5E"/>
+<polygon points="83,286 191,286 201,322 161,400 142,422 123,400 83,322" fill="#C8A2A8" stroke="#687A8B" stroke-width="3"/>
+<polygon points="283,296 379,296 389,322 353,408 330,430 307,408 271,322" fill="#704C5E"/>
+<polygon points="271,286 379,286 389,322 349,400 330,422 311,400 271,322" fill="#EBD8C3"/>
+<polygon points="471,296 567,296 577,322 541,408 518,430 495,408 459,322" fill="#704C5E"/>
+<polygon points="459,286 567,286 577,322 537,400 518,422 499,400 459,322" fill="#687A8B" stroke="#687A8B" stroke-width="3"/>
+<polygon points="125,484 221,484 231,510 195,596 172,618 149,596 113,510" fill="#704C5E"/>
+<polygon points="113,474 221,474 231,510 191,588 172,610 153,588 113,510" fill="#EBD8C3"/>
+<polygon points="313,484 409,484 419,510 383,596 360,618 337,596 301,510" fill="#704C5E"/>
+<polygon points="301,474 409,474 419,510 379,588 360,610 341,588 301,510" fill="#687A8B" stroke="#687A8B" stroke-width="3"/>
+<polygon points="501,484 597,484 607,510 571,596 548,618 525,596 489,510" fill="#704C5E"/>
+<polygon points="489,474 597,474 607,510 567,588 548,610 529,588 489,510" fill="#9E6A7A"/>
+<polygon points="155,672 251,672 261,698 225,784 202,806 179,784 143,698" fill="#704C5E"/>
+<polygon points="143,662 251,662 261,698 221,776 202,798 183,776 143,698" fill="#687A8B" stroke="#687A8B" stroke-width="3"/>
+<polygon points="343,672 439,672 449,698 413,784 390,806 367,784 331,698" fill="#704C5E"/>
+<polygon points="331,662 439,662 449,698 409,776 390,798 371,776 331,698" fill="#9E6A7A"/>
+<polygon points="531,672 627,672 637,698 601,784 578,806 555,784 519,698" fill="#704C5E"/>
+<polygon points="519,662 627,662 637,698 597,776 578,798 559,776 519,698" fill="#C8A2A8" stroke="#687A8B" stroke-width="3"/>
+<text x="750" y="955" text-anchor="end" fill="#EBD8C3" opacity="0.32" font-family="sans-serif" font-size="12" letter-spacing="4">SYNTHETIC</text>
+</svg>

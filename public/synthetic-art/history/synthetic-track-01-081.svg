@@ -1,10 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Synthetic flowing ribbon placeholder for synthetic-track-01-081" data-seed="synthetic-track-01-081" data-index="80">
-<rect width="800" height="1000" fill="#f6ecea"/>
-<path d="M -70 298 C 232 206 382 390 405 298 S 637 206 870 284 L 870 318 C 637 455 382 267 405 332 S 232 441 -70 306 Z" fill="#a9ce22" opacity=".58"/>
-<path d="M -70 481 C 232 641 382 321 410 492 S 637 641 870 459 L 870 482 C 637 344 382 664 410 550 S 232 344 -70 521 Z" fill="#28b8c8" opacity=".52"/>
-<path d="M -50 808 C 232 677 382 939 415 794 S 637 677 850 839" fill="none" stroke="#bf1daf" stroke-width="18" stroke-linecap="round" opacity=".72"/>
-<path d="M -40 434 C 232 515 382 331 420 450 S 637 515 850 397" fill="none" stroke="#e279de" stroke-width="23" stroke-linecap="round" opacity=".78"/>
-<path d="M 378 677 A 141 141 0 0 0 237 755" fill="none" stroke="#5b151b" stroke-width="34" stroke-linecap="round" opacity=".36"/>
-<circle cx="378" cy="677" r="17" fill="#5b151b" opacity=".18"/>
-<text x="284" y="937" fill="#5b151b" font-family="sans-serif" font-size="18" letter-spacing="6" opacity=".28">SYNTHETIC</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="온새벽 — 조약돌 균형 구성" data-record-id="synthetic-track-01-081" data-index="80" data-seed="4805">
+<title>조약돌의 균형 — 작은 중심을 세우다 · Pebble Balance / Setting a Small Center Upright</title>
+<rect x="0" y="0" width="800" height="1000" fill="#D8D0BC"/>
+<ellipse cx="119" cy="522" rx="82" ry="43" fill="#77766C" stroke="#222222" stroke-width="2"/>
+<ellipse cx="272" cy="545" rx="116" ry="64" fill="#A9A79A" stroke="#222222" stroke-width="2"/>
+<ellipse cx="436" cy="522" rx="92" ry="48" fill="#D8D0BC" stroke="#222222" stroke-width="2"/>
+<ellipse cx="610" cy="545" rx="135" ry="76" fill="#222222" stroke="#222222" stroke-width="2"/>
+<path d="M 58 606 Q 397 710 739 592" fill="none" stroke="#A9A79A" stroke-width="5"/>
+<polygon points="364,196 409,126 447,198" fill="#B56D52"/>
+<circle cx="406" cy="163" r="8" fill="#D8D0BC"/>
+<text x="34" y="968" fill="#B56D52" font-family="sans-serif" font-size="11" letter-spacing="3">SYNTHETIC</text>
 </svg>

@@ -1,10 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Synthetic flowing ribbon placeholder for synthetic-track-01-082" data-seed="synthetic-track-01-082" data-index="81">
-<rect width="800" height="1000" fill="#eceaf6"/>
-<path d="M -70 277 C 153 189 378 365 405 277 S 662 189 870 296 L 870 334 C 662 404 378 252 405 315 S 153 373 -70 302 Z" fill="#ce2269" opacity=".58"/>
-<path d="M -70 628 C 153 717 378 539 410 632 S 662 717 870 584 L 870 605 C 662 560 378 738 410 636 S 153 560 -70 619 Z" fill="#c8c528" opacity=".52"/>
-<path d="M -50 883 C 153 830 378 936 415 902 S 662 830 850 884" fill="none" stroke="#1db1bf" stroke-width="33" stroke-linecap="round" opacity=".72"/>
-<path d="M -40 406 C 153 490 378 314 420 427 S 662 490 850 389" fill="none" stroke="#e279a5" stroke-width="21" stroke-linecap="round" opacity=".78"/>
-<path d="M 196 801 A 210 210 0 0 1 406 815" fill="none" stroke="#19155b" stroke-width="38" stroke-linecap="round" opacity=".36"/>
-<circle cx="196" cy="801" r="19" fill="#19155b" opacity=".18"/>
-<text x="271" y="938" fill="#19155b" font-family="sans-serif" font-size="18" letter-spacing="6" opacity=".28">SYNTHETIC</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="온새벽 — 조약돌 균형 구성" data-record-id="synthetic-track-01-082" data-index="81" data-seed="4806">
+<title>조약돌의 균형 — 매끈한 면의 대화 · Pebble Balance / Conversation of Smooth Planes</title>
+<rect x="0" y="0" width="800" height="1000" fill="#D8D0BC"/>
+<ellipse cx="586" cy="776" rx="191" ry="111" fill="#4B4B47" stroke="#222222" stroke-width="4"/>
+<ellipse cx="565" cy="748" rx="103" ry="60" fill="#A9A79A"/>
+<ellipse cx="180" cy="282" rx="43" ry="27" fill="#77766C" stroke="#222222" stroke-width="2"/>
+<ellipse cx="270" cy="355" rx="26" ry="17" fill="#B56D52"/>
+<ellipse cx="118" cy="408" rx="17" ry="12" fill="#222222"/>
+<line x1="438" y1="881" x2="727" y2="881" stroke="#222222" stroke-width="3"/>
+<text x="34" y="968" fill="#B56D52" font-family="sans-serif" font-size="11" letter-spacing="3">SYNTHETIC</text>
 </svg>

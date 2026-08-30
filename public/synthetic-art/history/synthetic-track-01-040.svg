@@ -1,14 +1,26 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000">
-<rect width="800" height="1000" fill="#291427"/>
-<rect x="42" y="52" width="716" height="896" rx="14" fill="none" stroke="#cbe6cd" stroke-opacity="0.28" stroke-width="4"/>
-<rect x="74" y="88" width="611" height="18" fill="#b981e4" opacity="0.48"/>
-<rect x="121" y="136" width="455" height="354" fill="#dc4c69" opacity="0.92"/>
-<rect x="170" y="200" width="344" height="277" fill="#61bc24" opacity="0.72"/>
-<rect x="127" y="444" width="201" height="339" fill="#7ce2e4" opacity="0.88"/>
-<rect x="174" y="506" width="126" height="230" fill="#291427" opacity="0.64"/>
-<rect x="149" y="685" width="354" height="241" fill="#b981e4" opacity="0.82"/>
-<rect x="115" y="289" width="274" height="22" fill="#cbe6cd" opacity="0.35" transform="rotate(-2 115 289)"/>
-<rect x="74" y="862" width="347" height="3" fill="#cbe6cd" opacity="0.5"/>
-<text x="74" y="905" fill="#cbe6cd" opacity="0.52" font-family="sans-serif" font-size="16" letter-spacing="4">SYNTHETIC</text>
-<text x="726" y="905" fill="#cbe6cd" opacity="0.62" font-family="sans-serif" font-size="18" text-anchor="end">39</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-01-040" data-record-index="39" data-seed="4406">
+<title>바람실의 층 — 매듭이 만든 그늘 · Wind Thread Layers / Shadow Made by Knots</title>
+<rect x="0" y="0" width="800" height="1000" fill="#264653"/>
+<g transform="rotate(180 400 500)">
+<polygon points="0,98 82,42 800,735 800,866 714,802 0,238" fill="#287271" opacity="0.65"/>
+<polygon points="128,0 245,0 800,620 800,740 708,683" fill="#61A59C" opacity="0.6"/>
+<polygon points="800,160 718,98 0,790 0,932 90,872" fill="#E9C46A" opacity="0.55"/>
+<polygon points="800,412 766,382 213,1000 338,1000" fill="#E08E79" opacity="0.62"/>
+<path d="M-34 196 C190 305 398 563 822 830" fill="none" stroke="#E9C46A" stroke-width="3" stroke-opacity="0.44" stroke-linecap="round"/>
+<path d="M0 230 C224 288 432 580 856 796" fill="none" stroke="#B7D7C4" stroke-width="4" stroke-opacity="0.49" stroke-linecap="round"/>
+<path d="M34 264 C258 271 466 597 890 762" fill="none" stroke="#E9C46A" stroke-width="5" stroke-opacity="0.54" stroke-linecap="round"/>
+<path d="M68 298 C292 254 500 614 924 728" fill="none" stroke="#B7D7C4" stroke-width="3" stroke-opacity="0.59" stroke-linecap="round"/>
+<path d="M102 332 C326 237 534 631 958 694" fill="none" stroke="#E9C46A" stroke-width="4" stroke-opacity="0.44" stroke-linecap="round"/>
+<path d="M136 366 C360 220 568 648 992 660" fill="none" stroke="#B7D7C4" stroke-width="5" stroke-opacity="0.49" stroke-linecap="round"/>
+<path d="M170 400 C394 203 602 665 1026 626" fill="none" stroke="#E9C46A" stroke-width="3" stroke-opacity="0.54" stroke-linecap="round"/>
+<path d="M204 434 C428 186 636 682 1060 592" fill="none" stroke="#B7D7C4" stroke-width="4" stroke-opacity="0.59" stroke-linecap="round"/>
+<path d="M238 468 C462 169 670 699 1094 558" fill="none" stroke="#E9C46A" stroke-width="5" stroke-opacity="0.44" stroke-linecap="round"/>
+<ellipse cx="262" cy="202" rx="11" ry="28" fill="#E9C46A" opacity="0.72"/>
+<ellipse cx="383" cy="351" rx="16" ry="37" fill="#E9C46A" opacity="0.72"/>
+<ellipse cx="504" cy="500" rx="21" ry="28" fill="#E9C46A" opacity="0.72"/>
+<ellipse cx="625" cy="649" rx="11" ry="37" fill="#E9C46A" opacity="0.72"/>
+<ellipse cx="96" cy="798" rx="16" ry="28" fill="#E9C46A" opacity="0.72"/>
+<ellipse cx="217" cy="157" rx="21" ry="37" fill="#E9C46A" opacity="0.72"/>
+<text x="68" y="950" fill="#E9C46A" font-family="sans-serif" font-size="9" letter-spacing="3" opacity="0.32">SYNTHETIC</text>
+</g>
 </svg>

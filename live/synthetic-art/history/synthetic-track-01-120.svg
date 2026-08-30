@@ -1,10 +1,26 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Synthetic flowing ribbon placeholder for synthetic-track-01-120" data-seed="synthetic-track-01-120" data-index="119">
-<rect width="800" height="1000" fill="#eaeff6"/>
-<path d="M -70 275 C 106 180 478 370 405 275 S 582 180 870 275 L 870 333 C 582 459 478 194 405 333 S 106 466 -70 345 Z" fill="#ce22c3" opacity=".58"/>
-<path d="M -70 599 C 106 711 478 487 410 590 S 582 711 870 603 L 870 635 C 582 519 478 743 410 656 S 106 519 -70 669 Z" fill="#c88528" opacity=".52"/>
-<path d="M -50 821 C 106 703 478 939 415 821 S 582 703 850 852" fill="none" stroke="#1dbf68" stroke-width="34" stroke-linecap="round" opacity=".72"/>
-<path d="M -40 391 C 106 495 478 305 420 356 S 582 495 850 412" fill="none" stroke="#79e2b1" stroke-width="32" stroke-linecap="round" opacity=".78"/>
-<path d="M 562 622 A 209 209 0 0 1 771 724" fill="none" stroke="#15405b" stroke-width="58" stroke-linecap="round" opacity=".36"/>
-<circle cx="562" cy="622" r="29" fill="#15405b" opacity=".18"/>
-<text x="234" y="950" fill="#15405b" font-family="sans-serif" font-size="18" letter-spacing="6" opacity=".28">SYNTHETIC</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="달포개 — 소리결 반복문양" data-record-id="synthetic-track-01-120" data-index="119" data-seed="5204">
+<title>소리결의 반복 — 고동을 닮은 작은 틀 · Soundgrain Refrain / Small Frame Resembling a Pulse</title>
+<rect x="0" y="0" width="800" height="1000" fill="#3B1F2B"/>
+<path d="M M 78 238 L 159 406 L 240 238 L 321 406 L 402 238 L 483 406 L 564 238 L 645 406 L 726 238" fill="none" stroke="#F1DABF" stroke-width="5"/>
+<polygon points="78,196 113,238 78,280 43,238" fill="#D8A48F"/>
+<circle cx="78" cy="238" r="11" fill="#637A7A"/>
+<polygon points="159,364 194,406 159,448 124,406" fill="#A65D75"/>
+<circle cx="159" cy="406" r="11" fill="#637A7A"/>
+<polygon points="240,196 275,238 240,280 205,238" fill="#D8A48F"/>
+<circle cx="240" cy="238" r="11" fill="#637A7A"/>
+<polygon points="321,364 356,406 321,448 286,406" fill="#A65D75"/>
+<circle cx="321" cy="406" r="11" fill="#637A7A"/>
+<polygon points="402,196 437,238 402,280 367,238" fill="#D8A48F"/>
+<circle cx="402" cy="238" r="11" fill="#637A7A"/>
+<polygon points="483,364 518,406 483,448 448,406" fill="#A65D75"/>
+<circle cx="483" cy="406" r="11" fill="#637A7A"/>
+<polygon points="564,196 599,238 564,280 529,238" fill="#D8A48F"/>
+<circle cx="564" cy="238" r="11" fill="#637A7A"/>
+<polygon points="645,364 680,406 645,448 610,406" fill="#A65D75"/>
+<circle cx="645" cy="406" r="11" fill="#637A7A"/>
+<polygon points="726,196 761,238 726,280 691,238" fill="#D8A48F"/>
+<circle cx="726" cy="238" r="11" fill="#637A7A"/>
+<path d="M 130 700 C 270 619 514 792 676 693" fill="none" stroke="#6C3A5B" stroke-width="9"/>
+<circle cx="400" cy="698" r="33" fill="#F1DABF"/>
+<text x="34" y="968" fill="#F1DABF" font-family="sans-serif" font-size="11" letter-spacing="3">SYNTHETIC</text>
 </svg>

@@ -1,10 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Synthetic flowing ribbon placeholder for synthetic-track-01-070" data-seed="synthetic-track-01-070" data-index="69">
-<rect width="800" height="1000" fill="#f6ebea"/>
-<path d="M -70 275 C 160 197 445 353 405 275 S 645 197 870 315 L 870 378 C 645 402 445 235 405 338 S 160 389 -70 330 Z" fill="#67ce22" opacity=".58"/>
-<path d="M -70 509 C 160 668 445 350 410 515 S 645 668 870 532 L 870 561 C 645 379 445 697 410 494 S 160 379 -70 511 Z" fill="#28adc8" opacity=".52"/>
-<path d="M -50 887 C 160 751 445 1023 415 927 S 645 751 850 873" fill="none" stroke="#421dbf" stroke-width="23" stroke-linecap="round" opacity=".72"/>
-<path d="M -40 406 C 160 478 445 322 420 375 S 645 478 850 392" fill="none" stroke="#79c6e2" stroke-width="29" stroke-linecap="round" opacity=".78"/>
-<path d="M 266 684 A 183 183 0 0 1 449 575" fill="none" stroke="#5b2e15" stroke-width="63" stroke-linecap="round" opacity=".36"/>
-<circle cx="266" cy="684" r="31" fill="#5b2e15" opacity=".18"/>
-<text x="233" y="948" fill="#5b2e15" font-family="sans-serif" font-size="18" letter-spacing="6" opacity=".28">SYNTHETIC</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="나루온 — 밤숲 기호 회화" data-record-id="synthetic-track-01-070" data-index="69" data-seed="4704">
+<title>밤숲의 표식 — 달 없는 숲의 문 · Nightwood Mark / Gate of a Moonless Wood</title>
+<rect x="0" y="0" width="800" height="1000" fill="#17231B"/>
+<path d="M 335 920 C 327 700 343 470 335 172" fill="none" stroke="#E6D9B8" stroke-width="10"/>
+<path d="M 459 920 C 471 682 443 442 459 172" fill="none" stroke="#819A70" stroke-width="7"/>
+<line x1="335" y1="172" x2="459" y2="172" stroke="#C8B77C" stroke-width="5"/>
+<line x1="303" y1="392" x2="487" y2="392" stroke="#4F7154" stroke-width="3"/>
+<line x1="309" y1="606" x2="480" y2="606" stroke="#4F7154" stroke-width="3"/>
+<circle cx="397" cy="135" r="24" fill="#C8B77C"/>
+<circle cx="397" cy="135" r="9" fill="#17231B" stroke="#E6D9B8" stroke-width="2"/>
+<line x1="355" y1="748" x2="435" y2="748" stroke="#294936" stroke-width="2"/>
+<line x1="355" y1="820" x2="435" y2="820" stroke="#294936" stroke-width="2"/>
+<line x1="355" y1="876" x2="435" y2="876" stroke="#294936" stroke-width="2"/>
+<text x="34" y="968" fill="#C8B77C" font-family="sans-serif" font-size="11" letter-spacing="3">SYNTHETIC</text>
 </svg>

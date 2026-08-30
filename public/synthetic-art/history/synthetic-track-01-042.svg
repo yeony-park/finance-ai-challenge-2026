@@ -1,14 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000">
-<rect width="800" height="1000" fill="#361636"/>
-<rect x="42" y="52" width="716" height="896" rx="14" fill="none" stroke="#dceadc" stroke-opacity="0.28" stroke-width="4"/>
-<rect x="74" y="88" width="606" height="18" fill="#b6adeb" opacity="0.48"/>
-<rect x="223" y="131" width="433" height="239" fill="#ef3488" opacity="0.92"/>
-<rect x="267" y="197" width="346" height="149" fill="#52a92d" opacity="0.72"/>
-<rect x="102" y="459" width="340" height="390" fill="#2baec5" opacity="0.88"/>
-<rect x="127" y="508" width="263" height="296" fill="#361636" opacity="0.64"/>
-<rect x="268" y="707" width="489" height="242" fill="#b6adeb" opacity="0.82"/>
-<rect x="214" y="401" width="202" height="22" fill="#dceadc" opacity="0.35" transform="rotate(-4 214 401)"/>
-<rect x="74" y="862" width="449" height="3" fill="#dceadc" opacity="0.5"/>
-<text x="74" y="905" fill="#dceadc" opacity="0.52" font-family="sans-serif" font-size="16" letter-spacing="4">SYNTHETIC</text>
-<text x="726" y="905" fill="#dceadc" opacity="0.62" font-family="sans-serif" font-size="18" text-anchor="end">41</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-01-042" data-record-index="41" data-seed="4408">
+<title>바람실의 층 — 올 사이로 새는 빛 · Wind Thread Layers / Light Leaking Through the Warp</title>
+<rect x="0" y="0" width="800" height="1000" fill="#B7D7C4"/>
+<g transform="rotate(180 400 500)">
+<path d="M0 96 C124 131 236 61 372 110 C510 131 644 61 800 100 L800 171 C646 136 512 206 370 163 C236 136 114 206 0 167 Z" fill="#287271" opacity="0.4"/>
+<path d="M0 308 C124 362 236 254 372 322 C510 362 644 254 800 312 L800 405 C646 351 512 459 370 397 C236 351 114 459 0 401 Z" fill="#61A59C" opacity="0.47"/>
+<path d="M0 520 C124 593 236 447 372 534 C510 593 644 447 800 524 L800 639 C646 566 512 712 370 631 C236 566 114 712 0 635 Z" fill="#B7D7C4" opacity="0.53"/>
+<path d="M0 732 C124 767 236 697 372 746 C510 767 644 697 800 736 L800 873 C646 838 512 908 370 865 C236 838 114 908 0 869 Z" fill="#E9C46A" opacity="0.59"/>
+<path d="M92 0 C60 188 128 336 84 530 C52 702 127 848 96 1000" fill="none" stroke="#E9C46A" stroke-width="2" stroke-opacity="0.52" stroke-linecap="round"/>
+<path d="M210 0 C178 188 246 336 202 530 C170 702 245 848 214 1000" fill="none" stroke="#E9C46A" stroke-width="3" stroke-opacity="0.52" stroke-linecap="round"/>
+<path d="M328 0 C296 188 364 336 320 530 C288 702 363 848 332 1000" fill="none" stroke="#E9C46A" stroke-width="4" stroke-opacity="0.52" stroke-linecap="round"/>
+<path d="M446 0 C414 188 482 336 438 530 C406 702 481 848 450 1000" fill="none" stroke="#E9C46A" stroke-width="2" stroke-opacity="0.52" stroke-linecap="round"/>
+<path d="M564 0 C532 188 600 336 556 530 C524 702 599 848 568 1000" fill="none" stroke="#E9C46A" stroke-width="3" stroke-opacity="0.52" stroke-linecap="round"/>
+<ellipse cx="316" cy="599" rx="146" ry="58" fill="#E08E79" opacity="0.72"/>
+<ellipse cx="310" cy="594" rx="69" ry="26" fill="#E9C46A" opacity="0.78"/>
+<text x="68" y="950" fill="#E9C46A" font-family="sans-serif" font-size="9" letter-spacing="3" opacity="0.32">SYNTHETIC</text>
+</g>
 </svg>

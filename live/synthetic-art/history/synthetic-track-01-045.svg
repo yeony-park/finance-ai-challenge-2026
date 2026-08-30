@@ -1,14 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000">
-<rect width="800" height="1000" fill="#271830"/>
-<rect x="42" y="52" width="716" height="896" rx="14" fill="none" stroke="#c6dab9" stroke-opacity="0.28" stroke-width="4"/>
-<rect x="74" y="88" width="593" height="18" fill="#6451db" opacity="0.48"/>
-<rect x="216" y="201" width="319" height="341" fill="#ee59d7" opacity="0.92"/>
-<rect x="251" y="270" width="208" height="245" fill="#a7e260" opacity="0.72"/>
-<rect x="263" y="470" width="190" height="270" fill="#30d5b4" opacity="0.88"/>
-<rect x="308" y="521" width="124" height="165" fill="#271830" opacity="0.64"/>
-<rect x="199" y="654" width="392" height="158" fill="#6451db" opacity="0.82"/>
-<rect x="279" y="223" width="173" height="22" fill="#c6dab9" opacity="0.35" transform="rotate(-2 279 223)"/>
-<rect x="74" y="862" width="442" height="3" fill="#c6dab9" opacity="0.5"/>
-<text x="74" y="905" fill="#c6dab9" opacity="0.52" font-family="sans-serif" font-size="16" letter-spacing="4">SYNTHETIC</text>
-<text x="726" y="905" fill="#c6dab9" opacity="0.62" font-family="sans-serif" font-size="18" text-anchor="end">44</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-01-045" data-record-index="44" data-seed="4411">
+<title>바람실의 층 — 조용한 직조의 벽 · Wind Thread Layers / Wall of a Quiet Weave</title>
+<rect x="0" y="0" width="800" height="1000" fill="#264653"/>
+<g transform="rotate(90 400 500)">
+<path d="M181 527 C281 431 470 -38 820 46 L820 88 C462 20 283 473 181 555 Z" fill="#287271" opacity="0.4"/>
+<path d="M181 527 C281 455 470 74 820 158 L820 200 C462 132 283 497 181 555 Z" fill="#61A59C" opacity="0.46"/>
+<path d="M181 527 C281 479 470 186 820 270 L820 312 C462 244 283 521 181 555 Z" fill="#B7D7C4" opacity="0.52"/>
+<path d="M181 527 C281 503 470 298 820 382 L820 424 C462 356 283 545 181 555 Z" fill="#E9C46A" opacity="0.58"/>
+<path d="M181 527 C281 527 470 410 820 494 L820 536 C462 468 283 569 181 555 Z" fill="#E08E79" opacity="0.4"/>
+<path d="M181 527 C281 551 470 522 820 606 L820 648 C462 580 283 593 181 555 Z" fill="#287271" opacity="0.46"/>
+<path d="M181 527 C281 575 470 634 820 718 L820 760 C462 692 283 617 181 555 Z" fill="#61A59C" opacity="0.52"/>
+<path d="M181 527 C281 599 470 746 820 830 L820 872 C462 804 283 641 181 555 Z" fill="#B7D7C4" opacity="0.58"/>
+<path d="M181 527 C281 623 470 858 820 942 L820 984 C462 916 283 665 181 555 Z" fill="#E9C46A" opacity="0.4"/>
+<ellipse cx="181" cy="527" rx="113" ry="96" fill="#E08E79" opacity="0.8"/>
+<ellipse cx="187" cy="523" rx="47" ry="36" fill="#264653" opacity="0.75"/>
+<line x1="723" y1="321" x2="765" y2="303" stroke="#E9C46A" stroke-width="3" stroke-opacity="0.6" stroke-linecap="round"/>
+<line x1="334" y1="438" x2="376" y2="420" stroke="#E9C46A" stroke-width="3" stroke-opacity="0.6" stroke-linecap="round"/>
+<line x1="425" y1="555" x2="467" y2="537" stroke="#E9C46A" stroke-width="3" stroke-opacity="0.6" stroke-linecap="round"/>
+<line x1="516" y1="672" x2="558" y2="654" stroke="#E9C46A" stroke-width="3" stroke-opacity="0.6" stroke-linecap="round"/>
+<text x="68" y="950" fill="#E9C46A" font-family="sans-serif" font-size="9" letter-spacing="3" opacity="0.32">SYNTHETIC</text>
+</g>
 </svg>

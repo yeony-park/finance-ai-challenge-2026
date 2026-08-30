@@ -1,14 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000">
-<rect width="800" height="1000" fill="#1f3d24"/>
-<rect x="42" y="52" width="716" height="896" rx="14" fill="none" stroke="#e2bbdd" stroke-opacity="0.28" stroke-width="4"/>
-<rect x="74" y="88" width="553" height="18" fill="#c5dd6e" opacity="0.48"/>
-<rect x="132" y="120" width="457" height="335" fill="#73e8d5" opacity="0.92"/>
-<rect x="174" y="180" width="366" height="261" fill="#e75de9" opacity="0.72"/>
-<rect x="233" y="454" width="382" height="199" fill="#d5675d" opacity="0.88"/>
-<rect x="289" y="513" width="316" height="110" fill="#1f3d24" opacity="0.64"/>
-<rect x="287" y="662" width="261" height="188" fill="#c5dd6e" opacity="0.82"/>
-<rect x="172" y="177" width="147" height="22" fill="#e2bbdd" opacity="0.35" transform="rotate(-6 172 177)"/>
-<rect x="74" y="862" width="358" height="3" fill="#e2bbdd" opacity="0.5"/>
-<text x="74" y="905" fill="#e2bbdd" opacity="0.52" font-family="sans-serif" font-size="16" letter-spacing="4">SYNTHETIC</text>
-<text x="726" y="905" fill="#e2bbdd" opacity="0.62" font-family="sans-serif" font-size="18" text-anchor="end">49</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-01-050" data-record-index="49" data-seed="4505">
+<title>작은 흙언덕 — 먼지 사이의 풀잎 · Small Earth Rise / Blade of Grass Between Dust</title>
+<rect x="0" y="0" width="800" height="1000" fill="#E4D1A6"/>
+<g transform="rotate(180 400 500)">
+<path d="M0 522 C110 434 238 411 356 498 C462 576 594 428 800 484 L800 1000 L0 1000 Z" fill="#795548"/>
+<path d="M0 614 C128 526 222 548 342 618 C466 692 634 558 800 616 L800 1000 L0 1000 Z" fill="#A97855"/>
+<path d="M0 741 C154 662 248 704 396 764 C524 816 672 670 800 732 L800 1000 L0 1000 Z" fill="#3E2C24"/>
+<ellipse cx="185" cy="331" rx="12" ry="6" fill="#A97855" opacity="0.74"/>
+<ellipse cx="282" cy="294" rx="19" ry="10" fill="#C7A77B" opacity="0.74"/>
+<ellipse cx="379" cy="257" rx="26" ry="14" fill="#A97855" opacity="0.74"/>
+<ellipse cx="476" cy="220" rx="33" ry="6" fill="#C7A77B" opacity="0.74"/>
+<ellipse cx="573" cy="363" rx="12" ry="10" fill="#A97855" opacity="0.74"/>
+<ellipse cx="670" cy="326" rx="19" ry="14" fill="#C7A77B" opacity="0.74"/>
+<ellipse cx="87" cy="289" rx="26" ry="6" fill="#A97855" opacity="0.74"/>
+<ellipse cx="184" cy="252" rx="33" ry="10" fill="#C7A77B" opacity="0.74"/>
+<path d="M209 801 q24 -18 48 0" fill="none" stroke="#C7A77B" stroke-width="3" stroke-opacity="0.54" stroke-linecap="round"/>
+<path d="M360 874 q31 -25 61 0" fill="none" stroke="#E4D1A6" stroke-width="3" stroke-opacity="0.54" stroke-linecap="round"/>
+<path d="M511 947 q38 -18 74 0" fill="none" stroke="#C7A77B" stroke-width="3" stroke-opacity="0.54" stroke-linecap="round"/>
+<path d="M662 1020 q24 -25 48 0" fill="none" stroke="#E4D1A6" stroke-width="3" stroke-opacity="0.54" stroke-linecap="round"/>
+<text x="66" y="953" fill="#795548" font-family="sans-serif" font-size="9" letter-spacing="3" opacity="0.34">SYNTHETIC</text>
+</g>
 </svg>

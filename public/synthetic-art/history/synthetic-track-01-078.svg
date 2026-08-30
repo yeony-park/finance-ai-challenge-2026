@@ -1,10 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Synthetic flowing ribbon placeholder for synthetic-track-01-078" data-seed="synthetic-track-01-078" data-index="77">
-<rect width="800" height="1000" fill="#eaf4f6"/>
-<path d="M -70 172 C 233 83 382 261 405 172 S 657 83 870 163 L 870 215 C 657 343 382 137 405 224 S 233 278 -70 245 Z" fill="#5022ce" opacity=".58"/>
-<path d="M -70 553 C 233 702 382 404 410 504 S 657 702 870 580 L 870 598 C 657 422 382 720 410 566 S 233 422 -70 536 Z" fill="#c8285d" opacity=".52"/>
-<path d="M -50 848 C 233 761 382 935 415 839 S 657 761 850 878" fill="none" stroke="#25bf1d" stroke-width="40" stroke-linecap="round" opacity=".72"/>
-<path d="M -40 248 C 233 386 382 208 420 299 S 657 386 850 318" fill="none" stroke="#79a5e2" stroke-width="18" stroke-linecap="round" opacity=".78"/>
-<path d="M 540 289 A 260 260 0 0 1 800 237" fill="none" stroke="#155a5b" stroke-width="52" stroke-linecap="round" opacity=".36"/>
-<circle cx="540" cy="289" r="26" fill="#155a5b" opacity=".18"/>
-<text x="85" y="954" fill="#155a5b" font-family="sans-serif" font-size="18" letter-spacing="6" opacity=".28">SYNTHETIC</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="온새벽 — 조약돌 균형 구성" data-record-id="synthetic-track-01-078" data-index="77" data-seed="4802">
+<title>조약돌의 균형 — 손바닥 위의 무게 · Pebble Balance / Weight Upon a Palm</title>
+<rect x="0" y="0" width="800" height="1000" fill="#D8D0BC"/>
+<line x1="126" y1="610" x2="675" y2="610" stroke="#222222" stroke-width="9"/>
+<ellipse cx="169" cy="687" rx="120" ry="52" fill="#77766C" stroke="#222222" stroke-width="3"/>
+<ellipse cx="631" cy="690" rx="75" ry="41" fill="#B56D52" stroke="#222222" stroke-width="3"/>
+<ellipse cx="370" cy="562" rx="156" ry="35" fill="#A9A79A" stroke="#222222" stroke-width="2"/>
+<rect x="376" y="610" width="35" height="180" fill="#222222"/>
+<ellipse cx="394" cy="800" rx="72" ry="22" fill="#222222"/>
+<text x="34" y="968" fill="#B56D52" font-family="sans-serif" font-size="11" letter-spacing="3">SYNTHETIC</text>
 </svg>

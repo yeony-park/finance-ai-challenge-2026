@@ -1,10 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Synthetic flowing ribbon placeholder for synthetic-track-01-097" data-seed="synthetic-track-01-097" data-index="96">
-<rect width="800" height="1000" fill="#f6eaeb"/>
-<path d="M -70 337 C 182 197 408 477 405 337 S 632 197 870 313 L 870 354 C 632 525 408 247 405 378 S 182 503 -70 336 Z" fill="#80ce22" opacity=".58"/>
-<path d="M -70 574 C 182 735 408 413 410 534 S 632 735 870 546 L 870 579 C 632 446 408 768 410 632 S 182 446 -70 592 Z" fill="#2893c8" opacity=".52"/>
-<path d="M -50 876 C 182 734 408 1018 415 852 S 632 734 850 883" fill="none" stroke="#381dbf" stroke-width="41" stroke-linecap="round" opacity=".72"/>
-<path d="M -40 422 C 182 602 408 322 420 471 S 632 602 850 420" fill="none" stroke="#a8e279" stroke-width="33" stroke-linecap="round" opacity=".78"/>
-<path d="M 674 432 A 216 216 0 0 1 890 524" fill="none" stroke="#5b1915" stroke-width="41" stroke-linecap="round" opacity=".36"/>
-<circle cx="674" cy="432" r="20" fill="#5b1915" opacity=".18"/>
-<text x="178" y="950" fill="#5b1915" font-family="sans-serif" font-size="18" letter-spacing="6" opacity=".28">SYNTHETIC</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="솔여울 — 조류 곡선 회화" data-record-id="synthetic-track-01-097" data-index="96" data-seed="5001">
+<title>조류의 곡선 — 밀려온 곡선의 노래 · Tidal Curve / Song of an Arriving Curve</title>
+<rect x="0" y="0" width="800" height="1000" fill="#12343B"/>
+<path d="M 200 1010 C 170 818 432 745 388 604 C 342 458 546 364 478 -10" fill="none" stroke="#58A6A6" stroke-width="24"/>
+<path d="M 278 1010 C 260 837 487 756 450 603 C 418 468 596 372 562 -12" fill="none" stroke="#A8D5BA" stroke-width="7"/>
+<path d="M 133 1010 C 88 841 330 773 319 634 C 308 507 397 423 373 38" fill="none" stroke="#1F6F78" stroke-width="8"/>
+<circle cx="522" cy="180" r="30" fill="#F4E9CD"/>
+<circle cx="522" cy="180" r="12" fill="#12343B"/>
+<text x="34" y="968" fill="#F4E9CD" font-family="sans-serif" font-size="11" letter-spacing="3">SYNTHETIC</text>
 </svg>

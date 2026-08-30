@@ -1,14 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000">
-<rect width="800" height="1000" fill="#33151f"/>
-<rect x="42" y="52" width="716" height="896" rx="14" fill="none" stroke="#bde0d3" stroke-opacity="0.28" stroke-width="4"/>
-<rect x="74" y="88" width="624" height="18" fill="#cd67d0" opacity="0.48"/>
-<rect x="155" y="209" width="419" height="332" fill="#eea586" opacity="0.92"/>
-<rect x="202" y="253" width="335" height="259" fill="#40b71f" opacity="0.72"/>
-<rect x="338" y="408" width="270" height="198" fill="#87cee3" opacity="0.88"/>
-<rect x="378" y="443" width="202" height="82" fill="#33151f" opacity="0.64"/>
-<rect x="159" y="685" width="280" height="160" fill="#cd67d0" opacity="0.82"/>
-<rect x="131" y="369" width="235" height="22" fill="#bde0d3" opacity="0.35" transform="rotate(4 131 369)"/>
-<rect x="74" y="862" width="381" height="3" fill="#bde0d3" opacity="0.5"/>
-<text x="74" y="905" fill="#bde0d3" opacity="0.52" font-family="sans-serif" font-size="16" letter-spacing="4">SYNTHETIC</text>
-<text x="726" y="905" fill="#bde0d3" opacity="0.62" font-family="sans-serif" font-size="18" text-anchor="end">18</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-01-019" data-record-index="18" data-seed="4207">
+<title>잔물결의 방 — 조용히 포개진 물빛 · Rill Room / Water Light Quietly Layered</title>
+<rect x="0" y="0" width="800" height="1000" fill="#312E4A"/>
+<g transform="rotate(180 400 500)">
+<ellipse cx="301" cy="549" rx="101" ry="67" fill="none" stroke="#5B4E78" stroke-width="10" stroke-opacity="0.42"/>
+<ellipse cx="301" cy="549" rx="154" ry="113" fill="none" stroke="#8C79A8" stroke-width="9" stroke-opacity="0.48"/>
+<ellipse cx="301" cy="549" rx="207" ry="159" fill="none" stroke="#D6B3A6" stroke-width="8" stroke-opacity="0.54"/>
+<ellipse cx="301" cy="549" rx="260" ry="205" fill="none" stroke="#F0D8B8" stroke-width="7" stroke-opacity="0.6"/>
+<ellipse cx="301" cy="549" rx="313" ry="251" fill="none" stroke="#8EA6A8" stroke-width="10" stroke-opacity="0.42"/>
+<ellipse cx="301" cy="549" rx="78" ry="62" fill="#8C79A8" opacity="0.42"/>
+<ellipse cx="308" cy="547" rx="36" ry="21" fill="#8EA6A8" opacity="0.75"/>
+<path d="M47 89 C177 143 287 35 402 91" fill="none" stroke="#D6B3A6" stroke-width="2" stroke-opacity="0.48" stroke-linecap="round"/>
+<path d="M114 207 C244 261 354 153 469 209" fill="none" stroke="#F0D8B8" stroke-width="3" stroke-opacity="0.48" stroke-linecap="round"/>
+<path d="M181 325 C311 379 421 271 536 327" fill="none" stroke="#8EA6A8" stroke-width="4" stroke-opacity="0.48" stroke-linecap="round"/>
+<path d="M248 443 C378 497 488 389 603 445" fill="none" stroke="#D6B3A6" stroke-width="2" stroke-opacity="0.48" stroke-linecap="round"/>
+<path d="M315 561 C445 615 555 507 670 563" fill="none" stroke="#F0D8B8" stroke-width="3" stroke-opacity="0.48" stroke-linecap="round"/>
+<text x="690" y="952" fill="#D6B3A6" font-family="sans-serif" font-size="9" letter-spacing="3" text-anchor="end" opacity="0.34">SYNTHETIC</text>
+</g>
 </svg>

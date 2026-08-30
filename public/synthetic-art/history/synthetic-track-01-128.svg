@@ -1,10 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Synthetic flowing ribbon placeholder for synthetic-track-01-128" data-seed="synthetic-track-01-128" data-index="127">
-<rect width="800" height="1000" fill="#f6f3ea"/>
-<path d="M -70 283 C 111 157 404 409 405 283 S 598 157 870 243 L 870 310 C 598 436 404 226 405 350 S 111 494 -70 359 Z" fill="#22ce24" opacity=".58"/>
-<path d="M -70 599 C 111 731 404 467 410 582 S 598 731 870 556 L 870 604 C 598 515 404 779 410 635 S 111 515 -70 665 Z" fill="#3a28c8" opacity=".52"/>
-<path d="M -50 817 C 111 703 404 931 415 777 S 598 703 850 777" fill="none" stroke="#bf1dbc" stroke-width="19" stroke-linecap="round" opacity=".72"/>
-<path d="M -40 391 C 111 534 404 282 420 410 S 598 534 850 417" fill="none" stroke="#d2e279" stroke-width="48" stroke-linecap="round" opacity=".78"/>
-<path d="M 221 384 A 192 192 0 0 1 413 342" fill="none" stroke="#5b4b15" stroke-width="67" stroke-linecap="round" opacity=".36"/>
-<circle cx="221" cy="384" r="33" fill="#5b4b15" opacity=".18"/>
-<text x="200" y="946" fill="#5b4b15" font-family="sans-serif" font-size="18" letter-spacing="6" opacity=".28">SYNTHETIC</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Byeolmuni Eno | 구름잠 청색 추상" data-record-id="synthetic-track-01-128" data-seed="5302" data-index="127">
+<title>구름잠의 파랑 — 옅은 하늘의 안쪽 · Cloudsleep Blue / Inside a Pale Sky</title>
+<rect x="0" y="0" width="800" height="1000" fill="#D9E2EC"/>
+<path d="M0 0H800V142 C690 214 602 190 525 137 C438 78 362 92 286 151 C193 223 88 188 0 112Z" fill="#486581"/>
+<ellipse cx="391" cy="507" rx="266" ry="382" fill="#243B53" opacity=".88"/>
+<ellipse cx="391" cy="508" rx="211" ry="319" fill="none" stroke="#829AB1" stroke-width="12"/>
+<path d="M250 696 C245 572 261 433 320 354 C366 292 430 286 478 347 C539 424 551 562 523 700" fill="none" stroke="#D9E2EC" stroke-width="8" stroke-linecap="round"/>
+<path d="M319 674 C302 558 319 457 357 410 C386 373 426 374 452 411 C490 464 497 568 473 674" fill="#102A43"/>
+<ellipse cx="386" cy="513" rx="57" ry="111" fill="#829AB1"/>
+<circle cx="580" cy="252" r="37" fill="#D6B370"/>
+<circle cx="580" cy="252" r="16" fill="#D9E2EC"/>
+<path d="M104 840 C173 782 252 793 301 835" fill="none" stroke="#829AB1" stroke-width="5"/>
+<text x="22" y="978" fill="#D9E2EC" font-family="sans-serif" font-size="8" letter-spacing="2">SYNTHETIC</text>
 </svg>

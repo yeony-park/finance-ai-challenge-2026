@@ -1,14 +1,25 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000">
-<rect width="800" height="1000" fill="#333a18"/>
-<rect x="42" y="52" width="716" height="896" rx="14" fill="none" stroke="#c6c0e3" stroke-opacity="0.28" stroke-width="4"/>
-<rect x="74" y="88" width="591" height="18" fill="#f0d88e" opacity="0.48"/>
-<rect x="157" y="176" width="251" height="210" fill="#53df55" opacity="0.92"/>
-<rect x="207" y="238" width="152" height="127" fill="#477ed7" opacity="0.72"/>
-<rect x="153" y="468" width="250" height="279" fill="#e331a1" opacity="0.88"/>
-<rect x="206" y="503" width="148" height="192" fill="#333a18" opacity="0.64"/>
-<rect x="289" y="711" width="274" height="207" fill="#f0d88e" opacity="0.82"/>
-<rect x="188" y="262" width="266" height="22" fill="#c6c0e3" opacity="0.35" transform="rotate(8 188 262)"/>
-<rect x="74" y="862" width="383" height="3" fill="#c6c0e3" opacity="0.5"/>
-<text x="74" y="905" fill="#c6c0e3" opacity="0.52" font-family="sans-serif" font-size="16" letter-spacing="4">SYNTHETIC</text>
-<text x="726" y="905" fill="#c6c0e3" opacity="0.62" font-family="sans-serif" font-size="18" text-anchor="end">03</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-01-004" data-record-index="3" data-seed="4104">
+<title>맑은 격자 — 비 개인 격자 · Clear Lattice / Grid After the Rain</title>
+<rect x="0" y="0" width="800" height="1000" fill="#1E2A3A"/>
+<rect x="76" y="76" width="648" height="848" fill="#38566B" opacity="0.38"/>
+<rect x="134" y="126" width="502" height="706" fill="#6D8A99" opacity="0.34"/>
+<rect x="202" y="202" width="344" height="512" fill="#B8C4C0" opacity="0.36"/>
+<rect x="110" y="110" width="580" height="780" fill="none" stroke="#E6D7C4" stroke-width="2" stroke-opacity="0.3"/>
+<rect x="119" y="119" width="562" height="762" fill="none" stroke="#B8C4C0" stroke-width="3" stroke-opacity="0.37"/>
+<rect x="128" y="128" width="544" height="744" fill="none" stroke="#6D8A99" stroke-width="4" stroke-opacity="0.44"/>
+<rect x="137" y="137" width="526" height="726" fill="none" stroke="#E6D7C4" stroke-width="2" stroke-opacity="0.3"/>
+<rect x="146" y="146" width="508" height="708" fill="none" stroke="#B8C4C0" stroke-width="3" stroke-opacity="0.37"/>
+<rect x="155" y="155" width="490" height="690" fill="none" stroke="#6D8A99" stroke-width="4" stroke-opacity="0.44"/>
+<rect x="164" y="164" width="472" height="672" fill="none" stroke="#E6D7C4" stroke-width="2" stroke-opacity="0.3"/>
+<rect x="173" y="173" width="454" height="654" fill="none" stroke="#B8C4C0" stroke-width="3" stroke-opacity="0.37"/>
+<line x1="92" y1="200" x2="706" y2="200" stroke="#C58D6D" stroke-width="2" stroke-opacity="0.38"/>
+<line x1="92" y1="321" x2="706" y2="321" stroke="#C58D6D" stroke-width="2" stroke-opacity="0.38"/>
+<line x1="92" y1="442" x2="706" y2="442" stroke="#C58D6D" stroke-width="2" stroke-opacity="0.38"/>
+<line x1="195" y1="98" x2="195" y2="884" stroke="#E6D7C4" stroke-width="2" stroke-opacity="0.42"/>
+<line x1="351" y1="98" x2="351" y2="884" stroke="#E6D7C4" stroke-width="2" stroke-opacity="0.42"/>
+<line x1="507" y1="98" x2="507" y2="884" stroke="#E6D7C4" stroke-width="2" stroke-opacity="0.42"/>
+<rect x="298" y="354" width="190" height="206" fill="#1E2A3A" opacity="0.72"/>
+<rect x="318" y="376" width="150" height="162" fill="none" stroke="#E6D7C4" stroke-width="4" stroke-opacity="0.72"/>
+<line x1="318" y1="457" x2="468" y2="457" stroke="#B8C4C0" stroke-width="2"/>
+<text x="70" y="955" fill="#E6D7C4" font-family="sans-serif" font-size="9" letter-spacing="3" opacity="0.3">SYNTHETIC</text>
 </svg>

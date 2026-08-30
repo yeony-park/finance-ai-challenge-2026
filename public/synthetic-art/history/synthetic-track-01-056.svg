@@ -1,14 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000">
-<rect width="800" height="1000" fill="#18173f"/>
-<rect x="42" y="52" width="716" height="896" rx="14" fill="none" stroke="#ddddca" stroke-opacity="0.28" stroke-width="4"/>
-<rect x="74" y="88" width="564" height="18" fill="#b0c5e8" opacity="0.48"/>
-<rect x="212" y="128" width="242" height="286" fill="#c32ced" opacity="0.92"/>
-<rect x="263" y="189" width="140" height="185" fill="#cc6424" opacity="0.72"/>
-<rect x="236" y="443" width="205" height="290" fill="#8de773" opacity="0.88"/>
-<rect x="289" y="498" width="124" height="209" fill="#18173f" opacity="0.64"/>
-<rect x="249" y="744" width="364" height="231" fill="#b0c5e8" opacity="0.82"/>
-<rect x="303" y="155" width="250" height="22" fill="#ddddca" opacity="0.35" transform="rotate(-5 303 155)"/>
-<rect x="74" y="862" width="438" height="3" fill="#ddddca" opacity="0.5"/>
-<text x="74" y="905" fill="#ddddca" opacity="0.52" font-family="sans-serif" font-size="16" letter-spacing="4">SYNTHETIC</text>
-<text x="726" y="905" fill="#ddddca" opacity="0.62" font-family="sans-serif" font-size="18" text-anchor="end">55</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-01-056" data-record-index="55" data-seed="4511">
+<title>작은 흙언덕 — 저녁이 내려앉은 밭 · Small Earth Rise / Field Where Evening Settled</title>
+<rect x="0" y="0" width="800" height="1000" fill="#E4D1A6"/>
+<g transform="rotate(90 400 500)">
+<path d="M0 310 C112 244 208 334 282 454 C344 552 304 679 362 1000 L0 1000 Z" fill="#795548"/>
+<path d="M800 248 C688 214 606 316 539 426 C463 553 504 688 434 1000 L800 1000 Z" fill="#A97855"/>
+<path d="M0 574 C159 520 251 602 336 741 C374 803 372 886 401 1000 L0 1000 Z" fill="#3E2C24" opacity="0.72"/>
+<path d="M800 544 C660 524 566 631 486 753 C453 805 432 900 421 1000 L800 1000 Z" fill="#3E2C24" opacity="0.82"/>
+<path d="M398 1000 C424 910 469 824 487 726 C507 620 435 520 411 448 C391 388 416 346 454 304 C418 355 447 430 477 493 C528 598 513 672 478 770 C450 849 434 932 432 1000 Z" fill="#C7A77B" opacity="0.86"/>
+<polygon points="121,493 83,477 61,517 102,528" fill="#A97855" opacity="0.74"/>
+<polygon points="726,584 764,568 786,608 745,619" fill="#6A7B58" opacity="0.74"/>
+<polygon points="177,675 139,659 117,699 158,710" fill="#6A7B58" opacity="0.74"/>
+<polygon points="670,766 708,750 730,790 689,801" fill="#A97855" opacity="0.74"/>
+<polygon points="83,857 45,841 23,881 64,892" fill="#6A7B58" opacity="0.74"/>
+<polygon points="614,438 652,422 674,462 633,473" fill="#6A7B58" opacity="0.74"/>
+<polygon points="139,529 101,513 79,553 120,564" fill="#A97855" opacity="0.74"/>
+<polygon points="708,620 746,604 768,644 727,655" fill="#6A7B58" opacity="0.74"/>
+<polygon points="195,711 157,695 135,735 176,746" fill="#6A7B58" opacity="0.74"/>
+<circle cx="424" cy="334" r="18" fill="#6A7B58" opacity="0.82"/>
+<text x="66" y="953" fill="#795548" font-family="sans-serif" font-size="9" letter-spacing="3" opacity="0.34">SYNTHETIC</text>
+</g>
 </svg>

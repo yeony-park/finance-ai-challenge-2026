@@ -1,10 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Synthetic flowing ribbon placeholder for synthetic-track-01-067" data-seed="synthetic-track-01-067" data-index="66">
-<rect width="800" height="1000" fill="#eaf1f6"/>
-<path d="M -70 175 C 238 79 372 271 405 175 S 644 79 870 195 L 870 263 C 644 320 372 108 405 243 S 238 364 -70 242 Z" fill="#bd22ce" opacity=".58"/>
-<path d="M -70 497 C 238 606 372 388 410 488 S 644 606 870 472 L 870 493 C 644 409 372 627 410 489 S 238 409 -70 543 Z" fill="#c83028" opacity=".52"/>
-<path d="M -50 775 C 238 706 372 844 415 795 S 644 706 850 756" fill="none" stroke="#1dbf81" stroke-width="41" stroke-linecap="round" opacity=".72"/>
-<path d="M -40 291 C 238 396 372 204 420 261 S 644 396 850 299" fill="none" stroke="#8079e2" stroke-width="21" stroke-linecap="round" opacity=".78"/>
-<path d="M 302 136 A 112 112 0 0 1 414 16" fill="none" stroke="#154e5b" stroke-width="68" stroke-linecap="round" opacity=".36"/>
-<circle cx="302" cy="136" r="34" fill="#154e5b" opacity=".18"/>
-<text x="225" y="951" fill="#154e5b" font-family="sans-serif" font-size="18" letter-spacing="6" opacity=".28">SYNTHETIC</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="나루온 — 밤숲 기호 회화" data-record-id="synthetic-track-01-067" data-index="66" data-seed="4701">
+<title>밤숲의 표식 — 어둠에 새긴 표식 · Nightwood Mark / Mark Carved into Darkness</title>
+<rect x="0" y="0" width="800" height="1000" fill="#17231B"/>
+<path d="M 385 900 C 367 730 401 560 385 385 C 381 355 383 330 385 298" fill="none" stroke="#4F7154" stroke-width="8"/>
+<circle cx="385" cy="298" r="145" fill="none" stroke="#E6D9B8" stroke-width="3"/>
+<circle cx="385" cy="298" r="103" fill="none" stroke="#819A70" stroke-width="2"/>
+<circle cx="385" cy="298" r="44" fill="#294936" stroke="#E6D9B8" stroke-width="2"/>
+<path d="M 385 302 Q 260 232 260 202" fill="none" stroke="#819A70" stroke-width="3"/>
+<path d="M 385 302 Q 322 214 322 184" fill="none" stroke="#819A70" stroke-width="3"/>
+<path d="M 385 302 Q 384 232 384 202" fill="none" stroke="#819A70" stroke-width="3"/>
+<path d="M 385 302 Q 446 214 446 184" fill="none" stroke="#819A70" stroke-width="3"/>
+<path d="M 385 302 Q 508 232 508 202" fill="none" stroke="#819A70" stroke-width="3"/>
+<circle cx="215" cy="504" r="8" fill="#C8B77C"/>
+<circle cx="327" cy="532" r="8" fill="#C8B77C"/>
+<circle cx="439" cy="504" r="8" fill="#C8B77C"/>
+<circle cx="551" cy="532" r="8" fill="#C8B77C"/>
+<text x="34" y="968" fill="#C8B77C" font-family="sans-serif" font-size="11" letter-spacing="3">SYNTHETIC</text>
 </svg>

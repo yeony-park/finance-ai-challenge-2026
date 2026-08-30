@@ -1,1 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="synthetic-track-01-163 synthetic geometric artwork"><title>synthetic-track-01-163</title><rect width="800" height="1000" fill="#121f11"/><circle cx="402" cy="504" r="244" fill="#25381b" opacity=".42"/><circle cx="402" cy="504" r="218" fill="none" stroke="#e075af" stroke-width="3" opacity=".4"/><g><line x1="422.6" y1="437.1" x2="451.9" y2="342.5" stroke="#e075af" stroke-width="1" opacity=".68"/><line x1="460.4" y1="473.2" x2="536.4" y2="433.0" stroke="#9742eb" stroke-width="2" opacity=".68"/><line x1="467.0" y1="524.1" x2="561.6" y2="553.3" stroke="#9742eb" stroke-width="3" opacity=".68"/><line x1="436.1" y1="568.5" x2="467.4" y2="627.8" stroke="#e075af" stroke-width="3" opacity=".68"/><line x1="382.5" y1="567.1" x2="358.0" y2="646.4" stroke="#9742eb" stroke-width="3" opacity=".68"/><line x1="327.7" y1="543.2" x2="275.6" y2="570.8" stroke="#9742eb" stroke-width="2" opacity=".68"/><line x1="335.1" y1="483.4" x2="243.4" y2="455.0" stroke="#e075af" stroke-width="2" opacity=".68"/><line x1="370.7" y1="444.8" x2="322.6" y2="353.7" stroke="#9742eb" stroke-width="3" opacity=".68"/></g><g><ellipse cx="402" cy="504" rx="174" ry="90" transform="rotate(0 402 504)" fill="none" stroke="#9742eb" stroke-width="4" opacity=".78"/><ellipse cx="402" cy="504" rx="152" ry="89" transform="rotate(37 402 504)" fill="none" stroke="#e075af" stroke-width="3" opacity=".78"/></g><g><circle cx="402" cy="504" r="54" fill="none" stroke="#9742eb" stroke-width="5" opacity="0.75"/><circle cx="402" cy="504" r="71" fill="none" stroke="#d2f5ab" stroke-width="2" opacity="0.66"/><circle cx="402" cy="504" r="88" fill="none" stroke="#9742eb" stroke-width="2" opacity="0.57"/><circle cx="511.0" cy="419.3" r="11" fill="#d2f5ab" stroke="#9742eb" stroke-width="2" opacity=".9"/><circle cx="534.4" cy="557.9" r="5" fill="#d2f5ab" stroke="#9742eb" stroke-width="2" opacity=".9"/><circle cx="423.4" cy="659.5" r="5" fill="#d2f5ab" stroke="#9742eb" stroke-width="2" opacity=".9"/><circle cx="289.9" cy="591.1" r="6" fill="#d2f5ab" stroke="#9742eb" stroke-width="2" opacity=".9"/><circle cx="261.2" cy="446.7" r="5" fill="#d2f5ab" stroke="#9742eb" stroke-width="2" opacity=".9"/><circle cx="380.6" cy="348.5" r="8" fill="#d2f5ab" stroke="#9742eb" stroke-width="2" opacity=".9"/></g><text x="402" y="920" text-anchor="middle" fill="#d2f5ab" opacity=".34" font-family="sans-serif" font-size="20" letter-spacing="6">SYNTHETIC</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Bitmorae Nelo | 먼지별 기록회화" data-record-id="synthetic-track-01-163" data-seed="5607" data-index="162">
+<title>먼지별 기록 — 가루처럼 흩어진 밤 · Duststar Record / Night Scattered Like Powder</title>
+<rect x="0" y="0" width="800" height="1000" fill="#312E2B"/>
+<rect x="94" y="142" width="612" height="716" fill="#665A4E" opacity=".55"/>
+<line x1="94" y1="258" x2="706" y2="258" stroke="#C7B299" stroke-width="3"/>
+<line x1="94" y1="741" x2="706" y2="741" stroke="#C7B299" stroke-width="3"/>
+<line x1="189" y1="142" x2="189" y2="858" stroke="#A78A65" stroke-width="2"/>
+<line x1="611" y1="142" x2="611" y2="858" stroke="#A78A65" stroke-width="2"/>
+<circle cx="404" cy="498" r="68" fill="#A78A65"/>
+<circle cx="404" cy="498" r="42" fill="#C7B299"/>
+<circle cx="404" cy="498" r="17" fill="#7B9275"/>
+<circle cx="342" cy="442" r="5" fill="#E5D8C5"/>
+<circle cx="479" cy="440" r="7" fill="#E5D8C5"/>
+<circle cx="474" cy="554" r="4" fill="#E5D8C5"/>
+<circle cx="336" cy="557" r="6" fill="#E5D8C5"/>
+<line x1="338" y1="497" x2="470" y2="497" stroke="#E5D8C5" stroke-width="2" stroke-dasharray="4 13"/>
+<rect x="314" y="895" width="174" height="12" fill="#C7B299"/>
+<text x="22" y="978" fill="#E5D8C5" font-family="sans-serif" font-size="8" letter-spacing="2">SYNTHETIC</text>
+</svg>

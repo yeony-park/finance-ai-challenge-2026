@@ -1,10 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Synthetic flowing ribbon placeholder for synthetic-track-01-086" data-seed="synthetic-track-01-086" data-index="85">
-<rect width="800" height="1000" fill="#f6eaf4"/>
-<path d="M -70 263 C 210 173 504 353 405 263 S 610 173 870 289 L 870 337 C 610 380 504 220 405 311 S 210 385 -70 292 Z" fill="#ce8f22" opacity=".58"/>
-<path d="M -70 495 C 210 610 504 380 410 508 S 610 610 870 515 L 870 552 C 610 417 504 647 410 558 S 210 417 -70 516 Z" fill="#52c828" opacity=".52"/>
-<path d="M -50 796 C 210 734 504 858 415 822 S 610 734 850 775" fill="none" stroke="#1d66bf" stroke-width="27" stroke-linecap="round" opacity=".72"/>
-<path d="M -40 401 C 210 478 504 298 420 387 S 610 478 850 369" fill="none" stroke="#79e2a5" stroke-width="37" stroke-linecap="round" opacity=".78"/>
-<path d="M 242 706 A 118 118 0 0 0 124 590" fill="none" stroke="#5b1557" stroke-width="48" stroke-linecap="round" opacity=".36"/>
-<circle cx="242" cy="706" r="24" fill="#5b1557" opacity=".18"/>
-<text x="177" y="940" fill="#5b1557" font-family="sans-serif" font-size="18" letter-spacing="6" opacity=".28">SYNTHETIC</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="온새벽 — 조약돌 균형 구성" data-record-id="synthetic-track-01-086" data-index="85" data-seed="4810">
+<title>조약돌의 균형 — 둥근 침묵의 윤곽 · Pebble Balance / Contour of a Rounded Silence</title>
+<rect x="0" y="0" width="800" height="1000" fill="#D8D0BC"/>
+<path d="M 68 814 Q 203 762 333 824 T 730 799" fill="none" stroke="#222222" stroke-width="5"/>
+<ellipse cx="92" cy="781" rx="18" ry="13" fill="#4B4B47" stroke="#222222" stroke-width="2"/>
+<ellipse cx="180" cy="812" rx="27" ry="20" fill="#77766C" stroke="#222222" stroke-width="2"/>
+<ellipse cx="268" cy="781" rx="36" ry="27" fill="#A9A79A" stroke="#222222" stroke-width="2"/>
+<ellipse cx="356" cy="812" rx="45" ry="13" fill="#D8D0BC" stroke="#222222" stroke-width="2"/>
+<ellipse cx="444" cy="781" rx="18" ry="20" fill="#222222" stroke="#222222" stroke-width="2"/>
+<ellipse cx="532" cy="812" rx="27" ry="27" fill="#4B4B47" stroke="#222222" stroke-width="2"/>
+<ellipse cx="620" cy="781" rx="36" ry="13" fill="#77766C" stroke="#222222" stroke-width="2"/>
+<ellipse cx="708" cy="812" rx="45" ry="20" fill="#A9A79A" stroke="#222222" stroke-width="2"/>
+<circle cx="400" cy="246" r="102" fill="none" stroke="#B56D52" stroke-width="4"/>
+<circle cx="400" cy="246" r="51" fill="none" stroke="#222222" stroke-width="2"/>
+<polygon points="400,161 424,217 400,266 374,217" fill="#B56D52"/>
+<text x="34" y="968" fill="#B56D52" font-family="sans-serif" font-size="11" letter-spacing="3">SYNTHETIC</text>
 </svg>

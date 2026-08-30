@@ -15,6 +15,19 @@ HISTORY_PUBLIC_DIR = ROOT / "public/synthetic-art/history"
 HISTORY_LIVE_DIR = ROOT / "live/synthetic-art/history"
 SVG_NAMESPACE = "http://www.w3.org/2000/svg"
 SVG_TAG = f"{{{SVG_NAMESPACE}}}svg"
+TITLE_PATTERN = re.compile(
+    r"^(?P<series_ko>[^—]+?)\s+—\s+(?P<secondary_ko>[^·]+?)"
+    r"\s+·\s+(?P<series_en>[^/]+?)\s*/\s*(?P<secondary_en>.+?)$"
+)
+TITLE_SUFFIX_PATTERN = re.compile(
+    r"(?i)(?:\d+|first|second|third|fourth|fifth|sixth|seventh|eighth|"
+    r"ninth|tenth|eleventh|twelfth|study|variation|variant|state|phase|"
+    r"version|edition|series|set)\s*$"
+)
+KOREAN_TITLE_SUFFIX_PATTERN = re.compile(
+    r"(?:\d+|첫째?|둘째|셋째|넷째|다섯째|여섯째|일곱째|여덟째|아홉째|열째|"
+    r"번째)\s*$"
+)
 HISTORY_TAGS = {"svg", "title", "rect", "circle", "ellipse", "g", "line", "path", "polygon", "text"}
 HISTORY_ATTRIBUTES = {
     "aria-label", "cx", "cy", "data-index", "data-record-id", "data-record-index",
@@ -63,9 +76,44 @@ class SyntheticDataTest(unittest.TestCase):
         self.assertTrue(all(item["recordScope"] == "historical" for item in self.records))
 
     def test_current_offerings_use_uniform_unit_and_minimum_prices(self):
+        self.assertEqual(len(self.offerings), 9)
         for offering in self.offerings.values():
             self.assertEqual(offering["unitPrice"], 100000, offering["id"])
             self.assertEqual(offering["minimumInvestment"], 100000, offering["id"])
+
+    def test_history_artwork_metadata_is_unique_and_platform_scoped(self):
+        titles = [record["artworkTitle"] for record in self.records]
+        self.assertEqual(len(titles), 318)
+        self.assertEqual(len(set(titles)), 318)
+
+        parsed_titles = []
+        for title in titles:
+            match = TITLE_PATTERN.fullmatch(title)
+            self.assertIsNotNone(match, title)
+            parsed_titles.append(match.groupdict())
+        secondary_ko = [item["secondary_ko"].strip() for item in parsed_titles]
+        secondary_en = [item["secondary_en"].strip() for item in parsed_titles]
+        self.assertEqual(len(set(secondary_ko)), 318)
+        self.assertEqual(len(set(secondary_en)), 318)
+        for phrase in secondary_ko:
+            self.assertNotRegex(phrase, r"\d")
+            self.assertIsNone(KOREAN_TITLE_SUFFIX_PATTERN.search(phrase), phrase)
+        for phrase in secondary_en:
+            self.assertNotRegex(phrase, r"\d")
+            self.assertIsNone(TITLE_SUFFIX_PATTERN.search(phrase), phrase)
+
+        artist_pairs = [(record["artistName"], record["artistNameEn"]) for record in self.records]
+        artist_counts = Counter(artist_pairs)
+        self.assertEqual(len(artist_counts), 32)
+        self.assertTrue(all(9 <= count <= 12 for count in artist_counts.values()))
+
+        artist_platforms = {}
+        for record, artist_pair in zip(self.records, artist_pairs):
+            artist_platforms.setdefault(artist_pair, set()).add(record["platformId"])
+        self.assertTrue(all(len(platforms) == 1 for platforms in artist_platforms.values()))
+
+        self.assertGreaterEqual(len({record["artworkMedium"] for record in self.records}), 12)
+        self.assertTrue(all(record["offeringId"] is None for record in self.records))
 
     def test_relationships_are_closed_over_fixture_collections(self):
         for platform in self.platforms.values():
@@ -134,6 +182,11 @@ class SyntheticDataTest(unittest.TestCase):
             live_path = ROOT / "live" / image_url.lstrip("/")
             public_bytes = public_path.read_bytes()
             self.assertEqual(public_bytes, live_path.read_bytes(), image_url)
+            for svg_path in (public_path, live_path):
+                svg_root = ET.parse(svg_path).getroot()
+                title = svg_root.find(f"{{{SVG_NAMESPACE}}}title")
+                self.assertIsNotNone(title, svg_path)
+                self.assertEqual(title.text, record["artworkTitle"], svg_path)
             content_hashes.append(hashlib.sha256(public_bytes).hexdigest())
         self.assertEqual(len(set(content_hashes)), 318)
 

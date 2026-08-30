@@ -1,10 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Synthetic flowing ribbon placeholder for synthetic-track-01-104" data-seed="synthetic-track-01-104" data-index="103">
-<rect width="800" height="1000" fill="#f6ebea"/>
-<path d="M -70 188 C 255 25 500 351 405 188 S 724 25 870 195 L 870 247 C 724 409 500 52 405 240 S 255 397 -70 203 Z" fill="#67ce22" opacity=".58"/>
-<path d="M -70 530 C 255 710 500 350 410 564 S 724 710 870 497 L 870 526 C 724 379 500 739 410 605 S 255 379 -70 553 Z" fill="#28c8c5" opacity=".52"/>
-<path d="M -50 776 C 255 690 500 862 415 783 S 724 690 850 782" fill="none" stroke="#9e1dbf" stroke-width="21" stroke-linecap="round" opacity=".72"/>
-<path d="M -40 347 C 255 476 500 150 420 288 S 724 476 850 276" fill="none" stroke="#8be279" stroke-width="29" stroke-linecap="round" opacity=".78"/>
-<path d="M 173 585 A 231 231 0 0 0 -58 639" fill="none" stroke="#5b2a15" stroke-width="52" stroke-linecap="round" opacity=".36"/>
-<circle cx="173" cy="585" r="26" fill="#5b2a15" opacity=".18"/>
-<text x="77" y="953" fill="#5b2a15" font-family="sans-serif" font-size="18" letter-spacing="6" opacity=".28">SYNTHETIC</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="솔여울 — 조류 곡선 회화" data-record-id="synthetic-track-01-104" data-index="103" data-seed="5008">
+<title>조류의 곡선 — 바다 쪽으로 휜 선 · Tidal Curve / Line Bending Toward the Sea</title>
+<rect x="0" y="0" width="800" height="1000" fill="#12343B"/>
+<path d="M -30 210 C 142 119 256 266 402 189 S 663 108 840 208" fill="none" stroke="#A8D5BA" stroke-width="14"/>
+<path d="M -30 279 C 156 202 275 331 417 257 S 652 192 840 280" fill="none" stroke="#58A6A6" stroke-width="6"/>
+<path d="M -30 806 C 155 724 302 883 455 795 S 682 735 840 825" fill="none" stroke="#1F6F78" stroke-width="19"/>
+<path d="M -30 886 C 143 789 291 956 469 860 S 690 805 840 906" fill="none" stroke="#D9826B" stroke-width="5"/>
+<circle cx="400" cy="525" r="51" fill="none" stroke="#F4E9CD" stroke-width="4"/>
+<text x="34" y="968" fill="#F4E9CD" font-family="sans-serif" font-size="11" letter-spacing="3">SYNTHETIC</text>
 </svg>

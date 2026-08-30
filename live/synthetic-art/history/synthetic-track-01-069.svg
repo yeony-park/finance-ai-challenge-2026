@@ -1,10 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Synthetic flowing ribbon placeholder for synthetic-track-01-069" data-seed="synthetic-track-01-069" data-index="68">
-<rect width="800" height="1000" fill="#f6f1ea"/>
-<path d="M -70 273 C 266 147 420 399 405 273 S 620 147 870 311 L 870 370 C 620 490 420 159 405 332 S 266 495 -70 305 Z" fill="#7bce22" opacity=".58"/>
-<path d="M -70 489 C 266 614 420 364 410 502 S 620 614 870 509 L 870 556 C 620 411 420 661 410 517 S 266 411 -70 573 Z" fill="#2893c8" opacity=".52"/>
-<path d="M -50 859 C 266 726 420 992 415 897 S 620 726 850 891" fill="none" stroke="#bf1d40" stroke-width="20" stroke-linecap="round" opacity=".72"/>
-<path d="M -40 411 C 266 524 420 272 420 351 S 620 524 850 371" fill="none" stroke="#b4e279" stroke-width="47" stroke-linecap="round" opacity=".78"/>
-<path d="M 339 219 A 126 126 0 0 0 213 108" fill="none" stroke="#5b3715" stroke-width="59" stroke-linecap="round" opacity=".36"/>
-<circle cx="339" cy="219" r="29" fill="#5b3715" opacity=".18"/>
-<text x="272" y="951" fill="#5b3715" font-family="sans-serif" font-size="18" letter-spacing="6" opacity=".28">SYNTHETIC</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="나루온 — 밤숲 기호 회화" data-record-id="synthetic-track-01-069" data-index="68" data-seed="4703">
+<title>밤숲의 표식 — 검은 잎의 암호 · Nightwood Mark / Cipher of a Black Leaf</title>
+<rect x="0" y="0" width="800" height="1000" fill="#17231B"/>
+<circle cx="168" cy="270" r="88" fill="none" stroke="#E6D9B8" stroke-width="3"/>
+<circle cx="168" cy="270" r="47" fill="none" stroke="#819A70" stroke-width="2"/>
+<circle cx="620" cy="612" r="162" fill="none" stroke="#4F7154" stroke-width="4"/>
+<circle cx="620" cy="612" r="112" fill="none" stroke="#E6D9B8" stroke-width="2"/>
+<circle cx="620" cy="612" r="46" fill="none" stroke="#C8B77C" stroke-width="3"/>
+<circle cx="370" cy="835" r="28" fill="none" stroke="#819A70" stroke-width="3"/>
+<line x1="149" y1="130" x2="187" y2="130" stroke="#C8B77C" stroke-width="3"/>
+<line x1="149" y1="410" x2="187" y2="410" stroke="#C8B77C" stroke-width="3"/>
+<line x1="601" y1="430" x2="639" y2="430" stroke="#C8B77C" stroke-width="3"/>
+<line x1="601" y1="824" x2="639" y2="824" stroke="#C8B77C" stroke-width="3"/>
+<line x1="341" y1="835" x2="379" y2="835" stroke="#C8B77C" stroke-width="3"/>
+<path d="M 0 530 C 170 495 260 560 398 528 S 670 480 800 532" fill="none" stroke="#294936" stroke-width="4"/>
+<text x="34" y="968" fill="#C8B77C" font-family="sans-serif" font-size="11" letter-spacing="3">SYNTHETIC</text>
 </svg>

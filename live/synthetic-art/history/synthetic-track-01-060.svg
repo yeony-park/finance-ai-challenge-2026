@@ -1,14 +1,24 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000">
-<rect width="800" height="1000" fill="#173315"/>
-<rect x="42" y="52" width="716" height="896" rx="14" fill="none" stroke="#dec1e1" stroke-opacity="0.28" stroke-width="4"/>
-<rect x="74" y="88" width="559" height="18" fill="#d4ea71" opacity="0.48"/>
-<rect x="129" y="175" width="424" height="237" fill="#8cedca" opacity="0.92"/>
-<rect x="173" y="216" width="319" height="132" fill="#8328d2" opacity="0.72"/>
-<rect x="275" y="387" width="216" height="195" fill="#e93f7b" opacity="0.88"/>
-<rect x="311" y="437" width="121" height="117" fill="#173315" opacity="0.64"/>
-<rect x="129" y="649" width="357" height="149" fill="#d4ea71" opacity="0.82"/>
-<rect x="242" y="178" width="171" height="22" fill="#dec1e1" opacity="0.35" transform="rotate(2 242 178)"/>
-<rect x="74" y="862" width="355" height="3" fill="#dec1e1" opacity="0.5"/>
-<text x="74" y="905" fill="#dec1e1" opacity="0.52" font-family="sans-serif" font-size="16" letter-spacing="4">SYNTHETIC</text>
-<text x="726" y="905" fill="#dec1e1" opacity="0.62" font-family="sans-serif" font-size="18" text-anchor="end">59</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-01-060" data-record-index="59" data-seed="4604">
+<title>유리결의 반사 — 빛이 굴절한 자리 · Glassgrain Reflection / Place Where Light Refracted</title>
+<rect x="0" y="0" width="800" height="1000" fill="#17324D"/>
+<ellipse cx="468" cy="498" rx="310" ry="214" fill="#2D5873" opacity="0.25"/>
+<ellipse cx="468" cy="498" rx="213" ry="180" fill="#5C8EA3" opacity="0.32"/>
+<polygon points="468,498 533.56,660.26 438.21,781.44 373.23,710.86" fill="#A9CDD0" opacity="0.25"/>
+<polygon points="468,498 411.58,708.57 189.84,671.81 200.2,564.77" fill="#E2F0EA" opacity="0.31"/>
+<polygon points="468,498 262.33,658.69 119.37,371.11 216.62,301.6" fill="#D6A85F" opacity="0.37"/>
+<polygon points="468,498 164.05,503.31 99.12,310.05 212.03,242.03" fill="#A9CDD0" opacity="0.43"/>
+<polygon points="468,498 326.42,395.14 413.62,218.24 496.4,266.74" fill="#E2F0EA" opacity="0.25"/>
+<polygon points="468,498 404.26,289.53 683.19,250.46 704.58,355.85" fill="#D6A85F" opacity="0.31"/>
+<polygon points="468,498 557.27,252.74 743.71,249.75 759.42,368.25" fill="#A9CDD0" opacity="0.37"/>
+<polygon points="468,498 722.96,332.43 875.71,569.89 787.63,667.95" fill="#E2F0EA" opacity="0.43"/>
+<ellipse cx="468" cy="498" rx="72" ry="48" fill="none" stroke="#D6A85F" stroke-width="3" stroke-opacity="0.54"/>
+<ellipse cx="468" cy="498" rx="111" ry="82" fill="none" stroke="#E2F0EA" stroke-width="4" stroke-opacity="0.6"/>
+<ellipse cx="468" cy="498" rx="150" ry="116" fill="none" stroke="#D6A85F" stroke-width="3" stroke-opacity="0.66"/>
+<ellipse cx="468" cy="498" rx="189" ry="150" fill="none" stroke="#E2F0EA" stroke-width="4" stroke-opacity="0.54"/>
+<ellipse cx="468" cy="498" rx="228" ry="184" fill="none" stroke="#D6A85F" stroke-width="3" stroke-opacity="0.6"/>
+<ellipse cx="468" cy="498" rx="267" ry="218" fill="none" stroke="#E2F0EA" stroke-width="4" stroke-opacity="0.66"/>
+<ellipse cx="468" cy="498" rx="306" ry="252" fill="none" stroke="#D6A85F" stroke-width="3" stroke-opacity="0.54"/>
+<circle cx="468" cy="498" r="42" fill="#E2F0EA" opacity="0.72"/>
+<circle cx="476" cy="492" r="14" fill="#D6A85F" opacity="0.9"/>
+<text x="728" y="953" fill="#A9CDD0" font-family="sans-serif" font-size="9" letter-spacing="3" text-anchor="end" opacity="0.34">SYNTHETIC</text>
 </svg>

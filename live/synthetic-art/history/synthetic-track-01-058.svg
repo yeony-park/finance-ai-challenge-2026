@@ -1,14 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000">
-<rect width="800" height="1000" fill="#122810"/>
-<rect x="42" y="52" width="716" height="896" rx="14" fill="none" stroke="#dec1e2" stroke-opacity="0.28" stroke-width="4"/>
-<rect x="74" y="88" width="562" height="18" fill="#c4e265" opacity="0.48"/>
-<rect x="122" y="118" width="372" height="334" fill="#37ebaf" opacity="0.92"/>
-<rect x="168" y="160" width="290" height="232" fill="#a73bce" opacity="0.72"/>
-<rect x="322" y="469" width="400" height="395" fill="#dc2e1e" opacity="0.88"/>
-<rect x="360" y="522" width="321" height="275" fill="#122810" opacity="0.64"/>
-<rect x="280" y="710" width="451" height="212" fill="#c4e265" opacity="0.82"/>
-<rect x="250" y="202" width="326" height="22" fill="#dec1e2" opacity="0.35" transform="rotate(6 250 202)"/>
-<rect x="74" y="862" width="348" height="3" fill="#dec1e2" opacity="0.5"/>
-<text x="74" y="905" fill="#dec1e2" opacity="0.52" font-family="sans-serif" font-size="16" letter-spacing="4">SYNTHETIC</text>
-<text x="726" y="905" fill="#dec1e2" opacity="0.62" font-family="sans-serif" font-size="18" text-anchor="end">57</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-01-058" data-record-index="57" data-seed="4602">
+<title>유리결의 반사 — 깨진 광선의 결 · Glassgrain Reflection / Grain of a Broken Ray</title>
+<rect x="0" y="0" width="800" height="1000" fill="#17324D"/>
+<polygon points="0,66 800,174 772,866 35,844" fill="#2D5873" opacity="0.18"/>
+<polygon points="54,90 746,150 718,890 89,820" fill="#5C8EA3" opacity="0.23"/>
+<polygon points="108,114 692,126 664,914 143,796" fill="#A9CDD0" opacity="0.29"/>
+<polygon points="162,66 638,174 610,866 197,844" fill="#E2F0EA" opacity="0.34"/>
+<polygon points="216,90 584,150 556,890 251,820" fill="#D6A85F" opacity="0.18"/>
+<polygon points="270,114 530,126 502,914 305,796" fill="#2D5873" opacity="0.23"/>
+<polygon points="118,196 682,231 632,775 164,730" fill="none" stroke="#E2F0EA" stroke-width="5" stroke-opacity="0.74"/>
+<polygon points="280,340 530,360 508,648 307,625" fill="none" stroke="#A9CDD0" stroke-width="4" stroke-opacity="0.72"/>
+<polygon points="377,421 444,427 437,560 386,552" fill="#E2F0EA" opacity="0.68"/>
+<line x1="80" y1="78" x2="22" y2="918" stroke="#A9CDD0" stroke-width="2" stroke-opacity="0.5"/>
+<line x1="186" y1="78" x2="186" y2="918" stroke="#D6A85F" stroke-width="3" stroke-opacity="0.5"/>
+<line x1="292" y1="78" x2="350" y2="918" stroke="#A9CDD0" stroke-width="4" stroke-opacity="0.5"/>
+<line x1="398" y1="78" x2="340" y2="918" stroke="#D6A85F" stroke-width="2" stroke-opacity="0.5"/>
+<line x1="504" y1="78" x2="504" y2="918" stroke="#A9CDD0" stroke-width="3" stroke-opacity="0.5"/>
+<line x1="610" y1="78" x2="668" y2="918" stroke="#D6A85F" stroke-width="4" stroke-opacity="0.5"/>
+<line x1="716" y1="78" x2="658" y2="918" stroke="#A9CDD0" stroke-width="2" stroke-opacity="0.5"/>
+<text x="728" y="953" fill="#A9CDD0" font-family="sans-serif" font-size="9" letter-spacing="3" text-anchor="end" opacity="0.34">SYNTHETIC</text>
 </svg>

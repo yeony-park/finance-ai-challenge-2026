@@ -1,10 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Synthetic flowing ribbon placeholder for synthetic-track-01-103" data-seed="synthetic-track-01-103" data-index="102">
-<rect width="800" height="1000" fill="#f0f6ea"/>
-<path d="M -70 279 C 225 165 489 393 405 279 S 660 165 870 243 L 870 313 C 660 465 489 232 405 349 S 225 460 -70 376 Z" fill="#22ce78" opacity=".58"/>
-<path d="M -70 593 C 225 668 489 518 410 611 S 660 668 870 643 L 870 663 C 660 538 489 688 410 658 S 225 538 -70 610 Z" fill="#7828c8" opacity=".52"/>
-<path d="M -50 872 C 225 756 489 988 415 836 S 660 756 850 874" fill="none" stroke="#bf351d" stroke-width="33" stroke-linecap="round" opacity=".72"/>
-<path d="M -40 422 C 225 518 489 290 420 401 S 660 518 850 431" fill="none" stroke="#8479e2" stroke-width="20" stroke-linecap="round" opacity=".78"/>
-<path d="M 340 545 A 159 159 0 0 1 499 481" fill="none" stroke="#305b15" stroke-width="70" stroke-linecap="round" opacity=".36"/>
-<circle cx="340" cy="545" r="35" fill="#305b15" opacity=".18"/>
-<text x="174" y="934" fill="#305b15" font-family="sans-serif" font-size="18" letter-spacing="6" opacity=".28">SYNTHETIC</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="솔여울 — 조류 곡선 회화" data-record-id="synthetic-track-01-103" data-index="102" data-seed="5007">
+<title>조류의 곡선 — 긴 파도의 어깨 · Tidal Curve / Shoulder of a Long Wave</title>
+<rect x="0" y="0" width="800" height="1000" fill="#12343B"/>
+<path d="M -40 220 C 190 80 267 408 400 514 S 610 921 843 782" fill="none" stroke="#58A6A6" stroke-width="11"/>
+<path d="M -30 770 C 206 929 314 615 412 493 S 615 91 837 211" fill="none" stroke="#A8D5BA" stroke-width="8"/>
+<path d="M 96 -30 C 242 238 539 247 690 103" fill="none" stroke="#1F6F78" stroke-width="6"/>
+<path d="M 82 1030 C 260 797 496 830 731 1030" fill="none" stroke="#D9826B" stroke-width="5"/>
+<path d="M -30 505 C 205 424 269 611 401 504 S 605 395 835 511" fill="none" stroke="#F4E9CD" stroke-width="4"/>
+<circle cx="406" cy="506" r="44" fill="#12343B" stroke="#A8D5BA" stroke-width="4"/>
+<circle cx="406" cy="506" r="11" fill="#D9826B"/>
+<text x="34" y="968" fill="#F4E9CD" font-family="sans-serif" font-size="11" letter-spacing="3">SYNTHETIC</text>
 </svg>

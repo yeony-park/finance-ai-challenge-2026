@@ -1,14 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000">
-<rect width="800" height="1000" fill="#2c1843"/>
-<rect x="42" y="52" width="716" height="896" rx="14" fill="none" stroke="#d1dbc2" stroke-opacity="0.28" stroke-width="4"/>
-<rect x="74" y="88" width="591" height="18" fill="#9bb2e9" opacity="0.48"/>
-<rect x="176" y="193" width="276" height="205" fill="#ef57db" opacity="0.92"/>
-<rect x="239" y="258" width="181" height="114" fill="#dcbe50" opacity="0.72"/>
-<rect x="298" y="523" width="373" height="239" fill="#85e5c2" opacity="0.88"/>
-<rect x="330" y="590" width="292" height="160" fill="#2c1843" opacity="0.64"/>
-<rect x="266" y="726" width="346" height="147" fill="#9bb2e9" opacity="0.82"/>
-<rect x="155" y="405" width="171" height="22" fill="#d1dbc2" opacity="0.35" transform="rotate(0 155 405)"/>
-<rect x="74" y="862" width="402" height="3" fill="#d1dbc2" opacity="0.5"/>
-<text x="74" y="905" fill="#d1dbc2" opacity="0.52" font-family="sans-serif" font-size="16" letter-spacing="4">SYNTHETIC</text>
-<text x="726" y="905" fill="#d1dbc2" opacity="0.62" font-family="sans-serif" font-size="18" text-anchor="end">17</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-01-018" data-record-index="17" data-seed="4206">
+<title>잔물결의 방 — 수면 아래의 온도 · Rill Room / Temperature Beneath the Waterline</title>
+<rect x="0" y="0" width="800" height="1000" fill="#312E4A"/>
+<g transform="rotate(180 400 500)">
+<path d="M485 0 C455 170 515 290 497 452 C455 610 515 780 489 1000 L515 1000 C545 790 485 622 515 454 C545 295 515 164 500 0 Z" fill="#5B4E78" opacity="0.32"/>
+<path d="M507 0 C462 170 552 290 519 452 C462 610 552 780 511 1000 L552 1000 C597 790 507 622 552 454 C597 295 552 164 529 0 Z" fill="#8C79A8" opacity="0.38"/>
+<path d="M529 0 C469 170 589 290 541 452 C469 610 589 780 533 1000 L589 1000 C649 790 529 622 589 454 C649 295 589 164 559 0 Z" fill="#D6B3A6" opacity="0.44"/>
+<path d="M551 0 C476 170 626 290 563 452 C476 610 626 780 555 1000 L626 1000 C701 790 551 622 626 454 C701 295 626 164 588 0 Z" fill="#F0D8B8" opacity="0.5"/>
+<path d="M573 0 C543 170 603 290 585 452 C543 610 603 780 577 1000 L603 1000 C633 790 573 622 603 454 C633 295 603 164 588 0 Z" fill="#8EA6A8" opacity="0.56"/>
+<path d="M595 0 C550 170 640 290 607 452 C550 610 640 780 599 1000 L640 1000 C685 790 595 622 640 454 C685 295 640 164 617 0 Z" fill="#5B4E78" opacity="0.32"/>
+<path d="M617 0 C557 170 677 290 629 452 C557 610 677 780 621 1000 L677 1000 C737 790 617 622 677 454 C737 295 677 164 647 0 Z" fill="#8C79A8" opacity="0.38"/>
+<path d="M639 0 C564 170 714 290 651 452 C564 610 714 780 643 1000 L714 1000 C789 790 639 622 714 454 C789 295 714 164 676 0 Z" fill="#D6B3A6" opacity="0.44"/>
+<path d="M661 0 C631 170 691 290 673 452 C631 610 691 780 665 1000 L691 1000 C721 790 661 622 691 454 C721 295 691 164 676 0 Z" fill="#F0D8B8" opacity="0.5"/>
+<ellipse cx="586" cy="530" rx="140" ry="188" fill="#F0D8B8" opacity="0.35"/>
+<ellipse cx="586" cy="530" rx="61" ry="165" fill="#8EA6A8" opacity="0.6"/>
+<ellipse cx="438" cy="111" rx="16" ry="5" fill="#D6B3A6" opacity="0.58"/>
+<ellipse cx="522" cy="282" rx="23" ry="8" fill="#D6B3A6" opacity="0.58"/>
+<ellipse cx="606" cy="453" rx="30" ry="5" fill="#D6B3A6" opacity="0.58"/>
+<ellipse cx="438" cy="624" rx="16" ry="8" fill="#D6B3A6" opacity="0.58"/>
+<ellipse cx="522" cy="795" rx="23" ry="5" fill="#D6B3A6" opacity="0.58"/>
+<text x="690" y="952" fill="#D6B3A6" font-family="sans-serif" font-size="9" letter-spacing="3" text-anchor="end" opacity="0.34">SYNTHETIC</text>
+</g>
 </svg>

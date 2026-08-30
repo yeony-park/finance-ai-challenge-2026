@@ -1,14 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000">
-<rect width="800" height="1000" fill="#1b2537"/>
-<rect x="42" y="52" width="716" height="896" rx="14" fill="none" stroke="#e1d3bc" stroke-opacity="0.28" stroke-width="4"/>
-<rect x="74" y="88" width="606" height="18" fill="#53bfdf" opacity="0.48"/>
-<rect x="218" y="191" width="388" height="191" fill="#5535e3" opacity="0.92"/>
-<rect x="263" y="228" width="291" height="92" fill="#c8511e" opacity="0.72"/>
-<rect x="115" y="392" width="200" height="316" fill="#53bd32" opacity="0.88"/>
-<rect x="169" y="422" width="117" height="199" fill="#1b2537" opacity="0.64"/>
-<rect x="117" y="702" width="383" height="181" fill="#53bfdf" opacity="0.82"/>
-<rect x="306" y="249" width="314" height="22" fill="#e1d3bc" opacity="0.35" transform="rotate(4 306 249)"/>
-<rect x="74" y="862" width="444" height="3" fill="#e1d3bc" opacity="0.5"/>
-<text x="74" y="905" fill="#e1d3bc" opacity="0.52" font-family="sans-serif" font-size="16" letter-spacing="4">SYNTHETIC</text>
-<text x="726" y="905" fill="#e1d3bc" opacity="0.62" font-family="sans-serif" font-size="18" text-anchor="end">38</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-01-039" data-record-index="38" data-seed="4405">
+<title>바람실의 층 — 섬유 사이의 낮 · Wind Thread Layers / Daylight Between Fibers</title>
+<rect x="0" y="0" width="800" height="1000" fill="#B7D7C4"/>
+<g transform="rotate(180 400 500)">
+<path d="M0 129 C150 99 260 163 400 131 C548 97 660 157 800 121 L800 175 C650 207 520 155 382 187 C240 213 120 150 0 193 Z" fill="#287271" opacity="0.52"/>
+<path d="M0 304 C150 274 260 338 400 306 C548 272 660 332 800 296 L800 368 C650 400 520 348 382 380 C240 406 120 343 0 386 Z" fill="#61A59C" opacity="0.58"/>
+<path d="M0 479 C150 449 260 513 400 481 C548 447 660 507 800 471 L800 561 C650 593 520 541 382 573 C240 599 120 536 0 579 Z" fill="#B7D7C4" opacity="0.64"/>
+<path d="M0 654 C150 624 260 688 400 656 C548 622 660 682 800 646 L800 700 C650 732 520 680 382 712 C240 738 120 675 0 718 Z" fill="#E9C46A" opacity="0.7"/>
+<path d="M62 34 C74 252 50 454 68 672 C74 810 50 926 62 988" fill="#E9C46A" opacity="0.42"/>
+<path d="M138 34 C118 252 158 454 128 672 C118 810 158 926 138 988" fill="#61A59C" opacity="0.47"/>
+<path d="M214 34 C242 252 186 454 228 672 C242 810 186 926 214 988" fill="#61A59C" opacity="0.52"/>
+<path d="M290 34 C278 252 302 454 284 672 C278 810 302 926 290 988" fill="#E9C46A" opacity="0.57"/>
+<path d="M366 34 C386 252 346 454 376 672 C386 810 346 926 366 988" fill="#61A59C" opacity="0.42"/>
+<path d="M442 34 C414 252 470 454 428 672 C414 810 470 926 442 988" fill="#61A59C" opacity="0.47"/>
+<path d="M518 34 C530 252 506 454 524 672 C530 810 506 926 518 988" fill="#E9C46A" opacity="0.52"/>
+<path d="M594 34 C574 252 614 454 584 672 C574 810 614 926 594 988" fill="#61A59C" opacity="0.57"/>
+<path d="M670 34 C698 252 642 454 684 672 C698 810 642 926 670 988" fill="#61A59C" opacity="0.42"/>
+<path d="M746 34 C734 252 758 454 740 672 C734 810 758 926 746 988" fill="#E9C46A" opacity="0.47"/>
+<ellipse cx="145" cy="625" rx="98" ry="44" fill="#E08E79" opacity="0.72"/>
+<ellipse cx="145" cy="621" rx="53" ry="23" fill="#287271" opacity="0.84"/>
+<text x="68" y="950" fill="#E9C46A" font-family="sans-serif" font-size="9" letter-spacing="3" opacity="0.32">SYNTHETIC</text>
+</g>
 </svg>

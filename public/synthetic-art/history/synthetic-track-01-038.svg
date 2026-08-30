@@ -1,14 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000">
-<rect width="800" height="1000" fill="#121635"/>
-<rect x="42" y="52" width="716" height="896" rx="14" fill="none" stroke="#dddac6" stroke-opacity="0.28" stroke-width="4"/>
-<rect x="74" y="88" width="585" height="18" fill="#66c7eb" opacity="0.48"/>
-<rect x="158" y="204" width="362" height="337" fill="#ab3be3" opacity="0.92"/>
-<rect x="194" y="241" width="243" height="264" fill="#d77860" opacity="0.72"/>
-<rect x="291" y="506" width="311" height="333" fill="#38da1b" opacity="0.88"/>
-<rect x="335" y="541" width="238" height="219" fill="#121635" opacity="0.64"/>
-<rect x="251" y="648" width="266" height="214" fill="#66c7eb" opacity="0.82"/>
-<rect x="91" y="346" width="212" height="22" fill="#dddac6" opacity="0.35" transform="rotate(-4 91 346)"/>
-<rect x="74" y="862" width="384" height="3" fill="#dddac6" opacity="0.5"/>
-<text x="74" y="905" fill="#dddac6" opacity="0.52" font-family="sans-serif" font-size="16" letter-spacing="4">SYNTHETIC</text>
-<text x="726" y="905" fill="#dddac6" opacity="0.62" font-family="sans-serif" font-size="18" text-anchor="end">37</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-01-038" data-record-index="37" data-seed="4404">
+<title>바람실의 층 — 거친 직조의 숨 · Wind Thread Layers / Breath of a Rough Weave</title>
+<rect x="0" y="0" width="800" height="1000" fill="#B7D7C4"/>
+<path d="M0 100 C124 135 236 65 372 114 C510 135 644 65 800 104 L800 175 C646 140 512 210 370 167 C236 140 114 210 0 171 Z" fill="#287271" opacity="0.4"/>
+<path d="M0 206 C124 260 236 152 372 220 C510 260 644 152 800 210 L800 303 C646 249 512 357 370 295 C236 249 114 357 0 299 Z" fill="#61A59C" opacity="0.47"/>
+<path d="M0 312 C124 385 236 239 372 326 C510 385 644 239 800 316 L800 431 C646 358 512 504 370 423 C236 358 114 504 0 427 Z" fill="#B7D7C4" opacity="0.53"/>
+<path d="M0 418 C124 453 236 383 372 432 C510 453 644 383 800 422 L800 559 C646 524 512 594 370 551 C236 524 114 594 0 555 Z" fill="#E9C46A" opacity="0.59"/>
+<path d="M0 524 C124 578 236 470 372 538 C510 578 644 470 800 528 L800 599 C646 545 512 653 370 591 C236 545 114 653 0 595 Z" fill="#E08E79" opacity="0.4"/>
+<path d="M0 630 C124 703 236 557 372 644 C510 703 644 557 800 634 L800 727 C646 654 512 800 370 719 C236 654 114 800 0 723 Z" fill="#287271" opacity="0.47"/>
+<path d="M0 736 C124 771 236 701 372 750 C510 771 644 701 800 740 L800 855 C646 820 512 890 370 847 C236 820 114 890 0 851 Z" fill="#61A59C" opacity="0.53"/>
+<path d="M0 842 C124 896 236 788 372 856 C510 896 644 788 800 846 L800 983 C646 929 512 1037 370 975 C236 929 114 1037 0 979 Z" fill="#B7D7C4" opacity="0.59"/>
+<path d="M83 0 C51 188 119 336 75 530 C43 702 118 848 87 1000" fill="none" stroke="#E9C46A" stroke-width="2" stroke-opacity="0.52" stroke-linecap="round"/>
+<path d="M201 0 C169 188 237 336 193 530 C161 702 236 848 205 1000" fill="none" stroke="#E9C46A" stroke-width="3" stroke-opacity="0.52" stroke-linecap="round"/>
+<path d="M319 0 C287 188 355 336 311 530 C279 702 354 848 323 1000" fill="none" stroke="#E9C46A" stroke-width="4" stroke-opacity="0.52" stroke-linecap="round"/>
+<path d="M437 0 C405 188 473 336 429 530 C397 702 472 848 441 1000" fill="none" stroke="#E9C46A" stroke-width="2" stroke-opacity="0.52" stroke-linecap="round"/>
+<path d="M555 0 C523 188 591 336 547 530 C515 702 590 848 559 1000" fill="none" stroke="#E9C46A" stroke-width="3" stroke-opacity="0.52" stroke-linecap="round"/>
+<path d="M673 0 C641 188 709 336 665 530 C633 702 708 848 677 1000" fill="none" stroke="#E9C46A" stroke-width="4" stroke-opacity="0.52" stroke-linecap="round"/>
+<path d="M791 0 C759 188 827 336 783 530 C751 702 826 848 795 1000" fill="none" stroke="#E9C46A" stroke-width="2" stroke-opacity="0.52" stroke-linecap="round"/>
+<ellipse cx="464" cy="427" rx="131" ry="58" fill="#E08E79" opacity="0.72"/>
+<ellipse cx="458" cy="422" rx="60" ry="26" fill="#E9C46A" opacity="0.78"/>
+<text x="68" y="950" fill="#E9C46A" font-family="sans-serif" font-size="9" letter-spacing="3" opacity="0.32">SYNTHETIC</text>
 </svg>

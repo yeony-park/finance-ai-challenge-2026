@@ -1,14 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000">
-<rect width="800" height="1000" fill="#2f3116"/>
-<rect x="42" y="52" width="716" height="896" rx="14" fill="none" stroke="#c8c6e1" stroke-opacity="0.28" stroke-width="4"/>
-<rect x="74" y="88" width="565" height="18" fill="#eaaa85" opacity="0.48"/>
-<rect x="142" y="129" width="255" height="175" fill="#4ae23c" opacity="0.92"/>
-<rect x="183" y="161" width="170" height="72" fill="#61bbd1" opacity="0.72"/>
-<rect x="181" y="401" width="389" height="316" fill="#d623e7" opacity="0.88"/>
-<rect x="217" y="469" width="290" height="216" fill="#2f3116" opacity="0.64"/>
-<rect x="132" y="715" width="355" height="187" fill="#eaaa85" opacity="0.82"/>
-<rect x="87" y="323" width="255" height="22" fill="#c8c6e1" opacity="0.35" transform="rotate(4 87 323)"/>
-<rect x="74" y="862" width="536" height="3" fill="#c8c6e1" opacity="0.5"/>
-<text x="74" y="905" fill="#c8c6e1" opacity="0.52" font-family="sans-serif" font-size="16" letter-spacing="4">SYNTHETIC</text>
-<text x="726" y="905" fill="#c8c6e1" opacity="0.62" font-family="sans-serif" font-size="18" text-anchor="end">58</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-01-059" data-record-index="58" data-seed="4603">
+<title>유리결의 반사 — 투명한 면의 이음 · Glassgrain Reflection / Join of Transparent Planes</title>
+<rect x="0" y="0" width="800" height="1000" fill="#17324D"/>
+<polygon points="141,105 470,68 548,831 231,884" fill="#2D5873" opacity="0.48"/>
+<polygon points="394,162 754,236 667,929 322,842" fill="#5C8EA3" opacity="0.42"/>
+<polygon points="195,168 418,135 474,760 244,790" fill="none" stroke="#E2F0EA" stroke-width="5" stroke-opacity="0.72"/>
+<polygon points="446,236 690,286 622,842 384,780" fill="none" stroke="#A9CDD0" stroke-width="4" stroke-opacity="0.68"/>
+<line x1="104" y1="193" x2="644" y2="255" stroke="#D6A85F" stroke-width="3" stroke-opacity="0.42"/>
+<line x1="165" y1="312" x2="705" y2="374" stroke="#D6A85F" stroke-width="3" stroke-opacity="0.47"/>
+<line x1="226" y1="431" x2="766" y2="493" stroke="#D6A85F" stroke-width="3" stroke-opacity="0.52"/>
+<line x1="104" y1="550" x2="644" y2="612" stroke="#D6A85F" stroke-width="3" stroke-opacity="0.57"/>
+<line x1="165" y1="669" x2="705" y2="731" stroke="#D6A85F" stroke-width="3" stroke-opacity="0.42"/>
+<line x1="226" y1="788" x2="766" y2="850" stroke="#D6A85F" stroke-width="3" stroke-opacity="0.47"/>
+<line x1="104" y1="907" x2="644" y2="969" stroke="#D6A85F" stroke-width="3" stroke-opacity="0.52"/>
+<ellipse cx="521" cy="543" rx="74" ry="172" fill="#E2F0EA" opacity="0.52"/>
+<ellipse cx="532" cy="535" rx="26" ry="66" fill="#D6A85F" opacity="0.85"/>
+<text x="728" y="953" fill="#A9CDD0" font-family="sans-serif" font-size="9" letter-spacing="3" text-anchor="end" opacity="0.34">SYNTHETIC</text>
 </svg>

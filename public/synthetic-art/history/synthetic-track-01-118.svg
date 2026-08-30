@@ -1,10 +1,31 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Synthetic flowing ribbon placeholder for synthetic-track-01-118" data-seed="synthetic-track-01-118" data-index="117">
-<rect width="800" height="1000" fill="#f1eaf6"/>
-<path d="M -70 298 C 145 143 422 453 405 298 S 635 143 870 320 L 870 377 C 635 544 422 197 405 355 S 145 485 -70 344 Z" fill="#ce4a22" opacity=".58"/>
-<path d="M -70 631 C 145 746 422 516 410 633 S 635 746 870 659 L 870 683 C 635 540 422 770 410 657 S 145 540 -70 630 Z" fill="#b5c828" opacity=".52"/>
-<path d="M -50 825 C 145 688 422 962 415 847 S 635 688 850 859" fill="none" stroke="#1da4bf" stroke-width="42" stroke-linecap="round" opacity=".72"/>
-<path d="M -40 425 C 145 578 422 268 420 420 S 635 578 850 412" fill="none" stroke="#79cbe2" stroke-width="24" stroke-linecap="round" opacity=".78"/>
-<path d="M 594 245 A 243 243 0 0 1 837 140" fill="none" stroke="#55155b" stroke-width="57" stroke-linecap="round" opacity=".36"/>
-<circle cx="594" cy="245" r="28" fill="#55155b" opacity=".18"/>
-<text x="239" y="940" fill="#55155b" font-family="sans-serif" font-size="18" letter-spacing="6" opacity=".28">SYNTHETIC</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="달포개 — 소리결 반복문양" data-record-id="synthetic-track-01-118" data-index="117" data-seed="5202">
+<title>소리결의 반복 — 낮은 울림의 문양 · Soundgrain Refrain / Pattern of a Low Resonance</title>
+<rect x="0" y="0" width="800" height="1000" fill="#3B1F2B"/>
+<circle cx="145" cy="166" r="25" fill="#F1DABF" stroke="#6C3A5B" stroke-width="2"/>
+<circle cx="145" cy="322" r="34" fill="#A65D75" stroke="#6C3A5B" stroke-width="2"/>
+<circle cx="145" cy="478" r="25" fill="#F1DABF" stroke="#6C3A5B" stroke-width="2"/>
+<line x1="145" y1="105" x2="145" y2="846" stroke="#637A7A" stroke-width="2"/>
+<circle cx="274" cy="199" r="25" fill="#A65D75" stroke="#6C3A5B" stroke-width="2"/>
+<circle cx="274" cy="355" r="34" fill="#F1DABF" stroke="#6C3A5B" stroke-width="2"/>
+<circle cx="274" cy="511" r="25" fill="#A65D75" stroke="#6C3A5B" stroke-width="2"/>
+<circle cx="274" cy="667" r="34" fill="#F1DABF" stroke="#6C3A5B" stroke-width="2"/>
+<line x1="274" y1="105" x2="274" y2="846" stroke="#637A7A" stroke-width="2"/>
+<circle cx="403" cy="166" r="25" fill="#F1DABF" stroke="#6C3A5B" stroke-width="2"/>
+<circle cx="403" cy="322" r="34" fill="#A65D75" stroke="#6C3A5B" stroke-width="2"/>
+<circle cx="403" cy="478" r="25" fill="#F1DABF" stroke="#6C3A5B" stroke-width="2"/>
+<circle cx="403" cy="634" r="34" fill="#A65D75" stroke="#6C3A5B" stroke-width="2"/>
+<circle cx="403" cy="790" r="25" fill="#F1DABF" stroke="#6C3A5B" stroke-width="2"/>
+<line x1="403" y1="105" x2="403" y2="846" stroke="#637A7A" stroke-width="2"/>
+<circle cx="532" cy="199" r="25" fill="#A65D75" stroke="#6C3A5B" stroke-width="2"/>
+<circle cx="532" cy="355" r="34" fill="#F1DABF" stroke="#6C3A5B" stroke-width="2"/>
+<circle cx="532" cy="511" r="25" fill="#A65D75" stroke="#6C3A5B" stroke-width="2"/>
+<line x1="532" y1="105" x2="532" y2="846" stroke="#637A7A" stroke-width="2"/>
+<circle cx="661" cy="166" r="25" fill="#F1DABF" stroke="#6C3A5B" stroke-width="2"/>
+<circle cx="661" cy="322" r="34" fill="#A65D75" stroke="#6C3A5B" stroke-width="2"/>
+<circle cx="661" cy="478" r="25" fill="#F1DABF" stroke="#6C3A5B" stroke-width="2"/>
+<circle cx="661" cy="634" r="34" fill="#A65D75" stroke="#6C3A5B" stroke-width="2"/>
+<line x1="661" y1="105" x2="661" y2="846" stroke="#637A7A" stroke-width="2"/>
+<line x1="86" y1="884" x2="714" y2="884" stroke="#D8A48F" stroke-width="4"/>
+<polygon points="388,75 424,75 406,37" fill="#F1DABF"/>
+<text x="34" y="968" fill="#F1DABF" font-family="sans-serif" font-size="11" letter-spacing="3">SYNTHETIC</text>
 </svg>

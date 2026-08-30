@@ -1,10 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Synthetic flowing ribbon placeholder for synthetic-track-01-101" data-seed="synthetic-track-01-101" data-index="100">
-<rect width="800" height="1000" fill="#edeaf6"/>
-<path d="M -70 247 C 207 167 355 327 405 247 S 604 167 870 224 L 870 283 C 604 423 355 270 405 306 S 207 368 -70 343 Z" fill="#ce2269" opacity=".58"/>
-<path d="M -70 583 C 207 686 355 480 410 619 S 604 686 870 543 L 870 571 C 604 508 355 714 410 577 S 207 508 -70 593 Z" fill="#c8c828" opacity=".52"/>
-<path d="M -50 795 C 207 683 355 907 415 772 S 604 683 850 832" fill="none" stroke="#1dbf96" stroke-width="23" stroke-linecap="round" opacity=".72"/>
-<path d="M -40 408 C 207 452 355 292 420 416 S 604 452 850 409" fill="none" stroke="#79a1e2" stroke-width="28" stroke-linecap="round" opacity=".78"/>
-<path d="M 421 128 A 257 257 0 0 1 678 231" fill="none" stroke="#1a155b" stroke-width="59" stroke-linecap="round" opacity=".36"/>
-<circle cx="421" cy="128" r="29" fill="#1a155b" opacity=".18"/>
-<text x="194" y="940" fill="#1a155b" font-family="sans-serif" font-size="18" letter-spacing="6" opacity=".28">SYNTHETIC</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="솔여울 — 조류 곡선 회화" data-record-id="synthetic-track-01-101" data-index="100" data-seed="5005">
+<title>조류의 곡선 — 흐름이 돌아선 자리 · Tidal Curve / Place Where the Flow Turned</title>
+<rect x="0" y="0" width="800" height="1000" fill="#12343B"/>
+<path d="M 80 665 C 178 737 585 737 710 665" fill="none" stroke="#58A6A6" stroke-width="5"/>
+<path d="M 105 702 C 203 774 567 774 692 702" fill="none" stroke="#A8D5BA" stroke-width="5"/>
+<path d="M 130 739 C 228 811 549 811 674 739" fill="none" stroke="#1F6F78" stroke-width="5"/>
+<path d="M 155 776 C 253 848 531 848 656 776" fill="none" stroke="#F4E9CD" stroke-width="5"/>
+<path d="M 180 813 C 278 885 513 885 638 813" fill="none" stroke="#D9826B" stroke-width="5"/>
+<path d="M 205 850 C 303 922 495 922 620 850" fill="none" stroke="#58A6A6" stroke-width="5"/>
+<path d="M 230 887 C 328 959 477 959 602 887" fill="none" stroke="#A8D5BA" stroke-width="5"/>
+<path d="M 0 325 C 170 260 324 373 800 298" fill="none" stroke="#1F6F78" stroke-width="15"/>
+<circle cx="644" cy="164" r="17" fill="#D9826B"/>
+<text x="34" y="968" fill="#F4E9CD" font-family="sans-serif" font-size="11" letter-spacing="3">SYNTHETIC</text>
 </svg>
