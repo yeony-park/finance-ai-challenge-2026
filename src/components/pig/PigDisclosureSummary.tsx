@@ -36,7 +36,7 @@ export function PigDisclosureSummary({ products }: PigDisclosureSummaryProps) {
     <section className={s.snapshot} aria-labelledby="pig-snapshot-title">
       <div className={s.sectionHeading}>
         <div>
-          <p className={s.sectionLabel}>공시 데이터 전체 보기</p>
+          <p className={s.sectionLabel}>공모별 확인 현황</p>
           <h3 className={s.sectionTitle} id="pig-snapshot-title">
             3개 회차를 같은 기준으로 펼쳐 봅니다
           </h3>

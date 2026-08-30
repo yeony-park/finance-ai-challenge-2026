@@ -4,11 +4,13 @@ import {
   PIG_ISSUER,
   PIG_OVERVIEW,
   PIG_PRICE,
+  PIG_GRADE_BAND,
   PIG_MARKET,
   type PigDisclosureProduct,
 } from "@/lib/content/pig";
 
 import { PigDiseaseContext } from "./PigDiseaseContext";
+import { PigGradeBandChart } from "./PigGradeBandChart";
 import { PigMarketInfographic } from "./PigMarketInfographic";
 import s from "./pig.module.css";
 
@@ -142,7 +144,7 @@ export function PigDisclosureDetail({
         </div>
       </section>
 
-      <PigDiseaseContext />
+      <PigDiseaseContext product={product} />
 
       <section className={s.card} aria-labelledby="pig-price-title">
         <div className={s.sectionHeading}>
@@ -160,6 +162,21 @@ export function PigDisclosureDetail({
           market={PIG_MARKET}
           products={allProducts}
           selectedProduct={product}
+        />
+
+        <div className={s.gradeBandHeading}>
+          <span className={s.eyebrow}>{PIG_PRICE.gradeBandEyebrow}</span>
+          <h4 className={s.cardHeading}>{PIG_PRICE.gradeBandTitle}</h4>
+          <p className={s.sectionDescription}>{PIG_PRICE.gradeBandDescription}</p>
+        </div>
+
+        <PigGradeBandChart
+          points={PIG_GRADE_BAND.points}
+          sourceName={PIG_PRICE.gradeBandSourceName}
+          sourceUrl={PIG_GRADE_BAND.sourceUrl}
+          retrievedAt={PIG_GRADE_BAND.retrievedAt}
+          asOf={PIG_GRADE_BAND.asOf}
+          limitation={PIG_GRADE_BAND.limitation}
         />
 
         <div className={s.sourceRow}>

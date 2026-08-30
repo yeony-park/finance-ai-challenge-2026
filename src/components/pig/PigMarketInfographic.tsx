@@ -50,7 +50,12 @@ export function PigMarketInfographic({
 
   const plotWidth = CHART_WIDTH - PLOT.left - PLOT.right;
   const plotHeight = CHART_HEIGHT - PLOT.top - PLOT.bottom;
-  const prices = market.points.map((point) => point.priceWonPerKg);
+  const selectedReferencePrice =
+    selectedProduct.pricing.baselinePriceWonPerKg;
+  const prices = [
+    ...market.points.map((point) => point.priceWonPerKg),
+    selectedReferencePrice,
+  ];
   const axisMin = Math.floor((Math.min(...prices) - 50) / 50) * 50;
   const axisMax = Math.ceil((Math.max(...prices) + 50) / 50) * 50;
   const axisRange = Math.max(axisMax - axisMin, 1);
@@ -69,6 +74,8 @@ export function PigMarketInfographic({
   const areaPath = `${linePath} L ${chartPoints.at(-1)?.x ?? 0} ${
     CHART_HEIGHT - PLOT.bottom
   } L ${chartPoints[0]?.x ?? 0} ${CHART_HEIGHT - PLOT.bottom} Z`;
+  const selectedReferenceY = yFor(selectedReferencePrice);
+  const selectedReferenceLabel = `제${selectedProduct.round}호 공시 기준가 (${selectedProduct.pricing.baselineMonth.replace("-", ".")}) ${selectedReferencePrice.toLocaleString("ko-KR")}원/kg`;
   const hoveredPoint = hoveredIndex === null ? null : chartPoints[hoveredIndex];
   const ticks = [axisMax, axisMin + axisRange / 2, axisMin];
   const change = (latestPoint.priceWonPerKg / firstPoint.priceWonPerKg - 1) * 100;
@@ -188,11 +195,20 @@ export function PigMarketInfographic({
                         `${Number(point.month.slice(-2))}월 ${Math.round(point.priceWonPerKg).toLocaleString("ko-KR")}원`,
                     )
                     .join(", ")}
+                  {`, ${selectedReferenceLabel}`}
                 </desc>
                 <defs>
                   <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#7da4df" stopOpacity="0.28" />
-                    <stop offset="100%" stopColor="#dce9f8" stopOpacity="0.03" />
+                    <stop
+                      offset="0%"
+                      stopColor="var(--ds-accent-line)"
+                      stopOpacity="0.28"
+                    />
+                    <stop
+                      offset="100%"
+                      stopColor="var(--ds-accent-soft)"
+                      stopOpacity="0.08"
+                    />
                   </linearGradient>
                 </defs>
                 {ticks.map((tick) => {
@@ -219,14 +235,28 @@ export function PigMarketInfographic({
                   viewport={{ once: true, amount: 0.35 }}
                   transition={{ duration: 0.7, ease: MOTION_EASE }}
                 />
-                <m.path
+                <g aria-hidden="true">
+                  <line
+                    className={s.offerReferenceLine}
+                    x1={PLOT.left}
+                    x2={CHART_WIDTH - PLOT.right}
+                    y1={selectedReferenceY}
+                    y2={selectedReferenceY}
+                    vectorEffect="non-scaling-stroke"
+                  />
+                  <text
+                    className={s.offerReferenceLabel}
+                    x={CHART_WIDTH - PLOT.right - 4}
+                    y={selectedReferenceY - 7}
+                    textAnchor="end"
+                  >
+                    {selectedReferenceLabel}
+                  </text>
+                </g>
+                <path
                   className={s.chartLine}
                   d={linePath}
                   vectorEffect="non-scaling-stroke"
-                  initial={isReduced ? false : { pathLength: 0, opacity: 0 }}
-                  whileInView={{ pathLength: 1, opacity: 1 }}
-                  viewport={{ once: true, amount: 0.35 }}
-                  transition={{ duration: 1.1, ease: MOTION_EASE, delay: 0.08 }}
                 />
                 {hoveredPoint ? (
                   <line

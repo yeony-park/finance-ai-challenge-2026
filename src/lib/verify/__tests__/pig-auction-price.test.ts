@@ -1,14 +1,18 @@
 import { describe, expect, test } from "vitest";
 
-import { PIG_MARKET } from "@/lib/content/pig";
+import { PIG_GRADE_BAND, PIG_MARKET } from "@/lib/content/pig";
 
 import {
   DEFAULT_PIG_AUCTION_FILTERS,
   PIG_AUCTION_SOURCE_ID,
   createPigAuctionPriceAdapter,
   parsePigAuctionCsv,
+  parsePigAuctionRows,
 } from "../adapters/pig-auction-price";
-import { resolvePigAuctionPriceAdapter } from "../adapters/pig-auction-price-fake";
+import {
+  loadPigAuctionFile,
+  resolvePigAuctionPriceAdapter,
+} from "../adapters/pig-auction-price-fake";
 
 describe("parsePigAuctionCsv — 커밋 CSV에서 월 집계 추출 (Green 원천)", () => {
   test("추출 결과가 content/pig.ts PIG_MARKET 스냅샷과 일치한다", async () => {
@@ -36,6 +40,38 @@ describe("parsePigAuctionCsv — 커밋 CSV에서 월 집계 추출 (Green 원�
         region: "전국(제주제외)",
       }),
     ).toThrow();
+  });
+
+  test("등외제외 평균과 1+·2등급 가격 폭이 같은 커밋 CSV에서 파생된다", async () => {
+    const loaded = await loadPigAuctionFile();
+    expect(loaded).not.toBeNull();
+    if (!loaded) return;
+
+    const rows = parsePigAuctionRows(loaded.csv);
+    for (const expected of PIG_GRADE_BAND.points) {
+      const row = (grade: "등외제외" | "1+" | "2") =>
+        rows.find(
+          (entry) =>
+            entry.month === expected.month &&
+            entry.skinType === "탕박" &&
+            entry.sex === "전체" &&
+            entry.grade === grade,
+        );
+
+      expect(row("등외제외")?.priceWonPerKg).toBeCloseTo(
+        expected.averageWonPerKg,
+        5,
+      );
+      expect(row("등외제외")?.headCount).toBe(expected.headCount);
+      expect(row("1+")?.priceWonPerKg).toBeCloseTo(
+        expected.gradeOnePlusWonPerKg,
+        5,
+      );
+      expect(row("2")?.priceWonPerKg).toBeCloseTo(
+        expected.gradeTwoWonPerKg,
+        5,
+      );
+    }
   });
 });
 

@@ -6,8 +6,9 @@ import {
   PIG_DISCLOSURE_PRODUCTS,
   pigCopyStrings,
 } from "../pig";
+import { pigReviewCopyStrings } from "../pig-review";
 
-const ALL_COPY = pigCopyStrings();
+const ALL_COPY = [...pigCopyStrings(), ...pigReviewCopyStrings()];
 
 // 판정·등급으로 읽히는 어휘. "등급"·"점수"는 공식 데이터셋명("축산물 등급별
 // 경락가격")과 충돌하므로 문맥 인식 출력 필터(materiality-grade·aggregate-score)에

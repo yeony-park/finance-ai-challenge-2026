@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { AuctionMarketSection } from "@/components/category/AuctionMarketSection";
+import { CattleDiseaseContext } from "@/components/cattle/CattleDiseaseContext";
 import {
   AnalysisEvidenceDiagram,
   CattleCrossCheckDiagram,
@@ -29,12 +30,13 @@ interface CattlePageProps {
 
 export default async function CattlePage({ searchParams }: CattlePageProps) {
   const params = await searchParams;
-  const { activeTab, analysisStatus } = categoryPageStateFromSearchParams(params);
+  const { activeTab, analysisStatus, analysisVerdict } =
+    categoryPageStateFromSearchParams(params);
   const series = activeTab === "analysis" ? await loadCattleAuctionSeries() : null;
   const cattleOffers = OFFERS.filter((offer) => offer.assetKind === "livestock");
   const markers = cattleOffers.map((offer) => ({
     month: kstMonth(offer.subscription.opensAt),
-    label: offer.title.replace("가축 ", ""),
+    label: offer.title.replace("한우 ", ""),
   }));
 
   return (
@@ -42,6 +44,7 @@ export default async function CattlePage({ searchParams }: CattlePageProps) {
       categoryId="cattle"
       activeTab={activeTab}
       analysisStatus={analysisStatus}
+      analysisVerdict={analysisVerdict}
       title="한우"
       lead="공시된 개체를 축산물이력제 원장과 대조하고, 공모가의 시장 위치와 정정 이력을 함께 보여줍니다."
       descriptor={CATTLE_CATEGORY}
@@ -52,6 +55,8 @@ export default async function CattlePage({ searchParams }: CattlePageProps) {
       market={
         series ? <AuctionMarketSection series={series} markers={markers} /> : null
       }
+      custom={<CattleDiseaseContext />}
+      customTitle="질병 지역 맥락"
       descriptionContentTitle={CATTLE_FLOW_TITLE}
       descriptionContent={<CattleFlowBand />}
     />

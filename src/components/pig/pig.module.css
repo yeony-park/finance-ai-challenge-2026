@@ -1,15 +1,19 @@
 .landing {
   display: grid;
   gap: var(--ds-space-6);
+  min-width: 0;
 }
 
 .detail {
   display: grid;
   gap: var(--ds-space-6);
+  min-width: 0;
   margin-top: var(--ds-space-6);
 }
 
 .card {
+  min-width: 0;
+  max-width: 100%;
   border: 1px solid var(--ds-line);
   border-radius: var(--ds-radius-lg);
   background: var(--ds-surface);
@@ -143,6 +147,8 @@
 }
 
 .axes {
+  min-width: 0;
+  max-width: 100%;
   border: 1px solid var(--ds-line);
   border-radius: var(--ds-radius-lg);
   background: var(--ds-bg-muted);
@@ -152,6 +158,8 @@
 }
 
 .snapshot {
+  min-width: 0;
+  max-width: 100%;
   border: 1px solid var(--ds-line);
   border-radius: var(--ds-radius-lg);
   background: var(--ds-surface);
@@ -307,91 +315,24 @@
   word-break: keep-all;
 }
 
-.galleryGrid {
+.gallerySection {
   display: grid;
-  gap: var(--ds-space-4);
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: var(--ds-space-5);
+  padding-block: var(--ds-section-y-tight);
 }
 
-.galleryCard {
-  display: grid;
-  gap: var(--ds-space-2);
-  align-content: start;
-  border: 1px solid var(--ds-line);
-  border-radius: var(--ds-radius-md);
-  background: var(--ds-surface);
-  padding: var(--ds-space-4);
-  text-decoration: none;
-  color: inherit;
-  transition: border-color var(--ds-duration-base) var(--ds-ease),
-    box-shadow var(--ds-duration-base) var(--ds-ease);
-}
-
-.galleryCard:hover {
-  border-color: var(--ds-line-strong);
-  box-shadow: var(--ds-shadow-md);
-}
-
-.galleryCardActive {
-  border-color: var(--ds-ink);
-  box-shadow: var(--ds-shadow-md);
-}
-
-.galleryCardTop {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
-  color: var(--ds-ink-faint);
-}
-
-.galleryCardTop em {
-  font-style: normal;
-  color: var(--ds-ink-muted);
-}
-
-.galleryCard h4 {
-  font-size: var(--ds-text-md);
+.galleryTitle {
+  margin: 0;
+  font-size: var(--ds-section-title);
   font-weight: var(--ds-weight-bold);
-  letter-spacing: var(--ds-tracking-snug);
+  letter-spacing: var(--ds-tracking-tight);
+  line-height: var(--ds-leading-tight);
+}
+
+.galleryEmpty {
   margin: 0;
-  word-break: keep-all;
-}
-
-.galleryCardFacts {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--ds-space-2);
-  margin: var(--ds-space-1) 0;
-}
-
-.galleryCardFacts dt {
-  font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
-  color: var(--ds-ink-faint);
-}
-
-.galleryCardFacts dd {
-  margin: 0;
+  color: var(--ds-ink-muted);
   font-size: var(--ds-text-sm);
-  font-weight: var(--ds-weight-bold);
-  color: var(--ds-ink);
-}
-
-.galleryCardNote {
-  font-size: var(--ds-text-2xs);
-  color: var(--ds-ink-muted);
-  word-break: keep-all;
-}
-
-.galleryCardCta {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--ds-space-2);
-  font-size: var(--ds-text-xs);
-  font-weight: var(--ds-weight-medium);
-  color: var(--ds-ink);
 }
 
 .overviewGrid,
@@ -480,6 +421,7 @@
 }
 
 .diseaseRegion {
+  min-width: 0;
   border: 1px solid var(--ds-line);
   border-radius: var(--ds-radius-md);
   background: var(--ds-bg-sunken);
@@ -496,6 +438,7 @@
 }
 
 .diseaseSnapshot {
+  min-width: 0;
   border: 1px solid var(--ds-line);
   border-radius: var(--ds-radius-md);
   background: var(--ds-surface);
@@ -535,13 +478,498 @@
   color: var(--ds-ink);
 }
 
+.diseaseMap {
+  min-width: 0;
+  max-width: 100%;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-bg-muted);
+}
+
+.diseaseMapHead {
+  display: grid;
+  gap: var(--ds-space-1);
+  padding: var(--ds-space-4) var(--ds-space-5);
+}
+
+.diseaseMapHead strong {
+  font-size: var(--ds-text-md);
+  color: var(--ds-ink);
+}
+
+.diseaseMapHead p,
+.diseaseMapCaption {
+  margin: 0;
+  color: var(--ds-ink-muted);
+  font-size: var(--ds-text-xs);
+  line-height: var(--ds-leading-relaxed);
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+.asfMapLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--ds-space-5);
+  border-top: 1px solid var(--ds-line);
+  background: var(--ds-surface);
+  padding: var(--ds-space-5);
+}
+
+.asfMapCanvas {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--ds-line-soft);
+  border-radius: var(--ds-radius-md);
+  background: #edf5f7;
+}
+
+.asfMapCanvas svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 39rem;
+}
+
+.asfKakaoStage {
+  position: relative;
+  height: clamp(27rem, 56vw, 39rem);
+  background: #edf5f7;
+}
+
+.asfKakaoMap {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity var(--ds-duration-base) var(--ds-ease);
+}
+
+.asfKakaoMap[data-ready="true"] {
+  opacity: 1;
+}
+
+.diseaseMapFilters {
+  position: absolute;
+  z-index: 9;
+  top: var(--ds-space-3);
+  right: var(--ds-space-3);
+  display: flex;
+  gap: 0.2rem;
+  padding: 0.2rem;
+  border: 1px solid rgb(255 255 255 / 82%);
+  border-radius: var(--ds-radius-pill);
+  background: rgb(255 255 255 / 92%);
+  box-shadow: 0 2px 8px rgb(18 36 38 / 12%);
+  backdrop-filter: blur(6px);
+}
+
+.diseaseMapFilters button {
+  padding: 0.38rem 0.65rem;
+  border: 0;
+  border-radius: var(--ds-radius-pill);
+  background: transparent;
+  color: var(--ds-ink-muted);
+  font-size: var(--ds-text-2xs);
+  font-weight: var(--ds-weight-bold);
+  cursor: pointer;
+}
+
+.diseaseMapFilters button[aria-pressed="true"] {
+  background: var(--ds-ink);
+  color: var(--ds-surface);
+}
+
+.diseaseMapFilters button:focus-visible {
+  outline: none;
+  box-shadow: var(--ds-focus-ring);
+}
+
+.asfKakaoFallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.asfKakaoFallback svg {
+  width: 100%;
+  height: 100%;
+}
+
+.asfKakaoStatus {
+  position: absolute;
+  top: var(--ds-space-3);
+  right: var(--ds-space-3);
+  max-width: calc(100% - var(--ds-space-6));
+  padding: var(--ds-space-2) var(--ds-space-3);
+  border: 1px solid rgb(255 255 255 / 80%);
+  border-radius: var(--ds-radius-sm);
+  background: rgb(255 255 255 / 90%);
+  color: var(--ds-ink-muted);
+  font-size: var(--ds-text-2xs);
+  backdrop-filter: blur(6px);
+}
+
+.asfKakaoMarker {
+  display: grid;
+  place-items: center;
+  width: 1.15rem;
+  height: 1.15rem;
+  padding: 0;
+  border: 2px solid var(--ds-surface);
+  border-radius: 50%;
+  color: #fff;
+  font-family: var(--ds-font-mono);
+  font-size: 0.62rem;
+  font-weight: var(--ds-weight-bold);
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 2px 7px rgb(18 36 38 / 28%);
+  transition: transform var(--ds-duration-fast) var(--ds-ease);
+}
+
+.asfKakaoMarker:empty::after {
+  width: 0.25rem;
+  height: 0.25rem;
+  border-radius: 50%;
+  background: currentcolor;
+  content: "";
+}
+
+.asfKakaoMarker:hover,
+.asfKakaoMarker:focus-visible {
+  z-index: 2;
+  transform: scale(1.24);
+}
+
+.asfKakaoMarker:focus-visible {
+  outline: 3px solid rgb(255 255 255 / 90%);
+  outline-offset: 2px;
+}
+
+.asfKakaoMarkerPast {
+  background: #829294;
+  color: #fff;
+}
+
+.asfKakaoMarkerCurrent {
+  width: 1.45rem;
+  height: 1.45rem;
+  background: #326fa8;
+}
+
+.asfKakaoMarkerFocus {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-width: 3px;
+  background: #b42318;
+}
+
+.fmdKakaoMarker {
+  width: 1.45rem;
+  height: 1.45rem;
+  border-radius: 0;
+  background: #d96c1f;
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+}
+
+.lsdKakaoMarker {
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 0.28rem;
+  background: #7048a8;
+}
+
+.asfKakaoSelection {
+  position: absolute;
+  z-index: 8;
+  top: 3.6rem;
+  left: var(--ds-space-3);
+  width: min(19rem, calc(100% - var(--ds-space-6)));
+  max-height: calc(100% - 7.5rem);
+  overflow: auto;
+  border: 1px solid rgb(255 255 255 / 85%);
+  border-radius: var(--ds-radius-md);
+  background: rgb(255 255 255 / 94%);
+  box-shadow: var(--ds-shadow-md);
+  backdrop-filter: blur(8px);
+}
+
+.asfKakaoSelectionHead {
+  position: sticky;
+  z-index: 1;
+  top: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--ds-space-3);
+  padding: var(--ds-space-3) var(--ds-space-4);
+  border-bottom: 1px solid var(--ds-line);
+  background: inherit;
+}
+
+.asfKakaoSelectionHead div {
+  display: grid;
+  gap: var(--ds-space-1);
+}
+
+.asfKakaoSelectionHead span,
+.asfKakaoSelection time,
+.asfKakaoSelection small {
+  color: var(--ds-ink-muted);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+}
+
+.asfKakaoSelectionHead strong {
+  color: var(--ds-ink);
+  font-size: var(--ds-text-sm);
+}
+
+.asfKakaoSelectionHead button {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: 1px solid var(--ds-line);
+  border-radius: 50%;
+  background: var(--ds-surface);
+  color: var(--ds-ink);
+  cursor: pointer;
+}
+
+.asfKakaoSelection ol {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.asfKakaoSelection li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--ds-space-1) var(--ds-space-3);
+  padding: var(--ds-space-3) var(--ds-space-4);
+  border-bottom: 1px solid var(--ds-line-soft);
+}
+
+.asfKakaoSelection li:last-child {
+  border-bottom: 0;
+}
+
+.asfKakaoSelection li > span {
+  color: var(--ds-ink);
+  font-size: var(--ds-text-xs);
+  font-weight: var(--ds-weight-medium);
+}
+
+.asfKakaoSelection li > small {
+  grid-column: 1 / -1;
+}
+
+.asfLand {
+  fill: #f8f7f2;
+  stroke: #9faeaf;
+  stroke-width: 1.2;
+  vector-effect: non-scaling-stroke;
+}
+
+.asfPointPast,
+.asfPointCurrent,
+.asfPointFocus,
+.fmdPoint,
+.lsdPoint {
+  vector-effect: non-scaling-stroke;
+  stroke: var(--ds-surface);
+  stroke-width: 1.5;
+}
+
+.asfPointPast {
+  fill: #829294;
+  opacity: 0.72;
+}
+
+.asfPointCurrent {
+  fill: #326fa8;
+}
+
+.asfPointFocus {
+  fill: #b42318;
+  stroke-width: 2.5;
+}
+
+.fmdPoint {
+  fill: #d96c1f;
+  stroke-width: 2;
+}
+
+.lsdPoint {
+  fill: #7048a8;
+  stroke-width: 2;
+}
+
+.asfMapLegend {
+  position: absolute;
+  z-index: 7;
+  bottom: var(--ds-space-3);
+  left: var(--ds-space-3);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-2) var(--ds-space-4);
+  padding: var(--ds-space-2) var(--ds-space-3);
+  border: 1px solid rgb(255 255 255 / 80%);
+  border-radius: var(--ds-radius-sm);
+  background: rgb(255 255 255 / 88%);
+  backdrop-filter: blur(6px);
+  color: var(--ds-ink-muted);
+  font-size: var(--ds-text-2xs);
+}
+
+.asfMapLegend span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-1);
+}
+
+.asfMapLegend i {
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 50%;
+}
+
+.asfLegendPast {
+  background: #829294;
+}
+
+.asfLegendCurrent {
+  background: #326fa8;
+}
+
+.asfLegendFocus {
+  background: #b42318;
+}
+
+.asfMapLegend .fmdLegend {
+  border-radius: 1px;
+  background: #d96c1f;
+  transform: rotate(45deg) scale(0.78);
+}
+
+.asfMapLegend .lsdLegend {
+  border-radius: 2px;
+  background: #7048a8;
+}
+
+.asfMapStats {
+  display: grid;
+  gap: var(--ds-space-5);
+  align-content: start;
+}
+
+.asfMetricGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--ds-space-2);
+}
+
+.asfMetricGrid > div {
+  display: grid;
+  gap: var(--ds-space-1);
+  min-width: 0;
+  padding: var(--ds-space-3);
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius-sm);
+  background: var(--ds-bg-muted);
+}
+
+.asfMetricGrid span,
+.asfYearRow span,
+.asfYearRow strong {
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  color: var(--ds-ink-muted);
+}
+
+.asfMetricGrid strong {
+  color: var(--ds-ink);
+  font-size: var(--ds-text-lg);
+}
+
+.asfYearList {
+  display: grid;
+  gap: var(--ds-space-2);
+}
+
+.asfYearRow {
+  display: grid;
+  grid-template-columns: 2.7rem minmax(0, 1fr) 2rem;
+  align-items: center;
+  gap: var(--ds-space-2);
+}
+
+.asfYearRow i {
+  height: 0.5rem;
+  overflow: hidden;
+  border-radius: var(--ds-radius-pill);
+  background: var(--ds-bg-sunken);
+}
+
+.asfYearRow b {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #326fa8;
+}
+
+.asfYearRow strong {
+  color: var(--ds-ink);
+  text-align: right;
+}
+
+.asfMapNote {
+  margin: 0;
+  padding: var(--ds-space-3);
+  border-left: 3px solid var(--ds-line-strong);
+  background: var(--ds-bg-muted);
+  color: var(--ds-ink-muted);
+  font-size: var(--ds-text-xs);
+  line-height: var(--ds-leading-relaxed);
+}
+
+.diseaseMapCaption {
+  border-top: 1px solid var(--ds-line);
+  padding: var(--ds-space-3) var(--ds-space-5);
+  background: var(--ds-surface);
+}
+
 .priceDashboard {
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--ds-space-5);
 }
 
+.gradeBandHeading {
+  display: grid;
+  gap: var(--ds-space-1);
+  margin-top: var(--ds-space-2);
+}
+
+.gradeBandHeading .sectionDescription {
+  margin-top: var(--ds-space-1);
+}
+
 @media (min-width: 60rem) {
+  .asfMapLayout {
+    grid-template-columns: minmax(22rem, 1.1fr) minmax(17rem, 0.9fr);
+    align-items: start;
+  }
+
   .priceDashboard {
     grid-template-columns: 1fr 1fr;
   }
@@ -563,11 +991,12 @@
 }
 
 .marketCard {
-  --pig-chart-blue: #4f7fc8;
+  --pig-chart-primary: var(--ds-accent-line);
+  --pig-chart-soft: var(--ds-accent-line-soft);
 
   border-color: var(--ds-line-soft);
   border-radius: var(--ds-radius-xl);
-  background: linear-gradient(180deg, var(--ds-surface) 0%, #fbfcfe 100%);
+  background: var(--ds-surface);
   box-shadow: var(--ds-shadow-md);
 }
 
@@ -681,7 +1110,7 @@
 }
 
 .chartGuide {
-  stroke: var(--pig-chart-blue);
+  stroke: var(--pig-chart-primary);
   stroke-width: 1;
   stroke-dasharray: 3 4;
   fill: none;
@@ -692,8 +1121,22 @@
   pointer-events: none;
 }
 
+.offerReferenceLine {
+  fill: none;
+  stroke: var(--ds-ink-muted);
+  stroke-width: 1.5;
+  stroke-dasharray: 6 5;
+}
+
+.offerReferenceLabel {
+  fill: var(--ds-ink-muted);
+  font-family: var(--ds-font-mono);
+  font-size: 10px;
+  font-weight: var(--ds-weight-medium);
+}
+
 .chartLine {
-  stroke: var(--pig-chart-blue);
+  stroke: var(--pig-chart-primary);
   stroke-width: 3;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -702,13 +1145,13 @@
 
 .chartDot {
   fill: var(--ds-surface);
-  stroke: var(--pig-chart-blue);
+  stroke: var(--pig-chart-primary);
   stroke-width: 3;
   transition: r var(--ds-duration-fast) var(--ds-ease);
 }
 
 .chartDotLast {
-  fill: var(--pig-chart-blue);
+  fill: var(--pig-chart-primary);
   stroke: var(--ds-surface);
   stroke-width: 3;
   transition: r var(--ds-duration-fast) var(--ds-ease);
@@ -799,7 +1242,7 @@
 .volumeBar i {
   display: block;
   height: 100%;
-  background: var(--ds-chart-edge);
+  background: var(--pig-chart-soft);
 }
 
 .marketCaption {
@@ -926,12 +1369,12 @@
   width: 10px;
   height: 10px;
   border-radius: var(--ds-radius-pill);
-  background: var(--ds-chart-edge);
+  background: var(--ds-accent-line-soft);
   transform: translate(-50%, -50%);
 }
 
 .roundPriceSelected .roundPriceRange i {
-  background: var(--ds-ink);
+  background: var(--ds-accent-line);
 }
 
 .roundScale {
