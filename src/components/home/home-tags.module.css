@@ -1,0 +1,13 @@
+.checkTag {
+  display: inline-block;
+  margin-left: var(--ds-space-2);
+  padding: 0.05rem 0.5rem;
+  border: 1px solid var(--ds-accent-line);
+  border-radius: var(--ds-radius-pill);
+  background: var(--ds-accent-soft);
+  color: var(--ds-accent-ink);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  letter-spacing: 0.04em;
+  vertical-align: middle;
+}

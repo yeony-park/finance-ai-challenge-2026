@@ -1,0 +1,1130 @@
+{
+  "schemaVersion": 1,
+  "asOf": "2026-07-01",
+  "source": {
+    "name": "농림축산식품부 가축전염병(FMD) 발생현황 정보공개",
+    "boardUrl": "https://www.mafra.go.kr/FMD-AI2/2216/subview.do",
+    "collectedAt": "2026-08-30T05:43:25.422Z",
+    "processing": "공식 첨부 표의 발생일·시도·시군구·축종·사육두수와 공식 지도 좌표만 결합. 농장명·농장주·읍면동 이하 상세주소는 결과 JSON에 포함하지 않음."
+  },
+  "coverage": {
+    "eventCount": 42,
+    "firstOccurredAt": "2019-01-28",
+    "lastOccurredAt": "2026-07-01",
+    "speciesCounts": {
+      "cattle": 35,
+      "pig": 6,
+      "goat": 1
+    }
+  },
+  "validation": {
+    "expectedEventCount": 42,
+    "eventCountMatches": true,
+    "expectedSpeciesCounts": {
+      "cattle": 35,
+      "pig": 6,
+      "goat": 1
+    },
+    "speciesCountsMatch": true,
+    "coordinatePointCount": 42,
+    "policy": "발생일·행정구역·축종은 첨부 표를 정본으로, 지도 파일에서는 행정기관 기준 좌표만 사용함."
+  },
+  "events": [
+    {
+      "id": "fmd-001",
+      "disease": "FMD",
+      "occurredAt": "2019-01-28",
+      "sourceSequence": 1,
+      "species": "cattle",
+      "raisedHeadCount": 120,
+      "province": "경기",
+      "cityCounty": "안성시",
+      "region": "경기 안성시",
+      "source": {
+        "articleId": "322998",
+        "articleTitle": "가축전염병(구제역) 발생현황에 대한 정보공개(’19.1.28.기준)",
+        "publishedAt": "2019-01-29",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/322998/artclView.do",
+        "attachmentId": "241270",
+        "attachmentFileName": "190128 가축전염병 발생 현황에 대한 정보공개.hwp"
+      },
+      "coordinates": {
+        "latitude": 36.99719,
+        "longitude": 127.317526,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 1
+      }
+    },
+    {
+      "id": "fmd-002",
+      "disease": "FMD",
+      "occurredAt": "2019-01-29",
+      "sourceSequence": 1,
+      "species": "cattle",
+      "raisedHeadCount": 97,
+      "province": "경기",
+      "cityCounty": "안성시",
+      "region": "경기 안성시",
+      "source": {
+        "articleId": "322999",
+        "articleTitle": "가축전염병(구제역) 발생 현황에 대한 정보공개('19.1.29일 기준)",
+        "publishedAt": "2019-01-31",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/322999/artclView.do",
+        "attachmentId": "241271",
+        "attachmentFileName": "190129 가축전염병 발생 현황에 대한 정보공개.hwp"
+      },
+      "coordinates": {
+        "latitude": 37.059817,
+        "longitude": 127.194455,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 2
+      }
+    },
+    {
+      "id": "fmd-003",
+      "disease": "FMD",
+      "occurredAt": "2019-01-31",
+      "sourceSequence": 1,
+      "species": "cattle",
+      "raisedHeadCount": 11,
+      "province": "충북",
+      "cityCounty": "충주시",
+      "region": "충북 충주시",
+      "source": {
+        "articleId": "323000",
+        "articleTitle": "가축전염병(구제역) 발생 현황에 대한 정보공개('19.01.31.기준)",
+        "publishedAt": "2019-01-31",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/323000/artclView.do",
+        "attachmentId": "241272",
+        "attachmentFileName": "190131 가축전염병 발생 현황에 대한 정보공개.hwp"
+      },
+      "coordinates": {
+        "latitude": 36.975638,
+        "longitude": 127.795516,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 3
+      }
+    },
+    {
+      "id": "fmd-004",
+      "disease": "FMD",
+      "occurredAt": "2023-05-10",
+      "sourceSequence": 1,
+      "species": "cattle",
+      "raisedHeadCount": 216,
+      "province": "충북",
+      "cityCounty": "청주시",
+      "region": "충북 청주시",
+      "source": {
+        "articleId": "566441",
+        "articleTitle": "구제역 발생 현황('23.5.19기준)",
+        "publishedAt": "2023-05-19",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/566441/artclView.do",
+        "attachmentId": "568444",
+        "attachmentFileName": "230526 기준 구제역 발생 현황.hwp"
+      },
+      "coordinates": {
+        "latitude": 36.739285,
+        "longitude": 127.541731,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 4
+      }
+    },
+    {
+      "id": "fmd-005",
+      "disease": "FMD",
+      "occurredAt": "2023-05-10",
+      "sourceSequence": 2,
+      "species": "cattle",
+      "raisedHeadCount": 166,
+      "province": "충북",
+      "cityCounty": "청주시",
+      "region": "충북 청주시",
+      "source": {
+        "articleId": "566441",
+        "articleTitle": "구제역 발생 현황('23.5.19기준)",
+        "publishedAt": "2023-05-19",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/566441/artclView.do",
+        "attachmentId": "568444",
+        "attachmentFileName": "230526 기준 구제역 발생 현황.hwp"
+      },
+      "coordinates": {
+        "latitude": 36.739185,
+        "longitude": 127.541731,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 5
+      }
+    },
+    {
+      "id": "fmd-006",
+      "disease": "FMD",
+      "occurredAt": "2023-05-11",
+      "sourceSequence": 4,
+      "species": "cattle",
+      "raisedHeadCount": 50,
+      "province": "충북",
+      "cityCounty": "청주시",
+      "region": "충북 청주시",
+      "source": {
+        "articleId": "566441",
+        "articleTitle": "구제역 발생 현황('23.5.19기준)",
+        "publishedAt": "2023-05-19",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/566441/artclView.do",
+        "attachmentId": "568444",
+        "attachmentFileName": "230526 기준 구제역 발생 현황.hwp"
+      },
+      "coordinates": {
+        "latitude": 36.739085,
+        "longitude": 127.541731,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 6
+      }
+    },
+    {
+      "id": "fmd-007",
+      "disease": "FMD",
+      "occurredAt": "2023-05-11",
+      "sourceSequence": 3,
+      "species": "cattle",
+      "raisedHeadCount": 68,
+      "province": "충북",
+      "cityCounty": "청주시",
+      "region": "충북 청주시",
+      "source": {
+        "articleId": "566441",
+        "articleTitle": "구제역 발생 현황('23.5.19기준)",
+        "publishedAt": "2023-05-19",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/566441/artclView.do",
+        "attachmentId": "568444",
+        "attachmentFileName": "230526 기준 구제역 발생 현황.hwp"
+      },
+      "coordinates": {
+        "latitude": 36.739285,
+        "longitude": 127.541831,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 7
+      }
+    },
+    {
+      "id": "fmd-008",
+      "disease": "FMD",
+      "occurredAt": "2023-05-12",
+      "sourceSequence": 5,
+      "species": "cattle",
+      "raisedHeadCount": 45,
+      "province": "충북",
+      "cityCounty": "청주시",
+      "region": "충북 청주시",
+      "source": {
+        "articleId": "566441",
+        "articleTitle": "구제역 발생 현황('23.5.19기준)",
+        "publishedAt": "2023-05-19",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/566441/artclView.do",
+        "attachmentId": "568444",
+        "attachmentFileName": "230526 기준 구제역 발생 현황.hwp"
+      },
+      "coordinates": {
+        "latitude": 36.739185,
+        "longitude": 127.541831,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 8
+      }
+    },
+    {
+      "id": "fmd-009",
+      "disease": "FMD",
+      "occurredAt": "2023-05-14",
+      "sourceSequence": 6,
+      "species": "cattle",
+      "raisedHeadCount": 398,
+      "province": "충북",
+      "cityCounty": "증평군",
+      "region": "충북 증평군",
+      "source": {
+        "articleId": "566441",
+        "articleTitle": "구제역 발생 현황('23.5.19기준)",
+        "publishedAt": "2023-05-19",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/566441/artclView.do",
+        "attachmentId": "568444",
+        "attachmentFileName": "230526 기준 구제역 발생 현황.hwp"
+      },
+      "coordinates": {
+        "latitude": 36.813322,
+        "longitude": 127.612849,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 9
+      }
+    },
+    {
+      "id": "fmd-010",
+      "disease": "FMD",
+      "occurredAt": "2023-05-15",
+      "sourceSequence": 7,
+      "species": "cattle",
+      "raisedHeadCount": 186,
+      "province": "충북",
+      "cityCounty": "청주시",
+      "region": "충북 청주시",
+      "source": {
+        "articleId": "566441",
+        "articleTitle": "구제역 발생 현황('23.5.19기준)",
+        "publishedAt": "2023-05-19",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/566441/artclView.do",
+        "attachmentId": "568444",
+        "attachmentFileName": "230526 기준 구제역 발생 현황.hwp"
+      },
+      "coordinates": {
+        "latitude": 36.742367,
+        "longitude": 127.454574,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 10
+      }
+    },
+    {
+      "id": "fmd-011",
+      "disease": "FMD",
+      "occurredAt": "2023-05-16",
+      "sourceSequence": 8,
+      "species": "cattle",
+      "raisedHeadCount": 177,
+      "province": "충북",
+      "cityCounty": "청주시",
+      "region": "충북 청주시",
+      "source": {
+        "articleId": "566441",
+        "articleTitle": "구제역 발생 현황('23.5.19기준)",
+        "publishedAt": "2023-05-19",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/566441/artclView.do",
+        "attachmentId": "568444",
+        "attachmentFileName": "230526 기준 구제역 발생 현황.hwp"
+      },
+      "coordinates": {
+        "latitude": 36.739085,
+        "longitude": 127.541831,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 11
+      }
+    },
+    {
+      "id": "fmd-012",
+      "disease": "FMD",
+      "occurredAt": "2023-05-16",
+      "sourceSequence": 9,
+      "species": "cattle",
+      "raisedHeadCount": 106,
+      "province": "충북",
+      "cityCounty": "증평군",
+      "region": "충북 증평군",
+      "source": {
+        "articleId": "566441",
+        "articleTitle": "구제역 발생 현황('23.5.19기준)",
+        "publishedAt": "2023-05-19",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/566441/artclView.do",
+        "attachmentId": "568444",
+        "attachmentFileName": "230526 기준 구제역 발생 현황.hwp"
+      },
+      "coordinates": {
+        "latitude": 36.813222,
+        "longitude": 127.612849,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 12
+      }
+    },
+    {
+      "id": "fmd-013",
+      "disease": "FMD",
+      "occurredAt": "2023-05-16",
+      "sourceSequence": 10,
+      "species": "goat",
+      "raisedHeadCount": 61,
+      "province": "충북",
+      "cityCounty": "청주시",
+      "region": "충북 청주시",
+      "source": {
+        "articleId": "566441",
+        "articleTitle": "구제역 발생 현황('23.5.19기준)",
+        "publishedAt": "2023-05-19",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/566441/artclView.do",
+        "attachmentId": "568444",
+        "attachmentFileName": "230526 기준 구제역 발생 현황.hwp"
+      },
+      "coordinates": {
+        "latitude": 36.739285,
+        "longitude": 127.541931,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 13
+      }
+    },
+    {
+      "id": "fmd-014",
+      "disease": "FMD",
+      "occurredAt": "2023-05-18",
+      "sourceSequence": 11,
+      "species": "cattle",
+      "raisedHeadCount": 98,
+      "province": "충북",
+      "cityCounty": "청주시",
+      "region": "충북 청주시",
+      "source": {
+        "articleId": "566441",
+        "articleTitle": "구제역 발생 현황('23.5.19기준)",
+        "publishedAt": "2023-05-19",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/566441/artclView.do",
+        "attachmentId": "568444",
+        "attachmentFileName": "230526 기준 구제역 발생 현황.hwp"
+      },
+      "coordinates": {
+        "latitude": 36.739185,
+        "longitude": 127.541931,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 14
+      }
+    },
+    {
+      "id": "fmd-015",
+      "disease": "FMD",
+      "occurredAt": "2025-03-13",
+      "sourceSequence": 1,
+      "species": "cattle",
+      "raisedHeadCount": 184,
+      "province": "전남",
+      "cityCounty": "영암군",
+      "region": "전남 영암군",
+      "source": {
+        "articleId": "573895",
+        "articleTitle": "가축전염병(구제역) 발생 현황에 대한 정보공개('25.4.14.기준)",
+        "publishedAt": "2025-04-14",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/573895/artclView.do",
+        "attachmentId": "593129",
+        "attachmentFileName": "250414 기준 구제역 발생 현황.hwp"
+      },
+      "coordinates": {
+        "latitude": 34.845144,
+        "longitude": 126.643681,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 15
+      }
+    },
+    {
+      "id": "fmd-016",
+      "disease": "FMD",
+      "occurredAt": "2025-03-14",
+      "sourceSequence": 2,
+      "species": "cattle",
+      "raisedHeadCount": 15,
+      "province": "전남",
+      "cityCounty": "영암군",
+      "region": "전남 영암군",
+      "source": {
+        "articleId": "573895",
+        "articleTitle": "가축전염병(구제역) 발생 현황에 대한 정보공개('25.4.14.기준)",
+        "publishedAt": "2025-04-14",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/573895/artclView.do",
+        "attachmentId": "593129",
+        "attachmentFileName": "250414 기준 구제역 발생 현황.hwp"
+      },
+      "coordinates": {
+        "latitude": 34.845144,
+        "longitude": 126.643681,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 16
+      }
+    },
+    {
+      "id": "fmd-017",
+      "disease": "FMD",
+      "occurredAt": "2025-03-14",
+      "sourceSequence": 3,
+      "species": "cattle",
+      "raisedHeadCount": 471,
+      "province": "전남",
+      "cityCounty": "영암군",
+      "region": "전남 영암군",
+      "source": {
+        "articleId": "573895",
+        "articleTitle": "가축전염병(구제역) 발생 현황에 대한 정보공개('25.4.14.기준)",
+        "publishedAt": "2025-04-14",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/573895/artclView.do",
+        "attachmentId": "593129",
+        "attachmentFileName": "250414 기준 구제역 발생 현황.hwp"
+      },
+      "coordinates": {
+        "latitude": 34.845144,
+        "longitude": 126.643681,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 17
+      }
+    },
+    {
+      "id": "fmd-018",
+      "disease": "FMD",
+      "occurredAt": "2025-03-14",
+      "sourceSequence": 4,
+      "species": "cattle",
+      "raisedHeadCount": 31,
+      "province": "전남",
+      "cityCounty": "영암군",
+      "region": "전남 영암군",
+      "source": {
+        "articleId": "573895",
+        "articleTitle": "가축전염병(구제역) 발생 현황에 대한 정보공개('25.4.14.기준)",
+        "publishedAt": "2025-04-14",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/573895/artclView.do",
+        "attachmentId": "593129",
+        "attachmentFileName": "250414 기준 구제역 발생 현황.hwp"
+      },
+      "coordinates": {
+        "latitude": 34.845144,
+        "longitude": 126.643681,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 18
+      }
+    },
+    {
+      "id": "fmd-019",
+      "disease": "FMD",
+      "occurredAt": "2025-03-15",
+      "sourceSequence": 5,
+      "species": "cattle",
+      "raisedHeadCount": 88,
+      "province": "전남",
+      "cityCounty": "무안군",
+      "region": "전남 무안군",
+      "source": {
+        "articleId": "573895",
+        "articleTitle": "가축전염병(구제역) 발생 현황에 대한 정보공개('25.4.14.기준)",
+        "publishedAt": "2025-04-14",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/573895/artclView.do",
+        "attachmentId": "593129",
+        "attachmentFileName": "250414 기준 구제역 발생 현황.hwp"
+      },
+      "coordinates": {
+        "latitude": 34.869271,
+        "longitude": 126.481142,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 19
+      }
+    },
+    {
+      "id": "fmd-020",
+      "disease": "FMD",
+      "occurredAt": "2025-03-17",
+      "sourceSequence": 6,
+      "species": "cattle",
+      "raisedHeadCount": 365,
+      "province": "전남",
+      "cityCounty": "영암군",
+      "region": "전남 영암군",
+      "source": {
+        "articleId": "573895",
+        "articleTitle": "가축전염병(구제역) 발생 현황에 대한 정보공개('25.4.14.기준)",
+        "publishedAt": "2025-04-14",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/573895/artclView.do",
+        "attachmentId": "593129",
+        "attachmentFileName": "250414 기준 구제역 발생 현황.hwp"
+      },
+      "coordinates": {
+        "latitude": 34.834525,
+        "longitude": 126.67844,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 20
+      }
+    },
+    {
+      "id": "fmd-021",
+      "disease": "FMD",
+      "occurredAt": "2025-03-17",
+      "sourceSequence": 7,
+      "species": "cattle",
+      "raisedHeadCount": 25,
+      "province": "전남",
+      "cityCounty": "영암군",
+      "region": "전남 영암군",
+      "source": {
+        "articleId": "573895",
+        "articleTitle": "가축전염병(구제역) 발생 현황에 대한 정보공개('25.4.14.기준)",
+        "publishedAt": "2025-04-14",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/573895/artclView.do",
+        "attachmentId": "593129",
+        "attachmentFileName": "250414 기준 구제역 발생 현황.hwp"
+      },
+      "coordinates": {
+        "latitude": 34.845144,
+        "longitude": 126.643681,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 21
+      }
+    },
+    {
+      "id": "fmd-022",
+      "disease": "FMD",
+      "occurredAt": "2025-03-17",
+      "sourceSequence": 8,
+      "species": "cattle",
+      "raisedHeadCount": 100,
+      "province": "전남",
+      "cityCounty": "영암군",
+      "region": "전남 영암군",
+      "source": {
+        "articleId": "573895",
+        "articleTitle": "가축전염병(구제역) 발생 현황에 대한 정보공개('25.4.14.기준)",
+        "publishedAt": "2025-04-14",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/573895/artclView.do",
+        "attachmentId": "593129",
+        "attachmentFileName": "250414 기준 구제역 발생 현황.hwp"
+      },
+      "coordinates": {
+        "latitude": 34.845144,
+        "longitude": 126.643681,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 22
+      }
+    },
+    {
+      "id": "fmd-023",
+      "disease": "FMD",
+      "occurredAt": "2025-03-18",
+      "sourceSequence": 9,
+      "species": "cattle",
+      "raisedHeadCount": 49,
+      "province": "전남",
+      "cityCounty": "영암군",
+      "region": "전남 영암군",
+      "source": {
+        "articleId": "573895",
+        "articleTitle": "가축전염병(구제역) 발생 현황에 대한 정보공개('25.4.14.기준)",
+        "publishedAt": "2025-04-14",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/573895/artclView.do",
+        "attachmentId": "593129",
+        "attachmentFileName": "250414 기준 구제역 발생 현황.hwp"
+      },
+      "coordinates": {
+        "latitude": 34.827464,
+        "longitude": 126.654637,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 23
+      }
+    },
+    {
+      "id": "fmd-024",
+      "disease": "FMD",
+      "occurredAt": "2025-03-18",
+      "sourceSequence": 10,
+      "species": "cattle",
+      "raisedHeadCount": 25,
+      "province": "전남",
+      "cityCounty": "영암군",
+      "region": "전남 영암군",
+      "source": {
+        "articleId": "573895",
+        "articleTitle": "가축전염병(구제역) 발생 현황에 대한 정보공개('25.4.14.기준)",
+        "publishedAt": "2025-04-14",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/573895/artclView.do",
+        "attachmentId": "593129",
+        "attachmentFileName": "250414 기준 구제역 발생 현황.hwp"
+      },
+      "coordinates": {
+        "latitude": 34.795946,
+        "longitude": 126.655228,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 24
+      }
+    },
+    {
+      "id": "fmd-025",
+      "disease": "FMD",
+      "occurredAt": "2025-03-19",
+      "sourceSequence": 11,
+      "species": "cattle",
+      "raisedHeadCount": 125,
+      "province": "전남",
+      "cityCounty": "영암군",
+      "region": "전남 영암군",
+      "source": {
+        "articleId": "573895",
+        "articleTitle": "가축전염병(구제역) 발생 현황에 대한 정보공개('25.4.14.기준)",
+        "publishedAt": "2025-04-14",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/573895/artclView.do",
+        "attachmentId": "593129",
+        "attachmentFileName": "250414 기준 구제역 발생 현황.hwp"
+      },
+      "coordinates": {
+        "latitude": 34.833885,
+        "longitude": 126.688937,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 25
+      }
+    },
+    {
+      "id": "fmd-026",
+      "disease": "FMD",
+      "occurredAt": "2025-03-19",
+      "sourceSequence": 12,
+      "species": "cattle",
+      "raisedHeadCount": 835,
+      "province": "전남",
+      "cityCounty": "영암군",
+      "region": "전남 영암군",
+      "source": {
+        "articleId": "573895",
+        "articleTitle": "가축전염병(구제역) 발생 현황에 대한 정보공개('25.4.14.기준)",
+        "publishedAt": "2025-04-14",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/573895/artclView.do",
+        "attachmentId": "593129",
+        "attachmentFileName": "250414 기준 구제역 발생 현황.hwp"
+      },
+      "coordinates": {
+        "latitude": 34.86196,
+        "longitude": 126.670394,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 26
+      }
+    },
+    {
+      "id": "fmd-027",
+      "disease": "FMD",
+      "occurredAt": "2025-03-20",
+      "sourceSequence": 13,
+      "species": "cattle",
+      "raisedHeadCount": 43,
+      "province": "전남",
+      "cityCounty": "영암군",
+      "region": "전남 영암군",
+      "source": {
+        "articleId": "573895",
+        "articleTitle": "가축전염병(구제역) 발생 현황에 대한 정보공개('25.4.14.기준)",
+        "publishedAt": "2025-04-14",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/573895/artclView.do",
+        "attachmentId": "593129",
+        "attachmentFileName": "250414 기준 구제역 발생 현황.hwp"
+      },
+      "coordinates": {
+        "latitude": 34.878299,
+        "longitude": 126.696217,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 27
+      }
+    },
+    {
+      "id": "fmd-028",
+      "disease": "FMD",
+      "occurredAt": "2025-03-23",
+      "sourceSequence": 14,
+      "species": "cattle",
+      "raisedHeadCount": 31,
+      "province": "전남",
+      "cityCounty": "영암군",
+      "region": "전남 영암군",
+      "source": {
+        "articleId": "573895",
+        "articleTitle": "가축전염병(구제역) 발생 현황에 대한 정보공개('25.4.14.기준)",
+        "publishedAt": "2025-04-14",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/573895/artclView.do",
+        "attachmentId": "593129",
+        "attachmentFileName": "250414 기준 구제역 발생 현황.hwp"
+      },
+      "coordinates": {
+        "latitude": 34.845144,
+        "longitude": 126.643681,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 28
+      }
+    },
+    {
+      "id": "fmd-029",
+      "disease": "FMD",
+      "occurredAt": "2025-04-10",
+      "sourceSequence": 15,
+      "species": "pig",
+      "raisedHeadCount": 5223,
+      "province": "전남",
+      "cityCounty": "무안군",
+      "region": "전남 무안군",
+      "source": {
+        "articleId": "573895",
+        "articleTitle": "가축전염병(구제역) 발생 현황에 대한 정보공개('25.4.14.기준)",
+        "publishedAt": "2025-04-14",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/573895/artclView.do",
+        "attachmentId": "593129",
+        "attachmentFileName": "250414 기준 구제역 발생 현황.hwp"
+      },
+      "coordinates": {
+        "latitude": 34.849214,
+        "longitude": 126.46535,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 29
+      }
+    },
+    {
+      "id": "fmd-030",
+      "disease": "FMD",
+      "occurredAt": "2025-04-10",
+      "sourceSequence": 16,
+      "species": "pig",
+      "raisedHeadCount": null,
+      "province": "전남",
+      "cityCounty": "무안군",
+      "region": "전남 무안군",
+      "source": {
+        "articleId": "573895",
+        "articleTitle": "가축전염병(구제역) 발생 현황에 대한 정보공개('25.4.14.기준)",
+        "publishedAt": "2025-04-14",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/573895/artclView.do",
+        "attachmentId": "593129",
+        "attachmentFileName": "250414 기준 구제역 발생 현황.hwp",
+        "normalizationNote": "구형 HWP 미리보기는 16차 행부터 잘렸으나 공식 총괄의 2025년 소14·돼지5와 지도 19건을 대조해 남은 4건을 돼지로 복원함."
+      },
+      "coordinates": {
+        "latitude": 34.869048,
+        "longitude": 126.464543,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 30
+      }
+    },
+    {
+      "id": "fmd-031",
+      "disease": "FMD",
+      "occurredAt": "2025-04-12",
+      "sourceSequence": 17,
+      "species": "pig",
+      "raisedHeadCount": null,
+      "province": "전남",
+      "cityCounty": "무안군",
+      "region": "전남 무안군",
+      "source": {
+        "articleId": "573895",
+        "articleTitle": "가축전염병(구제역) 발생 현황에 대한 정보공개('25.4.14.기준)",
+        "publishedAt": "2025-04-14",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/573895/artclView.do",
+        "attachmentId": "593129",
+        "attachmentFileName": "250414 기준 구제역 발생 현황.hwp",
+        "normalizationNote": "구형 HWP 미리보기는 16차 행부터 잘렸으나 공식 총괄의 2025년 소14·돼지5와 지도 19건을 대조해 남은 4건을 돼지로 복원함."
+      },
+      "coordinates": {
+        "latitude": 34.9009,
+        "longitude": 126.465518,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 31
+      }
+    },
+    {
+      "id": "fmd-032",
+      "disease": "FMD",
+      "occurredAt": "2025-04-12",
+      "sourceSequence": 18,
+      "species": "pig",
+      "raisedHeadCount": null,
+      "province": "전남",
+      "cityCounty": "무안군",
+      "region": "전남 무안군",
+      "source": {
+        "articleId": "573895",
+        "articleTitle": "가축전염병(구제역) 발생 현황에 대한 정보공개('25.4.14.기준)",
+        "publishedAt": "2025-04-14",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/573895/artclView.do",
+        "attachmentId": "593129",
+        "attachmentFileName": "250414 기준 구제역 발생 현황.hwp",
+        "normalizationNote": "구형 HWP 미리보기는 16차 행부터 잘렸으나 공식 총괄의 2025년 소14·돼지5와 지도 19건을 대조해 남은 4건을 돼지로 복원함."
+      },
+      "coordinates": {
+        "latitude": 34.849216,
+        "longitude": 126.46535,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 32
+      }
+    },
+    {
+      "id": "fmd-033",
+      "disease": "FMD",
+      "occurredAt": "2025-04-13",
+      "sourceSequence": 19,
+      "species": "pig",
+      "raisedHeadCount": null,
+      "province": "전남",
+      "cityCounty": "무안군",
+      "region": "전남 무안군",
+      "source": {
+        "articleId": "573895",
+        "articleTitle": "가축전염병(구제역) 발생 현황에 대한 정보공개('25.4.14.기준)",
+        "publishedAt": "2025-04-14",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/573895/artclView.do",
+        "attachmentId": "593129",
+        "attachmentFileName": "250414 기준 구제역 발생 현황.hwp",
+        "normalizationNote": "구형 HWP 미리보기는 16차 행부터 잘렸으나 공식 총괄의 2025년 소14·돼지5와 지도 19건을 대조해 남은 4건을 돼지로 복원함."
+      },
+      "coordinates": {
+        "latitude": 34.86905,
+        "longitude": 126.464543,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 33
+      }
+    },
+    {
+      "id": "fmd-034",
+      "disease": "FMD",
+      "occurredAt": "2026-01-30",
+      "sourceSequence": 1,
+      "species": "cattle",
+      "raisedHeadCount": 243,
+      "province": "인천",
+      "cityCounty": "강화군",
+      "region": "인천 강화군",
+      "source": {
+        "articleId": "577155",
+        "articleTitle": "가축전염병(구제역) 발생 현황에 대한 정보공개('26.2.28.기준)",
+        "publishedAt": "2026-02-28",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/577155/artclView.do",
+        "attachmentId": "596865",
+        "attachmentFileName": "250228 기준 구제역 발생 현황.hwpx"
+      },
+      "coordinates": {
+        "latitude": 37.764554,
+        "longitude": 126.463926,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 34
+      }
+    },
+    {
+      "id": "fmd-035",
+      "disease": "FMD",
+      "occurredAt": "2026-02-19",
+      "sourceSequence": 2,
+      "species": "cattle",
+      "raisedHeadCount": 241,
+      "province": "경기",
+      "cityCounty": "고양시",
+      "region": "경기 고양시",
+      "source": {
+        "articleId": "577155",
+        "articleTitle": "가축전염병(구제역) 발생 현황에 대한 정보공개('26.2.28.기준)",
+        "publishedAt": "2026-02-28",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/577155/artclView.do",
+        "attachmentId": "596865",
+        "attachmentFileName": "250228 기준 구제역 발생 현황.hwpx"
+      },
+      "coordinates": {
+        "latitude": 37.678147,
+        "longitude": 126.745271,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 35
+      }
+    },
+    {
+      "id": "fmd-036",
+      "disease": "FMD",
+      "occurredAt": "2026-02-28",
+      "sourceSequence": 3,
+      "species": "cattle",
+      "raisedHeadCount": 167,
+      "province": "경기",
+      "cityCounty": "고양시",
+      "region": "경기 고양시",
+      "source": {
+        "articleId": "577155",
+        "articleTitle": "가축전염병(구제역) 발생 현황에 대한 정보공개('26.2.28.기준)",
+        "publishedAt": "2026-02-28",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/577155/artclView.do",
+        "attachmentId": "596865",
+        "attachmentFileName": "250228 기준 구제역 발생 현황.hwpx"
+      },
+      "coordinates": {
+        "latitude": 37.677821,
+        "longitude": 126.745777,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 36
+      }
+    },
+    {
+      "id": "fmd-037",
+      "disease": "FMD",
+      "occurredAt": "2026-07-01",
+      "sourceSequence": 1,
+      "species": "pig",
+      "raisedHeadCount": 5500,
+      "province": "경북",
+      "cityCounty": "예천군",
+      "region": "경북 예천군",
+      "source": {
+        "articleId": "578352",
+        "articleTitle": "가축전염병(구제역) 발생 현황에 대한 정보공개('26.7.3.기준)",
+        "publishedAt": "2026-07-03",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/578352/artclView.do",
+        "attachmentId": "598556",
+        "attachmentFileName": "260703 기준 구제역 발생 현황(1).hwpx"
+      },
+      "coordinates": {
+        "latitude": 36.7212,
+        "longitude": 128.5264,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 37
+      }
+    },
+    {
+      "id": "fmd-038",
+      "disease": "FMD",
+      "occurredAt": "2026-07-01",
+      "sourceSequence": 2,
+      "species": "cattle",
+      "raisedHeadCount": 186,
+      "province": "경북",
+      "cityCounty": "예천군",
+      "region": "경북 예천군",
+      "source": {
+        "articleId": "578352",
+        "articleTitle": "가축전염병(구제역) 발생 현황에 대한 정보공개('26.7.3.기준)",
+        "publishedAt": "2026-07-03",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/578352/artclView.do",
+        "attachmentId": "598556",
+        "attachmentFileName": "260703 기준 구제역 발생 현황(1).hwpx"
+      },
+      "coordinates": {
+        "latitude": 36.7211,
+        "longitude": 128.5263,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 38
+      }
+    },
+    {
+      "id": "fmd-039",
+      "disease": "FMD",
+      "occurredAt": "2026-07-01",
+      "sourceSequence": 3,
+      "species": "cattle",
+      "raisedHeadCount": 81,
+      "province": "경북",
+      "cityCounty": "예천군",
+      "region": "경북 예천군",
+      "source": {
+        "articleId": "578352",
+        "articleTitle": "가축전염병(구제역) 발생 현황에 대한 정보공개('26.7.3.기준)",
+        "publishedAt": "2026-07-03",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/578352/artclView.do",
+        "attachmentId": "598556",
+        "attachmentFileName": "260703 기준 구제역 발생 현황(1).hwpx"
+      },
+      "coordinates": {
+        "latitude": 36.721,
+        "longitude": 128.5263,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 39
+      }
+    },
+    {
+      "id": "fmd-040",
+      "disease": "FMD",
+      "occurredAt": "2026-07-01",
+      "sourceSequence": 4,
+      "species": "cattle",
+      "raisedHeadCount": 130,
+      "province": "경북",
+      "cityCounty": "예천군",
+      "region": "경북 예천군",
+      "source": {
+        "articleId": "578352",
+        "articleTitle": "가축전염병(구제역) 발생 현황에 대한 정보공개('26.7.3.기준)",
+        "publishedAt": "2026-07-03",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/578352/artclView.do",
+        "attachmentId": "598556",
+        "attachmentFileName": "260703 기준 구제역 발생 현황(1).hwpx"
+      },
+      "coordinates": {
+        "latitude": 36.7212,
+        "longitude": 128.5263,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 40
+      }
+    },
+    {
+      "id": "fmd-041",
+      "disease": "FMD",
+      "occurredAt": "2026-07-01",
+      "sourceSequence": 5,
+      "species": "cattle",
+      "raisedHeadCount": 39,
+      "province": "경북",
+      "cityCounty": "예천군",
+      "region": "경북 예천군",
+      "source": {
+        "articleId": "578352",
+        "articleTitle": "가축전염병(구제역) 발생 현황에 대한 정보공개('26.7.3.기준)",
+        "publishedAt": "2026-07-03",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/578352/artclView.do",
+        "attachmentId": "598556",
+        "attachmentFileName": "260703 기준 구제역 발생 현황(1).hwpx"
+      },
+      "coordinates": {
+        "latitude": 36.7212,
+        "longitude": 128.5266,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 41
+      }
+    },
+    {
+      "id": "fmd-042",
+      "disease": "FMD",
+      "occurredAt": "2026-07-01",
+      "sourceSequence": 6,
+      "species": "cattle",
+      "raisedHeadCount": 72,
+      "province": "경북",
+      "cityCounty": "예천군",
+      "region": "경북 예천군",
+      "source": {
+        "articleId": "578352",
+        "articleTitle": "가축전염병(구제역) 발생 현황에 대한 정보공개('26.7.3.기준)",
+        "publishedAt": "2026-07-03",
+        "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/389/578352/artclView.do",
+        "attachmentId": "598556",
+        "attachmentFileName": "260703 기준 구제역 발생 현황(1).hwpx"
+      },
+      "coordinates": {
+        "latitude": 36.7211,
+        "longitude": 128.5265,
+        "precision": "농림축산식품부 공개 지도 행정기관 기준점",
+        "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/FMD/FMD_data.js?v=6",
+        "sourceSequence": 42
+      }
+    }
+  ]
+}

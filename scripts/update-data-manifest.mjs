@@ -53,6 +53,7 @@ const PUBLIC_GROUPS = [
     recover:
       "`npm run reference:collect -- --from <YYYY-MM> --to <YYYY-MM>` · `npm run reference:rtms -- --from <YYYY-MM> --to <YYYY-MM> --lawdCd <시군구코드>`",
     note: "개인정보 없음(집계·신고 통계). 쿼터 방어를 위해 사전 수집하며, 판정·화면은 이 캐시만 읽는다(런타임 API 호출 없음). 수집이 거부된 달은 status=failed로 남고 비교군에 들어가지 않는다.",
+    skipDirectoryNames: ["raw"],
   },
   {
     dir: "offers",
@@ -106,7 +107,7 @@ export const assertPublicFilesTracked = (files, tracked, root = ROOT) => {
   }
 };
 
-const listFilesRecursively = async (dir) => {
+const listFilesRecursively = async (dir, skipDirectoryNames = []) => {
   let entries;
   try {
     entries = await readdir(dir, { withFileTypes: true });
@@ -116,8 +117,9 @@ const listFilesRecursively = async (dir) => {
   const found = [];
   for (const entry of entries.sort((a, b) => a.name.localeCompare(b.name))) {
     const full = path.join(dir, entry.name);
-    if (entry.isDirectory()) found.push(...(await listFilesRecursively(full)));
-    else if (entry.isFile()) found.push(full);
+    if (entry.isDirectory() && !skipDirectoryNames.includes(entry.name)) {
+      found.push(...(await listFilesRecursively(full, skipDirectoryNames)));
+    } else if (entry.isFile()) found.push(full);
   }
   return found;
 };
@@ -132,7 +134,10 @@ const describeFile = async (absolute) => {
 };
 
 const describeGroup = async (group, tracked) => {
-  const files = await listFilesRecursively(path.join(DATA_DIR, group.dir));
+  const files = await listFilesRecursively(
+    path.join(DATA_DIR, group.dir),
+    group.skipDirectoryNames,
+  );
   if (tracked) assertPublicFilesTracked(files, tracked);
   const described = [];
   for (const file of files) described.push(await describeFile(file));
@@ -171,17 +176,19 @@ const render = (groups, publicGroups, generatedAt) =>
     "## 저장 정책",
     "",
     "개인정보(농장주 실명·상세주소·농장번호)가 담긴 원천 데이터는 git에 올리지 않는다.",
-    "커밋되는 것은 **이 매니페스트**와 **마스킹이 끝난 공개 산출물(`data/public/`)** 뿐이다.",
+    "커밋되는 것은 **이 매니페스트**, **마스킹이 끝난 공개 산출물(`data/public/`)**, **원문을 제거한 정제 JSON(`data/reference/`)**이다.",
     "",
     "| 구분 | 경로 | git |",
     "|---|---|---|",
     "| 원문 | `data/raw/{rcpNo}/` | 제외(.gitignore) |",
+    "| 외부 원문 | `data/**/raw/` 및 `data/**/*.{pdf,hwp,hwpx,...}` | 제외(.gitignore) |",
     "| 실측 스냅샷 | `data/snapshots/` | 제외(.gitignore) |",
     "| 내부 리포트 | `data/reports/{offerId}/` | 제외(.gitignore) |",
     "| 공개 리포트 | `data/public/{offerId}/` | **커밋** |",
     "| 발행사 트랙레코드 | `data/public/track-record/{issuerKey}.json` | **커밋**(공시 집계 — 발행사명·corp_code 미포함) |",
     "| 경락가 월 집계 | `data/reference/auction-price/` | **커밋**(시장 통계 — 개인정보 없음) |",
     "| 실거래 월 신고 | `data/reference/rtms/` | **커밋**(시장 통계 — 개인정보 없음) |",
+    "| 정제 참조 JSON | `data/reference/**/*.json` (`raw/` 제외) | **커밋**(비식별·출처 메타데이터 포함) |",
     "| 공모 기초자료 | `data/offers/{offerId}.json` | **커밋**(공개 자료 정리 — 개인정보 없음) |",
     "| 매니페스트 | `data/MANIFEST.md` | **커밋** |",
     "",

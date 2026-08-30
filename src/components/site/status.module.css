@@ -18,7 +18,7 @@
 }
 
 .title {
-  font-size: var(--ds-title-lg);
+  font-size: var(--ds-heading-h1);
   font-weight: var(--ds-weight-black);
   letter-spacing: var(--ds-tracking-tight);
   line-height: var(--ds-leading-tight);

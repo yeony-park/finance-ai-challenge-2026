@@ -43,6 +43,8 @@ export interface PigDisclosureProduct {
     readonly realizedReturnPercent: number | null;
     readonly publicSummary: string;
     readonly sourceUrl: string;
+    readonly sourceFiledAt: string;
+    readonly sourceLabel: string;
   };
   readonly documents: readonly PigDisclosureDocument[];
 }
@@ -71,9 +73,20 @@ export interface PigMarketSnapshot {
   readonly limitation: string;
 }
 
-export interface PigAsfEvent {
-  readonly occurredAt: string;
-  readonly region: string;
+export interface PigGradeBandPoint {
+  readonly month: string;
+  readonly averageWonPerKg: number;
+  readonly gradeOnePlusWonPerKg: number;
+  readonly gradeTwoWonPerKg: number;
+  readonly headCount: number;
+}
+
+export interface PigGradeBandSnapshot {
+  readonly points: readonly PigGradeBandPoint[];
+  readonly sourceUrl: string;
+  readonly retrievedAt: string;
+  readonly asOf: string;
+  readonly limitation: string;
 }
 
 export const PIG_DART_BASE = "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=";
@@ -120,6 +133,8 @@ export const PIG_DISCLOSURE_PRODUCTS: readonly PigDisclosureProduct[] = [
       publicSummary:
         "DART에서는 발행 완료까지 확인됩니다. 실제 판매단가와 최종 수익률은 수집한 DART 문서에 공개된 숫자가 없습니다.",
       sourceUrl: dartDocumentUrl("20260714000008"),
+      sourceFiledAt: "2026-07-14",
+      sourceLabel: "발행실적보고서",
     },
     documents: [
       { label: "최초 신고서", rceptNo: "20260605000175", filedAt: "2026-06-05" },
@@ -166,6 +181,8 @@ export const PIG_DISCLOSURE_PRODUCTS: readonly PigDisclosureProduct[] = [
       publicSummary:
         "DART에서는 발행 완료까지 확인됩니다. 실제 판매단가와 최종 수익률은 수집한 DART 문서에 공개된 숫자가 없습니다.",
       sourceUrl: dartDocumentUrl("20260528001031"),
+      sourceFiledAt: "2026-05-28",
+      sourceLabel: "발행실적보고서",
     },
     documents: [
       { label: "최초 신고서", rceptNo: "20260420000157", filedAt: "2026-04-20" },
@@ -212,6 +229,8 @@ export const PIG_DISCLOSURE_PRODUCTS: readonly PigDisclosureProduct[] = [
       publicSummary:
         "2026년 5월 11일 정산, 수익금 28,260,808원, 세전 단순수익률 13.1%로 제3호 신고서에 기재돼 있습니다. 계좌 입금 원장까지 독립적으로 확인한 값은 아닙니다.",
       sourceUrl: dartDocumentUrl("20260624000508"),
+      sourceFiledAt: "2026-06-24",
+      sourceLabel: "제3호 기재정정 신고서(후속 공시)",
     },
     documents: [
       { label: "최초 신고서", rceptNo: "20251215000259", filedAt: "2025-12-15" },
@@ -238,14 +257,37 @@ export const PIG_MARKET: PigMarketSnapshot = {
     "월별 시장 집계로 개별 상품의 돼지·출하 로트·실제 정산가격을 확인할 수 없습니다.",
 };
 
-export const PIG_ASF_MAP_URL = "https://www.mafra.go.kr/FMD-AI2/map/ASF/ASF_map.jsp";
-export const PIG_ASF_SNAPSHOT_URL =
-  "https://www.mafra.go.kr/bbs/FMD-AI2/404/577369/artclView.do";
-export const PIG_ASF_SNAPSHOT_ASOF = "2026-03-20";
-export const PIG_ASF_EVENTS: readonly PigAsfEvent[] = [
-  { occurredAt: "2026-02-01", region: "전북 고창군" },
-  { occurredAt: "2026-02-12", region: "전북 정읍시" },
-];
+export const PIG_GRADE_BAND: PigGradeBandSnapshot = {
+  points: [
+    {
+      month: "2026-05",
+      averageWonPerKg: 6_388.00473,
+      gradeOnePlusWonPerKg: 6_608.23727,
+      gradeTwoWonPerKg: 6_071.35116,
+      headCount: 29_415,
+    },
+    {
+      month: "2026-06",
+      averageWonPerKg: 6_342.50262,
+      gradeOnePlusWonPerKg: 6_557.26791,
+      gradeTwoWonPerKg: 6_023.56141,
+      headCount: 33_504,
+    },
+    {
+      month: "2026-07",
+      averageWonPerKg: 6_235.70217,
+      gradeOnePlusWonPerKg: 6_519.52503,
+      gradeTwoWonPerKg: 5_854.1138,
+      headCount: 34_374,
+    },
+  ],
+  sourceUrl:
+    "https://mtrace.go.kr/statHtml/statHtml.do?orgId=323&tblId=DT_323902_B20000&conn_path=I2",
+  retrievedAt: "2026-08-15 02:16:18 KST",
+  asOf: "2026-07",
+  limitation:
+    "월별 탕박·전체 성별·전국(제주제외) 집계입니다. 등외제외 평균과 1+·2등급 가격 폭은 선택 회차 돼지의 실제 판매·정산가격이 아닙니다.",
+};
 
 export const getPigProduct = (
   productId?: string,
@@ -268,10 +310,6 @@ export const PIG_AXES = {
 } as const;
 
 export const PIG_GALLERY = {
-  label: "최근 상품",
-  badge: "DART 공시 기준",
-  title: "최근 발행된 한돈 STO 3개 회차",
-  description: "회차를 선택하면 농장·가격·질병 맥락·발행사 이력이 한 화면에서 바뀝니다.",
   headsLabel: "기초자산",
   amountLabel: "발행금액",
   ctaSelected: "선택됨",
@@ -312,22 +350,33 @@ export const PIG_FARM = {
 
 export const PIG_DISEASE = {
   label: "질병 지역 맥락",
-  title: "공시 농장이 속한 도에 ASF 공개 발생이 있었나요?",
+  title: "공시 농장 지역과 ASF·구제역 발생을 함께 봅니다",
   description:
-    "공시 농장 지역은 시·군을 가린 도 단위(전북)라 같은 시·군 대조는 불가합니다. 전북에서 공개된 2026년 발생 지역만 도 단위 맥락으로 함께 둡니다.",
+    "ASF는 돼지 전용 질병이고, 구제역은 소·돼지·염소에 걸쳐 발생하므로 돼지 발생 6건만 분리했습니다. 공시 농장 지역은 시·군을 가린 도 단위라 개별 농장과의 연결은 하지 않습니다.",
   badge: "도 단위 맥락",
-  regionLabel: "공시 농장 지역",
-  regionValue: "전북 ○○",
+  regionLabel: "선택 회차의 익명 농장 맥락",
+  roundLabelPrefix: "제",
+  roundLabelSuffix: "호",
+  anonymizedFarmNote: "공개 화면 익명 표기",
   eventsHeading: "전북에서 공개된 2026년 발생 지역",
   snapshotPrefix: "정적 공개본",
+  snapshotAriaLabel: "전북 ASF 공개 발생 지역 목록",
+  mapEyebrow: "ASF·구제역 발생 지도",
+  mapTitle: "농식품부 공개 파일로 재구성한 돼지 질병 지도",
+  mapDescription:
+    "농림축산식품부 발생현황 첨부파일을 JSON으로 정규화하고, ASF와 돼지 구제역을 서로 다른 핀으로 Kakao Maps 위에 표시했습니다.",
+  mapCaption:
+    "선택 공시의 익명 농장과 발생 지점을 자동 연결하지 않습니다. 현재 선택:",
   officialLabel: "농림축산식품부 공식 자료",
+  sourceAriaLabel: "ASF와 구제역 발생 현황 공식 출처",
   noticeHeading: "자료 해석",
   noticeBody:
-    "같은 시·군 공개 발생이 0건이라도 농장 감염이 없거나 문제가 없다는 뜻은 아닙니다. 공식 자료는 개인정보 보호를 위해 발생 지역을 읍·면·동·리 단위로 공개하며, 원 지도의 좌표도 관공서 기준이라 실제 발생 농장 위치와 다를 수 있습니다.",
+    "같은 시·군 공개 발생이 0건이라도 농장 감염이 없거나 문제가 없다는 뜻은 아닙니다. 원형은 ASF, 마름모는 구제역이며 화면 좌표는 실제 농장이 아닌 행정기관 기준점입니다.",
   noticeBody2:
     "공시 농장과 질병 사건을 잇는 공공 식별자가 없어 상세 위치, 실제 거리, 감염 여부 또는 손익 영향은 판단하지 않습니다.",
   mapLink: "ASF 공식 지도 새 창에서 보기",
-  snapshotLink: "2026년 ASF 발생현황 공개본",
+  snapshotLink: "최신 ASF 발생현황 첨부파일",
+  boardLink: "ASF 발생현황 전체 자료실",
 } as const;
 
 export const PIG_PRICE = {
@@ -338,11 +387,22 @@ export const PIG_PRICE = {
   badge: "시장 참고값",
   chartEyebrow: "시장 흐름 · 2026.05–07",
   chartTitle: "최근 3개월 돼지 경락가격",
+  gradeBandEyebrow: "등급별 가격 폭 · 최근 6개월 창",
+  gradeBandTitle: "등외제외 평균과 1+·2등급 가격 폭",
+  gradeBandDescription:
+    "수집 시점 기준 최근 6개월 창을 유지하고, 같은 공식 CSV에 수록된 월의 1+와 2등급 경계만 표시합니다. 미수록 월은 추정하지 않습니다.",
+  gradeBandSourceName: "축산물 등급별 경락가격 공식 통계",
+  gradeBandCacheStatus: "공식 등급 CSV 저장본",
+  gradeBandWindowLabel: "최근 6개월 창",
+  gradeBandCoverageLabel: "CSV 관측",
+  gradeBandMissingLabel: "CSV 미수록",
+  gradeBandNoEstimate: "미수록 월은 추정하지 않습니다.",
+  gradeBandInsufficient: "표시할 등급별 가격 관측치가 충분하지 않습니다.",
   latestLabel: "7월 월평균",
   perKg: "원/kg",
   scaleNotePrefix: "가격 차이를 보기 위한 확대 축",
   caption:
-    "공식 월별 집계이며 개별 돼지의 실제 판매가격이 아닙니다. 가격선과 경락두수 막대는 서로 다른 단위를 사용합니다.",
+    "공식 월별 집계이며 개별 돼지의 실제 판매가격이 아닙니다. 가격선과 경락두수 막대는 서로 다른 단위를 사용합니다. 수평선은 선택 회차 공시에 적힌 원/kg 시장 기준가이며 증권의 1좌당 공모가격은 아닙니다.",
   selectedEyebrow: "선택 상품과 비교",
   selectedTag: "선택",
   baselineSuffix: "기준",
@@ -397,6 +457,7 @@ export const pigCopyStrings = (): readonly string[] => {
     ...Object.values(PIG_ISSUER),
     ...Object.values(PIG_FILING),
     PIG_MARKET.limitation,
+    PIG_GRADE_BAND.limitation,
   ];
   for (const product of PIG_DISCLOSURE_PRODUCTS) {
     literals.push(
@@ -410,6 +471,5 @@ export const pigCopyStrings = (): readonly string[] => {
       ...product.documents.map((document) => document.label),
     );
   }
-  for (const event of PIG_ASF_EVENTS) literals.push(event.region);
   return literals.filter((text) => text.length > 0);
 };

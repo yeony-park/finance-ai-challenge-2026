@@ -6,12 +6,16 @@ import {
   ART_CHART_COMPOSITION_TITLE,
   ART_LEGEND_ACQUISITION,
   ART_LEGEND_COST,
-  ART_PRODUCT_FACTS,
 } from "@/lib/content/art";
+import type { ArtProduct } from "@/lib/art/product-model";
 
 import s from "./art.module.css";
 
-export function OfferingCompositionChart() {
+interface OfferingChartProps {
+  readonly products: readonly ArtProduct[];
+}
+
+export function OfferingCompositionChart({ products }: OfferingChartProps) {
   return (
     <figure className={s.chartCard}>
       <figcaption className={s.chartCaption}>
@@ -29,20 +33,22 @@ export function OfferingCompositionChart() {
         </span>
       </div>
       <div className={s.compRows}>
-        {ART_PRODUCT_FACTS.map((fact) => {
-          const hasParts = fact.acquisition !== null && fact.issuanceCost !== null;
+        {products.map((product) => {
+          const hasParts =
+            product.art.acquisitionWon !== null &&
+            product.art.issuanceCostWon !== null;
           return (
-            <div key={fact.id} className={s.compRow}>
+            <div key={product.id} className={s.compRow}>
               <div className={s.compRowHead}>
-                <strong>{fact.label}</strong>
-                <span>{formatKrw(fact.offeringAmount)}</span>
+                <strong>{product.label}</strong>
+                <span>{formatKrw(product.offering.amountWon)}</span>
               </div>
               {hasParts ? (
                 <div className={s.stackBar}>
                   <span
                     className={s.stackAcq}
                     style={{
-                      width: `${((fact.acquisition as number) / fact.offeringAmount) * 100}%`,
+                      width: `${((product.art.acquisitionWon as number) / product.offering.amountWon) * 100}%`,
                     }}
                   >
                     {ART_LEGEND_ACQUISITION}
@@ -50,7 +56,7 @@ export function OfferingCompositionChart() {
                   <span
                     className={s.stackCost}
                     style={{
-                      width: `${((fact.issuanceCost as number) / fact.offeringAmount) * 100}%`,
+                      width: `${((product.art.issuanceCostWon as number) / product.offering.amountWon) * 100}%`,
                     }}
                   >
                     {ART_LEGEND_COST}
@@ -67,8 +73,11 @@ export function OfferingCompositionChart() {
   );
 }
 
-export function OfferingComparisonChart() {
-  const max = Math.max(...ART_PRODUCT_FACTS.map((fact) => fact.offeringAmount));
+export function OfferingComparisonChart({ products }: OfferingChartProps) {
+  const max = Math.max(
+    1,
+    ...products.map((product) => product.offering.amountWon),
+  );
   return (
     <figure className={s.chartCard}>
       <figcaption className={s.chartCaption}>
@@ -78,22 +87,25 @@ export function OfferingComparisonChart() {
       <div
         className={s.colChart}
         role="img"
-        aria-label={ART_PRODUCT_FACTS.map(
-          (fact) => `${fact.label} ${fact.offeringAmount.toLocaleString("ko-KR")}원`,
+        aria-label={products.map(
+          (product) =>
+            `${product.label} ${product.offering.amountWon.toLocaleString("ko-KR")}원`,
         ).join(", ")}
       >
-        {ART_PRODUCT_FACTS.map((fact) => (
-          <div key={fact.id} className={s.colItem}>
+        {products.map((product) => (
+          <div key={product.id} className={s.colItem}>
             <span className={s.colBarWrap}>
               <span className={s.colValue}>
-                {Math.round(fact.offeringAmount / 100_000_000)}억
+                {Math.round(product.offering.amountWon / 100_000_000)}억
               </span>
               <span
                 className={s.colBar}
-                style={{ height: `${(fact.offeringAmount / max) * 100}%` }}
+                style={{
+                  height: `${(product.offering.amountWon / max) * 100}%`,
+                }}
               />
             </span>
-            <span className={s.colLabel}>{fact.label}</span>
+            <span className={s.colLabel}>{product.label}</span>
           </div>
         ))}
       </div>

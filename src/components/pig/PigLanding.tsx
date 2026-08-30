@@ -1,62 +1,59 @@
+import type { SubscriptionPhase } from "@/components/site/offers";
 import {
   getPigProduct,
-  PIG_AXES,
   PIG_DISCLOSURE_PRODUCTS,
   PIG_FILING,
 } from "@/lib/content/pig";
+import { PIG_EXTRA_DISTRIBUTION_FILING } from "@/lib/content/pig-review";
 import type { FilingFacts } from "@/lib/verify/report/filing-facts";
+import type { Verdict } from "@/lib/verify/types";
 
 import { PigDisclosureDetail } from "./PigDisclosureDetail";
 import { PigDisclosureGallery } from "./PigDisclosureGallery";
+import { PigReviewSections } from "./PigReviewSections";
 import s from "./pig.module.css";
 
 interface PigLandingProps {
   readonly selectedProductId?: string;
   readonly filingFacts?: readonly FilingFacts[];
+  readonly analysisStatus?: SubscriptionPhase | null;
+  readonly analysisVerdict?: Verdict | null;
 }
 
 const dartAsOf = (): string => {
   const dates = PIG_DISCLOSURE_PRODUCTS.flatMap((product) =>
     product.documents.map((document) => document.filedAt),
-  ).sort();
+  )
+    .concat(PIG_EXTRA_DISTRIBUTION_FILING.filedAt)
+    .sort();
   return dates.at(-1) ?? "";
 };
 
 export function PigLanding({
   selectedProductId,
   filingFacts,
+  analysisStatus = null,
+  analysisVerdict = null,
 }: PigLandingProps) {
   const selected = getPigProduct(selectedProductId);
+  const matchesFilters =
+    (analysisStatus === null || analysisStatus === "closed") &&
+    (analysisVerdict === null || analysisVerdict === "unverifiable");
+  const visibleProducts = matchesFilters ? PIG_DISCLOSURE_PRODUCTS : [];
   const selectedFacts = filingFacts?.find(
     (facts) => facts.offerId === `pig-${selected.round}`,
   );
 
   return (
     <div className={s.landing}>
-      <section className={s.axes} aria-labelledby="pig-axes-title">
-        <p className={s.sectionLabel}>{PIG_AXES.eyebrow}</p>
-        <h3 className={s.sectionTitle} id="pig-axes-title">
-          {PIG_AXES.title}
-        </h3>
-        <div className={s.axesGrid}>
-          <article className={s.axisFilled}>
-            <span className={s.axisTag}>{PIG_AXES.disclosureLabel}</span>
-            <p>{PIG_AXES.disclosureBody}</p>
-          </article>
-          <article className={s.axisPending}>
-            <span className={s.axisTag}>
-              {PIG_AXES.ledgerLabel}
-              <b className={s.axisVerdict}>{PIG_AXES.ledgerVerdict}</b>
-            </span>
-            <p>{PIG_AXES.ledgerBody}</p>
-          </article>
-        </div>
-      </section>
-
       <PigDisclosureGallery
-        products={PIG_DISCLOSURE_PRODUCTS}
+        products={visibleProducts}
         selectedProductId={selected.id}
+        analysisStatus={analysisStatus}
+        analysisVerdict={analysisVerdict}
       />
+
+      <PigReviewSections product={selected} />
 
       <PigDisclosureDetail
         product={selected}

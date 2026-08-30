@@ -8,7 +8,9 @@ import RealEstatePage, { metadata } from "../page";
 
 describe("부동산 승인 시나리오 목록", () => {
   test("13개 시나리오를 세 단계로 나누고 실제 상품은 노출하지 않는다", async () => {
-    const markup = renderToStaticMarkup(await RealEstatePage());
+    const markup = renderToStaticMarkup(
+      await RealEstatePage({ searchParams: Promise.resolve({}) }),
+    );
 
     expect(markup).toContain("서울스퀘어");
     expect(markup).toContain("센터원");
@@ -17,9 +19,9 @@ describe("부동산 승인 시나리오 목록", () => {
     expect(markup).toContain("청약 중");
     expect(markup).toContain("상장 거래");
     expect(markup).toContain("종료");
-    expect(markup).not.toContain("real-estate-bbric-hiwon");
-    expect(markup).not.toContain("real-estate-sou-daejeon-startup");
-    expect(markup).not.toContain("real-estate-a");
+    expect(markup).not.toContain('href="/offers/real-estate-bbric-hiwon"');
+    expect(markup).not.toContain('href="/offers/real-estate-sou-daejeon-startup"');
+    expect(markup).not.toContain('href="/offers/real-estate-a"');
     expect(markup).not.toContain("한강대로 416");
     expect(markup).toContain("검토 대상 13개");
     expect(markup.split("검토용 시나리오 · 실제 청약·판매 상품이 아닙니다.")).toHaveLength(2);

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "mafra-asf-2026-snapshot",
+  "sourceName": "2026년 아프리카돼지열병(ASF) 발생현황 — 농림축산식품부",
+  "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/577369/artclView.do",
+  "sourceFile": "asf_events_20260320.json",
+  "method": "manual",
+  "license": {
+    "grade": "Green",
+    "basis": "농림축산식품부 공식 질병 발생 공개자료에서 지역·발생일 최소 사실만 정규화"
+  },
+  "retrievedAt": "2026-08-30 11:45:06 KST",
+  "sha256": "210354ec16bd52fc3886b89fdacd9269e0bd9b0c6ace22be39df7e2570d824e8",
+  "asOf": "2026-03-20",
+  "note": "화면은 외부 지도를 임베드하지 않는다. src/lib/content/pig.ts의 전북 2건 정적 맥락이 이 정규화 파일에서 파생되며, 최신 전국 위치와 지도 레이어는 공식 원문 링크에서 확인한다."
+}

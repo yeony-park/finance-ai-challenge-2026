@@ -1,0 +1,51 @@
+import type { SubscriptionPhase } from "@/components/site/offers";
+import type { Verdict } from "@/lib/verify/types";
+
+export const CATEGORY_TABS = ["about", "analysis"] as const;
+export type CategoryTab = (typeof CATEGORY_TABS)[number];
+
+export interface CategoryPageSearchParams {
+  readonly tab?: string | string[];
+  readonly status?: string | string[];
+  readonly verdict?: string | string[];
+  readonly product?: string | string[];
+}
+
+export const categoryTabFromSearchParam = (
+  value: string | string[] | undefined,
+): CategoryTab => {
+  const selected = Array.isArray(value) ? value[0] : value;
+  return selected === "analysis" ? "analysis" : "about";
+};
+
+export const analysisStatusFromSearchParam = (
+  value: string | string[] | undefined,
+): SubscriptionPhase | null => {
+  const selected = Array.isArray(value) ? value[0] : value;
+  return selected === "upcoming" || selected === "open" || selected === "closed"
+    ? selected
+    : null;
+};
+
+export const analysisVerdictFromSearchParam = (
+  value: string | string[] | undefined,
+): Verdict | null => {
+  const selected = Array.isArray(value) ? value[0] : value;
+  return selected === "match" ||
+    selected === "mismatch" ||
+    selected === "unverifiable"
+    ? selected
+    : null;
+};
+
+export const categoryPageStateFromSearchParams = (
+  params: CategoryPageSearchParams,
+): {
+  readonly activeTab: CategoryTab;
+  readonly analysisStatus: SubscriptionPhase | null;
+  readonly analysisVerdict: Verdict | null;
+} => ({
+  activeTab: categoryTabFromSearchParam(params.tab),
+  analysisStatus: analysisStatusFromSearchParam(params.status),
+  analysisVerdict: analysisVerdictFromSearchParam(params.verdict),
+});

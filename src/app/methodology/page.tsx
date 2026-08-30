@@ -124,9 +124,11 @@ export default function MethodologyPage() {
     <>
       <section className={s.header} aria-labelledby={METHODOLOGY_ANCHOR.methodology}>
         <div className={s.wrap}>
-          <p className={s.eyebrow}>검증 방법</p>
           <h1 id={METHODOLOGY_ANCHOR.methodology} className={s.title}>
-            무엇을 어떤 기록과 대조하는가
+            <span>검증 방법</span>
+            <span className={s.titleLead}>
+              무엇을 어떤 <em className={s.mark}>기록</em>과 대조하는가
+            </span>
           </h1>
           <p className={s.lead}>
             이 서비스는 문서를 평가하지 않습니다. 문서에 적힌 주장을 검증 가능한 단위로 쪼갠 다음,
@@ -142,18 +144,24 @@ export default function MethodologyPage() {
           </h2>
           <ol className={s.stepList}>
             <li className={s.stepItem}>
-              <strong>주장 추출</strong> — 증권신고서에서 검증할 수 있는 주장을 항목 단위로
-              뽑아냅니다.
+              <h3 className={s.stepTitle}>주장 추출</h3>
+              <p className={s.stepDescription}>
+                증권신고서에서 검증할 수 있는 주장을 항목 단위로 뽑아냅니다.
+              </p>
             </li>
             <li className={s.stepItem}>
-              <strong>검증 가능성 판별</strong> — 그중 공공 데이터로 확인할 수 있는 항목을
-              가려냅니다.
+              <h3 className={s.stepTitle}>검증 가능성 판별</h3>
+              <p className={s.stepDescription}>
+                그중 공공 데이터로 확인할 수 있는 항목을 가려냅니다.
+              </p>
             </li>
             <li className={s.stepItem}>
-              <strong>대조</strong> — 해당 공공 데이터를 조회해 값을 맞춰 봅니다.
+              <h3 className={s.stepTitle}>대조</h3>
+              <p className={s.stepDescription}>해당 공공 데이터를 조회해 값을 맞춰 봅니다.</p>
             </li>
             <li className={s.stepItem}>
-              <strong>판정</strong> — 결과를 세 값 중 하나로 적고 근거를 붙입니다.
+              <h3 className={s.stepTitle}>판정</h3>
+              <p className={s.stepDescription}>결과를 세 값 중 하나로 적고 근거를 붙입니다.</p>
             </li>
           </ol>
           <p className={s.callout}>

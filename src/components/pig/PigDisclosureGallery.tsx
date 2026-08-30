@@ -1,12 +1,19 @@
-import Link from "next/link";
-
+import {
+  CategoryOfferCard,
+  CategoryOfferCardGrid,
+} from "@/components/landing/CategoryOfferCard";
+import offerStyles from "@/components/landing/landing.module.css";
+import type { SubscriptionPhase } from "@/components/site/offers";
 import { PIG_GALLERY, type PigDisclosureProduct } from "@/lib/content/pig";
+import type { Verdict } from "@/lib/verify/types";
 
 import s from "./pig.module.css";
 
 interface PigDisclosureGalleryProps {
   readonly products: readonly PigDisclosureProduct[];
   readonly selectedProductId: PigDisclosureProduct["id"];
+  readonly analysisStatus: SubscriptionPhase | null;
+  readonly analysisVerdict: Verdict | null;
 }
 
 function formatWon(value: number): string {
@@ -16,64 +23,77 @@ function formatWon(value: number): string {
   return `${value.toLocaleString("ko-KR")}원`;
 }
 
+const buildProductHref = ({
+  productId,
+  analysisStatus,
+  analysisVerdict,
+}: {
+  readonly productId: PigDisclosureProduct["id"];
+  readonly analysisStatus: SubscriptionPhase | null;
+  readonly analysisVerdict: Verdict | null;
+}): string => {
+  const params = new URLSearchParams({ tab: "analysis", product: productId });
+  if (analysisStatus !== null) params.set("status", analysisStatus);
+  if (analysisVerdict !== null) params.set("verdict", analysisVerdict);
+  return `/pig?${params.toString()}#pig-review`;
+};
+
 export function PigDisclosureGallery({
   products,
   selectedProductId,
+  analysisStatus,
+  analysisVerdict,
 }: PigDisclosureGalleryProps) {
   return (
-    <section className={s.card} aria-labelledby="pig-gallery-title">
-      <div className={s.sectionHeading}>
-        <div>
-          <p className={s.sectionLabel}>{PIG_GALLERY.label}</p>
-          <h3 className={s.sectionTitle} id="pig-gallery-title">
-            {PIG_GALLERY.title}
-          </h3>
-          <p className={s.sectionDescription}>{PIG_GALLERY.description}</p>
-        </div>
-        <span className={s.badge}>{PIG_GALLERY.badge}</span>
-      </div>
+    <section className={s.gallerySection} aria-labelledby="pig-gallery-title">
+      <h2 className={offerStyles.categoryOfferSectionTitle} id="pig-gallery-title">
+        최근 상품
+      </h2>
 
-      <div className={s.galleryGrid}>
-        {products.map((product) => {
-          const isSelected = product.id === selectedProductId;
-          const returnNote =
-            product.settlement.realizedReturnPercent === null
-              ? PIG_GALLERY.noReturn
-              : `DART 기재 수익률 ${product.settlement.realizedReturnPercent.toFixed(1)}%`;
-          return (
-            <Link
-              className={isSelected ? `${s.galleryCard} ${s.galleryCardActive}` : s.galleryCard}
-              href={`/pig?product=${product.id}#pig-detail`}
-              aria-current={isSelected ? "page" : undefined}
-              key={product.id}
-            >
-              <div className={s.galleryCardTop}>
-                <span>제{product.round}호</span>
-                <em>{product.statusLabel}</em>
-              </div>
-              <h4>{product.productName}</h4>
-              <p className={s.metaLine}>
-                {product.farm.region} · {product.farm.name}
-              </p>
-              <dl className={s.galleryCardFacts}>
-                <div>
-                  <dt>{PIG_GALLERY.headsLabel}</dt>
-                  <dd>{product.offering.heads.toLocaleString("ko-KR")}두</dd>
-                </div>
-                <div>
-                  <dt>{PIG_GALLERY.amountLabel}</dt>
-                  <dd>{formatWon(product.offering.issueAmountWon)}</dd>
-                </div>
-              </dl>
-              <small className={s.galleryCardNote}>{returnNote}</small>
-              <span className={s.galleryCardCta}>
-                {isSelected ? PIG_GALLERY.ctaSelected : PIG_GALLERY.ctaOpen}
-                <b aria-hidden="true">→</b>
-              </span>
-            </Link>
-          );
-        })}
-      </div>
+      {products.length > 0 ? (
+        <CategoryOfferCardGrid>
+          {products.map((product) => {
+            const isSelected = product.id === selectedProductId;
+            const returnNote =
+              product.settlement.realizedReturnPercent === null
+                ? PIG_GALLERY.noReturn
+                : `DART 기재 수익률 ${product.settlement.realizedReturnPercent.toFixed(1)}%`;
+            return (
+              <CategoryOfferCard
+                key={product.id}
+                id={`pig-${product.round}`}
+                title={`한돈 ${product.round}호`}
+                assetLabel="한돈"
+                badge={product.statusLabel}
+                badgeTone="closed"
+                meta={`${product.offering.subscriptionPeriod} · ${product.farm.region} · ${product.farm.name}`}
+                metrics={[
+                  {
+                    label: PIG_GALLERY.headsLabel,
+                    value: `${product.offering.heads.toLocaleString("ko-KR")}두`,
+                  },
+                  {
+                    label: PIG_GALLERY.amountLabel,
+                    value: formatWon(product.offering.issueAmountWon),
+                  },
+                ]}
+                note={returnNote}
+                href={buildProductHref({
+                  productId: product.id,
+                  analysisStatus,
+                  analysisVerdict,
+                })}
+                ctaLabel={
+                  isSelected ? PIG_GALLERY.ctaSelected : PIG_GALLERY.ctaOpen
+                }
+                current={isSelected}
+              />
+            );
+          })}
+        </CategoryOfferCardGrid>
+      ) : (
+        <p className={s.galleryEmpty}>선택한 필터에 해당하는 공모가 없습니다.</p>
+      )}
     </section>
   );
 }

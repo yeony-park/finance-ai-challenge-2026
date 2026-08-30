@@ -1,3 +1,7 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
 import {
   FILING_HEADING_ID,
   HISTORY_HEADING_ID,
@@ -30,12 +34,54 @@ export function ReportChapterNav({
   const chapters = CHAPTERS.filter(
     (chapter) => hasFilingFacts || chapter.id !== FILING_HEADING_ID,
   );
+  const [activeId, setActiveId] = useState(VERDICT_HEADING_ID);
+
+  useEffect(() => {
+    let frame = 0;
+    const visibleChapterIds = CHAPTERS.filter(
+      (chapter) => hasFilingFacts || chapter.id !== FILING_HEADING_ID,
+    ).map((chapter) => chapter.id);
+
+    const updateActiveChapter = () => {
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(() => {
+        const anchorOffset = Math.min(window.innerHeight * 0.42, 320);
+        let nextId = visibleChapterIds[0] ?? VERDICT_HEADING_ID;
+
+        visibleChapterIds.forEach((id) => {
+          const heading = document.getElementById(id);
+          if (heading && heading.getBoundingClientRect().top <= anchorOffset) {
+            nextId = id;
+          }
+        });
+
+        setActiveId(nextId);
+      });
+    };
+
+    updateActiveChapter();
+    window.addEventListener("scroll", updateActiveChapter, { passive: true });
+    window.addEventListener("hashchange", updateActiveChapter);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", updateActiveChapter);
+      window.removeEventListener("hashchange", updateActiveChapter);
+    };
+  }, [hasFilingFacts]);
 
   return (
     <nav className={s.chapterNav} aria-label="리포트 목차">
       <div className={s.chapterNavRow}>
         {chapters.map((chapter) => (
-          <a key={chapter.id} className={s.chapterLink} href={`#${chapter.id}`}>
+          <a
+            key={chapter.id}
+            className={s.chapterLink}
+            href={`#${chapter.id}`}
+            data-active={activeId === chapter.id}
+            aria-current={activeId === chapter.id ? "location" : undefined}
+            onClick={() => setActiveId(chapter.id)}
+          >
             {chapter.label}
           </a>
         ))}

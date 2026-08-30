@@ -54,13 +54,14 @@ vi.mock("@/lib/db/repositories/product-knowledge", () => ({
         sourceUrl: "https://example.com/product.pdf",
         asOf: "2026-08-29",
         sourceHash: "b".repeat(64),
-        status: "ready" as const,
+        status: "partial" as const,
         limitations: ["공개 설명서 범위만 확인했습니다."],
       };
       return {
         documents: [document],
         chunks: [{
           ...document,
+          status: "ready" as const,
           chunkId: "chunk-10",
           page: 2,
           text: `공모금액은 ${state.pdfAmountWon.toLocaleString("ko-KR")}원입니다.`,
@@ -125,7 +126,7 @@ describe("integration repository API wiring", () => {
     });
   });
 
-  it("exact product PDF provenance를 붙이고 구조화값 충돌을 덮어쓰지 않는다", async () => {
+  it("partial product PDF의 ready chunk provenance를 붙이고 구조화값 충돌을 덮어쓰지 않는다", async () => {
     state.pdfAmountWon = 130_000_000;
     const response = await evidencePost(request("http://localhost/api/evidence/query", {
       categoryId: "cattle",

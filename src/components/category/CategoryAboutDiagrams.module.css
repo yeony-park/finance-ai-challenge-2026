@@ -1,0 +1,5 @@
+.diagramImage {
+  display: block;
+  width: min(100%, 27rem);
+  height: auto;
+}

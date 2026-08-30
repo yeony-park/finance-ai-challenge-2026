@@ -1,3 +1,10 @@
+"use client";
+
+import { m } from "motion/react";
+import { useId, useRef, useState } from "react";
+
+import { MOTION_EASE } from "@/components/motion/tokens";
+import { useReducedMotionSafe } from "@/components/motion/useReducedMotionSafe";
 import {
   PIG_PRICE,
   type PigDisclosureProduct,
@@ -33,13 +40,22 @@ export function PigMarketInfographic({
   products,
   selectedProduct,
 }: PigMarketInfographicProps) {
+  const svgRef = useRef<SVGSVGElement | null>(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const isReduced = useReducedMotionSafe();
+  const gradientId = `pig-market-area-${useId().replaceAll(":", "")}`;
   const firstPoint = market.points[0];
   const latestPoint = market.points.at(-1);
   if (!firstPoint || !latestPoint) return null;
 
   const plotWidth = CHART_WIDTH - PLOT.left - PLOT.right;
   const plotHeight = CHART_HEIGHT - PLOT.top - PLOT.bottom;
-  const prices = market.points.map((point) => point.priceWonPerKg);
+  const selectedReferencePrice =
+    selectedProduct.pricing.baselinePriceWonPerKg;
+  const prices = [
+    ...market.points.map((point) => point.priceWonPerKg),
+    selectedReferencePrice,
+  ];
   const axisMin = Math.floor((Math.min(...prices) - 50) / 50) * 50;
   const axisMax = Math.ceil((Math.max(...prices) + 50) / 50) * 50;
   const axisRange = Math.max(axisMax - axisMin, 1);
@@ -55,6 +71,12 @@ export function PigMarketInfographic({
   const linePath = chartPoints
     .map((point, index) => `${index === 0 ? "M" : "L"} ${point.x} ${point.y}`)
     .join(" ");
+  const areaPath = `${linePath} L ${chartPoints.at(-1)?.x ?? 0} ${
+    CHART_HEIGHT - PLOT.bottom
+  } L ${chartPoints[0]?.x ?? 0} ${CHART_HEIGHT - PLOT.bottom} Z`;
+  const selectedReferenceY = yFor(selectedReferencePrice);
+  const selectedReferenceLabel = `제${selectedProduct.round}호 공시 기준가 (${selectedProduct.pricing.baselineMonth.replace("-", ".")}) ${selectedReferencePrice.toLocaleString("ko-KR")}원/kg`;
+  const hoveredPoint = hoveredIndex === null ? null : chartPoints[hoveredIndex];
   const ticks = [axisMax, axisMin + axisRange / 2, axisMin];
   const change = (latestPoint.priceWonPerKg / firstPoint.priceWonPerKg - 1) * 100;
   const priceDelta = Math.round(latestPoint.priceWonPerKg - firstPoint.priceWonPerKg);
@@ -69,6 +91,23 @@ export function PigMarketInfographic({
   const roundScaleMin = Math.floor((Math.min(...roundPrices) - 150) / 250) * 250;
   const roundScaleMax = Math.ceil((Math.max(...roundPrices) + 150) / 250) * 250;
   const roundScaleRange = Math.max(roundScaleMax - roundScaleMin, 1);
+
+  const handleChartMove = (clientX: number): void => {
+    const svg = svgRef.current;
+    if (!svg) return;
+    const rect = svg.getBoundingClientRect();
+    const pointerX = ((clientX - rect.left) / rect.width) * CHART_WIDTH;
+    let closestIndex = 0;
+    let closestDistance = Number.POSITIVE_INFINITY;
+    chartPoints.forEach((point, index) => {
+      const distance = Math.abs(point.x - pointerX);
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestIndex = index;
+      }
+    });
+    setHoveredIndex(closestIndex);
+  };
 
   return (
     <div className={s.priceDashboard}>
@@ -107,67 +146,162 @@ export function PigMarketInfographic({
                 <span key={tick}>{Math.round(tick).toLocaleString("ko-KR")}</span>
               ))}
             </div>
-            <svg
-              className={s.chartSvg}
-              viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`}
-              role="img"
-              aria-labelledby="pig-market-chart-title pig-market-chart-desc"
-            >
-              <title id="pig-market-chart-title">
-                2026년 5월부터 7월까지 돼지 경락가격 변화
-              </title>
-              <desc id="pig-market-chart-desc">
-                {market.points
-                  .map(
-                    (point) =>
-                      `${Number(point.month.slice(-2))}월 ${Math.round(point.priceWonPerKg).toLocaleString("ko-KR")}원`,
-                  )
-                  .join(", ")}
-              </desc>
-              {ticks.map((tick) => {
-                const y = yFor(tick);
-                return (
+            <div className={s.chartCanvas}>
+              <p id="pig-market-chart-help" className={s.srOnly}>
+                그래프에 초점을 맞춘 뒤 좌우 방향키 또는 Home, End 키로 월별 값을 확인할
+                수 있습니다.
+              </p>
+              <svg
+                ref={svgRef}
+                className={s.chartSvg}
+                viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`}
+                role="img"
+                tabIndex={0}
+                aria-labelledby="pig-market-chart-title pig-market-chart-desc"
+                aria-describedby="pig-market-chart-help"
+                onPointerMove={(event) => handleChartMove(event.clientX)}
+                onPointerDown={(event) => handleChartMove(event.clientX)}
+                onPointerLeave={(event) => {
+                  if (event.pointerType === "mouse" && document.activeElement !== svgRef.current) {
+                    setHoveredIndex(null);
+                  }
+                }}
+                onFocus={() => setHoveredIndex(chartPoints.length - 1)}
+                onBlur={() => setHoveredIndex(null)}
+                onKeyDown={(event) => {
+                  if (event.key === "Home" || event.key === "End") {
+                    event.preventDefault();
+                    setHoveredIndex(event.key === "Home" ? 0 : chartPoints.length - 1);
+                    return;
+                  }
+                  if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+                  event.preventDefault();
+                  const direction = event.key === "ArrowLeft" ? -1 : 1;
+                  setHoveredIndex((current) =>
+                    Math.min(
+                      chartPoints.length - 1,
+                      Math.max(0, (current ?? chartPoints.length - 1) + direction),
+                    ),
+                  );
+                }}
+              >
+                <title id="pig-market-chart-title">
+                  2026년 5월부터 7월까지 돼지 경락가격 변화
+                </title>
+                <desc id="pig-market-chart-desc">
+                  {market.points
+                    .map(
+                      (point) =>
+                        `${Number(point.month.slice(-2))}월 ${Math.round(point.priceWonPerKg).toLocaleString("ko-KR")}원`,
+                    )
+                    .join(", ")}
+                  {`, ${selectedReferenceLabel}`}
+                </desc>
+                <defs>
+                  <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+                    <stop
+                      offset="0%"
+                      stopColor="var(--ds-accent-line)"
+                      stopOpacity="0.28"
+                    />
+                    <stop
+                      offset="100%"
+                      stopColor="var(--ds-accent-soft)"
+                      stopOpacity="0.08"
+                    />
+                  </linearGradient>
+                </defs>
+                {ticks.map((tick) => {
+                  const y = yFor(tick);
+                  return (
+                    <line
+                      key={tick}
+                      className={s.chartGrid}
+                      x1={PLOT.left}
+                      x2={CHART_WIDTH - PLOT.right}
+                      y1={y}
+                      y2={y}
+                      strokeDasharray="4 9"
+                      vectorEffect="non-scaling-stroke"
+                    />
+                  );
+                })}
+                <m.path
+                  className={s.chartArea}
+                  d={areaPath}
+                  fill={`url(#${gradientId})`}
+                  initial={isReduced ? false : { opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true, amount: 0.35 }}
+                  transition={{ duration: 0.7, ease: MOTION_EASE }}
+                />
+                <g aria-hidden="true">
                   <line
-                    key={tick}
-                    className={s.chartGrid}
+                    className={s.offerReferenceLine}
                     x1={PLOT.left}
                     x2={CHART_WIDTH - PLOT.right}
-                    y1={y}
-                    y2={y}
-                    strokeDasharray="5 8"
+                    y1={selectedReferenceY}
+                    y2={selectedReferenceY}
                     vectorEffect="non-scaling-stroke"
                   />
-                );
-              })}
-              {chartPoints.map((point) => (
-                <line
-                  key={`${point.month}-guide`}
-                  className={s.chartGuide}
-                  x1={point.x}
-                  x2={point.x}
-                  y1={point.y}
-                  y2={CHART_HEIGHT - PLOT.bottom}
+                  <text
+                    className={s.offerReferenceLabel}
+                    x={CHART_WIDTH - PLOT.right - 4}
+                    y={selectedReferenceY - 7}
+                    textAnchor="end"
+                  >
+                    {selectedReferenceLabel}
+                  </text>
+                </g>
+                <path
+                  className={s.chartLine}
+                  d={linePath}
                   vectorEffect="non-scaling-stroke"
                 />
-              ))}
-              <path
-                className={s.chartLine}
-                d={linePath}
-                vectorEffect="non-scaling-stroke"
-              />
-              {chartPoints.map((point, index) => (
-                <circle
-                  key={point.month}
-                  className={
-                    index === chartPoints.length - 1 ? s.chartDotLast : s.chartDot
-                  }
-                  cx={point.x}
-                  cy={point.y}
-                  r="6"
-                  vectorEffect="non-scaling-stroke"
-                />
-              ))}
-            </svg>
+                {hoveredPoint ? (
+                  <line
+                    className={s.chartGuide}
+                    x1={hoveredPoint.x}
+                    x2={hoveredPoint.x}
+                    y1={PLOT.top}
+                    y2={CHART_HEIGHT - PLOT.bottom}
+                    vectorEffect="non-scaling-stroke"
+                  />
+                ) : null}
+                {chartPoints.map((point, index) => (
+                  <circle
+                    key={point.month}
+                    className={`${
+                      index === chartPoints.length - 1 ? s.chartDotLast : s.chartDot
+                    } ${hoveredIndex === index ? s.chartDotActive : ""}`}
+                    cx={point.x}
+                    cy={point.y}
+                    r="6"
+                    vectorEffect="non-scaling-stroke"
+                  />
+                ))}
+              </svg>
+              {hoveredPoint ? (
+                <div
+                  className={s.marketChartTooltip}
+                  style={{
+                    left: `${Math.min(86, Math.max(14, (hoveredPoint.x / CHART_WIDTH) * 100))}%`,
+                    top: `${Math.max(22, (hoveredPoint.y / CHART_HEIGHT) * 100)}%`,
+                  }}
+                >
+                  <b>{Number(hoveredPoint.month.slice(-2))}월</b>
+                  <span>
+                    {Math.round(hoveredPoint.priceWonPerKg).toLocaleString("ko-KR")}원/kg
+                  </span>
+                  <small>경락 {hoveredPoint.headCount.toLocaleString("ko-KR")}두</small>
+                </div>
+              ) : null}
+              <p className={s.srOnly} aria-live="polite" aria-atomic="true">
+                {hoveredPoint
+                  ? `${Number(hoveredPoint.month.slice(-2))}월, ${Math.round(hoveredPoint.priceWonPerKg).toLocaleString("ko-KR")}원/kg, 경락 ${hoveredPoint.headCount.toLocaleString("ko-KR")}두`
+                  : ""}
+              </p>
+            </div>
           </div>
 
           <div className={s.marketMonths} role="list" aria-label="월별 경락가격과 경락두수">

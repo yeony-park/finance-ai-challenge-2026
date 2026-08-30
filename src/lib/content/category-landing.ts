@@ -1,6 +1,6 @@
 import type { VerificationLayer } from "@/lib/verify/contract/category";
 
-export const OFFERS_SECTION_TITLE = "공모별 확인 현황";
+export const OFFERS_SECTION_TITLE = "최근 상품";
 
 export const OFFERS_SECTION_LEAD =
   "검증 가능한 공개 데이터가 있는 공모 전수를 공시 접수일순 그대로 보여줍니다.";
@@ -20,7 +20,7 @@ export const verdictTotalsLead = (
 ): string =>
   `공모 ${offerCount}건에서 공시된 기재 ${itemCount.toLocaleString("ko-KR")}건을 공적 원장과 하나씩 대조한 누적 결과입니다.`;
 
-export const LAYERS_SECTION_TITLE = "무엇을 어디까지 대조하나";
+export const LAYERS_SECTION_TITLE = "대조는 어떻게 이루어지나요?";
 
 export const LAYERS_SECTION_LEAD =
   "확인 질문마다 어떤 공공 데이터로 어디까지 대조하는지, 데이터 깊이의 차이까지 그대로 적습니다.";
@@ -37,4 +37,4 @@ export const FACT_STRIP_LINK = "신고서 정보 전체 보기 →";
 
 export const ISSUER_SLOT_TITLE = "발행사의 과거 기록";
 
-export const REPORT_OPEN_LABEL = "리포트 열기 →";
+export const REPORT_OPEN_LABEL = "검증 리포트 보기 →";

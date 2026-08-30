@@ -1,50 +1,95 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 
 import { Reveal } from "@/components/motion/Reveal";
-import { orderByInterests, useProfile } from "@/components/site/profile";
-import { CATEGORY_REGISTRY } from "@/lib/content/categories";
+import { useProfile } from "@/components/site/profile";
+import { categoryById } from "@/lib/content/categories";
 import { INTEREST_TAG } from "@/lib/content/onboarding";
 
-import s from "./home.module.css";
+import layout from "./home.module.css";
+import tags from "./home-tags.module.css";
+import { HomeSectionFrame, HomeSectionHeader } from "./HomeSection";
+import s from "./CategoryGrid.module.css";
+
+const CATEGORY_ORDER = ["art", "cattle", "pig", "real-estate"] as const;
+
+const categoryImageSrc = (categoryId: string) => `/category-${categoryId}.jpg`;
 
 export function CategoryGrid() {
   const profile = useProfile();
-  const entries = orderByInterests(CATEGORY_REGISTRY, profile.interests);
+  const entries = CATEGORY_ORDER.map((categoryId) => categoryById(categoryId));
 
   return (
-    <section className={s.section} aria-labelledby="category-grid-title">
-      <div className={s.wrap}>
-        <h2 id="category-grid-title" className={s.sectionTitle}>
-          카테고리별 확인 현황
-        </h2>
-        <p className={s.sectionLead}>
-          네 카테고리를 같은 기준으로 다룹니다. 데이터 깊이의 차이는 각 페이지의
-          층별 지원 선언으로 그대로 표시합니다.
-        </p>
-        <Reveal>
-        <div className={s.categoryGrid}>
-          {entries.map((entry) => (
-            <Link key={entry.id} href={entry.href} className={s.categoryCard}>
-              <span className={s.categoryLabel}>
-                {entry.label}
-                {entry.subLabel ? (
-                  <span className={s.categorySub}>({entry.subLabel})</span>
-                ) : null}
-                {profile.interests.includes(entry.id) ? (
-                  <span className={s.checkTag}>{INTEREST_TAG}</span>
-                ) : null}
-              </span>
-              <p className={s.categoryNote}>{entry.note}</p>
+    <HomeSectionFrame
+      labelledBy="category-grid-title"
+      containerClassName={s.categoryStage}
+    >
+        <HomeSectionHeader
+          titleId="category-grid-title"
+          title="카테고리별 확인 현황"
+          className={layout.categorySectionHead}
+          titleRowClassName={s.sectionTitleRow}
+          aside={
+            <Link
+              href="/offers"
+              className={`${layout.sectionAllReports} ${s.sectionAllReports}`}
+            >
+              전체 검증 리포트 보기 <span aria-hidden="true">→</span>
             </Link>
-          ))}
-        </div>
-        <Link href="/offers" className={s.bandLink}>
-          전체 검증 리포트 보기 →
-        </Link>
+          }
+          lead={
+            <>
+              미술품·한우·한돈·부동산의 공시 내용을 공공 원장과 공식 자료로
+              항목별 대조하고, 확인 근거가 없으면 “대조 불가”로 표시합니다.
+            </>
+          }
+        />
+        <Reveal>
+          <div className={s.categoryGrid}>
+            {entries.map((entry, index) => (
+              <article key={entry.id} className={s.categoryCard}>
+                <Link
+                  href={entry.href}
+                  className={s.categoryVisual}
+                  data-category={entry.id}
+                  aria-label={`${entry.label} 확인 현황 보기`}
+                >
+                  <Image
+                    src={categoryImageSrc(entry.id)}
+                    alt={`${entry.label} 카테고리 대표 이미지`}
+                    fill
+                    sizes="(max-width: 760px) calc(100vw - 2.25rem), (max-width: 1100px) calc((100vw - 5rem) / 2), 25vw"
+                    className={s.categoryPhotoImg}
+                  />
+                  <span className={s.categoryIndex} aria-hidden="true">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                </Link>
+                <div className={s.categoryBody}>
+                  <h3 className={s.categoryLabel}>
+                    {entry.label}
+                    {entry.subLabel ? (
+                      <span className={s.categorySub}>({entry.subLabel})</span>
+                    ) : null}
+                    {profile.interests.includes(entry.id) ? (
+                      <span className={tags.checkTag}>{INTEREST_TAG}</span>
+                    ) : null}
+                  </h3>
+                  <p className={s.categoryNote}>
+                    {entry.cardNote.map((line) => (
+                      <span key={line}>{line}</span>
+                    ))}
+                  </p>
+                  <Link href={entry.href} className={s.categoryReportLink}>
+                    분석 보기 <span aria-hidden="true">→</span>
+                  </Link>
+                </div>
+              </article>
+            ))}
+          </div>
         </Reveal>
-      </div>
-    </section>
+    </HomeSectionFrame>
   );
 }

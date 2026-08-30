@@ -53,6 +53,7 @@ export default function RootLayout({
   return (
     <html
       lang="ko"
+      data-scroll-behavior="smooth"
       className={`${sansKr.variable} ${serifKr.variable} ${plexMono.variable} antialiased`}
     >
       <body>

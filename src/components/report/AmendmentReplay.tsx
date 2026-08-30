@@ -3,7 +3,6 @@ import type {
   DiffTextSegment,
 } from "@/lib/verify/amend/replay-view";
 
-import { IconAlert } from "./icons";
 import s from "./report.module.css";
 
 interface AmendmentReplayProps {
@@ -44,69 +43,81 @@ export function AmendmentReplay({ replay }: AmendmentReplayProps) {
       </div>
       <p className={s.replayLead}>{replay.lead}</p>
 
-      <p className={s.replayDisclosure}>
-        <IconAlert className={s.ic} />
-        <span>{replay.disclosure}</span>
-      </p>
-
       <div className={s.stageStack}>
-        {replay.stages.map((stage) => (
+        {replay.stages.map((stage, index) => (
           <section key={stage.id} className={s.stageBlock} aria-label={stage.name}>
-            <p className={s.stageBlockName}>{stage.name}</p>
+            <div className={s.stageBlockHead}>
+              <span className={s.stageStep} aria-hidden="true">
+                {index + 1}
+              </span>
+              <p className={s.stageBlockName}>{stage.name}</p>
+            </div>
             <p className={s.stageTitle}>{stage.title}</p>
             <p className={s.stageSummary}>{stage.summary}</p>
 
             {stage.rows.length > 0 ? (
-              <dl className={s.stageRows}>
-                {stage.rows.map((row) => (
-                  <div key={row.id} className={s.stageRow}>
-                    <dt className={s.stageRowLabel}>{row.label}</dt>
-                    <dd className={s.stageRowDetail}>
-                      {row.detail}
-                      {row.diff ? (
-                        <details className={s.rowDiff}>
-                          <summary className={s.rowDiffSummary}>
-                            정정 전 → 후 발췌 보기
-                          </summary>
-                          <div className={s.rowDiffBody}>
-                            <div className={s.rowDiffCol}>
-                              <span className={s.rowDiffTag}>정정 전</span>
-                              <p className={s.rowDiffText}>
-                                <DiffText
-                                  segments={row.diff.beforeSegments}
-                                  fallback="—"
-                                  markClass={s.rowDiffMarkBefore}
-                                />
-                              </p>
+              <details className={s.stageDetails}>
+                <summary className={s.stageDetailsSummary}>
+                  세부 기록 {stage.rows.length}건 보기
+                </summary>
+                <dl className={s.stageRows}>
+                  {stage.rows.map((row) => (
+                    <div key={row.id} className={s.stageRow}>
+                      <dt className={s.stageRowLabel}>{row.label}</dt>
+                      <dd className={s.stageRowDetail}>
+                        {row.detail}
+                        {row.diff ? (
+                          <details className={s.rowDiff}>
+                            <summary className={s.rowDiffSummary}>
+                              정정 전 → 후 발췌 보기
+                            </summary>
+                            <div className={s.rowDiffBody}>
+                              <div className={s.rowDiffCol}>
+                                <span className={s.rowDiffTag}>정정 전</span>
+                                <p className={s.rowDiffText}>
+                                  <DiffText
+                                    segments={row.diff.beforeSegments}
+                                    fallback="—"
+                                    markClass={s.rowDiffMarkBefore}
+                                  />
+                                </p>
+                              </div>
+                              <div className={s.rowDiffCol}>
+                                <span
+                                  className={`${s.rowDiffTag} ${s.rowDiffTagAfter}`}
+                                >
+                                  정정 후
+                                </span>
+                                <p className={s.rowDiffText}>
+                                  <DiffText
+                                    segments={row.diff.afterSegments}
+                                    fallback="—"
+                                    markClass={s.rowDiffMarkAfter}
+                                  />
+                                </p>
+                              </div>
+                              <p className={s.rowDiffSource}>{row.diff.sourceNote}</p>
                             </div>
-                            <div className={s.rowDiffCol}>
-                              <span
-                                className={`${s.rowDiffTag} ${s.rowDiffTagAfter}`}
-                              >
-                                정정 후
-                              </span>
-                              <p className={s.rowDiffText}>
-                                <DiffText
-                                  segments={row.diff.afterSegments}
-                                  fallback="—"
-                                  markClass={s.rowDiffMarkAfter}
-                                />
-                              </p>
-                            </div>
-                            <p className={s.rowDiffSource}>{row.diff.sourceNote}</p>
-                          </div>
-                        </details>
-                      ) : null}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
+                          </details>
+                        ) : null}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              </details>
             ) : stage.emptyText ? (
               <p className={s.stageEmpty}>{stage.emptyText}</p>
             ) : null}
           </section>
         ))}
       </div>
+
+      <details className={s.supportingDetails}>
+        <summary className={s.supportingSummary}>재대조 기준 보기</summary>
+        <div className={s.supportingTextBody}>
+          <p>{replay.disclosure}</p>
+        </div>
+      </details>
     </div>
   );
 }

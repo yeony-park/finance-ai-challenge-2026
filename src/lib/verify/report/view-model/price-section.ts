@@ -3,7 +3,7 @@ import { maskFreeText } from "../mask";
 import type { PricePlacementRecord } from "../snapshot";
 import type { ReportContext } from "./context";
 import { buildRealEstatePriceSection } from "./real-estate";
-import type { DemoView, NoteItemView } from "./types";
+import type { DemoView, NoteItemView, PriceVisualView } from "./types";
 
 const NO_PLACEMENT_REASON = "대조할 공공 데이터가 아직 연결되지 않았습니다.";
 
@@ -113,6 +113,38 @@ const unplacedItems = (ctx: ReportContext): readonly NoteItemView[] => {
   }));
 };
 
+const priceVisual = (
+  placements: readonly PricePlacementRecord[],
+): PriceVisualView | undefined => {
+  const first = placements[0];
+  if (!first) return undefined;
+
+  const prices = placements.map((placement) => placement.claimedPerHead);
+  const total = prices.reduce((sum, price) => sum + price, 0);
+
+  return {
+    referenceMonth: first.referenceMonth,
+    breedName: first.breedName,
+    sexName: first.sexName,
+    averagePricePerKg: first.averagePricePerKg,
+    sampleSize: first.sampleSize,
+    windowAveragePricePerKg: first.windowAveragePricePerKg ?? null,
+    monthVsWindowPercent: first.monthVsWindowPercent ?? null,
+    grades: first.grades.map((grade) => ({
+      name: grade.gradeName,
+      pricePerKg: grade.pricePerKg,
+      headCount: grade.headCount,
+    })),
+    acquisition: {
+      prices,
+      total,
+      average: total / prices.length,
+      min: Math.min(...prices),
+      max: Math.max(...prices),
+    },
+  };
+};
+
 export const buildPriceSection = (ctx: ReportContext): DemoView["price"] => {
   if (ctx.assetKind === "real-estate") return buildRealEstatePriceSection(ctx);
 
@@ -153,5 +185,6 @@ export const buildPriceSection = (ctx: ReportContext): DemoView["price"] => {
       ...unplacedItems(ctx),
     ],
     note: BASIS_NOTE,
+    visual: priceVisual(placements),
   };
 };

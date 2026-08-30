@@ -12,11 +12,13 @@ export function ReportDocument({
   view,
   narrative = null,
   overview = null,
+  lifecycle = null,
   children,
 }: {
   readonly view: DemoView;
   readonly narrative?: Readonly<Record<ExplainLevel, NarrativeLevel>> | null;
   readonly overview?: ReactNode;
+  readonly lifecycle?: ReactNode;
   readonly children?: ReactNode;
 }) {
   const profile = useProfile();
@@ -30,6 +32,7 @@ export function ReportDocument({
         level={level}
         narrative={narrative}
         overview={overview}
+        lifecycle={lifecycle}
         onLevelChange={setLevelOverride}
       />
       {children}

@@ -28,7 +28,7 @@ const fromCommon = async (
   );
   if (!loaded.product || loaded.product.scenarioId !== scope.scenarioId) return null;
   const documents: ProductKnowledgeDocument[] = loaded.documents
-    .filter((document) => document.status === "ready")
+    .filter((document) => document.status === "ready" || document.status === "partial")
     .map((document) => ({
       categoryId: document.categoryId,
       productId: document.productId,
@@ -41,7 +41,7 @@ const fromCommon = async (
       sourceUrl: document.sourceUrl,
       asOf: document.asOf,
       sourceHash: document.sourceHash,
-      status: "ready",
+      status: document.status === "partial" ? "partial" : "ready",
       approvedForExternalAi: document.approvedForExternalAi === true,
       piiReviewStatus: document.piiReviewStatus === "passed" ? "passed" : "not-reviewed",
       limitations: document.limitations,
@@ -82,7 +82,10 @@ const fromLegacyScenario = async (
   const loaded = await loadKnowledgeScope(scope.scenarioId, scope.productId, dataRoot);
   if (loaded.scenario?.categoryId !== scope.categoryId) return EMPTY_RESULT;
   const documents: ProductKnowledgeDocument[] = loaded.documents
-    .filter((document) => document.status === "ready" && document.dataNature === scope.dataNature)
+    .filter((document) =>
+      (document.status === "ready" || document.status === "partial") &&
+      document.dataNature === scope.dataNature
+    )
     .map((document) => ({
       categoryId: document.categoryId,
       productId: document.offerId,
@@ -95,7 +98,7 @@ const fromLegacyScenario = async (
       sourceUrl: document.sourceUrl,
       asOf: document.asOf,
       sourceHash: document.sourceHash,
-      status: "ready",
+      status: document.status === "partial" ? "partial" : "ready",
       approvedForExternalAi: false,
       piiReviewStatus: "not-reviewed",
       limitations: document.limitations,

@@ -1,17 +1,39 @@
 .slot {
-  margin-top: var(--ds-space-8);
+  margin-top: 0;
+  padding-block: var(--ds-section-y-tight);
+  border-top: 1px solid var(--ds-line);
+}
+
+.slotGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--ds-space-5);
+  align-items: start;
+}
+
+.slotGrid > .slotTitle {
+  grid-column: 1;
+  grid-row: auto;
+}
+
+.slotGrid > :not(.slotTitle) {
+  grid-column: 1;
+}
+
+.slotGrid > .slotTitle + * {
+  grid-row: auto;
 }
 
 .slotTitle {
-  font-size: var(--ds-title-md);
-  font-weight: var(--ds-weight-black);
+  font-size: var(--ds-section-title);
+  font-weight: var(--ds-weight-bold);
   letter-spacing: var(--ds-tracking-tight);
   line-height: var(--ds-leading-tight);
   word-break: keep-all;
 }
 
 .slotLead {
-  margin-top: var(--ds-space-2);
+  margin-top: 0;
   font-size: var(--ds-text-sm);
   line-height: var(--ds-leading-relaxed);
   color: var(--ds-ink-muted);
@@ -19,63 +41,110 @@
   word-break: keep-all;
 }
 
-.layerTable {
-  margin-top: var(--ds-space-4);
+.layerTableFrame {
   width: 100%;
-  border-collapse: collapse;
-  font-size: var(--ds-text-base);
+  margin-top: var(--ds-space-2);
+  overflow-x: auto;
+  border-block: 1px solid var(--ds-line-strong);
+  background: var(--ds-surface);
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
 }
+
+.layerTable {
+  width: 100%;
+  min-width: 42rem;
+  border-collapse: collapse;
+  table-layout: fixed;
+  background: var(--ds-surface);
+  font-size: var(--ds-text-sm);
+}
+
+.layerTable th:first-child,
+.layerTable td:first-child {
+  width: 31%;
+}
+
+.layerTable th:nth-child(2),
+.layerTable td:nth-child(2) {
+  width: 17%;
+}
+
 .layerTable th,
 .layerTable td {
   text-align: left;
-  vertical-align: top;
-  padding: var(--ds-space-3) var(--ds-space-4) var(--ds-space-3) 0;
+  vertical-align: middle;
+  padding: var(--ds-space-5) var(--ds-space-4);
   border-bottom: 1px solid var(--ds-line);
 }
+
 .layerTable th {
-  font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
-  font-weight: var(--ds-weight-medium);
-  letter-spacing: var(--ds-tracking-wide);
-  color: var(--ds-ink-faint);
+  padding-block: var(--ds-space-3);
+  font-size: var(--ds-text-xs);
+  font-weight: var(--ds-weight-bold);
+  letter-spacing: var(--ds-tracking-normal);
+  color: var(--ds-ink-muted);
+}
+
+.layerTable tbody tr:last-child td {
+  border-bottom: 0;
 }
 
 .layerName {
   font-weight: var(--ds-weight-bold);
   color: var(--ds-ink);
-  white-space: nowrap;
+  line-height: var(--ds-leading-snug);
+  word-break: keep-all;
 }
 
 .layerLevel {
-  display: inline-block;
-  padding: 0.2rem 0.5rem;
-  border: 1px solid var(--ds-accent-line);
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.75rem;
+  padding: 0.2rem 0.6rem;
+  border: 1px solid var(--ds-verdict-match-line);
   border-radius: var(--ds-radius-sm);
-  background: var(--ds-accent-soft);
-  color: var(--ds-accent-ink);
-  font-family: var(--ds-font-mono);
+  background: var(--ds-verdict-match-soft);
+  color: var(--ds-verdict-match);
   font-size: var(--ds-text-2xs);
+  font-weight: var(--ds-weight-bold);
+  line-height: 1;
   white-space: nowrap;
 }
-.layerLevelPending {
+
+.layerLevel[data-level="partial"] {
+  border-color: var(--ds-accent-line-soft);
+  background: var(--ds-accent-soft);
+  color: var(--ds-accent-ink);
+}
+
+.layerLevel[data-level="unsupported"],
+.layerLevel[data-level="pending"] {
   border-color: var(--ds-line);
-  background: var(--ds-bg-sunken);
+  background: var(--ds-bg-muted);
   color: var(--ds-ink-muted);
 }
 
 .layerBasis {
   color: var(--ds-ink-muted);
-  line-height: var(--ds-leading-snug);
+  line-height: var(--ds-leading-normal);
   word-break: keep-all;
 }
 
 @media (max-width: 640px) {
-  .layerName {
-    white-space: normal;
-    word-break: keep-all;
+  .layerTableFrame {
+    margin-inline: calc(0px - var(--ds-gutter));
+    width: calc(100% + var(--ds-gutter) * 2);
+    padding-inline: var(--ds-gutter);
   }
-  .layerBasis {
-    overflow-wrap: anywhere;
+
+  .layerTable {
+    min-width: 40rem;
+  }
+
+  .layerTable th,
+  .layerTable td {
+    padding-inline: var(--ds-space-3);
   }
 }
 
@@ -232,8 +301,7 @@ span.offerName {
 
 .layerSub {
   display: block;
-  margin-top: 0.15rem;
-  font-family: var(--ds-font-mono);
+  margin-top: var(--ds-space-1);
   font-size: var(--ds-text-2xs);
   font-weight: var(--ds-weight-regular, 400);
   color: var(--ds-ink-faint);

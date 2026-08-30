@@ -1,6 +1,38 @@
 import type { NextConfig } from "next";
 
+const isDevelopment = process.env.NODE_ENV === "development";
+const scriptSrc = `script-src 'self' 'unsafe-inline'${
+  isDevelopment ? " 'unsafe-eval'" : ""
+} https://dapi.kakao.com https://t1.daumcdn.net${
+  isDevelopment ? " http://t1.daumcdn.net" : ""
+}; `;
+const kakaoImageSrc = `https://*.daumcdn.net https://*.kakaocdn.net https://*.kakao.com https://*.maps.daum.net${
+  isDevelopment ? " http://*.daumcdn.net http://*.kakaocdn.net http://*.kakao.com http://*.maps.daum.net" : ""
+}`;
+const kakaoConnectSrc = `https://*.kakao.com https://*.daum.net https://*.daumcdn.net${
+  isDevelopment ? " http://*.kakao.com http://*.daum.net http://*.daumcdn.net" : ""
+}`;
+
 const nextConfig: NextConfig = {
+  devIndicators: false,
+  images: {
+    remotePatterns: [
+      new URL(
+        "https://dzb2k3770zezk.cloudfront.net/file/img/artWork/182/20231129120144c682624f-6317-482a-9f57-b32c6867cb82.jpg",
+      ),
+      new URL(
+        "https://dzb2k3770zezk.cloudfront.net/file/img/artWork/183/20240227153040f4183850-cfda-46f0-b3c9-0d13e999a579.png",
+      ),
+      new URL(
+        "https://dzb2k3770zezk.cloudfront.net/file/img/artWork/191/202604031648559c9f0135-c61f-49c6-9ec3-bb28dc2d7d05.jpg",
+      ),
+      new URL(
+        "https://dzb2k3770zezk.cloudfront.net/file/img/artWork/190/202605141145053bd8f766-cc15-4e47-8b6c-10c56fe4abcc.jpg",
+      ),
+    ],
+    maximumRedirects: 0,
+    dangerouslyAllowLocalIP: false,
+  },
   outputFileTracingIncludes: {
     "/**": [
       "data/public/**/*.json",
@@ -56,9 +88,13 @@ const nextConfig: NextConfig = {
           {
             key: "Content-Security-Policy",
             value:
-              "default-src 'self'; script-src 'self' 'unsafe-inline'; " +
-              "style-src 'self' 'unsafe-inline'; img-src 'self' data:; " +
-              "font-src 'self'; connect-src 'self'; frame-ancestors 'none'; " +
+              "default-src 'self'; " +
+              scriptSrc +
+              "style-src 'self' 'unsafe-inline'; " +
+              `img-src 'self' data: ${kakaoImageSrc}; ` +
+              "font-src 'self'; " +
+              `connect-src 'self' ${kakaoConnectSrc}; ` +
+              "frame-src https://www.mafra.go.kr; frame-ancestors 'none'; " +
               "object-src 'none'; base-uri 'self'",
           },
         ],

@@ -53,11 +53,11 @@ afterEach(async () => {
 });
 
 describe("DB product knowledge exact scope", () => {
-  test("SQL은 product/public/ready와 exact scope를 바인딩한다", async () => {
+  test("SQL은 product/public/partial document/ready chunk와 exact scope를 바인딩한다", async () => {
     let rendered: ReturnType<PgDialect["sqlToQuery"]> | undefined;
     const repository = createDbProductKnowledgeRepository(async (statement) => {
       rendered = new PgDialect().sqlToQuery(statement);
-      return [dbRow()];
+      return [dbRow({ document_status: "partial" })];
     });
     const result = await repository.findExact({
       categoryId: "cattle",
@@ -68,7 +68,8 @@ describe("DB product knowledge exact scope", () => {
     expect(rendered?.sql).toContain("d.scope_kind = 'product'");
     expect(rendered?.sql).toContain("c.scope_kind = 'product'");
     expect(rendered?.sql).toContain("d.approved_for_public = true");
-    expect(rendered?.sql).toContain("d.status = 'ready'");
+    expect(rendered?.sql).toContain("d.status IN ('ready', 'partial')");
+    expect(rendered?.sql).toContain("c.status = 'ready'");
     expect(rendered?.params).toEqual([
       "cattle", "cattle", "livestock-1", "livestock-1",
       "observed", "observed", null, null,
@@ -88,6 +89,8 @@ describe("DB product knowledge exact scope", () => {
       approvedForExternalAi: true,
       piiReviewStatus: "passed",
     });
+    expect(result.documents[0]?.status).toBe("partial");
+    expect(result.chunks[0]?.status).toBe("ready");
   });
 
   test("executor가 다른 scope 행을 반환해도 노출하지 않는다", async () => {
@@ -158,7 +161,7 @@ describe("file product knowledge adapter", () => {
         approvedForExternalAi: true,
         piiReviewStatus: "passed",
         sourceHash: hash,
-        status: "ready",
+        status: "partial",
         pages: [{ page: 1, quality: "ready", limitations: [] }],
         limitations: [],
       }],
@@ -194,8 +197,16 @@ describe("file product knowledge adapter", () => {
       productId: "livestock-1",
       dataNature: "observed",
     })).resolves.toMatchObject({
-      documents: [expect.objectContaining({ documentId: "document-1", sourceId: "document-1" })],
-      chunks: [expect.objectContaining({ chunkId: "chunk-1", productId: "livestock-1" })],
+      documents: [expect.objectContaining({
+        documentId: "document-1",
+        sourceId: "document-1",
+        status: "partial",
+      })],
+      chunks: [expect.objectContaining({
+        chunkId: "chunk-1",
+        productId: "livestock-1",
+        status: "ready",
+      })],
     });
     await expect(repository.findExact({
       categoryId: "pig",

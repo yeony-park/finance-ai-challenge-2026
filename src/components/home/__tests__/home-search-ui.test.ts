@@ -2,7 +2,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, test } from "vitest";
 
-import { NoSearchResultsPanel, ReviewGuidancePanel, SearchResultsPanel } from "../HomeHero";
+import { GenericEvidencePanel, NoSearchResultsPanel, ReviewGuidancePanel, SearchResultsPanel } from "../HomeHero";
 
 describe("홈 검색 응답 UI", () => {
   test("검색 결과는 상품명, 단계, 상세 링크를 표시한다", () => {
@@ -56,5 +56,29 @@ describe("홈 검색 응답 UI", () => {
     expect(markup).toContain("검색 결과 없음");
     expect(markup).toContain("상품명이나 청약·상장 거래·종료 같은 단계로 다시 검색해 주세요");
     expect(markup).not.toContain("한우");
+  });
+
+  test("상품 결과가 없어도 일반 검토 근거와 안전한 출처를 표시한다", () => {
+    const markup = renderToStaticMarkup(createElement(GenericEvidencePanel, {
+      evidence: [{
+        sourceId: "verification-methodology",
+        label: "검증 방법론",
+        url: "https://example.com/methodology",
+        excerpt: "공시와 공공 원장을 같은 기준으로 대조합니다.",
+        asOf: "2026-08-29",
+        hash: "a".repeat(64),
+        status: "approved" as const,
+        dataNature: "observed" as const,
+        categoryId: null,
+        productId: null,
+        score: 1,
+      }],
+    }));
+
+    expect(markup).toContain("일반 검토 근거");
+    expect(markup).toContain("공시와 공공 원장을 같은 기준으로 대조합니다.");
+    expect(markup).toContain('href="https://example.com/methodology"');
+    expect(markup).toContain('rel="noopener noreferrer"');
+    expect(markup).not.toContain("검색 결과 없음");
   });
 });

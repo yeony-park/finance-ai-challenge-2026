@@ -45,8 +45,8 @@ export interface OfferEntry {
 export const OFFERS: readonly OfferEntry[] = [
   {
     id: "livestock-1",
-    title: "가축 1호",
-    assetLabel: "가축",
+    title: "한우 1호",
+    assetLabel: "한우",
     assetKind: "livestock",
     subscription: {
       opensAt: "2024-06-20T00:00:00+09:00",
@@ -56,8 +56,8 @@ export const OFFERS: readonly OfferEntry[] = [
   },
   {
     id: "livestock-2",
-    title: "가축 2호",
-    assetLabel: "가축",
+    title: "한우 2호",
+    assetLabel: "한우",
     assetKind: "livestock",
     subscription: {
       opensAt: "2024-09-13T00:00:00+09:00",
@@ -67,8 +67,8 @@ export const OFFERS: readonly OfferEntry[] = [
   },
   {
     id: "livestock-3",
-    title: "가축 3호",
-    assetLabel: "가축",
+    title: "한우 3호",
+    assetLabel: "한우",
     assetKind: "livestock",
     subscription: {
       opensAt: "2024-12-24T00:00:00+09:00",
@@ -78,8 +78,8 @@ export const OFFERS: readonly OfferEntry[] = [
   },
   {
     id: "livestock-4",
-    title: "가축 4호",
-    assetLabel: "가축",
+    title: "한우 4호",
+    assetLabel: "한우",
     assetKind: "livestock",
     subscription: {
       opensAt: "2025-04-22T00:00:00+09:00",
@@ -89,8 +89,8 @@ export const OFFERS: readonly OfferEntry[] = [
   },
   {
     id: "livestock-5",
-    title: "가축 5호",
-    assetLabel: "가축",
+    title: "한우 5호",
+    assetLabel: "한우",
     assetKind: "livestock",
     subscription: {
       opensAt: "2025-06-19T00:00:00+09:00",
@@ -100,8 +100,8 @@ export const OFFERS: readonly OfferEntry[] = [
   },
   {
     id: "livestock-6",
-    title: "가축 6호",
-    assetLabel: "가축",
+    title: "한우 6호",
+    assetLabel: "한우",
     assetKind: "livestock",
     subscription: {
       opensAt: "2025-11-22T00:00:00+09:00",
@@ -111,8 +111,8 @@ export const OFFERS: readonly OfferEntry[] = [
   },
   {
     id: "livestock-7",
-    title: "가축 7호",
-    assetLabel: "가축",
+    title: "한우 7호",
+    assetLabel: "한우",
     assetKind: "livestock",
     subscription: {
       opensAt: "2026-02-28T10:00:00+09:00",
@@ -121,8 +121,8 @@ export const OFFERS: readonly OfferEntry[] = [
   },
   {
     id: "livestock-8",
-    title: "가축 8호",
-    assetLabel: "가축",
+    title: "한우 8호",
+    assetLabel: "한우",
     assetKind: "livestock",
     subscription: {
       opensAt: "2026-04-17T10:00:00+09:00",
@@ -131,8 +131,8 @@ export const OFFERS: readonly OfferEntry[] = [
   },
   {
     id: "livestock-9",
-    title: "가축 9호",
-    assetLabel: "가축",
+    title: "한우 9호",
+    assetLabel: "한우",
     assetKind: "livestock",
     subscription: {
       opensAt: "2026-09-08T10:00:00+09:00",
@@ -220,7 +220,7 @@ export const buildOfferSchedule = (entry: OfferEntry, now: Date): OfferSchedule 
       ...base,
       phase: "upcoming",
       dday,
-      badge: dday === 0 ? "청약 D-DAY" : `청약 D-${dday}`,
+      badge: dday === 0 ? "D-DAY" : `D-${dday}`,
     };
   }
 

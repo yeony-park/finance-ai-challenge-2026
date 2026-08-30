@@ -45,13 +45,14 @@ export interface ProductKnowledgeDocument extends ProductKnowledgeScope {
   readonly sourceUrl: string;
   readonly asOf: string;
   readonly sourceHash: string;
-  readonly status: "ready";
+  readonly status: "ready" | "partial";
   readonly approvedForExternalAi: boolean;
   readonly piiReviewStatus: "passed" | "not-reviewed";
   readonly limitations: readonly string[];
 }
 
-export interface ProductKnowledgeChunk extends ProductKnowledgeDocument {
+export interface ProductKnowledgeChunk extends Omit<ProductKnowledgeDocument, "status"> {
+  readonly status: "ready";
   readonly chunkId: string;
   readonly page: number;
   readonly text: string;

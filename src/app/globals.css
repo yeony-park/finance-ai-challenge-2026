@@ -35,6 +35,31 @@ body {
   overflow-wrap: break-word;
 }
 
+:where(h1, h2, h3, h4, h5) {
+  line-height: var(--ds-leading-tight);
+  letter-spacing: var(--ds-tracking-tight);
+}
+
+h1 {
+  font-size: var(--ds-heading-h1);
+}
+
+h2 {
+  font-size: var(--ds-heading-h2);
+}
+
+h3 {
+  font-size: var(--ds-heading-h3);
+}
+
+h4 {
+  font-size: var(--ds-heading-h4);
+}
+
+h5 {
+  font-size: var(--ds-heading-h5);
+}
+
 :focus-visible {
   outline: none;
   box-shadow: var(--ds-focus-ring);

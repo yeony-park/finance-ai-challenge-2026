@@ -1,7 +1,6 @@
 import type { OfferSchedule } from "@/components/site/offers";
 import {
   buildLifecycleStages,
-  LIFECYCLE_NOTE,
   LIFECYCLE_TITLE,
   type LifecycleStageView,
 } from "@/lib/content/lifecycle";
@@ -55,20 +54,22 @@ export function LifecycleStrip({
 
   return (
     <section className={s.lifecycle} aria-label={LIFECYCLE_TITLE}>
-      <div className={s.wrap}>
+      <div className={`${s.wrap} ${s.lifecycleWrap}`}>
         <ol className={s.lcRow}>
-          {stages.map((stage) => (
+          {stages.map((stage, index) => (
             <li
               key={stage.id}
               className={`${s.lcStage} ${STATE_CLASS[stage.state]}`}
               aria-current={stage.state === "current" ? "step" : undefined}
             >
+              <span className={s.lcDot} aria-hidden="true">
+                {index + 1}
+              </span>
               <span className={s.lcLabel}>{stage.label}</span>
               {stage.note ? <span className={s.lcNote}>{stage.note}</span> : null}
             </li>
           ))}
         </ol>
-        <p className={s.lcFootnote}>{LIFECYCLE_NOTE}</p>
       </div>
     </section>
   );

@@ -2,22 +2,24 @@
 
 # data/ 매니페스트
 
-생성 시각: 2026-08-29T16:52:43.329Z
+생성 시각: 2026-08-30T15:48:15.629Z
 
 ## 저장 정책
 
 개인정보(농장주 실명·상세주소·농장번호)가 담긴 원천 데이터는 git에 올리지 않는다.
-커밋되는 것은 **이 매니페스트**와 **마스킹이 끝난 공개 산출물(`data/public/`)** 뿐이다.
+커밋되는 것은 **이 매니페스트**, **마스킹이 끝난 공개 산출물(`data/public/`)**, **원문을 제거한 정제 JSON(`data/reference/`)**이다.
 
 | 구분 | 경로 | git |
 |---|---|---|
 | 원문 | `data/raw/{rcpNo}/` | 제외(.gitignore) |
+| 외부 원문 | `data/**/raw/` 및 `data/**/*.{pdf,hwp,hwpx,...}` | 제외(.gitignore) |
 | 실측 스냅샷 | `data/snapshots/` | 제외(.gitignore) |
 | 내부 리포트 | `data/reports/{offerId}/` | 제외(.gitignore) |
 | 공개 리포트 | `data/public/{offerId}/` | **커밋** |
 | 발행사 트랙레코드 | `data/public/track-record/{issuerKey}.json` | **커밋**(공시 집계 — 발행사명·corp_code 미포함) |
 | 경락가 월 집계 | `data/reference/auction-price/` | **커밋**(시장 통계 — 개인정보 없음) |
 | 실거래 월 신고 | `data/reference/rtms/` | **커밋**(시장 통계 — 개인정보 없음) |
+| 정제 참조 JSON | `data/reference/**/*.json` (`raw/` 제외) | **커밋**(비식별·출처 메타데이터 포함) |
 | 공모 기초자료 | `data/offers/{offerId}.json` | **커밋**(공개 자료 정리 — 개인정보 없음) |
 | 매니페스트 | `data/MANIFEST.md` | **커밋** |
 
@@ -32,10 +34,7 @@
 - **재확보**: `npm run verify:collect -- <rcpNo>`
 - **비고**: ZIP 해제본 그대로. 농장 상세주소·개체 식별자 포함.
 
-| 경로 | 바이트 | sha256 |
-|---|---:|---|
-| `data/raw/20260806000159/20260806000159.xml` | 2,271,672 | `34b0a80b80b17b92675a6eba29c0ef623d9e6455607756bbfd8dc33235855972` |
-| `data/raw/20260814003572/20260814003572.xml` | 2,455,175 | `cc815be9d95de6cbe4a6a16f632cfe65c3f56589ce77caa9c7890fefce8b99e2` |
+_현재 로컬에 파일이 없습니다._
 
 ### 2. 실측 스냅샷 (축산물이력제 API 응답)
 
@@ -43,9 +42,7 @@
 - **재확보**: 팀 내부 채널에서 수령하거나, `DATA_GO_KR_API_KEY`로 `npm run verify:live -- --rcpNo <rcpNo>` 재수집
 - **비고**: 농장주 실명(farmerNm)·상세주소(farmAddr) 포함 — 절대 커밋 금지.
 
-| 경로 | 바이트 | sha256 |
-|---|---:|---|
-| `data/snapshots/2026-08-10-bankcow9-37head-trace.json` | 144,844 | `7b5597b48c491d286bec9db2644bb74abbae300656c38fd6ab5aac97c1562985` |
+_현재 로컬에 파일이 없습니다._
 
 ### 3. 내부 판정 리포트
 
@@ -55,8 +52,10 @@
 
 | 경로 | 바이트 | sha256 |
 |---|---:|---|
-| `data/reports/livestock-9/report-2026-08-15T15-52-44-480Z.json` | 430,308 | `eae1cd4fd24efd09bc84ba7d6d7647ff915f5fed9e656e4859f9b379afe6e5ca` |
-| `data/reports/real-estate-a/report-2026-08-21T16-58-05-870Z.json` | 51,295 | `a6a92d2e1de63f3293a312a02943ad373cf611d9f9edf92f31241e99187b21f5` |
+| `data/reports/real-estate-bbric-hiwon/report-2026-08-23T00-00-00-000Z.json` | 17,585 | `5a68a3a3b5fa2e29d595ddb4806f0496095c74d3ad2328726a418177f9dbb3ea` |
+| `data/reports/real-estate-sou-daejeon-startup/report-2026-08-22T20-07-56-237Z.json` | 9,961 | `a77af71d53e97083c7adba80ffa0d21faa70695b2c7e54a81ace06cd5f975235` |
+| `data/reports/real-estate-sou-daejeon-startup/report-2026-08-22T20-11-20-411Z.json` | 7,416 | `64903a2fc51850adeb8f475935ba05e13073ba2154edeb6402e1411099b36cca` |
+| `data/reports/real-estate-sou-daejeon-startup/report-2026-08-22T20-13-42-535Z.json` | 7,446 | `332d3f866cf25d87eca3324648498b4a3d5858184277377d8a747caef4a81484` |
 
 ## 커밋 대상 산출물
 
@@ -239,6 +238,16 @@
 | `data/reference/building-hub/26380-10800-0-0651-0001.json` | 1,216 | `962ac8a7add39efbe5f80db3d92ccf37a84c144e1f525aea4f1cdd95ee3fb47e` |
 | `data/reference/building-register/11650-10800-1678-0004.json` | 666 | `8e1aaf9a6caeed472ab872af079698529d14106b4448379810f26dfe4f7757ca` |
 | `data/reference/ecos/722Y001-base-rate.json` | 121,047 | `42757c94fa387a0377afa0b7aa212f1d8e94e9673285808e440b4b624d844abe` |
+| `data/reference/livestock-disease/api/mafra_disease_occurrences_auxiliary.json` | 197,159 | `2c6f970a9178cd44a2f1b9ca97bab6717e9a09a935a5a990b5b8ce49721c0dbd` |
+| `data/reference/livestock-disease/api/mafra_farm_disease_stats_auxiliary.json` | 11,064 | `67eac373d5ef682ade9a47f512940a541368ffe90ff391334f8c986c3b26249f` |
+| `data/reference/livestock-disease/fmd/mafra_fmd_documents.json` | 24,572 | `4dbc2dbc98cb4f36ca0a7924ed997c5dfa5fd21bf71ada160df0f9123c476878` |
+| `data/reference/livestock-disease/fmd/mafra_fmd_events.json` | 41,625 | `73fc1e338fc68e3cef97e95aecf9744353bdd63abcbbb0735b7ef10d5e980c3b` |
+| `data/reference/livestock-disease/lsd/mafra_lsd_events.json` | 92,031 | `003a25bb1391f0f0ead1a5d79f63b10b2724bdd7bc9d23f2a13e9e0940602abe` |
+| `data/reference/pig-asf/asf_events_20260320.json` | 470 | `210354ec16bd52fc3886b89fdacd9269e0bd9b0c6ace22be39df7e2570d824e8` |
+| `data/reference/pig-asf/asf_events_20260320.meta.json` | 866 | `5582efcdfd1c4d811c57ac5fc550282a7b2b3accaab0a6a369697cb380399dea` |
+| `data/reference/pig-asf/korea_outline.json` | 81,312 | `b8f328af41cba57f83f5f4b2d107efd8848942cd1973c38c50a11f1493f83382` |
+| `data/reference/pig-asf/mafra_asf_documents.json` | 83,560 | `10674d3063b07d8dec5dade9d9925a7ebfba7eb217af4889fab7032d52a3eb5b` |
+| `data/reference/pig-asf/mafra_asf_events.json` | 76,617 | `bbbb425b64fcd20d22ff8e488d4f1da74500e39e88252986e62b556291532adb` |
 | `data/reference/pig-auction-price/pig_price_20260815021618.csv` | 40,445 | `673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d` |
 | `data/reference/pig-auction-price/pig_price_20260815021618.meta.json` | 1,035 | `2d62daccfdbcc13ecb882df975b3275e1cc6f49daf6408882ff69a74fe87af83` |
 | `data/reference/rag/corpus-sources.json` | 4,809 | `d3dc06951b05c8915a5c3cce0a18f84a7dd1f2f726009d1a00679113062549db` |

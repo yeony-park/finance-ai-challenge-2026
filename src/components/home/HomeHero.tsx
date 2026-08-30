@@ -1,54 +1,37 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import { useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 
-import { CATEGORY_REGISTRY } from "@/lib/content/categories";
-import {
-  EXAMPLE_QUESTIONS,
-  FOLLOW_UP_LABEL,
-  followUpQuestions,
-  HERO_CHIP_LABELS,
-  HERO_EYEBROW,
-  HERO_SOURCES_LINE,
-  HOME_HERO_LEAD,
-  HOME_HERO_TITLE_PARTS,
-  INTRO_CARDS,
-  SCAFFOLD_NOTICE,
-  SEARCH_PLACEHOLDER,
-  type FollowUpKey,
-  type GuideTarget,
-} from "@/lib/content/home";
-import { matchScaffold, type ScaffoldMatch } from "@/lib/content/scaffold-match";
+import { type GuideTarget } from "@/lib/content/home";
+import type { ScaffoldMatch } from "@/lib/content/scaffold-match";
 import type { GlobalSearchResponse, GlobalSearchResult } from "@/lib/knowledge/global-search";
+import type { GenericKnowledgeEvidence } from "@/lib/knowledge/retrieval";
+import { safeCitationUrl } from "@/components/real-estate-scenario/ScenarioEvidenceQuery";
 
-import { HeroShards } from "./HeroShards";
-import s from "./home.module.css";
+import {
+  HERO_SHRINK_SCROLL_DISTANCE,
+  SEARCH_TRANSITION_MS,
+  scrollImmediately,
+} from "./home-hero-config";
+import { HomeHeroTitle } from "./HomeHeroTitle";
+import { HomeSearchScaffold } from "./HomeSearchScaffold";
+import { HomeSectionDial } from "./HomeSectionDial";
+import home from "./home.module.css";
+import content from "./home-content.module.css";
+import search from "./HomeHeroSearch.module.css";
+import visual from "./HomeHeroVisual.module.css";
+import motion from "./home-motion.module.css";
+import { useHomeHeroVisual } from "./useHomeHeroVisual";
+import { useHomeSectionDial, useHomeStageSnap } from "./useHomeStageNavigation";
 
-const guideCard = (target: GuideTarget) =>
-  INTRO_CARDS.find((card) => card.id === target);
-
-const followUpKeyOf = (match: ScaffoldMatch): FollowUpKey | null => {
-  if (match.kind === "guide") return match.target;
-  if (match.kind === "reports") return "reports";
-  if (match.kind === "category") return "category";
-  return null;
-};
-
-const categoryEntry = (categoryId: string) =>
-  CATEGORY_REGISTRY.find((entry) => entry.id === categoryId);
-
-const HERO_CHIPS = HERO_CHIP_LABELS.map((label) =>
-  EXAMPLE_QUESTIONS.find((question) => question.label === label),
-).filter((question): question is (typeof EXAMPLE_QUESTIONS)[number] =>
-  question !== undefined,
-);
-
-type SearchResult = Pick<GlobalSearchResult, "id" | "title" | "isScenario" | "phase" | "href">;
-type SearchResponse = Pick<GlobalSearchResponse, "mode" | "guidance"> & {
-  readonly results: readonly SearchResult[];
-};
-type ReviewArea = NonNullable<GlobalSearchResponse["guidance"]>["reviewAreas"][number];
+type SearchResult = Pick<
+  GlobalSearchResult,
+  "id" | "title" | "isScenario" | "phase" | "href"
+>;
+type SearchResponse = GlobalSearchResponse;
+type ReviewArea = NonNullable<SearchResponse["guidance"]>["reviewAreas"][number];
 
 const SEARCH_PHASE_LABEL: Readonly<Record<SearchResult["phase"], string>> = {
   upcoming: "청약 예정",
@@ -76,12 +59,12 @@ const REVIEW_AREA_LABEL: Readonly<Record<ReviewArea, string>> = {
 
 export function SearchResultsPanel({ results }: { readonly results: readonly SearchResult[] }) {
   return (
-    <div className={s.panel}>
-      <h3 className={s.panelTitle}>검색 결과</h3>
-      <ul className={s.searchResults}>
+    <div className={`${search.panel} ${visual.panel}`}>
+      <h3 className={`${search.panelTitle} ${visual.panelTitle}`}>검색 결과</h3>
+      <ul className={home.searchResults}>
         {results.map((result) => (
           <li key={result.id}>
-            <Link href={result.href} className={s.searchResultLink}>{result.title}</Link>
+            <Link href={result.href} className={home.searchResultLink}>{result.title}</Link>
             <span>
               {result.isScenario
                 ? `가상 시나리오 · ${SCENARIO_PHASE_LABEL[result.phase]}`
@@ -96,108 +79,63 @@ export function SearchResultsPanel({ results }: { readonly results: readonly Sea
 
 export function ReviewGuidancePanel({ guidance }: { readonly guidance: NonNullable<SearchResponse["guidance"]> }) {
   return (
-    <div className={s.panel}>
-      <h3 className={s.panelTitle}>상품 순위 대신 확인할 기준</h3>
-      <div className={s.panelBody}><p>{guidance.message}</p></div>
-      <div className={s.panelBody}>
+    <div className={`${search.panel} ${visual.panel}`}>
+      <h3 className={`${search.panelTitle} ${visual.panelTitle}`}>상품 순위 대신 확인할 기준</h3>
+      <div className={`${search.panelBody} ${visual.panelBody}`}><p>{guidance.message}</p></div>
+      <div className={`${search.panelBody} ${visual.panelBody}`}>
         <p>확인 영역 · {guidance.reviewAreas.map((area) => REVIEW_AREA_LABEL[area]).join(" · ")}</p>
       </div>
-      <Link href="/real-estate" className={s.panelLink}>부동산 검토 데이터 보기</Link>
+      <Link href="/real-estate" className={search.panelLink}>부동산 검토 데이터 보기 <span aria-hidden="true">→</span></Link>
     </div>
   );
 }
 
 export function NoSearchResultsPanel() {
   return (
-    <div className={s.panel}>
-      <h3 className={s.panelTitle}>검색 결과 없음</h3>
-      <div className={s.panelBody}>
+    <div className={`${search.panel} ${visual.panel}`}>
+      <h3 className={`${search.panelTitle} ${visual.panelTitle}`}>검색 결과 없음</h3>
+      <div className={`${search.panelBody} ${visual.panelBody}`}>
         <p>상품명이나 청약·상장 거래·종료 같은 단계로 다시 검색해 주세요.</p>
       </div>
     </div>
   );
 }
 
-function ScaffoldPanel({ match }: { readonly match: ScaffoldMatch }) {
-  if (match.kind === "guide") {
-    const card = guideCard(match.target);
-    if (!card) return null;
-    return (
-      <div className={s.panel}>
-        <h3 className={s.panelTitle}>{card.title}</h3>
-        <div className={s.panelBody}>
-          {card.body.map((line) => (
-            <p key={line}>{line}</p>
-          ))}
-        </div>
-        <ul className={s.sourceList}>
-          {card.sources.map((source) => (
-            <li key={source.url}>
-              출처: {source.label}
-            </li>
-          ))}
-        </ul>
-        {match.target === "checklist" ? (
-          <Link href="#checklist" className={s.panelLink}>
-            확인 질문 8가지 보기
-          </Link>
-        ) : null}
-      </div>
-    );
-  }
-
-  if (match.kind === "category") {
-    const entry = categoryEntry(match.categoryId);
-    if (!entry) return null;
-    return (
-      <div className={s.panel}>
-        <h3 className={s.panelTitle}>{entry.label} 카테고리</h3>
-        <div className={s.panelBody}>
-          <p>{entry.note}</p>
-        </div>
-        <Link href={entry.href} className={s.panelLink}>
-          {entry.label} 확인 현황 보기
-        </Link>
-      </div>
-    );
-  }
-
-  if (match.kind === "reports") {
-    return (
-      <div className={s.panel}>
-        <h3 className={s.panelTitle}>공시와 공공 원장이 다르면, 그 사실이 리포트에 남습니다</h3>
-        <div className={s.panelBody}>
-          <p>
-            공모별 검증 리포트에서 판정(일치 · 원장 불일치 · 대조 불가)과 근거,
-            정정 전후 재대조 기록을 확인할 수 있습니다.
-          </p>
-        </div>
-        <Link href="/offers" className={s.panelLink}>
-          검증 리포트 목록 보기
-        </Link>
-      </div>
-    );
-  }
-
+export function GenericEvidencePanel({
+  evidence,
+}: {
+  readonly evidence: readonly GenericKnowledgeEvidence[];
+}) {
   return (
-    <div className={s.panel}>
-      <h3 className={s.panelTitle}>준비된 안내 목록</h3>
-      <div className={s.panelBody}>
-        <p>입력한 내용과 연결되는 안내를 찾지 못했습니다. 아래에서 골라 볼 수 있습니다.</p>
-      </div>
-      <div className={s.panelLinkList}>
-        {CATEGORY_REGISTRY.map((entry) => (
-          <Link key={entry.id} href={entry.href} className={s.chip}>
-            {entry.label}
-          </Link>
-        ))}
-        <Link href="/offers" className={s.chip}>
-          검증 리포트
-        </Link>
-        <Link href="/methodology" className={s.chip}>
-          검증 방법
-        </Link>
-      </div>
+    <div className={`${search.panel} ${visual.panel}`}>
+      <h3 className={`${search.panelTitle} ${visual.panelTitle}`}>일반 검토 근거</h3>
+      <p className={`${search.panelBody} ${visual.panelBody}`}>
+        상품 검색 결과와 별도로, 공개된 검토 자료에서 관련 내용을 찾았습니다.
+      </p>
+      <ul className={`${content.sourceList} ${visual.sourceList}`}>
+        {evidence.map((item) => {
+          const url = safeCitationUrl(item.url);
+          return (
+            <li key={`${item.sourceId}-${item.hash}`}>
+              <strong>{item.label}</strong>
+              <span>{item.excerpt}</span>
+              <span>{item.asOf} 기준</span>
+              {url ? (
+                <a
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${item.label} 출처 (새 창)`}
+                >
+                  출처 보기
+                </a>
+              ) : (
+                <span>출처 링크 확인 불가</span>
+              )}
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 }
@@ -205,16 +143,69 @@ function ScaffoldPanel({ match }: { readonly match: ScaffoldMatch }) {
 export function HomeHero() {
   const [query, setQuery] = useState("");
   const [match, setMatch] = useState<ScaffoldMatch | null>(null);
-  const [activeChip, setActiveChip] = useState<string | null>(null);
   const [results, setResults] = useState<readonly SearchResult[] | null>(null);
   const [guidance, setGuidance] = useState<SearchResponse["guidance"] | null>(null);
+  const [genericEvidence, setGenericEvidence] = useState<readonly GenericKnowledgeEvidence[] | null>(null);
   const [hasEmptyResults, setHasEmptyResults] = useState(false);
+  const [hasSearchError, setHasSearchError] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
+  const [isSearchClosing, setIsSearchClosing] = useState(false);
+  const [isSearchRestoring, setIsSearchRestoring] = useState(false);
+  const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false);
+  const [isTitleSplit, setIsTitleSplit] = useState(false);
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setActiveChip(null);
+  const visualRef = useRef<HTMLElement>(null);
+  const visualFrameRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const titlePrefixRef = useRef<HTMLSpanElement>(null);
+  const titleQuestionRef = useRef<HTMLSpanElement>(null);
+  const scaffoldRef = useRef<HTMLDivElement>(null);
+  const hasApiOutput = results !== null || guidance !== null || genericEvidence !== null || hasEmptyResults || hasSearchError;
+  const isSearchOpen = match !== null || hasApiOutput || isSearching || isSearchClosing;
+  const visualMatch: ScaffoldMatch | null = isSearchOpen ? match ?? { kind: "none" } : null;
+
+  useHomeHeroVisual(
+    { visual: visualRef, frame: visualFrameRef, content: contentRef, title: titleRef,
+      titlePrefix: titlePrefixRef, titleQuestion: titleQuestionRef, scaffold: scaffoldRef },
+    visualMatch,
+    setIsTitleSplit,
+  );
+  useHomeStageSnap(visualMatch);
+  const { activeSection, scrollToSection } = useHomeSectionDial(isSearchOpen);
+
+  useEffect(() => {
+    if (isSearchOpen) scrollImmediately(0);
+  }, [isSearchOpen]);
+
+  useEffect(() => {
+    const handleHomeReset = () => {
+      setMatch(null);
+      setQuery("");
+      setResults(null);
+      setGuidance(null);
+      setGenericEvidence(null);
+      setHasEmptyResults(false);
+      setHasSearchError(false);
+      setIsSearching(false);
+      setIsSearchClosing(false);
+      setIsSearchRestoring(false);
+      setIsSuggestionsOpen(false);
+      setIsTitleSplit(false);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+    window.addEventListener("jeomjeom:home-reset", handleHomeReset);
+    return () => window.removeEventListener("jeomjeom:home-reset", handleHomeReset);
+  }, []);
+
+  const runSearch = async () => {
+    if (!query.trim()) return;
+    setMatch(null);
+    setResults(null);
+    setGuidance(null);
+    setGenericEvidence(null);
     setHasEmptyResults(false);
+    setHasSearchError(false);
     setIsSearching(true);
     try {
       const response = await fetch("/api/search", {
@@ -225,127 +216,89 @@ export function HomeHero() {
       if (!response.ok) throw new Error("search failed");
       const body = (await response.json()) as SearchResponse;
       const found = body.results ?? [];
-      const reviewGuidance = body.mode === "review-guidance" ? body.guidance ?? null : null;
+      const generic = body.genericEvidence ?? [];
       setResults(body.mode === "matches" && found.length > 0 ? found : null);
-      setGuidance(reviewGuidance);
-      setHasEmptyResults(body.mode === "matches" && found.length === 0);
-      setMatch(null);
+      setGuidance(body.mode === "review-guidance" ? body.guidance ?? null : null);
+      setGenericEvidence(generic.length > 0 ? generic : null);
+      setHasEmptyResults(body.mode === "matches" && found.length === 0 && generic.length === 0);
     } catch {
-      setResults(null);
-      setGuidance(null);
-      setHasEmptyResults(false);
-      setMatch(matchScaffold(query));
+      setHasSearchError(true);
     } finally {
       setIsSearching(false);
     }
   };
 
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setIsSearchRestoring(false);
+    setIsSuggestionsOpen(false);
+    void runSearch();
+  };
+
   const handleChip = (label: string, target: string) => {
-    setActiveChip(label);
     setQuery(label);
     setResults(null);
     setGuidance(null);
+    setGenericEvidence(null);
     setHasEmptyResults(false);
-    setMatch(
-      target === "reports"
-        ? { kind: "reports" }
-        : { kind: "guide", target: target as GuideTarget },
-    );
+    setHasSearchError(false);
+    setIsSearchRestoring(false);
+    setIsSuggestionsOpen(false);
+    setMatch(target === "reports" ? { kind: "reports" } : { kind: "guide", target: target as GuideTarget });
+  };
+
+  const handleCloseSearch = () => {
+    if (isSearchClosing) return;
+    setIsSearchClosing(true);
+    window.setTimeout(() => {
+      scrollImmediately(HERO_SHRINK_SCROLL_DISTANCE);
+      setMatch(null);
+      setQuery("");
+      setResults(null);
+      setGuidance(null);
+      setGenericEvidence(null);
+      setHasEmptyResults(false);
+      setHasSearchError(false);
+      setIsSearchClosing(false);
+      setIsSearchRestoring(true);
+      setIsSuggestionsOpen(false);
+      window.setTimeout(() => setIsSearchRestoring(false), SEARCH_TRANSITION_MS);
+    }, SEARCH_TRANSITION_MS);
+  };
+
+  const handleScrollCue = () => {
+    document.getElementById("category-grid-title")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   return (
-    <section className={`${s.section} ${s.hero}`} aria-labelledby="home-hero-title">
-      <div className={`${s.wrap} ${s.heroWrap}`}>
-        <div>
-          <p className={`${s.heroEyebrow} ${s.heroIn}`}>{HERO_EYEBROW}</p>
-          <h1 id="home-hero-title" className={`${s.heroTitle} ${s.heroIn}`}>
-            {HOME_HERO_TITLE_PARTS.map((part) =>
-              part.isMark ? (
-                <em key={part.text} className={s.mark}>
-                  {part.text}
-                </em>
-              ) : (
-                <span key={part.text}>{part.text}</span>
-              ),
-            )}
-          </h1>
-          <p className={`${s.heroLead} ${s.heroIn} ${s.heroIn2}`}>{HOME_HERO_LEAD}</p>
-
-          <div className={`${s.scaffold} ${s.heroIn} ${s.heroIn3}`}>
-            <form className={s.searchForm} onSubmit={handleSubmit} role="search">
-              <label htmlFor="home-search" className="sr-only">
-                궁금한 내용 입력
-              </label>
-              <input
-                id="home-search"
-                className={s.searchInput}
-                type="text"
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder={SEARCH_PLACEHOLDER}
-                autoComplete="off"
-              />
-              <button type="submit" className={s.searchButton} disabled={isSearching || !query.trim()}>
-                {isSearching ? "찾는 중" : "안내 찾기"}
-              </button>
-            </form>
-            <p className={s.scaffoldNote}>{SCAFFOLD_NOTICE}</p>
-
-            <div className={s.chipRow} role="group" aria-label="예시 질문">
-              {HERO_CHIPS.map((question) => (
-                <button
-                  key={question.label}
-                  type="button"
-                  className={s.chip}
-                  aria-pressed={activeChip === question.label}
-                  onClick={() => handleChip(question.label, question.target)}
-                >
-                  {question.label}
-                </button>
-              ))}
-            </div>
-
-            <div aria-live="polite">
+    <section ref={visualRef} className={`${visual.visualIntro} ${isSearchOpen ? search.visualIntroSearch : ""}`} aria-labelledby="home-hero-title">
+      <div className={`${visual.visualSticky} ${isSearchOpen ? search.visualStickySearch : ""}`}>
+        <div ref={visualFrameRef} className={`${visual.visualFrame} ${search.visualFrame} ${isSearchOpen && !isSearchClosing ? search.visualFrameSearch : ""}`}>
+          <Image src="/sto-disclosure-hero-v2.png" alt="투자계약증권 공시와 대조를 상징하는 3차원 문서" fill priority sizes="100vw" className={visual.visualImage} />
+        </div>
+        <div ref={contentRef} className={`${visual.visualContent} ${isSearchOpen ? search.visualContentSearch : ""} ${isSearchClosing ? search.visualContentSearchClosing : ""} ${isSearchRestoring ? search.visualContentRestoring : ""}`}>
+          <HomeHeroTitle titleRef={titleRef} prefixRef={titlePrefixRef} questionRef={titleQuestionRef} query={query} isSearchOpen={isSearchOpen} hasMatch={isSearchOpen} isTitleSplit={isTitleSplit} onCloseSearch={handleCloseSearch} />
+          <HomeSearchScaffold scaffoldRef={scaffoldRef} query={query} match={match} isSuggestionsOpen={isSuggestionsOpen} onQueryChange={setQuery} onSuggestionsOpenChange={setIsSuggestionsOpen} onSubmit={handleSubmit} onChip={handleChip} />
+          {hasApiOutput || isSearching ? (
+            <div className={`${search.answer} ${home.apiAnswer}`} aria-live="polite">
+              {isSearching ? <div className={`${search.panel} ${visual.panel}`}><p className={`${search.panelBody} ${visual.panelBody}`}>상품을 찾고 있습니다.</p></div> : null}
               {results ? <SearchResultsPanel results={results} /> : null}
               {guidance ? <ReviewGuidancePanel guidance={guidance} /> : null}
+              {genericEvidence ? <GenericEvidencePanel evidence={genericEvidence} /> : null}
               {hasEmptyResults ? <NoSearchResultsPanel /> : null}
-              {match ? <ScaffoldPanel match={match} /> : null}
-              {(() => {
-                const key = match ? followUpKeyOf(match) : null;
-                const followUps = key
-                  ? followUpQuestions(key).filter(
-                      (question) => question.label !== activeChip,
-                    )
-                  : [];
-                if (followUps.length === 0) return null;
-                return (
-                  <div className={s.followRow} role="group" aria-label={FOLLOW_UP_LABEL}>
-                    <span className={s.followLabel}>{FOLLOW_UP_LABEL}</span>
-                    {followUps.map((question) => (
-                      <button
-                        key={question.label}
-                        type="button"
-                        className={s.chip}
-                        onClick={() => handleChip(question.label, question.target)}
-                      >
-                        {question.label}
-                      </button>
-                    ))}
-                  </div>
-                );
-              })()}
+              {hasSearchError ? (
+                <div className={`${search.panel} ${visual.panel}`}>
+                  <h3 className={`${search.panelTitle} ${visual.panelTitle}`}>검색 연결 오류</h3>
+                  <div className={`${search.panelBody} ${visual.panelBody}`}><p>검색 결과를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.</p></div>
+                  <button type="button" className={`${search.panelLink} ${home.retryButton}`} onClick={() => void runSearch()}>다시 시도</button>
+                </div>
+              ) : null}
             </div>
-
-            <p className={s.heroSources}>{HERO_SOURCES_LINE}</p>
-          </div>
+          ) : null}
         </div>
-
-        <HeroShards />
-
-        <p className={s.scrollCue} aria-hidden="true">
-          <span className={s.scrollCueArrow}>↓</span> SCROLL
-        </p>
+        <button type="button" className={`${visual.visualScroll} ${search.visualScroll}`} onClick={handleScrollCue} aria-label="다음 콘텐츠로 이동"><span className={motion.scrollCueArrow}>↓</span> SCROLL</button>
       </div>
+      {!isSearchOpen && !isSearchRestoring ? <HomeSectionDial activeSection={activeSection} onSelect={scrollToSection} /> : null}
     </section>
   );
 }

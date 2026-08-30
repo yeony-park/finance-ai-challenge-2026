@@ -35,14 +35,14 @@ const FORBIDDEN_USER_TERMS = [
 
 describe("knowledge API routes", () => {
   it("전역 검색은 scenarioId/offerId 없이 기존 상품을 찾는다", async () => {
-    const response = await searchPost(request("http://localhost/api/search", { q: "가축 1호" }));
+    const response = await searchPost(request("http://localhost/api/search", { q: "한우 1호" }));
     expect(response.status).toBe(200);
     const body = await response.json();
     expect(body.results[0]).toMatchObject({
       id: "livestock-1",
       productId: "livestock-1",
       categoryId: "cattle",
-      title: "가축 1호",
+      title: "한우 1호",
       assetKind: "livestock",
       href: "/offers/livestock-1",
       isScenario: false,
@@ -61,16 +61,16 @@ describe("knowledge API routes", () => {
 
   it("q/query alias를 내부 query로 통일하고 서로 다르면 두 API 모두 거부한다", async () => {
     for (const body of [
-      { query: "가축 1호" },
-      { q: " 가축 1호 ", query: "가축 1호" },
+      { query: "한우 1호" },
+      { q: " 한우 1호 ", query: "한우 1호" },
     ]) {
       const response = await searchPost(request("http://localhost/api/search", body));
       expect(response.status).toBe(200);
       expect((await response.json()).results[0]?.id).toBe("livestock-1");
     }
     expect((await searchPost(request("http://localhost/api/search", {
-      q: "가축 1호",
-      query: "가축 2호",
+      q: "한우 1호",
+      query: "한우 2호",
     }))).status).toBe(400);
 
     const evidence = await evidencePost(request("http://localhost/api/evidence/query", {

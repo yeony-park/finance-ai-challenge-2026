@@ -14,11 +14,17 @@ import { buildOfferCard } from "../report/view-model/offer-card";
 
 const WATCH: WatchState = {
   offerId: "livestock-9",
-  checkedAt: "2026-08-13T17:45:24.412Z",
+  checkedAt: "2026-08-14T09:00:00.000Z",
   baseRcpNo: "20260806000159",
   checkedThrough: "20260814",
-  amendmentCount: 0,
-  amendments: [],
+  amendmentCount: 1,
+  amendments: [
+    {
+      rcpNo: "20260814003572",
+      receivedOn: "20260814",
+      reportName: "[기재정정]증권신고서(투자계약증권)",
+    },
+  ],
   sourceName: "OpenDART 공시검색 (금융감독원 · opendart.fss.or.kr)",
   detectionFailed: false,
   notes: [],
@@ -26,8 +32,8 @@ const WATCH: WatchState = {
 
 const ENTRY: OfferEntry = {
   id: "livestock-9",
-  title: "가축 9호",
-  assetLabel: "가축",
+  title: "한우 9호",
+  assetLabel: "한우",
   assetKind: "livestock",
   subscription: {
     opensAt: "2026-08-27T10:00:00+09:00",
@@ -46,7 +52,7 @@ describe("buildOfferSchedule — D-day는 기준 시각의 함수다", () => {
 
     expect(schedule.phase).toBe("upcoming");
     expect(schedule.dday).toBe(14);
-    expect(schedule.badge).toBe("청약 D-14");
+    expect(schedule.badge).toBe("D-14");
   });
 
   test("같은 날 자정 직전에도 달력일 기준이라 날수가 흔들리지 않는다", () => {
@@ -64,7 +70,7 @@ describe("buildOfferSchedule — D-day는 기준 시각의 함수다", () => {
   test("청약 개시 당일 개시 시각 전에는 D-DAY로 적는다", () => {
     const schedule = buildOfferSchedule(ENTRY, kst("2026-08-27T09:00:00"));
 
-    expect(schedule.badge).toBe("청약 D-DAY");
+    expect(schedule.badge).toBe("D-DAY");
   });
 
   test("청약 중에는 마감까지 남은 날수를 센다", () => {
@@ -112,19 +118,25 @@ describe("buildOfferCard — 카드 값은 레지스트리와 리포트에서만
       offer: ENTRY,
       now: kst("2026-08-13T09:00:00"),
       ...(await loadLatestReport(ENTRY.id)),
+      watch: WATCH,
+      hasFilingFacts: true,
     });
 
   test("4블록이 모두 채워진다", async () => {
     const card = await buildCard();
 
-    expect(card.title).toBe("가축 9호");
+    expect(card.title).toBe("한우 9호");
     expect(card.href).toBe("/offers/livestock-9");
     expect(card.schedule.label).toContain("~");
     expect(card.schedule.badge).toContain("D-");
     expect(card.verdictLine.length).toBeGreaterThan(0);
     expect(card.tallies).toHaveLength(3);
     expect(card.lastVerifiedAt).toContain("최근 재대조");
-    expect(card.amendment).toContain("정정");
+    expect(card.amendment).toBe(
+      "정정신고서 1건 접수 (최근 2026. 8. 14.)",
+    );
+    expect(card.amendmentIsAlert).toBe(true);
+    expect(card.hasFilingFacts).toBe(true);
   });
 
   test("판정 요약의 주어는 공모이고 개체 수가 분모다", async () => {
@@ -146,53 +158,34 @@ describe("buildOfferCard — 카드 값은 레지스트리와 리포트에서만
 
   test("카드 문장에 화면 금지 용어(불일치)가 들어가지 않는다", async () => {
     const card = await buildCard();
-    const text = [card.verdictLine, card.lastVerifiedAt, card.amendment].join(" ");
+    const text = [card.verdictLine, card.lastVerifiedAt].join(" ");
 
     expect(text).not.toContain("불일치");
   });
 });
 
-describe("buildOfferCard — 정정 감시 라인은 감시 기록의 함수다", () => {
+describe("buildOfferCard — 정정 감시 상태를 사실대로 표시한다", () => {
   const buildCard = async (watch: WatchState | null) =>
     buildOfferCard({
       offer: ENTRY,
       now: kst("2026-08-14T09:00:00"),
-      watch,
       ...(await loadLatestReport(ENTRY.id)),
+      watch,
     });
 
-  test("감시 기록이 없으면 미조회 문구를 유지한다", async () => {
+  test("감시 기록이 없으면 기록 없음으로 표시한다", async () => {
     const card = await buildCard(null);
 
-    expect(card.amendment).toContain("정정 접수 감시 미연결");
-    expect(card.hasAmendment).toBe(false);
+    expect(card.amendment).toBe("감시 기록 없음");
+    expect(card.amendmentIsAlert).toBe(false);
   });
 
-  test("접수 0건이면 건수와 최근 확인 날짜를 적는다", async () => {
-    const card = await buildCard(WATCH);
-
-    expect(card.amendment).toBe("정정 0건 · 최근 확인 8. 14.");
-    expect(card.hasAmendment).toBe(false);
-  });
-
-  test("접수가 있으면 건수를 그대로 적는다", async () => {
-    const card = await buildCard({
-      ...WATCH,
-      amendmentCount: 2,
-      amendments: [
-        { rcpNo: "20260901000001", receivedOn: "20260901", reportName: "정정신고서" },
-        { rcpNo: "20260902000002", receivedOn: "20260902", reportName: "정정신고서" },
-      ],
-    });
-
-    expect(card.amendment).toBe("정정 2건 접수 · 최근 확인 8. 14.");
-    expect(card.hasAmendment).toBe(true);
-  });
-
-  test("조회가 실패한 기록은 건수를 지어내지 않는다", async () => {
+  test("감시 조회 실패를 정정 0건으로 바꾸지 않는다", async () => {
     const card = await buildCard({ ...WATCH, detectionFailed: true });
 
-    expect(card.amendment).toBe("정정 접수 여부 미확인 · 최근 조회 8. 14.");
-    expect(card.hasAmendment).toBe(false);
+    expect(card.amendment).toBe(
+      "이번 주기 감시 확인 실패 — 다음 주기에 다시 확인합니다",
+    );
+    expect(card.amendmentIsAlert).toBe(true);
   });
 });

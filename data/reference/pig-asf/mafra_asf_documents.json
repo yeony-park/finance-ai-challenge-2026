@@ -1,0 +1,1825 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "boardUrl": "https://www.mafra.go.kr/FMD-AI2/2145/subview.do",
+    "listUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/artclList.do?page=1&row=100",
+    "collectedAt": "2026-08-30T04:55:53.088Z"
+  },
+  "postCount": 86,
+  "attachmentCount": 86,
+  "mapData": {
+    "sourceUrl": "https://www.mafra.go.kr/FMD-AI2/map/ASF/ASF_data.js?v=2.4",
+    "localPath": "data/reference/pig-asf/raw/mafra_asf_map_data.js",
+    "bytes": 270734,
+    "sha256": "b5b058ef283e3ef86259d8f9f9e631b6112371e2da21651fd49e6af9b7b466f2",
+    "pointCount": 79
+  },
+  "documents": [
+    {
+      "articleId": "577369",
+      "title": "26년 아프리카돼지열병(ASF) 발생현황 정보공개(~24차)",
+      "publishedAt": "2026-03-20",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/577369/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "595826",
+          "fileName": "26년 아프리카돼지열병(ASF) 발생현황 정보공개(~24차).hwpx",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/595826/download.do",
+          "localPath": "data/reference/pig-asf/raw/577369-595826-26년 아프리카돼지열병(ASF) 발생현황 정보공개(~24차).hwpx",
+          "mediaType": "application/hwp+zip",
+          "bytes": 86739,
+          "sha256": "5867a307252deb065ab991c7255d96849faabb816c54bd9b2779807e5fb374b8",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 26,
+          "parsedEventCount": 24
+        }
+      ]
+    },
+    {
+      "articleId": "577203",
+      "title": "26년 아프리카돼지열병(ASF) 발생현황 정보공개(~22차)",
+      "publishedAt": "2026-03-04",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/577203/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "595387",
+          "fileName": "26년 아프리카돼지열병(ASF) 발생현황 정보공개(~22차).hwpx",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/595387/download.do",
+          "localPath": "data/reference/pig-asf/raw/577203-595387-26년 아프리카돼지열병(ASF) 발생현황 정보공개(~22차).hwpx",
+          "mediaType": "application/hwp+zip",
+          "bytes": 83758,
+          "sha256": "b62a7eb67f7d668ac8ba8bcb083c25ed82cc3c857cbca240112fdba18dece5d4",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 24,
+          "parsedEventCount": 22
+        }
+      ]
+    },
+    {
+      "articleId": "577099",
+      "title": "26년 아프리카돼지열병(ASF) 발생현황 정보공개",
+      "publishedAt": "2026-02-25",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/577099/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "595112",
+          "fileName": "26년 아프리카돼지열병(ASF) 발생현황 정보공개(~20차).hwpx",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/595112/download.do",
+          "localPath": "data/reference/pig-asf/raw/577099-595112-26년 아프리카돼지열병(ASF) 발생현황 정보공개(~20차).hwpx",
+          "mediaType": "application/hwp+zip",
+          "bytes": 81622,
+          "sha256": "1e0fc15d8f411a774578bdcbd8731c5c6b0212d76998fac30c374c805e94d3d6",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 22,
+          "parsedEventCount": 20
+        }
+      ]
+    },
+    {
+      "articleId": "577061",
+      "title": "26년 아프리카돼지열병(ASF) 발생현황 정보공개",
+      "publishedAt": "2026-02-23",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/577061/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "595016",
+          "fileName": "26년 아프리카돼지열병(ASF) 발생현황 정보공개(~19차).hwpx",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/595016/download.do",
+          "localPath": "data/reference/pig-asf/raw/577061-595016-26년 아프리카돼지열병(ASF) 발생현황 정보공개(~19차).hwpx",
+          "mediaType": "application/hwp+zip",
+          "bytes": 80652,
+          "sha256": "f3a2d74480533a29baae5828d8484a6df04ce72d3508ad31dd3dd8bfac80cd71",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 21,
+          "parsedEventCount": 19
+        }
+      ]
+    },
+    {
+      "articleId": "576354",
+      "title": "'19년_'25년 아프리카돼지열병(ASF) 발생현황 정보공개(~55차)",
+      "publishedAt": "2025-12-30",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/576354/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "593131",
+          "fileName": "'19년_'25년 아프리카돼지열병(ASF) 발생현황 정보공개(~55차).hwpx",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/593131/download.do",
+          "localPath": "data/reference/pig-asf/raw/576354-593131-'19년_'25년 아프리카돼지열병(ASF) 발생현황 정보공개(~55차).hwpx",
+          "mediaType": "application/hwp+zip",
+          "bytes": 90175,
+          "sha256": "49eb1ee67d2bd8af10feca91a155bc95a9cb94266cec5e753d67a5c9964c96a6",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 60,
+          "parsedEventCount": 55
+        }
+      ]
+    },
+    {
+      "articleId": "575103",
+      "title": "'19년_'25년 아프리카돼지열병(ASF) 발생현황 정보공개(~54차)",
+      "publishedAt": "2025-09-17",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/575103/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "590190",
+          "fileName": "'19년_'25년 아프리카돼지열병(ASF) 발생현황 정보공개(~54차).hwpx",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/590190/download.do",
+          "localPath": "data/reference/pig-asf/raw/575103-590190-'19년_'25년 아프리카돼지열병(ASF) 발생현황 정보공개(~54차).hwpx",
+          "mediaType": "application/hwp+zip",
+          "bytes": 88492,
+          "sha256": "8de6ffd78bee7b637d80716d16200b7dee9a077b8775b68bfa603470354d1af2",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 59,
+          "parsedEventCount": 54
+        }
+      ]
+    },
+    {
+      "articleId": "574925",
+      "title": "'19년_'25년 아프리카돼지열병(ASF) 발생현황 정보공개(~53차)",
+      "publishedAt": "2025-08-22",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/574925/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "589728",
+          "fileName": "'19년_'25년 아프리카돼지열병(ASF) 발생현황 정보공개(~52차).hwpx",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/589728/download.do",
+          "localPath": "data/reference/pig-asf/raw/574925-589728-'19년_'25년 아프리카돼지열병(ASF) 발생현황 정보공개(~52차).hwpx",
+          "mediaType": "application/hwp+zip",
+          "bytes": 91589,
+          "sha256": "314020b4da24644f4e66ce2ae0972d5cfc5a261215ddf193a96367cd9d6076c0",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 57,
+          "parsedEventCount": 52
+        }
+      ]
+    },
+    {
+      "articleId": "573662",
+      "title": "'19년_'25년 아프리카돼지열병(ASF) 발생현황 정보공개(~52차)",
+      "publishedAt": "2025-03-24",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/573662/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "586488",
+          "fileName": "'19년_'25년 아프리카돼지열병(ASF) 발생현황 정보공개(~52차).hwpx",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/586488/download.do",
+          "localPath": "data/reference/pig-asf/raw/573662-586488-'19년_'25년 아프리카돼지열병(ASF) 발생현황 정보공개(~52차).hwpx",
+          "mediaType": "application/hwp+zip",
+          "bytes": 91589,
+          "sha256": "314020b4da24644f4e66ce2ae0972d5cfc5a261215ddf193a96367cd9d6076c0",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 57,
+          "parsedEventCount": 52
+        }
+      ]
+    },
+    {
+      "articleId": "573661",
+      "title": "'19년_'25년 아프리카돼지열병(ASF) 발생현황 정보공개(~51차)",
+      "publishedAt": "2025-03-24",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/573661/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "586487",
+          "fileName": "'19년_'25년 아프리카돼지열병(ASF) 발생현황 정보공개(~51차).hwpx",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/586487/download.do",
+          "localPath": "data/reference/pig-asf/raw/573661-586487-'19년_'25년 아프리카돼지열병(ASF) 발생현황 정보공개(~51차).hwpx",
+          "mediaType": "application/hwp+zip",
+          "bytes": 91487,
+          "sha256": "a43d27ff93b9c6049a8c45973342a516def399f112ecbaf16f0807e1989c92a6",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 56,
+          "parsedEventCount": 51
+        }
+      ]
+    },
+    {
+      "articleId": "573110",
+      "title": "'19년_'25년 아프리카돼지열병(ASF) 발생현황 정보공개(~50차)",
+      "publishedAt": "2025-01-24",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/573110/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "585009",
+          "fileName": "'19년_'25년 아프리카돼지열병(ASF) 발생현황 정보공개(~50차).hwpx",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/585009/download.do",
+          "localPath": "data/reference/pig-asf/raw/573110-585009-'19년_'25년 아프리카돼지열병(ASF) 발생현황 정보공개(~50차).hwpx",
+          "mediaType": "application/hwp+zip",
+          "bytes": 91394,
+          "sha256": "704ba7fb902e681d48f22dc368cad1b758fc6e2a25f223a26e1b9228f80a8922",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 55,
+          "parsedEventCount": 50
+        }
+      ]
+    },
+    {
+      "articleId": "573109",
+      "title": "'19년_'24년 아프리카돼지열병(ASF) 발생현황 정보공개(~49차)",
+      "publishedAt": "2025-01-24",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/573109/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "585008",
+          "fileName": "'19년_'24년 아프리카돼지열병(ASF) 발생현황 정보공개(~49차).hwpx",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/585008/download.do",
+          "localPath": "data/reference/pig-asf/raw/573109-585008-'19년_'24년 아프리카돼지열병(ASF) 발생현황 정보공개(~49차).hwpx",
+          "mediaType": "application/hwp+zip",
+          "bytes": 91795,
+          "sha256": "d46412c958b1d9a9e047a3aa0ab093d0aa4ae04e454f93e886f29376acd9b65c",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 54,
+          "parsedEventCount": 49
+        }
+      ]
+    },
+    {
+      "articleId": "573108",
+      "title": "'19년_'24년 아프리카돼지열병(ASF) 발생현황 정보공개(~48차)",
+      "publishedAt": "2025-01-24",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/573108/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "585007",
+          "fileName": "'19년_'24년 아프리카돼지열병(ASF) 발생현황 정보공개(~48차).hwpx",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/585007/download.do",
+          "localPath": "data/reference/pig-asf/raw/573108-585007-'19년_'24년 아프리카돼지열병(ASF) 발생현황 정보공개(~48차).hwpx",
+          "mediaType": "application/hwp+zip",
+          "bytes": 91428,
+          "sha256": "0a5964423d49ce30038b4a7e17c560ea5d1bc4aff151e27db7e3e4668ce7877c",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 53,
+          "parsedEventCount": 48
+        }
+      ]
+    },
+    {
+      "articleId": "573107",
+      "title": "'19년_'24년 아프리카돼지열병(ASF) 발생현황 정보공개(~47차)",
+      "publishedAt": "2025-01-24",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/573107/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "585006",
+          "fileName": "'19년_'24년 아프리카돼지열병(ASF) 발생현황 정보공개(~47차).hwpx",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/585006/download.do",
+          "localPath": "data/reference/pig-asf/raw/573107-585006-'19년_'24년 아프리카돼지열병(ASF) 발생현황 정보공개(~47차).hwpx",
+          "mediaType": "application/hwp+zip",
+          "bytes": 91189,
+          "sha256": "721224588de453b8a1ba052beb9be3ce859f6457cb7a76ec0e36c48c552b20a8",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 52,
+          "parsedEventCount": 47
+        }
+      ]
+    },
+    {
+      "articleId": "571433",
+      "title": "'19~'24년 아프리카돼지열병(ASF) 발생현황 정보 공개(~46차)",
+      "publishedAt": "2024-09-01",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/571433/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "580560",
+          "fileName": "'19년_'24년 아프리카돼지열병(ASF) 발생현황 정보공개(~46차).pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/580560/download.do",
+          "localPath": "data/reference/pig-asf/raw/571433-580560-'19년_'24년 아프리카돼지열병(ASF) 발생현황 정보공개(~46차).pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 147728,
+          "sha256": "8e82a1fbd5f634c8dcb73e9463a137dec75dae1d151fa3c4d6bdc98694f13f00",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "571202",
+      "title": "'19~'24년 아프리카돼지열병(ASF) 발생현황 정보 공개(~45차)",
+      "publishedAt": "2024-08-14",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/571202/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "579982",
+          "fileName": "'19년_'24년 아프리카돼지열병(ASF) 발생현황 정보공개(~45차).pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/579982/download.do",
+          "localPath": "data/reference/pig-asf/raw/571202-579982-'19년_'24년 아프리카돼지열병(ASF) 발생현황 정보공개(~45차).pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 146526,
+          "sha256": "3638a29fee4bdd6ed1a15bcf675793184f4031e641a3923f99cce0ad4d45c22e",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "570756",
+      "title": "'19~'24년 아프리카돼지열병(ASF) 발생현황 정보 공개(~44차)",
+      "publishedAt": "2024-07-07",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/570756/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "578880",
+          "fileName": "'19년_'24년 아프리카돼지열병(ASF) 발생현황 정보공개(~44차).pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/578880/download.do",
+          "localPath": "data/reference/pig-asf/raw/570756-578880-'19년_'24년 아프리카돼지열병(ASF) 발생현황 정보공개(~44차).pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 142636,
+          "sha256": "282604a1d12dba3f8a87b4cbb1911a0e509a157033cf3845afd3b6bc520fc7e3",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "570741",
+      "title": "'19~'24년 아프리카돼지열병(ASF) 발생현황 정보 공개",
+      "publishedAt": "2024-07-03",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/570741/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "578840",
+          "fileName": "'19년_'24년 아프리카돼지열병(ASF) 발생현황 정보공개(~43차).pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/578840/download.do",
+          "localPath": "data/reference/pig-asf/raw/570741-578840-'19년_'24년 아프리카돼지열병(ASF) 발생현황 정보공개(~43차).pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 132070,
+          "sha256": "6afa81a9cb3081cab74a492ade96f142eaf6d3cac74ca31ed9956e1df37700a5",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "570636",
+      "title": "'19~'24년 아프리카돼지열병(ASF) 발생현황 정보 공개",
+      "publishedAt": "2024-06-21",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/570636/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "578569",
+          "fileName": "'19년_'24년 아프리카돼지열병(ASF) 발생현황 정보공개(~42차).pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/578569/download.do",
+          "localPath": "data/reference/pig-asf/raw/570636-578569-'19년_'24년 아프리카돼지열병(ASF) 발생현황 정보공개(~42차).pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 130162,
+          "sha256": "d22111f890b786ab4b15978c16db3f3c747e5fb4a31cab9fe374ed2a59bb9a69",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "570373",
+      "title": "`19~`24년 아프리카돼지열병(ASF) 발생현황 정보 공개",
+      "publishedAt": "2024-05-23",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/570373/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "577876",
+          "fileName": "'19년_'24년 아프리카돼지열병(ASF) 발생현황 정보공개(~41차).pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/577876/download.do",
+          "localPath": "data/reference/pig-asf/raw/570373-577876-'19년_'24년 아프리카돼지열병(ASF) 발생현황 정보공개(~41차).pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 128421,
+          "sha256": "e4684658b70b91854e1f3977a589ad1567da57305f2ae279121026a4d9340a80",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "569248",
+      "title": "'19~'24년 아프리카돼지열병(ASF) 발생현황 정보 공개",
+      "publishedAt": "2024-01-23",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/569248/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "574968",
+          "fileName": "'19년_'24년 아프리카돼지열병(ASF) 발생현황 정보공개(~40차).pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/574968/download.do",
+          "localPath": "data/reference/pig-asf/raw/569248-574968-'19년_'24년 아프리카돼지열병(ASF) 발생현황 정보공개(~40차).pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 127710,
+          "sha256": "957985a0c8e18b154e3180b2fbf97a0ee84ec5ebfc331d37885a7211fb49a3b1",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "567715",
+      "title": "'19~'23년 아프리카돼지열병(ASF) 발생현황 정보 공개",
+      "publishedAt": "2023-09-28",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/567715/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "571415",
+          "fileName": "'19년_'23년 아프리카돼지열병(ASF) 발생현황 정보공개(~38차).pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/571415/download.do",
+          "localPath": "data/reference/pig-asf/raw/567715-571415-'19년_'23년 아프리카돼지열병(ASF) 발생현황 정보공개(~38차).pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 123539,
+          "sha256": "71f5ea15ed82ceebafc760878bf944cc6f04ce09e99410b4571a424ce5630998",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "566858",
+      "title": "'19~'23년 아프리카돼지열병(ASF) 발생현황 정보 공개",
+      "publishedAt": "2023-07-19",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/566858/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "569548",
+          "fileName": "'19년_'23년 아프리카돼지열병(ASF) 발생현황 정보공개(~37차).pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/569548/download.do",
+          "localPath": "data/reference/pig-asf/raw/566858-569548-'19년_'23년 아프리카돼지열병(ASF) 발생현황 정보공개(~37차).pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 122944,
+          "sha256": "0cad56fc50c618b38eaa5184b1656b862b055e5a22289276affad90716458886",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "566605",
+      "title": "'19~'23년 아프리카돼지열병(ASF) 발생현황 정보 공개",
+      "publishedAt": "2023-04-24",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/566605/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "568872",
+          "fileName": "'19년_'23년 아프리카돼지열병(ASF) 발생현황 정보공개.hwp",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/568872/download.do",
+          "localPath": "data/reference/pig-asf/raw/566605-568872-'19년_'23년 아프리카돼지열병(ASF) 발생현황 정보공개.hwp",
+          "mediaType": "application/x-hwp",
+          "bytes": 69120,
+          "sha256": "a686eb656a86d910ad7dc48e30c41323204b01245a2d45157fb832a957d2408c",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 74,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "565189",
+      "title": "'19~'23년 아프리카돼지열병 발생현황 정보 공개",
+      "publishedAt": "2023-01-19",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/565189/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "565298",
+          "fileName": "'19년~'23년 ASF 발생현황 정보공개.hwp",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/565298/download.do",
+          "localPath": "data/reference/pig-asf/raw/565189-565298-'19년~'23년 ASF 발생현황 정보공개.hwp",
+          "mediaType": "application/x-hwp",
+          "bytes": 67072,
+          "sha256": "3882a8458033e7e3a1bf21c01a825e72e51d480dadf9fb749d48dd0f790020f5",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 78,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "565056",
+      "title": "'19~'23년 아프리카돼지열병 발생현황 정보 공개",
+      "publishedAt": "2023-01-09",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/565056/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "564995",
+          "fileName": "'19년~'23년 ASF 발생현황 정보공개.hwp",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/564995/download.do",
+          "localPath": "data/reference/pig-asf/raw/565056-564995-'19년~'23년 ASF 발생현황 정보공개.hwp",
+          "mediaType": "application/x-hwp",
+          "bytes": 137728,
+          "sha256": "61328049a4466555b971b652953ddf350d685ab58e61d0b6435889e4b117fe40",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 174,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "401174",
+      "title": "'19~'22년 아프리카돼지열병 발생현황 정보 공개",
+      "publishedAt": "2022-11-17",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/401174/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "350096",
+          "fileName": "'19년~'22년 ASF 발생현황 정보공개.hwp",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/350096/download.do",
+          "localPath": "data/reference/pig-asf/raw/401174-350096-'19년~'22년 ASF 발생현황 정보공개.hwp",
+          "mediaType": "application/x-hwp",
+          "bytes": 133632,
+          "sha256": "47f9999038e1ae35d1a519950a0eafda293193c890ad7776936b4b69fc6ea1bd",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 158,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "331643",
+      "title": "'19~'22년 아프리카돼지열병 발생현황 정보 공개",
+      "publishedAt": "2022-10-11",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/331643/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "258128",
+          "fileName": "'19년~'22년 ASF 발생현황 정보공개.hwp",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/258128/download.do",
+          "localPath": "data/reference/pig-asf/raw/331643-258128-'19년~'22년 ASF 발생현황 정보공개.hwp",
+          "mediaType": "application/x-hwp",
+          "bytes": 138752,
+          "sha256": "36f33ee813c4173e6f18d2114eb30d4e357890773d60096147ed85c84b8feb31",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 156,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "331446",
+      "title": "야생멧돼지 ASF 발생보고 누계(22.9.20 기준)",
+      "publishedAt": "2022-09-21",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/331446/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "257609",
+          "fileName": "220920기준 야생멧돼지 ASF 발생현황.xlsx",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/257609/download.do",
+          "localPath": "data/reference/pig-asf/raw/331446-257609-220920기준 야생멧돼지 ASF 발생현황.xlsx",
+          "mediaType": "application/octet-stream",
+          "bytes": 319398,
+          "sha256": "e3d3a77e607d5a54141c4abf682388cce70365aeab62270025d815b9e8b8c0bb",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "330460",
+      "title": "야생멧돼지 ASF 발생보고 누계(22.6.16 기준)",
+      "publishedAt": "2022-06-17",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/330460/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "255334",
+          "fileName": "220617 ASF 야생멧돼지 발생현황.xlsx",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/255334/download.do",
+          "localPath": "data/reference/pig-asf/raw/330460-255334-220617 ASF 야생멧돼지 발생현황.xlsx",
+          "mediaType": "application/octet-stream",
+          "bytes": 204832,
+          "sha256": "fbe71dab28c346638b129ebafff193a744ac86965e72d8f3a9c30fe3ae94c577",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "329577",
+      "title": "야생멧돼지 ASF 발생보고 누계(22.2.6 기준)",
+      "publishedAt": "2022-02-07",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/329577/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "253233",
+          "fileName": "★ASF 야생멧돼지 발생현황(`22.2.6기준).pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/253233/download.do",
+          "localPath": "data/reference/pig-asf/raw/329577-253233-★ASF 야생멧돼지 발생현황(`22.2.6기준).pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 285643,
+          "sha256": "c9cbb9a71028e764ffa53cd1746be82fa0702686ed06d208746e35aec479dfee",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "329517",
+      "title": "야생멧돼지 ASF 발생보고 누계(22.1.28 기준)",
+      "publishedAt": "2022-01-28",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/329517/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "253083",
+          "fileName": "★ASF 야생멧돼지 발생현황(22.1.28 기준).pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/253083/download.do",
+          "localPath": "data/reference/pig-asf/raw/329517-253083-★ASF 야생멧돼지 발생현황(22.1.28 기준).pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 282931,
+          "sha256": "4fe09fae223e4155fbd52a453e77a34c0ec9c2e1ca2c86504921156135d15d5c",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "329483",
+      "title": "야생멧돼지 ASF 발생보고 누계(22.1.25 기준)",
+      "publishedAt": "2022-01-26",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/329483/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "253019",
+          "fileName": "★ASF 야생멧돼지 발생현황 (22.1.25 기준).pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/253019/download.do",
+          "localPath": "data/reference/pig-asf/raw/329483-253019-★ASF 야생멧돼지 발생현황 (22.1.25 기준).pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 279486,
+          "sha256": "83daf5d6e2be7e07e57959935fb72f554140adf1f45f60cb9fd107184068e9e9",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "329409",
+      "title": "야생멧돼지 ASF 발생보고 누계(22.1.18 기준)",
+      "publishedAt": "2022-01-18",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/329409/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "252817",
+          "fileName": "★ASF 야생멧돼지 발생현황 (`22.1.18 기준).pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/252817/download.do",
+          "localPath": "data/reference/pig-asf/raw/329409-252817-★ASF 야생멧돼지 발생현황 (`22.1.18 기준).pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 277205,
+          "sha256": "6ad95af6e02212db5dd44d27b0805c90d5f5b1fd973a9958851f2f4c3bffea69",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "329237",
+      "title": "야생멧돼지 ASF 발생보고 누계(21.12.31 기준)",
+      "publishedAt": "2022-01-03",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/329237/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "252400",
+          "fileName": "ASF 야생멧돼지 발생현황 (21.12.31기준).pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/252400/download.do",
+          "localPath": "data/reference/pig-asf/raw/329237-252400-ASF 야생멧돼지 발생현황 (21.12.31기준).pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 266504,
+          "sha256": "c029553f221740674fc5867582b5c9e7a4a9a09b8e5f0cd7f933ca9b6d1c4963",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "328835",
+      "title": "'19~'21년 ASF 발생현황 정보공개",
+      "publishedAt": "2021-12-01",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/328835/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "251646",
+          "fileName": "'19~'21년 ASF 발생현황 정보공개.hwp",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/251646/download.do",
+          "localPath": "data/reference/pig-asf/raw/328835-251646-'19~'21년 ASF 발생현황 정보공개.hwp",
+          "mediaType": "application/x-hwp",
+          "bytes": 72704,
+          "sha256": "93f43ce3f1e839a43a15edddf1fd816d9372fbbc028dd2e570140f3ef3f6c2e9",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 81,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "328812",
+      "title": "야생멧돼지 ASF 발생보고 누계(21.11.30 기준)",
+      "publishedAt": "2021-11-30",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/328812/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "251614",
+          "fileName": "★ASF 야생멧돼지 발생현황 (원본).pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/251614/download.do",
+          "localPath": "data/reference/pig-asf/raw/328812-251614-★ASF 야생멧돼지 발생현황 (원본).pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 1346215,
+          "sha256": "e3d81490088bbb0e56c8a682cd1de460b84432d0cab56b9fd9441265eda67d6a",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "328276",
+      "title": "야생멧돼지 ASF 발생보고 누계(21.9.29 기준)",
+      "publishedAt": "2021-09-29",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/328276/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "250831",
+          "fileName": "★야생멧돼지 ASF 발생보고 누계_210929.hwp",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/250831/download.do",
+          "localPath": "data/reference/pig-asf/raw/328276-250831-★야생멧돼지 ASF 발생보고 누계_210929.hwp",
+          "mediaType": "application/x-hwp",
+          "bytes": 285696,
+          "sha256": "c0d9e2059875c79a10eb22c4b976498590e03f3446123f4d57ce69302ba919f1",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 211,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "326790",
+      "title": "210401 야생멧돼지 ASF 검출현황",
+      "publishedAt": "2021-04-01",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/326790/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "248307",
+          "fileName": "야생멧돼지 ASF 발생현황 (2021. 3. 31.).hwp",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/248307/download.do",
+          "localPath": "data/reference/pig-asf/raw/326790-248307-야생멧돼지 ASF 발생현황 (2021. 3. 31.).hwp",
+          "mediaType": "application/x-hwp",
+          "bytes": 336896,
+          "sha256": "cf3ef7dc949c7fdbc62f1b6d42dfefc006ffd68827ee3af2b62eed29fcbfcef6",
+          "parseStatus": "parsed",
+          "parseError": null,
+          "parsedRowCount": 287,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "324784",
+      "title": "여행자 휴대품 모니터링 검사 ASF 유전자 검출(54건) 사례(’20.9.25. 기준)",
+      "publishedAt": "2020-09-25",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/324784/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "244361",
+          "fileName": "여행자 휴대품 모니터링 검사 ASF 유전자 검출(54건) 사례(’20.9.25. 기준).pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/244361/download.do",
+          "localPath": "data/reference/pig-asf/raw/324784-244361-여행자 휴대품 모니터링 검사 ASF 유전자 검출(54건) 사례(’20.9.25. 기준).pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 86502,
+          "sha256": "8398ddeea9de5f9cfbec4c1284904fe6a1ae1231d3075ee0851db2e3ff37755b",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "324544",
+      "title": "여행자 휴대품 모니터링 검사 ASF 유전자 검출(49건) 사례(’20.8.21. 기준)",
+      "publishedAt": "2020-08-21",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/324544/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "243903",
+          "fileName": "여행자 휴대품 모니터링 검사 ASF 유전자 검출(49건) 사례(’20.8.21. 기준).pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/243903/download.do",
+          "localPath": "data/reference/pig-asf/raw/324544-243903-여행자 휴대품 모니터링 검사 ASF 유전자 검출(49건) 사례(’20.8.21. 기준).pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 85571,
+          "sha256": "46a7d322799b643d5247fe735a936a811fede08e1de7dcd78487428f083dcf37",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "324454",
+      "title": "여행자 휴대품 모니터링 검사 ASF 유전자 검출(47건) 사례(’20.8.6. 기준)",
+      "publishedAt": "2020-08-07",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/324454/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "243698",
+          "fileName": "여행자 휴대품 모니터링 검사 ASF 유전자 검출(47건) 사례(’20.8.6. 기준).pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/243698/download.do",
+          "localPath": "data/reference/pig-asf/raw/324454-243698-여행자 휴대품 모니터링 검사 ASF 유전자 검출(47건) 사례(’20.8.6. 기준).pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 114172,
+          "sha256": "6fa96fc2dccf1eb7e27cea8e1d51d61cc939217690f4391cf69de5ba7cbee9f5",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "324392",
+      "title": "여행자 휴대품 모니터링 검사 ASF 유전자 검출(45건) 사례(’20.7.29. 기준)",
+      "publishedAt": "2020-07-31",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/324392/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "243563",
+          "fileName": "여행자 휴대품 모니터링 검사 ASF 유전자 검출(45건) 사례(’20.7.29. 기준).pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/243563/download.do",
+          "localPath": "data/reference/pig-asf/raw/324392-243563-여행자 휴대품 모니터링 검사 ASF 유전자 검출(45건) 사례(’20.7.29. 기준).pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 109837,
+          "sha256": "883ba61211ef48b33d5e009421382be4a4a7f1651841afb1aa1cc5f7eaac168a",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "324314",
+      "title": "여행자 휴대품 모니터링 검사 ASF 유전자 검출(44건) 사례(’20.7.16. 기준)",
+      "publishedAt": "2020-07-20",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/324314/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "243408",
+          "fileName": "여행자 휴대품 모니터링 검사 ASF 유전자 검출(44건) 사례(’20.7.16. 기준).pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/243408/download.do",
+          "localPath": "data/reference/pig-asf/raw/324314-243408-여행자 휴대품 모니터링 검사 ASF 유전자 검출(44건) 사례(’20.7.16. 기준).pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 109466,
+          "sha256": "986ba4b8bcd1f99a730c85228b9a461742c35c75e018310868baa954b5940088",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "323692",
+      "title": "여행자 휴대품 모니터링 검사 ASF 유전자 검출(40건) 사례(’20.5.4. 기준)",
+      "publishedAt": "2020-05-06",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/323692/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "242401",
+          "fileName": "여행자 휴대품 모니터링 검사 ASF 유전자 검출(40건) 사례(’20.5.4. 기준).pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/242401/download.do",
+          "localPath": "data/reference/pig-asf/raw/323692-242401-여행자 휴대품 모니터링 검사 ASF 유전자 검출(40건) 사례(’20.5.4. 기준).pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 104307,
+          "sha256": "9654fd061d1e1df4e9122e019d6dc34bbe57836a01e6e18b4c872713af016edd",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "323553",
+      "title": "여행자 휴대품 모니터링 검사 ASF 유전자 검출(38건) 사례(’20.4.20. 기준)",
+      "publishedAt": "2020-04-20",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/323553/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "242176",
+          "fileName": "여행자 휴대품 모니터링 검사 ASF 유전자 검출(38건) 사례(’20.4.20. 기준).pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/242176/download.do",
+          "localPath": "data/reference/pig-asf/raw/323553-242176-여행자 휴대품 모니터링 검사 ASF 유전자 검출(38건) 사례(’20.4.20. 기준).pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 104911,
+          "sha256": "dc4d51bcf4d15febc117070dc4fbc1274547c7c17ba671bdcabf7c66f5073ebf",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322807",
+      "title": "200219 야생멧돼지 ASF 검출현황 지도",
+      "publishedAt": "2020-02-20",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322807/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241069",
+          "fileName": "야생멧돼지 ASF 검출현황 지도.pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241069/download.do",
+          "localPath": "data/reference/pig-asf/raw/322807-241069-야생멧돼지 ASF 검출현황 지도.pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 288555,
+          "sha256": "d1d4bcaf146c662cd7676ede9b515e8b40c2cd06c10382cf7daed7ed5a67ce77",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322806",
+      "title": "200219 아프리카 돼지열병 발생 지도",
+      "publishedAt": "2020-02-20",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322806/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241068",
+          "fileName": "아프리카 돼지열병 발생 현황.pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241068/download.do",
+          "localPath": "data/reference/pig-asf/raw/322806-241068-아프리카 돼지열병 발생 현황.pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 113752,
+          "sha256": "d26e089134e65c75a022cd922d00e4abc9f67fb23c34e10fa32b10867767783b",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322805",
+      "title": "여행자 휴대품 모니터링 검사 ASF 유전자 검출(36건) 사례(’19.12.06. 기준)",
+      "publishedAt": "2019-12-06",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322805/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241067",
+          "fileName": "여행자 휴대품 모니터링 검사 ASF 유전자 검출(36건) 사례(’19.12.06. 기준).pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241067/download.do",
+          "localPath": "data/reference/pig-asf/raw/322805-241067-여행자 휴대품 모니터링 검사 ASF 유전자 검출(36건) 사례(’19.12.06. 기준).pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 103124,
+          "sha256": "99823500aa50d6e4b64b9faf435444702e61286c7639b682901ae13e2c76ba75",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322804",
+      "title": "여행자 휴대품 모니터링 검사 ASF 유전자 검출(34건) 사례(’19.11.29. 기준)",
+      "publishedAt": "2019-12-04",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322804/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241066",
+          "fileName": "여행자 휴대품 모니터링 검사 ASF 유전자 검출(34건) 사례(’19.11.29. 기준).pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241066/download.do",
+          "localPath": "data/reference/pig-asf/raw/322804-241066-여행자 휴대품 모니터링 검사 ASF 유전자 검출(34건) 사례(’19.11.29. 기준).pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 102466,
+          "sha256": "0c04889cd6e0b845a12ae38725bff3fb844d726ad3e59ecf3530563e7e418ee8",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322803",
+      "title": "여행자 휴대품 모니터링 검사 ASF 유전자 검출(30건) 사례(’19.11.26. 기준)",
+      "publishedAt": "2019-11-26",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322803/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241065",
+          "fileName": "여행자 휴대품 모니터링 검사 ASF 유전자 검출(30건) 사례(’19.11.26. 기준).pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241065/download.do",
+          "localPath": "data/reference/pig-asf/raw/322803-241065-여행자 휴대품 모니터링 검사 ASF 유전자 검출(30건) 사례(’19.11.26. 기준).pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 85026,
+          "sha256": "3c54919bce27e5121f8249045239dd8a62e393927106617688c7912ffacc1081",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322802",
+      "title": "190909 주변국 ASF 발생지도",
+      "publishedAt": "2019-09-17",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322802/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241064",
+          "fileName": "190909 주변국 ASF 발생지도.pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241064/download.do",
+          "localPath": "data/reference/pig-asf/raw/322802-241064-190909 주변국 ASF 발생지도.pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 203906,
+          "sha256": "2983f6b16e50d79a9799d216d9371c351833fb51f7dd489f6f2be9c8bf410931",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322801",
+      "title": "190823 주변국 ASF 발생지도",
+      "publishedAt": "2019-08-26",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322801/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241063",
+          "fileName": "190823 주변국 ASF 발생지도.pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241063/download.do",
+          "localPath": "data/reference/pig-asf/raw/322801-241063-190823 주변국 ASF 발생지도.pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 230962,
+          "sha256": "c7f98435db45ea5039bb213bc63d084062f44c678eaa956164f7b206a9984f66",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322800",
+      "title": "주변국 ASF 발생 현황(북한1, 중국153, 몽골11, 베트남4,420, 캄보디아13,",
+      "publishedAt": "2019-07-22",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322800/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241062",
+          "fileName": "190722 주변국 ASF 발생현황.pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241062/download.do",
+          "localPath": "data/reference/pig-asf/raw/322800-241062-190722 주변국 ASF 발생현황.pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 226302,
+          "sha256": "15e586fb943d33dd150497f4c31b91bdf8e8d1d7735bfe4a6efb2d946ba89fae",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322799",
+      "title": "주변국 ASF 발생 현황(북한1, 중국152, 몽골11, 베트남4,420, 캄보디아11,",
+      "publishedAt": "2019-07-16",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322799/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241061",
+          "fileName": "190716 주변국 ASF 발생현황.pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241061/download.do",
+          "localPath": "data/reference/pig-asf/raw/322799-241061-190716 주변국 ASF 발생현황.pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 217390,
+          "sha256": "09c3104fadcfd002cc2272d648d205afe56740a48723254603430244a8d2390a",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322798",
+      "title": "주변국 ASF 발생 현황(북한1, 중국151, 몽골11, 베트남4,420, 캄보디아11,",
+      "publishedAt": "2019-07-16",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322798/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241060",
+          "fileName": "190712 주변국 ASF 발생현황.pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241060/download.do",
+          "localPath": "data/reference/pig-asf/raw/322798-241060-190712 주변국 ASF 발생현황.pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 199140,
+          "sha256": "312a74d256c28805b6206c83b6fe688b14a7da6300927d77bb5b4f79da44cdb0",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322797",
+      "title": "주변국 ASF 발생 현황(북한1, 중국149, 몽골11, 베트남4,419, 캄보디아8, 라",
+      "publishedAt": "2019-07-05",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322797/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241059",
+          "fileName": "190705 주변국 ASF 발생현황.pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241059/download.do",
+          "localPath": "data/reference/pig-asf/raw/322797-241059-190705 주변국 ASF 발생현황.pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 229996,
+          "sha256": "f066b4d91c17b6f8ccf3cf7549c9013720f7ef12c6346b94af49fbcfcb8a9ee9",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322796",
+      "title": "주변국 ASF 발생 현황(북한1, 중국148, 몽골11, 베트남4,418, 캄보디아7, 라",
+      "publishedAt": "2019-06-28",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322796/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241058",
+          "fileName": "190627 주변국 ASF 발생현황.pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241058/download.do",
+          "localPath": "data/reference/pig-asf/raw/322796-241058-190627 주변국 ASF 발생현황.pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 224448,
+          "sha256": "94d871394f56731bef1a51afab97185c4dff4533edca8feac6ed7f40ad4e32de",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322795",
+      "title": "아프리카돼지열병 발생국 지도(6.3 기준)",
+      "publishedAt": "2019-06-03",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322795/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241057",
+          "fileName": "20190603-ASF 발생국 지도(북한 반영).pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241057/download.do",
+          "localPath": "data/reference/pig-asf/raw/322795-241057-20190603-ASF 발생국 지도(북한 반영).pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 808674,
+          "sha256": "6afd3a734fcc3c8c62bce8d692b910997a9f20aaf7c2a9b616774ccd9b79416c",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322794",
+      "title": "주변국 아프리카돼지열병 발생(중국 134건, 몽골 11건, 베트남 2332건, 캄보디아 7",
+      "publishedAt": "2019-05-17",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322794/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241056",
+          "fileName": "190517_주변국 아프리카돼지열병 발생현황(중국 134건, 몽골 11건, 베트남 2,332건, 캄보디아7)_게시.pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241056/download.do",
+          "localPath": "data/reference/pig-asf/raw/322794-241056-190517_주변국 아프리카돼지열병 발생현황(중국 134건, 몽골 11건, 베트남 2,332건, 캄보디아7)_게시.pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 432167,
+          "sha256": "87c8382c3b543d3b56c4b7b276ae9a0472f5ec0e1d7965418365fc237f106a4a",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322793",
+      "title": "ASF 유전자 검출 사례(17건, 19.5.16일 기준)",
+      "publishedAt": "2019-05-17",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322793/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241055",
+          "fileName": "ASF 유전자 검출 사례(19.5.16).pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241055/download.do",
+          "localPath": "data/reference/pig-asf/raw/322793-241055-ASF 유전자 검출 사례(19.5.16).pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 269190,
+          "sha256": "8ad5f77c973b6e8838657980b2fdc7f900217461b68233e8dd86f534cc474210",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322792",
+      "title": "주변국 아프리카돼지열병 발생(중국 133건, 몽골 11건, 베트남 211건, 캄보디아 7건",
+      "publishedAt": "2019-05-07",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322792/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241054",
+          "fileName": "190507_주변국 아프리카돼지열병 발생보고(중국 133건, 몽골 11건, 베트남 211건, 캄보디아7)_게시.pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241054/download.do",
+          "localPath": "data/reference/pig-asf/raw/322792-241054-190507_주변국 아프리카돼지열병 발생보고(중국 133건, 몽골 11건, 베트남 211건, 캄보디아7)_게시.pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 399712,
+          "sha256": "0399ba41b3ebfe72996f2a4047ed3e9c84b8716a8b640b8e67ecdbfc1af2de81",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322791",
+      "title": "ASF 유전자 검출 사례(15건, 19.4.25일 기준)",
+      "publishedAt": "2019-04-28",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322791/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241053",
+          "fileName": "ASF 유전자 검출 사례(19.4.25).pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241053/download.do",
+          "localPath": "data/reference/pig-asf/raw/322791-241053-ASF 유전자 검출 사례(19.4.25).pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 239667,
+          "sha256": "4b44a72a0bfa336619a1cd4a49583825122475cc11de1bf6673a8c3bebc15195",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322788",
+      "title": "주변국 아프리카돼지열병 발생(중국 115건, 몽골 11건, 베트남 211건, 캄보디아 1건",
+      "publishedAt": "2019-04-24",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322788/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241050",
+          "fileName": "190415_주변국 아프리카돼지열병 발생보고(중국 115건, 몽골 11건, 베트남 211건, 캄보디아1)_게시.pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241050/download.do",
+          "localPath": "data/reference/pig-asf/raw/322788-241050-190415_주변국 아프리카돼지열병 발생보고(중국 115건, 몽골 11건, 베트남 211건, 캄보디아1)_게시.pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 494059,
+          "sha256": "832f0f2035c2637be5e25137cb9958851d7d0a66a7f5f2aab89f442f1b200931",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322789",
+      "title": "ASF 유전자 검출 사례(14건, 19.4.24일 기준)",
+      "publishedAt": "2019-04-24",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322789/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241051",
+          "fileName": "ASF 유전자 검출 사례(19.4.24).pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241051/download.do",
+          "localPath": "data/reference/pig-asf/raw/322789-241051-ASF 유전자 검출 사례(19.4.24).pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 223239,
+          "sha256": "b14aff275e71a9ff664b4b28530a40d16541a2ac6967b65e27e3af817ac3e151",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322787",
+      "title": "ASF 유전자 검출 사례(14건, 19.4.24일 기준)",
+      "publishedAt": "2019-04-10",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322787/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241049",
+          "fileName": "ASF 유전자 검출 사례(19.4.4).pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241049/download.do",
+          "localPath": "data/reference/pig-asf/raw/322787-241049-ASF 유전자 검출 사례(19.4.4).pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 222063,
+          "sha256": "5f1197b9cc95bde0ceb261218ee4b6d82c4628ef8887c1e15a5920b3f512aa0d",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322786",
+      "title": "주변국 아프리카돼지열병 발생(중국 112건, 몽골 11건, 베트남 211건, 캄보디아 1건",
+      "publishedAt": "2019-04-04",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322786/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241048",
+          "fileName": "190404_주변국 아프리카돼지열병 발생보고(중국 112건, 몽골 11건, 베트남 211건, 캄보디아1)_게시.pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241048/download.do",
+          "localPath": "data/reference/pig-asf/raw/322786-241048-190404_주변국 아프리카돼지열병 발생보고(중국 112건, 몽골 11건, 베트남 211건, 캄보디아1)_게시.pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 490225,
+          "sha256": "fefc6c211ce16fa8eebe88de4048f1544ebeb1abc6c98e7a62821a6f0e29ffbc",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322785",
+      "title": "ASF 유전자 검출 사례(12건, 19.3.26일 기준)",
+      "publishedAt": "2019-04-02",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322785/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241047",
+          "fileName": "ASF 유전자 검출 사례(12건).pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241047/download.do",
+          "localPath": "data/reference/pig-asf/raw/322785-241047-ASF 유전자 검출 사례(12건).pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 166004,
+          "sha256": "703dad063a54033f888f3701089b02d5d59b5754e676a5a696464bbb8abe6a45",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322782",
+      "title": "주변국 아프리카돼지열병 발생(중국 109건, 몽골 11건, 베트남 211건)",
+      "publishedAt": "2019-03-29",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322782/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241044",
+          "fileName": "190329_주변국 아프리카돼지열병 발생보고(중국 109건, 몽골 11건, 베트남 211건)_게시.pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241044/download.do",
+          "localPath": "data/reference/pig-asf/raw/322782-241044-190329_주변국 아프리카돼지열병 발생보고(중국 109건, 몽골 11건, 베트남 211건)_게시.pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 416708,
+          "sha256": "446cf56b91535ccd00f2638effaea904b4cd20dd0da9ed122b7e3ff804b8179b",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322781",
+      "title": "주변국 아프리카돼지열병 발생(중국 109건, 몽골 11건, 베트남 208건)",
+      "publishedAt": "2019-03-25",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322781/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241043",
+          "fileName": "190324_주변국 아프리카돼지열병 발생보고(중국 109건, 몽골 11건, 베트남 208건)_게시.pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241043/download.do",
+          "localPath": "data/reference/pig-asf/raw/322781-241043-190324_주변국 아프리카돼지열병 발생보고(중국 109건, 몽골 11건, 베트남 208건)_게시.pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 410158,
+          "sha256": "20d1d156fb90688b856dc73adf667b7f79a2ece611908248e66edbc2c962b5e9",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322780",
+      "title": "주변국 아프리카돼지열병 발생(중국 108건, 몽골 11건, 베트남 208건)",
+      "publishedAt": "2019-03-21",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322780/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241042",
+          "fileName": "190321_주변국 아프리카돼지열병 발생보고(중국 108건, 몽골 11건, 베트남 208건)_게시.pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241042/download.do",
+          "localPath": "data/reference/pig-asf/raw/322780-241042-190321_주변국 아프리카돼지열병 발생보고(중국 108건, 몽골 11건, 베트남 208건)_게시.pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 407546,
+          "sha256": "6a8bf6cc4c2e441ad69cad92f49593f63891867d912816f0cf0311d44020215b",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322779",
+      "title": "주변국 아프리카돼지열병 발생(중국 108건, 몽골 11건, 베트남 206건)",
+      "publishedAt": "2019-03-21",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322779/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241041",
+          "fileName": "190319_주변국 아프리카돼지열병 발생보고(중국 108건, 몽골 11건, 베트남 206건)_게시.pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241041/download.do",
+          "localPath": "data/reference/pig-asf/raw/322779-241041-190319_주변국 아프리카돼지열병 발생보고(중국 108건, 몽골 11건, 베트남 206건)_게시.pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 411961,
+          "sha256": "ae91484c3d553526bd96cf9a2b88098c16966a79de38f17a4cfd0bd1670860ac",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322777",
+      "title": "주변국 아프리카돼지열병 발생(중국 107건, 몽골 11건, 베트남 79건)",
+      "publishedAt": "2019-03-21",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322777/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241039",
+          "fileName": "190311_주변국 아프리카돼지열병 발생보고(중국 107건, 몽골 11건, 베트남 79건)_게시.pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241039/download.do",
+          "localPath": "data/reference/pig-asf/raw/322777-241039-190311_주변국 아프리카돼지열병 발생보고(중국 107건, 몽골 11건, 베트남 79건)_게시.pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 468251,
+          "sha256": "e7cce36045d718ff999f5b57f30bdac99964fd5efddebec8f37faaff254320b1",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322778",
+      "title": "주변국 아프리카돼지열병 발생(중국 108건, 몽골 11건, 베트남 135건)",
+      "publishedAt": "2019-03-19",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322778/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241040",
+          "fileName": "190314_주변국 아프리카돼지열병 발생보고(중국 108건, 몽골 11건, 베트남 135건)_게시.pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241040/download.do",
+          "localPath": "data/reference/pig-asf/raw/322778-241040-190314_주변국 아프리카돼지열병 발생보고(중국 108건, 몽골 11건, 베트남 135건)_게시.pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 421882,
+          "sha256": "ba5ae4f106b8ce70d5f9d0db686388adc8359ec0e41068dd4c8840e84b6f0e3a",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322776",
+      "title": "주변국 아프리카돼지열병 발생(중국 106건, 몽골 11건, 베트남 79건)",
+      "publishedAt": "2019-03-12",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322776/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241038",
+          "fileName": "190308_주변국 아프리카돼지열병 발생보고(중국 106건, 몽골 11건, 베트남 79건)_게시.pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241038/download.do",
+          "localPath": "data/reference/pig-asf/raw/322776-241038-190308_주변국 아프리카돼지열병 발생보고(중국 106건, 몽골 11건, 베트남 79건)_게시.pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 372173,
+          "sha256": "22b6bbad1b4c2c221fc5f5589df2472b6a52d0780830cb4a84d13c7fdfb2be6e",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322775",
+      "title": "주변국 아프리카돼지열병 발생(중국 106건, 몽골 11건, 베트남 33건)",
+      "publishedAt": "2019-03-08",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322775/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241037",
+          "fileName": "190306_주변국 아프리카돼지열병 발생보고(중국 106건, 몽골 11건, 베트남 33건)_게시.pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241037/download.do",
+          "localPath": "data/reference/pig-asf/raw/322775-241037-190306_주변국 아프리카돼지열병 발생보고(중국 106건, 몽골 11건, 베트남 33건)_게시.pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 389321,
+          "sha256": "dc2a413dd28d9a5b1e82570dcb9bad3337c8b5e6080a6a81d25eb4ba6e3c4d5c",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322773",
+      "title": "주변국 아프리카돼지열병 발생(중국 106건, 몽골 11건, 베트남 11건)",
+      "publishedAt": "2019-02-28",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322773/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241034",
+          "fileName": "190228_주변국 아프리카돼지열병 발생보고(중국 106건, 몽골 11건, 베트남 11건)_게시.pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241034/download.do",
+          "localPath": "data/reference/pig-asf/raw/322773-241034-190228_주변국 아프리카돼지열병 발생보고(중국 106건, 몽골 11건, 베트남 11건)_게시.pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 385562,
+          "sha256": "5fc765b693356f6fb0e8b66fe9babd7099f511a5f32eed88d3db88ef6521b9b2",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322772",
+      "title": "주변국 아프리카돼지열병 발생(중국 105건, 몽골 11건, 베트남 7건)",
+      "publishedAt": "2019-02-26",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322772/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241033",
+          "fileName": "190226_주변국 아프리카돼지열병 발생보고(중국 105건, 몽골 11건, 베트남 7건)_게시.pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241033/download.do",
+          "localPath": "data/reference/pig-asf/raw/322772-241033-190226_주변국 아프리카돼지열병 발생보고(중국 105건, 몽골 11건, 베트남 7건)_게시.pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 563982,
+          "sha256": "0928daba878f1d56283f2bc4fa267390080cf067f56d5065b01486897c2e5718",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322771",
+      "title": "주변국 아프리카돼지열병 발생(중국 103건, 몽골 11건, 베트남 3건)",
+      "publishedAt": "2019-02-21",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322771/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241032",
+          "fileName": "190221_주변국 아프리카돼지열병 발생보고(중국 103건, 몽골 11건, 베트남 3건)_게시.pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241032/download.do",
+          "localPath": "data/reference/pig-asf/raw/322771-241032-190221_주변국 아프리카돼지열병 발생보고(중국 103건, 몽골 11건, 베트남 3건)_게시.pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 529850,
+          "sha256": "74d573cdfd60185dcf792c10cf482c9880ab8f28486f029199de423c7667eb21",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322770",
+      "title": "중국(101차), 몽골(11차), 베트남(1차) 아프리카돼지열병 발생",
+      "publishedAt": "2019-02-20",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322770/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241031",
+          "fileName": "190219_중국(101차), 몽골(1차) 아프리카돼지열병 발생보고_게시.pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241031/download.do",
+          "localPath": "data/reference/pig-asf/raw/322770-241031-190219_중국(101차), 몽골(1차) 아프리카돼지열병 발생보고_게시.pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 305154,
+          "sha256": "fd0c78c26cf040fec96dd15c6fac49f8bab0050eb2b6197b76c0d50bd1dab985",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322769",
+      "title": "중국 아프리카돼지열병 추가 발생(100차)",
+      "publishedAt": "2019-02-11",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322769/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241030",
+          "fileName": "190211_중국 아프리카돼지열병 추가 발생보고(100차)_게시.pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241030/download.do",
+          "localPath": "data/reference/pig-asf/raw/322769-241030-190211_중국 아프리카돼지열병 추가 발생보고(100차)_게시.pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 172575,
+          "sha256": "a2ffa826efe2db46ee1125b19ff7d0498b48ed57c227fb4da6a19d8818bb9dbe",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322768",
+      "title": "중국 아프리카돼지열병 추가 발생(98~99차)",
+      "publishedAt": "2019-01-21",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322768/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241029",
+          "fileName": "190121_중국 아프리카돼지열병 추가 발생보고(98_99차)_게시.pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241029/download.do",
+          "localPath": "data/reference/pig-asf/raw/322768-241029-190121_중국 아프리카돼지열병 추가 발생보고(98_99차)_게시.pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 185891,
+          "sha256": "7c836284152965ab750b09b59267970ee27c76b7086d8a7f707e4e5f3c3ec8d5",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322767",
+      "title": "몽골 아프리카돼지열병 최초발생",
+      "publishedAt": "2019-01-17",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322767/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241028",
+          "fileName": "몽골 ASF 발생 현황.pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241028/download.do",
+          "localPath": "data/reference/pig-asf/raw/322767-241028-몽골 ASF 발생 현황.pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 170718,
+          "sha256": "6d2f904230956cc3231b1fa442af3c3d1dee3882b3ed2d8ec730d1f63c8590ab",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322766",
+      "title": "중국 아프리카돼지열병 추가 발생(96~97차)",
+      "publishedAt": "2019-01-14",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322766/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241027",
+          "fileName": "190114_중국 아프리카돼지열병 추가 발생보고(96_97차)_게시.pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241027/download.do",
+          "localPath": "data/reference/pig-asf/raw/322766-241027-190114_중국 아프리카돼지열병 추가 발생보고(96_97차)_게시.pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 174673,
+          "sha256": "5daab1bed7049769310e5a806463c84c006ae142ae2833927b4a6300f89aa227",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322765",
+      "title": "중국 아프리카돼지열병 추가 발생(95차)",
+      "publishedAt": "2019-01-04",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322765/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241026",
+          "fileName": "190103_중국 아프리카돼지열병 추가 발생보고(95차)_게시.pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241026/download.do",
+          "localPath": "data/reference/pig-asf/raw/322765-241026-190103_중국 아프리카돼지열병 추가 발생보고(95차)_게시.pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 187594,
+          "sha256": "09b2184997ced4e4a53ef791545d131d9190082b0e4a681667e9f291dcfc3eda",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "322764",
+      "title": "중국 아프리카돼지열병 추가 발생(94차)",
+      "publishedAt": "2019-01-02",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/322764/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "241025",
+          "fileName": "190102_중국 아프리카돼지열병 추가 발생보고(94차)_게시.pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/241025/download.do",
+          "localPath": "data/reference/pig-asf/raw/322764-241025-190102_중국 아프리카돼지열병 추가 발생보고(94차)_게시.pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 339280,
+          "sha256": "5b70a196140b0e03af735f18a3fbae7c04eff877a872c359a652841a18ba9c07",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    },
+    {
+      "articleId": "319099",
+      "title": "중국 아프리카돼지열병 추가 발생(92~93차)",
+      "publishedAt": "2018-12-26",
+      "sourceUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/319099/artclView.do",
+      "attachments": [
+        {
+          "attachmentId": "234633",
+          "fileName": "181226_중국 아프리카돼지열병 추가 발생(92~93차)_게시.pdf",
+          "downloadUrl": "https://www.mafra.go.kr/bbs/FMD-AI2/404/234633/download.do",
+          "localPath": "data/reference/pig-asf/raw/319099-234633-181226_중국 아프리카돼지열병 추가 발생(92~93차)_게시.pdf",
+          "mediaType": "application/octet-stream",
+          "bytes": 189807,
+          "sha256": "b7c23bbee5556d45a270ba81535b8184ad64bed984e4647d3d9ee727cb511b9b",
+          "parseStatus": "unsupported",
+          "parseError": null,
+          "parsedRowCount": 0,
+          "parsedEventCount": 0
+        }
+      ]
+    }
+  ]
+}

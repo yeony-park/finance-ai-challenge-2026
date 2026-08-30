@@ -26,7 +26,7 @@ const rowSchema = z.strictObject({
   source_url: z.string().min(1),
   as_of: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   source_hash: z.string().regex(/^[a-f0-9]{64}$/),
-  document_status: z.literal("ready"),
+  document_status: z.enum(["ready", "partial"]),
   limitations: z.array(z.string()),
   page: z.number().int().positive(),
   text: z.string().min(1),
@@ -101,7 +101,7 @@ export const productKnowledgeSql = (scope: ProductKnowledgeScope): SQL => sql`
     AND c.pii_review_status = d.pii_review_status
     AND d.approved_for_public = true
     AND c.approved_for_public = true
-    AND d.status = 'ready'
+    AND d.status IN ('ready', 'partial')
     AND c.status = 'ready'
   ORDER BY d.id, c.page, c.chunk_index
 `;
@@ -145,6 +145,7 @@ export const createDbProductKnowledgeRepository = (
       documents.set(base.documentId, base);
       return {
         ...base,
+        status: "ready",
         chunkId: row.chunk_id,
         page: row.page,
         text: row.text,

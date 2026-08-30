@@ -27,7 +27,8 @@ import {
   STORAGE_NOTE,
 } from "@/lib/content/onboarding";
 
-import s from "./home.module.css";
+import controls from "./home-controls.module.css";
+import s from "./OnboardingDialog.module.css";
 
 const SEEN_KEY = "jeomjeom.onboarding.v1";
 
@@ -129,12 +130,12 @@ export function OnboardingDialog() {
 
         <div className={s.obGroup} role="group" aria-label={LEVEL_QUESTION}>
           <p className={s.obQuestion}>{LEVEL_QUESTION}</p>
-          <div className={s.chipRow}>
+          <div className={controls.chipRow}>
             {LEVEL_OPTIONS.map((option) => (
               <button
                 key={option.level}
                 type="button"
-                className={s.chip}
+                className={controls.chip}
                 aria-pressed={profile.level === option.level}
                 onClick={() => toggleLevel(profile.level, option.level)}
               >
@@ -146,12 +147,12 @@ export function OnboardingDialog() {
 
         <div className={s.obGroup} role="group" aria-label={CONCERN_QUESTION}>
           <p className={s.obQuestion}>{CONCERN_QUESTION}</p>
-          <div className={s.chipRow}>
+          <div className={controls.chipRow}>
             {CONCERN_OPTIONS.map((option) => (
               <button
                 key={option.concern}
                 type="button"
-                className={s.chip}
+                className={controls.chip}
                 aria-pressed={profile.concern === option.concern}
                 onClick={() => toggleConcern(profile.concern, option.concern)}
               >
@@ -164,12 +165,12 @@ export function OnboardingDialog() {
         <div className={s.obGroup} role="group" aria-label={INTEREST_QUESTION}>
           <p className={s.obQuestion}>{INTEREST_QUESTION}</p>
           <p className={s.obHint}>{INTEREST_HINT}</p>
-          <div className={s.chipRow}>
+          <div className={controls.chipRow}>
             {CATEGORY_REGISTRY.map((entry) => (
               <button
                 key={entry.id}
                 type="button"
-                className={s.chip}
+                className={controls.chip}
                 aria-pressed={profile.interests.includes(entry.id)}
                 onClick={() => toggleInterest(profile.interests, entry.id)}
               >

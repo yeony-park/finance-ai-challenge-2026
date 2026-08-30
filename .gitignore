@@ -24,6 +24,10 @@
 # misc
 .DS_Store
 *.pem
+__pycache__/
+*.py[cod]
+/.flow-transfer/
+/.ouroboros/
 
 # debug
 npm-debug.log*
@@ -38,15 +42,28 @@ yarn-error.log*
 # vercel
 .vercel
 
-# 개인정보 포함 원천 데이터 — 로컬 전용 (git 커밋 금지)
+# 원천 데이터 — 로컬 전용 (git 커밋 금지)
 #   raw       : DART 신고서 원문 (농장 상세주소·개체 식별자)
 #   snapshots : 이력제 API 실측 응답 (농장주 실명 farmerNm·상세주소 farmAddr)
 #   reports   : 내부 판정 리포트 (농장번호·상세주소)
-# 커밋 대상은 data/MANIFEST.md(재확보 안내)와 data/public/(마스킹 완료 공개 리포트)뿐이다.
+#   **/raw   : 농식품부 PDF/HWP/HWPX 등 재가공 전 공식 원문
+# 커밋 대상은 data/MANIFEST.md, data/public/ 및 data/reference/의 정제 JSON이다.
 # 재확보: npm run verify:collect -- <rcpNo> · npm run verify -- --rcpNo <rcpNo> (상세는 data/MANIFEST.md)
 data/raw/
+data/**/raw/
 data/snapshots/
 data/reports/
+
+# 수집기가 원문을 raw 밖에 저장하더라도 문서 원본은 커밋하지 않는다.
+# 정제된 data/reference/**/*.json에는 적용되지 않는다.
+data/**/*.pdf
+data/**/*.hwp
+data/**/*.hwpx
+data/**/*.doc
+data/**/*.docx
+data/**/*.xls
+data/**/*.xlsx
+data/**/*.zip
 
 # 골드셋 라벨 (이력번호·사육지 포함) — 로컬 전용. 가이드(data/goldset/README.md)만 커밋한다
 data/goldset/*/

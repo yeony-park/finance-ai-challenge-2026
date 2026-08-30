@@ -90,7 +90,7 @@ describe("리포트 제목 — 공모가 늘어도 서로 구분된다", () => {
     );
 
     expect(new Set(titles).size).toBe(3);
-    expect(titles[1]).toContain("가축 8호");
+    expect(titles[1]).toContain("한우 8호");
   });
 
   test("제목에 발행사명·브랜드가 들어가지 않는다", async () => {

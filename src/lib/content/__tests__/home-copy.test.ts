@@ -32,8 +32,6 @@ import {
 import {
   AI_ROLE_SENTENCE,
   EXAMPLE_QUESTIONS,
-  FOLLOW_UP_LABEL,
-  followUpQuestions,
   HERO_CHIP_LABELS,
   HERO_EYEBROW,
   HERO_SOURCES_LINE,
@@ -43,7 +41,6 @@ import {
   METHOD_STEP_TITLE,
   SCAFFOLD_NOTICE,
   SEARCH_PLACEHOLDER,
-  type FollowUpKey,
 } from "../home";
 import {
   ACTIVE_GROUP_EMPTY,
@@ -115,7 +112,6 @@ const ALL_COPY: readonly string[] = [
     checklistBridgeLabel("가축 9호", item.reportChapter?.label ?? ""),
   ),
   ...Object.values(VERDICT_CAPTIONS),
-  FOLLOW_UP_LABEL,
   WATCH_BAND_TITLE,
   WATCH_BAND_LEAD,
   WATCH_NO_RECORD,
@@ -218,33 +214,6 @@ describe("판정어 쉬운 병기 캡션", () => {
 
   test("대조 불가 캡션은 자료 부재를 밝힌다", () => {
     expect(VERDICT_CAPTIONS.unverifiable).toContain("자료가 아직 없었다");
-  });
-});
-
-describe("후속 질문 칩 — 커리큘럼 불변식", () => {
-  const KEYS: readonly FollowUpKey[] = [
-    "intro",
-    "protection",
-    "lifecycle",
-    "checklist",
-    "reports",
-    "category",
-  ];
-
-  test.each(KEYS)("%s: 후속 질문이 비어 있지 않다", (key) => {
-    expect(followUpQuestions(key).length).toBeGreaterThan(0);
-  });
-
-  test.each(KEYS)("%s: 후속 질문은 전부 예시 질문 레지스트리의 원소다", (key) => {
-    for (const question of followUpQuestions(key)) {
-      expect(EXAMPLE_QUESTIONS).toContain(question);
-    }
-  });
-
-  test.each(KEYS)("%s: 같은 목적지로 되돌아가는 후속 질문이 없다", (key) => {
-    for (const question of followUpQuestions(key)) {
-      expect(question.target, `${key} → ${question.label}`).not.toBe(key);
-    }
   });
 });
 

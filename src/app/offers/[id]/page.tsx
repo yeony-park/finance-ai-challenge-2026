@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 
@@ -34,7 +35,10 @@ import { loadLatestWatchState } from "@/lib/verify/amend/watch-state";
 import { loadNarrativeForReport } from "@/lib/verify/narrative/cache";
 import type { NarrativeDocument } from "@/lib/verify/narrative/types";
 import { toWatchStatusView, type WatchStatusView } from "@/lib/verify/amend/watch-view";
-import { loadLatestReport } from "@/lib/verify/report/load";
+import {
+  loadLatestReport,
+  type LoadedReport,
+} from "@/lib/verify/report/load";
 import { toDemoView, type DemoView } from "@/lib/verify/report/view-model";
 import { loadRealEstateInvestmentReview } from "@/lib/verify/real-estate-investment-review";
 import { loadRealEstateProductSummary } from "@/lib/verify/real-estate-product-summary";
@@ -44,6 +48,8 @@ import {
   toTrackRecordView,
   type TrackRecordCardView,
 } from "@/lib/verify/track-record/view";
+
+import s from "@/components/report/report.module.css";
 
 interface OfferPageProps {
   readonly params: Promise<{ readonly id: string }>;
@@ -74,15 +80,22 @@ const loadInvestmentReview = cache(async (offerId: string) => {
     : null;
 });
 
+const loadPublishedReport = cache(
+  async (offerId: string): Promise<LoadedReport | null> => {
+    if (!isPublishedOfferId(offerId)) return null;
+    return loadLatestReport(offerId);
+  },
+);
 const loadOfferView = cache(async (offerId: string): Promise<DemoView | null> => {
-  if (!isPublishedOfferId(offerId)) return null;
-  return toDemoView(await loadLatestReport(offerId));
+  const loaded = await loadPublishedReport(offerId);
+  if (!loaded) return null;
+  return toDemoView(loaded);
 });
 
 const loadOfferNarrative = cache(
   async (offerId: string): Promise<NarrativeDocument | null> => {
-    if (!isPublishedOfferId(offerId)) return null;
-    const loaded = await loadLatestReport(offerId);
+    const loaded = await loadPublishedReport(offerId);
+    if (!loaded) return null;
     return loadNarrativeForReport(loaded.report, loaded.fileName);
   },
 );
@@ -216,7 +229,24 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
       : null;
 
   return (
-    <>
+    <div className={s.reportPage}>
+      <div className={s.breadcrumbBar}>
+        <nav className={`${s.wrap} ${s.breadcrumb}`} aria-label="현재 위치">
+          <Link href="/offers" className={s.breadcrumbBack}>
+            <span aria-hidden="true">←</span>
+            검증 리포트
+          </Link>
+          <span className={s.breadcrumbDivider} aria-hidden="true">
+            /
+          </span>
+          <span className={s.breadcrumbCurrent} aria-current="page">
+            {view.offer.title}
+          </span>
+        </nav>
+      </div>
+
+      <ReportChapterNav hasFilingFacts={filingFacts !== null} />
+
       <ReportDocument
         view={view}
         narrative={narrative?.levels ?? null}
@@ -236,16 +266,17 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
             </>
           ) : null
         }
+        lifecycle={
+          offerEntry ? (
+            <LifecycleStrip
+              schedule={buildOfferSchedule(offerEntry, new Date())}
+              assetKind={offerEntry.assetKind}
+              assetLifecycle={offerEntry.assetLifecycle}
+              isExitVerified={offerEntry.isExitVerified}
+            />
+          ) : null
+        }
       >
-        <ReportChapterNav hasFilingFacts={filingFacts !== null} />
-        {offerEntry ? (
-          <LifecycleStrip
-            schedule={buildOfferSchedule(offerEntry, new Date())}
-            assetKind={offerEntry.assetKind}
-            assetLifecycle={offerEntry.assetLifecycle}
-            isExitVerified={offerEntry.isExitVerified}
-          />
-        ) : null}
         {filingFacts ? <FilingFactsSection facts={filingFacts} /> : null}
         <WatchSection
           watch={watch}
@@ -256,6 +287,6 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
       </ReportDocument>
       <PriceSection view={view} />
       <ReportFoot />
-    </>
+    </div>
   );
 }

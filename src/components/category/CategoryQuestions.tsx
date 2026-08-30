@@ -6,7 +6,8 @@ import { orderByConcern, useProfile } from "@/components/site/profile";
 import { checklistBridgeLabel, TRUST_CHECKLIST } from "@/lib/content/checklist";
 import { CONCERN_TAG } from "@/lib/content/onboarding";
 
-import home from "@/components/home/home.module.css";
+import homeContent from "@/components/home/home-content.module.css";
+import homeTags from "@/components/home/home-tags.module.css";
 import s from "./category.module.css";
 
 const QUESTION_COUNT = 3;
@@ -34,7 +35,7 @@ export function CategoryQuestions({
           <p key={item.id}>
             · {item.question}
             {item.id === profile.concern ? (
-              <span className={home.checkTag}>{CONCERN_TAG}</span>
+              <span className={homeTags.checkTag}>{CONCERN_TAG}</span>
             ) : null}
             {item.reportChapter && bridgeOffer ? (
               <Link
@@ -47,7 +48,7 @@ export function CategoryQuestions({
           </p>
         ))}
       </div>
-      <Link href="/#checklist" className={home.bandLink}>
+      <Link href="/#checklist" className={homeContent.bandLink}>
         확인 질문 8가지 전체 보기 →
       </Link>
     </>

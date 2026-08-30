@@ -41,10 +41,19 @@ describe("assignSubjectNos — 개체 번호는 이름에서 읽되 겹치지 �
 
 describe("목록 항목은 안정 id를 갖는다 (자유 텍스트를 key로 쓰지 않는다)", () => {
   test("② 가격 위치 항목 id가 유일하다", async () => {
-    const items = buildPriceSection(await buildContext()).items;
+    const price = buildPriceSection(await buildContext());
+    const items = price.items;
 
     expect(items.length).toBeGreaterThan(0);
     expect(new Set(items.map((item) => item.id)).size).toBe(items.length);
+    expect(price.visual?.grades.length).toBeGreaterThan(0);
+    expect(price.visual?.acquisition.prices.length).toBeGreaterThan(0);
+    expect(price.visual?.acquisition.min).toBeLessThanOrEqual(
+      price.visual?.acquisition.average ?? 0,
+    );
+    expect(price.visual?.acquisition.average).toBeLessThanOrEqual(
+      price.visual?.acquisition.max ?? 0,
+    );
   });
 
   test("③ 이행 이력 항목 id가 유일하고 엔진 note를 순번으로 구분한다", async () => {
