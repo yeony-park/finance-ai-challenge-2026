@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1130" height="328" viewBox="0 0 1130 328">
+  <style>
+    text { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    .title { fill: #171717; font-size: 27px; font-weight: 700; }
+    .body { fill: #8a8c88; font-size: 21px; font-weight: 400; }
+    .chip { fill: #62521f; font-size: 17px; font-weight: 500; }
+    .chip-muted { fill: #687080; font-size: 16px; font-weight: 600; }
+  </style>
+
+  <rect x="20" y="107" width="380" height="109" rx="14" fill="#f8f8f6" stroke="#deded9" stroke-width="2" />
+  <path d="M43 139h29l11 11v36H43z" fill="none" stroke="#676b6d" stroke-width="3" stroke-linejoin="round" />
+  <path d="M72 139v13h11M52 174h22" fill="none" stroke="#676b6d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  <text class="title" x="98" y="158">DART 공시</text>
+  <text class="body" x="98" y="190">한돈 STO 3개 회차</text>
+
+  <path d="M400 161h32M432 49v229M432 61h18M432 162h18M432 263h18" fill="none" stroke="#cecec8" stroke-width="2" />
+
+  <rect x="450" y="15" width="665" height="92" rx="13" fill="#ffffff" stroke="#deded9" stroke-width="2" />
+  <text class="title" x="469" y="56">회차·가격</text>
+  <text class="body" x="469" y="88">제1호 · 제2호 · 제3호</text>
+  <rect x="1029" y="43" width="67" height="34" rx="15" fill="#fff5cb" />
+  <text class="chip" x="1045" y="66">공시</text>
+
+  <rect x="450" y="116" width="665" height="92" rx="13" fill="#ffffff" stroke="#deded9" stroke-width="2" />
+  <text class="title" x="469" y="157">시장 참고</text>
+  <text class="body" x="469" y="189">돼지 경락가 월 통계</text>
+  <rect x="1029" y="144" width="67" height="34" rx="15" fill="#fff5cb" />
+  <text class="chip" x="1045" y="167">가격</text>
+
+  <rect x="450" y="217" width="665" height="92" rx="13" fill="#ffffff" stroke="#deded9" stroke-width="2" />
+  <text class="title" x="469" y="258">개체 원장</text>
+  <text class="body" x="469" y="290">개체 이력번호 미기재</text>
+  <rect x="986" y="245" width="110" height="34" rx="15" fill="#f0f0ee" />
+  <text class="chip-muted" x="1003" y="268">대조 불가</text>
+</svg>

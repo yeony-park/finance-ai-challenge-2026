@@ -1,6 +1,7 @@
 import Link from "next/link";
 
-import { OfferWatchControl } from "@/components/landing/OfferWatchControl";
+import { CategoryOfferCardGrid } from "@/components/landing/CategoryOfferCard";
+import { OfferCard } from "@/components/landing/OfferCard";
 import { Reveal } from "@/components/motion/Reveal";
 import { FILING_HEADING_ID } from "@/components/report/ids";
 import {
@@ -11,7 +12,6 @@ import {
   FACT_STRIP_TITLE,
   OFFERS_SECTION_LEAD,
   OFFERS_SECTION_TITLE,
-  REPORT_OPEN_LABEL,
 } from "@/lib/content/category-landing";
 import {
   TIMELINE_AMENDED,
@@ -23,15 +23,12 @@ import {
   TIMELINE_TITLE_SUFFIX,
 } from "@/lib/content/event-timeline";
 import type { SubscriptionPhase } from "@/components/site/offers";
-import { watchAmendmentSummary } from "@/lib/verify/amend/watch-label";
 import { formatKstDateTime, formatYmd8 } from "@/lib/verify/report/format";
 import { VERDICT_LABEL } from "@/lib/verify/report/view-model/labels";
+import type { Verdict } from "@/lib/verify/types";
 
 import homeContent from "@/components/home/home-content.module.css";
-import {
-  ACTIVE_REPORT_CHAPTERS,
-  type OfferEvidence,
-} from "./category-landing-model";
+import type { OfferEvidence } from "./category-landing-model";
 import base from "./category.module.css";
 import s from "./CategoryEvidenceSection.module.css";
 
@@ -41,82 +38,6 @@ const countsSentence = (
   unverifiable: number,
 ): string =>
   `${VERDICT_LABEL.match} ${match}건 · ${VERDICT_LABEL.mismatch} ${mismatch}건 · ${VERDICT_LABEL.unverifiable} ${unverifiable}건`;
-
-function OfferEvidenceCard({
-  entry,
-  showChapterLinks = false,
-}: {
-  readonly entry: OfferEvidence;
-  readonly showChapterLinks?: boolean;
-}) {
-  const { summary } = entry.loaded.report;
-  const verdicts = ["match", "mismatch", "unverifiable"] as const;
-
-  return (
-    <article className={s.offerCard}>
-      <span className={s.offerCardHead}>
-        <Link href={`/offers/${entry.offer.id}`} className={s.offerCardName}>
-          {entry.offer.title}
-        </Link>
-        <span
-          className={
-            entry.schedule.phase === "open" ? s.offerBadgeOpen : s.offerBadge
-          }
-        >
-          {entry.schedule.badge}
-        </span>
-      </span>
-      <span className={s.offerCardStats}>
-        {verdicts.map((verdict) => (
-          <span key={verdict} className={s.offerStat}>
-            <span className={s.offerStatLabel}>
-              <span
-                className={`${base.tileMark} ${
-                  verdict === "match"
-                    ? base.tileMarkMatch
-                    : verdict === "mismatch"
-                      ? base.tileMarkMiss
-                      : base.tileMarkUnknown
-                }`}
-              />
-              {VERDICT_LABEL[verdict]}
-            </span>
-            <span className={s.offerStatNum}>
-              {summary[verdict].toLocaleString("ko-KR")}
-            </span>
-          </span>
-        ))}
-      </span>
-      <span className={s.offerCardMeta}>청약 {entry.schedule.label}</span>
-      {showChapterLinks ? (
-        <span className={s.chapterLinks}>
-          {ACTIVE_REPORT_CHAPTERS.filter(
-            (chapter) =>
-              chapter.id !== FILING_HEADING_ID || entry.filingFacts !== null,
-          ).map((chapter) => (
-            <Link
-              key={chapter.id}
-              href={`/offers/${entry.offer.id}#${chapter.id}`}
-              className={base.questionBridge}
-            >
-              {chapter.label} →
-            </Link>
-          ))}
-        </span>
-      ) : null}
-      <OfferWatchControl
-        offerId={entry.offer.id}
-        offerTitle={entry.offer.title}
-        statusText={watchAmendmentSummary(entry.watch)}
-        isAlert={(entry.watch?.amendmentCount ?? 0) > 0}
-        className={s.offerCardWatch}
-      />
-      <Link href={`/offers/${entry.offer.id}`} className={base.questionBridge}>
-        {REPORT_OPEN_LABEL}
-      </Link>
-    </article>
-  );
-}
 
 function FactStrip({ entry }: { readonly entry: OfferEvidence }) {
   if (!entry.filingFacts) return null;
@@ -211,6 +132,7 @@ interface CategoryEvidenceSectionProps {
   readonly activeEvidence: readonly OfferEvidence[];
   readonly closedEvidence: readonly OfferEvidence[];
   readonly analysisStatus: SubscriptionPhase | null;
+  readonly analysisVerdict: Verdict | null;
   readonly preview: readonly string[] | null;
 }
 
@@ -222,6 +144,7 @@ export function CategoryEvidenceSection({
   activeEvidence,
   closedEvidence,
   analysisStatus,
+  analysisVerdict,
   preview,
 }: CategoryEvidenceSectionProps) {
   return (
@@ -241,15 +164,11 @@ export function CategoryEvidenceSection({
                 <h3 className={base.groupTitle}>{ACTIVE_GROUP_TITLE}</h3>
                 {activeEvidence.length > 0 ? (
                   <>
-                    <div className={s.offerGrid}>
+                    <CategoryOfferCardGrid>
                       {activeEvidence.map((entry) => (
-                        <OfferEvidenceCard
-                          key={entry.offer.id}
-                          entry={entry}
-                          showChapterLinks
-                        />
+                        <OfferCard key={entry.offer.id} card={entry.card} />
                       ))}
-                    </div>
+                    </CategoryOfferCardGrid>
                     {activeEvidence.map((entry) => (
                       <FactStrip key={`facts-${entry.offer.id}`} entry={entry} />
                     ))}
@@ -266,11 +185,11 @@ export function CategoryEvidenceSection({
               <>
                 <h3 className={base.groupTitle}>{CLOSED_GROUP_TITLE}</h3>
                 {closedEvidence.length > 0 ? (
-                  <div className={s.offerGrid}>
+                  <CategoryOfferCardGrid>
                     {closedEvidence.map((entry) => (
-                      <OfferEvidenceCard key={entry.offer.id} entry={entry} />
+                      <OfferCard key={entry.offer.id} card={entry.card} />
                     ))}
-                  </div>
+                  </CategoryOfferCardGrid>
                 ) : (
                   <p className={base.emptyNote}>
                     이 카테고리에는 아직 청약이 종료된 공모가 없습니다.
@@ -279,8 +198,9 @@ export function CategoryEvidenceSection({
               </>
             ) : null}
           </>
-        ) : analysisStatus !== null && evidence.length > 0 ? (
-          <p className={base.emptyNote}>선택한 청약 상태에 해당하는 공모가 없습니다.</p>
+        ) : (analysisStatus !== null || analysisVerdict !== null) &&
+          evidence.length > 0 ? (
+          <p className={base.emptyNote}>선택한 필터에 해당하는 공모가 없습니다.</p>
         ) : preview ? (
           <ul className={base.previewList}>
             {preview.map((line) => (

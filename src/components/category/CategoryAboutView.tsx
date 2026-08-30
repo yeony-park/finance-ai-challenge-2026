@@ -21,6 +21,7 @@ interface CategoryAboutViewProps {
   readonly heroImage: string | null;
   readonly leadVisual?: ReactNode;
   readonly analysisHintVisual?: ReactNode;
+  readonly replaceCopyWithVisuals?: boolean;
   readonly descriptionContent: ReactNode;
   readonly descriptionContentTitle: string;
 }
@@ -34,6 +35,7 @@ export function CategoryAboutView({
   heroImage,
   leadVisual = null,
   analysisHintVisual = null,
+  replaceCopyWithVisuals = false,
   descriptionContent,
   descriptionContentTitle,
 }: CategoryAboutViewProps) {
@@ -81,7 +83,9 @@ export function CategoryAboutView({
           {leadVisual ? (
             <div className={s.aboutVisualBlock}>
               <div className={s.aboutLeadVisual}>{leadVisual}</div>
-              <p className={`${base.slotLead} ${s.aboutLead}`}>{lead}</p>
+              {replaceCopyWithVisuals ? null : (
+                <p className={`${base.slotLead} ${s.aboutLead}`}>{lead}</p>
+              )}
             </div>
           ) : (
             <p className={`${base.slotLead} ${s.aboutLead}`}>{lead}</p>
@@ -89,11 +93,13 @@ export function CategoryAboutView({
           {analysisHintVisual ? (
             <div className={s.aboutVisualBlock}>
               <div className={s.aboutHintVisual}>{analysisHintVisual}</div>
-              <p className={s.aboutHint}>
-                공시 분석 탭에서는 공개된 공시 원문, 공공 자료와의 대조 결과,
-                그리고 현재 확인할 수 없는 범위를 근거와 함께 확인할 수
-                있습니다.
-              </p>
+              {replaceCopyWithVisuals ? null : (
+                <p className={s.aboutHint}>
+                  공시 분석 탭에서는 공개된 공시 원문, 공공 자료와의 대조
+                  결과, 그리고 현재 확인할 수 없는 범위를 근거와 함께 확인할
+                  수 있습니다.
+                </p>
+              )}
             </div>
           ) : (
             <p className={s.aboutHint}>

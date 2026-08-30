@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 
 import { CategoryLanding } from "@/components/category/CategoryLanding";
+import {
+  RealEstateAnalysisScopeDiagram,
+  RealEstateVerificationOverviewDiagram,
+} from "@/components/category/RealEstateAboutDiagrams";
 import { OFFERS } from "@/components/site/offers";
 import {
   categoryPageStateFromSearchParams,
@@ -19,17 +23,22 @@ interface RealEstatePageProps {
 
 export default async function RealEstatePage({ searchParams }: RealEstatePageProps) {
   const params = await searchParams;
-  const { activeTab, analysisStatus } = categoryPageStateFromSearchParams(params);
+  const { activeTab, analysisStatus, analysisVerdict } =
+    categoryPageStateFromSearchParams(params);
 
   return (
     <CategoryLanding
       categoryId="real-estate"
       activeTab={activeTab}
       analysisStatus={analysisStatus}
+      analysisVerdict={analysisVerdict}
       title="부동산"
       lead="종료된 공모의 사후 검증 리포트가 공개돼 있습니다 — 소재지·가격·이행을 공공 원장과 대조합니다."
       descriptor={REAL_ESTATE_CATEGORY}
       heroImage="/category-real-estate.jpg"
+      leadVisual={<RealEstateVerificationOverviewDiagram />}
+      analysisHintVisual={<RealEstateAnalysisScopeDiagram />}
+      replaceCopyWithVisuals
       offers={OFFERS.filter((offer) => offer.assetKind === "real-estate")}
     />
   );

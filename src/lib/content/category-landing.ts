@@ -37,4 +37,4 @@ export const FACT_STRIP_LINK = "신고서 정보 전체 보기 →";
 
 export const ISSUER_SLOT_TITLE = "발행사의 과거 기록";
 
-export const REPORT_OPEN_LABEL = "리포트 열기 →";
+export const REPORT_OPEN_LABEL = "검증 리포트 보기 →";

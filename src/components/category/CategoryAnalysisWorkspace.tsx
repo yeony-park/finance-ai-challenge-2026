@@ -2,11 +2,11 @@ import type { ReactNode } from "react";
 
 import type { SubscriptionPhase } from "@/components/site/offers";
 import type { CategoryId } from "@/lib/content/categories";
+import type { Verdict } from "@/lib/verify/types";
 
 import home from "@/components/home/home.module.css";
 import {
   CategoryAnalysisSidebar,
-  type AnalysisOfferOption,
   type AnalysisSectionLink,
 } from "./CategoryAnalysisSidebar";
 import { CategoryPageNav } from "./CategoryPageNav";
@@ -16,8 +16,9 @@ interface CategoryAnalysisWorkspaceProps {
   readonly categoryId: CategoryId;
   readonly categoryHref: string;
   readonly title: string;
-  readonly offers: readonly AnalysisOfferOption[];
   readonly selectedPhase: SubscriptionPhase | null;
+  readonly selectedVerdict: Verdict | null;
+  readonly hasFilterableOffers: boolean;
   readonly sections: readonly AnalysisSectionLink[];
   readonly children: ReactNode;
 }
@@ -26,8 +27,9 @@ export function CategoryAnalysisWorkspace({
   categoryId,
   categoryHref,
   title,
-  offers,
   selectedPhase,
+  selectedVerdict,
+  hasFilterableOffers,
   sections,
   children,
 }: CategoryAnalysisWorkspaceProps) {
@@ -48,8 +50,9 @@ export function CategoryAnalysisWorkspace({
         <CategoryAnalysisSidebar
           categoryId={categoryId}
           categoryHref={categoryHref}
-          offers={offers}
           selectedPhase={selectedPhase}
+          selectedVerdict={selectedVerdict}
+          hasFilterableOffers={hasFilterableOffers}
           sections={sections}
         />
         <main className={s.analysisMain} id={`${categoryId}-analysis-results`}>

@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1126" height="330" viewBox="0 0 1126 330">
+  <style>
+    text { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    .title { fill: #171717; font-size: 27px; font-weight: 700; }
+    .body { fill: #8a8c88; font-size: 21px; font-weight: 400; }
+    .result { fill: #287d68; font-size: 24px; font-weight: 700; }
+    .muted-result { fill: #687080; font-size: 24px; font-weight: 700; }
+    .result-body { fill: #555a5c; font-size: 20px; font-weight: 400; }
+    .footer { fill: #555a5c; font-size: 18px; font-weight: 600; }
+    .footer-muted { fill: #8a8c88; font-size: 18px; font-weight: 400; }
+  </style>
+
+  <rect x="15" y="10" width="524" height="99" rx="14" fill="#f8f8f6" stroke="#deded9" stroke-width="2" />
+  <path d="M39 37h29l11 11v36H39z" fill="none" stroke="#676b6d" stroke-width="3" stroke-linejoin="round" />
+  <path d="M68 37v13h11M48 72h22" fill="none" stroke="#676b6d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  <text class="title" x="94" y="58">공시 원문</text>
+  <text class="body" x="94" y="88">신고서 · 설명서 · 발행실적</text>
+
+  <text x="556" y="68" fill="#777b7d" font-size="25" font-weight="500">+</text>
+
+  <rect x="587" y="10" width="524" height="99" rx="14" fill="#f8f8f6" stroke="#deded9" stroke-width="2" />
+  <ellipse cx="630" cy="49" rx="20" ry="11" fill="none" stroke="#676b6d" stroke-width="3" />
+  <path d="M610 49v23c0 7 9 12 20 12s20-5 20-12V49M610 60c0 7 9 12 20 12s20-5 20-12" fill="none" stroke="#676b6d" stroke-width="3" />
+  <text class="title" x="668" y="58">공모가 구성</text>
+  <text class="body" x="668" y="88">공모가 · 취득가 · 발행비용</text>
+
+  <path d="M15 133h516M595 133h516" fill="none" stroke="#cecec8" stroke-width="2" />
+  <rect x="531" y="118" width="64" height="30" fill="#ffffff" />
+  <text x="545" y="139" fill="#8a8c88" font-size="18">검산</text>
+
+  <rect x="15" y="158" width="540" height="104" rx="14" fill="#e4f2ed" stroke="#b8ddcf" stroke-width="2" />
+  <text class="result" x="38" y="201">확인한 범위</text>
+  <text class="result-body" x="38" y="234">문서 좌표 · 공모금액 · 구성 산식</text>
+
+  <rect x="572" y="158" width="539" height="104" rx="14" fill="#f4f4f2" stroke="#d8d8d3" stroke-width="2" stroke-dasharray="7 5" />
+  <text class="muted-result" x="595" y="201">현재 확인 불가</text>
+  <text class="result-body" x="595" y="234">독립 낙찰 · 현재 보관 · 처분·회수</text>
+
+  <path d="M15 275h1096" fill="none" stroke="#deded9" stroke-width="2" />
+  <text class="footer" x="34" y="309">근거 연결</text>
+  <text class="footer-muted" x="897" y="309">원문 · 접수일 · 기준일</text>
+</svg>

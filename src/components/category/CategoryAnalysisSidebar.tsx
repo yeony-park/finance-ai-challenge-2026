@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 
@@ -8,18 +7,9 @@ import type { SubscriptionPhase } from "@/components/site/offers";
 import { SearchField } from "@/components/site/SearchField";
 import type { CategoryId } from "@/lib/content/categories";
 import { VERDICT_LABEL } from "@/lib/verify/report/view-model/labels";
+import type { Verdict } from "@/lib/verify/types";
 
 import s from "./category-shell.module.css";
-
-export type AnalysisVerdict = "match" | "mismatch" | "unverifiable";
-
-export interface AnalysisOfferOption {
-  readonly id: string;
-  readonly title: string;
-  readonly href: string;
-  readonly phase: SubscriptionPhase;
-  readonly verdicts: readonly AnalysisVerdict[];
-}
 
 export interface AnalysisSectionLink {
   readonly id: string;
@@ -30,23 +20,16 @@ export interface AnalysisSectionLink {
 interface CategoryAnalysisSidebarProps {
   readonly categoryId: CategoryId;
   readonly categoryHref: string;
-  readonly offers: readonly AnalysisOfferOption[];
   readonly selectedPhase: SubscriptionPhase | null;
+  readonly selectedVerdict: Verdict | null;
+  readonly hasFilterableOffers: boolean;
   readonly sections: readonly AnalysisSectionLink[];
 }
 
-const SEARCH_PLACEHOLDER: Record<CategoryId, string> = {
-  art: "상품·작품·작가·플랫폼 검색",
-  cattle: "공모·개체·이력번호·판정 검색",
-  pig: "공모·발행사·신고서·판정 검색",
-  "real-estate": "공모·소재지·사업자·거래 근거 검색",
-};
-
 const VERDICT_FILTERS: readonly {
-  readonly id: "all" | AnalysisVerdict;
+  readonly id: Verdict;
   readonly label: string;
 }[] = [
-  { id: "all", label: "전체" },
   { id: "match", label: VERDICT_LABEL.match },
   { id: "mismatch", label: VERDICT_LABEL.mismatch },
   { id: "unverifiable", label: VERDICT_LABEL.unverifiable },
@@ -64,32 +47,43 @@ const OFFER_PHASE_FILTERS: readonly {
 const normalize = (value: string): string =>
   value.trim().toLocaleLowerCase("ko-KR").replaceAll(" ", "");
 
+export const buildAnalysisFilterHref = ({
+  categoryHref,
+  currentSearch,
+  currentHash,
+  filter,
+  nextValue,
+}: {
+  readonly categoryHref: string;
+  readonly currentSearch: string;
+  readonly currentHash: string;
+  readonly filter: "status" | "verdict";
+  readonly nextValue: string | null;
+}): string => {
+  const params = new URLSearchParams(currentSearch.replace(/^\?/, ""));
+  params.set("tab", "analysis");
+  if (nextValue === null) params.delete(filter);
+  else params.set(filter, nextValue);
+
+  const search = params.toString();
+  const hash =
+    currentHash.length === 0 || currentHash.startsWith("#")
+      ? currentHash
+      : `#${currentHash}`;
+  return `${categoryHref}${search.length > 0 ? `?${search}` : ""}${hash}`;
+};
+
 export function CategoryAnalysisSidebar({
   categoryId,
   categoryHref,
-  offers,
   selectedPhase,
+  selectedVerdict,
+  hasFilterableOffers,
   sections,
 }: CategoryAnalysisSidebarProps) {
   const router = useRouter();
   const [query, setQuery] = useState("");
-  const [verdict, setVerdict] = useState<"all" | AnalysisVerdict>("all");
   const normalizedQuery = normalize(query);
-
-  const filteredOffers = useMemo(
-    () =>
-      offers.filter((offer) => {
-        const matchesQuery =
-          normalizedQuery.length === 0 ||
-          normalize(`${offer.title} ${offer.id}`).includes(normalizedQuery);
-        const matchesVerdict =
-          verdict === "all" || offer.verdicts.includes(verdict);
-        const matchesPhase =
-          selectedPhase === null || offer.phase === selectedPhase;
-        return matchesQuery && matchesVerdict && matchesPhase;
-      }),
-    [normalizedQuery, offers, selectedPhase, verdict],
-  );
 
   const filteredSections = useMemo(
     () =>
@@ -109,10 +103,11 @@ export function CategoryAnalysisSidebar({
         <span className={s.analysisSearchHeading}>검색</span>
         <SearchField
           id={`${variant}-${categoryId}-analysis-search`}
-          label="공모 및 분석 항목 검색"
+          label="분석 항목 검색"
+          className={s.analysisSearchField}
           value={query}
           onChange={setQuery}
-          placeholder={SEARCH_PLACEHOLDER[categoryId]}
+          placeholder=""
         />
       </div>
 
@@ -124,12 +119,25 @@ export function CategoryAnalysisSidebar({
               key={filter.id}
               type="button"
               className={
-                verdict === filter.id
+                selectedVerdict === filter.id
                   ? `${s.analysisVerdictFilter} ${s.analysisVerdictFilterActive}`
                   : s.analysisVerdictFilter
               }
-              aria-pressed={verdict === filter.id}
-              onClick={() => setVerdict(filter.id)}
+              aria-pressed={selectedVerdict === filter.id}
+              disabled={!hasFilterableOffers}
+              onClick={() =>
+                router.replace(
+                  buildAnalysisFilterHref({
+                    categoryHref,
+                    currentSearch: window.location.search,
+                    currentHash: window.location.hash,
+                    filter: "verdict",
+                    nextValue:
+                      selectedVerdict === filter.id ? null : filter.id,
+                  }),
+                  { scroll: false },
+                )
+              }
             >
               {filter.label}
             </button>
@@ -152,11 +160,16 @@ export function CategoryAnalysisSidebar({
                     : s.analysisVerdictFilter
                 }
                 aria-pressed={isActive}
+                disabled={!hasFilterableOffers}
                 onClick={() =>
                   router.replace(
-                    isActive
-                      ? `${categoryHref}?tab=analysis`
-                      : `${categoryHref}?tab=analysis&status=${filter.id}`,
+                    buildAnalysisFilterHref({
+                      categoryHref,
+                      currentSearch: window.location.search,
+                      currentHash: window.location.hash,
+                      filter: "status",
+                      nextValue: isActive ? null : filter.id,
+                    }),
                     { scroll: false },
                   )
                 }
@@ -167,28 +180,6 @@ export function CategoryAnalysisSidebar({
           })}
         </div>
       </fieldset>
-
-      <section className={s.analysisSidebarGroup} aria-labelledby={`${variant}-offer-filter-title`}>
-        <h2 id={`${variant}-offer-filter-title`}>공모 선택</h2>
-        {offers.length === 0 ? (
-          <p className={s.analysisSidebarEmpty}>
-            공개 공모 리포트가 연결되면 여기에 표시됩니다.
-          </p>
-        ) : filteredOffers.length > 0 ? (
-          <ul className={s.analysisSidebarList}>
-            {filteredOffers.map((offer) => (
-              <li key={offer.id}>
-                <Link href={offer.href} className={s.analysisSidebarLink}>
-                  {offer.title}
-                  <span aria-hidden="true">↗</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className={s.analysisSidebarEmpty}>조건에 맞는 공모가 없습니다.</p>
-        )}
-      </section>
 
       <nav className={s.analysisSidebarGroup} aria-labelledby={`${variant}-section-filter-title`}>
         <h2 id={`${variant}-section-filter-title`}>분석 항목</h2>

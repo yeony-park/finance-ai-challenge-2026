@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import s from "./CattleAboutDiagrams.module.css";
+import s from "./CategoryAboutDiagrams.module.css";
 
 export function CattleCrossCheckDiagram() {
   return (

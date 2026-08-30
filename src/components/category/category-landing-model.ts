@@ -1,15 +1,11 @@
 import {
-  FILING_HEADING_ID,
-  REALITY_HEADING_ID,
   TRACK_RECORD_HEADING_ID,
-  WATCH_HEADING_ID,
 } from "@/components/report/ids";
 import type {
   OfferEntry,
   OfferSchedule,
   SubscriptionPhase,
 } from "@/components/site/offers";
-import { buildOfferSchedule } from "@/components/site/offers";
 import { categoryById, type CategoryId } from "@/lib/content/categories";
 import {
   ISSUER_SLOT_TITLE,
@@ -22,24 +18,19 @@ import {
 } from "@/lib/verify/amend/watch-state";
 import { loadFilingFacts, type FilingFacts } from "@/lib/verify/report/filing-facts";
 import { loadLatestReport, type LoadedReport } from "@/lib/verify/report/load";
+import {
+  buildOfferCard,
+  type OfferCardView,
+} from "@/lib/verify/report/view-model";
 import { issuerKeyForOffer } from "@/lib/verify/track-record/registry";
 import { loadTrackRecord } from "@/lib/verify/track-record/store";
 import {
   toTrackRecordView,
   type TrackRecordCardView,
 } from "@/lib/verify/track-record/view";
+import type { Verdict } from "@/lib/verify/types";
 
-import type {
-  AnalysisOfferOption,
-  AnalysisSectionLink,
-  AnalysisVerdict,
-} from "./CategoryAnalysisSidebar";
-
-const ANALYSIS_VERDICTS: readonly AnalysisVerdict[] = [
-  "match",
-  "mismatch",
-  "unverifiable",
-];
+import type { AnalysisSectionLink } from "./CategoryAnalysisSidebar";
 
 const CATEGORY_ANALYSIS_KEYWORDS: Record<CategoryId, readonly string[]> = {
   art: ["상품", "작품", "작가", "플랫폼", "미술품"],
@@ -54,6 +45,7 @@ export interface OfferEvidence {
   readonly watch: WatchState | null;
   readonly schedule: OfferSchedule;
   readonly filingFacts: FilingFacts | null;
+  readonly card: OfferCardView;
 }
 
 export interface CategoryVerdictTotals {
@@ -71,7 +63,6 @@ export interface CategoryLandingModel {
   readonly totalItems: number;
   readonly latestGeneratedAt: string | undefined;
   readonly categoryHref: string;
-  readonly analysisOffers: readonly AnalysisOfferOption[];
   readonly analysisSections: readonly AnalysisSectionLink[];
   readonly trackRecord: TrackRecordCardView | null;
   readonly bridgeOffer: OfferEntry | null;
@@ -82,6 +73,7 @@ interface CategoryLandingModelOptions {
   readonly title: string;
   readonly offers: readonly OfferEntry[];
   readonly analysisStatus: SubscriptionPhase | null;
+  readonly analysisVerdict: Verdict | null;
   readonly hasCustomContent: boolean;
   readonly customTitle: string;
   readonly hasMarketContent: boolean;
@@ -98,12 +90,20 @@ const loadEvidence = async (
         loadLatestWatchState(offer.id),
         loadFilingFacts(offer.id),
       ]);
+      const card = buildOfferCard({
+        offer,
+        now,
+        ...loaded,
+        watch: watch ?? null,
+        hasFilingFacts: filingFacts !== null,
+      });
       return {
         offer,
         loaded,
         watch: watch ?? null,
-        schedule: buildOfferSchedule(offer, now),
+        schedule: card.schedule,
         filingFacts,
+        card,
       };
     }),
   );
@@ -121,43 +121,77 @@ const loadCategoryTrackRecord = async (
 };
 
 const buildAnalysisSections = ({
+  categoryId,
   title,
   categoryKeywords,
   hasCustomContent,
   customTitle,
   hasTrackRecord,
   hasMarketContent,
-  hasQuestions,
 }: {
+  readonly categoryId: CategoryId;
   readonly title: string;
   readonly categoryKeywords: readonly string[];
   readonly hasCustomContent: boolean;
   readonly customTitle: string;
   readonly hasTrackRecord: boolean;
   readonly hasMarketContent: boolean;
-  readonly hasQuestions: boolean;
 }): readonly AnalysisSectionLink[] => {
-  const sections: AnalysisSectionLink[] = [
-    {
+  const sections: AnalysisSectionLink[] = [];
+
+  if (categoryId !== "pig") {
+    sections.push({
       id: `${title}-evidence`,
       label: OFFERS_SECTION_TITLE,
       keywords: [...categoryKeywords, "공모", "리포트", "신고서", "원문"],
-    },
-  ];
+    });
+  }
 
   if (hasCustomContent) {
     sections.push({
-      id: `${title}-custom`,
+      id: categoryId === "pig" ? "pig-gallery-title" : `${title}-custom`,
       label: customTitle,
       keywords: categoryKeywords,
     });
   }
 
-  sections.push({
-    id: `${title}-verdicts`,
-    label: VERDICT_SECTION_TITLE,
-    keywords: ["판정", "일치", "원장 불일치", "대조 불가"],
-  });
+  if (categoryId === "pig") {
+    sections.push(
+      {
+        id: "pig-review-layer-title",
+        label: "선택 회차 검토",
+        keywords: ["공시 계보", "기초자산", "판매", "정산", "식별자"],
+      },
+      {
+        id: "pig-review-questions-title",
+        label: "발행사 확인 질문",
+        keywords: ["질문", "소유권", "담보", "출하", "정산 근거"],
+      },
+      {
+        id: "pig-review-sources-title",
+        label: "근거 수집 상태",
+        keywords: ["DART", "축산물이력제", "시장 통계", "원문"],
+      },
+      {
+        id: "pig-disease-title",
+        label: "ASF·구제역 지역 맥락",
+        keywords: ["ASF", "구제역", "지도", "고창", "정읍", "KAHIS"],
+      },
+      {
+        id: "pig-price-title",
+        label: "경락가격 그래프",
+        keywords: ["그래프", "경락가격", "등급", "1+", "2등급"],
+      },
+    );
+  }
+
+  if (categoryId !== "pig") {
+    sections.push({
+      id: `${title}-verdicts`,
+      label: VERDICT_SECTION_TITLE,
+      keywords: ["판정", "일치", "원장 불일치", "대조 불가"],
+    });
+  }
 
   if (hasTrackRecord) {
     sections.push({
@@ -175,30 +209,20 @@ const buildAnalysisSections = ({
     });
   }
 
-  if (hasQuestions) {
-    sections.push({
-      id: `${title}-questions`,
-      label: "확인 질문",
-      keywords: ["질문", "확인 항목", "검색"],
-    });
-  }
+  sections.push({
+    id: `${title}-questions`,
+    label: "확인 질문",
+    keywords: ["질문", "확인 항목", "검색"],
+  });
   return sections;
 };
-
-export const ACTIVE_REPORT_CHAPTERS: readonly {
-  readonly id: string;
-  readonly label: string;
-}[] = [
-  { id: REALITY_HEADING_ID, label: "실재 확인" },
-  { id: WATCH_HEADING_ID, label: "정정 이력" },
-  { id: FILING_HEADING_ID, label: "신고서 정보" },
-];
 
 export async function loadCategoryLandingModel({
   categoryId,
   title,
   offers,
   analysisStatus,
+  analysisVerdict,
   hasCustomContent,
   customTitle,
   hasMarketContent,
@@ -212,10 +236,12 @@ export async function loadCategoryLandingModel({
     loadCategoryTrackRecord(byOpenAsc),
   ]);
 
-  const visibleEvidence =
-    analysisStatus === null
-      ? evidence
-      : evidence.filter((entry) => entry.schedule.phase === analysisStatus);
+  const visibleEvidence = evidence.filter(
+    (entry) =>
+      (analysisStatus === null || entry.schedule.phase === analysisStatus) &&
+      (analysisVerdict === null ||
+        entry.loaded.report.summary[analysisVerdict] > 0),
+  );
   const activeEvidence = visibleEvidence.filter(
     (entry) => entry.schedule.phase !== "closed",
   );
@@ -236,15 +262,6 @@ export async function loadCategoryLandingModel({
     .sort()
     .at(-1);
   const categoryKeywords = CATEGORY_ANALYSIS_KEYWORDS[categoryId];
-  const analysisOffers: readonly AnalysisOfferOption[] = evidence.map((entry) => ({
-    id: entry.offer.id,
-    title: entry.offer.title,
-    href: `/offers/${entry.offer.id}`,
-    phase: entry.schedule.phase,
-    verdicts: ANALYSIS_VERDICTS.filter(
-      (verdict) => entry.loaded.report.summary[verdict] > 0,
-    ),
-  }));
 
   return {
     evidence,
@@ -255,15 +272,14 @@ export async function loadCategoryLandingModel({
     totalItems: totals.match + totals.mismatch + totals.unverifiable,
     latestGeneratedAt,
     categoryHref: categoryById(categoryId).href,
-    analysisOffers,
     analysisSections: buildAnalysisSections({
+      categoryId,
       title,
       categoryKeywords,
       hasCustomContent,
       customTitle,
       hasTrackRecord: trackRecord !== null,
       hasMarketContent,
-      hasQuestions: categoryId !== "pig",
     }),
     trackRecord,
     bridgeOffer: byOpenAsc.at(-1) ?? null,

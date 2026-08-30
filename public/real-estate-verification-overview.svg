@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1130" height="328" viewBox="0 0 1130 328">
+  <style>
+    text { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    .title { fill: #171717; font-size: 27px; font-weight: 700; }
+    .body { fill: #8a8c88; font-size: 21px; font-weight: 400; }
+    .chip { fill: #62521f; font-size: 17px; font-weight: 500; }
+  </style>
+
+  <rect x="20" y="107" width="380" height="109" rx="14" fill="#f8f8f6" stroke="#deded9" stroke-width="2" />
+  <path d="M43 184v-38l20-12 20 12v38zM52 153h5M69 153h5M52 165h5M69 165h5M59 184v-10h8v10" fill="none" stroke="#676b6d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  <text class="title" x="98" y="158">종료 공모</text>
+  <text class="body" x="98" y="190">공모 공고 · 매각 공시</text>
+
+  <path d="M400 161h32M432 49v229M432 61h18M432 162h18M432 263h18" fill="none" stroke="#cecec8" stroke-width="2" />
+
+  <rect x="450" y="15" width="665" height="92" rx="13" fill="#ffffff" stroke="#deded9" stroke-width="2" />
+  <text class="title" x="469" y="56">소재지 실재</text>
+  <text class="body" x="469" y="88">건축물대장 표제부</text>
+  <rect x="1029" y="43" width="67" height="34" rx="15" fill="#fff5cb" />
+  <text class="chip" x="1045" y="66">실재</text>
+
+  <rect x="450" y="116" width="665" height="92" rx="13" fill="#ffffff" stroke="#deded9" stroke-width="2" />
+  <text class="title" x="469" y="157">가격 위치</text>
+  <text class="body" x="469" y="189">법정동 실거래 비교군</text>
+  <rect x="1029" y="144" width="67" height="34" rx="15" fill="#fff5cb" />
+  <text class="chip" x="1045" y="167">가격</text>
+
+  <rect x="450" y="217" width="665" height="92" rx="13" fill="#ffffff" stroke="#deded9" stroke-width="2" />
+  <text class="title" x="469" y="258">이행 대조</text>
+  <text class="body" x="469" y="290">매각금액 · 매각일</text>
+  <rect x="1029" y="245" width="67" height="34" rx="15" fill="#fff5cb" />
+  <text class="chip" x="1045" y="268">이행</text>
+</svg>

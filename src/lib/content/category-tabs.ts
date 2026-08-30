@@ -1,4 +1,5 @@
 import type { SubscriptionPhase } from "@/components/site/offers";
+import type { Verdict } from "@/lib/verify/types";
 
 export const CATEGORY_TABS = ["about", "analysis"] as const;
 export type CategoryTab = (typeof CATEGORY_TABS)[number];
@@ -6,6 +7,8 @@ export type CategoryTab = (typeof CATEGORY_TABS)[number];
 export interface CategoryPageSearchParams {
   readonly tab?: string | string[];
   readonly status?: string | string[];
+  readonly verdict?: string | string[];
+  readonly product?: string | string[];
 }
 
 export const categoryTabFromSearchParam = (
@@ -24,12 +27,25 @@ export const analysisStatusFromSearchParam = (
     : null;
 };
 
+export const analysisVerdictFromSearchParam = (
+  value: string | string[] | undefined,
+): Verdict | null => {
+  const selected = Array.isArray(value) ? value[0] : value;
+  return selected === "match" ||
+    selected === "mismatch" ||
+    selected === "unverifiable"
+    ? selected
+    : null;
+};
+
 export const categoryPageStateFromSearchParams = (
   params: CategoryPageSearchParams,
 ): {
   readonly activeTab: CategoryTab;
   readonly analysisStatus: SubscriptionPhase | null;
+  readonly analysisVerdict: Verdict | null;
 } => ({
   activeTab: categoryTabFromSearchParam(params.tab),
   analysisStatus: analysisStatusFromSearchParam(params.status),
+  analysisVerdict: analysisVerdictFromSearchParam(params.verdict),
 });

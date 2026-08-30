@@ -35,15 +35,20 @@
 .analysisWorkspace {
   display: grid;
   grid-template-columns: minmax(13.5rem, 16rem) minmax(0, 1fr);
-  gap: var(--ds-space-5) var(--ds-layout-gap);
+  gap: var(--ds-space-5) clamp(1rem, 0.5rem + 2vw, 2.5rem);
   align-items: start;
 }
 
 .analysisSidebar {
-  position: static;
-  border: 0;
+  position: sticky;
+  top: calc(var(--ds-header-h) + var(--ds-space-5));
+  max-height: calc(
+    100svh - var(--ds-header-h) - var(--ds-space-5) - var(--ds-space-5)
+  );
+  overflow-y: auto;
+  border: 1px solid var(--ds-line);
   border-radius: var(--ds-radius-xl);
-  background: var(--ds-bg-muted);
+  background: var(--ds-surface);
 }
 
 .analysisSidebarControls {
@@ -63,6 +68,12 @@
   color: var(--ds-ink);
 }
 
+.analysisSearchField input {
+  height: var(--ds-control-h-sm);
+  min-height: var(--ds-control-h-sm);
+  padding-block: var(--ds-space-2);
+}
+
 .analysisFilterGroup {
   min-width: 0;
   margin: 0;
@@ -75,9 +86,9 @@
   margin: 0 0 var(--ds-space-3);
   padding: 0;
   font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
+  font-size: var(--ds-text-xs);
   font-weight: var(--ds-weight-medium);
-  color: var(--ds-ink-faint);
+  color: var(--ds-ink);
   letter-spacing: var(--ds-tracking-wide);
 }
 
@@ -106,6 +117,16 @@
 .analysisVerdictFilter:hover {
   border-color: var(--ds-line-strong);
   color: var(--ds-ink);
+}
+
+.analysisVerdictFilter:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.analysisVerdictFilter:disabled:hover {
+  border-color: var(--ds-line);
+  color: var(--ds-ink-muted);
 }
 
 .analysisVerdictFilter:focus-visible {
@@ -279,13 +300,8 @@
 .aboutVisualBlock {
   display: grid;
   gap: var(--ds-space-3);
-  justify-self: end;
-  width: min(
-    70.625rem,
-    calc(
-      50vw - var(--ds-gutter) - clamp(1rem, 0.5rem + 2vw, 2.5rem)
-    )
-  );
+  justify-self: stretch;
+  width: 100%;
   min-width: 0;
 }
 
@@ -406,9 +422,9 @@
 
   .mobileAnalysisFilters {
     display: block;
-    border: 0;
+    border: 1px solid var(--ds-line);
     border-radius: var(--ds-radius-xl);
-    background: var(--ds-bg-muted);
+    background: var(--ds-surface);
   }
 
   .mobileAnalysisFilters > summary {
@@ -464,7 +480,7 @@
     width: 100%;
   }
 
-  .landingHeroWithDescription .landingHeroPhotoWithVisuals {
+  .landingHeroPhotoWithVisuals {
     order: 3;
     height: auto;
     min-height: 0;

@@ -15,7 +15,8 @@ export const MARKET_SOURCE_LINE =
 export const MARKET_DISCLAIMER =
   "시장 통계입니다 — 특정 공모의 가격 판정이 아닙니다.";
 
-export const MARKET_GAP_NOTE = "자료 없는 달은 선을 끊어 표시합니다.";
+export const MARKET_GAP_NOTE =
+  "자료 없는 달은 값을 만들지 않고 앞뒤 관측치를 선으로 잇습니다.";
 
 export const MARKET_TABLE_TOGGLE = "월별 원자료 표로 보기";
 

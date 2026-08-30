@@ -56,23 +56,6 @@ const monthFromOrdinal = (ordinal: number): string => {
   return `${year}-${String(month).padStart(2, "0")}`;
 };
 
-const buildSegments = (
-  series: readonly AuctionSeriesPoint[],
-): readonly (readonly AuctionSeriesPoint[])[] => {
-  const segments: AuctionSeriesPoint[][] = [];
-  let current: AuctionSeriesPoint[] = [];
-  for (const point of series) {
-    const previous = current.at(-1);
-    if (previous && monthOrdinal(point.month) - monthOrdinal(previous.month) > 1) {
-      segments.push(current);
-      current = [];
-    }
-    current.push(point);
-  }
-  if (current.length > 0) segments.push(current);
-  return segments;
-};
-
 export interface MarketMarker {
   readonly month: string;
   readonly label: string;
@@ -148,7 +131,7 @@ export function AuctionMarketSection({
   const y = (value: number): number =>
     PAD_TOP + INNER_H - ((value - yMin) / (yMax - yMin)) * INNER_H;
 
-  const segments = buildSegments(loadedSeries);
+  const segments = [loadedSeries];
   const linePath = (
     segment: readonly AuctionSeriesPoint[],
     pick: (point: AuctionSeriesPoint) => number,
