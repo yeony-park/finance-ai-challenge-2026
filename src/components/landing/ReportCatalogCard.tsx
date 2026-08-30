@@ -1,8 +1,4 @@
-import Link from "next/link";
-
-import { Pressable } from "@/components/motion/Pressable";
-
-import s from "./landing.module.css";
+import { CategoryOfferCard } from "./CategoryOfferCard";
 import type { ReportCatalogCardView } from "./report-catalog";
 
 export function ReportCatalogCard({
@@ -10,33 +6,21 @@ export function ReportCatalogCard({
 }: {
   readonly card: ReportCatalogCardView;
 }) {
-  const titleId = `report-catalog-${card.id}-title`;
-
   return (
-    <Pressable hover={1.01} tap={0.99}>
-      <article
-        className={s.offerCard}
-        aria-labelledby={titleId}
-      >
-        <div className={s.offerTop}>
-          <h3 id={titleId} className={s.offerTitle}>
-            {card.title}
-          </h3>
-          <span className={s.dday}>{card.badge}</span>
-        </div>
-
-        <p className={s.schedule}>
-          <span className={s.scheduleAsset}>{card.assetLabel}</span> ·{" "}
-          {card.meta}
-        </p>
-        <p className={s.offerAmendment}>{card.summary}</p>
-
-        <Link
-          href={card.href}
-          className={s.offerCardLink}
-          aria-label={`${card.title} 검증 리포트 열기`}
-        />
-      </article>
-    </Pressable>
+    <CategoryOfferCard
+      id={card.id}
+      title={card.title}
+      assetLabel={card.assetLabel}
+      badge={card.badge}
+      badgeTone={card.phase}
+      meta={card.meta}
+      metrics={card.tallies.map((tally) => ({
+        label: tally.label,
+        value: tally.value.toLocaleString("ko-KR"),
+        tone: tally.tone === "unk" ? "unknown" : tally.tone,
+      }))}
+      note={card.summary}
+      href={card.href}
+    />
   );
 }

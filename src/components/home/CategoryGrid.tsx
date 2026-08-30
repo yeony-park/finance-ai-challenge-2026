@@ -15,7 +15,10 @@ import s from "./CategoryGrid.module.css";
 
 const CATEGORY_ORDER = ["art", "cattle", "pig", "real-estate"] as const;
 
-const categoryImageSrc = (categoryId: string) => `/category-${categoryId}.jpg`;
+const categoryImageSrc = (categoryId: string) =>
+  categoryId === "real-estate"
+    ? "/category-real-estate-card-v2.png"
+    : `/category-${categoryId}.jpg`;
 
 export function CategoryGrid() {
   const profile = useProfile();
