@@ -1,4 +1,4 @@
-import { createOpenAI } from "@ai-sdk/openai";
+import { createOpenAI, type OpenAILanguageModelResponsesOptions } from "@ai-sdk/openai";
 import { generateObject } from "ai";
 import { z } from "zod";
 import { sha256, type ParsedPdf } from "./pdf";
@@ -93,13 +93,18 @@ export interface DocumentExtractionClient {
   }): Promise<unknown>;
 }
 
+export const KNOWLEDGE_EXTRACT_DEFAULT_MODEL = "gpt-5.6-luna";
+export const KNOWLEDGE_EXTRACT_OPENAI_OPTIONS = {
+  reasoningEffort: "none",
+} satisfies OpenAILanguageModelResponsesOptions;
+
 const modelOf = (): { model: Parameters<typeof generateObject>[0]["model"]; label: string } => {
   const configured = process.env.KNOWLEDGE_EXTRACT_MODEL;
   if (process.env.AI_GATEWAY_API_KEY) {
-    const id = configured ?? "openai/gpt-4.1-mini";
+    const id = configured ?? `openai/${KNOWLEDGE_EXTRACT_DEFAULT_MODEL}`;
     return { model: id, label: `gateway:${id}` };
   }
-  const id = configured ?? "gpt-4.1-mini";
+  const id = configured ?? KNOWLEDGE_EXTRACT_DEFAULT_MODEL;
   return {
     model: createOpenAI({ apiKey: process.env.OPENAI_API_KEY })(id),
     label: `openai:${id}`,
@@ -126,6 +131,7 @@ export const createAiSdkDocumentExtractionClient = (): DocumentExtractionClient 
         ].join("\n"),
         prompt: JSON.stringify(input),
         temperature: 0,
+        providerOptions: { openai: KNOWLEDGE_EXTRACT_OPENAI_OPTIONS },
         maxOutputTokens: KNOWLEDGE_EXTRACTION_MAX_OUTPUT_TOKENS,
         maxRetries: 0,
         abortSignal: AbortSignal.timeout(KNOWLEDGE_EXTRACTION_TIMEOUT_MS),

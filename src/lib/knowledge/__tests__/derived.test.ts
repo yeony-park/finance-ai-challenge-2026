@@ -7,6 +7,7 @@ import { z } from "zod";
 import {
   buildKnowledgeRecordsFromParsedDocument,
   buildParsedDocumentArtifact,
+  createAiSdkRealEstateProductClient,
   deriveRealEstateScenarioProduct,
   DERIVED_EXTRACTION_TIMEOUT_MS,
   isCitationValueExplicitInQuote,
@@ -18,10 +19,16 @@ import {
   resolveReviewedDerivedScenarioProduct,
 } from "../derived";
 import { runKnowledgeDerive } from "../derive-cli";
-import { calculateExtractionManifestHash } from "../document-extraction";
+import {
+  calculateExtractionManifestHash,
+  createAiSdkDocumentExtractionClient,
+  KNOWLEDGE_EXTRACT_DEFAULT_MODEL,
+  KNOWLEDGE_EXTRACT_OPENAI_OPTIONS,
+} from "../document-extraction";
 import { loadApprovedScenarios, loadKnowledgeScope } from "../loader";
 import { sha256, type ParsedPdf } from "../pdf";
 import { ParsedDocumentArtifactSchema, ScenarioOfferSchema, SourceManifestSchema, type ScenarioOffer } from "../schema";
+import { createAiSdkVisionOcrClient } from "../vision-ocr";
 import { buildKnowledgeIngestPlan } from "@/lib/db/ingest/knowledge";
 import { hashA, validScenarioOffer } from "./fixtures";
 
@@ -127,6 +134,33 @@ const client = () => ({
 });
 
 describe("PDF-first real-estate derived artifacts", () => {
+  it("상품 추출 기본 모델은 exact Luna이며 override와 OCR 모델은 분리한다", () => {
+    const names = ["AI_GATEWAY_API_KEY", "OPENAI_API_KEY", "KNOWLEDGE_EXTRACT_MODEL", "KNOWLEDGE_OCR_MODEL"] as const;
+    const original = Object.fromEntries(names.map((name) => [name, process.env[name]]));
+    try {
+      for (const name of names) delete process.env[name];
+      expect(KNOWLEDGE_EXTRACT_DEFAULT_MODEL).toBe("gpt-5.6-luna");
+      expect(KNOWLEDGE_EXTRACT_OPENAI_OPTIONS).toEqual({ reasoningEffort: "none" });
+      expect(createAiSdkDocumentExtractionClient().model).toBe("disabled:openai:gpt-5.6-luna");
+      expect(createAiSdkRealEstateProductClient().model).toBe("disabled:openai:gpt-5.6-luna");
+
+      process.env.AI_GATEWAY_API_KEY = "test-key";
+      expect(createAiSdkDocumentExtractionClient().model).toBe("gateway:openai/gpt-5.6-luna");
+      expect(createAiSdkRealEstateProductClient().model).toBe("gateway:openai/gpt-5.6-luna");
+
+      delete process.env.AI_GATEWAY_API_KEY;
+      process.env.KNOWLEDGE_EXTRACT_MODEL = "extract-override";
+      expect(createAiSdkRealEstateProductClient().model).toBe("disabled:openai:extract-override");
+      expect(createAiSdkVisionOcrClient().model).toBe("openai:gpt-5.6-luna");
+    } finally {
+      for (const name of names) {
+        const value = original[name];
+        if (value === undefined) delete process.env[name];
+        else process.env[name] = value;
+      }
+    }
+  });
+
   it("실행 시각과 무관한 parsed hash를 만들고 같은 artifact로 문서와 페이지 chunk를 만든다", () => {
     const first = artifact();
     const later = artifact("2026-08-25T00:00:00.000Z");

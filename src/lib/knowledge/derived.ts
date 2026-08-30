@@ -6,6 +6,8 @@ import {
   calculateExtractionManifestHash,
   containsObviousPii,
   isExtractionValueInQuote,
+  KNOWLEDGE_EXTRACT_DEFAULT_MODEL,
+  KNOWLEDGE_EXTRACT_OPENAI_OPTIONS,
 } from "./document-extraction";
 import {
   calculateCommonChunkHash,
@@ -198,7 +200,7 @@ export interface CategoryExtractorAdapter {
 export const createAiSdkRealEstateProductClient = (): RealEstateProductExtractionClient => {
   const configured = process.env.KNOWLEDGE_EXTRACT_MODEL;
   const gateway = Boolean(process.env.AI_GATEWAY_API_KEY);
-  const id = configured ?? (gateway ? "openai/gpt-4.1-mini" : "gpt-4.1-mini");
+  const id = configured ?? (gateway ? `openai/${KNOWLEDGE_EXTRACT_DEFAULT_MODEL}` : KNOWLEDGE_EXTRACT_DEFAULT_MODEL);
   const model = gateway ? id : createOpenAI({ apiKey: process.env.OPENAI_API_KEY })(id);
   const label = `${gateway ? "gateway" : "openai"}:${id}`;
   if (!gateway && !process.env.OPENAI_API_KEY) {
@@ -222,6 +224,7 @@ export const createAiSdkRealEstateProductClient = (): RealEstateProductExtractio
           ].join("\n"),
           prompt: JSON.stringify(input),
           temperature: 0,
+          providerOptions: { openai: KNOWLEDGE_EXTRACT_OPENAI_OPTIONS },
           maxOutputTokens: DERIVED_EXTRACTION_MAX_OUTPUT_TOKENS,
           maxRetries: 0,
           abortSignal: AbortSignal.timeout(DERIVED_EXTRACTION_TIMEOUT_MS),
