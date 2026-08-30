@@ -1,0 +1,61 @@
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { describe, expect, test, vi } from "vitest";
+
+import type { CategoryLandingModel } from "./category-landing-model";
+import { categoryAnalysisLayout } from "./category-analysis-layout";
+import { CategoryAnalysisView } from "./CategoryAnalysisView";
+
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({ replace: vi.fn() }),
+}));
+
+const pigModel: CategoryLandingModel = {
+  evidence: [],
+  visibleEvidence: [],
+  activeEvidence: [],
+  closedEvidence: [],
+  totals: { match: 0, mismatch: 0, unverifiable: 0 },
+  totalItems: 0,
+  latestGeneratedAt: undefined,
+  categoryHref: "/pig",
+  analysisLayout: categoryAnalysisLayout("pig"),
+  analysisSections: [
+    ...(categoryAnalysisLayout("pig").customNavigation ?? []),
+    { id: "한돈-questions", label: "확인 질문", keywords: ["질문"] },
+  ],
+  trackRecord: null,
+  bridgeOffer: null,
+};
+
+describe("카테고리 분석 템플릿", () => {
+  test("한돈의 인라인 특례를 레이아웃 설정 순서대로 렌더한다", () => {
+    const html = renderToStaticMarkup(
+      createElement(CategoryAnalysisView, {
+        categoryId: "pig",
+        title: "한돈",
+        model: pigModel,
+        analysisStatus: null,
+        analysisVerdict: null,
+        filterControlsEnabled: true,
+        preview: null,
+        custom: createElement(
+          "section",
+          { "data-template-marker": "pig-custom" },
+          "한돈 특화 콘텐츠",
+        ),
+        customTitle: "최근 상품",
+        market: null,
+      }),
+    );
+
+    const customPosition = html.indexOf('data-template-marker="pig-custom"');
+    const questionsPosition = html.indexOf('id="한돈-questions"');
+
+    expect(customPosition).toBeGreaterThanOrEqual(0);
+    expect(questionsPosition).toBeGreaterThan(customPosition);
+    expect(html).not.toContain('id="한돈-evidence"');
+    expect(html).not.toContain('id="한돈-verdicts"');
+    expect(html).not.toContain('id="한돈-custom"');
+  });
+});

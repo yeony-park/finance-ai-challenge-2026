@@ -31,6 +31,10 @@ import {
 import type { Verdict } from "@/lib/verify/types";
 
 import type { AnalysisSectionLink } from "./CategoryAnalysisSidebar";
+import {
+  categoryAnalysisLayout,
+  type CategoryAnalysisLayout,
+} from "./category-analysis-layout";
 
 const CATEGORY_ANALYSIS_KEYWORDS: Record<CategoryId, readonly string[]> = {
   art: ["상품", "작품", "작가", "플랫폼", "미술품"],
@@ -63,6 +67,7 @@ export interface CategoryLandingModel {
   readonly totalItems: number;
   readonly latestGeneratedAt: string | undefined;
   readonly categoryHref: string;
+  readonly analysisLayout: CategoryAnalysisLayout;
   readonly analysisSections: readonly AnalysisSectionLink[];
   readonly trackRecord: TrackRecordCardView | null;
   readonly bridgeOffer: OfferEntry | null;
@@ -121,17 +126,17 @@ const loadCategoryTrackRecord = async (
 };
 
 const buildAnalysisSections = ({
-  categoryId,
   title,
   categoryKeywords,
+  layout,
   hasCustomContent,
   customTitle,
   hasTrackRecord,
   hasMarketContent,
 }: {
-  readonly categoryId: CategoryId;
   readonly title: string;
   readonly categoryKeywords: readonly string[];
+  readonly layout: CategoryAnalysisLayout;
   readonly hasCustomContent: boolean;
   readonly customTitle: string;
   readonly hasTrackRecord: boolean;
@@ -139,81 +144,57 @@ const buildAnalysisSections = ({
 }): readonly AnalysisSectionLink[] => {
   const sections: AnalysisSectionLink[] = [];
 
-  if (categoryId !== "pig") {
-    sections.push({
-      id: `${title}-evidence`,
-      label: OFFERS_SECTION_TITLE,
-      keywords: [...categoryKeywords, "공모", "리포트", "신고서", "원문"],
-    });
+  for (const slot of layout.slots) {
+    switch (slot) {
+      case "evidence":
+        sections.push({
+          id: `${title}-evidence`,
+          label: OFFERS_SECTION_TITLE,
+          keywords: [...categoryKeywords, "공모", "리포트", "신고서", "원문"],
+        });
+        break;
+      case "custom":
+        if (hasCustomContent) {
+          sections.push(
+            ...(layout.customNavigation ?? [
+              {
+                id: `${title}-custom`,
+                label: customTitle,
+                keywords: categoryKeywords,
+              },
+            ]),
+          );
+        }
+        break;
+      case "verdict":
+        sections.push({
+          id: `${title}-verdicts`,
+          label: VERDICT_SECTION_TITLE,
+          keywords: ["판정", "일치", "원장 불일치", "대조 불가"],
+        });
+        break;
+      case "track-record":
+        if (hasTrackRecord) {
+          sections.push({
+            id: TRACK_RECORD_HEADING_ID,
+            label: ISSUER_SLOT_TITLE,
+            keywords: ["발행사", "이력", "정정", "공모"],
+          });
+        }
+        break;
+      case "market":
+        if (hasMarketContent) sections.push(layout.marketNavigation);
+        break;
+      case "questions":
+        sections.push({
+          id: `${title}-questions`,
+          label: "확인 질문",
+          keywords: ["질문", "확인 항목", "검색"],
+        });
+        break;
+    }
   }
 
-  if (hasCustomContent) {
-    sections.push({
-      id: categoryId === "pig" ? "pig-gallery-title" : `${title}-custom`,
-      label: customTitle,
-      keywords: categoryKeywords,
-    });
-  }
-
-  if (categoryId === "pig") {
-    sections.push(
-      {
-        id: "pig-review-layer-title",
-        label: "선택 회차 검토",
-        keywords: ["공시 계보", "기초자산", "판매", "정산", "식별자"],
-      },
-      {
-        id: "pig-review-questions-title",
-        label: "발행사 확인 질문",
-        keywords: ["질문", "소유권", "담보", "출하", "정산 근거"],
-      },
-      {
-        id: "pig-review-sources-title",
-        label: "근거 수집 상태",
-        keywords: ["DART", "축산물이력제", "시장 통계", "원문"],
-      },
-      {
-        id: "pig-disease-title",
-        label: "ASF·구제역 지역 맥락",
-        keywords: ["ASF", "구제역", "지도", "고창", "정읍", "KAHIS"],
-      },
-      {
-        id: "pig-price-title",
-        label: "경락가격 그래프",
-        keywords: ["그래프", "경락가격", "등급", "1+", "2등급"],
-      },
-    );
-  }
-
-  if (categoryId !== "pig") {
-    sections.push({
-      id: `${title}-verdicts`,
-      label: VERDICT_SECTION_TITLE,
-      keywords: ["판정", "일치", "원장 불일치", "대조 불가"],
-    });
-  }
-
-  if (hasTrackRecord) {
-    sections.push({
-      id: TRACK_RECORD_HEADING_ID,
-      label: ISSUER_SLOT_TITLE,
-      keywords: ["발행사", "이력", "정정", "공모"],
-    });
-  }
-
-  if (hasMarketContent) {
-    sections.push({
-      id: "market-context-title",
-      label: "경락 시장 대조",
-      keywords: ["경락", "가격", "시장", "공공데이터"],
-    });
-  }
-
-  sections.push({
-    id: `${title}-questions`,
-    label: "확인 질문",
-    keywords: ["질문", "확인 항목", "검색"],
-  });
   return sections;
 };
 
@@ -262,6 +243,7 @@ export async function loadCategoryLandingModel({
     .sort()
     .at(-1);
   const categoryKeywords = CATEGORY_ANALYSIS_KEYWORDS[categoryId];
+  const analysisLayout = categoryAnalysisLayout(categoryId);
 
   return {
     evidence,
@@ -272,10 +254,11 @@ export async function loadCategoryLandingModel({
     totalItems: totals.match + totals.mismatch + totals.unverifiable,
     latestGeneratedAt,
     categoryHref: categoryById(categoryId).href,
+    analysisLayout,
     analysisSections: buildAnalysisSections({
-      categoryId,
       title,
       categoryKeywords,
+      layout: analysisLayout,
       hasCustomContent,
       customTitle,
       hasTrackRecord: trackRecord !== null,
