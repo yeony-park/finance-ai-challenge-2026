@@ -536,7 +536,7 @@ describe("PDF-first real-estate derived artifacts", () => {
         },
       },
     };
-    await expect(runKnowledgeDerive(options)).resolves.toMatchObject({ code: 1, derived: 1, reused: 0, reviewRequired: 1 });
+    await expect(runKnowledgeDerive(options)).resolves.toMatchObject({ code: 0, derived: 1, reused: 0, reviewRequired: 0 });
     let revalidateProviderCalls = 0;
     await expect(runKnowledgeDerive({
       ...options,

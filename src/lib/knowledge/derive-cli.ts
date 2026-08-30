@@ -247,8 +247,11 @@ const deriveOne = async (
     client,
     createdAt: options.createdAt,
   });
-  await atomicWrite(derivedRoot, "product.json", envelope);
-  return { reused: false, reviewRequired: envelope.status !== "auto-approved" };
+  const finalEnvelope = envelope.status === "needs-review"
+    ? revalidateDerivedScenarioProduct(envelope, artifact.data, client.model) ?? envelope
+    : envelope;
+  await atomicWrite(derivedRoot, "product.json", finalEnvelope);
+  return { reused: false, reviewRequired: finalEnvelope.status !== "auto-approved" };
 };
 
 export const runKnowledgeDerive = async (options: DeriveCommandOptions): Promise<DeriveCommandResult> => {
