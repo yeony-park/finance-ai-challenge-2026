@@ -1,8 +1,10 @@
 import { buildOfferSchedule, type OfferEntry, type OfferSchedule } from "@/components/site/offers";
+import { WATCH_DETECTION_FAILED } from "@/lib/content/watch-band";
 
+import { watchAmendmentSummary } from "../../amend/watch-label";
 import type { WatchState } from "../../amend/watch-state";
 import type { AssetKind } from "../../types";
-import { formatKstShortDate, formatKstShortDateTime } from "../format";
+import { formatKstShortDateTime } from "../format";
 import { buildReportContext, type ReportContext } from "./context";
 import { mismatchFieldLabel } from "./labels";
 import { realEstateVerdictLine } from "./real-estate";
@@ -19,13 +21,15 @@ export interface OfferCardView {
   readonly tallies: readonly TallyView[];
   readonly lastVerifiedAt: string;
   readonly amendment: string;
-  readonly hasAmendment: boolean;
+  readonly amendmentIsAlert: boolean;
+  readonly hasFilingFacts: boolean;
 }
 
 export interface OfferCardInput extends DemoViewInput {
   readonly offer: OfferEntry;
   readonly now: Date;
   readonly watch?: WatchState | null;
+  readonly hasFilingFacts?: boolean;
 }
 
 const livestockLine = (ctx: ReportContext): string => {
@@ -52,24 +56,6 @@ const verdictLineOf = (ctx: ReportContext, assetKind: AssetKind): string => {
   }
 };
 
-const UNWATCHED_AMENDMENT_TEXT = "정정 접수 감시 미연결";
-
-const amendmentLine = (
-  versionCount: number,
-  watch: WatchState | null | undefined,
-): string => {
-  if (!watch) return `리포트 ${versionCount}판 보관 · ${UNWATCHED_AMENDMENT_TEXT}`;
-
-  const checkedOn = formatKstShortDate(watch.checkedAt);
-  if (watch.detectionFailed) {
-    return `정정 접수 여부 미확인 · 최근 조회 ${checkedOn}`;
-  }
-  if (watch.amendmentCount === 0) {
-    return `정정 0건 · 최근 확인 ${checkedOn}`;
-  }
-  return `정정 ${watch.amendmentCount}건 접수 · 최근 확인 ${checkedOn}`;
-};
-
 export const buildOfferCard = (input: OfferCardInput): OfferCardView => {
   const { offer, now, watch } = input;
   const ctx = buildReportContext(input);
@@ -83,7 +69,11 @@ export const buildOfferCard = (input: OfferCardInput): OfferCardView => {
     verdictLine: verdictLineOf(ctx, offer.assetKind),
     tallies: buildVerdictSection(ctx).tallies,
     lastVerifiedAt: `최근 재대조 ${formatKstShortDateTime(ctx.report.generatedAt)}`,
-    amendment: amendmentLine(ctx.versionCount, watch),
-    hasAmendment: (watch?.amendmentCount ?? 0) > 0,
+    amendment: watch?.detectionFailed
+      ? WATCH_DETECTION_FAILED
+      : watchAmendmentSummary(watch),
+    amendmentIsAlert:
+      watch?.detectionFailed === true || (watch?.amendmentCount ?? 0) > 0,
+    hasFilingFacts: input.hasFilingFacts ?? false,
   };
 };

@@ -46,4 +46,12 @@ describe("latestOfferEntry — 대표 공모 기계 선정", () => {
     );
     expect(Date.parse(latest?.subscription.opensAt ?? "")).toBe(maxOpens);
   });
+
+  test("한우 공모는 가축이 아닌 한우로 구분해 표시한다", () => {
+    const cattle = OFFERS.filter((offer) => offer.assetKind === "livestock");
+
+    expect(cattle).toHaveLength(9);
+    expect(cattle.every((offer) => offer.assetLabel === "한우")).toBe(true);
+    expect(cattle.every((offer) => offer.title.startsWith("한우 "))).toBe(true);
+  });
 });

@@ -10,8 +10,17 @@
 }
 
 .sectionMuted {
-  background: var(--ds-bg-muted);
-  border-block: 1px solid var(--ds-line);
+  --offer-tabs-bottom: calc(
+    clamp(2rem, 1.5rem + 2vw, 3.5rem) + var(--ds-control-h-sm) + 1px
+  );
+
+  background: linear-gradient(
+    to bottom,
+    var(--ds-bg) 0,
+    var(--ds-bg) var(--offer-tabs-bottom),
+    var(--ds-bg-muted) var(--offer-tabs-bottom),
+    var(--ds-bg-muted) 100%
+  );
 }
 
 .mark {
@@ -35,8 +44,8 @@
 }
 
 .hero {
-  padding-block: clamp(3.5rem, 2.5rem + 4vw, 7rem) clamp(2.5rem, 2rem + 2vw, 4rem);
-  border-bottom: 1px solid var(--ds-line);
+  padding-block: clamp(2rem, 1rem + 3vw, 4.5rem)
+    clamp(1.5rem, 1rem + 1vw, 2.5rem);
 }
 
 .heroCopy {
@@ -126,6 +135,12 @@
   gap: var(--ds-space-5);
 }
 
+.categoryOfferGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
+  gap: var(--ds-space-4);
+}
+
 @media (min-width: 700px) {
   .offerGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -159,6 +174,10 @@
   box-shadow: none;
 }
 
+.offerCardCurrent {
+  border-color: var(--ds-ink);
+}
+
 .offerTop {
   display: flex;
   flex-wrap: wrap;
@@ -170,11 +189,11 @@
 .offerAsset {
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-2xs);
-  letter-spacing: var(--ds-tracking-normal);
   color: var(--ds-ink-faint);
 }
 
 .dday {
+  pointer-events: none;
   padding: 0.2rem 0.5rem;
   border-radius: var(--ds-radius-sm);
   border: 1px solid var(--ds-line);
@@ -186,13 +205,27 @@
   white-space: nowrap;
 }
 
-.ddayOpen {
+.ddayUpcoming {
   border-color: var(--ds-accent-line);
   background: var(--ds-accent-soft);
   color: var(--ds-accent-ink);
 }
 
+.ddayOpen {
+  border-color: var(--ds-verdict-match-line);
+  background: var(--ds-verdict-match-soft);
+  color: var(--ds-verdict-match);
+}
+
+.ddayClosed {
+  border-color: var(--ds-verdict-unknown-line);
+  background: var(--ds-verdict-unknown-soft);
+  color: var(--ds-verdict-unknown);
+}
+
 .offerTitle {
+  flex: 1 1 auto;
+  min-width: 0;
   font-size: var(--ds-heading-h3);
   font-weight: var(--ds-weight-bold);
   letter-spacing: var(--ds-tracking-snug);
@@ -209,64 +242,75 @@
   line-height: 1.7;
 }
 
-.offerVerdict {
-  padding-top: var(--ds-space-3);
-  border-top: 1px solid var(--ds-line);
+.scheduleAsset {
   color: var(--ds-ink);
-  font-size: var(--ds-text-sm);
-  line-height: var(--ds-leading-normal);
-  word-break: keep-all;
+  font-weight: var(--ds-weight-bold);
 }
 
-.tallyInline {
-  display: flex;
-  flex-wrap: wrap;
+.tallyList {
+  display: grid;
   gap: var(--ds-space-2);
+  margin-top: var(--ds-space-1);
 }
 
-.tallyInlineItem {
-  display: inline-flex;
-  align-items: baseline;
-  gap: var(--ds-space-1);
-  padding: 0.2rem var(--ds-space-2);
-  border-radius: var(--ds-radius-pill);
-  border: 1px solid var(--ds-line);
-  background: var(--ds-bg-muted);
-  font-size: var(--ds-text-2xs);
+.tallyRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-3);
+  min-height: 1.5rem;
+  font-size: var(--ds-text-sm);
+}
+
+.tallyLabel {
   color: var(--ds-ink-muted);
   word-break: keep-all;
 }
 
-.tallyInlineValue {
+.tallyValue {
   font-family: var(--ds-font-sans);
   font-size: var(--ds-text-sm);
-  font-weight: var(--ds-weight-medium);
+  font-weight: var(--ds-weight-bold);
   font-variant-numeric: tabular-nums;
 }
 
-.offerMeta {
-  margin-top: auto;
+.offerAmendment {
   padding-top: var(--ds-space-3);
   border-top: 1px solid var(--ds-line);
   font-family: var(--ds-font-sans);
-  font-size: var(--ds-text-2xs);
-  color: var(--ds-ink-faint);
-  line-height: 1.5;
+  font-size: var(--ds-text-xs);
+  color: var(--ds-ink-muted);
+  line-height: var(--ds-leading-normal);
+  word-break: keep-all;
+}
+
+.offerAmendmentAlert {
+  color: var(--ds-verdict-miss);
+  font-weight: var(--ds-weight-medium);
 }
 
 .offerFlags {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   display: inline-flex;
+  flex: none;
   align-items: center;
   gap: var(--ds-space-2);
+  transform: translateX(var(--ds-space-3));
+  pointer-events: none;
+}
+
+.offerFlagsSolo {
+  transform: none;
 }
 
 .watchIconToggle {
+  position: relative;
+  z-index: 2;
   display: inline-grid;
   flex: none;
-  width: 2rem;
-  height: 2rem;
+  width: var(--ds-tap-min);
+  height: var(--ds-tap-min);
   place-items: center;
   padding: 0;
   border: 1px solid transparent;
@@ -277,6 +321,7 @@
   font-size: 1.25rem;
   line-height: 1;
   cursor: pointer;
+  pointer-events: auto;
   transition: color var(--ds-duration-base) var(--ds-ease);
 }
 
@@ -357,10 +402,11 @@
 }
 
 .offerLink {
-  justify-self: start;
+  align-self: flex-start;
   display: inline-flex;
   align-items: center;
   gap: var(--ds-space-2);
+  margin-top: auto;
   font-size: var(--ds-text-xs);
   font-weight: var(--ds-weight-bold);
   color: var(--ds-ink);
@@ -373,15 +419,29 @@
 .offerLink::after {
   content: "";
   position: absolute;
+  z-index: 1;
   inset: 0;
   border-radius: var(--ds-radius-panel);
 }
 
 .offerLink:focus-visible {
-  box-shadow: none;
+  outline: none;
 }
 
 .offerLink:focus-visible::after {
+  border-radius: var(--ds-radius-panel);
+  box-shadow: var(--ds-focus-ring);
+}
+
+.offerCardLink {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  border-radius: var(--ds-radius-panel);
+}
+
+.offerCardLink:focus-visible {
+  outline: none;
   box-shadow: var(--ds-focus-ring);
 }
 

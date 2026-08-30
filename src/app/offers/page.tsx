@@ -2,8 +2,13 @@ import type { Metadata } from "next";
 
 import { HeroSection } from "@/components/landing/HeroSection";
 import { OfferTabs } from "@/components/landing/OfferTabs";
-import { OFFERS, TOTAL_2026_OFFER_COUNT } from "@/components/site/offers";
+import {
+  REPORT_CATALOG_CARDS,
+  REPORT_COVERAGE,
+} from "@/components/landing/report-catalog";
+import { OFFERS } from "@/components/site/offers";
 import { loadLatestWatchState } from "@/lib/verify/amend/watch-state";
+import { loadFilingFacts } from "@/lib/verify/report/filing-facts";
 import { loadLatestReport } from "@/lib/verify/report/load";
 import { buildOfferCard, type OfferCardView } from "@/lib/verify/report/view-model";
 
@@ -15,32 +20,23 @@ export const metadata: Metadata = {
 const byCloseAsc = (a: OfferCardView, b: OfferCardView): number =>
   Date.parse(a.schedule.closesAt) - Date.parse(b.schedule.closesAt);
 
-const coverageText = (cohort2026: number, pastClosed: number) => [
-  { text: `2026년 투자계약증권 공모 ${TOTAL_2026_OFFER_COUNT}건 중 ` },
-  { text: `${cohort2026}건`, isStrong: true },
-  { text: "이 국가 공공데이터 대조를 거쳤습니다." },
-  ...(pastClosed > 0
-    ? [
-        { text: " 종료된 공모 " },
-        { text: `${pastClosed}건`, isStrong: true },
-        { text: "의 사후 검증 리포트가 함께 공개돼 있습니다." },
-      ]
-    : []),
-];
-
-const isCohort2026 = (closesAt: string): boolean =>
-  new Date(closesAt).getFullYear() === 2026;
-
 export default async function OffersPage() {
   const now = new Date();
 
   const cards = await Promise.all(
     OFFERS.map(async (offer) => {
-      const [loaded, watch] = await Promise.all([
+      const [loaded, watch, filingFacts] = await Promise.all([
         loadLatestReport(offer.id),
         loadLatestWatchState(offer.id),
+        loadFilingFacts(offer.id),
       ]);
-      return buildOfferCard({ offer, now, ...loaded, watch: watch ?? null });
+      return buildOfferCard({
+        offer,
+        now,
+        ...loaded,
+        watch: watch ?? null,
+        hasFilingFacts: filingFacts !== null,
+      });
     }),
   );
 
@@ -57,12 +53,14 @@ export default async function OffersPage() {
   return (
     <>
       <HeroSection
-        coverage={coverageText(
-          OFFERS.filter((offer) => isCohort2026(offer.subscription.closesAt)).length,
-          OFFERS.filter((offer) => !isCohort2026(offer.subscription.closesAt)).length,
-        )}
+        coverage={REPORT_COVERAGE}
       />
-      <OfferTabs upcoming={upcoming} open={open} closed={closed} />
+      <OfferTabs
+        upcoming={upcoming}
+        open={open}
+        closed={closed}
+        catalog={REPORT_CATALOG_CARDS}
+      />
     </>
   );
 }
