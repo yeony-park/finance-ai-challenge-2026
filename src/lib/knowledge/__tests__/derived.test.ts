@@ -2,6 +2,7 @@ import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
+import { z } from "zod";
 
 import {
   buildKnowledgeRecordsFromParsedDocument,
@@ -10,6 +11,8 @@ import {
   isCitationValueExplicitInQuote,
   isValidAutoApprovedEnvelope,
   parsedArtifactHash,
+  RealEstateProductDraftSchema,
+  RealEstateProviderDraftSchema,
 } from "../derived";
 import { runKnowledgeDerive } from "../derive-cli";
 import { loadApprovedScenarios, loadKnowledgeScope } from "../loader";
@@ -116,6 +119,73 @@ describe("PDF-first real-estate derived artifacts", () => {
     expect(envelope.validation.failures).toEqual([]);
     expect(isValidAutoApprovedEnvelope(envelope, parsed)).toBe(true);
     expect(isValidAutoApprovedEnvelope({ ...envelope, sourceHash: "b".repeat(64) }, parsed)).toBe(false);
+  });
+
+  it("provider schema는 모든 property required·default 없음이며 큰 서울 payload를 로컬 왕복 검증한다", () => {
+    const jsonSchema = z.toJSONSchema(RealEstateProviderDraftSchema);
+    let missingRequired = 0;
+    let defaults = 0;
+    const walk = (value: unknown): void => {
+      if (!value || typeof value !== "object") return;
+      const record = value as Record<string, unknown>;
+      if (record.type === "object" && record.properties && typeof record.properties === "object") {
+        const properties = Object.keys(record.properties);
+        const required = new Set(Array.isArray(record.required) ? record.required : []);
+        missingRequired += properties.filter((key) => !required.has(key)).length;
+      }
+      if (Object.hasOwn(record, "default")) defaults += 1;
+      Object.values(record).forEach(walk);
+    };
+    walk(jsonSchema);
+    expect({ missingRequired, defaults }).toEqual({ missingRequired: 0, defaults: 0 });
+    expect(JSON.stringify(jsonSchema).length).toBeLessThan(20_000);
+
+    const draft = payloadAndCitations();
+    const product = structuredClone(draft.product) as Record<string, unknown>;
+    product.completion ??= null;
+    const asset = product.asset as { facts: Record<string, unknown>[] };
+    for (const fact of asset.facts) {
+      fact.unit ??= null;
+      if (fact.status === "confirmed") fact.validThrough ??= null;
+    }
+    for (const fact of product.claimedAssetFacts as Record<string, unknown>[]) fact.unit ??= null;
+    const offering = product.offering as Record<string, unknown>;
+    for (const key of ["listedOn", "tradabilityValidThrough", "latestTradePriceWon", "indicativeNavPerUnitWon"]) offering[key] ??= null;
+    const providerDraft = RealEstateProviderDraftSchema.parse({ product, fieldCitations: draft.fieldCitations, warnings: [] });
+    const serialized = JSON.stringify(providerDraft);
+    expect(serialized.length).toBeGreaterThan(20_000);
+    expect(RealEstateProviderDraftSchema.parse(JSON.parse(serialized))).toEqual(providerDraft);
+    expect(RealEstateProductDraftSchema.parse({ product: draft.product, fieldCitations: draft.fieldCitations, warnings: [] }).fieldCitations.length)
+      .toBeGreaterThan(100);
+  });
+
+  it("provider/draft/ScenarioOffer 실패 경계를 비민감 failure code로 구분한다", async () => {
+    const parsed = artifact();
+    const providerFailure = await deriveRealEstateScenarioProduct({
+      manifest: manifest(),
+      artifact: parsed,
+      client: { model: "fake", async extract() { throw new Error("OPENAI_API_KEY=secret 원문"); } },
+    });
+    expect(providerFailure.validation.failures).toEqual(["provider-call"]);
+    expect(JSON.stringify(providerFailure)).not.toContain("secret");
+
+    const draftFailure = await deriveRealEstateScenarioProduct({
+      manifest: manifest(),
+      artifact: parsed,
+      client: { model: "fake", async extract() { return {}; } },
+    });
+    expect(draftFailure.validation.failures).toEqual(["draft-schema"]);
+
+    const draft = payloadAndCitations();
+    const invalidProduct = structuredClone(draft.product) as typeof draft.product;
+    const offering = invalidProduct.offering as unknown as { amountWon: number };
+    offering.amountWon += 1;
+    const scenarioFailure = await deriveRealEstateScenarioProduct({
+      manifest: manifest(),
+      artifact: parsed,
+      client: { model: "fake", async extract() { return { product: invalidProduct, fieldCitations: draft.fieldCitations, warnings: [] }; } },
+    });
+    expect(scenarioFailure.validation.failures).toEqual(["scenario-schema"]);
   });
 
   it("boolean과 null citation은 값에 대응하는 명시 표현만 허용한다", () => {
