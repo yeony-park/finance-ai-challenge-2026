@@ -53,6 +53,7 @@ export function CategoryGrid() {
                 <Link
                   href={entry.href}
                   className={s.categoryVisual}
+                  data-category={entry.id}
                   aria-label={`${entry.label} 확인 현황 보기`}
                 >
                   <Image
@@ -82,7 +83,7 @@ export function CategoryGrid() {
                     ))}
                   </p>
                   <Link href={entry.href} className={s.categoryReportLink}>
-                    검증 리포트 보기 <span aria-hidden="true">→</span>
+                    분석 보기 <span aria-hidden="true">→</span>
                   </Link>
                 </div>
               </article>

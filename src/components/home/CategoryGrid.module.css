@@ -52,6 +52,10 @@
   transition: transform var(--ds-duration-slow) var(--ds-ease);
 }
 
+.categoryVisual[data-category="real-estate"] .categoryPhotoImg {
+  object-position: 62% center;
+}
+
 .categoryCard:hover .categoryPhotoImg,
 .categoryCard:focus-within .categoryPhotoImg {
   transform: scale(1.075);

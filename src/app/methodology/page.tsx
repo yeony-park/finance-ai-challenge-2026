@@ -124,9 +124,11 @@ export default function MethodologyPage() {
     <>
       <section className={s.header} aria-labelledby={METHODOLOGY_ANCHOR.methodology}>
         <div className={s.wrap}>
-          <p className={s.eyebrow}>검증 방법</p>
           <h1 id={METHODOLOGY_ANCHOR.methodology} className={s.title}>
-            무엇을 어떤 기록과 대조하는가
+            <span>검증 방법</span>
+            <span className={s.titleLead}>
+              무엇을 어떤 <em className={s.mark}>기록</em>과 대조하는가
+            </span>
           </h1>
           <p className={s.lead}>
             이 서비스는 문서를 평가하지 않습니다. 문서에 적힌 주장을 검증 가능한 단위로 쪼갠 다음,
