@@ -1,6 +1,8 @@
 import json
+import hashlib
 import re
 import unittest
+import xml.etree.ElementTree as ET
 from collections import Counter
 from datetime import date
 from pathlib import Path
@@ -8,6 +10,20 @@ from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA_PATH = ROOT / "data/synthetic/art-investment.json"
+LIVE_DATA_PATH = ROOT / "live/data/synthetic/art-investment.json"
+HISTORY_PUBLIC_DIR = ROOT / "public/synthetic-art/history"
+HISTORY_LIVE_DIR = ROOT / "live/synthetic-art/history"
+SVG_NAMESPACE = "http://www.w3.org/2000/svg"
+SVG_TAG = f"{{{SVG_NAMESPACE}}}svg"
+HISTORY_TAGS = {"svg", "title", "rect", "circle", "ellipse", "g", "line", "path", "polygon", "text"}
+HISTORY_ATTRIBUTES = {
+    "aria-label", "cx", "cy", "data-index", "data-record-id", "data-record-index",
+    "data-seed", "d", "fill", "fill-opacity", "font-family", "font-size", "height",
+    "letter-spacing", "opacity", "points", "r", "role", "rx", "ry", "stroke",
+    "stroke-linecap", "stroke-dasharray", "stroke-linejoin", "stroke-opacity",
+    "stroke-width", "text-anchor", "transform", "viewBox", "width", "x", "x1", "x2", "y",
+    "y1", "y2",
+}
 OPEN_DART_HOSTS = {"dart.fss.or.kr", "englishdart.fss.or.kr", "opendart.fss.or.kr", "api.odcloud.kr"}
 FORBIDDEN_KEYS = {"sourcePayload", "dueDiligencePayload", "sourceSnapshot", "legacySourceRef"}
 
@@ -98,7 +114,58 @@ class SyntheticDataTest(unittest.TestCase):
             self.assertTrue(image.startswith("/") and not image.startswith("//"))
             self.assertFalse(re.match(r"https?://", image, re.I))
             self.assertTrue((ROOT / "public" / image.lstrip("/")).is_file(), image)
-        self.assertTrue(all(record["artworkImageUrl"] is None for record in self.records))
+
+    def test_track_record_images_are_unique_and_mirrored(self):
+        image_urls = [record["artworkImageUrl"] for record in self.records]
+        self.assertEqual(len(image_urls), 318)
+        self.assertEqual(len(set(image_urls)), 318)
+        expected_names = {f"{record['id']}.svg" for record in self.records}
+        for directory in (HISTORY_PUBLIC_DIR, HISTORY_LIVE_DIR):
+            self.assertTrue(directory.is_dir(), directory)
+            entries = list(directory.iterdir())
+            self.assertEqual({entry.name for entry in entries}, expected_names)
+            self.assertTrue(all(entry.is_file() and not entry.is_symlink() for entry in entries))
+
+        content_hashes = []
+        for record, image_url in zip(self.records, image_urls):
+            expected = f"/synthetic-art/history/{record['id']}.svg"
+            self.assertEqual(image_url, expected)
+            public_path = ROOT / "public" / image_url.lstrip("/")
+            live_path = ROOT / "live" / image_url.lstrip("/")
+            public_bytes = public_path.read_bytes()
+            self.assertEqual(public_bytes, live_path.read_bytes(), image_url)
+            content_hashes.append(hashlib.sha256(public_bytes).hexdigest())
+        self.assertEqual(len(set(content_hashes)), 318)
+
+    def test_history_svg_is_valid_local_narrow_synthetic_art(self):
+        external_ref = re.compile(r"(?i)(?:https?:|data:|file:|ftp:|javascript:|//|url\s*\()")
+        for path in sorted(HISTORY_PUBLIC_DIR.iterdir()):
+            raw = path.read_text(encoding="utf-8")
+            root = ET.fromstring(raw)
+            self.assertEqual(root.tag, SVG_TAG, path)
+            self.assertEqual(root.attrib.get("viewBox"), "0 0 800 1000", path)
+            self.assertEqual(raw.count("SYNTHETIC"), 1, path)
+            without_namespace = re.sub(
+                r'''xmlns\s*=\s*(['"])''' + re.escape(SVG_NAMESPACE) + r'''\1''',
+                "",
+                raw,
+                flags=re.IGNORECASE,
+            )
+            self.assertIsNone(external_ref.search(without_namespace), path)
+            self.assertNotRegex(raw, r"(?is)<\s*(?:script|foreignObject|iframe|image|use|style)\b", path)
+            for element in root.iter():
+                self.assertIn(element.tag.rsplit("}", 1)[-1], HISTORY_TAGS, path)
+                self.assertTrue(all(not name.startswith("{") and name in HISTORY_ATTRIBUTES for name in element.attrib), path)
+                self.assertFalse(any(external_ref.search(value) for value in element.attrib.values()), path)
+
+    def test_current_and_historical_art_records_have_images(self):
+        current_images = [self.artworks[offering["artworkId"]]["imageUrl"] for offering in self.offerings.values()]
+        historical_images = [record["artworkImageUrl"] for record in self.records]
+        self.assertTrue(all(current_images))
+        self.assertTrue(all(historical_images))
+
+    def test_live_dataset_mirrors_source(self):
+        self.assertEqual(DATA_PATH.read_bytes(), LIVE_DATA_PATH.read_bytes())
 
     def test_distributions_and_date_status_coherence(self):
         source_counts = Counter(record["sourceDataset"] for record in self.records)

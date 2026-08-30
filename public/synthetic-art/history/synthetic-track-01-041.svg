@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000">
+<rect width="800" height="1000" fill="#16311b"/>
+<rect x="42" y="52" width="716" height="896" rx="14" fill="none" stroke="#e0bddb" stroke-opacity="0.28" stroke-width="4"/>
+<rect x="74" y="88" width="597" height="18" fill="#aae585" opacity="0.48"/>
+<rect x="102" y="200" width="266" height="318" fill="#63eec6" opacity="0.92"/>
+<rect x="148" y="256" width="173" height="210" fill="#a768df" opacity="0.72"/>
+<rect x="324" y="460" width="431" height="237" fill="#d64c5a" opacity="0.88"/>
+<rect x="366" y="510" width="323" height="131" fill="#16311b" opacity="0.64"/>
+<rect x="176" y="682" width="340" height="114" fill="#aae585" opacity="0.82"/>
+<rect x="119" y="381" width="189" height="22" fill="#e0bddb" opacity="0.35" transform="rotate(2 119 381)"/>
+<rect x="74" y="862" width="328" height="3" fill="#e0bddb" opacity="0.5"/>
+<text x="74" y="905" fill="#e0bddb" opacity="0.52" font-family="sans-serif" font-size="16" letter-spacing="4">SYNTHETIC</text>
+<text x="726" y="905" fill="#e0bddb" opacity="0.62" font-family="sans-serif" font-size="18" text-anchor="end">40</text>
+</svg>

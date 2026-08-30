@@ -3,6 +3,7 @@ import hashlib
 import http.client
 import importlib.util
 import json
+import re
 import shutil
 import tempfile
 import threading
@@ -65,6 +66,67 @@ class LiveStaticTest(unittest.TestCase):
         finally:
             httpd.shutdown()
             httpd.server_close()
+
+    def test_history_allowlist_is_derived_and_source_inventory_is_exact(self):
+        mappings = BUILDER.source_map(ROOT)
+        history = [
+            (source_rel, target_rel)
+            for source_rel, target_rel in mappings
+            if source_rel.is_relative_to(BUILDER.HISTORY_SOURCE_DIR)
+        ]
+        expected = {
+            (f"public/synthetic-art/history/{record['id']}.svg", f"synthetic-art/history/{record['id']}.svg")
+            for record in DATA["trackRecords"]
+        }
+        self.assertEqual(len(history), 318)
+        self.assertEqual({(str(source), str(target)) for source, target in history}, expected)
+        self.assertIn(BUILDER.HISTORY_TARGET_DIR, BUILDER.ALLOWED_DIRS)
+
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            for source_rel, _ in mappings:
+                source = ROOT / str(source_rel)
+                target = root / str(source_rel)
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(source, target)
+            history_dir = root / "public/synthetic-art/history"
+            BUILDER.build(root)
+            extra = history_dir / "synthetic-extra.svg"
+            extra.write_text("<svg/>", encoding="utf-8")
+            with self.assertRaises(BUILDER.BuildError):
+                BUILDER.verify(root)
+            with self.assertRaises(BUILDER.BuildError):
+                BUILDER.build(root)
+            extra.unlink()
+            missing = history_dir / "synthetic-track-01-001.svg"
+            missing.unlink()
+            with self.assertRaises(BUILDER.BuildError):
+                BUILDER.verify(root)
+            with self.assertRaises(BUILDER.BuildError):
+                BUILDER.build(root)
+            missing.symlink_to(ROOT / "public/synthetic-art/history/synthetic-track-01-001.svg")
+            with self.assertRaises(BUILDER.BuildError):
+                BUILDER.build(root)
+
+    def test_history_validator_rejects_css_escaped_external_presentation_values(self):
+        escaped_url = r"u\72 l(h\74 tp:\2f \2f 127.0.0.1:9999\2f paint.svg\23 p)"
+        for attribute in sorted(BUILDER.PRESENTATION_ATTRIBUTES):
+            with self.subTest(attribute=attribute):
+                source_path = next(
+                    path
+                    for path in sorted((ROOT / "public/synthetic-art/history").glob("*.svg"))
+                    if re.search(rf"(?<![A-Za-z0-9_.:-]){re.escape(attribute)}=\"", path.read_text(encoding="utf-8"))
+                )
+                source = source_path.read_text(encoding="utf-8")
+                match = re.search(
+                    rf"(?<![A-Za-z0-9_.:-]){re.escape(attribute)}=\"[^\"]*\"", source
+                )
+                self.assertIsNotNone(match)
+                replacement = f'{attribute}="{escaped_url}"'
+                mutated = source[: match.start()] + replacement + source[match.end() :]
+                BUILDER._validate_history_svg(source_path.read_bytes(), source_path)
+                with self.assertRaises(BUILDER.BuildError):
+                    BUILDER._validate_history_svg(mutated.encode("utf-8"), source_path)
 
     def test_builder_rejects_extra_and_symlink(self):
         with tempfile.TemporaryDirectory() as temporary:

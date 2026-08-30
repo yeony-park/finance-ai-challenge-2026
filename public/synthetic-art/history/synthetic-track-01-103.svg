@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Synthetic flowing ribbon placeholder for synthetic-track-01-103" data-seed="synthetic-track-01-103" data-index="102">
+<rect width="800" height="1000" fill="#f0f6ea"/>
+<path d="M -70 279 C 225 165 489 393 405 279 S 660 165 870 243 L 870 313 C 660 465 489 232 405 349 S 225 460 -70 376 Z" fill="#22ce78" opacity=".58"/>
+<path d="M -70 593 C 225 668 489 518 410 611 S 660 668 870 643 L 870 663 C 660 538 489 688 410 658 S 225 538 -70 610 Z" fill="#7828c8" opacity=".52"/>
+<path d="M -50 872 C 225 756 489 988 415 836 S 660 756 850 874" fill="none" stroke="#bf351d" stroke-width="33" stroke-linecap="round" opacity=".72"/>
+<path d="M -40 422 C 225 518 489 290 420 401 S 660 518 850 431" fill="none" stroke="#8479e2" stroke-width="20" stroke-linecap="round" opacity=".78"/>
+<path d="M 340 545 A 159 159 0 0 1 499 481" fill="none" stroke="#305b15" stroke-width="70" stroke-linecap="round" opacity=".36"/>
+<circle cx="340" cy="545" r="35" fill="#305b15" opacity=".18"/>
+<text x="174" y="934" fill="#305b15" font-family="sans-serif" font-size="18" letter-spacing="6" opacity=".28">SYNTHETIC</text>
+</svg>

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000" role="img" aria-label="Synthetic abstract polygon collage synthetic-track-03-001" data-record-id="synthetic-track-03-001" data-record-index="308">
+<title>synthetic-track-03-001 — synthetic polygon collage</title>
+<rect width="800" height="1000" fill="#ebeaf2"/>
+<rect x="28" y="28" width="744" height="944" fill="none" stroke="#4c4e23" stroke-opacity=".16" stroke-width="3"/>
+<polygon points="676.6,539.5 529.1,329.3 692.5,202.3 811.9,256.2" fill="#8389e0" fill-opacity="0.83" stroke="#7e2f33" stroke-width="8" stroke-opacity=".40"/>
+<polygon points="557.6,895.9 554.5,955.8 162.9,785.9 334.3,678.4" fill="#5e109e" fill-opacity="0.69" stroke="#8a422a" stroke-width="6" stroke-opacity=".40"/>
+<polygon points="671.8,755.4 725.0,797.7 659.1,910.2 618.7,923.7 331.2,835.3 619.2,449.0 759.0,622.6" fill="#d77f94" fill-opacity="0.58" stroke="#509146" stroke-width="5" stroke-opacity=".40"/>
+<polygon points="590.2,365.8 374.7,399.5 44.6,201.2 546.1,147.7 565.7,148.6" fill="#bf1b23" fill-opacity="0.53" stroke="#236c59" stroke-width="4" stroke-opacity=".40"/>
+<polygon points="529.8,794.8 245.2,966.4 186.2,1010.5 68.1,977.7 -20.0,930.6 -20.0,840.8" fill="#aa8c15" fill-opacity="0.70" stroke="#773282" stroke-width="4" stroke-opacity=".40"/>
+<polygon points="268.6,298.3 237.6,239.2 388.8,168.5" fill="#3db02d" fill-opacity="0.48" stroke="#6f2b5b" stroke-width="5" stroke-opacity=".40"/>
+<polygon points="820.0,736.5 820.0,849.1 595.7,925.0 510.8,892.7 474.8,840.4 416.1,716.9 820.0,567.6" fill="#15e53c" fill-opacity="0.46" stroke="#90a238" stroke-width="3" stroke-opacity=".40"/>
+<g fill="none" stroke-linejoin="round">
+<path d="M49,544 C475,377 337,980 768,894" fill="none" stroke="#d77f94" stroke-width="40" stroke-opacity="0.66" stroke-linecap="round"/>
+<path d="M27,481 C458,389 434,474 677,301" fill="none" stroke="#aa8c15" stroke-width="30" stroke-opacity="0.62" stroke-linecap="round"/>
+<path d="M18,777 C500,706 674,699 819,563" fill="none" stroke="#15e53c" stroke-width="36" stroke-opacity="0.47" stroke-linecap="round"/>
+<path d="M119,477 C262,490 470,235 732,323" fill="none" stroke="#5e109e" stroke-width="42" stroke-opacity="0.44" stroke-linecap="round"/>
+<path d="M69,844 C476,980 338,895 794,938" fill="none" stroke="#4c4e23" stroke-width="8" stroke-opacity="0.51" stroke-linecap="round"/>
+<path d="M115,489 C213,342 360,652 837,766" fill="none" stroke="#4c4e23" stroke-width="3" stroke-opacity="0.57" stroke-linecap="round"/>
+<path d="M105,208 C396,258 633,213 748,148" fill="none" stroke="#4c4e23" stroke-width="3" stroke-opacity="0.57" stroke-linecap="round"/>
+</g>
+<text x="147" y="958" font-family="sans-serif" font-size="18" letter-spacing="5" fill="#4c4e23" fill-opacity=".34">SYNTHETIC</text>
+<circle cx="602" cy="511" r="14" fill="#15e53c" fill-opacity=".58"/>
+</svg>
