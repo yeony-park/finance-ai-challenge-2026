@@ -38,7 +38,14 @@ const labelSegment = (segment) => ({
 }[segment] ?? (Number.isInteger(Number(segment)) ? `항목 ${Number(segment) + 1}` : segment));
 
 const humanLabel = (fieldPath) => fieldPath.split(".").map(labelSegment).join(" · ");
-const displayValue = (value) => value === null ? "미확인 (raw null)" : typeof value === "boolean" ? `${value ? "예" : "아니오"} (raw ${value})` : String(value);
+const scalarUnit = (fieldPath) => ({
+  "asset.landAreaM2": "㎡",
+  "offering.targetHoldingMonths": "개월",
+  "offering.financing.annualInterestRatePercent": "%",
+  "offering.exitReview.maximumExtensionMonths": "개월",
+  "offering.leaseAssumptions.vacancyRatePercent": "%",
+}[fieldPath] ?? "");
+const displayValue = (fieldPath, value) => value === null ? "미확인 (raw null)" : typeof value === "boolean" ? `${value ? "예" : "아니오"} (raw ${value})` : `${String(value)}${scalarUnit(fieldPath)}`;
 const rawValue = (value) => value === null ? "null" : typeof value === "boolean" ? String(value) : String(value);
 
 const section = (heading, text) => `<section><h2>${escapeHtml(heading)}</h2><p>${escapeHtml(text)}</p></section>`;
@@ -54,7 +61,7 @@ const overview = (offer) => {
     : "완료 이력은 아직 없는 현재 시나리오입니다.";
   return [
     section("시나리오 안내", `${offer.disclosure.text}\n이 문서는 ${offer.title}의 ${offering.phase} 상태를 가정한 상품설명서이며, 실제 투자 권유나 상품 청약 자료가 아닙니다.`),
-    section("상품 개요와 건물·원장", `공개명 ${asset.publicName}, 지역 ${asset.region}, 도로명 주소 ${asset.roadAddress}. 주용도 ${asset.mainUse ?? "미확인"}, 연면적 ${asset.grossFloorAreaM2 ?? "미확인"}, 대지면적 ${asset.landAreaM2 ?? "미확인"}, 사용승인일 ${asset.approvedOn ?? "미확인"}. 관찰 사실과 시나리오 주장은 데이터 정의·출처 부록에서 분리해 표시합니다.`),
+    section("상품 개요와 건물·원장", `공개명 ${asset.publicName}, 지역 ${asset.region}, 도로명 주소 ${asset.roadAddress}. 주용도 ${asset.mainUse ?? "미확인"}, 연면적 ${asset.grossFloorAreaM2 ?? "미확인"}${asset.grossFloorAreaM2 === null ? "" : "㎡"}, 대지면적 ${asset.landAreaM2 ?? "미확인"}${asset.landAreaM2 === null ? "" : "㎡"}, 사용승인일 ${asset.approvedOn ?? "미확인"}. 관찰 사실과 시나리오 주장은 데이터 정의·출처 부록에서 분리해 표시합니다.`),
     groupedTableSection("공모·모집·상장", [
       { heading: "공모 금액 요약", headers: ["항목", "시나리오 조건"], rows: [["단가", money(offering.unitPriceWon)], ["수량", `${offering.unitCount}좌`], ["공모총액", money(offering.amountWon)], ["최소투자금", money(offering.minimumInvestmentWon)]] },
       { heading: "모집·상장 일정표", headers: ["일정 항목", "시나리오 조건"], rows: [["모집 시작일", offering.opensOn], ["모집 종료일", offering.closesOn], ["상장일", valueOrUnknown(offering.listedOn)], ["거래 유효기한", valueOrUnknown(offering.tradabilityValidThrough)], ["거래 가능 상태", valueOrUnknown(offering.tradabilityStatus)]] },
@@ -63,7 +70,7 @@ const overview = (offer) => {
       ["분배", "예상 연 분배율", percent(offering.expectedAnnualDistributionRatePercent)], ["분배", "분배 주기", `${offering.distributionCycleMonths}개월`], ["비용", "거래 수수료율", percent(offering.tradingFeeRatePercent)], ["비용", "총비용률", percent(offering.totalExpenseRatePercent)],
       ["차입", "LTV", percent(offering.financing.ltvPercent)], ["차입", "연이율", percent(offering.financing.annualInterestRatePercent)], ["차입", "만기", valueOrUnknown(offering.financing.maturityOn)], ["임대", "공실률", percent(offering.leaseAssumptions.vacancyRatePercent)], ["보유", "목표 보유기간", `${offering.targetHoldingMonths}개월`],
     ]),
-    section("분배·비용·세금·회수 조건", `${offering.distributionBasis} ${offering.feeScope} ${offering.taxNotice}\n${offering.exitConditions.join(" ")} ${offering.extensionConditions.join(" ")} ${offering.liquidationPriority}`),
+    section("분배·비용·세금·회수 조건", `${offering.distributionBasis} ${offering.feeScope} ${offering.taxNotice}\n회수 검토상 최대 연장기간은 ${valueOrUnknown(offering.exitReview.maximumExtensionMonths)}${offering.exitReview.maximumExtensionMonths === null ? "" : "개월"}입니다. ${offering.exitConditions.join(" ")} ${offering.extensionConditions.join(" ")} ${offering.liquidationPriority}`),
     tableSection("투자자 보호·주요 위험요인", ["보호 항목", "상태", "시나리오 조건 및 한계"], Object.entries(offer.investorProtection)
       .filter(([key]) => !["dataNature", "basis"].includes(key))
       .map(([key, item]) => [humanLabel(key), item.status, `${item.statement} ${item.limitations.join(" ")}`])),
@@ -73,7 +80,7 @@ const overview = (offer) => {
 
 const appendix = (offer) => {
   const rows = scalarEntries(offer).map(({ path: fieldPath, value }) =>
-    `<li><strong>${escapeHtml(humanLabel(fieldPath))}</strong> <code>[${escapeHtml(fieldPath)}]</code>: ${escapeHtml(displayValue(value))} <span class="raw">raw=${escapeHtml(rawValue(value))}</span></li>`).join("");
+    `<li><strong>${escapeHtml(humanLabel(fieldPath))}</strong> <code>[${escapeHtml(fieldPath)}]</code>: ${escapeHtml(displayValue(fieldPath, value))} <span class="raw">raw=${escapeHtml(rawValue(value))}</span></li>`).join("");
   return `<section class="appendix"><h2>데이터 정의·출처 부록</h2><p>아래는 문서에서 구조화할 수 있도록 표시한 사람 친화적 라벨, 필드 경로와 원시값입니다. 관찰 사실과 scenario-input을 혼동하지 마세요.</p><ul>${rows}</ul></section>`;
 };
 
@@ -91,7 +98,7 @@ const assertPdfCoverage = (offer, parsed) => {
   }
   const text = canonical(parsed.pages.map((page) => page.canonicalText).join("\n"));
   for (const { path: fieldPath, value } of scalarEntries(offer)) {
-    const token = canonical(displayValue(value));
+    const token = canonical(displayValue(fieldPath, value));
     if (!text.includes(token) || !text.includes(canonical(fieldPath))) {
       throw new Error(`${offer.scenarioId}: PDF canonical text에 ${fieldPath} 값이 없습니다.`);
     }
