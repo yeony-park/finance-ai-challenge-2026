@@ -362,6 +362,8 @@ describe("화면 뷰모델 — 축산 문구가 부동산에 새지 않는다", 
     expect(text).not.toContain("개체");
     expect(text).not.toContain("두 전수");
     expect(text).not.toContain("경락");
+    expect(view.reality.countUnit).toBe("건");
+    expect(view.reality.comparisonDescription).toContain("자산 단위");
   });
 
   test("판정 집계는 항목 단위로 세고 대조 불가를 숨기지 않는다", async () => {

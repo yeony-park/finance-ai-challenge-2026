@@ -1,46 +1,50 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
 
-import {
-  FILING_HEADING_ID,
-  HISTORY_HEADING_ID,
-  PRICE_HEADING_ID,
-  REALITY_HEADING_ID,
-  VERDICT_HEADING_ID,
-  WATCH_HEADING_ID,
-} from "./ids";
+import { VERDICT_HEADING_ID } from "./ids";
+import type { ReportSection } from "./report-sections";
 import s from "./report.module.css";
 
-interface Chapter {
-  readonly id: string;
-  readonly label: string;
-}
-
-const CHAPTERS: readonly Chapter[] = [
-  { id: VERDICT_HEADING_ID, label: "요약" },
-  { id: FILING_HEADING_ID, label: "신고서 정보" },
-  { id: WATCH_HEADING_ID, label: "정정 이력" },
-  { id: HISTORY_HEADING_ID, label: "이행 이력" },
-  { id: REALITY_HEADING_ID, label: "실재 확인" },
-  { id: PRICE_HEADING_ID, label: "가격 위치" },
-];
-
 export function ReportChapterNav({
-  hasFilingFacts = false,
+  sections,
 }: {
-  readonly hasFilingFacts?: boolean;
+  readonly sections: readonly ReportSection[];
 }) {
-  const chapters = CHAPTERS.filter(
-    (chapter) => hasFilingFacts || chapter.id !== FILING_HEADING_ID,
-  );
   const [activeId, setActiveId] = useState(VERDICT_HEADING_ID);
+
+  const handleChapterClick = (
+    event: MouseEvent<HTMLAnchorElement>,
+    chapterId: string,
+  ) => {
+    const target = document.getElementById(chapterId);
+    if (!target) return;
+
+    event.preventDefault();
+
+    const sectionStart =
+      target.classList.contains(s.sectionAnchor) &&
+      target.nextElementSibling instanceof HTMLElement
+        ? target.nextElementSibling
+        : target;
+    const stickyBottom =
+      event.currentTarget.closest("nav")?.getBoundingClientRect().bottom ?? 0;
+    const targetTop = sectionStart.getBoundingClientRect().top + window.scrollY;
+    const behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ? "auto"
+      : "smooth";
+
+    window.history.pushState(null, "", `#${chapterId}`);
+    window.scrollTo({
+      top: Math.max(0, targetTop - stickyBottom),
+      behavior,
+    });
+    setActiveId(chapterId);
+  };
 
   useEffect(() => {
     let frame = 0;
-    const visibleChapterIds = CHAPTERS.filter(
-      (chapter) => hasFilingFacts || chapter.id !== FILING_HEADING_ID,
-    ).map((chapter) => chapter.id);
+    const visibleChapterIds = sections.map((section) => section.id);
 
     const updateActiveChapter = () => {
       window.cancelAnimationFrame(frame);
@@ -68,21 +72,21 @@ export function ReportChapterNav({
       window.removeEventListener("scroll", updateActiveChapter);
       window.removeEventListener("hashchange", updateActiveChapter);
     };
-  }, [hasFilingFacts]);
+  }, [sections]);
 
   return (
     <nav className={s.chapterNav} aria-label="리포트 목차">
       <div className={s.chapterNavRow}>
-        {chapters.map((chapter) => (
+        {sections.map((section) => (
           <a
-            key={chapter.id}
+            key={section.id}
             className={s.chapterLink}
-            href={`#${chapter.id}`}
-            data-active={activeId === chapter.id}
-            aria-current={activeId === chapter.id ? "location" : undefined}
-            onClick={() => setActiveId(chapter.id)}
+            href={`#${section.id}`}
+            data-active={activeId === section.id}
+            aria-current={activeId === section.id ? "location" : undefined}
+            onClick={(event) => handleChapterClick(event, section.id)}
           >
-            {chapter.label}
+            {section.label}
           </a>
         ))}
       </div>

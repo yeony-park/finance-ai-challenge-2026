@@ -1,8 +1,8 @@
 import { OFFERS, type SubscriptionPhase } from "@/components/site/offers";
 import { ART_PRODUCT_FACTS } from "@/lib/content/art";
 import { PIG_DISCLOSURE_PRODUCTS } from "@/lib/content/pig";
-import type { RichText } from "@/lib/verify/report/view-model";
-import { VERDICT_LABEL } from "@/lib/verify/report/view-model/labels";
+import type { RichText, TallyView } from "@/lib/verify/report/view-model";
+import type { Verdict } from "@/lib/verify/types";
 
 export interface ReportCatalogCardView {
   readonly id: string;
@@ -12,8 +12,19 @@ export interface ReportCatalogCardView {
   readonly badge: string;
   readonly meta: string;
   readonly summary: string;
+  readonly tallies: readonly TallyView[];
   readonly phase: SubscriptionPhase;
 }
+
+const verdictTallies = (verdict: Verdict): readonly TallyView[] => [
+  { label: "일치", value: verdict === "match" ? 1 : 0, tone: "good" },
+  { label: "원장 불일치", value: verdict === "mismatch" ? 1 : 0, tone: "warn" },
+  {
+    label: "대조 불가",
+    value: verdict === "unverifiable" ? 1 : 0,
+    tone: "unk",
+  },
+];
 
 const pigCards: readonly ReportCatalogCardView[] =
   PIG_DISCLOSURE_PRODUCTS.map((product) => ({
@@ -21,9 +32,10 @@ const pigCards: readonly ReportCatalogCardView[] =
     href: `/pig?tab=analysis&product=${product.id}#pig-review`,
     title: `한돈 ${product.round}호`,
     assetLabel: "한돈",
-    badge: VERDICT_LABEL.unverifiable,
+    badge: "청약 종료",
     meta: `${product.statusLabel} · 청약 ${product.offering.subscriptionPeriod.replace("~", " ~ ")}`,
     summary: `기초자산 ${product.offering.heads.toLocaleString("ko-KR")}두 · 발행금액 ${product.offering.issueAmountWon.toLocaleString("ko-KR")}원 · 공시 기준가 ${product.pricing.baselinePriceWonPerKg.toLocaleString("ko-KR")}원/kg`,
+    tallies: verdictTallies("unverifiable"),
     phase: "closed",
   }));
 
@@ -33,9 +45,10 @@ const artCards: readonly ReportCatalogCardView[] = ART_PRODUCT_FACTS.map(
     href: `/art?tab=analysis&product=${product.id}#art-product-${product.id}`,
     title: product.label,
     assetLabel: "미술품",
-    badge: VERDICT_LABEL[product.verdict],
+    badge: "청약 종료",
     meta: `${product.lifecycle} · 기준 ${product.asOf.replaceAll("-", ".")}`,
     summary: product.finding,
+    tallies: verdictTallies(product.verdict),
     phase: "closed",
   }),
 );

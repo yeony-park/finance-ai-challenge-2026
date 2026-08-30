@@ -72,7 +72,7 @@
 .coverage {
   max-width: 38ch;
   color: var(--ds-ink-muted);
-  font-size: var(--ds-text-lg);
+  font-size: var(--ds-text-md);
   line-height: var(--ds-leading-relaxed);
   word-break: keep-all;
 }
@@ -328,12 +328,20 @@
   border-radius: 50%;
   background: transparent;
   color: var(--ds-ink-muted);
-  font-family: var(--ds-font-sans);
-  font-size: 1.25rem;
-  line-height: 1;
   cursor: pointer;
   pointer-events: auto;
   transition: color var(--ds-duration-base) var(--ds-ease);
+}
+
+.watchHeartIcon {
+  width: 1.35rem;
+  height: 1.35rem;
+  fill: transparent;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.7;
+  transition: fill var(--ds-duration-fast) var(--ds-ease);
 }
 
 .watchIconToggle:hover {
@@ -342,6 +350,10 @@
 
 .watchIconToggle[aria-pressed="true"] {
   color: var(--ds-accent-ink);
+}
+
+.watchIconToggle[aria-pressed="true"] .watchHeartIcon {
+  fill: currentColor;
 }
 
 .watchIconToggle:focus-visible {

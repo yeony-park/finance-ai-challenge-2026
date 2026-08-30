@@ -81,7 +81,7 @@ export function WatchSection({ watch, replay }: WatchSectionProps) {
           <p className={s.watchPending}>{pendingText(watch)}</p>
         )}
 
-        <details className={s.supportingDetails}>
+        <details className={`${s.supportingDetails} ${s.questionDetails}`}>
           <summary className={s.supportingSummary}>조회·알림 운영 정보 보기</summary>
           <div className={s.supportingTextBody}>
             <p>{watch ? watchStatusText(watch) : UNCONNECTED_WATCH_TEXT}</p>

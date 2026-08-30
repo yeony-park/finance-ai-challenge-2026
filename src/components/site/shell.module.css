@@ -68,8 +68,7 @@
 .headerHome .navLink:hover,
 .headerHome .navLink[aria-current="page"],
 .headerHome .watchlistLink:hover,
-.headerHome .watchlistLink[aria-current="page"],
-.headerHome .watchlistLink[data-has-items="true"] {
+.headerHome .watchlistLink[aria-current="page"] {
   color: color-mix(
     in srgb,
     var(--ds-ink) var(--home-header-ink, 0%),
@@ -179,8 +178,7 @@
 }
 
 .watchlistLink:hover,
-.watchlistLink[aria-current="page"],
-.watchlistLink[data-has-items="true"] {
+.watchlistLink[aria-current="page"] {
   color: var(--ds-ink);
 }
 

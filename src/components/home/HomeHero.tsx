@@ -25,6 +25,7 @@ import {
 
 export function HomeHero() {
   const [query, setQuery] = useState("");
+  const [submittedQuery, setSubmittedQuery] = useState("");
   const [match, setMatch] = useState<ScaffoldMatch | null>(null);
   const [isSearchClosing, setIsSearchClosing] = useState(false);
   const [isSearchRestoring, setIsSearchRestoring] = useState(false);
@@ -64,6 +65,7 @@ export function HomeHero() {
     const handleHomeReset = () => {
       setMatch(null);
       setQuery("");
+      setSubmittedQuery("");
       setIsSearchClosing(false);
       setIsSearchRestoring(false);
       setIsSuggestionsOpen(false);
@@ -79,11 +81,14 @@ export function HomeHero() {
     event.preventDefault();
     setIsSearchRestoring(false);
     setIsSuggestionsOpen(false);
+    setSubmittedQuery(query);
+    setQuery("");
     setMatch(matchScaffold(query));
   };
 
   const handleChip = (label: string, target: string) => {
-    setQuery(label);
+    setSubmittedQuery(label);
+    setQuery("");
     setIsSearchRestoring(false);
     setIsSuggestionsOpen(false);
     setMatch(
@@ -100,6 +105,7 @@ export function HomeHero() {
       scrollImmediately(HERO_SHRINK_SCROLL_DISTANCE);
       setMatch(null);
       setQuery("");
+      setSubmittedQuery("");
       setIsSearchClosing(false);
       setIsSearchRestoring(true);
       setIsSuggestionsOpen(false);
@@ -155,7 +161,7 @@ export function HomeHero() {
             titleRef={titleRef}
             prefixRef={titlePrefixRef}
             questionRef={titleQuestionRef}
-            query={query}
+            query={submittedQuery}
             isSearchOpen={isSearchOpen}
             hasMatch={match !== null}
             isTitleSplit={isTitleSplit}
