@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "documentId": "re-scenario-07-product-description",
+  "categoryId": "real-estate",
+  "productId": "re-offer-07",
+  "scenarioId": "re-scenario-07",
+  "title": "그랑서울 시나리오 상품설명서",
+  "publisher": "점점 데모 시나리오",
+  "documentType": "product-description",
+  "approvedForExternalAi": true,
+  "piiReviewStatus": "passed",
+  "sourceKind": "scenario-input",
+  "sourceUrl": "/scenario-documents/re-scenario-07-product-description.pdf",
+  "localPath": "real-estate/re-offer-07/re-scenario-07-product-description.pdf",
+  "sourceHash": "2630e00d7cd2dceb6305bb8d0365e545663bbcaa113150d45ae26cee445973a2",
+  "asOf": "2026-08-24",
+  "collectedAt": "2026-08-30T04:00:00.000Z",
+  "dataNature": "scenario",
+  "rightsStatus": "permission-confirmed",
+  "approvedForPublic": true,
+  "limitations": [
+    "가상상품 PDF만 외부 AI 구조화에 승인했습니다.",
+    "PII 검토는 통과했으며 실제 투자상품 또는 실제 법인 성과를 나타내지 않습니다."
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "documentId": "re-scenario-09-product-description",
+  "categoryId": "real-estate",
+  "productId": "re-offer-09",
+  "scenarioId": "re-scenario-09",
+  "title": "디타워 광화문 시나리오 상품설명서",
+  "publisher": "점점 데모 시나리오",
+  "documentType": "product-description",
+  "approvedForExternalAi": true,
+  "piiReviewStatus": "passed",
+  "sourceKind": "scenario-input",
+  "sourceUrl": "/scenario-documents/re-scenario-09-product-description.pdf",
+  "localPath": "real-estate/re-offer-09/re-scenario-09-product-description.pdf",
+  "sourceHash": "d263d16a91810a0405ea6eb6c71317a26627e03afe4af7d9c24854383d89e6e9",
+  "asOf": "2026-08-24",
+  "collectedAt": "2026-08-30T04:00:00.000Z",
+  "dataNature": "scenario",
+  "rightsStatus": "permission-confirmed",
+  "approvedForPublic": true,
+  "limitations": [
+    "가상상품 PDF만 외부 AI 구조화에 승인했습니다.",
+    "PII 검토는 통과했으며 실제 투자상품 또는 실제 법인 성과를 나타내지 않습니다."
+  ]
+}

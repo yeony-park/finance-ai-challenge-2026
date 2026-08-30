@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "documentId": "re-scenario-12-product-description",
+  "categoryId": "real-estate",
+  "productId": "re-offer-12",
+  "scenarioId": "re-scenario-12",
+  "title": "센터필드 시나리오 상품설명서",
+  "publisher": "점점 데모 시나리오",
+  "documentType": "product-description",
+  "approvedForExternalAi": true,
+  "piiReviewStatus": "passed",
+  "sourceKind": "scenario-input",
+  "sourceUrl": "/scenario-documents/re-scenario-12-product-description.pdf",
+  "localPath": "real-estate/re-offer-12/re-scenario-12-product-description.pdf",
+  "sourceHash": "59a7c51b6a28a0e7b8381cfb42c4f0763f6befee2101122f40e1269b6728a4f1",
+  "asOf": "2026-08-24",
+  "collectedAt": "2026-08-30T04:00:00.000Z",
+  "dataNature": "scenario",
+  "rightsStatus": "permission-confirmed",
+  "approvedForPublic": true,
+  "limitations": [
+    "가상상품 PDF만 외부 AI 구조화에 승인했습니다.",
+    "PII 검토는 통과했으며 실제 투자상품 또는 실제 법인 성과를 나타내지 않습니다."
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "documentId": "re-scenario-06-product-description",
+  "categoryId": "real-estate",
+  "productId": "re-offer-06",
+  "scenarioId": "re-scenario-06",
+  "title": "을지로트윈타워 시나리오 상품설명서",
+  "publisher": "점점 데모 시나리오",
+  "documentType": "product-description",
+  "approvedForExternalAi": true,
+  "piiReviewStatus": "passed",
+  "sourceKind": "scenario-input",
+  "sourceUrl": "/scenario-documents/re-scenario-06-product-description.pdf",
+  "localPath": "real-estate/re-offer-06/re-scenario-06-product-description.pdf",
+  "sourceHash": "94b7fe88ffba6d492293726971aee3468659246d1ebe64efde7f1046c085318e",
+  "asOf": "2026-08-24",
+  "collectedAt": "2026-08-30T04:00:00.000Z",
+  "dataNature": "scenario",
+  "rightsStatus": "permission-confirmed",
+  "approvedForPublic": true,
+  "limitations": [
+    "가상상품 PDF만 외부 AI 구조화에 승인했습니다.",
+    "PII 검토는 통과했으며 실제 투자상품 또는 실제 법인 성과를 나타내지 않습니다."
+  ]
+}
