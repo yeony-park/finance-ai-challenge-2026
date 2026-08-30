@@ -562,7 +562,7 @@ const appendixCitation = (
   value: unknown,
   artifact: ParsedDocumentArtifact,
 ): DerivedFieldCitation | null => {
-  if (typeof value === "number" || (typeof value !== "string" && typeof value !== "boolean" && value !== null)) return null;
+  if (typeof value !== "string" && typeof value !== "number" && typeof value !== "boolean" && value !== null) return null;
   const marker = `[${fieldPath}]:`;
   const matches: { page: ParsedDocumentArtifact["pages"][number]; index: number }[] = [];
   for (const page of artifact.pages) {
@@ -578,18 +578,33 @@ const appendixCitation = (
   if (matches.length !== 1) return null;
   const [{ page, index }] = matches;
   const nextMarker = page.selected.text.indexOf("\n[", index + marker.length);
+  const lineEnd = page.selected.text.indexOf("\n", index + marker.length);
+  const quoteEnd = typeof value === "number"
+    ? lineEnd < 0 ? page.selected.text.length : lineEnd
+    : nextMarker < 0 ? page.selected.text.length : nextMarker;
   const exactQuote = page.selected.text
-    .slice(index, Math.min(nextMarker < 0 ? page.selected.text.length : nextMarker, index + 2_000))
+    .slice(index, Math.min(quoteEnd, index + 2_000))
     .trim();
-  if (!exactQuote || !isCitationValueExplicitInQuote(value, null, exactQuote)) return null;
+  const unit = typeof value === "number" ? unitForFieldPath(fieldPath) : null;
+  if (typeof value === "number" && unit === null) return null;
+  const evidenceText = exactQuote.slice(marker.length);
+  if (!exactQuote || !isCitationValueExplicitInQuote(value, unit, evidenceText)) return null;
   return DerivedFieldCitationSchema.parse({
     fieldPath,
     page: page.page,
     exactQuote,
     origin: page.selected.origin,
     value,
-    unit: null,
+    unit,
   });
+};
+
+const unitForFieldPath = (fieldPath: string): string | null => {
+  if (fieldPath.endsWith("Won")) return "KRW";
+  if (fieldPath.endsWith("M2")) return "m2";
+  if (fieldPath.endsWith("Percent")) return "%";
+  if (fieldPath.endsWith("Months")) return "months";
+  return null;
 };
 
 const repairAppendixCitations = (
@@ -598,10 +613,13 @@ const repairAppendixCitations = (
   artifact: ParsedDocumentArtifact,
 ): readonly DerivedFieldCitation[] => {
   const paths = citations.map((citation) => citation.fieldPath);
-  if (paths.length !== new Set(paths).size || !citations.every((citation) => citationMatches(citation, product, artifact))) return citations;
-  const repaired = [...citations];
-  const present = new Set(paths);
-  for (const fieldPath of scalarLeafPaths(product).filter((field) => !MANIFEST_ASSIGNED_PRODUCT_PATHS.has(field))) {
+  if (paths.length !== new Set(paths).size) return citations;
+  const required = scalarLeafPaths(product).filter((field) => !MANIFEST_ASSIGNED_PRODUCT_PATHS.has(field));
+  const requiredSet = new Set(required);
+  if (paths.some((fieldPath) => !requiredSet.has(fieldPath))) return citations;
+  const repaired = citations.filter((citation) => citationMatches(citation, product, artifact));
+  const present = new Set(repaired.map((citation) => citation.fieldPath));
+  for (const fieldPath of required) {
     if (present.has(fieldPath)) continue;
     const citation = appendixCitation(fieldPath, valueAtPath(product, fieldPath), artifact);
     if (citation) {
@@ -769,8 +787,7 @@ export const revalidateDerivedScenarioProduct = (
   if (
     JSON.stringify(envelope.document) !== JSON.stringify(rebuilt.document) ||
     JSON.stringify(envelope.chunks) !== JSON.stringify(rebuilt.chunks) ||
-    JSON.stringify(envelope.chunkHashes) !== JSON.stringify(expectedChunkHashes) ||
-    !envelope.fieldCitations.every((citation) => citationMatches(citation, envelope.product!, artifact))
+    JSON.stringify(envelope.chunkHashes) !== JSON.stringify(expectedChunkHashes)
   ) return null;
   const fieldCitations = repairAppendixCitations(envelope.product, envelope.fieldCitations, artifact);
   const evaluated = validateDerivedCandidate(envelope.product, fieldCitations, artifact, envelope.manifest);

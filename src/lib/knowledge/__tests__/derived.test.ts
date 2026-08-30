@@ -227,7 +227,16 @@ describe("PDF-first real-estate derived artifacts", () => {
   it("공백 줄바꿈 인용과 단일 appendix string 누락을 로컬 보완하고 product는 바꾸지 않는다", async () => {
     const draft = payloadAndCitations();
     const titleQuote = draft.fieldCitations.find((citation) => citation.fieldPath === "title")!.exactQuote;
-    const pageText = `${draft.text.replace(titleQuote, titleQuote.replace("업무시설 시나리오", "업무시설\n 시나리오"))}\n[operatorGroupId]:\noperator-a`;
+    const numericAppendix = [
+      "[asset.grossFloorAreaM2]: value raw=1000㎡",
+      "[offering.unitPriceWon]: value raw=5000 KRW",
+      "[offering.targetHoldingMonths]: value raw=24개월",
+      "[offering.financing.annualInterestRatePercent]: value raw=4.5%",
+      "[offering.exitReview.maximumExtensionMonths]: value raw=6개월",
+      "[offering.leaseAssumptions.vacancyRatePercent]: value raw=5%",
+    ];
+    const numericRepairPaths = new Set(numericAppendix.map((line) => line.slice(1, line.indexOf("]"))));
+    const pageText = `${draft.text.replace(titleQuote, titleQuote.replace("업무시설 시나리오", "업무시설\n 시나리오"))}\n[operatorGroupId]:\noperator-a\n${numericAppendix.join("\n")}`;
     const base = artifact();
     const parsed = ParsedDocumentArtifactSchema.parse({
       ...base,
@@ -237,21 +246,33 @@ describe("PDF-first real-estate derived artifacts", () => {
         selected: { ...page.selected, text: pageText, canonicalText: pageText },
       })),
     });
-    const withoutOperator = draft.fieldCitations.filter((citation) => citation.fieldPath !== "operatorGroupId");
+    const modelCitations = draft.fieldCitations
+      .filter((citation) => citation.fieldPath !== "operatorGroupId")
+      .map((citation) => numericRepairPaths.has(citation.fieldPath)
+        ? { ...citation, page: 2, exactQuote: "5000", unit: null }
+        : citation);
     const candidate = await deriveRealEstateScenarioProduct({
       manifest: manifest(),
       artifact: parsed,
-      client: { model: "fake:gpt-4.1-mini", async extract() { return { product: draft.product, fieldCitations: withoutOperator, warnings: [] }; } },
+      client: { model: "fake:gpt-4.1-mini", async extract() { return { product: draft.product, fieldCitations: modelCitations, warnings: [] }; } },
     });
     expect(candidate.status).toBe("needs-review");
-    expect(candidate.validation.exactQuotes).toBe(true);
+    expect(candidate.fieldCitations).toHaveLength(draft.fieldCitations.length - 1);
+    expect(candidate.validation.exactQuotes).toBe(false);
     const originalProduct = JSON.stringify(candidate.product);
     const promoted = revalidateDerivedScenarioProduct(candidate, parsed, "fake:gpt-4.1-mini");
     expect(promoted?.status).toBe("auto-approved");
+    expect(promoted?.fieldCitations).toHaveLength(draft.fieldCitations.length);
     expect(promoted?.fieldCitations.find((citation) => citation.fieldPath === "operatorGroupId")).toMatchObject({
       exactQuote: "[operatorGroupId]:\noperator-a",
       value: "operator-a",
       origin: "native_text",
+    });
+    expect(promoted?.fieldCitations.find((citation) => citation.fieldPath === "offering.unitPriceWon")).toMatchObject({
+      page: 1,
+      exactQuote: "[offering.unitPriceWon]: value raw=5000 KRW",
+      value: 5000,
+      unit: "KRW",
     });
     expect(JSON.stringify(promoted?.product)).toBe(originalProduct);
     expect(revalidateDerivedScenarioProduct({ ...candidate, productHash: "b".repeat(64) }, parsed, "fake:gpt-4.1-mini")).toBeNull();
@@ -259,7 +280,7 @@ describe("PDF-first real-estate derived artifacts", () => {
 
   it("appendix에 있어도 numeric 누락은 로컬 보완하지 않는다", async () => {
     const draft = payloadAndCitations();
-    const pageText = `${draft.text}\n[offering.unitPriceWon]: 5000원`;
+    const pageText = `${draft.text}\n[offering.unitPriceWon]: value raw=5000 months\n[operatorGroupId]: operator-a\n[operatorGroupId]: operator-a`;
     const base = artifact();
     const parsed = ParsedDocumentArtifactSchema.parse({
       ...base,
@@ -275,13 +296,19 @@ describe("PDF-first real-estate derived artifacts", () => {
       client: {
         model: "fake:gpt-4.1-mini",
         async extract() {
-          return { product: draft.product, fieldCitations: draft.fieldCitations.filter((citation) => citation.fieldPath !== "offering.unitPriceWon"), warnings: [] };
+          return {
+            product: draft.product,
+            fieldCitations: draft.fieldCitations.filter((citation) =>
+              citation.fieldPath !== "offering.unitPriceWon" && citation.fieldPath !== "operatorGroupId"),
+            warnings: [],
+          };
         },
       },
     });
     const revalidated = revalidateDerivedScenarioProduct(candidate, parsed, "fake:gpt-4.1-mini");
     expect(revalidated?.status).toBe("needs-review");
     expect(revalidated?.fieldCitations.some((citation) => citation.fieldPath === "offering.unitPriceWon")).toBe(false);
+    expect(revalidated?.fieldCitations.some((citation) => citation.fieldPath === "operatorGroupId")).toBe(false);
   });
 
   it("runtime은 seed/legacy가 아니라 auto-approved derived registry 한 건만 읽는다", async () => {
@@ -354,8 +381,14 @@ describe("PDF-first real-estate derived artifacts", () => {
       },
     };
     await expect(runKnowledgeDerive(options)).resolves.toMatchObject({ code: 1, derived: 1, reused: 0, reviewRequired: 1 });
-    await expect(runKnowledgeDerive(options)).resolves.toMatchObject({ code: 0, derived: 1, reused: 1 });
+    let revalidateProviderCalls = 0;
+    await expect(runKnowledgeDerive({
+      ...options,
+      revalidateOnly: true,
+      client: { model: "fake:gpt-4.1-mini", async extract() { revalidateProviderCalls += 1; throw new Error("must not call"); } },
+    })).resolves.toMatchObject({ code: 0, derived: 1, reused: 1 });
     expect({ parseCalls, extractCalls }).toEqual({ parseCalls: 1, extractCalls: 1 });
+    expect(revalidateProviderCalls).toBe(0);
     await expect(runKnowledgeDerive({ dataRoot: root, checkOnly: true })).resolves.toMatchObject({ code: 0, derived: 1 });
   });
 });

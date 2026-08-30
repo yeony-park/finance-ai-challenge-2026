@@ -31,6 +31,7 @@ export interface DeriveCommandOptions {
   readonly manifestPath?: string;
   readonly allRealEstate?: boolean;
   readonly checkOnly?: boolean;
+  readonly revalidateOnly?: boolean;
   readonly client?: RealEstateProductExtractionClient;
   readonly parsePdf?: (bytes: Uint8Array) => Promise<ParsedPdf>;
   readonly ocrEnabled?: boolean;
@@ -185,6 +186,17 @@ const deriveOne = async (
   const productFile = resolveWithin(derivedRoot, "product.json");
   const cached = await readJsonFile(productFile).catch(() => null);
   if (isValidAutoApprovedEnvelope(cached, artifact.data)) return { reused: true, reviewRequired: false };
+  if (options.revalidateOnly) {
+    const parsedCached = DerivedScenarioProductEnvelopeSchema.safeParse(cached);
+    const revalidated = parsedCached.success
+      ? revalidateDerivedScenarioProduct(parsedCached.data, artifact.data, parsedCached.data.model)
+      : null;
+    if (revalidated) {
+      if (JSON.stringify(revalidated) !== JSON.stringify(cached)) await atomicWrite(derivedRoot, "product.json", revalidated);
+      return { reused: true, reviewRequired: revalidated.status !== "auto-approved" };
+    }
+    return { reused: false, reviewRequired: true };
+  }
   const client = options.client ?? createAiSdkRealEstateProductClient();
   const revalidated = revalidateDerivedScenarioProduct(cached, artifact.data, client.model);
   if (revalidated) {
@@ -222,6 +234,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     manifestPath: manifest,
     allRealEstate: process.argv.includes("--all-real-estate"),
     checkOnly: process.argv.includes("--check"),
+    revalidateOnly: process.argv.includes("--revalidate-only"),
   }).then((result) => {
     console.info(`knowledge:derive derived=${result.derived} reused=${result.reused} review=${result.reviewRequired}`);
     process.exitCode = result.code;

@@ -168,11 +168,16 @@ export const isExtractionValueInQuote = (
   }
   if (!unit) return true;
   const units: Readonly<Record<string, readonly string[]>> = {
-    won: ["won", "원"],
+    krw: ["krw", "won", "원"],
+    won: ["krw", "won", "원"],
     percent: ["percent", "%", "퍼센트"],
+    "%": ["percent", "%", "퍼센트"],
+    m2: ["m2", "㎡", "제곱미터"],
     months: ["months", "개월"],
   };
-  return (units[unit.toLocaleLowerCase()] ?? [unit]).some((item) => source.includes(compact(item)));
+  const unitSource = source.toLocaleLowerCase();
+  return (units[unit.toLocaleLowerCase()] ?? [unit]).some((item) =>
+    unitSource.includes(compact(item).toLocaleLowerCase()));
 };
 
 export const calculateExtractionManifestHash = (manifestInput: unknown): string =>
