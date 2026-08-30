@@ -8,6 +8,7 @@ import { LifecycleStrip } from "@/components/report/LifecycleStrip";
 import { ReportChapterNav } from "@/components/report/ReportChapterNav";
 import { ReportDocument } from "@/components/report/ReportDocument";
 import { ReportFoot } from "@/components/report/ReportFoot";
+import { reportSectionsFor } from "@/components/report/report-sections";
 import { HistorySection, PriceSection } from "@/components/report/SummaryLayers";
 import { WatchSection } from "@/components/report/WatchSection";
 import {
@@ -145,6 +146,7 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
   ]);
 
   const offerEntry = OFFERS.find((offer) => offer.id === id) ?? null;
+  const sections = reportSectionsFor({ hasFilingFacts: filingFacts !== null });
 
   return (
     <div className={s.reportPage}>
@@ -163,11 +165,18 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
         </nav>
       </div>
 
-      <ReportChapterNav hasFilingFacts={filingFacts !== null} />
+      <ReportChapterNav sections={sections} />
 
       <ReportDocument
         view={view}
         narrative={narrative?.levels ?? null}
+        sections={sections}
+        sectionContent={{
+          filing: filingFacts ? <FilingFactsSection facts={filingFacts} /> : null,
+          watch: <WatchSection watch={watch} replay={replay} />,
+          history: <HistorySection view={view} trackRecord={trackRecord} />,
+          price: <PriceSection view={view} />,
+        }}
         lifecycle={
           offerEntry ? (
             <LifecycleStrip
@@ -177,12 +186,7 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
             />
           ) : null
         }
-      >
-        {filingFacts ? <FilingFactsSection facts={filingFacts} /> : null}
-        <WatchSection watch={watch} replay={replay} />
-        <HistorySection view={view} trackRecord={trackRecord} />
-      </ReportDocument>
-      <PriceSection view={view} />
+      />
       <ReportFoot />
     </div>
   );

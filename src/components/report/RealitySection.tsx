@@ -104,7 +104,10 @@ export function RealitySection({
         <div className={s.realityOverview}>
           <div className={s.realityStat}>
             <strong>{matched.length}</strong>
-            <span>/ {total}두</span>
+            <span>
+              / {total}
+              {view.reality.countUnit}
+            </span>
             <small>전 항목 일치</small>
           </div>
           <div className={s.realityPlot}>
@@ -115,7 +118,7 @@ export function RealitySection({
             <div
               className={s.realityBar}
               role="img"
-              aria-label={`전체 ${total}두 중 전 항목 일치 ${matched.length}두, 확인 필요 ${flagged.length}두`}
+              aria-label={`전체 ${total}${view.reality.countUnit} 중 전 항목 일치 ${matched.length}${view.reality.countUnit}, 확인 필요 ${flagged.length}${view.reality.countUnit}`}
             >
               <span
                 className={s.realityBarMatch}
@@ -126,7 +129,7 @@ export function RealitySection({
                 style={{ width: `${100 - matchedRate}%` }}
               />
             </div>
-            <p>개체 단위로 공시값과 국가 원장을 같은 기준으로 대조했습니다.</p>
+            <p>{view.reality.comparisonDescription}</p>
           </div>
         </div>
 

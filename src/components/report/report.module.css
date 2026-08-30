@@ -12,8 +12,8 @@
   --report-font-display: clamp(1.875rem, 1.65rem + 1.1vw, 2.5rem);
   --report-font-section: clamp(1.375rem, 1.27rem + 0.5vw, 1.75rem);
   --report-font-subsection: clamp(1.125rem, 1.05rem + 0.4vw, 1.25rem);
-  --report-font-kpi: clamp(2.25rem, 1.9rem + 1.5vw, 3.25rem);
-  --report-font-numeral: clamp(1.5rem, 1.3rem + 0.9vw, 2.125rem);
+  --report-font-kpi: var(--ds-heading-h3);
+  --report-font-numeral: var(--ds-heading-h3);
 
   font-family: var(--ds-font-sans);
 }
@@ -23,7 +23,7 @@
   top: var(--ds-header-h);
   z-index: 35;
   border-bottom: 1px solid var(--ds-line);
-  background: var(--ds-surface);
+  background: var(--ds-bg);
 }
 
 .breadcrumb {
@@ -98,7 +98,7 @@
 }
 
 .hero {
-  padding-block: clamp(4rem, 2.5rem + 5vw, 8rem) var(--ds-section-y-tight);
+  padding-block: clamp(2rem, 1.25rem + 2.5vw, 4rem) var(--ds-section-y-tight);
 }
 .heroGrid {
   display: grid;
@@ -797,8 +797,7 @@
   position: sticky;
   top: calc(var(--ds-header-h) + 3.5rem);
   z-index: 30;
-  background: color-mix(in srgb, var(--ds-surface) 94%, transparent);
-  backdrop-filter: saturate(1.4) blur(10px);
+  background: var(--ds-bg);
 }
 .chapterNavRow {
   display: flex;
@@ -1404,32 +1403,56 @@
 }
 .questionDetails {
   border: 0;
+  border-bottom: 1px solid var(--ds-line);
   border-radius: 0;
   background: transparent;
   overflow: visible;
 }
 .questionDetails .supportingSummary,
 .questionDetails .trackDetailsSummary {
-  min-height: var(--ds-tap-min);
-  padding: var(--ds-space-3) 0;
+  min-height: auto;
+  padding: var(--ds-space-4) 0;
   color: var(--ds-ink);
   font-size: var(--ds-heading-h4);
-  font-weight: var(--ds-weight-bold);
+  font-weight: var(--ds-weight-medium);
 }
 .questionDetails .supportingSummary::before,
 .questionDetails .trackDetailsSummary::before {
   content: "▶";
+  display: inline-block;
+  width: 1.25em;
   color: var(--ds-ink);
-  font-size: 1.125rem;
+  font-size: 0.72em;
+  transform: none;
+}
+.questionDetails[open] .supportingSummary::before,
+.questionDetails[open] .trackDetailsSummary::before {
+  content: "▼";
+  transform: none;
 }
 .questionDetails[open] .supportingSummary,
 .questionDetails[open] .trackDetailsSummary {
   border-bottom: 0;
 }
 .questionDetails .supportingBody,
+.questionDetails .supportingTextBody,
 .questionDetails .trackFacts {
-  padding: 0 0 var(--ds-space-4) calc(1rem + var(--ds-space-3));
+  position: relative;
+  margin: var(--ds-space-3) 0 var(--ds-space-5) var(--ds-space-3);
+  padding: 0 0 0 var(--ds-space-5);
   background: transparent;
+}
+.questionDetails .supportingBody::before,
+.questionDetails .supportingTextBody::before,
+.questionDetails .trackFacts::before {
+  content: "";
+  position: absolute;
+  top: 0.35rem;
+  bottom: 0.35rem;
+  left: 0;
+  width: 0.25rem;
+  border-radius: var(--ds-radius-pill);
+  background: var(--ds-line-strong);
 }
 .trackTitle {
   font-size: var(--report-font-subsection, var(--ds-heading-h3));

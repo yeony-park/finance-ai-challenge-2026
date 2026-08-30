@@ -26,7 +26,7 @@ export function ReportFoot() {
           </p>
         </header>
 
-        <details className={s.supportingDetails}>
+        <details className={`${s.supportingDetails} ${s.questionDetails}`}>
           <summary className={s.supportingSummary}>데이터 출처와 갱신 기준 보기</summary>
           <div className={s.supportingTextBody}>
             {DATA_SOURCES.map((source) => (

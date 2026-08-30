@@ -34,7 +34,7 @@ export function PriceSection({ view }: { readonly view: DemoView }) {
 
         {view.price.visual ? <PriceVisual visual={view.price.visual} /> : null}
         {view.price.visual ? (
-          <details className={s.supportingDetails}>
+          <details className={`${s.supportingDetails} ${s.questionDetails}`}>
             <summary className={s.supportingSummary}>
               수치 산출 근거 {view.price.items.length}건 보기
             </summary>
@@ -45,7 +45,7 @@ export function PriceSection({ view }: { readonly view: DemoView }) {
         ) : (
           <NoteList items={view.price.items} />
         )}
-        <details className={s.supportingDetails}>
+        <details className={`${s.supportingDetails} ${s.questionDetails}`}>
           <summary className={s.supportingSummary}>가격 비교 기준과 한계 보기</summary>
           <div className={s.supportingTextBody}>
             <p>{view.price.note}</p>

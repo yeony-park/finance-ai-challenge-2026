@@ -47,7 +47,9 @@ export function VerdictNarrative({ level }: { readonly level: NarrativeLevel }) 
         </ul>
       ) : null}
 
-      <details className={`${s.supportingDetails} ${s.narrativeDetails}`}>
+      <details
+        className={`${s.supportingDetails} ${s.questionDetails} ${s.narrativeDetails}`}
+      >
         <summary className={s.supportingSummary}>판정 설명과 근거 구분 보기</summary>
         <div className={s.supportingBody}>
           {layers.length > 0 ? (

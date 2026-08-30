@@ -112,7 +112,7 @@ export function AmendmentReplay({ replay }: AmendmentReplayProps) {
         ))}
       </div>
 
-      <details className={s.supportingDetails}>
+      <details className={`${s.supportingDetails} ${s.questionDetails}`}>
         <summary className={s.supportingSummary}>재대조 기준 보기</summary>
         <div className={s.supportingTextBody}>
           <p>{replay.disclosure}</p>
