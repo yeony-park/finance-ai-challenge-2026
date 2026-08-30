@@ -31,7 +31,7 @@ export default async function RealEstatePage({
     loadApprovedScenarios(),
   ]);
   const { activeTab, analysisStatus, analysisVerdict } =
-    categoryPageStateFromSearchParams({ ...params, tab: params.tab ?? "analysis" });
+    categoryPageStateFromSearchParams(params);
 
   return CategoryLanding({
     categoryId: "real-estate",

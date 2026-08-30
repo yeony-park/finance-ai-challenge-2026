@@ -9,7 +9,7 @@ import RealEstatePage, { metadata } from "../page";
 describe("부동산 승인 시나리오 목록", () => {
   test("13개 시나리오를 세 단계로 나누고 실제 상품은 노출하지 않는다", async () => {
     const markup = renderToStaticMarkup(
-      await RealEstatePage({ searchParams: Promise.resolve({}) }),
+      await RealEstatePage({ searchParams: Promise.resolve({ tab: "analysis" }) }),
     );
 
     expect(markup).toContain("서울스퀘어");
@@ -28,6 +28,18 @@ describe("부동산 승인 시나리오 목록", () => {
     expect(markup.split(SCENARIO_DEMO_DISCLOSURE)).toHaveLength(2);
     expect(metadata.robots).toEqual({ index: false, follow: false });
   });
+
+  test.each([{}, { tab: "unknown" }])(
+    "기본·알 수 없는 탭은 설명으로 열고 명시적 analysis만 목록을 연다",
+    async (searchParams) => {
+      const markup = renderToStaticMarkup(
+        await RealEstatePage({ searchParams: Promise.resolve(searchParams) }),
+      );
+
+      expect(markup).toContain('aria-current="page" href="/real-estate?tab=about">설명');
+      expect(markup).not.toContain("서울스퀘어");
+    },
+  );
 
   test("제거된 실제 부동산 상세 경로에만 검색 차단 응답 헤더를 둔다", async () => {
     const headers = await nextConfig.headers?.();
