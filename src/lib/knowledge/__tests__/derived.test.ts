@@ -1,4 +1,4 @@
-import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, rm, symlink, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
@@ -15,11 +15,13 @@ import {
   revalidateDerivedScenarioProduct,
   RealEstateProductDraftSchema,
   RealEstateProviderDraftSchema,
+  resolveReviewedDerivedScenarioProduct,
 } from "../derived";
 import { runKnowledgeDerive } from "../derive-cli";
+import { calculateExtractionManifestHash } from "../document-extraction";
 import { loadApprovedScenarios, loadKnowledgeScope } from "../loader";
 import { sha256, type ParsedPdf } from "../pdf";
-import { ParsedDocumentArtifactSchema, SourceManifestSchema } from "../schema";
+import { ParsedDocumentArtifactSchema, ScenarioOfferSchema, SourceManifestSchema, type ScenarioOffer } from "../schema";
 import { buildKnowledgeIngestPlan } from "@/lib/db/ingest/knowledge";
 import { hashA, validScenarioOffer } from "./fixtures";
 
@@ -49,7 +51,7 @@ const manifest = () => SourceManifestSchema.parse({
   limitations: ["가상 상품설명서입니다."],
 });
 
-const payloadAndCitations = (scenario = validScenarioOffer()) => {
+const payloadAndCitations = (scenario: ScenarioOffer = ScenarioOfferSchema.parse(validScenarioOffer())) => {
   const systemFields = new Set(["schemaVersion", "categoryId", "scenarioId", "offerId", "dataNature", "sourceKind", "approvedForPublic", "status"]);
   const product = Object.fromEntries(
     Object.entries(scenario).filter(([key]) => !systemFields.has(key)),
@@ -72,6 +74,28 @@ const payloadAndCitations = (scenario = validScenarioOffer()) => {
     unit: null,
   }));
   return { product, fieldCitations, text: fieldCitations.map((citation) => citation.exactQuote).join("\n") };
+};
+
+const canonicalAppendixText = (scenario: ScenarioOffer = ScenarioOfferSchema.parse(validScenarioOffer())): string => {
+  const { product } = payloadAndCitations(scenario);
+  const lines: string[] = [];
+  const visit = (value: unknown, prefix = ""): void => {
+    if (value === null || typeof value !== "object") {
+      const unit = typeof value === "number"
+        ? prefix === "offering.unitCount" ? "개"
+          : prefix.endsWith("Won") ? " KRW"
+            : prefix.endsWith("M2") ? "㎡"
+              : prefix.endsWith("Percent") ? "%"
+                : prefix.endsWith("Months") ? "개월"
+                  : ""
+        : "";
+      lines.push(`[${prefix}]: ${value === null ? "미확인" : typeof value === "boolean" ? value ? "예" : "아니오" : String(value)}${unit}`);
+      return;
+    }
+    for (const [key, child] of Object.entries(value)) visit(child, prefix ? `${prefix}.${key}` : key);
+  };
+  visit(product);
+  return lines.join("\n");
 };
 
 const artifact = (createdAt = "2026-08-24T00:00:00.000Z") => {
@@ -313,7 +337,7 @@ describe("PDF-first real-estate derived artifacts", () => {
   });
 
   it("fact numeric value는 같은 항목의 허용된 sibling unit이 PDF에 있을 때만 보완한다", async () => {
-    const scenario = structuredClone(validScenarioOffer());
+    const scenario = ScenarioOfferSchema.parse(structuredClone(validScenarioOffer()));
     const claim = scenario.claimedAssetFacts[0] as { value: string | number; unit?: string };
     claim.value = 1_000;
     claim.unit = "m2";
@@ -357,6 +381,90 @@ describe("PDF-first real-estate derived artifacts", () => {
       },
     });
     expect(revalidateDerivedScenarioProduct(unknownCandidate, parsed, "fake:gpt-4.1-mini")?.status).toBe("needs-review");
+  });
+
+  it("명시 검토 상품만 canonical appendix 전체 근거와 scope/hash를 통과하면 승격한다", async () => {
+    const reviewedProduct = ScenarioOfferSchema.parse({
+      ...validScenarioOffer(),
+      asset: {
+        ...validScenarioOffer().asset,
+        facts: [{
+          field: "main-use",
+          status: "unknown",
+          dataNature: "observed",
+          basis: "source",
+          limitations: ["공개정보에서 확인하지 못했습니다."],
+        }],
+      },
+    });
+    const modelProduct = ScenarioOfferSchema.parse({
+      ...reviewedProduct,
+      asset: {
+        ...reviewedProduct.asset,
+        facts: [{
+          field: "main-use",
+          value: null,
+          status: "confirmed",
+          dataNature: "observed",
+          basis: "source",
+          sourceId: "source-001",
+          validThrough: null,
+          limitations: ["공개정보에서 확인하지 못했습니다."],
+        }],
+      },
+    });
+    const text = canonicalAppendixText(reviewedProduct);
+    const base = artifact();
+    const parsed = ParsedDocumentArtifactSchema.parse({
+      ...base,
+      pages: base.pages.map((page) => ({
+        ...page,
+        native: { ...page.native, text, canonicalText: text, metrics: { ...page.native.metrics, characterCount: text.length, density: text.length } },
+        selected: { ...page.selected, text, canonicalText: text },
+      })),
+    });
+    const modelDraft = payloadAndCitations(modelProduct);
+    const candidate = await deriveRealEstateScenarioProduct({
+      manifest: manifest(),
+      artifact: parsed,
+      client: { model: "fake:gpt-4.1-mini", async extract() { return { product: modelDraft.product, fieldCitations: modelDraft.fieldCitations, warnings: [] }; } },
+    });
+    expect(candidate.status).toBe("needs-review");
+    expect(revalidateDerivedScenarioProduct(candidate, parsed, candidate.model)?.status).toBe("needs-review");
+    expect(candidate.product?.asset.facts[0]).toMatchObject({ status: "confirmed", sourceId: "source-001" });
+
+    const reviewed = {
+      schemaVersion: 1,
+      kind: "reviewed-scenario-product-v1",
+      categoryId: "real-estate",
+      productId: manifest().productId,
+      scenarioId: manifest().scenarioId,
+      documentId: manifest().documentId,
+      sourceHash: parsed.sourceHash,
+      manifestHash: parsed.manifestHash,
+      reviewedAt: "2026-08-25T09:00:00+09:00",
+      reviewer: "reviewer-01",
+      resolutionNote: "PDF canonical appendix와 대조해 unknown 상태를 확인했습니다.",
+      product: reviewedProduct,
+    };
+    const promoted = resolveReviewedDerivedScenarioProduct(candidate, parsed, reviewed);
+    expect(promoted?.status).toBe("auto-approved");
+    expect(promoted?.validation.failures).toEqual([]);
+    expect(promoted?.product?.asset.facts[0]).toEqual(reviewedProduct.asset.facts[0]);
+    expect(promoted?.reviewResolution).toMatchObject({
+      method: "explicit-reviewed-product-v1",
+      originalProductHash: candidate.productHash,
+      reviewedAt: reviewed.reviewedAt,
+    });
+    expect(promoted?.reviewResolution?.reviewInputHash).toBe(sha256(JSON.stringify(reviewed)));
+
+    expect(resolveReviewedDerivedScenarioProduct(candidate, parsed, { ...reviewed, productId: "other-offer" })).toBeNull();
+    expect(resolveReviewedDerivedScenarioProduct({ ...candidate, productHash: hashA }, parsed, reviewed)).toBeNull();
+    const unsupported = structuredClone(reviewed);
+    unsupported.product.asset.facts[0] = { ...unsupported.product.asset.facts[0], field: "not-in-pdf" };
+    const notPromoted = resolveReviewedDerivedScenarioProduct(candidate, parsed, unsupported);
+    expect(notPromoted?.status).toBe("needs-review");
+    expect(notPromoted?.validation.citationsComplete).toBe(false);
   });
 
   it("runtime은 seed/legacy가 아니라 auto-approved derived registry 한 건만 읽는다", async () => {
@@ -438,5 +546,101 @@ describe("PDF-first real-estate derived artifacts", () => {
     expect({ parseCalls, extractCalls }).toEqual({ parseCalls: 1, extractCalls: 1 });
     expect(revalidateProviderCalls).toBe(0);
     await expect(runKnowledgeDerive({ dataRoot: root, checkOnly: true })).resolves.toMatchObject({ code: 0, derived: 1 });
+  });
+
+  it("CLI 검토 입력은 비공개 review 내부 regular JSON만 읽고 provider 없이 명시 해결한다", async () => {
+    const projectRoot = await mkdtemp(path.join(os.tmpdir(), "knowledge-reviewed-product-"));
+    roots.push(projectRoot);
+    const root = path.join(projectRoot, "data");
+    const bytes = new Uint8Array([37, 80, 68, 70, 45, 49]);
+    const sourceHash = sha256(bytes);
+    const inputDirectory = path.join(root, "knowledge/inputs/real-estate/offer-001");
+    const publicDirectory = path.join(projectRoot, "public/scenario-documents");
+    await mkdir(inputDirectory, { recursive: true });
+    await mkdir(publicDirectory, { recursive: true });
+    await writeFile(path.join(inputDirectory, "product.pdf"), bytes);
+    await writeFile(path.join(publicDirectory, "input.pdf"), bytes);
+    const inputManifest = SourceManifestSchema.parse({
+      ...manifest(),
+      sourceUrl: "/scenario-documents/input.pdf",
+      localPath: "real-estate/offer-001/product.pdf",
+      sourceHash,
+    });
+    await writeFile(path.join(inputDirectory, "product.manifest.json"), JSON.stringify(inputManifest));
+
+    const reviewedProduct = ScenarioOfferSchema.parse({
+      ...validScenarioOffer(),
+      asset: {
+        ...validScenarioOffer().asset,
+        facts: [{ field: "main-use", status: "unknown", dataNature: "observed", basis: "source", limitations: ["미확인"] }],
+      },
+    });
+    const modelProduct = ScenarioOfferSchema.parse({
+      ...reviewedProduct,
+      asset: {
+        ...reviewedProduct.asset,
+        facts: [{
+          field: "main-use", value: null, status: "confirmed", dataNature: "observed", basis: "source",
+          sourceId: "source-001", validThrough: null, limitations: ["미확인"],
+        }],
+      },
+    });
+    const text = canonicalAppendixText(reviewedProduct);
+    let providerCalls = 0;
+    const options = {
+      dataRoot: root,
+      manifestPath: "real-estate/offer-001/product.manifest.json",
+      async parsePdf(): Promise<ParsedPdf> {
+        return {
+          status: "ready",
+          sourceHash,
+          limitation: null,
+          pages: [{ page: 1, text, canonicalText: text, positions: [], quality: "ready" as const, reasonCodes: [], metrics: { itemCount: 1, characterCount: text.length, density: text.length }, limitations: [] }],
+        };
+      },
+      client: {
+        model: "fake:gpt-4.1-mini",
+        async extract() {
+          providerCalls += 1;
+          const draft = payloadAndCitations(modelProduct);
+          return { product: draft.product, fieldCitations: draft.fieldCitations, warnings: [] };
+        },
+      },
+    };
+    await expect(runKnowledgeDerive(options)).resolves.toMatchObject({ code: 1, reviewRequired: 1 });
+    expect(providerCalls).toBe(1);
+
+    const reviewDirectory = path.join(root, "knowledge/review/real-estate/scenario-001");
+    await mkdir(reviewDirectory, { recursive: true });
+    const reviewed = {
+      schemaVersion: 1,
+      kind: "reviewed-scenario-product-v1",
+      categoryId: "real-estate",
+      productId: inputManifest.productId,
+      scenarioId: inputManifest.scenarioId,
+      documentId: inputManifest.documentId,
+      sourceHash,
+      manifestHash: calculateExtractionManifestHash(inputManifest),
+      reviewedAt: "2026-08-25T09:00:00+09:00",
+      reviewer: "reviewer-01",
+      resolutionNote: "canonical appendix와 대조했습니다.",
+      product: reviewedProduct,
+    };
+    const external = path.join(projectRoot, "external-review.json");
+    await writeFile(external, JSON.stringify(reviewed));
+    await symlink(external, path.join(reviewDirectory, "linked.json"));
+    await writeFile(path.join(reviewDirectory, "oversized.json"), " ".repeat(4 * 1024 * 1024 + 1));
+    await expect(runKnowledgeDerive({ ...options, reviewedProductPath: "../external-review.json" })).rejects.toThrow();
+    await expect(runKnowledgeDerive({ ...options, reviewedProductPath: "real-estate/scenario-001/linked.json" })).rejects.toThrow(/심볼릭 링크/);
+    await expect(runKnowledgeDerive({ ...options, reviewedProductPath: "real-estate/scenario-001/oversized.json" })).rejects.toThrow(/크기 상한/);
+    expect(providerCalls).toBe(1);
+
+    await writeFile(path.join(reviewDirectory, "reviewed.json"), JSON.stringify(reviewed));
+    await expect(runKnowledgeDerive({ ...options, reviewedProductPath: "real-estate/scenario-001/reviewed.json" }))
+      .resolves.toMatchObject({ code: 0, reused: 1, reviewRequired: 0 });
+    expect(providerCalls).toBe(1);
+    const loaded = await loadApprovedScenarios(root);
+    expect(loaded).toHaveLength(1);
+    expect(loaded[0].asset.facts[0]).toEqual(reviewedProduct.asset.facts[0]);
   });
 });

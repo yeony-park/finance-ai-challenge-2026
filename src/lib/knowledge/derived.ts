@@ -18,6 +18,7 @@ import {
   DerivedFieldCitationSchema,
   DerivedScenarioProductEnvelopeSchema,
   ParsedDocumentArtifactSchema,
+  ReviewedScenarioProductInputSchema,
   ScenarioOfferSchema,
   SourceManifestSchema,
   type DerivedFieldCitation,
@@ -656,6 +657,32 @@ const repairAppendixCitations = (
   return repaired;
 };
 
+const appendixCitationsForReviewedProduct = (
+  product: ScenarioOffer,
+  artifact: ParsedDocumentArtifact,
+): readonly DerivedFieldCitation[] => scalarLeafPaths(product)
+  .filter((fieldPath) => !MANIFEST_ASSIGNED_PRODUCT_PATHS.has(fieldPath))
+  .flatMap((fieldPath) => {
+    const citation = appendixCitation(fieldPath, valueAtPath(product, fieldPath), product, artifact);
+    return citation ? [citation] : [];
+  });
+
+const searchRecordFor = (product: ScenarioOffer, manifest: SourceManifest) => ({
+  categoryId: "real-estate" as const,
+  productId: manifest.productId,
+  scenarioId: manifest.scenarioId!,
+  dataNature: "scenario" as const,
+  title: product.title,
+  aliases: [...new Set([
+    product.asset.publicName,
+    product.asset.roadAddress,
+    product.asset.region,
+    product.operatorGroupId,
+  ])],
+  phase: product.offering.phase,
+  asOf: product.asOf,
+});
+
 const failedEnvelope = (
   base: ReturnType<typeof baseEnvelope>,
   code: DerivedExtractionFailureCode,
@@ -749,21 +776,7 @@ export const deriveRealEstateScenarioProduct = async (input: {
       document,
       chunks,
       chunkHashes,
-      searchRecord: {
-        categoryId: "real-estate",
-        productId: manifest.productId,
-        scenarioId: manifest.scenarioId,
-        dataNature: "scenario",
-        title: product.title,
-        aliases: [...new Set([
-          product.asset.publicName,
-          product.asset.roadAddress,
-          product.asset.region,
-          product.operatorGroupId,
-        ])],
-        phase: product.offering.phase,
-        asOf: product.asOf,
-      },
+      searchRecord: searchRecordFor(product, manifest),
       validation,
       fieldCitations: draft.fieldCitations,
       limitations: [
@@ -782,18 +795,22 @@ export const realEstateCategoryExtractor: CategoryExtractorAdapter = {
   derive: deriveRealEstateScenarioProduct,
 };
 
-export const revalidateDerivedScenarioProduct = (
+const verifiedNeedsReviewContext = (
   envelopeInput: unknown,
   artifactInput: unknown,
-  expectedModel: string,
-): DerivedScenarioProductEnvelope | null => {
+  expectedModel?: string,
+): {
+  readonly envelope: DerivedScenarioProductEnvelope;
+  readonly artifact: ParsedDocumentArtifact;
+} | null => {
   const envelopeResult = DerivedScenarioProductEnvelopeSchema.safeParse(envelopeInput);
   const artifactResult = ParsedDocumentArtifactSchema.safeParse(artifactInput);
   if (!envelopeResult.success || !artifactResult.success || envelopeResult.data.status !== "needs-review") return null;
   const envelope = envelopeResult.data;
   const artifact = artifactResult.data;
   if (
-    envelope.model !== expectedModel || envelope.promptVersion !== DERIVED_EXTRACTION_PROMPT_VERSION ||
+    (expectedModel !== undefined && envelope.model !== expectedModel) ||
+    envelope.promptVersion !== DERIVED_EXTRACTION_PROMPT_VERSION ||
     envelope.extractionSchemaVersion !== DERIVED_EXTRACTION_SCHEMA_VERSION || !envelope.manifest ||
     !envelope.product || !envelope.productHash || !envelope.document || !envelope.searchRecord ||
     envelope.categoryId !== artifact.categoryId || envelope.productId !== artifact.productId ||
@@ -815,8 +832,19 @@ export const revalidateDerivedScenarioProduct = (
     JSON.stringify(envelope.chunks) !== JSON.stringify(rebuilt.chunks) ||
     JSON.stringify(envelope.chunkHashes) !== JSON.stringify(expectedChunkHashes)
   ) return null;
-  const fieldCitations = repairAppendixCitations(envelope.product, envelope.fieldCitations, artifact);
-  const evaluated = validateDerivedCandidate(envelope.product, fieldCitations, artifact, envelope.manifest);
+  return { envelope, artifact };
+};
+
+export const revalidateDerivedScenarioProduct = (
+  envelopeInput: unknown,
+  artifactInput: unknown,
+  expectedModel: string,
+): DerivedScenarioProductEnvelope | null => {
+  const context = verifiedNeedsReviewContext(envelopeInput, artifactInput, expectedModel);
+  if (!context) return null;
+  const { envelope, artifact } = context;
+  const fieldCitations = repairAppendixCitations(envelope.product!, envelope.fieldCitations, artifact);
+  const evaluated = validateDerivedCandidate(envelope.product!, fieldCitations, artifact, envelope.manifest!);
   const limitations = envelope.limitations.filter((limitation) =>
     limitation !== "필드 인용이 선택된 PDF 텍스트와 일치하지 않습니다." &&
     limitation !== "자동 승인에 필요한 전체 필드 인용이 누락되었습니다.");
@@ -827,6 +855,52 @@ export const revalidateDerivedScenarioProduct = (
     status: evaluated.valid ? "auto-approved" : "needs-review",
     fieldCitations,
     validation: evaluated.validation,
+    limitations: [...new Set(limitations)],
+  });
+};
+
+export const resolveReviewedDerivedScenarioProduct = (
+  envelopeInput: unknown,
+  artifactInput: unknown,
+  reviewInput: unknown,
+): DerivedScenarioProductEnvelope | null => {
+  const context = verifiedNeedsReviewContext(envelopeInput, artifactInput);
+  const reviewResult = ReviewedScenarioProductInputSchema.safeParse(reviewInput);
+  if (!context || !reviewResult.success) return null;
+  const { envelope, artifact } = context;
+  const review = reviewResult.data;
+  if (
+    review.categoryId !== envelope.categoryId || review.productId !== envelope.productId ||
+    review.scenarioId !== envelope.scenarioId || review.documentId !== envelope.documentId ||
+    review.sourceHash !== envelope.sourceHash || review.manifestHash !== envelope.manifestHash ||
+    envelope.manifest?.sourceKind !== "scenario-input" ||
+    envelope.manifest.documentType !== "product-description"
+  ) return null;
+
+  const fieldCitations = appendixCitationsForReviewedProduct(review.product, artifact);
+  const evaluated = validateDerivedCandidate(review.product, fieldCitations, artifact, envelope.manifest);
+  const limitations = envelope.limitations.filter((limitation) =>
+    limitation !== "필드 인용이 선택된 PDF 텍스트와 일치하지 않습니다." &&
+    limitation !== "자동 승인에 필요한 전체 필드 인용이 누락되었습니다.");
+  if (!evaluated.validation.exactQuotes) limitations.push("필드 인용이 선택된 PDF 텍스트와 일치하지 않습니다.");
+  if (!evaluated.validation.citationsComplete) limitations.push("자동 승인에 필요한 전체 필드 인용이 누락되었습니다.");
+  return DerivedScenarioProductEnvelopeSchema.parse({
+    ...envelope,
+    status: evaluated.valid ? "auto-approved" : "needs-review",
+    product: review.product,
+    productHash: evaluated.productHash,
+    document: evaluated.document,
+    chunks: evaluated.chunks,
+    chunkHashes: evaluated.chunkHashes,
+    searchRecord: searchRecordFor(review.product, envelope.manifest),
+    fieldCitations,
+    validation: evaluated.validation,
+    reviewResolution: {
+      method: "explicit-reviewed-product-v1",
+      reviewInputHash: sha256(JSON.stringify(review)),
+      originalProductHash: envelope.productHash,
+      reviewedAt: review.reviewedAt,
+    },
     limitations: [...new Set(limitations)],
   });
 };

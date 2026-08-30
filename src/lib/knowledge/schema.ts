@@ -925,6 +925,13 @@ export const DerivedProductValidationSchema = z.strictObject({
   failures: z.array(z.string().trim().min(1).max(240)).max(100),
 });
 
+export const DerivedReviewResolutionSchema = z.strictObject({
+  method: z.literal("explicit-reviewed-product-v1"),
+  reviewInputHash: Hash,
+  originalProductHash: Hash,
+  reviewedAt: z.string().datetime({ offset: true }),
+});
+
 export const DerivedScenarioProductEnvelopeSchema = z.strictObject({
   schemaVersion: z.literal(1),
   artifactVersion: z.literal("derived-real-estate-product-v1"),
@@ -949,6 +956,7 @@ export const DerivedScenarioProductEnvelopeSchema = z.strictObject({
   chunks: z.array(CommonChunkRecordSchema).max(250),
   fieldCitations: z.array(DerivedFieldCitationSchema).max(500),
   validation: DerivedProductValidationSchema,
+  reviewResolution: DerivedReviewResolutionSchema.optional(),
   limitations: Limitations,
 }).superRefine((value, context) => {
   if (value.status !== "auto-approved") return;
@@ -973,6 +981,35 @@ export const DerivedScenarioProductEnvelopeSchema = z.strictObject({
   }
   if (Object.entries(value.validation).some(([key, result]) => key !== "failures" && result !== true) || value.validation.failures.length > 0) {
     context.addIssue({ code: "custom", path: ["validation"], message: "auto-approved 상품은 모든 검증을 통과해야 합니다." });
+  }
+});
+
+export const ReviewedScenarioProductInputSchema = z.strictObject({
+  schemaVersion: z.literal(1),
+  kind: z.literal("reviewed-scenario-product-v1"),
+  categoryId: z.literal("real-estate"),
+  productId: Id,
+  scenarioId: Id,
+  documentId: Id,
+  sourceHash: Hash,
+  manifestHash: Hash,
+  reviewedAt: z.string().datetime({ offset: true }),
+  reviewer: z.string().trim().min(1).max(120),
+  resolutionNote: z.string().trim().min(1).max(500),
+  product: ScenarioOfferSchema,
+}).superRefine((value, context) => {
+  if (
+    value.product.categoryId !== value.categoryId ||
+    value.product.offerId !== value.productId ||
+    value.product.scenarioId !== value.scenarioId ||
+    value.product.status !== "approved" ||
+    !value.product.approvedForPublic
+  ) {
+    context.addIssue({
+      code: "custom",
+      path: ["product"],
+      message: "검토 상품의 scope가 검토 입력과 일치해야 합니다.",
+    });
   }
 });
 
@@ -1058,6 +1095,7 @@ export type CommonKnowledgeIndex = z.infer<typeof CommonKnowledgeIndexSchema>;
 export type ParsedDocumentArtifact = z.infer<typeof ParsedDocumentArtifactSchema>;
 export type DerivedFieldCitation = z.infer<typeof DerivedFieldCitationSchema>;
 export type DerivedScenarioProductEnvelope = z.infer<typeof DerivedScenarioProductEnvelopeSchema>;
+export type ReviewedScenarioProductInput = z.infer<typeof ReviewedScenarioProductInputSchema>;
 export type CommonKnowledgeQuery = z.infer<typeof CommonKnowledgeQuerySchema>;
 export type KnowledgeRequest = z.infer<typeof KnowledgeRequestSchema>;
 export type CommonKnowledgeRequest = z.infer<typeof CommonKnowledgeRequestSchema>;

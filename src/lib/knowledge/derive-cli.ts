@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { lstat, mkdir, readFile, readdir, rename, unlink, writeFile } from "node:fs/promises";
+import { lstat, mkdir, readFile, readdir, realpath, rename, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
@@ -11,6 +11,7 @@ import {
   deriveRealEstateScenarioProduct,
   isValidAutoApprovedEnvelope,
   revalidateDerivedScenarioProduct,
+  resolveReviewedDerivedScenarioProduct,
   type RealEstateProductExtractionClient,
 } from "./derived";
 import { resolveWithin } from "./loader";
@@ -32,6 +33,8 @@ export interface DeriveCommandOptions {
   readonly allRealEstate?: boolean;
   readonly checkOnly?: boolean;
   readonly revalidateOnly?: boolean;
+  /** data/knowledge/review 기준 상대경로. 지정 시 provider를 호출하지 않습니다. */
+  readonly reviewedProductPath?: string;
   readonly client?: RealEstateProductExtractionClient;
   readonly parsePdf?: (bytes: Uint8Array) => Promise<ParsedPdf>;
   readonly ocrEnabled?: boolean;
@@ -53,6 +56,34 @@ const readJsonFile = async (file: string): Promise<unknown> => {
     throw new Error("파생 JSON 파일이 안전하지 않습니다.");
   }
   return JSON.parse(await readFile(file, "utf8"));
+};
+
+const readReviewedProduct = async (dataRoot: string, relativePath: string): Promise<unknown> => {
+  const normalizedPath = relativePath.replaceAll("\\", "/");
+  if (!normalizedPath.endsWith(".json")) throw new Error("검토 입력은 JSON 파일이어야 합니다.");
+  const knowledgeRoot = resolveWithin(dataRoot, "knowledge");
+  const reviewRoot = resolveWithin(knowledgeRoot, "review");
+  for (const directory of [knowledgeRoot, reviewRoot]) {
+    const stat = await lstat(directory);
+    if (!stat.isDirectory() || stat.isSymbolicLink()) throw new Error("검토 입력 루트가 안전하지 않습니다.");
+  }
+  const target = resolveWithin(reviewRoot, normalizedPath);
+  let cursor = reviewRoot;
+  for (const part of normalizedPath.split("/")) {
+    if (!part) throw new Error("검토 입력 경로가 안전하지 않습니다.");
+    cursor = resolveWithin(cursor, part);
+    const stat = await lstat(cursor);
+    if (stat.isSymbolicLink()) throw new Error("검토 입력 경로에 심볼릭 링크를 사용할 수 없습니다.");
+  }
+  const reviewRealPath = await realpath(reviewRoot);
+  const targetRealPath = await realpath(target);
+  const relative = path.relative(reviewRealPath, targetRealPath);
+  if (relative === ".." || relative.startsWith(`..${path.sep}`)) throw new Error("검토 입력이 review 루트를 벗어났습니다.");
+  const stat = await lstat(targetRealPath);
+  if (!stat.isFile() || stat.isSymbolicLink() || stat.size > 4 * 1024 * 1024) {
+    throw new Error("검토 입력 파일이 안전한 regular JSON 또는 크기 상한을 충족하지 않습니다.");
+  }
+  return JSON.parse(await readFile(targetRealPath, "utf8"));
 };
 
 const atomicWrite = async (directory: string, name: string, value: unknown): Promise<void> => {
@@ -186,6 +217,13 @@ const deriveOne = async (
   const productFile = resolveWithin(derivedRoot, "product.json");
   const cached = await readJsonFile(productFile).catch(() => null);
   if (isValidAutoApprovedEnvelope(cached, artifact.data)) return { reused: true, reviewRequired: false };
+  if (options.reviewedProductPath) {
+    const reviewed = await readReviewedProduct(dataRoot, options.reviewedProductPath);
+    const resolved = resolveReviewedDerivedScenarioProduct(cached, artifact.data, reviewed);
+    if (!resolved) return { reused: false, reviewRequired: true };
+    if (JSON.stringify(resolved) !== JSON.stringify(cached)) await atomicWrite(derivedRoot, "product.json", resolved);
+    return { reused: true, reviewRequired: resolved.status !== "auto-approved" };
+  }
   if (options.revalidateOnly) {
     const parsedCached = DerivedScenarioProductEnvelopeSchema.safeParse(cached);
     const revalidated = parsedCached.success
@@ -218,6 +256,9 @@ export const runKnowledgeDerive = async (options: DeriveCommandOptions): Promise
   if (options.checkOnly) return verifyCommittedDerived(dataRoot);
   const inputsRoot = resolveWithin(dataRoot, "knowledge/inputs");
   const paths = await manifestPaths(inputsRoot, options);
+  if (options.reviewedProductPath && paths.length !== 1) {
+    throw new Error("검토 입력은 단일 --manifest 실행에서만 사용할 수 있습니다.");
+  }
   let reused = 0;
   let reviewRequired = 0;
   for (const manifestPath of paths) {
@@ -230,11 +271,13 @@ export const runKnowledgeDerive = async (options: DeriveCommandOptions): Promise
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const manifest = process.argv.find((value) => value.startsWith("--manifest="))?.slice("--manifest=".length);
+  const reviewedProduct = process.argv.find((value) => value.startsWith("--reviewed-product="))?.slice("--reviewed-product=".length);
   runKnowledgeDerive({
     manifestPath: manifest,
     allRealEstate: process.argv.includes("--all-real-estate"),
     checkOnly: process.argv.includes("--check"),
     revalidateOnly: process.argv.includes("--revalidate-only"),
+    reviewedProductPath: reviewedProduct,
   }).then((result) => {
     console.info(`knowledge:derive derived=${result.derived} reused=${result.reused} review=${result.reviewRequired}`);
     process.exitCode = result.code;
