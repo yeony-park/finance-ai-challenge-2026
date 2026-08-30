@@ -54,6 +54,7 @@ GitHub 필수 승인 수는 현재 정책대로 `0`을 유지한다. 저장소 �
 - 워크플로는 `integration` 대상 pull request에서만 실행한다.
 - 최소 권한은 `contents: read`로 제한한다.
 - `pull_request_target`을 사용하지 않고 checkout 자격증명을 유지하지 않는다.
+- 외부 GitHub Actions는 검증한 릴리스의 전체 커밋 SHA로 고정한다.
 - 같은 PR의 이전 실행은 취소하고 최신 커밋만 검증한다.
 - 체크 이름 `Verify`를 안정적으로 유지하고, 체크가 없거나 성공하기 전에는 병합하지 않는다.
 - 에이전트는 사람의 승인을 만들어내거나 대신 제출하지 않으며, 명시적 병합 동의와 근거를 PR에 기록한다.
@@ -85,4 +86,4 @@ GitHub 필수 승인 수는 현재 정책대로 `0`을 유지한다. 저장소 �
 
 ## Amendments
 
-- None.
+- 2026-08-31: GitHub-hosted runner의 Node.js 20 action 런타임 중단 경고를 해소하기 위해 `actions/checkout` v7.0.1과 `actions/setup-node` v7.0.0을 전체 커밋 SHA로 고정했다.
