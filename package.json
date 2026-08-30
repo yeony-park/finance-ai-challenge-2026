@@ -18,6 +18,7 @@
     "reference:collect": "tsx --env-file-if-exists=.env src/lib/verify/reference/auction-collect-cli.ts",
     "reference:rtms": "tsx --env-file-if-exists=.env src/lib/verify/reference/rtms-collect-cli.ts",
     "reference:building": "tsx --env-file-if-exists=.env src/lib/verify/reference/building-register-collect-cli.ts",
+    "reference:mafra-asf": "node scripts/collect-mafra-asf.mjs",
     "reference:mafra-fmd": "node scripts/collect-mafra-fmd.mjs",
     "reference:mafra-disease-api": "node --env-file=.env scripts/collect-mafra-disease-api.mjs",
     "reference:korea-outline": "node scripts/collect-korea-outline.mjs",
