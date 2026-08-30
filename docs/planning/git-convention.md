@@ -52,8 +52,9 @@ git switch -c work/<이름>/<type>/<다음-작업>
 | 분류 | 브랜치 (최종 커밋일) | 처리 상태 |
 |---|---|---|
 | 삭제 완료 | `viowlet` (8/15, 머지 완료·소유자 승인) | ✅ 8/31 삭제 |
+| 삭제 완료 | `feat/initial-sto-ui` (8/10, 아카이브 태그 보존·소유자 승인) | ✅ 8/31 삭제 — `archive/feat/initial-sto-ui`로 복구 가능 |
 | 유지 — 최근 활동 | `feat/integration-user-flow`(8/30), `feat/integration-pig-review`(8/26), `hyonsho/jeomjeom-hybrid-integration`(8/23), `hyunsuk`(8/23) | 소유자 판단에 위임 |
-| 아카이브 태그 후 보류 | `Su`(8/15), `docs/pig-sto-research`(8/15), `feat/initial-sto-ui`(8/10), `yeonjeong`(8/8) | ✅ `archive/<이름>` 태그 푸시 완료 — 소유자가 자산 회수 확인해주면 브랜치 삭제 |
+| 아카이브 태그 후 보류 | `Su`(8/15), `docs/pig-sto-research`(8/15), `yeonjeong`(8/8) | ✅ `archive/<이름>` 태그 푸시 완료 — 소유자가 자산 회수 확인해주면 브랜치 삭제 |
 | 동결 | `main` (8/23, integration에 포함됨) | 제출 후 승격 시까지 유지 |
 | 로컬 워크트리 | `wt-*` (detached 4 포함) | 이식 완료분 `git worktree remove` — 각자 로컬 정리 |
 
@@ -61,4 +62,5 @@ git switch -c work/<이름>/<type>/<다음-작업>
 
 | 날짜 | 내용 |
 | --- | --- |
+| 2026-08-31 | `feat/initial-sto-ui` 소유자 확인 후 브랜치 삭제, 아카이브 태그 유지 |
 | 2026-08-31 | 최초 제안 — 오멍가멍 컨벤션 경량화 이식, 브랜치 정리 계획 포함 |
