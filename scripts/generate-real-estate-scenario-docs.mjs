@@ -38,14 +38,22 @@ const labelSegment = (segment) => ({
 }[segment] ?? (Number.isInteger(Number(segment)) ? `항목 ${Number(segment) + 1}` : segment));
 
 const humanLabel = (fieldPath) => fieldPath.split(".").map(labelSegment).join(" · ");
-const scalarUnit = (fieldPath) => ({
-  "asset.landAreaM2": "㎡",
-  "offering.targetHoldingMonths": "개월",
-  "offering.financing.annualInterestRatePercent": "%",
-  "offering.exitReview.maximumExtensionMonths": "개월",
-  "offering.leaseAssumptions.vacancyRatePercent": "%",
-}[fieldPath] ?? "");
-const displayValue = (fieldPath, value) => value === null ? "미확인 (raw null)" : typeof value === "boolean" ? `${value ? "예" : "아니오"} (raw ${value})` : `${String(value)}${scalarUnit(fieldPath)}`;
+const scalarUnit = (offer, fieldPath, value) => {
+  if (typeof value !== "number") return "";
+  if (fieldPath === "schemaVersion") return "버전";
+  if (fieldPath.endsWith("Won")) return "원";
+  if (fieldPath.endsWith("Percent")) return "%";
+  if (fieldPath.endsWith("Months")) return "개월";
+  if (fieldPath.endsWith("M2")) return "㎡";
+  if (fieldPath === "offering.unitCount") return "개";
+  const matched = fieldPath.match(/^(asset\.facts|claimedAssetFacts)\.(\d+)\.value$/);
+  if (matched) {
+    const item = matched[1] === "asset.facts" ? offer.asset.facts[Number(matched[2])] : offer.claimedAssetFacts[Number(matched[2])];
+    if (item?.unit === "m2") return "㎡";
+  }
+  throw new Error(`${offer.scenarioId}: 숫자 scalar 단위 매핑이 없습니다 (${fieldPath}).`);
+};
+const displayValue = (offer, fieldPath, value) => value === null ? "미확인 (raw null)" : typeof value === "boolean" ? `${value ? "예" : "아니오"} (raw ${value})` : `${String(value)}${scalarUnit(offer, fieldPath, value)}`;
 const rawValue = (value) => value === null ? "null" : typeof value === "boolean" ? String(value) : String(value);
 
 const section = (heading, text) => `<section><h2>${escapeHtml(heading)}</h2><p>${escapeHtml(text)}</p></section>`;
@@ -80,7 +88,7 @@ const overview = (offer) => {
 
 const appendix = (offer) => {
   const rows = scalarEntries(offer).map(({ path: fieldPath, value }) =>
-    `<li><strong>${escapeHtml(humanLabel(fieldPath))}</strong> <code>[${escapeHtml(fieldPath)}]</code>: ${escapeHtml(displayValue(fieldPath, value))} <span class="raw">raw=${escapeHtml(rawValue(value))}</span></li>`).join("");
+    `<li><strong>${escapeHtml(humanLabel(fieldPath))}</strong> <code>[${escapeHtml(fieldPath)}]</code>: ${escapeHtml(displayValue(offer, fieldPath, value))} <span class="raw">raw=${escapeHtml(rawValue(value))}</span></li>`).join("");
   return `<section class="appendix"><h2>데이터 정의·출처 부록</h2><p>아래는 문서에서 구조화할 수 있도록 표시한 사람 친화적 라벨, 필드 경로와 원시값입니다. 관찰 사실과 scenario-input을 혼동하지 마세요.</p><ul>${rows}</ul></section>`;
 };
 
@@ -98,7 +106,7 @@ const assertPdfCoverage = (offer, parsed) => {
   }
   const text = canonical(parsed.pages.map((page) => page.canonicalText).join("\n"));
   for (const { path: fieldPath, value } of scalarEntries(offer)) {
-    const token = canonical(displayValue(fieldPath, value));
+    const token = canonical(displayValue(offer, fieldPath, value));
     if (!text.includes(token) || !text.includes(canonical(fieldPath))) {
       throw new Error(`${offer.scenarioId}: PDF canonical text에 ${fieldPath} 값이 없습니다.`);
     }
