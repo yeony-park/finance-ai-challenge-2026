@@ -102,3 +102,41 @@ describe("db:export 공개 인덱스 v2 (R-STO-03 마스킹 경유)", () => {
     expect(reDetail).not.toHaveProperty("hasImage");
   });
 });
+
+const cattleOffering: Offering = {
+  offerSlug: "livestock-7",
+  categoryId: "cattle",
+  provenance: "manual_verified",
+  titlePublic: "한우 7호",
+  amountWon: null,
+  opensOn: "2026-02-28",
+  closesOn: "2026-03-30",
+  detail: {
+    opensAt: "2026-02-28T10:00:00+09:00",
+    closesAt: "2026-03-30T16:00:00+09:00",
+  },
+  sourceMeta: {
+    sourceUrl: "",
+    license: "green",
+    method: "manual_verified",
+    retrievedAt: "",
+    sha256: "def",
+  },
+};
+
+describe("db:export cattle 분 단위 청약 시각 (A안 · detail 파생)", () => {
+  test("detail.opensAt/closesAt가 있으면 precision=minute로 파생하고 detail에 통과시킨다", () => {
+    const publicOffering = toPublicOffering(cattleOffering);
+    expect(publicOffering.subscription.precision).toBe("minute");
+    expect(publicOffering.detail.opensAt).toBe("2026-02-28T10:00:00+09:00");
+    expect(publicOffering.detail.closesAt).toBe("2026-03-30T16:00:00+09:00");
+  });
+
+  test("detail에 opensAt이 없으면 precision=day이고 detail에 opensAt 키가 없다", () => {
+    const dayOffering: Offering = { ...cattleOffering, detail: {} };
+    const publicOffering = toPublicOffering(dayOffering);
+    expect(publicOffering.subscription.precision).toBe("day");
+    expect(publicOffering.detail).not.toHaveProperty("opensAt");
+    expect(publicOffering.detail).not.toHaveProperty("closesAt");
+  });
+});

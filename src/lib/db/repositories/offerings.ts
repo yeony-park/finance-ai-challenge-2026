@@ -43,6 +43,8 @@ const rawOfferSchema = z.object({
       amountWon: z.number().int().nullable().optional(),
       opensOn: z.string().optional(),
       closesOn: z.string().optional(),
+      opensAt: z.string().optional(),
+      closesAt: z.string().optional(),
       unitCount: z.number().optional(),
       unitPriceWon: z.number().optional(),
     })
@@ -99,6 +101,10 @@ const mapRawOffer = (
       ...(raw.offer?.unitPriceWon === undefined
         ? {}
         : { unitPriceWon: raw.offer.unitPriceWon }),
+      ...(raw.offer?.opensAt === undefined ? {} : { opensAt: raw.offer.opensAt }),
+      ...(raw.offer?.closesAt === undefined
+        ? {}
+        : { closesAt: raw.offer.closesAt }),
       ...(raw.asset?.buildingUse === undefined
         ? {}
         : { buildingUse: raw.asset.buildingUse }),

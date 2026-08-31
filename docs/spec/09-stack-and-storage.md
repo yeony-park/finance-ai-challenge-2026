@@ -178,7 +178,7 @@ npm run db:export      # DB → data/public/·data/reference/ 화면용 산출�
 }
 ```
 
-- `detail` 화이트리스트: art=`{artistName, platformName, hasImage, note?}`, real-estate=`{buildingUse, note?}`, 그 외=`{note?}`. 카테고리 확장 시 `cardDetail`에 화이트리스트 추가.
+- `detail` 화이트리스트: art=`{artistName, platformName, hasImage, note?}`, real-estate=`{buildingUse, note?}`, 그 외=`{note?}`. 카테고리 확장 시 `cardDetail`에 화이트리스트 추가. 분 단위 청약 시각을 갖는 cattle 공모(livestock 7~9)는 `detail.opensAt`·`detail.closesAt`(ISO 8601, KST offset)를 추가로 통과시키며 그 존재로 `subscription.precision`을 `minute`/`day`로 파생한다(A안 — schema.ts date 컬럼 불변, 마이그레이션 불필요).
 - 청약 `phase`(`upcoming|open|closed`)는 인덱스에 굽지 않는다 — `subscription.opensOn/closesOn`에서 클라이언트가 파생(내보내기 시각 고정 방지).
 - **재생성 절차(오너)**: 합성 생성기(`seed/synthetic.ts`)의 detail 확장은 `db:seed` 재실행으로 DB에 반영된 뒤 `db:export`로 산출물에 반영된다 — schema.ts(DB 컬럼)는 불변(카테고리 필드는 `detail` jsonb)이라 신규 마이그레이션 불필요.
 
