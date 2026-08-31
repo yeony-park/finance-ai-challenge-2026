@@ -2,7 +2,7 @@ import { zipSync } from "fflate";
 import { describe, expect, it } from "vitest";
 
 import { parseFilingFacts } from "../report/filing-facts";
-import { DartFilingRegistrySchema, requireExactRcpNo, sha256, type DartFilingRegistry } from "../dart/filing-registry";
+import { DartFilingRegistrySchema, isExactDartPublicUrl, requireExactRcpNo, sha256, type DartFilingRegistry } from "../dart/filing-registry";
 import {
   buildCattleFilingDerivedArtifact,
   calculateCattleFilingArtifactHash,
@@ -69,6 +69,24 @@ const report = new TextEncoder().encode(JSON.stringify({
 }));
 
 describe("cattle filing derived artifact", () => {
+  it("DART exact URL은 credential/hash/추가 query 없이 14자리 rcpNo 하나만 허용한다", () => {
+    const rcpNo = "20260814003572";
+    expect(isExactDartPublicUrl(`https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${rcpNo}`, rcpNo)).toBe(true);
+    for (const url of [
+      `https://user:password@dart.fss.or.kr/dsaf001/main.do?rcpNo=${rcpNo}`,
+      `https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${rcpNo}#section`,
+      `https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${rcpNo}&page=1`,
+      `https://dart.fss.or.kr/dsaf001/main.do?rcpno=${rcpNo}`,
+      `https://dart.fss.or.kr/dsaf001/main.do?rcpNo=123`,
+    ]) {
+      expect(isExactDartPublicUrl(url, rcpNo), url).toBe(false);
+      expect(DartFilingRegistrySchema.safeParse({
+        ...registry(),
+        source: { ...registry().source, exactPublicUrl: url },
+      }).success, url).toBe(false);
+    }
+  });
+
   it("exact ZIP entry와 hash가 맞을 때만 XML을 읽는다", () => {
     const input = registry();
     expect(readRegisteredXmlFromZip(zipSync({ [input.entry.name]: xmlBytes }), input)).toBe(xml);

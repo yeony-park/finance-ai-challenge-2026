@@ -5,6 +5,7 @@ import {
   loadApprovedScenarios,
   routableLegacyScenarios,
 } from "./loader";
+import { loadApprovedCattleFilingArtifacts } from "./cattle-filing-artifact";
 import {
   isGenericKnowledgeQuery,
   listPublishedRepositoryOfferings,
@@ -107,6 +108,14 @@ const PHASE_ALIASES: Readonly<Record<GlobalSearchResult["phase"], string>> = {
 const SCENARIO_TOPICS =
   "최소 투자 공모 가격 배당 분배 수수료 비용 운용기간 보유 매각 회수 연면적 건물정보 자산검토 수익비용 금융 회수검토 운영그룹 과거이력";
 
+const CATTLE_FILING_SEARCH_TERMS: Readonly<Record<string, string>> = {
+  "issuer-allocation": "공모가격 공모가 배정",
+  "operation-period": "사업기간 운용기간",
+  "investor-fees": "수수료 비용",
+  "protection-fund": "보호기금 투자자보호",
+  "pricing-basis": "공모가격 가격 산정 수요예측",
+};
+
 const CATEGORY_ALIASES: Readonly<Record<GlobalSearchResult["categoryId"], readonly string[]>> = {
   cattle: ["cattle", "한우", "소", "가축"],
   pig: ["pig", "돼지", "돈육"],
@@ -192,11 +201,18 @@ export const searchOffers = async (
     item.scenarioId === scenarioId
   )?.score ?? 0;
   const now = new Date();
-  const [population, commonProducts, resolvedRepositories] = await Promise.all([
+  const [population, commonProducts, cattleFilings, resolvedRepositories] = await Promise.all([
     loadApprovedScenarios(dataRoot),
     loadApprovedCommonProducts(dataRoot),
+    loadApprovedCattleFilingArtifacts(dataRoot),
     repositories ?? resolveRetrievalRepositories({ dataDir: dataRoot }),
   ]);
+  const cattleFilingByProduct = new Map(cattleFilings.map((artifact) => [
+    artifact.registry.offerId,
+    artifact.sections.map((section) =>
+      `${section.title} ${CATTLE_FILING_SEARCH_TERMS[section.factId] ?? ""}`
+    ).join(" "),
+  ]));
   const repositoryOfferings = await listPublishedRepositoryOfferings(
     resolvedRepositories.offerings,
     query.categoryId ?? intent.categoryId,
@@ -213,6 +229,7 @@ export const searchOffers = async (
       phase: `${phase} ${PHASE_ALIASES[phase]}`,
       repositoryTitle: repositoryById.get(offer.id)?.titlePublic ?? "",
       repositoryAmount: repositoryById.get(offer.id)?.amountWon?.toString() ?? "",
+      filing: cattleFilingByProduct.get(offer.id) ?? "",
     });
     const semantic = semanticScore("cattle", offer.id, "observed", "published-offer");
     return {

@@ -1,6 +1,12 @@
 import { resolveOfferingsRepository } from "@/lib/db/repositories/offerings";
 import { resolveProductKnowledgeRepository } from "@/lib/db/repositories/product-knowledge";
-import { answerFromCommonEvidence, answerFromEvidence, answerFromOfferingKnowledge } from "@/lib/knowledge/evidence";
+import { OFFERS } from "@/components/site/offers";
+import {
+  answerFromCommonEvidence,
+  answerFromEvidence,
+  answerFromOfferingKnowledge,
+  answerFromProductKnowledge,
+} from "@/lib/knowledge/evidence";
 import { invalidRequest, internalError, parseEvidenceRequest } from "@/lib/knowledge/http";
 import {
   findLegacyScenarioScope,
@@ -13,6 +19,10 @@ import {
   authorizeKnowledgeAiHttpRequest,
   retrieveExactProductEvidence,
 } from "@/lib/knowledge/search-orchestration";
+import {
+  loadApprovedCattleFilingArtifact,
+  matchesCattleFilingKnowledge,
+} from "@/lib/knowledge/cattle-filing-artifact";
 
 export const runtime = "nodejs";
 
@@ -52,13 +62,24 @@ export const POST = async (request: Request): Promise<Response> => {
         return invalidRequest();
       }
       if (query.namespace === "published-offer" || publishedScope?.status === "found") {
-        if (publishedScope?.status !== "found") return invalidRequest();
         const productKnowledgeRepository = await resolveProductKnowledgeRepository();
         const productKnowledge = await productKnowledgeRepository.findExact({
           categoryId: query.categoryId,
           productId: query.productId,
           dataNature: "observed",
         });
+        const registryProduct = OFFERS.find((offer) =>
+          offer.id === query.productId &&
+          (offer.assetKind === "real-estate" ? "real-estate" : "cattle") === query.categoryId
+        );
+        const artifact = publishedScope?.status === "found"
+          ? null
+          : await loadApprovedCattleFilingArtifact(query.categoryId, query.productId);
+        const artifactBacked = publishedScope?.status !== "found" &&
+          query.namespace === "published-offer" &&
+          registryProduct !== undefined &&
+          matchesCattleFilingKnowledge(artifact, productKnowledge);
+        if (publishedScope?.status !== "found" && !artifactBacked) return invalidRequest();
         const exactRetrieval = await retrieveExactProductEvidence({
           scope: {
             categoryId: query.categoryId,
@@ -73,6 +94,13 @@ export const POST = async (request: Request): Promise<Response> => {
           runtimeAiAllowed: access.allowed,
           ...(!access.allowed ? { runtimeReason: access.reason } : {}),
         });
+        if (artifactBacked && artifact && exactRetrieval.evidence.some((item) =>
+          item.documentId !== artifact.document.documentId ||
+          item.sourceHash !== artifact.sourceHash ||
+          !artifact.chunks.some((chunk) =>
+            chunk.chunkId === item.chunkId && chunk.chunkHash === item.chunkHash
+          )
+        )) return invalidRequest();
         return Response.json({
           categoryId: query.categoryId,
           productId: query.productId,
@@ -89,16 +117,31 @@ export const POST = async (request: Request): Promise<Response> => {
             ...(exactRetrieval.retrieval.reason ? { reason: exactRetrieval.retrieval.reason } : {}),
             planner: exactRetrieval.retrieval.planner,
           },
-          ...(await answerFromOfferingKnowledge(
-            publishedScope.offering,
-            query.query,
-            productKnowledge,
-            {
-              limit: query.limit,
-              evidence: exactRetrieval.evidence,
-              ...(disabledLiveAnswer ? { liveAnswer: disabledLiveAnswer } : {}),
-            },
-          )),
+          ...(publishedScope?.status === "found"
+            ? await answerFromOfferingKnowledge(
+                publishedScope.offering,
+                query.query,
+                productKnowledge,
+                {
+                  limit: query.limit,
+                  evidence: exactRetrieval.evidence,
+                  ...(disabledLiveAnswer ? { liveAnswer: disabledLiveAnswer } : {}),
+                },
+              )
+            : await answerFromProductKnowledge(
+                {
+                  categoryId: query.categoryId,
+                  productId: query.productId,
+                  dataNature: "observed",
+                },
+                query.query,
+                productKnowledge,
+                {
+                  limit: query.limit,
+                  evidence: exactRetrieval.evidence,
+                  ...(disabledLiveAnswer ? { liveAnswer: disabledLiveAnswer } : {}),
+                },
+              )),
         });
       }
       if (query.namespace === "legacy-scenario" && !scenario) return invalidRequest();

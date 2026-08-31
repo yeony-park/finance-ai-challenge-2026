@@ -5,6 +5,7 @@ import {
   isSafeHttpsPublicSourceUrl,
   isSafeScenarioDocumentPath,
 } from "@/lib/knowledge/schema";
+import { isExactDartPublicUrl } from "@/lib/verify/dart/filing-registry";
 import { getRuntimeDb } from "../client";
 import type {
   ProductKnowledgeChunk,
@@ -27,23 +28,31 @@ const rowSchema = z.strictObject({
   as_of: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   source_hash: z.string().regex(/^[a-f0-9]{64}$/),
   document_status: z.enum(["ready", "partial"]),
-  limitations: z.array(z.string()),
+  document_approved_for_public: z.literal(true),
+  document_limitations: z.array(z.string()),
   page: z.number().int().positive(),
   text: z.string().min(1),
   canonical_text: z.string().min(1),
   chunk_hash: z.string().regex(/^[a-f0-9]{64}$/),
   chunk_status: z.literal("ready"),
+  chunk_approved_for_public: z.literal(true),
+  chunk_limitations: z.array(z.string()),
   approved_for_external_ai: z.boolean(),
   pii_review_status: z.enum(["passed", "not-reviewed"]),
 }).superRefine((row, context) => {
   const safeUrl = row.data_nature === "observed"
     ? isSafeHttpsPublicSourceUrl(row.source_url)
     : isSafeHttpsPublicSourceUrl(row.source_url) || isSafeScenarioDocumentPath(row.source_url);
-  if (!safeUrl) {
+  const rcpNo = row.document_id.match(/dart-(\d{14})$/)?.[1];
+  const exactDartUrl = row.category_id === "cattle" &&
+    row.data_nature === "observed" &&
+    rcpNo !== undefined &&
+    isExactDartPublicUrl(row.source_url, rcpNo);
+  if (!safeUrl && !exactDartUrl) {
     context.addIssue({ code: "custom", path: ["source_url"], message: "공개할 수 없는 출처 URL입니다." });
   } else if (row.source_url.startsWith("https://")) {
     const url = new URL(row.source_url);
-    if (url.search || url.hash) {
+    if ((url.search || url.hash) && !exactDartUrl) {
       context.addIssue({ code: "custom", path: ["source_url"], message: "공개 인용 URL에는 query/hash를 사용할 수 없습니다." });
     }
   }
@@ -73,12 +82,15 @@ export const productKnowledgeSql = (scope: ProductKnowledgeScope): SQL => sql`
          d.as_of::text AS as_of,
          d.source_hash,
          d.status AS document_status,
-         d.limitations,
+         d.approved_for_public AS document_approved_for_public,
+         d.limitations AS document_limitations,
          c.page,
          c.content AS text,
          c.canonical_text,
          c.chunk_hash,
          c.status AS chunk_status,
+         c.approved_for_public AS chunk_approved_for_public,
+         c.limitations AS chunk_limitations,
          d.approved_for_external_ai,
          d.pii_review_status
   FROM rag_chunks c
@@ -125,6 +137,13 @@ export const createDbProductKnowledgeRepository = (
     );
     const documents = new Map<string, ProductKnowledgeDocument>();
     const chunks: ProductKnowledgeChunk[] = rows.map((row) => {
+      const cattleRcpNo = row.category_id === "cattle" && row.data_nature === "observed"
+        ? row.document_id.match(/^cattle-[a-z0-9-]+-dart-(\d{14})$/)?.[1]
+        : undefined;
+      const isCattleFiling = cattleRcpNo !== undefined && (
+        row.source_url === "https://dart.fss.or.kr/dsaf001/main.do" ||
+        isExactDartPublicUrl(row.source_url, cattleRcpNo)
+      );
       const base: ProductKnowledgeDocument = {
         categoryId: row.category_id,
         productId: row.product_id,
@@ -134,13 +153,16 @@ export const createDbProductKnowledgeRepository = (
         documentId: row.document_id,
         title: row.title,
         sourceKind: row.source_kind,
-        sourceUrl: row.source_url,
+        sourceUrl: isCattleFiling
+          ? `https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${cattleRcpNo}`
+          : row.source_url,
         asOf: row.as_of,
         sourceHash: row.source_hash,
         status: row.document_status,
-        approvedForExternalAi: row.approved_for_external_ai,
+        approvedForPublic: row.document_approved_for_public && row.chunk_approved_for_public,
+        approvedForExternalAi: isCattleFiling ? false : row.approved_for_external_ai,
         piiReviewStatus: row.pii_review_status,
-        limitations: row.limitations,
+        limitations: row.document_limitations,
       };
       documents.set(base.documentId, base);
       return {
@@ -151,6 +173,7 @@ export const createDbProductKnowledgeRepository = (
         text: row.text,
         canonicalText: row.canonical_text,
         chunkHash: row.chunk_hash,
+        limitations: row.chunk_limitations,
       };
     });
     return { documents: [...documents.values()], chunks };

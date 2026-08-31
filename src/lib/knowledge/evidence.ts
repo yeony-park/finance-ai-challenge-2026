@@ -1,6 +1,10 @@
 import { createHash } from "node:crypto";
 import type { Offering } from "@/lib/db/repositories/offerings";
-import type { ProductKnowledgeResult } from "@/lib/db/repositories/types";
+import type {
+  ProductKnowledgeChunk,
+  ProductKnowledgeEvidenceGroup,
+  ProductKnowledgeResult,
+} from "@/lib/db/repositories/types";
 import { filterOutput } from "@/lib/spine/guardrail/output-filter";
 import {
   generateLiveEvidenceAnswer,
@@ -81,6 +85,7 @@ export interface EvidenceAnswer {
   readonly structuredSources?: readonly StructuredSource[];
   readonly structuredClaims?: readonly OfferingStructuredClaim[];
   readonly conflicts?: readonly EvidenceConflict[];
+  readonly evidenceGroups?: readonly ProductKnowledgeEvidenceGroup[];
 }
 
 export interface EvidenceConflict {
@@ -283,6 +288,10 @@ export const answerFromOfferingKnowledge = async (
   } = {},
 ): Promise<EvidenceAnswer> => {
   const structured = answerFromOfferingFacts(offering, query);
+  const knowledgeLimitations = [...new Set(knowledge.documents.flatMap((document) => document.limitations))];
+  const evidenceGroups = knowledge.evidenceGroups?.length
+    ? { evidenceGroups: knowledge.evidenceGroups }
+    : {};
   const exactChunks = knowledge.chunks.filter((chunk) =>
     chunk.categoryId === offering.categoryId &&
     chunk.productId === offering.offerSlug &&
@@ -306,6 +315,7 @@ export const answerFromOfferingKnowledge = async (
       evidence,
       limitations: [
         ...structured.limitations,
+        ...knowledgeLimitations,
         ...new Set(evidence.flatMap((item) => item.limitations)),
         ...(pdfLimitation ? [pdfLimitation] : []),
         ...(conflicts.length > 0
@@ -313,12 +323,16 @@ export const answerFromOfferingKnowledge = async (
           : []),
       ],
       ...(conflicts.length > 0 ? { conflicts } : {}),
+      ...evidenceGroups,
     });
   }
   if (evidence.length === 0 || isRankingRequest(query)) {
     return {
       ...structured,
-      limitations: [...structured.limitations, ...(pdfLimitation ? [pdfLimitation] : [])],
+      limitations: [
+        ...new Set([...structured.limitations, ...knowledgeLimitations, ...(pdfLimitation ? [pdfLimitation] : [])]),
+      ],
+      ...evidenceGroups,
     };
   }
 
@@ -338,6 +352,7 @@ export const answerFromOfferingKnowledge = async (
           cached: false,
           answerSource: "live_llm",
           citations: validated.citations,
+          ...evidenceGroups,
         });
       }
     } catch {
@@ -351,6 +366,87 @@ export const answerFromOfferingKnowledge = async (
     limitations: [...new Set(evidence.flatMap((item) => item.limitations))],
     cached: false,
     answerSource: "none",
+    ...evidenceGroups,
+  };
+};
+
+export const answerFromProductKnowledge = async (
+  scope: {
+    readonly categoryId: ProductKnowledgeChunk["categoryId"];
+    readonly productId: string;
+    readonly dataNature: ProductKnowledgeChunk["dataNature"];
+  },
+  query: string,
+  knowledge: ProductKnowledgeResult,
+  options: {
+    readonly limit?: number;
+    readonly liveAnswer?: LiveAnswerGenerator;
+    readonly evidence?: readonly SearchHit[];
+  } = {},
+): Promise<EvidenceAnswer> => {
+  const chunks = knowledge.chunks.filter((chunk) =>
+    chunk.categoryId === scope.categoryId &&
+    chunk.productId === scope.productId &&
+    chunk.dataNature === scope.dataNature &&
+    chunk.scenarioId === undefined &&
+    chunk.status === "ready"
+  );
+  const evidence = options.evidence
+    ? evidenceBackedBy(options.evidence, chunks)
+    : searchChunks(chunks, query, options.limit ?? 5);
+  const evidenceGroups = knowledge.evidenceGroups?.length
+    ? { evidenceGroups: knowledge.evidenceGroups }
+    : {};
+  const limitations = [...new Set([
+    ...knowledge.documents.flatMap((document) => document.limitations),
+    ...evidence.flatMap((item) => item.limitations),
+  ])];
+  if (evidence.length === 0 || isRankingRequest(query)) {
+    return {
+      outcome: "abstain",
+      answer: isRankingRequest(query)
+        ? "상품 순위를 만들지 않습니다. 발행인 공시와 외부 대조 결과를 나누어 확인해 주세요."
+        : ABSTAIN_TEXT,
+      evidence: [],
+      limitations: limitations.length > 0
+        ? limitations
+        : ["이 상품에 연결된 공식 문서와 공개정보에서 질문에 맞는 내용을 확인하지 못했습니다."],
+      cached: false,
+      answerSource: "none",
+      ...evidenceGroups,
+    };
+  }
+  const liveInput = { question: query, evidence: evidence.slice(0, LIVE_ANSWER_MAX_EVIDENCE) };
+  if (isLiveAnswerInputEligible(liveInput)) {
+    try {
+      const validated = validateLiveAnswerDraft(
+        await (options.liveAnswer ?? generateLiveEvidenceAnswer)(liveInput),
+        liveInput,
+      );
+      if (validated) {
+        return filtered({
+          outcome: "answer",
+          answer: validated.answer,
+          evidence: evidence.filter((item) => validated.citedChunkIds.includes(item.chunkId)),
+          limitations,
+          cached: false,
+          answerSource: "live_llm",
+          citations: validated.citations,
+          ...evidenceGroups,
+        });
+      }
+    } catch {
+      // Provider/auth/quota/timeout failures intentionally degrade to evidence_only.
+    }
+  }
+  return {
+    outcome: "evidence_only",
+    answer: EVIDENCE_ONLY_TEXT,
+    evidence,
+    limitations,
+    cached: false,
+    answerSource: "none",
+    ...evidenceGroups,
   };
 };
 

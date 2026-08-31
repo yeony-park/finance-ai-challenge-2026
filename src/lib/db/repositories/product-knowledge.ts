@@ -1,5 +1,9 @@
 import { storageMode } from "../env";
 import { loadCommonKnowledgeScope, loadKnowledgeScope } from "@/lib/knowledge/loader";
+import {
+  cattleFilingKnowledge,
+  loadApprovedCattleFilingArtifact,
+} from "@/lib/knowledge/cattle-filing-artifact";
 import type {
   ProductKnowledgeChunk,
   ProductKnowledgeDocument,
@@ -42,6 +46,7 @@ const fromCommon = async (
       asOf: document.asOf,
       sourceHash: document.sourceHash,
       status: document.status === "partial" ? "partial" : "ready",
+      approvedForPublic: true,
       approvedForExternalAi: document.approvedForExternalAi === true,
       piiReviewStatus: document.piiReviewStatus === "passed" ? "passed" : "not-reviewed",
       limitations: document.limitations,
@@ -63,6 +68,7 @@ const fromCommon = async (
       asOf: chunk.asOf,
       sourceHash: chunk.sourceHash,
       status: "ready",
+      approvedForPublic: true,
       approvedForExternalAi: chunk.approvedForExternalAi === true,
       piiReviewStatus: chunk.piiReviewStatus === "passed" ? "passed" : "not-reviewed",
       limitations: chunk.limitations,
@@ -99,6 +105,7 @@ const fromLegacyScenario = async (
       asOf: document.asOf,
       sourceHash: document.sourceHash,
       status: document.status === "partial" ? "partial" : "ready",
+      approvedForPublic: true,
       approvedForExternalAi: false,
       piiReviewStatus: "not-reviewed",
       limitations: document.limitations,
@@ -120,6 +127,7 @@ const fromLegacyScenario = async (
       asOf: chunk.asOf,
       sourceHash: chunk.sourceHash,
       status: "ready",
+      approvedForPublic: true,
       approvedForExternalAi: false,
       piiReviewStatus: "not-reviewed",
       limitations: chunk.limitations,
@@ -137,6 +145,10 @@ export const createFileProductKnowledgeRepository = (
   mode: "file",
   async findExact(scope) {
     if (!validScope(scope)) return EMPTY_RESULT;
+    if (scope.categoryId === "cattle" && scope.dataNature === "observed") {
+      const artifact = await loadApprovedCattleFilingArtifact(scope.categoryId, scope.productId, dataRoot);
+      if (artifact) return cattleFilingKnowledge(artifact);
+    }
     return (await fromCommon(scope, dataRoot)) ?? fromLegacyScenario(scope, dataRoot);
   },
 });

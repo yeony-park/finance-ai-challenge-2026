@@ -543,6 +543,7 @@ describe("common knowledge index", () => {
     const nextConfig = await readFile(path.join(process.cwd(), "next.config.ts"), "utf8");
     expect(nextConfig).toContain('"data/knowledge/generated/index.json"');
     expect(nextConfig).toContain('"data/knowledge/derived/**/*.json"');
+    expect(nextConfig).toContain('"data/knowledge/filing-registry/**/*.json"');
     expect(nextConfig).not.toContain('"data/knowledge/documents/*.json"');
     expect(nextConfig).not.toContain('"data/knowledge/**/*.json"');
     expect(nextConfig).toContain('"data/knowledge/sources/**/*"');

@@ -7,6 +7,26 @@ import { assertOfferId, assertRcpNo } from "../paths";
 
 const HashSchema = z.string().regex(/^[a-f0-9]{64}$/);
 const IsoDateSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
+
+export const isExactDartPublicUrl = (value: string, rcpNo: string): boolean => {
+  if (!/^\d{14}$/.test(rcpNo)) return false;
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" &&
+      url.hostname === "dart.fss.or.kr" &&
+      url.port === "" &&
+      url.username === "" &&
+      url.password === "" &&
+      url.pathname === "/dsaf001/main.do" &&
+      url.hash === "" &&
+      url.searchParams.size === 1 &&
+      [...url.searchParams.keys()][0] === "rcpNo" &&
+      url.searchParams.get("rcpNo") === rcpNo;
+  } catch {
+    return false;
+  }
+};
+
 export const DartFilingRegistrySchema = z.strictObject({
   schemaVersion: z.literal(1),
   registryVersion: z.literal("dart-filing-registry-v1"),
@@ -52,6 +72,9 @@ export const DartFilingRegistrySchema = z.strictObject({
 }).superRefine((value, context) => {
   if (value.entry.name !== `${value.rcpNo}.xml`) {
     context.addIssue({ code: "custom", path: ["entry", "name"], message: "registry entry는 exact rcpNo XML이어야 합니다." });
+  }
+  if (!isExactDartPublicUrl(value.source.exactPublicUrl, value.rcpNo)) {
+    context.addIssue({ code: "custom", path: ["source", "exactPublicUrl"], message: "DART 공개 URL은 exact rcpNo 하나만 포함해야 합니다." });
   }
   if (new Set(value.sectionLocators.map((item) => item.factId)).size !== value.sectionLocators.length) {
     context.addIssue({ code: "custom", path: ["sectionLocators"], message: "factId는 중복될 수 없습니다." });

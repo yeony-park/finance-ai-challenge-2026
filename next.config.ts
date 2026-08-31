@@ -38,6 +38,7 @@ const nextConfig: NextConfig = {
       "data/public/**/*.json",
       "data/reference/**/*.json",
       "data/knowledge/derived/**/*.json",
+      "data/knowledge/filing-registry/**/*.json",
       "data/knowledge/generated/index.json",
     ],
   },

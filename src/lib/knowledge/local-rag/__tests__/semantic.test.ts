@@ -70,7 +70,8 @@ const repository: ProductKnowledgeRepository = {
       asOf: semanticChunk.asOf,
       sourceHash: semanticChunk.sourceHash,
       status: "ready" as const,
-      approvedForExternalAi: true,
+        approvedForPublic: true,
+        approvedForExternalAi: true,
       piiReviewStatus: "passed" as const,
       limitations: semanticChunk.limitations,
     };

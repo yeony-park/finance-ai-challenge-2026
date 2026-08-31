@@ -200,7 +200,8 @@ describe("공개 offering exact scope evidence", () => {
       asOf: "2026-08-29",
       sourceHash: "b".repeat(64),
       status: "ready" as const,
-      approvedForExternalAi: true,
+    approvedForPublic: true,
+    approvedForExternalAi: true,
       piiReviewStatus: "passed" as const,
       limitations: [] as const,
     };

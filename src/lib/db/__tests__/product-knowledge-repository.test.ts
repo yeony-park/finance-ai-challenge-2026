@@ -36,12 +36,15 @@ const dbRow = (overrides: Record<string, unknown> = {}) => ({
   as_of: "2026-08-29",
   source_hash: hash,
   document_status: "ready",
-  limitations: ["등기사항은 포함하지 않습니다."],
+  document_approved_for_public: true,
+  document_limitations: ["등기사항은 포함하지 않습니다."],
   page: 1,
   text: "공모금액은 120,000,000원입니다.",
   canonical_text: "공모금액은 120,000,000원입니다.",
   chunk_hash: chunkHash,
   chunk_status: "ready",
+  chunk_approved_for_public: true,
+  chunk_limitations: ["등기사항은 포함하지 않습니다."],
   approved_for_external_ai: true,
   pii_review_status: "passed",
   ...overrides,
@@ -86,11 +89,46 @@ describe("DB product knowledge exact scope", () => {
       chunkHash,
       status: "ready",
       sourceKind: "official-document",
+      approvedForPublic: true,
       approvedForExternalAi: true,
       piiReviewStatus: "passed",
     });
     expect(result.documents[0]?.status).toBe("partial");
     expect(result.chunks[0]?.status).toBe("ready");
+  });
+
+  test("cattle DART exact URL만 허용하고 DB row도 external AI를 강제로 비활성화한다", async () => {
+    const exact = "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260814003572";
+    const repository = createDbProductKnowledgeRepository(async () => [dbRow({
+      product_id: "livestock-9",
+      document_id: "cattle-livestock-9-dart-20260814003572",
+      source_url: "https://dart.fss.or.kr/dsaf001/main.do",
+      approved_for_external_ai: true,
+    })]);
+    const result = await repository.findExact({
+      categoryId: "cattle",
+      productId: "livestock-9",
+      dataNature: "observed",
+    });
+    expect(result.documents[0]).toMatchObject({ sourceUrl: exact, approvedForExternalAi: false });
+    expect(result.chunks[0]).toMatchObject({ sourceUrl: exact, approvedForExternalAi: false });
+
+    for (const source_url of [
+      `${exact}&page=1`,
+      `${exact}#section`,
+      "https://user:password@dart.fss.or.kr/dsaf001/main.do?rcpNo=20260814003572",
+    ]) {
+      const invalid = createDbProductKnowledgeRepository(async () => [dbRow({
+        product_id: "livestock-9",
+        document_id: "cattle-livestock-9-dart-20260814003572",
+        source_url,
+      })]);
+      await expect(invalid.findExact({
+        categoryId: "cattle",
+        productId: "livestock-9",
+        dataNature: "observed",
+      })).rejects.toThrow();
+    }
   });
 
   test("executor가 다른 scope 행을 반환해도 노출하지 않는다", async () => {
