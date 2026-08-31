@@ -10,10 +10,12 @@ import { DatabaseSync } from "node:sqlite";
 
 import {
   LOCAL_RAG_DB_PATH,
+  LOCAL_RAG_CHUNKING_VERSION,
   LOCAL_RAG_MODEL_ID,
   LOCAL_RAG_SCHEMA_VERSION,
   LOCAL_RAG_VECTOR_DIMENSION,
   type LocalRagBuildInput,
+  type LocalRagCachedChunk,
   type LocalRagChunkInput,
   type LocalRagHit,
   type LocalRagScope,
@@ -138,6 +140,10 @@ const prepareChunk = (chunk: LocalRagChunkInput) => {
   assertReferenceKey("chunkId", chunk.chunkId);
   assertHash("sourceHash", chunk.sourceHash);
   assertHash("chunkHash", chunk.chunkHash);
+  assertHash("contentHash", chunk.contentHash);
+  if (chunk.chunkingVersion !== LOCAL_RAG_CHUNKING_VERSION) {
+    throw new Error("invalid local RAG chunking version");
+  }
   return { ...chunk, embedding: encodeVector(normalizedVector(chunk.vector)) };
 };
 
@@ -158,6 +164,8 @@ const SCHEMA = `
     document_id TEXT NOT NULL,
     source_hash TEXT NOT NULL CHECK (length(source_hash) = 64),
     chunk_hash TEXT NOT NULL CHECK (length(chunk_hash) = 64),
+    content_hash TEXT NOT NULL CHECK (length(content_hash) = 64),
+    chunking_version TEXT NOT NULL,
     category_id TEXT NOT NULL CHECK (category_id IN ('cattle','pig','art','real-estate')),
     product_id TEXT NOT NULL,
     scenario_id TEXT,
@@ -222,9 +230,10 @@ export const buildLocalRagStore = (input: LocalRagBuildInput): void => {
         );
       const insert = database.prepare(`
         INSERT INTO chunks (
-          chunk_id, document_id, source_hash, chunk_hash, category_id,
+          chunk_id, document_id, source_hash, chunk_hash, content_hash,
+          chunking_version, category_id,
           product_id, scenario_id, data_nature, approval_reference_key, embedding
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `);
       for (const chunk of chunks) {
         insert.run(
@@ -232,6 +241,8 @@ export const buildLocalRagStore = (input: LocalRagBuildInput): void => {
           chunk.documentId,
           chunk.sourceHash,
           chunk.chunkHash,
+          chunk.contentHash,
+          chunk.chunkingVersion,
           chunk.categoryId,
           chunk.productId,
           chunk.scenarioId,
@@ -253,6 +264,76 @@ export const buildLocalRagStore = (input: LocalRagBuildInput): void => {
     rmSync(temporary, { force: true });
     rmSync(`${temporary}-journal`, { force: true });
     throw error;
+  }
+};
+
+export const readLocalRagCache = (
+  dbPath: string = LOCAL_RAG_DB_PATH,
+): readonly LocalRagCachedChunk[] => {
+  const resolved = resolveDbPath(dbPath);
+  if (!existsSync(resolved)) return [];
+  let database: DatabaseSync | undefined;
+  try {
+    database = new DatabaseSync(resolved, {
+      allowExtension: false,
+      enableDoubleQuotedStringLiterals: false,
+      readOnly: true,
+    });
+    database.exec("PRAGMA query_only = ON; PRAGMA trusted_schema = OFF;");
+    if (database.prepare("PRAGMA quick_check").get()?.quick_check !== "ok") return [];
+    const metadata = database
+      .prepare("SELECT schema_version, model_id, vector_dimension FROM meta WHERE singleton = 1")
+      .get();
+    if (
+      metadata?.schema_version !== LOCAL_RAG_SCHEMA_VERSION ||
+      metadata.model_id !== LOCAL_RAG_MODEL_ID ||
+      metadata.vector_dimension !== LOCAL_RAG_VECTOR_DIMENSION
+    ) return [];
+    return database.prepare(`
+      SELECT chunk_id, document_id, source_hash, chunk_hash, content_hash,
+             chunking_version, category_id, product_id, scenario_id,
+             data_nature, approval_reference_key, embedding
+      FROM chunks
+    `).all().flatMap((row): LocalRagCachedChunk[] => {
+      if (
+        typeof row.chunk_id !== "string" ||
+        typeof row.document_id !== "string" ||
+        typeof row.source_hash !== "string" ||
+        typeof row.chunk_hash !== "string" ||
+        typeof row.content_hash !== "string" ||
+        row.chunking_version !== LOCAL_RAG_CHUNKING_VERSION ||
+        typeof row.category_id !== "string" ||
+        typeof row.product_id !== "string" ||
+        !(row.scenario_id === null || typeof row.scenario_id === "string") ||
+        (row.data_nature !== "observed" && row.data_nature !== "scenario") ||
+        typeof row.approval_reference_key !== "string" ||
+        !(row.embedding instanceof Uint8Array)
+      ) return [];
+      const cached: LocalRagCachedChunk = {
+        categoryId: row.category_id as LocalRagCachedChunk["categoryId"],
+        productId: row.product_id,
+        scenarioId: row.scenario_id,
+        dataNature: row.data_nature,
+        approvalReferenceKey: row.approval_reference_key,
+        documentId: row.document_id,
+        chunkId: row.chunk_id,
+        sourceHash: row.source_hash,
+        chunkHash: row.chunk_hash,
+        contentHash: row.content_hash,
+        chunkingVersion: LOCAL_RAG_CHUNKING_VERSION,
+        vector: decodeVector(row.embedding),
+      };
+      try {
+        prepareChunk(cached);
+        return [cached];
+      } catch {
+        return [];
+      }
+    });
+  } catch {
+    return [];
+  } finally {
+    if (database?.isOpen) database.close();
   }
 };
 

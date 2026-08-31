@@ -11,6 +11,7 @@ import { afterEach, describe, expect, test } from "vitest";
 
 import { buildLocalRagStore, searchLocalRagStore } from "../store";
 import {
+  LOCAL_RAG_CHUNKING_VERSION,
   LOCAL_RAG_MODEL_ID,
   LOCAL_RAG_VECTOR_DIMENSION,
   type LocalRagChunkInput,
@@ -55,6 +56,8 @@ const chunk = (
   chunkId,
   sourceHash: "a".repeat(64),
   chunkHash: "b".repeat(64),
+  contentHash: "c".repeat(64),
+  chunkingVersion: LOCAL_RAG_CHUNKING_VERSION,
   vector: embedding,
   ...overrides,
 });
@@ -113,6 +116,8 @@ describe("local semantic RAG SQLite store", () => {
       "document_id",
       "source_hash",
       "chunk_hash",
+      "content_hash",
+      "chunking_version",
       "category_id",
       "product_id",
       "scenario_id",
@@ -223,7 +228,7 @@ describe("local semantic RAG SQLite store", () => {
   });
 
   test.each([
-    ["schema_version", 2],
+    ["schema_version", 999],
     ["model_id", "other-model"],
     ["vector_dimension", 3],
     ["content_version", "knowledge-v2"],

@@ -1,7 +1,8 @@
-export const LOCAL_RAG_SCHEMA_VERSION = 1 as const;
+export const LOCAL_RAG_SCHEMA_VERSION = 2 as const;
 export const LOCAL_RAG_MODEL_ID = "text-embedding-3-small" as const;
 export const LOCAL_RAG_VECTOR_DIMENSION = 1_536 as const;
 export const LOCAL_RAG_DB_PATH = "data/scratch-rag/knowledge.sqlite" as const;
+export const LOCAL_RAG_CHUNKING_VERSION = "canonical-chunk-v1" as const;
 
 export type LocalRagCategoryId =
   | "cattle"
@@ -23,8 +24,12 @@ export interface LocalRagChunkInput extends LocalRagScope {
   readonly chunkId: string;
   readonly sourceHash: string;
   readonly chunkHash: string;
+  readonly contentHash: string;
+  readonly chunkingVersion: typeof LOCAL_RAG_CHUNKING_VERSION;
   readonly vector: ReadonlyArray<number> | Float32Array;
 }
+
+export type LocalRagCachedChunk = LocalRagChunkInput;
 
 export interface LocalRagBuildInput {
   readonly contentVersion: string;
