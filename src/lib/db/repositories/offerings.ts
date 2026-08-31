@@ -23,7 +23,7 @@ const assetSchema = z
   })
   .optional();
 
-const rawSourceSchema = z
+const legacyRawSourceSchema = z
   .object({
     label: z.string().min(1),
     url: z.string().min(1),
@@ -32,6 +32,28 @@ const rawSourceSchema = z
       .regex(/^\d{4}-\d{2}-\d{2}$/, "날짜는 YYYY-MM-DD 형식이어야 합니다"),
   })
   .strict();
+
+const provenanceRawSourceSchema = z
+  .object({
+    sourceKind: z.enum([
+      "platform-claim",
+      "official-document",
+      "external-observation",
+    ]),
+    label: z.string().min(1),
+    url: z.string().min(1),
+    asOf: z.iso.date(),
+    collectedAt: z.union([z.iso.date(), z.iso.datetime({ offset: true })]),
+    method: z.literal("manual"),
+    status: z.string().min(1),
+    limitations: z.array(z.string().min(1)),
+  })
+  .strict();
+
+const rawSourceSchema = z.union([
+  legacyRawSourceSchema,
+  provenanceRawSourceSchema,
+]);
 
 const rawOfferSchema = z.object({
   offerId: z.string().min(1),
@@ -85,6 +107,8 @@ const mapRawOffer = (
   rawText: string,
 ): OfferingRow => {
   const source = raw.sources?.[0];
+  const legacySource = source && "retrievedOn" in source ? source : undefined;
+  const hasUnboundProvenance = source !== undefined && legacySource === undefined;
   return offeringRowSchema.parse({
     offerSlug: raw.offerId,
     categoryId: raw.assetKind,
@@ -111,10 +135,10 @@ const mapRawOffer = (
       ...(raw.sources === undefined ? {} : { sources: raw.sources }),
     },
     sourceMeta: {
-      sourceUrl: source?.url ?? "",
+      sourceUrl: hasUnboundProvenance ? "" : legacySource?.url ?? "",
       license: raw.license ?? "green",
-      method: "manual_verified",
-      retrievedAt: source?.retrievedOn ?? "",
+      method: hasUnboundProvenance ? "discovery_only" : "manual_verified",
+      retrievedAt: legacySource?.retrievedOn ?? "",
       sha256: sha256Hex(rawText),
     },
   });

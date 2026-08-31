@@ -46,6 +46,10 @@ describe("livestock-9 approved filing artifact runtime adapter", () => {
     expect(knowledge.chunks.every((chunk) =>
       chunk.status === "ready" && !chunk.approvedForExternalAi
     )).toBe(true);
+    expect(knowledge.documents[0]?.limitations).toEqual([
+      "DART 원문의 상품별 확인 항목만 구조화했습니다.",
+      "발행 주체와 운영 주체의 동일성을 확인하지 못해 청약 미달 답변을 보류합니다.",
+    ]);
     expect(knowledge.evidenceGroups).toEqual([
       expect.objectContaining({
         groupKind: "issuer-claim",
@@ -59,7 +63,7 @@ describe("livestock-9 approved filing artifact runtime adapter", () => {
         groupKind: "external-observation",
         sourceKind: "external-observation",
         asOf: "2026-08-15T15:52:44.480Z",
-        limitations: expect.arrayContaining([expect.stringContaining("마스킹된 공개 리포트")]),
+        limitations: [],
         items: expect.arrayContaining([
           expect.objectContaining({ label: "품종", value: "일치 37건, 불일치 0건, 미확인 0건" }),
         ]),
@@ -208,7 +212,6 @@ describe("livestock-9 approved filing artifact runtime adapter", () => {
     let embeddingCalls = 0;
     let liveCalls = 0;
     for (const [query, expectedText] of [
-      ["공모가격", "20,000원"],
       ["사업기간", "20~26개월"],
       ["수수료", "200원/건"],
       ["보호기금", "투자자보호기금"],
@@ -252,6 +255,64 @@ describe("livestock-9 approved filing artifact runtime adapter", () => {
           approvedForExternalAi: false,
       })]));
     }
+    for (const query of [
+      "가격",
+      "공모가격",
+      "공모가액",
+      "공모가",
+      "공모가는",
+      "단가",
+      "가격은 얼마인가요?",
+      "단가는 몇 원인가요?",
+      "공모가격 알려줘",
+    ] as const) {
+      const answer = await answerFromProductKnowledge(
+        { categoryId: "cattle", productId: PRODUCT_ID, dataNature: "observed" },
+        query,
+        knowledge,
+        { liveAnswer: async () => { liveCalls += 1; return null; } },
+      );
+      expect(answer).toMatchObject({
+        outcome: "answer",
+        answer: "DART 공시에서 1단위 공모가액 20,000원을 확인했습니다.",
+        answerSource: "structured",
+      });
+      expect(answer.evidence[0]).toMatchObject({
+        chunkId: "cattle-livestock-9-dart-20260814003572-issuer-allocation",
+        chunkHash: "fc59b03f271d79affa18859060f9a02509c3e5d6953db356d10a1ffc69e6799a",
+      });
+    }
+    for (const query of [
+      "공모가격 산정",
+      "공모가 결정 근거",
+      "수요예측 근거",
+      "공모가격 기준",
+      "공모가격 산출 방법",
+      "왜 이 금액",
+      "공모가격 산정 방법은 무엇인가요?",
+    ] as const) {
+      const answer = await answerFromProductKnowledge(
+        { categoryId: "cattle", productId: PRODUCT_ID, dataNature: "observed" },
+        query,
+        knowledge,
+        { liveAnswer: async () => { liveCalls += 1; return null; } },
+      );
+      expect(answer, query).toMatchObject({ outcome: "evidence_only", answerSource: "none" });
+      expect(answer.evidence[0], query).toMatchObject({
+        chunkId: "cattle-livestock-9-dart-20260814003572-pricing-basis",
+      });
+      expect(JSON.stringify(answer), query).not.toContain("청약 미달");
+    }
+    for (const query of ["공모가와 수수료 알려줘", "공모가와 사업기간을 확인해줘"] as const) {
+      const answer = await answerFromProductKnowledge(
+        { categoryId: "cattle", productId: PRODUCT_ID, dataNature: "observed" },
+        query,
+        knowledge,
+        { liveAnswer: async () => { liveCalls += 1; return null; } },
+      );
+      expect(answer.answerSource, query).not.toBe("structured");
+      expect(answer.answer, query).not.toBe("DART 공시에서 1단위 공모가액 20,000원을 확인했습니다.");
+    }
     expect({ embeddingCalls, liveCalls }).toEqual({ embeddingCalls: 0, liveCalls: 0 });
   });
 
@@ -270,8 +331,53 @@ describe("livestock-9 approved filing artifact runtime adapter", () => {
     );
     expect(answer).toMatchObject({ outcome: "abstain", answerSource: "none", evidence: [] });
     expect(answer.limitations).toEqual(expect.arrayContaining([
-      expect.stringContaining("청약 미달 처리 사실"),
+      "발행 주체와 운영 주체의 동일성을 확인하지 못해 청약 미달 답변을 보류합니다.",
     ]));
+  });
+
+  test("축산물이력·개체·실재 질문은 상세 리포트 확인 경로만 안내한다", async () => {
+    const knowledge = await createFileProductKnowledgeRepository().findExact({
+      categoryId: "cattle",
+      productId: PRODUCT_ID,
+      dataNature: "observed",
+    });
+    for (const query of ["축산물이력제", "개체 정보", "실재 확인"] as const) {
+      const answer = await answerFromProductKnowledge(
+        { categoryId: "cattle", productId: PRODUCT_ID, dataNature: "observed" },
+        query,
+        knowledge,
+        { liveAnswer: async () => { throw new Error("must not call"); } },
+      );
+      expect(answer).toEqual({
+        outcome: "abstain",
+        answer: "현재 Copilot은 DART 공시만 검색합니다. 축산물이력 대조는 상세 리포트의 실재 확인에서 확인해 주세요.",
+        evidence: [],
+        limitations: [],
+        cached: false,
+        answerSource: "none",
+        responseKind: "scope-guidance",
+      });
+    }
+  });
+
+  test("가격 deterministic 답변은 exact chunk text/hash가 변조되면 생성하지 않는다", async () => {
+    const knowledge = await createFileProductKnowledgeRepository().findExact({
+      categoryId: "cattle",
+      productId: PRODUCT_ID,
+      dataNature: "observed",
+    });
+    const tampered = {
+      ...knowledge,
+      chunks: knowledge.chunks.map((chunk) => chunk.chunkId.endsWith("issuer-allocation")
+        ? { ...chunk, text: chunk.text.replace("20,000원", "30,000원") }
+        : chunk),
+    };
+    await expect(answerFromProductKnowledge(
+      { categoryId: "cattle", productId: PRODUCT_ID, dataNature: "observed" },
+      "공모가액",
+      tampered,
+      { liveAnswer: async () => null },
+    )).resolves.not.toMatchObject({ answerSource: "structured", answer: expect.stringContaining("20,000원") });
   });
 
   test("홈 keyword 검색과 published-offer evidence API가 같은 exact artifact를 사용한다", async () => {
@@ -298,7 +404,8 @@ describe("livestock-9 approved filing artifact runtime adapter", () => {
       }),
     }));
     expect(response.status).toBe(200);
-    expect(await response.json()).toMatchObject({
+    const responseBody = await response.json();
+    expect(responseBody).toMatchObject({
       categoryId: "cattle",
       productId: PRODUCT_ID,
       dataNature: "observed",
@@ -310,6 +417,80 @@ describe("livestock-9 approved filing artifact runtime adapter", () => {
         expect.objectContaining({ groupKind: "issuer-claim", sourceKind: "official-document" }),
         expect.objectContaining({ groupKind: "external-observation", sourceKind: "external-observation" }),
       ],
+    });
+    expect(JSON.stringify(responseBody)).not.toMatch(/exact rcpNo|product-specific|versioned artifact|runtime|\/index|\bRAG\b|relationship|issuer_context/);
+
+    for (const query of ["공모가액", "공모가", "가격은 얼마인가요?"] as const) {
+      const price = await evidencePost(new Request("http://localhost/api/evidence/query", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          categoryId: "cattle",
+          productId: PRODUCT_ID,
+          dataNature: "observed",
+          namespace: "published-offer",
+          query,
+        }),
+      }));
+      expect(price.status, query).toBe(200);
+      const priceBody = await price.json();
+      expect(priceBody, query).toMatchObject({
+        outcome: "answer",
+        answer: "DART 공시에서 1단위 공모가액 20,000원을 확인했습니다.",
+        answerSource: "structured",
+      });
+      expect(priceBody.evidence[0], query).toMatchObject({
+        chunkId: "cattle-livestock-9-dart-20260814003572-issuer-allocation",
+        chunkHash: "fc59b03f271d79affa18859060f9a02509c3e5d6953db356d10a1ffc69e6799a",
+      });
+    }
+
+    for (const query of [
+      "공모가격 기준",
+      "공모가격 산출 방법",
+      "왜 이 금액",
+      "공모가격 산정 방법",
+      "공모가격 산정은 무엇인가요?",
+    ] as const) {
+      const pricingBasis = await evidencePost(new Request("http://localhost/api/evidence/query", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          categoryId: "cattle",
+          productId: PRODUCT_ID,
+          dataNature: "observed",
+          namespace: "published-offer",
+          query,
+        }),
+      }));
+      expect(pricingBasis.status, query).toBe(200);
+      const pricingBasisBody = await pricingBasis.json();
+      expect(pricingBasisBody, query).toMatchObject({ outcome: "evidence_only", answerSource: "none" });
+      expect(pricingBasisBody.evidence[0], query).toMatchObject({
+        chunkId: "cattle-livestock-9-dart-20260814003572-pricing-basis",
+      });
+      expect(JSON.stringify(pricingBasisBody), query).not.toContain("청약 미달");
+    }
+
+    const history = await evidencePost(new Request("http://localhost/api/evidence/query", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        categoryId: "cattle",
+        productId: PRODUCT_ID,
+        dataNature: "observed",
+        namespace: "published-offer",
+        query: "축산물이력제",
+      }),
+    }));
+    expect(history.status).toBe(200);
+    expect(await history.json()).toMatchObject({
+      outcome: "abstain",
+      answer: "현재 Copilot은 DART 공시만 검색합니다. 축산물이력 대조는 상세 리포트의 실재 확인에서 확인해 주세요.",
+      evidence: [],
+      limitations: [],
+      answerSource: "none",
+      responseKind: "scope-guidance",
     });
 
     const removed = await evidencePost(new Request("http://localhost/api/evidence/query", {
@@ -327,7 +508,9 @@ describe("livestock-9 approved filing artifact runtime adapter", () => {
     expect(await removed.json()).toMatchObject({
       outcome: "abstain",
       evidence: [],
-      limitations: expect.arrayContaining([expect.stringContaining("청약 미달 처리 사실")]),
+      limitations: expect.arrayContaining([
+        "발행 주체와 운영 주체의 동일성을 확인하지 못해 청약 미달 답변을 보류합니다.",
+      ]),
     });
 
     for (const productId of ["livestock-8", "unknown-product"]) {

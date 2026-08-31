@@ -2,7 +2,7 @@ import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 
-import { afterAll, beforeAll, describe, expect, test } from "vitest";
+import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
 import { PgDialect } from "drizzle-orm/pg-core";
 
 import { isRegisteredSource } from "@/lib/spine/rag/corpus";
@@ -59,6 +59,32 @@ describe("④ DATABASE_URL 없이 file 모드 완주 (R-STO-02·R-INV-05)", () =
         .every((offering) => offering.offerSlug.startsWith("ex-")),
     ).toBe(true);
     expect(await repository.findBySlug("does-not-exist")).toBeNull();
+  });
+
+  test("v2 출처를 쓰는 실제 공모 2건은 경고 없이 discovery row로 로드한다", async () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    try {
+      const repository = await resolveOfferingsRepository();
+      for (const offerId of [
+        "real-estate-bbric-hiwon",
+        "real-estate-sou-daejeon-startup",
+      ]) {
+        const offering = await repository.findBySlug(offerId);
+        expect(offering?.provenance).toBe("manual_verified");
+        expect(offering?.sourceMeta).toMatchObject({
+          sourceUrl: "",
+          method: "discovery_only",
+          retrievedAt: "",
+        });
+        expect(offering?.sourceMeta.sha256).toMatch(/^[a-f0-9]{64}$/);
+      }
+
+      const warnings = warn.mock.calls.flat().join("\n");
+      expect(warnings).not.toContain("real-estate-bbric-hiwon.json");
+      expect(warnings).not.toContain("real-estate-sou-daejeon-startup.json");
+    } finally {
+      warn.mockRestore();
+    }
   });
 
   test("실 공모 파싱은 asset 조인 키·sale·limits를 detail 화이트리스트로 수용한다 (09 §3.5)", async () => {

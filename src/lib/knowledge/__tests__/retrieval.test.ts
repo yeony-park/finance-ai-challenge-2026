@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { offeringRowSchema } from "@/lib/db/records";
+import { loadFileModeOfferings } from "@/lib/db/repositories/offerings";
 import type { RagSearchRepository } from "@/lib/db/repositories/types";
 import { answerFromOfferingFacts, answerFromOfferingKnowledge } from "../evidence";
 import { searchOffers } from "../global-search";
@@ -126,6 +127,31 @@ describe("공통 retrieval orchestration", () => {
     };
     await expect(searchOffers({ q: "가축", limit: 20 }, undefined, failed)).rejects.toThrow("db failed");
   });
+
+  it("일반 부동산·금액 필터 검색은 cattle filing을 읽지 않고 cattle 질의만 읽는다", async () => {
+    let calls = 0;
+    const loadCattleFilings = async () => {
+      calls += 1;
+      return [];
+    };
+    const deps = repositories({ rows: [offering()] });
+
+    await searchOffers(
+      { q: "부동산 10만원 이하", categoryId: "real-estate", limit: 20 },
+      undefined,
+      deps,
+      { minimumInvestmentWonMax: 100_000, loadCattleFilings },
+    );
+    expect(calls).toBe(0);
+
+    await searchOffers(
+      { q: "한우 보호기금", categoryId: "cattle", limit: 20 },
+      undefined,
+      deps,
+      { loadCattleFilings },
+    );
+    expect(calls).toBe(1);
+  });
 });
 
 describe("공개 offering exact scope evidence", () => {
@@ -184,6 +210,31 @@ describe("공개 offering exact scope evidence", () => {
         source: expect.objectContaining({ url: "https://example.com/disclosure" }),
       })],
     });
+  });
+
+  it("field binding 없는 v2 실제 상품은 discovery에 남되 구조화 금액·일정 답변을 보류한다", async () => {
+    const rows = await loadFileModeOfferings();
+    for (const offerId of [
+      "real-estate-bbric-hiwon",
+      "real-estate-sou-daejeon-startup",
+    ]) {
+      const actual = rows.find((row) => row.offerSlug === offerId);
+      expect(actual).toBeDefined();
+      expect(actual?.detail.sources).toBeInstanceOf(Array);
+      for (const query of ["공모금액은 얼마인가요", "청약 시작일과 종료일은 언제인가요"]) {
+        const answer = answerFromOfferingFacts(actual!, query);
+        expect(answer).toMatchObject({
+          outcome: "abstain",
+          answerSource: "none",
+        });
+        expect(answer).not.toHaveProperty("structuredClaims");
+
+        expect(answerFromOfferingFacts({
+          ...actual!,
+          sourceMeta: offering().sourceMeta,
+        }, query)).toMatchObject({ outcome: "abstain", answerSource: "none" });
+      }
+    }
   });
 
   it("구조화 항목에 없는 질문은 exact product PDF 근거 경로만 사용한다", async () => {

@@ -4,11 +4,15 @@ import { describe, expect, test } from "vitest";
 
 import { generateMetadata, generateStaticParams } from "@/app/offers/[id]/page";
 import { loadApprovedScenarios } from "@/lib/knowledge/loader";
+import { loadApprovedCattleFilingArtifact } from "@/lib/knowledge/cattle-filing-artifact";
 import { SCENARIO_DEMO_DISCLOSURE } from "@/lib/knowledge/schema";
 
 import { ScenarioDetail } from "../ScenarioDetail";
 import {
+  cattleFilingEvidenceScope,
+  CattleFilingEvidenceQuery,
   directLimitations,
+  evidenceRequestBody,
   EvidenceQuery,
   EvidenceResultPanel,
   evidenceResultTitle,
@@ -44,6 +48,10 @@ describe("부동산 시나리오 상세", () => {
       .toBe("연결된 상품 문서에서 확인");
     expect(evidenceResultTitle({ outcome: "answer", answerSource: "live_llm" }))
       .toBe("상품 원문을 바탕으로 생성한 답변");
+    expect(evidenceResultTitle({ outcome: "evidence_only", answerSource: "none" }))
+      .toBe("관련 문서만 확인됨");
+    expect(evidenceResultTitle({ outcome: "abstain", answerSource: "none", responseKind: "scope-guidance" }))
+      .toBe("검색 범위 안내");
 
     const base = {
       outcome: "answer" as const,
@@ -156,6 +164,29 @@ describe("부동산 시나리오 상세", () => {
     expect(queryMarkup).toContain('aria-busy="false"');
     expect(queryMarkup).toContain('role="status"');
     expect(queryMarkup).toContain('aria-live="polite"');
+  });
+
+  test("공개 한우 공시 artifact가 있는 상품만 exact 공시 Copilot 범위를 사용한다", async () => {
+    await expect(loadApprovedCattleFilingArtifact("cattle", "livestock-9")).resolves.not.toBeNull();
+    await expect(loadApprovedCattleFilingArtifact("cattle", "livestock-1")).resolves.toBeNull();
+    expect(evidenceRequestBody(cattleFilingEvidenceScope("livestock-9"), " 공모가격 ")).toEqual({
+      categoryId: "cattle",
+      productId: "livestock-9",
+      dataNature: "observed",
+      namespace: "published-offer",
+      q: "공모가격",
+      limit: 5,
+    });
+
+    const markup = renderToStaticMarkup(createElement(CattleFilingEvidenceQuery, {
+      productId: "livestock-9",
+    }));
+    for (const question of ["공모가격", "예상 사업기간", "수수료", "투자자보호기금"]) {
+      expect(markup).toContain(question);
+    }
+    expect(markup).toContain("DART 공시와 축산물이력 외부 대조를 구분해 확인");
+    expect(markup).toContain("투자 판단이나 생성 답변을 만들지 않습니다");
+    expect(markup).not.toContain("청약 미달");
   });
 
   test("공식 공개정보 답변은 안전한 출처와 기준일을 표시한다", () => {

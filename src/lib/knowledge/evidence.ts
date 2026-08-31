@@ -20,6 +20,7 @@ import {
   type ScenarioReview,
 } from "./scenario-review";
 import {
+  isPricingBasisQuery,
   isRankingRequest,
   normalizeKorean,
   normalizeSearchQuery,
@@ -28,6 +29,7 @@ import {
 } from "./search";
 import { CachedAnswerSchema, type CachedAnswer, type CommonKnowledgeQuery, type KnowledgeQuery } from "./schema";
 import { isSafePublicSourceUrl, sanitizePublicSourceUrl } from "@/lib/verify/real-estate/source-url";
+import { calculateCommonChunkHash } from "./pdf";
 
 const ABSTAIN_TEXT =
   "이 상품에 연결된 공식 문서와 공개정보에서는 질문에 답할 내용을 확인하지 못했습니다. 판정을 보류합니다.";
@@ -37,6 +39,47 @@ const EVIDENCE_ONLY_TEXT =
   "관련 공식 문서와 공개정보를 찾았습니다. 준비된 설명이 없어 아래 출처·페이지·기준일과 한계를 제공합니다.";
 const MIXED_NATURE_TEXT =
   "공식 공개정보와 시나리오 조건이 함께 확인되었습니다. 두 자료를 구분해 확인할 수 있도록 하나의 답변으로 합치지 않았습니다.";
+const CATTLE_PRICE_ANSWER = "DART 공시에서 1단위 공모가액 20,000원을 확인했습니다.";
+const CATTLE_HISTORY_GUIDANCE =
+  "현재 Copilot은 DART 공시만 검색합니다. 축산물이력 대조는 상세 리포트의 실재 확인에서 확인해 주세요.";
+const CATTLE_PRICE_CHUNK_ID = "cattle-livestock-9-dart-20260814003572-issuer-allocation";
+const CATTLE_PRICE_CHUNK_HASH = "fc59b03f271d79affa18859060f9a02509c3e5d6953db356d10a1ffc69e6799a";
+const CATTLE_PRICE_SOURCE_HASH = "cc815be9d95de6cbe4a6a16f632cfe65c3f56589ce77caa9c7890fefce8b99e2";
+
+const exactCattlePriceHit = (
+  scope: { readonly categoryId: ProductKnowledgeChunk["categoryId"]; readonly productId: string; readonly dataNature: ProductKnowledgeChunk["dataNature"] },
+  query: string,
+  chunks: readonly ProductKnowledgeChunk[],
+): SearchHit | null => {
+  const normalizedIntent = normalizeKorean(query)
+    .replace(/\s+(?:알려줘|알려주세요|확인해줘|확인해주세요|조회|조회해줘|조회해주세요)$/, "")
+    .trim();
+  const singlePriceIntent = /^(?:가격|공모가|공모가격|공모가액|단가)(?:은|는|이|가|을|를)?(?:\s+(?:얼마(?:인가요)?|몇\s*원(?:인가요)?))?$/.test(normalizedIntent);
+  if (
+    scope.categoryId !== "cattle" ||
+    scope.productId !== "livestock-9" ||
+    scope.dataNature !== "observed" ||
+    !singlePriceIntent ||
+    isPricingBasisQuery(query)
+  ) return null;
+  const chunk = chunks.find((item) => item.chunkId === CATTLE_PRICE_CHUNK_ID);
+  if (!chunk ||
+    chunk.documentId !== "cattle-livestock-9-dart-20260814003572" ||
+    chunk.sourceHash !== CATTLE_PRICE_SOURCE_HASH ||
+    chunk.chunkHash !== CATTLE_PRICE_CHUNK_HASH ||
+    chunk.page !== 1 ||
+    !chunk.text.includes("공모가액") ||
+    !chunk.text.includes("20,000원") ||
+    calculateCommonChunkHash({
+      page: chunk.page,
+      text: chunk.text,
+      canonicalText: chunk.canonicalText,
+      positions: [],
+      pageQuality: "ready",
+    }) !== chunk.chunkHash
+  ) return null;
+  return searchChunks([chunk], "공모가액", 1)[0] ?? null;
+};
 
 const evidenceBackedBy = (
   evidence: readonly SearchHit[],
@@ -76,6 +119,7 @@ export interface EvidenceAnswer {
   readonly limitations: readonly string[];
   readonly cached: boolean;
   readonly answerSource: "structured" | "approved_cache" | "live_llm" | "none";
+  readonly responseKind?: "scope-guidance";
   readonly citations?: readonly {
     readonly chunkId: string;
     readonly page: number;
@@ -145,7 +189,11 @@ export const answerFromOfferingFacts = (
 ): EvidenceAnswer => {
   const normalized = normalizeSearchQuery(query);
   const sourceUrl = safeOfferingSourceUrl(offering.sourceMeta.sourceUrl);
-  const completeProvenance = sourceUrl !== null &&
+  const hasUnboundProvenance = Array.isArray(offering.detail.sources) &&
+    offering.detail.sources.some((source) =>
+      typeof source === "object" && source !== null && "sourceKind" in source
+    );
+  const completeProvenance = !hasUnboundProvenance && sourceUrl !== null &&
     /^\d{4}-\d{2}-\d{2}$/.test(offering.sourceMeta.retrievedAt) &&
     /^[a-f0-9]{64}$/.test(offering.sourceMeta.sha256);
   if (!completeProvenance) {
@@ -401,6 +449,54 @@ export const answerFromProductKnowledge = async (
     ...knowledge.documents.flatMap((document) => document.limitations),
     ...evidence.flatMap((item) => item.limitations),
   ])];
+  const cattleHistoryQuestion = scope.categoryId === "cattle" &&
+    scope.productId === "livestock-9" &&
+    scope.dataNature === "observed" &&
+    /(?:축산물\s*이력(?:제)?|개체(?:\s*정보)?|실재(?:\s*확인)?)/.test(query.normalize("NFKC"));
+  if (cattleHistoryQuestion) {
+    return {
+      outcome: "abstain",
+      answer: CATTLE_HISTORY_GUIDANCE,
+      evidence: [],
+      limitations: [],
+      cached: false,
+      answerSource: "none",
+      responseKind: "scope-guidance",
+    };
+  }
+  const cattlePricingBasisQuestion = scope.categoryId === "cattle" &&
+    scope.productId === "livestock-9" &&
+    scope.dataNature === "observed" &&
+    isPricingBasisQuery(query);
+  if (cattlePricingBasisQuestion) {
+    const pricingEvidence = searchChunks(chunks, "공모가격 산정", options.limit ?? 5)
+      .map((item) => ({
+        ...item,
+        limitations: item.limitations.filter((limitation) => !limitation.includes("청약 미달")),
+      }));
+    return {
+      outcome: pricingEvidence.length > 0 ? "evidence_only" : "abstain",
+      answer: pricingEvidence.length > 0 ? EVIDENCE_ONLY_TEXT : ABSTAIN_TEXT,
+      evidence: pricingEvidence,
+      limitations: [...new Set(pricingEvidence.flatMap((item) => item.limitations))],
+      cached: false,
+      answerSource: "none",
+    };
+  }
+  const priceHit = exactCattlePriceHit(scope, query, chunks);
+  if (priceHit) {
+    return {
+      outcome: "answer",
+      answer: CATTLE_PRICE_ANSWER,
+      evidence: [priceHit, ...evidence.filter((item) => item.chunkId !== priceHit.chunkId)]
+        .slice(0, options.limit ?? 5),
+      limitations,
+      cached: false,
+      answerSource: "structured",
+      citations: [{ chunkId: priceHit.chunkId, page: priceHit.page, exactQuote: "20,000원" }],
+      ...evidenceGroups,
+    };
+  }
   if (evidence.length === 0 || isRankingRequest(query)) {
     return {
       outcome: "abstain",

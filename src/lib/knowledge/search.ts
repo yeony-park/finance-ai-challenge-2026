@@ -7,6 +7,8 @@ const SYNONYMS: Readonly<Record<string, readonly string[]>> = {
   가격: ["금액", "공모가", "매각가", "실거래가"],
   금액: ["가격", "공모가", "매각가"],
   공모가격: ["공모가", "공모가액"],
+  근거: ["산정", "반영", "수요예측"],
+  결정: ["산정", "반영"],
   공모: ["청약", "모집"],
   청약: ["공모", "모집"],
   배당: ["수익", "분배"],
@@ -50,6 +52,11 @@ const REQUEST_WORDS = new Set([
   "알려줘",
   "알려주세요",
   "알려",
+  "확인해줘",
+  "확인해주세요",
+  "조회",
+  "조회해줘",
+  "조회해주세요",
   "줘",
   "주세요",
   "어떻게",
@@ -75,6 +82,12 @@ export const isRankingRequest = (value: string): boolean =>
   normalizeKorean(value)
     .split(" ")
     .some((token) => ["추천", "안전", "최고", "적정가"].some((term) => token.startsWith(term)));
+
+export const isPricingBasisQuery = (value: string): boolean => {
+  const normalized = normalizeKorean(value);
+  return /(?:가격|공모가|금액|단가|수요\s*예측)/.test(normalized) &&
+    /(?:기준|산정|산출|방법|왜|결정|수요\s*예측|근거|정해|책정)/.test(normalized);
+};
 
 const termGroupsOf = (query: string): readonly (readonly string[])[] => {
   const normalized = normalizeSearchQuery(query);

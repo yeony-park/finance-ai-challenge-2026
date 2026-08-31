@@ -13,6 +13,7 @@ import { ReportFoot } from "@/components/report/ReportFoot";
 import { HistorySection, PriceSection } from "@/components/report/SummaryLayers";
 import { WatchSection } from "@/components/report/WatchSection";
 import { ScenarioDetail } from "@/components/real-estate-scenario/ScenarioDetail";
+import { CattleFilingEvidenceQuery } from "@/components/real-estate-scenario/ScenarioEvidenceQuery";
 import {
   buildOfferSchedule,
   classifyRealEstateOffer,
@@ -26,6 +27,7 @@ import {
   loadApprovedScenarios,
   routableLegacyScenarios,
 } from "@/lib/knowledge/loader";
+import { loadApprovedCattleFilingArtifact } from "@/lib/knowledge/cattle-filing-artifact";
 import { loadLatestReplayDiff } from "@/lib/verify/amend/replay-load";
 import {
   toAmendmentReplayView,
@@ -203,6 +205,7 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
     filingFacts,
     productSummary,
     investmentReview,
+    cattleFilingArtifact,
   ] = await Promise.all([
     loadWatchStatus(id),
     loadAmendmentReplay(id),
@@ -211,6 +214,7 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
     loadFilingFacts(id),
     loadProductSummary(id),
     loadInvestmentReview(id),
+    loadApprovedCattleFilingArtifact("cattle", id),
   ]);
 
   const offerEntry = OFFERS.find((offer) => offer.id === id) ?? null;
@@ -278,6 +282,11 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
         }
       >
         {filingFacts ? <FilingFactsSection facts={filingFacts} /> : null}
+        {cattleFilingArtifact ? (
+          <div className={s.wrap}>
+            <CattleFilingEvidenceQuery productId={id} />
+          </div>
+        ) : null}
         <WatchSection
           watch={watch}
           replay={replay}

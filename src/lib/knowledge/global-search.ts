@@ -72,6 +72,7 @@ export interface GlobalSearchOptions {
   readonly semanticMatches?: readonly SemanticProductMatch[];
   readonly minimumInvestmentWonMin?: number;
   readonly minimumInvestmentWonMax?: number;
+  readonly loadCattleFilings?: typeof loadApprovedCattleFilingArtifacts;
 }
 
 const matchFields = (
@@ -162,6 +163,12 @@ const intentsOf = (value: string): {
 const assetKindOf = (categoryId: GlobalSearchResult["categoryId"]): GlobalSearchResult["assetKind"] =>
   categoryId === "real-estate" ? "real-estate" : "livestock";
 
+const isCattleFilingQuery = (
+  query: string,
+  categoryId?: GlobalSearchResult["categoryId"],
+): boolean => categoryId === "cattle" || categoryId === undefined &&
+  /공모\s*가격|공모가(?:액)?|배정|사업\s*기간|운용\s*기간|수수료|보호\s*기금|투자자\s*보호|가격\s*산정|수요\s*예측/.test(query);
+
 export const searchOffers = async (
   query: GlobalSearchQuery | GlobalSearchRequest,
   dataRoot?: string,
@@ -201,10 +208,14 @@ export const searchOffers = async (
     item.scenarioId === scenarioId
   )?.score ?? 0;
   const now = new Date();
+  const categoryId = query.categoryId ?? intent.categoryId;
+  const cattleFilingsPromise = isCattleFilingQuery(queryText, categoryId)
+    ? (options.loadCattleFilings ?? loadApprovedCattleFilingArtifacts)(dataRoot)
+    : Promise.resolve([]);
   const [population, commonProducts, cattleFilings, resolvedRepositories] = await Promise.all([
     loadApprovedScenarios(dataRoot),
     loadApprovedCommonProducts(dataRoot),
-    loadApprovedCattleFilingArtifacts(dataRoot),
+    cattleFilingsPromise,
     repositories ?? resolveRetrievalRepositories({ dataDir: dataRoot }),
   ]);
   const cattleFilingByProduct = new Map(cattleFilings.map((artifact) => [

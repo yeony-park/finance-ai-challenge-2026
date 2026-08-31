@@ -23,6 +23,10 @@ import { resolveWithin } from "./loader";
 
 const MAX_CATTLE_ARTIFACT_BYTES = 2 * 1024 * 1024;
 const SAFE_PRODUCT_ID = /^[a-z0-9-]+$/;
+export const CATTLE_FILING_PUBLIC_LIMITATIONS = [
+  "DART 원문의 상품별 확인 항목만 구조화했습니다.",
+  "발행 주체와 운영 주체의 동일성을 확인하지 못해 청약 미달 답변을 보류합니다.",
+] as const;
 
 const isPublicReady = (artifact: CattleFilingDerivedArtifact): boolean => {
   return artifact.registry.relationship.mappingStatus === "confirmed" &&
@@ -189,8 +193,7 @@ export const matchesCattleFilingKnowledge = (
     document.approvedForPublic !== true ||
     document.approvedForExternalAi !== false ||
     document.piiReviewStatus !== "passed" ||
-    ![artifact.document.limitations, expectedDocument.limitations]
-      .some((limitations) => isDeepStrictEqual(document.limitations, limitations))
+    !isDeepStrictEqual(document.limitations, expectedDocument.limitations)
   ) return false;
   const chunks = new Map(knowledge.chunks.map((chunk) => [chunk.chunkId, chunk]));
   const expectedChunks = new Map(expectedKnowledge.chunks.map((chunk) => [chunk.chunkId, chunk]));
@@ -220,8 +223,7 @@ export const matchesCattleFilingKnowledge = (
       actual.text === source.text &&
       actual.canonicalText === source.canonicalText &&
       actual.chunkHash === source.chunkHash &&
-      [source.limitations, expectedLimitations]
-        .some((limitations) => isDeepStrictEqual(actual.limitations, limitations)) &&
+      isDeepStrictEqual(actual.limitations, expectedLimitations) &&
       calculateCommonChunkHash({
         page: actual.page,
         text: actual.text,
@@ -235,11 +237,7 @@ export const matchesCattleFilingKnowledge = (
 export const cattleFilingKnowledge = (
   artifact: CattleFilingDerivedArtifact,
 ): ProductKnowledgeResult => {
-  const limitations = [...new Set([
-    ...artifact.document.limitations,
-    ...artifact.limitations,
-    ...artifact.registry.relationship.limitations,
-  ])];
+  const limitations = [...CATTLE_FILING_PUBLIC_LIMITATIONS];
   const document: ProductKnowledgeDocument = {
     categoryId: "cattle",
     productId: artifact.registry.offerId,
@@ -266,7 +264,7 @@ export const cattleFilingKnowledge = (
     text: chunk.text,
     canonicalText: chunk.canonicalText,
     chunkHash: chunk.chunkHash,
-    limitations: [...new Set([...chunk.limitations, ...artifact.limitations])],
+    limitations,
   }));
   const evidenceGroups: ProductKnowledgeEvidenceGroup[] = [{
     groupKind: "issuer-claim",
@@ -293,7 +291,7 @@ export const cattleFilingKnowledge = (
     asOf: observation.observedAt,
     dataNature: "observed",
     sourceHash: observation.sourceHash,
-    limitations: observation.limitations,
+    limitations: [],
     items: observation.fieldSummary.map((summary) => ({
       evidenceId: `external-${summary.field}`,
       label: summary.field,

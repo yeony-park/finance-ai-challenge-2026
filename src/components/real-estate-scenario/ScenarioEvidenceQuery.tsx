@@ -22,6 +22,7 @@ interface EvidenceResult {
   readonly evidence: readonly EvidenceHit[];
   readonly limitations: readonly string[];
   readonly answerSource: "structured" | "approved_cache" | "live_llm" | "none";
+  readonly responseKind?: "scope-guidance";
   readonly structuredSources?: readonly StructuredSource[];
 }
 
@@ -39,8 +40,9 @@ const OUTCOME_LABEL: Readonly<Record<EvidenceResult["outcome"], string>> = {
 };
 
 export const evidenceResultTitle = (
-  result: Pick<EvidenceResult, "outcome" | "answerSource" | "structuredSources">,
+  result: Pick<EvidenceResult, "outcome" | "answerSource" | "structuredSources" | "responseKind">,
 ): string => {
+  if (result.responseKind === "scope-guidance") return "검색 범위 안내";
   if (result.answerSource === "structured") {
     return result.structuredSources && result.structuredSources.length > 0
       ? "공식 공개정보에서 확인"
@@ -52,6 +54,7 @@ export const evidenceResultTitle = (
 };
 
 export const evidenceSourceLabel = (result: EvidenceResult): string => {
+  if (result.responseKind === "scope-guidance") return "검색 범위 안내";
   if (result.answerSource === "structured") {
     return result.structuredSources && result.structuredSources.length > 0
       ? "공식 공개정보"
@@ -102,6 +105,13 @@ export const COMMON_EVIDENCE_EXAMPLES = [
   "이 상품의 핵심 조건은 무엇인가요?",
   "위험 요인은 무엇인가요?",
   "수수료와 회수 조건은 무엇인가요?",
+] as const;
+
+export const CATTLE_FILING_EVIDENCE_EXAMPLES = [
+  "공모가격은 얼마인가요?",
+  "예상 사업기간은 얼마인가요?",
+  "수수료는 어떻게 되나요?",
+  "투자자보호기금은 어떻게 운영되나요?",
 ] as const;
 
 export const safeCitationUrl = (value: string): string | null => {
@@ -195,7 +205,7 @@ export type EvidenceQueryScope =
       readonly categoryId: "cattle" | "pig" | "art" | "real-estate";
       readonly productId: string;
       readonly dataNature: "observed";
-      readonly namespace: "common";
+      readonly namespace: "common" | "published-offer";
       readonly scenarioId?: never;
     }
   | {
@@ -205,6 +215,13 @@ export type EvidenceQueryScope =
       readonly namespace: "common";
       readonly scenarioId: string;
     };
+
+export const cattleFilingEvidenceScope = (productId: string): EvidenceQueryScope => ({
+  categoryId: "cattle",
+  productId,
+  dataNature: "observed",
+  namespace: "published-offer",
+});
 
 export const evidenceRequestBody = (scope: EvidenceQueryScope, q: string) => ({
   ...scope,
@@ -321,6 +338,16 @@ export function ScenarioEvidenceQuery({
       scope={{ scenarioId, offerId }}
       examples={SCENARIO_EXAMPLES}
       lead="투자 조건은 등록된 시나리오 조건에서 확인하고, 문서 질문은 해당 상품에 연결된 공개 문서 범위에서만 찾습니다. 확인 자료가 없으면 답을 만들지 않고 보류합니다."
+    />
+  );
+}
+
+export function CattleFilingEvidenceQuery({ productId }: { readonly productId: string }) {
+  return (
+    <EvidenceQuery
+      scope={cattleFilingEvidenceScope(productId)}
+      examples={CATTLE_FILING_EVIDENCE_EXAMPLES}
+      lead="DART 공시와 축산물이력 외부 대조를 구분해 확인합니다. 현재는 이 상품에 연결된 공시 근거만 보여주며, 투자 판단이나 생성 답변을 만들지 않습니다."
     />
   );
 }

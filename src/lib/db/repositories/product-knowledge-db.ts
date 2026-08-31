@@ -6,6 +6,7 @@ import {
   isSafeScenarioDocumentPath,
 } from "@/lib/knowledge/schema";
 import { isExactDartPublicUrl } from "@/lib/verify/dart/filing-registry";
+import { CATTLE_FILING_PUBLIC_LIMITATIONS } from "@/lib/knowledge/cattle-filing-artifact";
 import { getRuntimeDb } from "../client";
 import type {
   ProductKnowledgeChunk,
@@ -162,7 +163,7 @@ export const createDbProductKnowledgeRepository = (
         approvedForPublic: row.document_approved_for_public && row.chunk_approved_for_public,
         approvedForExternalAi: isCattleFiling ? false : row.approved_for_external_ai,
         piiReviewStatus: row.pii_review_status,
-        limitations: row.document_limitations,
+        limitations: isCattleFiling ? CATTLE_FILING_PUBLIC_LIMITATIONS : row.document_limitations,
       };
       documents.set(base.documentId, base);
       return {
@@ -173,7 +174,7 @@ export const createDbProductKnowledgeRepository = (
         text: row.text,
         canonicalText: row.canonical_text,
         chunkHash: row.chunk_hash,
-        limitations: row.chunk_limitations,
+        limitations: isCattleFiling ? CATTLE_FILING_PUBLIC_LIMITATIONS : row.chunk_limitations,
       };
     });
     return { documents: [...documents.values()], chunks };

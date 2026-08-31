@@ -37,6 +37,23 @@ describe("knowledge chunk search", () => {
       .toEqual(["chunk-relevant"]);
   });
 
+  it("가격 근거 검색은 다른 자산의 공모가격 특례로 치환하지 않는다", () => {
+    const saleBasis = {
+      ...validChunk(),
+      chunkId: "sale-basis",
+      title: "매각가격 근거",
+      text: "매각가격 근거는 공개 감정평가입니다.",
+    };
+    const offeringBasis = {
+      ...validChunk(),
+      chunkId: "offering-basis",
+      title: "공모가격 산정",
+      text: "수요예측 결과를 반영했습니다.",
+    };
+    expect(searchChunks([offeringBasis, saleBasis], "매각가격 근거", 5).map((hit) => hit.chunkId))
+      .toEqual(["sale-basis"]);
+  });
+
   it("승인 표준 질문을 실제 PDF의 관련 쪽에 연결하고 재생성 cache를 사용한다", async () => {
     const scope = await loadKnowledgeScope("re-scenario-01", "re-offer-01");
     const cases = [
