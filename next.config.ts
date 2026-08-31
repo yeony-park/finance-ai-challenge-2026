@@ -34,11 +34,7 @@ const nextConfig: NextConfig = {
     dangerouslyAllowLocalIP: false,
   },
   outputFileTracingIncludes: {
-    "/**": [
-      "data/public/**/*.json",
-      "data/reference/**/*.json",
-      "db/certs/*.pem",
-    ],
+    "/**": ["data/public/**/*.json", "data/reference/**/*.json"],
   },
   outputFileTracingExcludes: {
     "/**": [
