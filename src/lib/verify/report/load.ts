@@ -66,3 +66,20 @@ export const loadLatestReport = async (offerId: string): Promise<LoadedReport> =
   }
   return { report, fileName, versionCount: files.length };
 };
+
+export const loadLatestReportOrNull = async (
+  offerId: string,
+  loader: (id: string) => Promise<LoadedReport> = loadLatestReport,
+): Promise<LoadedReport | null> => {
+  try {
+    return await loader(offerId);
+  } catch (error) {
+    if (error instanceof ReportNotFoundError) {
+      console.error(
+        `[offers] 리포트 없는 게시 공모 — 카드 생략: ${offerId}`,
+      );
+      return null;
+    }
+    throw error;
+  }
+};

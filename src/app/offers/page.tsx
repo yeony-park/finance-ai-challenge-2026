@@ -9,7 +9,7 @@ import {
 import { OFFERS } from "@/components/site/offers";
 import { loadLatestWatchState } from "@/lib/verify/amend/watch-state";
 import { loadFilingFacts } from "@/lib/verify/report/filing-facts";
-import { loadLatestReport } from "@/lib/verify/report/load";
+import { loadLatestReportOrNull } from "@/lib/verify/report/load";
 import { buildOfferCard, type OfferCardView } from "@/lib/verify/report/view-model";
 
 export const metadata: Metadata = {
@@ -23,13 +23,14 @@ const byCloseAsc = (a: OfferCardView, b: OfferCardView): number =>
 export default async function OffersPage() {
   const now = new Date();
 
-  const cards = await Promise.all(
+  const built = await Promise.all(
     OFFERS.map(async (offer) => {
       const [loaded, watch, filingFacts] = await Promise.all([
-        loadLatestReport(offer.id),
+        loadLatestReportOrNull(offer.id),
         loadLatestWatchState(offer.id),
         loadFilingFacts(offer.id),
       ]);
+      if (loaded === null) return null;
       return buildOfferCard({
         offer,
         now,
@@ -38,6 +39,9 @@ export default async function OffersPage() {
         hasFilingFacts: filingFacts !== null,
       });
     }),
+  );
+  const cards = built.filter(
+    (card): card is OfferCardView => card !== null,
   );
 
   const upcoming = cards

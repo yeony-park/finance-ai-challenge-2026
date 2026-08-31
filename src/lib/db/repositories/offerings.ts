@@ -32,6 +32,9 @@ const rawSourceSchema = z
   })
   .strict();
 
+const ISO_OFFSET_PATTERN =
+  /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}$/;
+
 const rawOfferSchema = z.object({
   offerId: z.string().min(1),
   publicAlias: z.string().min(1),
@@ -43,8 +46,14 @@ const rawOfferSchema = z.object({
       amountWon: z.number().int().nullable().optional(),
       opensOn: z.string().optional(),
       closesOn: z.string().optional(),
-      opensAt: z.string().optional(),
-      closesAt: z.string().optional(),
+      opensAt: z
+        .string()
+        .regex(ISO_OFFSET_PATTERN, "opensAt은 ISO 8601(오프셋 포함)이어야 합니다")
+        .optional(),
+      closesAt: z
+        .string()
+        .regex(ISO_OFFSET_PATTERN, "closesAt은 ISO 8601(오프셋 포함)이어야 합니다")
+        .optional(),
       unitCount: z.number().optional(),
       unitPriceWon: z.number().optional(),
     })
