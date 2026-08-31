@@ -15,7 +15,7 @@ rationale: docs/spec/09-stack-and-storage.md
 | ② Vercel Blob | 정정 감시 이벤트 스토어 | 불가 |
 | ③ Postgres (**AWS RDS** + pgvector, ap-northeast-2 — 2026-08-31 오너 결정으로 이전) | 더미·참조 원장 + RAG 코퍼스 | **불가** |
 
-- **R-STO-01 (MUST)** DB 접근 경로는 둘뿐: ①수집·생성 CLI(적재 후 `db:export`로 파일 캐시에 내보냄) ②`POST /api/search` RAG 검색(M2+). 렌더 경로·서버 컴포넌트에서 DB 조회 금지.
+- **R-STO-01 (MUST)** DB 접근 경로는 둘뿐: ①수집·생성 CLI(적재 후 `db:export`로 파일 캐시에 내보냄) ②`POST /api/search` RAG 검색(M2+). 렌더 경로·서버 컴포넌트에서 DB 조회 금지. **단서(2026-08-31)**: `GET /api/products`(08 예외 4분류)는 **파일 리포지토리 전용** — `resolveOfferingsRepository`가 런타임에서 DB 트윈을 반환하도록 확장하는 것은 본 규칙의 세 번째 경로 신설이며 금지. 재개정 조건은 상품 수가 커밋 사이클로 감당 불가하거나 실시간 갱신 요구가 생길 때뿐이다.
 - **R-STO-02 (MUST)** `DATABASE_URL` 미설정 = file 모드. DB 리포지토리마다 `data/` JSON을 읽는 fake 트윈이 같은 인터페이스로 응답해야 하며, DB 없이 빌드·테스트·verify 완주(R-INV-05).
 - **R-STO-03 (MUST)** `db:export`만이 화면 데이터를 만든다. export 산출물은 마스킹 2단 + 익명화 게이트(R-INV-03)를 동일 통과. DB에서 화면 JSON으로 가는 다른 경로 금지.
 - **R-STO-03a (MUST)** `db:seed`는 원천 경로가 `data/raw/`·`data/snapshots/`·`data/reports/`(로컬 전용)이면 즉시 실패 — CLI 진입점 하드코딩. R-STO-04의 유일한 기계 강제 지점.

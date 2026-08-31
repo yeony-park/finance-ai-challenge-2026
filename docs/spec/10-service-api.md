@@ -7,13 +7,16 @@
 
 ## 1. 범위와 공통 규칙
 
-서비스 API는 세 개다. `health`와 라이브 재검증은 서비스 화면에서 사용할 수 있는 공개 표면이며, 정정 감시는 Vercel Cron만 호출하는 운영용 표면이다.
+서비스 API는 여섯 개다(2026-08-31 갱신 — 상품 조회 2종·AI 상품 문답 추가). `health`·라이브 재검증·상품 조회·AI 상품 문답은 공개 표면이며, 정정 감시는 Vercel Cron만 호출하는 운영용 표면이다.
 
 | 구분 | 메서드 · 경로 | 용도 | 공개 여부 |
 |---|---|---|---|
 | 상태 확인 | `GET /api/health` | 서비스 기동 상태 확인 | 공개 |
 | 라이브 재검증 | `POST /api/verify/{id}` | 공개 공모를 최신 공시·공공 원장으로 다시 대조 | 공개 |
 | 정정 감시 | `GET /api/cron/monitor` | 대상 공모의 기재정정 여부 확인 및 이벤트 저장 | 운영 전용 |
+| 상품 목록 | `GET /api/products` | 수동 검증 미술품 5건 공개 문맥 (08 예외 4분류) | 공개 |
+| 상품 단건 | `GET /api/products/{id}` | 위와 동일, `art-{양의정수}` id | 공개 |
+| AI 상품 문답 | `POST /api/ai/ask-product` | 미술 상품 문맥 한정 Q&A — 한시 표면, 일몰 조항은 08 예외 5분류 | 공개 |
 
 - Base URL은 배포 환경의 origin이다. 예: `https://jeom-jeom.vercel.app`.
 - 이 문서에 명시한 응답은 JSON이다. Live Verify와 Cron Monitor는 응답 헤더 `Cache-Control: no-store`를 명시한다. Health는 현재 헤더를 직접 설정하지 않으며, 캐시 헤더 계약 통일은 E2E 검증 항목으로 남아 있다. 예기치 않은 런타임·플랫폼 오류의 `5xx` 본문 형식은 계약에 포함하지 않는다.
@@ -265,9 +268,16 @@ curl -sS \
 3. 공개 응답에 식별 가능한 이력번호·실명·상세 주소·농장번호를 추가해서는 안 된다. 응답 변경 전 마스킹 테스트를 통과해야 한다.
 4. `/api/cron/monitor`의 인증 비밀값과 외부 API 키는 문서 예시·응답·로그에 기록하지 않는다.
 
+## 5.1 상품 조회 · AI 상품 문답 (요약 — 상세 계약은 08 §"공개 상품 문맥"과 예외 5분류)
+
+- `GET /api/products`: 인증 없음 · `Cache-Control: no-store`. 쿼리 `category=art|q|page|pageSize`(Zod strict, pageSize 최대 100). 응답 `{items, total, pagination}`. 원천은 커밋된 파일 리포지토리 — DB·외부 원장 미접촉(R-STO-01 단서).
+- `GET /api/products/{id}`: id 형식 오류 400 `validation_error` · 미공개 404 `not_found`.
+- `POST /api/ai/ask-product`: 본문 `{productId, question(≤1,000자)}` · 8KB 바운드 파싱 · 출처(origin) 검증 · 입력 스크리닝 · IP 레이트리밋(초과 429 + `Retry-After`) · 응답은 출력 필터 통과분만. 한시 표면 — `/api/search` 개통 시 통합·폐지(08 예외 5분류의 일몰 조항).
+
 ## 6. 구현 근거
 
-- 라우트: `src/app/api/health/route.ts`, `src/app/api/verify/[id]/route.ts`, `src/app/api/cron/monitor/route.ts`
+- 라우트: `src/app/api/health/route.ts`, `src/app/api/verify/[id]/route.ts`, `src/app/api/cron/monitor/route.ts`, `src/app/api/products/route.ts`, `src/app/api/products/[id]/route.ts`, `src/app/api/ai/ask-product/route.ts`
+- 상품 조회·코파일럿: `src/lib/art/product-repository.ts`, `src/lib/art/copilot/`(http·request-guard·service)
 - 라이브 재검증 계약·폴백: `src/lib/verify/live/revalidate.ts`, `src/lib/verify/live/response.ts`
 - 정정 감시·인증·저장: `src/lib/verify/amend/monitor.ts`, `src/lib/verify/amend/cron-auth.ts`, `src/lib/verify/amend/event-store.ts`
 - 배포 Cron: `vercel.json`
