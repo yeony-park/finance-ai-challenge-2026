@@ -180,7 +180,7 @@ describe("product knowledge DB write", () => {
     await writeKnowledgeIngestPlan(plan, executor, KNOWLEDGE_FULL_SNAPSHOT);
     await writeKnowledgeIngestPlan(plan, executor, KNOWLEDGE_FULL_SNAPSHOT);
 
-    expect({ documentCount, chunkCount }).toEqual({ documentCount: 13, chunkCount: 190 });
+    expect({ documentCount, chunkCount }).toEqual({ documentCount: 14, chunkCount: 195 });
     expect(executor.documents).toHaveLength(documentCount);
     expect(executor.chunks).toHaveLength(chunkCount);
     const transactionEventCount = documentCount + chunkCount + 1;

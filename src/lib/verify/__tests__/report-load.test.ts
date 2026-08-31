@@ -1,4 +1,7 @@
 import { describe, expect, test } from "vitest";
+import { loadLatestReplayDiff } from "../amend/replay-load";
+import { loadLatestWatchState } from "../amend/watch-state";
+import { loadNarrative } from "../narrative/cache";
 import { loadLatestReport, pickLatestFileName } from "../report/load";
 import { parseReportSnapshot } from "../report/snapshot";
 
@@ -36,6 +39,34 @@ describe("loadLatestReport — 스냅샷 JSON 로딩 (읽기 전용)", () => {
     expect(loaded.report.unjudged.length).toBeGreaterThan(0);
     expect(loaded.fileName).toMatch(/^report-.*\.json$/);
     expect(loaded.versionCount).toBeGreaterThanOrEqual(1);
+    expect(loaded.report.document.rcpNo).toBe("20260814003572");
+  });
+
+  test("pending cattle의 남아 있는 공개 파일은 loader에서 모두 숨긴다", async () => {
+    await expect(loadLatestReport("livestock-1")).rejects.toThrow(
+      /리포트를 찾을 수 없습니다/,
+    );
+    await expect(loadLatestReplayDiff("livestock-1")).resolves.toBeUndefined();
+    await expect(loadLatestWatchState("livestock-1")).resolves.toBeUndefined();
+    await expect(
+      loadNarrative("livestock-1", "20240619000091"),
+    ).resolves.toBeNull();
+  });
+
+  test("active cattle의 exact RCP 공개 자료만 읽는다", async () => {
+    await expect(loadLatestReplayDiff("livestock-9")).resolves.toMatchObject({
+      offerId: "livestock-9",
+      diff: { to: { rcpNo: "20260814003572" } },
+    });
+    await expect(
+      loadNarrative("livestock-9", "20260814003572"),
+    ).resolves.toMatchObject({
+      offerId: "livestock-9",
+      rcpNo: "20260814003572",
+    });
+    await expect(
+      loadNarrative("livestock-9", "20260806000159"),
+    ).resolves.toBeNull();
   });
 
   test("리포트가 없는 공모는 사람이 읽을 수 있는 오류를 던진다", async () => {

@@ -108,6 +108,49 @@ describe("cattle filing derived artifact", () => {
     expect(JSON.stringify(first)).not.toMatch(/traceNo|cattleNo|farmNo|currentFarmNo|farmer|address|farmHistory/i);
   });
 
+  it("exact registry가 있으면 livestock-N scope와 masked report 경로를 일반화한다", () => {
+    const genericReport = new TextEncoder().encode(JSON.stringify({
+      offerId: "livestock-8",
+      generatedAt: "2026-08-15T15:52:44.480Z",
+      judgements: [{ verdict: "match", claim: { field: "품종" } }],
+    }));
+    const generic = DartFilingRegistrySchema.parse({
+      ...registry(),
+      offerId: "livestock-8",
+      rcpNo: "20260414002068",
+      submittedOn: "2026-04-14",
+      entry: { name: "20260414002068.xml", sha256: sha256(xml) },
+      source: {
+        ...registry().source,
+        exactPublicUrl: "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260414002068",
+      },
+      maskedObservation: {
+        ...registry().maskedObservation,
+        reportPath: "public/livestock-8/report.json",
+        sha256: sha256(genericReport),
+      },
+    });
+    const artifact = buildCattleFilingDerivedArtifact({
+      registry: generic,
+      xml,
+      filingFacts: parseFilingFacts({
+        schemaVersion: 1,
+        offerId: "livestock-8",
+        rcpNo: "20260414002068",
+        submittedOn: "20260414",
+        facts: [{ id: "operation-period", label: "예상 사업기간", value: "26개월입니다.", section: "1. 공모개요" }],
+      }),
+      maskedObservationRaw: genericReport,
+      sourceFileMtime: "2026-08-31T01:02:03.000Z",
+    });
+    expect(artifact.document.productId).toBe("livestock-8");
+    expect(artifact.externalObservations).toHaveLength(1);
+    expect(DartFilingRegistrySchema.safeParse({
+      ...generic,
+      maskedObservation: { ...generic.maskedObservation, reportPath: "public/livestock-9/report.json" },
+    }).success).toBe(false);
+  });
+
   it("민감 식별 필드가 승인 section에 섞이면 fail-closed한다", () => {
     const input = registry();
     const piiXml = xml.replace("26개월", "26개월 농장주소");

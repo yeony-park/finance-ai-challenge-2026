@@ -4,6 +4,10 @@ import {
   cattleFilingKnowledge,
   loadApprovedCattleFilingArtifact,
 } from "@/lib/knowledge/cattle-filing-artifact";
+import {
+  loadApprovedPigFilingArtifact,
+  pigFilingKnowledge,
+} from "@/lib/knowledge/pig-filing-artifact";
 import type {
   ProductKnowledgeChunk,
   ProductKnowledgeDocument,
@@ -148,6 +152,10 @@ export const createFileProductKnowledgeRepository = (
     if (scope.categoryId === "cattle" && scope.dataNature === "observed") {
       const artifact = await loadApprovedCattleFilingArtifact(scope.categoryId, scope.productId, dataRoot);
       if (artifact) return cattleFilingKnowledge(artifact);
+    }
+    if (scope.categoryId === "pig" && scope.dataNature === "observed") {
+      const artifact = await loadApprovedPigFilingArtifact(scope.categoryId, scope.productId, dataRoot);
+      if (artifact) return pigFilingKnowledge(artifact);
     }
     return (await fromCommon(scope, dataRoot)) ?? fromLegacyScenario(scope, dataRoot);
   },

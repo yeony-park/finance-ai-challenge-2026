@@ -17,6 +17,7 @@ import {
   loadDartFilingRegistry,
   sha256,
 } from "@/lib/verify/dart/filing-registry";
+import { isActiveOnboardingProduct } from "@/lib/verify/dart/onboarding-catalog";
 import { calculateCommonChunkHash } from "./pdf";
 
 import { resolveWithin } from "./loader";
@@ -29,7 +30,8 @@ export const CATTLE_FILING_PUBLIC_LIMITATIONS = [
 ] as const;
 
 const isPublicReady = (artifact: CattleFilingDerivedArtifact): boolean => {
-  return artifact.registry.relationship.mappingStatus === "confirmed" &&
+  return isActiveOnboardingProduct("cattle", artifact.registry.offerId, artifact.registry.rcpNo) &&
+    artifact.registry.relationship.mappingStatus === "confirmed" &&
     artifact.registry.categoryId === "cattle" &&
     artifact.registry.offerId === artifact.document.productId &&
     artifact.document.categoryId === "cattle" &&

@@ -23,6 +23,10 @@ import {
   loadApprovedCattleFilingArtifact,
   matchesCattleFilingKnowledge,
 } from "@/lib/knowledge/cattle-filing-artifact";
+import {
+  loadApprovedPigFilingArtifact,
+  matchesPigFilingKnowledge,
+} from "@/lib/knowledge/pig-filing-artifact";
 
 export const runtime = "nodejs";
 
@@ -57,11 +61,19 @@ export const POST = async (request: Request): Promise<Response> => {
       const publishedScope = offeringsRepository
         ? await findPublishedOfferingScope(offeringsRepository, query.categoryId, query.productId)
         : null;
+      const inferredPigArtifact =
+        query.namespace === undefined && query.categoryId === "pig" && query.dataNature === "observed"
+          ? await loadApprovedPigFilingArtifact(query.categoryId, query.productId)
+          : null;
       if (publishedScope?.status === "category-mismatch") return invalidRequest();
-      if (!query.namespace && [Boolean(scenario), Boolean(commonScope?.product), publishedScope?.status === "found"].filter(Boolean).length > 1) {
+      if (!query.namespace && [
+        Boolean(scenario),
+        Boolean(commonScope?.product),
+        publishedScope?.status === "found" || inferredPigArtifact !== null,
+      ].filter(Boolean).length > 1) {
         return invalidRequest();
       }
-      if (query.namespace === "published-offer" || publishedScope?.status === "found") {
+      if (query.namespace === "published-offer" || publishedScope?.status === "found" || inferredPigArtifact) {
         const productKnowledgeRepository = await resolveProductKnowledgeRepository();
         const productKnowledge = await productKnowledgeRepository.findExact({
           categoryId: query.categoryId,
@@ -72,13 +84,22 @@ export const POST = async (request: Request): Promise<Response> => {
           offer.id === query.productId &&
           (offer.assetKind === "real-estate" ? "real-estate" : "cattle") === query.categoryId
         );
-        const artifact = publishedScope?.status === "found"
+        const cattleArtifact = publishedScope?.status === "found" || query.categoryId !== "cattle"
           ? null
           : await loadApprovedCattleFilingArtifact(query.categoryId, query.productId);
-        const artifactBacked = publishedScope?.status !== "found" &&
+        const pigArtifact = inferredPigArtifact ?? (query.categoryId !== "pig"
+          ? null
+          : await loadApprovedPigFilingArtifact(query.categoryId, query.productId));
+        const artifact = cattleArtifact ?? pigArtifact;
+        const cattleArtifactBacked = cattleArtifact !== null &&
           query.namespace === "published-offer" &&
           registryProduct !== undefined &&
-          matchesCattleFilingKnowledge(artifact, productKnowledge);
+          matchesCattleFilingKnowledge(cattleArtifact, productKnowledge);
+        const pigArtifactBacked = pigArtifact !== null &&
+          query.namespace !== "common" && query.namespace !== "legacy-scenario" &&
+          matchesPigFilingKnowledge(pigArtifact, productKnowledge);
+        const artifactBacked = cattleArtifactBacked || pigArtifactBacked;
+        if (query.categoryId === "pig" && !pigArtifactBacked) return invalidRequest();
         if (publishedScope?.status !== "found" && !artifactBacked) return invalidRequest();
         const exactRetrieval = await retrieveExactProductEvidence({
           scope: {

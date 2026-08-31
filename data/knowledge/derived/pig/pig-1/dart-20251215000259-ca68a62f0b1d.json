@@ -1,0 +1,408 @@
+{
+  "schemaVersion": 1,
+  "artifactVersion": "pig-filing-derived-v1",
+  "artifactHash": "d43e0de53e0d7d42786a6b1554ea4ee7d1fc943984e62fda3febcb39dccd56f7",
+  "registry": {
+    "schemaVersion": 1,
+    "registryVersion": "dart-pig-filing-registry-v1",
+    "categoryId": "pig",
+    "productId": "pig-1",
+    "rcpNo": "20251215000259",
+    "submittedOn": "2025-12-15",
+    "entry": {
+      "name": "20251215000259.xml",
+      "sha256": "ca68a62f0b1d896c8c853b4daee7bb64e0aec58ee7f0b660a3cec85d59e26b06"
+    },
+    "source": {
+      "landingUrl": "https://dart.fss.or.kr/dsaf001/main.do",
+      "exactPublicUrl": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20251215000259",
+      "collectedAtSource": "local raw XML file mtime",
+      "method": "로컬 exact primary OpenDART document.xml의 승인 locator와 source hash 검증"
+    },
+    "relationship": {
+      "type": "primary",
+      "mappingStatus": "confirmed",
+      "mappingEvidence": "사용자가 지정한 pig-1 파일럿과 exact primary RCP를 대조하고, 각 공개 locator가 pig-1 원자 excerpt에 속함을 수기 확인했습니다.",
+      "limitations": [
+        "승인된 비민감 원자 excerpt 밖의 정보는 상품 근거로 사용하지 않습니다.",
+        "공모개요 표의 사업기간 필드는 동일 excerpt에 식별 가능 정보가 포함돼 공개 artifact에서 제외했습니다.",
+        "실물·개인 식별 가능 항목과 기존 복합 filing-facts는 사용하지 않습니다."
+      ]
+    },
+    "approval": {
+      "policyId": "pig-filing-pilot-v1",
+      "scope": "pig-1 비민감 원자 XML excerpt 5개",
+      "externalAiApproved": false,
+      "piiReviewStatus": "passed"
+    },
+    "sectionLocators": [
+      {
+        "factId": "offering-terms",
+        "title": "공모 좌수·단가·총액",
+        "anchor": "10,812",
+        "sectionPath": [
+          "요약정보",
+          "1. 핵심투자위험",
+          "2. 모집 또는 매출에 관한 일반사항"
+        ],
+        "occurrence": 2,
+        "evidenceTokens": [
+          "10,812",
+          "20,000",
+          "216,240,000"
+        ],
+        "normalizedExcerptHash": "4868d0a945f3e897bc9ebd0123fe4319a50c96681552bfc5927b80cb1a247a43"
+      },
+      {
+        "factId": "subscription-payment-schedule",
+        "title": "청약·배정 및 납입 절차",
+        "anchor": "청약",
+        "sectionPath": [
+          "요약정보",
+          "1. 핵심투자위험",
+          "2. 모집 또는 매출에 관한 일반사항"
+        ],
+        "occurrence": 28,
+        "evidenceTokens": [
+          "청약",
+          "배정",
+          "납입"
+        ],
+        "normalizedExcerptHash": "1ffb9022935a1e3dc858f0daf49770b8cb8deb57b5390297a5a8617a08cb137e"
+      },
+      {
+        "factId": "limited-fee-risk",
+        "title": "한정된 수수료 위험",
+        "anchor": "수수료",
+        "sectionPath": [
+          "제1부 모집 또는 매출에 관한 사항",
+          "III. 투자위험요소",
+          "1. 사업위험",
+          "차. 한정된 수수료로 인한 위험"
+        ],
+        "occurrence": 136,
+        "evidenceTokens": [
+          "수수료",
+          "위험"
+        ],
+        "normalizedExcerptHash": "f8f434feec104a74a70919404fa77193a866d417752f4cbd46acf854c9d7e4a9"
+      },
+      {
+        "factId": "investor-compensation",
+        "title": "투자자 피해 보상 체계",
+        "anchor": "피해 보상",
+        "sectionPath": [
+          "제1부 모집 또는 매출에 관한 사항",
+          "VI. 그 밖에 투자자보호를 위해 필요한 사항",
+          "10. 투자자 보호장치에 관한 사항",
+          "바. 투자자 피해 보상 체계 및 분쟁처리 절차"
+        ],
+        "occurrence": 4,
+        "evidenceTokens": [
+          "피해 보상"
+        ],
+        "normalizedExcerptHash": "ab348e7062f1f7acdfc2ebb40786690cf9f3f868163a181d04a4fef254808491"
+      },
+      {
+        "factId": "principal-not-guaranteed",
+        "title": "원금 미보장 위험",
+        "anchor": "원금 미보장",
+        "sectionPath": [
+          "제1부 모집 또는 매출에 관한 사항",
+          "III. 투자위험요소",
+          "3. 기타위험",
+          "나. 원금 미보장과 관련된 위험"
+        ],
+        "occurrence": 3,
+        "evidenceTokens": [
+          "원금 미보장"
+        ],
+        "normalizedExcerptHash": "b908494f43183eec74a424c7b354ef119eeee844859d2d5f82ba4568e28833af"
+      }
+    ]
+  },
+  "registryHash": "93a0ad3d390968bd1593f8beefeb44a6d1d3c96ff10f655f53c1196f71efc947",
+  "sourceHash": "ca68a62f0b1d896c8c853b4daee7bb64e0aec58ee7f0b660a3cec85d59e26b06",
+  "sanitizerVersion": "pig-filing-sanitizer-v1",
+  "sourceFileMtime": "2026-08-31T15:14:10.289Z",
+  "approval": {
+    "policyId": "pig-filing-pilot-v1",
+    "scope": "pig-1 비민감 원자 XML excerpt 5개",
+    "externalAiApproved": false,
+    "piiReviewStatus": "passed"
+  },
+  "sections": [
+    {
+      "sectionId": "dart-offering-terms",
+      "factId": "offering-terms",
+      "title": "공모 좌수·단가·총액",
+      "text": "증권 기본정보 증권명칭 증권수량 액면가액 모집(매출)가액 모집(매출)총액 모집(매출)방법 가축투자계약증권 제1호(패키지발행) 10,812 20,000 20,000 216,240,000 일반공모",
+      "sectionPath": [
+        "요약정보",
+        "1. 핵심투자위험",
+        "2. 모집 또는 매출에 관한 일반사항"
+      ],
+      "charRange": {
+        "start": 26916,
+        "end": 28858
+      },
+      "anchorOffset": 28481,
+      "occurrence": 2,
+      "normalizedExcerptHash": "4868d0a945f3e897bc9ebd0123fe4319a50c96681552bfc5927b80cb1a247a43",
+      "sectionHash": "25399083f38020bec79b53a3b6c14b1457720f752a34fb6191b56ac25564bb1e"
+    },
+    {
+      "sectionId": "dart-subscription-payment-schedule",
+      "factId": "subscription-payment-schedule",
+      "title": "청약·배정 및 납입 절차",
+      "text": "청약의 방식은 균등배정, 비례배정 방식의 청약을 일괄하여 받는 방식인 ‘일괄청약방식’입니다. 따라서 일반 청약자가 비례배정 방식으로 배정을 받고자 하는 수량을 청약하면 자동으로 균등배정의 청약자로 인정됩니다. 청약자가 청약한 증권의 총 수량(이하 ‘총 청약의 수’이라 한다)이 균등배정 증권 수를 미달하는 경우, 균등배정 이후 잔여 수량은 비례배정 수량에 합산되어 비례배정하게 됩니다. 균등배정으로 인한 청약금 추가 납입 절차 등은 없습니다. 또한, 총 청약의 수가 균등배정 증권 수를 초과하는 경우, 청약신청 일시가 빠른 순인 선착순으로 배정하며, 이에 따라 균등배정으로 1주도 배정받지 못하는 경우가 발생할 수 있습니다. 일반 투자자에 대한 배정결과 발생하는 1주 미만의 단수주는 소수점 숫자가 큰 순으로 배정합니다.",
+      "sectionPath": [
+        "요약정보",
+        "1. 핵심투자위험",
+        "2. 모집 또는 매출에 관한 일반사항"
+      ],
+      "charRange": {
+        "start": 61883,
+        "end": 62315
+      },
+      "anchorOffset": 61907,
+      "occurrence": 28,
+      "normalizedExcerptHash": "1ffb9022935a1e3dc858f0daf49770b8cb8deb57b5390297a5a8617a08cb137e",
+      "sectionHash": "aa5e5b358aa46fff33f859dbee315bb37c2f8f14f7d489d5a9a85195e273e86f"
+    },
+    {
+      "sectionId": "dart-limited-fee-risk",
+      "factId": "limited-fee-risk",
+      "title": "한정된 수수료 위험",
+      "text": "본 공동사업에 필요한 운영비용은 투자계약증권 공모자금을 통해 조달할 예정이지만, 예기치 못한 비용 증가나 시장 환경 변화 등으로 인해 운영자금이 부족해질 가능성이 존재합니다. 공동사업 운영자가 청산수수료 지급 전까지 운영자금 조달에 어려움을 겪는 경우 공동사업의 성과가 악화될 수 있으므로, 투자자께서는 이러한 위험을 충분히 인지하시기 바랍니다.",
+      "sectionPath": [
+        "제1부 모집 또는 매출에 관한 사항",
+        "III. 투자위험요소",
+        "1. 사업위험",
+        "차. 한정된 수수료로 인한 위험"
+      ],
+      "charRange": {
+        "start": 1122968,
+        "end": 1123185
+      },
+      "anchorOffset": 1123098,
+      "occurrence": 136,
+      "normalizedExcerptHash": "f8f434feec104a74a70919404fa77193a866d417752f4cbd46acf854c9d7e4a9",
+      "sectionHash": "b9dde36bdb14000a4854b9a8e34cf08c78eb7ddd250e08e5936f5316df1a19b3"
+    },
+    {
+      "sectionId": "dart-investor-compensation",
+      "factId": "investor-compensation",
+      "title": "투자자 피해 보상 체계",
+      "text": "두번째 비경영적 요인에 따른 손실 보상으로 공동사업의 경영 외적 요인인 도난, 화재, 자연 재해로 인한 폐사로 투자자의 손실이 발생할 경우, 이에 대한 피해 보상금은 제2의 투자자 보호기금 및 「투자자보호기금 운영기준」에 따라 보상합니다.",
+      "sectionPath": [
+        "제1부 모집 또는 매출에 관한 사항",
+        "VI. 그 밖에 투자자보호를 위해 필요한 사항",
+        "10. 투자자 보호장치에 관한 사항",
+        "바. 투자자 피해 보상 체계 및 분쟁처리 절차"
+      ],
+      "charRange": {
+        "start": 1440329,
+        "end": 1440488
+      },
+      "anchorOffset": 1440435,
+      "occurrence": 4,
+      "normalizedExcerptHash": "ab348e7062f1f7acdfc2ebb40786690cf9f3f868163a181d04a4fef254808491",
+      "sectionHash": "f72a1b1cbfff533e0a1ca78b9ea4d1be578041745678955f628724f49d891109"
+    },
+    {
+      "sectionId": "dart-principal-not-guaranteed",
+      "factId": "principal-not-guaranteed",
+      "title": "원금 미보장 위험",
+      "text": "나. 원금 미보장과 관련된 위험",
+      "sectionPath": [
+        "제1부 모집 또는 매출에 관한 사항",
+        "III. 투자위험요소",
+        "3. 기타위험",
+        "나. 원금 미보장과 관련된 위험"
+      ],
+      "charRange": {
+        "start": 1245228,
+        "end": 1245269
+      },
+      "anchorOffset": 1245251,
+      "occurrence": 3,
+      "normalizedExcerptHash": "b908494f43183eec74a424c7b354ef119eeee844859d2d5f82ba4568e28833af",
+      "sectionHash": "dfd49de82989ad07438fbcc59e11c4d785f24ce9e81c15305da0fe487c74403d"
+    }
+  ],
+  "document": {
+    "schemaVersion": 1,
+    "categoryId": "pig",
+    "productId": "pig-1",
+    "documentId": "pig-pig-1-dart-20251215000259",
+    "title": "공모 좌수·단가·총액",
+    "publisher": "OpenDART",
+    "sourceKind": "official-document",
+    "sourceUrl": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20251215000259",
+    "asOf": "2025-12-15",
+    "collectedAt": "2026-08-31T15:14:10.289Z",
+    "dataNature": "observed",
+    "rightsStatus": "unknown",
+    "approvedForPublic": true,
+    "approvedForExternalAi": false,
+    "piiReviewStatus": "passed",
+    "sourceHash": "ca68a62f0b1d896c8c853b4daee7bb64e0aec58ee7f0b660a3cec85d59e26b06",
+    "status": "ready",
+    "pages": [
+      {
+        "page": 1,
+        "quality": "ready",
+        "reasonCodes": [
+          "xml-logical-page"
+        ],
+        "metrics": {
+          "itemCount": 5,
+          "characterCount": 853,
+          "density": 0
+        },
+        "limitations": [
+          "원천은 XML이므로 PDF 페이지 대신 논리 페이지 1로 기록했습니다."
+        ]
+      }
+    ],
+    "limitations": [
+      "DART 원문에서 승인된 한돈 상품 확인 문단만 구조화했습니다."
+    ]
+  },
+  "chunks": [
+    {
+      "schemaVersion": 1,
+      "categoryId": "pig",
+      "productId": "pig-1",
+      "documentId": "pig-pig-1-dart-20251215000259",
+      "chunkId": "pig-pig-1-dart-20251215000259-offering-terms",
+      "title": "공모 좌수·단가·총액",
+      "sourceKind": "official-document",
+      "sourceUrl": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20251215000259",
+      "asOf": "2025-12-15",
+      "dataNature": "observed",
+      "page": 1,
+      "text": "증권 기본정보 증권명칭 증권수량 액면가액 모집(매출)가액 모집(매출)총액 모집(매출)방법 가축투자계약증권 제1호(패키지발행) 10,812 20,000 20,000 216,240,000 일반공모",
+      "canonicalText": "증권 기본정보 증권명칭 증권수량 액면가액 모집(매출)가액 모집(매출)총액 모집(매출)방법 가축투자계약증권 제1호(패키지발행) 10,812 20,000 20,000 216,240,000 일반공모",
+      "positions": [],
+      "pageQuality": "ready",
+      "sourceHash": "ca68a62f0b1d896c8c853b4daee7bb64e0aec58ee7f0b660a3cec85d59e26b06",
+      "chunkHash": "9641c071c296cc94117ec6c061ba34f9dc563487525ed3f55a64a824f2c4b6ac",
+      "approvedForPublic": true,
+      "approvedForExternalAi": false,
+      "piiReviewStatus": "passed",
+      "status": "ready",
+      "limitations": [
+        "DART 원문에서 승인된 한돈 상품 확인 문단만 구조화했습니다."
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "categoryId": "pig",
+      "productId": "pig-1",
+      "documentId": "pig-pig-1-dart-20251215000259",
+      "chunkId": "pig-pig-1-dart-20251215000259-subscription-payment-schedule",
+      "title": "청약·배정 및 납입 절차",
+      "sourceKind": "official-document",
+      "sourceUrl": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20251215000259",
+      "asOf": "2025-12-15",
+      "dataNature": "observed",
+      "page": 1,
+      "text": "청약의 방식은 균등배정, 비례배정 방식의 청약을 일괄하여 받는 방식인 ‘일괄청약방식’입니다. 따라서 일반 청약자가 비례배정 방식으로 배정을 받고자 하는 수량을 청약하면 자동으로 균등배정의 청약자로 인정됩니다. 청약자가 청약한 증권의 총 수량(이하 ‘총 청약의 수’이라 한다)이 균등배정 증권 수를 미달하는 경우, 균등배정 이후 잔여 수량은 비례배정 수량에 합산되어 비례배정하게 됩니다. 균등배정으로 인한 청약금 추가 납입 절차 등은 없습니다. 또한, 총 청약의 수가 균등배정 증권 수를 초과하는 경우, 청약신청 일시가 빠른 순인 선착순으로 배정하며, 이에 따라 균등배정으로 1주도 배정받지 못하는 경우가 발생할 수 있습니다. 일반 투자자에 대한 배정결과 발생하는 1주 미만의 단수주는 소수점 숫자가 큰 순으로 배정합니다.",
+      "canonicalText": "청약의 방식은 균등배정, 비례배정 방식의 청약을 일괄하여 받는 방식인 ‘일괄청약방식’입니다. 따라서 일반 청약자가 비례배정 방식으로 배정을 받고자 하는 수량을 청약하면 자동으로 균등배정의 청약자로 인정됩니다. 청약자가 청약한 증권의 총 수량(이하 ‘총 청약의 수’이라 한다)이 균등배정 증권 수를 미달하는 경우, 균등배정 이후 잔여 수량은 비례배정 수량에 합산되어 비례배정하게 됩니다. 균등배정으로 인한 청약금 추가 납입 절차 등은 없습니다. 또한, 총 청약의 수가 균등배정 증권 수를 초과하는 경우, 청약신청 일시가 빠른 순인 선착순으로 배정하며, 이에 따라 균등배정으로 1주도 배정받지 못하는 경우가 발생할 수 있습니다. 일반 투자자에 대한 배정결과 발생하는 1주 미만의 단수주는 소수점 숫자가 큰 순으로 배정합니다.",
+      "positions": [],
+      "pageQuality": "ready",
+      "sourceHash": "ca68a62f0b1d896c8c853b4daee7bb64e0aec58ee7f0b660a3cec85d59e26b06",
+      "chunkHash": "30b7a7b9d54693da9ce1878bca30261a3fcf6f4adc5b50c9ea232ac7a86737a7",
+      "approvedForPublic": true,
+      "approvedForExternalAi": false,
+      "piiReviewStatus": "passed",
+      "status": "ready",
+      "limitations": [
+        "DART 원문에서 승인된 한돈 상품 확인 문단만 구조화했습니다."
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "categoryId": "pig",
+      "productId": "pig-1",
+      "documentId": "pig-pig-1-dart-20251215000259",
+      "chunkId": "pig-pig-1-dart-20251215000259-limited-fee-risk",
+      "title": "한정된 수수료 위험",
+      "sourceKind": "official-document",
+      "sourceUrl": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20251215000259",
+      "asOf": "2025-12-15",
+      "dataNature": "observed",
+      "page": 1,
+      "text": "본 공동사업에 필요한 운영비용은 투자계약증권 공모자금을 통해 조달할 예정이지만, 예기치 못한 비용 증가나 시장 환경 변화 등으로 인해 운영자금이 부족해질 가능성이 존재합니다. 공동사업 운영자가 청산수수료 지급 전까지 운영자금 조달에 어려움을 겪는 경우 공동사업의 성과가 악화될 수 있으므로, 투자자께서는 이러한 위험을 충분히 인지하시기 바랍니다.",
+      "canonicalText": "본 공동사업에 필요한 운영비용은 투자계약증권 공모자금을 통해 조달할 예정이지만, 예기치 못한 비용 증가나 시장 환경 변화 등으로 인해 운영자금이 부족해질 가능성이 존재합니다. 공동사업 운영자가 청산수수료 지급 전까지 운영자금 조달에 어려움을 겪는 경우 공동사업의 성과가 악화될 수 있으므로, 투자자께서는 이러한 위험을 충분히 인지하시기 바랍니다.",
+      "positions": [],
+      "pageQuality": "ready",
+      "sourceHash": "ca68a62f0b1d896c8c853b4daee7bb64e0aec58ee7f0b660a3cec85d59e26b06",
+      "chunkHash": "8e6d836e8511f5c6d041b8dcf3ed5ab78341a2122dcb684f8796a20a6a9fb2ec",
+      "approvedForPublic": true,
+      "approvedForExternalAi": false,
+      "piiReviewStatus": "passed",
+      "status": "ready",
+      "limitations": [
+        "DART 원문에서 승인된 한돈 상품 확인 문단만 구조화했습니다."
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "categoryId": "pig",
+      "productId": "pig-1",
+      "documentId": "pig-pig-1-dart-20251215000259",
+      "chunkId": "pig-pig-1-dart-20251215000259-investor-compensation",
+      "title": "투자자 피해 보상 체계",
+      "sourceKind": "official-document",
+      "sourceUrl": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20251215000259",
+      "asOf": "2025-12-15",
+      "dataNature": "observed",
+      "page": 1,
+      "text": "두번째 비경영적 요인에 따른 손실 보상으로 공동사업의 경영 외적 요인인 도난, 화재, 자연 재해로 인한 폐사로 투자자의 손실이 발생할 경우, 이에 대한 피해 보상금은 제2의 투자자 보호기금 및 「투자자보호기금 운영기준」에 따라 보상합니다.",
+      "canonicalText": "두번째 비경영적 요인에 따른 손실 보상으로 공동사업의 경영 외적 요인인 도난, 화재, 자연 재해로 인한 폐사로 투자자의 손실이 발생할 경우, 이에 대한 피해 보상금은 제2의 투자자 보호기금 및 「투자자보호기금 운영기준」에 따라 보상합니다.",
+      "positions": [],
+      "pageQuality": "ready",
+      "sourceHash": "ca68a62f0b1d896c8c853b4daee7bb64e0aec58ee7f0b660a3cec85d59e26b06",
+      "chunkHash": "fc3cc6b0a338ebf3645b7dc432d95f585fc358ea20163ffa345082ff538584e8",
+      "approvedForPublic": true,
+      "approvedForExternalAi": false,
+      "piiReviewStatus": "passed",
+      "status": "ready",
+      "limitations": [
+        "DART 원문에서 승인된 한돈 상품 확인 문단만 구조화했습니다."
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "categoryId": "pig",
+      "productId": "pig-1",
+      "documentId": "pig-pig-1-dart-20251215000259",
+      "chunkId": "pig-pig-1-dart-20251215000259-principal-not-guaranteed",
+      "title": "원금 미보장 위험",
+      "sourceKind": "official-document",
+      "sourceUrl": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20251215000259",
+      "asOf": "2025-12-15",
+      "dataNature": "observed",
+      "page": 1,
+      "text": "나. 원금 미보장과 관련된 위험",
+      "canonicalText": "나. 원금 미보장과 관련된 위험",
+      "positions": [],
+      "pageQuality": "ready",
+      "sourceHash": "ca68a62f0b1d896c8c853b4daee7bb64e0aec58ee7f0b660a3cec85d59e26b06",
+      "chunkHash": "a5ddd82fb613fa037c571023e9c79a73d927eb29ea939a1637d6ed23e8a00b34",
+      "approvedForPublic": true,
+      "approvedForExternalAi": false,
+      "piiReviewStatus": "passed",
+      "status": "ready",
+      "limitations": [
+        "DART 원문에서 승인된 한돈 상품 확인 문단만 구조화했습니다."
+      ]
+    }
+  ],
+  "limitations": [
+    "승인된 원자 문단만 포함하며 복합 요약이나 실물 식별정보를 생성하지 않습니다."
+  ]
+}

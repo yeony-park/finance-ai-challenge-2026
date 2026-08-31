@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { isSafePublicSourceUrl } from "@/lib/verify/real-estate/source-url";
 import { filterOutput } from "@/lib/spine/guardrail/output-filter";
+import { isExactDartPublicUrl } from "@/lib/verify/dart/filing-registry";
 
 const Id = z.string().trim().min(1).max(120).regex(/^[a-zA-Z0-9][a-zA-Z0-9._-]*$/);
 const DateValue = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
@@ -113,6 +114,7 @@ const validateOptionalScenarioId = (
 
 const validateCommonCitationSourceUrl = (
   value: {
+    categoryId: z.infer<typeof CategoryId>;
     dataNature: z.infer<typeof DataNature>;
     sourceKind: z.infer<typeof SourceKind>;
     sourceUrl: string;
@@ -122,7 +124,13 @@ const validateCommonCitationSourceUrl = (
   validateRecordSourceUrl(value, context);
   if (value.sourceUrl.startsWith("https://")) {
     const url = new URL(value.sourceUrl);
-    if (url.search || url.hash) {
+    const rcpNo = url.searchParams.get("rcpNo") ?? "";
+    const exactDartFilingUrl =
+      (value.categoryId === "cattle" || value.categoryId === "pig") &&
+      value.dataNature === "observed" &&
+      value.sourceKind === "official-document" &&
+      isExactDartPublicUrl(value.sourceUrl, rcpNo);
+    if ((url.search || url.hash) && !exactDartFilingUrl) {
       context.addIssue({
         code: "custom",
         path: ["sourceUrl"],

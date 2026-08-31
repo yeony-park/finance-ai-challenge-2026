@@ -11,6 +11,12 @@ interface XmlNode {
 }
 
 const ARRAY_TAGS = new Set(["TABLE", "TR", "TD", "TH", "P"]);
+export const MAX_TABLE_COUNT = 2_000;
+export const MAX_TABLE_ROWS = 10_000;
+export const MAX_TABLE_CELLS_PER_ROW = 512;
+export const MAX_TABLE_SPAN = 256;
+export const MAX_TABLE_EXPANDED_CELLS = 1_000_000;
+const MAX_TABLE_NESTING = 32;
 
 const parser = new XMLParser({
   ignoreAttributes: false,
@@ -40,7 +46,9 @@ const attrNumber = (cell: unknown, name: string): number => {
   if (cell == null || typeof cell !== "object" || Array.isArray(cell)) return 1;
   const raw = (cell as XmlNode)[name];
   const value = Number.parseInt(String(raw ?? "1"), 10);
-  return Number.isFinite(value) && value > 0 ? value : 1;
+  const span = Number.isFinite(value) && value > 0 ? value : 1;
+  if (span > MAX_TABLE_SPAN) throw new Error("table span 상한을 초과했습니다.");
+  return span;
 };
 
 const collectTableNodes = (root: unknown): unknown[] => {
@@ -52,7 +60,10 @@ const collectTableNodes = (root: unknown): unknown[] => {
     }
     if (node == null || typeof node !== "object") return;
     for (const [key, value] of Object.entries(node as XmlNode)) {
-      if (key === "TABLE" && Array.isArray(value)) found.push(...value);
+      if (key === "TABLE" && Array.isArray(value)) {
+        found.push(...value);
+        if (found.length > MAX_TABLE_COUNT) throw new Error("table 수 상한을 초과했습니다.");
+      }
       visit(value);
     }
   };
@@ -67,14 +78,18 @@ const rowNodes = (table: unknown): unknown[] => {
   const rows =
     (body && typeof body === "object" ? (body as XmlNode).TR : undefined) ??
     node.TR;
-  return Array.isArray(rows) ? rows : [];
+  if (!Array.isArray(rows)) return [];
+  if (rows.length > MAX_TABLE_ROWS) throw new Error("table row 수 상한을 초과했습니다.");
+  return rows;
 };
 
 const cellNodes = (row: unknown): unknown[] => {
   if (row == null || typeof row !== "object") return [];
   const node = row as XmlNode;
   const cells = node.TD ?? node.TH;
-  return Array.isArray(cells) ? cells : [];
+  if (!Array.isArray(cells)) return [];
+  if (cells.length > MAX_TABLE_CELLS_PER_ROW) throw new Error("table cell 수 상한을 초과했습니다.");
+  return cells;
 };
 
 interface PendingCell {
@@ -94,6 +109,9 @@ const expandGrid = (rows: unknown[]): string[][] => {
     ),
     0,
   );
+  if (columnCount > MAX_TABLE_CELLS_PER_ROW || rows.length * columnCount > MAX_TABLE_EXPANDED_CELLS) {
+    throw new Error("table expanded cell 상한을 초과했습니다.");
+  }
 
   for (const row of rows) {
     const queue = [...cellNodes(row)];
@@ -164,7 +182,10 @@ export const findTableRanges = (
     }
     if (depth === 0) start = match.index;
     depth += 1;
+    if (depth > MAX_TABLE_NESTING) throw new Error("table nesting 상한을 초과했습니다.");
+    if (ranges.length > MAX_TABLE_COUNT) throw new Error("table 수 상한을 초과했습니다.");
   }
+  if (ranges.length > MAX_TABLE_COUNT) throw new Error("table 수 상한을 초과했습니다.");
   return ranges;
 };
 

@@ -25,6 +25,7 @@ describe("카테고리 분석 공모 필터", () => {
   test("필터가 없으면 모든 공모 카드를 표시한다", async () => {
     const model = await loadModel(null, null);
 
+    expect(model.evidence.map((entry) => entry.offer.id)).toEqual(["livestock-9"]);
     expect(model.visibleEvidence.map((entry) => entry.offer.id)).toEqual(
       model.evidence.map((entry) => entry.offer.id),
     );

@@ -6,6 +6,7 @@ import {
   routableLegacyScenarios,
 } from "./loader";
 import { loadApprovedCattleFilingArtifacts } from "./cattle-filing-artifact";
+import { loadApprovedPigFilingArtifacts } from "./pig-filing-artifact";
 import {
   isGenericKnowledgeQuery,
   listPublishedRepositoryOfferings,
@@ -73,6 +74,7 @@ export interface GlobalSearchOptions {
   readonly minimumInvestmentWonMin?: number;
   readonly minimumInvestmentWonMax?: number;
   readonly loadCattleFilings?: typeof loadApprovedCattleFilingArtifacts;
+  readonly loadPigFilings?: typeof loadApprovedPigFilingArtifacts;
 }
 
 const matchFields = (
@@ -119,7 +121,7 @@ const CATTLE_FILING_SEARCH_TERMS: Readonly<Record<string, string>> = {
 
 const CATEGORY_ALIASES: Readonly<Record<GlobalSearchResult["categoryId"], readonly string[]>> = {
   cattle: ["cattle", "한우", "소", "가축"],
-  pig: ["pig", "돼지", "돈육"],
+  pig: ["pig", "돼지", "돈육", "한돈"],
   art: ["art", "미술", "미술품", "작품"],
   "real-estate": ["real estate", "부동산", "건물", "건축물"],
 };
@@ -169,6 +171,22 @@ const isCattleFilingQuery = (
 ): boolean => categoryId === "cattle" || categoryId === undefined &&
   /공모\s*가격|공모가(?:액)?|배정|사업\s*기간|운용\s*기간|수수료|보호\s*기금|투자자\s*보호|가격\s*산정|수요\s*예측/.test(query);
 
+const isPigFilingQuery = (
+  query: string,
+  categoryId?: GlobalSearchResult["categoryId"],
+): boolean => (categoryId === undefined || categoryId === "pig") &&
+  /공모\s*(?:조건|개요|가격|총액|금액)|공모가(?:액)?|좌수|단가|청약|배정|납입|수수료|위험|보상|원금\s*미보장|투자자\s*보호|보호\s*기금/.test(query);
+
+const repositoryPhase = (
+  offering: { readonly opensOn: string | null; readonly closesOn: string | null },
+  now: Date,
+): GlobalSearchResult["phase"] => {
+  const today = now.toISOString().slice(0, 10);
+  if (offering.opensOn && offering.opensOn > today) return "upcoming";
+  if (offering.closesOn && offering.closesOn >= today) return "subscription-open";
+  return "closed";
+};
+
 export const searchOffers = async (
   query: GlobalSearchQuery | GlobalSearchRequest,
   dataRoot?: string,
@@ -212,10 +230,14 @@ export const searchOffers = async (
   const cattleFilingsPromise = isCattleFilingQuery(queryText, categoryId)
     ? (options.loadCattleFilings ?? loadApprovedCattleFilingArtifacts)(dataRoot)
     : Promise.resolve([]);
-  const [population, commonProducts, cattleFilings, resolvedRepositories] = await Promise.all([
+  const pigFilingsPromise = isPigFilingQuery(queryText, categoryId)
+    ? (options.loadPigFilings ?? loadApprovedPigFilingArtifacts)(dataRoot)
+    : Promise.resolve([]);
+  const [population, commonProducts, cattleFilings, pigFilings, resolvedRepositories] = await Promise.all([
     loadApprovedScenarios(dataRoot),
     loadApprovedCommonProducts(dataRoot),
     cattleFilingsPromise,
+    pigFilingsPromise,
     repositories ?? resolveRetrievalRepositories({ dataDir: dataRoot }),
   ]);
   const cattleFilingByProduct = new Map(cattleFilings.map((artifact) => [
@@ -229,6 +251,13 @@ export const searchOffers = async (
     query.categoryId ?? intent.categoryId,
   );
   const repositoryById = new Map(repositoryOfferings.map((item) => [item.entry.id, item.offering]));
+  const pigRepositoryById = new Map(
+    (pigFilings.length > 0
+      ? await resolvedRepositories.offerings.listByCategory("pig")
+      : []
+    ).filter((offering) => offering.provenance !== "synthetic")
+      .map((offering) => [offering.offerSlug, offering]),
+  );
   const published = OFFERS.map((offer) => {
     const schedulePhase = buildOfferSchedule(offer, now).phase;
     const phase: GlobalSearchResult["phase"] =
@@ -337,7 +366,38 @@ export const searchOffers = async (
     };
   });
 
-  const results = [...new Map([...published, ...common, ...scenarios].map((item) => [
+  const pig = pigFilings.flatMap((artifact) => {
+    const offering = pigRepositoryById.get(artifact.registry.productId);
+    if (!offering || offering.categoryId !== "pig") return [];
+    const phase = repositoryPhase(offering, now);
+    const match = matchFields(normalized, {
+      id: offering.offerSlug,
+      title: offering.titlePublic,
+      category: `pig ${CATEGORY_ALIASES.pig.join(" ")}`,
+      phase: `${phase} ${PHASE_ALIASES[phase]}`,
+      filing: artifact.sections.map((section) => `${section.title} ${section.text}`).join(" "),
+    });
+    const minimumInvestmentWon = typeof offering.detail.unitPriceWon === "number"
+      ? offering.detail.unitPriceWon
+      : undefined;
+    return [{
+      id: offering.offerSlug,
+      productId: offering.offerSlug,
+      categoryId: "pig" as const,
+      title: offering.titlePublic,
+      assetKind: "livestock" as const,
+      phase,
+      ...(minimumInvestmentWon === undefined ? {} : { minimumInvestmentWon }),
+      href: `/pig?tab=analysis&product=${offering.offerSlug}#pig-review`,
+      matchedFields: match.matchedFields,
+      isScenario: false,
+      dataNature: "observed" as const,
+      namespace: "published-offer" as const,
+      score: match.score,
+    }];
+  });
+
+  const results = [...new Map([...published, ...pig, ...common, ...scenarios].map((item) => [
     `${item.categoryId}/${item.id}/${item.dataNature}/${item.namespace}`,
     item,
   ])).values()]

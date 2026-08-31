@@ -1,5 +1,6 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { isPublicVerificationDocumentAllowed } from "../dart/onboarding-catalog";
 import { offerDataDir } from "../paths";
 import { sanitizePublicSourceUrl } from "../real-estate/source-url";
 import type {
@@ -286,6 +287,12 @@ export const writePublicReport = async (
   report: ReportSnapshot,
   dataDir = "data",
 ): Promise<string> => {
+  if (
+    report.document.offerId !== report.offerId ||
+    !isPublicVerificationDocumentAllowed(report.offerId, report.document.rcpNo)
+  ) {
+    throw new Error("공개 리포트는 승인된 active RCP 검증 결과만 저장할 수 있습니다.");
+  }
   const dir = publicReportDir(report.offerId, dataDir);
   await mkdir(dir, { recursive: true });
   const file = path.join(dir, reportFileName(report.generatedAt));

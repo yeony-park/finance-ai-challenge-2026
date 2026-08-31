@@ -2,7 +2,13 @@ import { readFileSync } from "node:fs";
 import { describe, expect, test } from "vitest";
 import { parseDocument } from "../parse/document";
 import { itemDepth, readOutline, stripMarkup } from "../parse/outline";
-import { findTableRanges, readTables } from "../parse/tables";
+import {
+  findTableRanges,
+  MAX_TABLE_CELLS_PER_ROW,
+  MAX_TABLE_ROWS,
+  MAX_TABLE_SPAN,
+  readTables,
+} from "../parse/tables";
 import {
   FALLBACK_PROFILE,
   resolveDocumentProfile,
@@ -100,6 +106,17 @@ describe("문서 모델 — 표마다 항목 경로와 원문 오프셋", () => 
     expect(document.tables).toHaveLength(1);
     expect(document.tables[0].section).toBe("");
     expect(document.tables[0].sectionPath).toEqual([]);
+  });
+});
+
+describe("표 자원 상한", () => {
+  test("과도한 span·row·cell 확장을 fail-closed한다", () => {
+    expect(() => readTables(`<TABLE><TR><TD COLSPAN="${MAX_TABLE_SPAN + 1}">값</TD></TR></TABLE>`))
+      .toThrow("span");
+    expect(() => readTables(`<TABLE>${"<TR><TD>값</TD></TR>".repeat(MAX_TABLE_ROWS + 1)}</TABLE>`))
+      .toThrow("row");
+    expect(() => readTables(`<TABLE><TR>${"<TD>값</TD>".repeat(MAX_TABLE_CELLS_PER_ROW + 1)}</TR></TABLE>`))
+      .toThrow("cell");
   });
 });
 

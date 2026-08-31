@@ -7,6 +7,7 @@ import {
 } from "@/lib/knowledge/schema";
 import { isExactDartPublicUrl } from "@/lib/verify/dart/filing-registry";
 import { CATTLE_FILING_PUBLIC_LIMITATIONS } from "@/lib/knowledge/cattle-filing-artifact";
+import { PIG_FILING_PUBLIC_LIMITATIONS } from "@/lib/knowledge/pig-filing-artifact";
 import { getRuntimeDb } from "../client";
 import type {
   ProductKnowledgeChunk,
@@ -45,7 +46,7 @@ const rowSchema = z.strictObject({
     ? isSafeHttpsPublicSourceUrl(row.source_url)
     : isSafeHttpsPublicSourceUrl(row.source_url) || isSafeScenarioDocumentPath(row.source_url);
   const rcpNo = row.document_id.match(/dart-(\d{14})$/)?.[1];
-  const exactDartUrl = row.category_id === "cattle" &&
+  const exactDartUrl = (row.category_id === "cattle" || row.category_id === "pig") &&
     row.data_nature === "observed" &&
     rcpNo !== undefined &&
     isExactDartPublicUrl(row.source_url, rcpNo);
@@ -138,13 +139,16 @@ export const createDbProductKnowledgeRepository = (
     );
     const documents = new Map<string, ProductKnowledgeDocument>();
     const chunks: ProductKnowledgeChunk[] = rows.map((row) => {
-      const cattleRcpNo = row.category_id === "cattle" && row.data_nature === "observed"
-        ? row.document_id.match(/^cattle-[a-z0-9-]+-dart-(\d{14})$/)?.[1]
+      const filingRcpNo = (row.category_id === "cattle" || row.category_id === "pig") && row.data_nature === "observed"
+        ? row.document_id.match(/^(?:cattle|pig)-[a-z0-9-]+-dart-(\d{14})$/)?.[1]
         : undefined;
-      const isCattleFiling = cattleRcpNo !== undefined && (
+      const isDartFiling = filingRcpNo !== undefined && (
         row.source_url === "https://dart.fss.or.kr/dsaf001/main.do" ||
-        isExactDartPublicUrl(row.source_url, cattleRcpNo)
+        isExactDartPublicUrl(row.source_url, filingRcpNo)
       );
+      const filingLimitations = row.category_id === "cattle"
+        ? CATTLE_FILING_PUBLIC_LIMITATIONS
+        : PIG_FILING_PUBLIC_LIMITATIONS;
       const base: ProductKnowledgeDocument = {
         categoryId: row.category_id,
         productId: row.product_id,
@@ -154,16 +158,16 @@ export const createDbProductKnowledgeRepository = (
         documentId: row.document_id,
         title: row.title,
         sourceKind: row.source_kind,
-        sourceUrl: isCattleFiling
-          ? `https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${cattleRcpNo}`
+        sourceUrl: isDartFiling
+          ? `https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${filingRcpNo}`
           : row.source_url,
         asOf: row.as_of,
         sourceHash: row.source_hash,
         status: row.document_status,
         approvedForPublic: row.document_approved_for_public && row.chunk_approved_for_public,
-        approvedForExternalAi: isCattleFiling ? false : row.approved_for_external_ai,
+        approvedForExternalAi: isDartFiling ? false : row.approved_for_external_ai,
         piiReviewStatus: row.pii_review_status,
-        limitations: isCattleFiling ? CATTLE_FILING_PUBLIC_LIMITATIONS : row.document_limitations,
+        limitations: isDartFiling ? filingLimitations : row.document_limitations,
       };
       documents.set(base.documentId, base);
       return {
@@ -174,7 +178,7 @@ export const createDbProductKnowledgeRepository = (
         text: row.text,
         canonicalText: row.canonical_text,
         chunkHash: row.chunk_hash,
-        limitations: isCattleFiling ? CATTLE_FILING_PUBLIC_LIMITATIONS : row.chunk_limitations,
+        limitations: isDartFiling ? filingLimitations : row.chunk_limitations,
       };
     });
     return { documents: [...documents.values()], chunks };

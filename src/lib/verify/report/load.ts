@@ -1,6 +1,10 @@
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { isEnoent } from "../adapters/io-errors";
+import {
+  isPublicVerificationDocumentAllowed,
+  isPublicVerificationScopeAllowed,
+} from "../dart/onboarding-catalog";
 import { assertOfferId } from "../paths";
 import { parseReportSnapshot, type ReportSnapshot } from "./snapshot";
 
@@ -45,6 +49,9 @@ const listReportFiles = async (dir: string): Promise<readonly string[]> => {
 };
 
 export const loadLatestReport = async (offerId: string): Promise<LoadedReport> => {
+  if (!isPublicVerificationScopeAllowed(offerId)) {
+    throw new ReportNotFoundError("공개 리포트를 찾을 수 없습니다.");
+  }
   const dir = path.join(process.cwd(), "data", "public", assertOfferId(offerId));
   const files = await listReportFiles(dir);
   const fileName = pickLatestFileName(files);
@@ -63,6 +70,13 @@ export const loadLatestReport = async (offerId: string): Promise<LoadedReport> =
     report = parseReportSnapshot(JSON.parse(raw));
   } catch (error) {
     throw new ReportCorruptError(fileName, error);
+  }
+  if (
+    report.offerId !== offerId ||
+    report.document.offerId !== offerId ||
+    !isPublicVerificationDocumentAllowed(offerId, report.document.rcpNo)
+  ) {
+    throw new ReportNotFoundError("공개 리포트를 찾을 수 없습니다.");
   }
   return { report, fileName, versionCount: files.length };
 };

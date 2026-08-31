@@ -9,6 +9,7 @@ import {
 } from "@/lib/knowledge/schema";
 import { calculateCommonChunkHash } from "@/lib/knowledge/pdf";
 import { loadDerivedRealEstateRegistry } from "@/lib/knowledge/loader";
+import { loadApprovedPigFilingArtifacts } from "@/lib/knowledge/pig-filing-artifact";
 
 type DataNature = "observed" | "scenario";
 type SourceKind = "issuer-claim" | "platform-claim" | "official-document" | "external-observation" | "scenario-input";
@@ -131,8 +132,7 @@ const sameScope = (document: InputDocument, chunk: InputChunk): boolean =>
   document.asOf === chunk.asOf &&
   document.sourceHash === chunk.sourceHash &&
   document.approvedForExternalAi === chunk.approvedForExternalAi &&
-  document.piiReviewStatus === chunk.piiReviewStatus &&
-  document.title === chunk.title;
+  document.piiReviewStatus === chunk.piiReviewStatus;
 
 const externalAiGate = (value: object): {
   readonly approvedForExternalAi: boolean;
@@ -296,9 +296,10 @@ const toPlan = (documents: readonly InputDocument[], chunks: readonly InputChunk
 
 export const buildKnowledgeIngestPlan = async (dataRoot = "data"): Promise<KnowledgeIngestPlan> => {
   const root = path.resolve(dataRoot);
-  const [common, derived] = await Promise.all([
+  const [common, derived, pigFilings] = await Promise.all([
     readCommonIndex(root),
     loadDerivedRealEstateRegistry(root),
+    loadApprovedPigFilingArtifacts(root),
   ]);
   const publicProducts = new Set(common.products
     .filter((product) => product.approvedForPublic)
@@ -342,5 +343,12 @@ export const buildKnowledgeIngestPlan = async (dataRoot = "data"): Promise<Knowl
       throw new KnowledgeIngestError(`derived chunk scope mismatch: ${chunk.chunkId}`);
     }
   }
-  return toPlan([...commonDocuments, ...derivedDocuments], [...commonChunks, ...derivedChunks]);
+  const pigDocuments = pigFilings.map((artifact) => commonDocument(artifact.document, "derived"));
+  const pigChunks = pigFilings.flatMap((artifact) =>
+    artifact.chunks.map((chunk) => commonChunk(chunk, commonDocument(artifact.document, "derived")))
+  );
+  return toPlan(
+    [...commonDocuments, ...derivedDocuments, ...pigDocuments],
+    [...commonChunks, ...derivedChunks, ...pigChunks],
+  );
 };

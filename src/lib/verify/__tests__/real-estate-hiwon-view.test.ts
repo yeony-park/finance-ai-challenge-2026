@@ -173,7 +173,7 @@ describe("희원감천 운영 상품 화면 모델", () => {
   });
 
   test("가축 리포트에는 부동산 상태 출처 문구가 추가되지 않는다", async () => {
-    const view = toDemoView(await loadLatestReport("livestock-1"));
+    const view = toDemoView(await loadLatestReport("livestock-9"));
     const text = JSON.stringify(view.history);
 
     expect(view.history.items[0]?.title).toContain("증권신고서");

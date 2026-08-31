@@ -42,6 +42,8 @@ const MIXED_NATURE_TEXT =
 const CATTLE_PRICE_ANSWER = "DART 공시에서 1단위 공모가액 20,000원을 확인했습니다.";
 const CATTLE_HISTORY_GUIDANCE =
   "현재 Copilot은 DART 공시만 검색합니다. 축산물이력 대조는 상세 리포트의 실재 확인에서 확인해 주세요.";
+const PIG_HISTORY_GUIDANCE =
+  "현재 한돈 근거질의는 승인된 DART 공시 문단만 검색합니다. 개체 실재와 축산물이력은 아직 확인할 수 없습니다.";
 const CATTLE_PRICE_CHUNK_ID = "cattle-livestock-9-dart-20260814003572-issuer-allocation";
 const CATTLE_PRICE_CHUNK_HASH = "fc59b03f271d79affa18859060f9a02509c3e5d6953db356d10a1ffc69e6799a";
 const CATTLE_PRICE_SOURCE_HASH = "cc815be9d95de6cbe4a6a16f632cfe65c3f56589ce77caa9c7890fefce8b99e2";
@@ -432,6 +434,20 @@ export const answerFromProductKnowledge = async (
     readonly evidence?: readonly SearchHit[];
   } = {},
 ): Promise<EvidenceAnswer> => {
+  if (
+    scope.categoryId === "pig" &&
+    /(?:개체|실재|축산물\s*이력|이력제)/.test(normalizeKorean(query))
+  ) {
+    return {
+      outcome: "abstain",
+      answer: PIG_HISTORY_GUIDANCE,
+      evidence: [],
+      limitations: [],
+      cached: false,
+      answerSource: "none",
+      responseKind: "scope-guidance",
+    };
+  }
   const chunks = knowledge.chunks.filter((chunk) =>
     chunk.categoryId === scope.categoryId &&
     chunk.productId === scope.productId &&

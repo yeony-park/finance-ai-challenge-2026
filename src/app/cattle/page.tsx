@@ -15,6 +15,7 @@ import {
 } from "@/lib/content/category-tabs";
 import { CATTLE_FLOW_TITLE } from "@/lib/content/cattle";
 import { CATTLE_CATEGORY } from "@/lib/verify/contract/cattle";
+import { isPublicVerificationScopeAllowed } from "@/lib/verify/dart/onboarding-catalog";
 import { loadCattleAuctionSeries } from "@/lib/verify/reference/auction-series";
 
 export const metadata: Metadata = {
@@ -33,7 +34,11 @@ export default async function CattlePage({ searchParams }: CattlePageProps) {
   const { activeTab, analysisStatus, analysisVerdict } =
     categoryPageStateFromSearchParams(params);
   const series = activeTab === "analysis" ? await loadCattleAuctionSeries() : null;
-  const cattleOffers = OFFERS.filter((offer) => offer.assetKind === "livestock");
+  const cattleOffers = OFFERS.filter(
+    (offer) =>
+      offer.assetKind === "livestock" &&
+      isPublicVerificationScopeAllowed(offer.id),
+  );
   const markers = cattleOffers.map((offer) => ({
     month: kstMonth(offer.subscription.opensAt),
     label: offer.title.replace("한우 ", ""),

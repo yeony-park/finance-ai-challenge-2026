@@ -6,15 +6,19 @@ import {
   type CommonIndexOptions,
 } from "./common-index";
 import { auditCattleFilingArtifacts } from "./cattle-filing-artifact";
+import { auditPigFilingArtifacts } from "./pig-filing-artifact";
 import { auditLegacyPublicData } from "./legacy-audit";
 
 export const runKnowledgeIndex = async (
   dataRoot = path.join(process.cwd(), "data"),
   options: CommonIndexOptions = {},
 ): Promise<number> => {
-  const cattleErrors = await auditCattleFilingArtifacts(dataRoot);
-  for (const item of cattleErrors) console.error(`[error] ${item.code} ${item.file}: ${item.message}`);
-  if (cattleErrors.length > 0) return 1;
+  const filingErrors = [
+    ...await auditCattleFilingArtifacts(dataRoot),
+    ...await auditPigFilingArtifacts(dataRoot),
+  ];
+  for (const item of filingErrors) console.error(`[error] ${item.code} ${item.file}: ${item.message}`);
+  if (filingErrors.length > 0) return 1;
   const legacyErrors = await auditLegacyPublicData(dataRoot);
   for (const item of legacyErrors) console.error(`[error] ${item.code} ${item.file}: ${item.message}`);
   if (legacyErrors.length > 0) {

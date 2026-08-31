@@ -29,9 +29,9 @@ describe("RealitySection 일치 항목 appendix", () => {
   });
 
   test("실제 일치 항목이 있는 가축은 기존 appendix를 유지한다", async () => {
-    const markup = await renderReality("livestock-1");
+    const markup = await renderReality("livestock-9");
 
-    expect(markup).toContain("전체 50건 판정 펼쳐 보기 — 전 항목 일치");
+    expect(markup).toMatch(/전 항목 일치 \d+건 펼쳐 보기/);
     expect(markup).toContain('aria-label="전 항목 일치 판정"');
   });
 });

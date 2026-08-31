@@ -1,5 +1,6 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 
 import { OFFERS } from "../../../components/site/offers";
 import { resolveAuctionPriceAdapter } from "../adapters/auction-price-fake";
@@ -24,14 +25,14 @@ import {
 } from "./synthetic-version";
 import { toWatchState, writeWatchState } from "./watch-state";
 
-interface CliOptions {
+export interface CliOptions {
   readonly dataDir: string;
   readonly replayFixture: boolean;
   readonly write: boolean;
   readonly offerId?: string;
 }
 
-const parseArgs = (argv: readonly string[]): CliOptions => {
+export const parseArgs = (argv: readonly string[]): CliOptions => {
   const valueOf = (flag: string): string | undefined => {
     const index = argv.indexOf(flag);
     return index >= 0 ? argv[index + 1] : undefined;
@@ -59,15 +60,23 @@ const loadRawXml = async (rcpNo: string, dataDir: string): Promise<string> => {
   return readFile(path.join(rawDocumentDir(rcpNo, dataDir), first), "utf8");
 };
 
-const targetsFor = (options: CliOptions): readonly MonitorTarget[] =>
-  OFFERS.filter((offer) => !options.offerId || offer.id === options.offerId).map(
-    (offer): MonitorTarget => {
+export const targetsFor = (options: CliOptions): readonly MonitorTarget[] =>
+  OFFERS.filter((offer) => !options.offerId || offer.id === options.offerId)
+    .map((offer): MonitorTarget | undefined => {
       const rcpNo = rcpNoForOffer(offer.id);
-      return { offerId: offer.id, ...(rcpNo === undefined ? {} : { rcpNo }) };
-    },
-  );
+      return rcpNo === undefined ? undefined : { offerId: offer.id, rcpNo };
+    })
+    .filter((target): target is MonitorTarget => target !== undefined);
 
-const runDetection = async (options: CliOptions): Promise<void> => {
+export const runDetection = async (
+  options: CliOptions,
+  deps: {
+    readonly fetchLineage?: typeof fetchAmendmentLineage;
+    readonly writeState?: typeof writeWatchState;
+  } = {},
+): Promise<void> => {
+  const targets = targetsFor(options);
+  if (targets.length === 0) return;
   const apiKey = process.env.DART_API_KEY;
   if (!apiKey) {
     throw new Error(
@@ -76,8 +85,9 @@ const runDetection = async (options: CliOptions): Promise<void> => {
   }
 
   const run = await runAmendmentMonitor({
-    targets: targetsFor(options),
-    fetchLineage: (rcpNo) => fetchAmendmentLineage(rcpNo, apiKey),
+    targets,
+    fetchLineage: (rcpNo) =>
+      (deps.fetchLineage ?? fetchAmendmentLineage)(rcpNo, apiKey),
     now: () => new Date(),
   });
 
@@ -90,7 +100,7 @@ const runDetection = async (options: CliOptions): Promise<void> => {
     for (const note of event.notes) console.log(`    note: ${note}`);
 
     if (!options.write) continue;
-    const file = await writeWatchState(
+    const file = await (deps.writeState ?? writeWatchState)(
       toWatchState(event, run.source),
       options.dataDir,
     );
@@ -99,8 +109,8 @@ const runDetection = async (options: CliOptions): Promise<void> => {
 };
 
 const runReplayFixture = async (options: CliOptions): Promise<void> => {
-  const offerId = options.offerId ?? OFFERS[0]?.id;
-  if (!offerId) throw new Error("공모 레지스트리가 비어 있습니다");
+  const offerId = targetsFor(options)[0]?.offerId;
+  if (!offerId) throw new Error("승인된 active cattle 공모가 없습니다");
 
   const rcpNo = rcpNoForOffer(offerId);
   if (!rcpNo) {
@@ -171,10 +181,12 @@ const main = async (): Promise<void> => {
   await runDetection(options);
 };
 
-main().catch((error: unknown) => {
-  console.error(
-    "정정 감시 실패:",
-    error instanceof Error ? error.message : error,
-  );
-  process.exitCode = 1;
-});
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  void main().catch((error: unknown) => {
+    console.error(
+      "정정 감시 실패:",
+      error instanceof Error ? error.message : error,
+    );
+    process.exitCode = 1;
+  });
+}

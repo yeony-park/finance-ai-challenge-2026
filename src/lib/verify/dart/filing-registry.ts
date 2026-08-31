@@ -65,7 +65,7 @@ export const DartFilingRegistrySchema = z.strictObject({
     normalizedExcerptHash: HashSchema,
   })).min(1).max(50),
   maskedObservation: z.strictObject({
-    reportPath: z.string().regex(/^public\/livestock-9\/[a-zA-Z0-9._-]+\.json$/),
+    reportPath: z.string().regex(/^public\/livestock-[1-9]\d*\/[a-zA-Z0-9._-]+\.json$/),
     sha256: HashSchema,
     allowedFields: z.array(z.enum(["품종", "성별", "취득시기"])).min(1).max(3),
   }),
@@ -81,6 +81,9 @@ export const DartFilingRegistrySchema = z.strictObject({
   }
   if (value.relationship.type === "primary" && value.relationship.mappingStatus !== "confirmed") {
     context.addIssue({ code: "custom", path: ["relationship"], message: "primary 관계는 confirmed mapping 근거가 필요합니다." });
+  }
+  if (!value.maskedObservation.reportPath.startsWith(`public/${value.offerId}/`)) {
+    context.addIssue({ code: "custom", path: ["maskedObservation", "reportPath"], message: "masked observation은 exact offerId 경로에 있어야 합니다." });
   }
 });
 

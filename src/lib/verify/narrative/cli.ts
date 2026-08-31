@@ -1,4 +1,9 @@
-import { PUBLISHED_OFFER_IDS } from "../../../components/site/offers";
+import { pathToFileURL } from "node:url";
+
+import {
+  isExternalAiApprovedOnboardingProduct,
+  ONBOARDING_CATALOG,
+} from "../dart/onboarding-catalog";
 import { assertOfferId } from "../paths";
 import { loadLatestReport } from "../report/load";
 import { writeNarrative } from "./cache";
@@ -6,35 +11,56 @@ import { createFakeNarrativeClient, resolveNarrativeClient } from "./client";
 import { generateNarrative } from "./generate";
 import { NARRATIVE_LAYERS, NARRATIVE_TAG_LABEL } from "./types";
 
-interface CliOptions {
+export interface CliOptions {
   readonly offerIds: readonly string[];
   readonly forceFake: boolean;
   readonly dataDir: string;
 }
 
-const parseArgs = (argv: readonly string[]): CliOptions => {
+export const parseArgs = (argv: readonly string[]): CliOptions => {
   const valueOf = (flag: string): string | undefined => {
     const index = argv.indexOf(flag);
     return index >= 0 ? argv[index + 1] : undefined;
   };
   const offer = valueOf("--offer");
 
+  const requested = offer
+    ? [assertOfferId(offer)]
+    : ONBOARDING_CATALOG
+        .filter((item) => item.categoryId === "cattle")
+        .map((item) => item.productId);
   return {
-    offerIds: offer ? [assertOfferId(offer)] : PUBLISHED_OFFER_IDS,
+    offerIds: requested.filter((offerId) =>
+      ONBOARDING_CATALOG.some(
+        (item) => item.categoryId === "cattle" &&
+          item.productId === offerId &&
+          item.status === "ready-local" &&
+          item.activeRcpNo !== null,
+      ),
+    ),
     forceFake: argv.includes("--fake"),
     dataDir: valueOf("--dataDir") ?? "data",
   };
 };
 
-const main = async (): Promise<void> => {
-  const options = parseArgs(process.argv.slice(2));
+export const runNarrativeCli = async (
+  options: CliOptions,
+  resolveClient: typeof resolveNarrativeClient = resolveNarrativeClient,
+): Promise<void> => {
+  const approvedOfferIds = options.offerIds.filter((offerId) =>
+    isExternalAiApprovedOnboardingProduct("cattle", offerId),
+  );
+  if (approvedOfferIds.length === 0) {
+    console.log("외부 AI 사용이 승인된 active cattle 상품이 없어 서술 생성을 생략합니다.");
+    return;
+  }
   const client = options.forceFake
     ? createFakeNarrativeClient()
-    : await resolveNarrativeClient();
+    : await resolveClient();
 
   console.log(`서술 생성기: ${client.name} (${client.generator})`);
 
-  for (const offerId of options.offerIds) {
+  for (const offerId of approvedOfferIds) {
     const loaded = await loadLatestReport(offerId);
     const { document } = await generateNarrative({
       report: loaded.report,
@@ -63,7 +89,9 @@ const main = async (): Promise<void> => {
   }
 };
 
-main().catch((error: unknown) => {
-  console.error("서술 생성 실패:", error instanceof Error ? error.message : error);
-  process.exitCode = 1;
-});
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  void runNarrativeCli(parseArgs(process.argv.slice(2))).catch((error: unknown) => {
+    console.error("서술 생성 실패:", error instanceof Error ? error.message : error);
+    process.exitCode = 1;
+  });
+}

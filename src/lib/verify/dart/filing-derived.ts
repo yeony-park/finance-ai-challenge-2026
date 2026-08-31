@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { mkdir, readFile, readdir, stat, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { unzipSync } from "fflate";
 import { z } from "zod";
@@ -10,7 +10,6 @@ import {
 } from "@/lib/knowledge/schema";
 import { calculateCommonChunkHash } from "@/lib/knowledge/pdf";
 import { parseFilingFacts, type FilingFacts } from "../report/filing-facts";
-import { rawDataDir } from "../paths";
 import { outlineAt, stripMarkup, type OutlineNode } from "../parse/outline";
 import { parseDocument } from "../parse/document";
 import {
@@ -18,6 +17,7 @@ import {
   sha256,
   type DartFilingRegistry,
 } from "./filing-registry";
+import { readExactLocalRawXml } from "./raw-xml";
 
 const SAFE_DART_URL = "https://dart.fss.or.kr/dsaf001/main.do";
 const SANITIZER_VERSION = "cattle-filing-sanitizer-v1" as const;
@@ -376,26 +376,20 @@ export const buildAndWriteCattleFilingDerivedArtifact = async (
   registry: DartFilingRegistry,
   dataDir = "data",
 ): Promise<{ readonly path: string; readonly artifact: CattleFilingDerivedArtifact }> => {
-  const rawDir = rawDataDir(registry.rcpNo, dataDir);
-  const xmlEntries = (await readdir(rawDir)).filter((name) => name.toLowerCase().endsWith(".xml"));
-  if (xmlEntries.length !== 1 || xmlEntries[0] !== registry.entry.name) {
-    throw new Error("로컬 DART raw XML entry가 registry의 exact entry와 일치하지 않습니다.");
-  }
-  const xmlPath = path.join(rawDir, registry.entry.name);
-  const [xmlBytes, factsRaw, observationRaw, xmlStat] = await Promise.all([
-    readFile(xmlPath),
-    readFile(path.resolve(dataDir, "offers", "filing-facts", `${registry.offerId}.json`), "utf8"),
-    readFile(path.resolve(dataDir, registry.maskedObservation.reportPath)),
-    stat(xmlPath),
+  const approvedRegistry = DartFilingRegistrySchema.parse(registry);
+  const [source, factsRaw, observationRaw] = await Promise.all([
+    readExactLocalRawXml({ dataDir, rcpNo: approvedRegistry.rcpNo, entryName: approvedRegistry.entry.name }),
+    readFile(path.resolve(dataDir, "offers", "filing-facts", `${approvedRegistry.offerId}.json`), "utf8"),
+    readFile(path.resolve(dataDir, approvedRegistry.maskedObservation.reportPath)),
   ]);
   const artifact = buildCattleFilingDerivedArtifact({
-    registry,
-    xml: new TextDecoder("utf-8").decode(xmlBytes),
+    registry: approvedRegistry,
+    xml: new TextDecoder("utf-8").decode(source.bytes),
     filingFacts: parseFilingFacts(JSON.parse(factsRaw)),
     maskedObservationRaw: new Uint8Array(observationRaw),
-    sourceFileMtime: xmlStat.mtime.toISOString(),
+    sourceFileMtime: source.mtime,
   });
-  const output = cattleDerivedArtifactPath(registry, dataDir);
+  const output = cattleDerivedArtifactPath(approvedRegistry, dataDir);
   await mkdir(path.dirname(output), { recursive: true });
   await writeFile(output, `${JSON.stringify(artifact, null, 2)}\n`, "utf8");
   return { path: output, artifact };

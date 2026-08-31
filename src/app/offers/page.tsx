@@ -10,6 +10,7 @@ import {
 import { OFFERS } from "@/components/site/offers";
 import { loadApprovedScenarios } from "@/lib/knowledge/loader";
 import { loadLatestWatchState } from "@/lib/verify/amend/watch-state";
+import { isPublicVerificationScopeAllowed } from "@/lib/verify/dart/onboarding-catalog";
 import { loadFilingFacts } from "@/lib/verify/report/filing-facts";
 import { loadLatestReport } from "@/lib/verify/report/load";
 import { buildOfferCard, type OfferCardView } from "@/lib/verify/report/view-model";
@@ -24,9 +25,12 @@ const byCloseAsc = (a: OfferCardView, b: OfferCardView): number =>
 
 export default async function OffersPage() {
   const now = new Date();
+  const publicOffers = OFFERS.filter((offer) =>
+    isPublicVerificationScopeAllowed(offer.id),
+  );
 
   const [cards, scenarios] = await Promise.all([
-    Promise.all(OFFERS.map(async (offer) => {
+    Promise.all(publicOffers.map(async (offer) => {
       const [loaded, watch, filingFacts] = await Promise.all([
         loadLatestReport(offer.id),
         loadLatestWatchState(offer.id),

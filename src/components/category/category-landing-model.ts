@@ -16,6 +16,7 @@ import {
   loadLatestWatchState,
   type WatchState,
 } from "@/lib/verify/amend/watch-state";
+import { isPublicVerificationScopeAllowed } from "@/lib/verify/dart/onboarding-catalog";
 import { loadFilingFacts, type FilingFacts } from "@/lib/verify/report/filing-facts";
 import { loadLatestReport, type LoadedReport } from "@/lib/verify/report/load";
 import {
@@ -227,10 +228,12 @@ export async function loadCategoryLandingModel({
   customTitle,
   hasMarketContent,
 }: CategoryLandingModelOptions): Promise<CategoryLandingModel> {
-  const byOpenAsc = [...offers].sort(
-    (a, b) =>
-      Date.parse(a.subscription.opensAt) - Date.parse(b.subscription.opensAt),
-  );
+  const byOpenAsc = offers
+    .filter((offer) => isPublicVerificationScopeAllowed(offer.id))
+    .sort(
+      (a, b) =>
+        Date.parse(a.subscription.opensAt) - Date.parse(b.subscription.opensAt),
+    );
   const [evidence, trackRecord] = await Promise.all([
     loadEvidence(byOpenAsc, new Date()),
     loadCategoryTrackRecord(byOpenAsc),

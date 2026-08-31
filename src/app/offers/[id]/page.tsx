@@ -38,9 +38,11 @@ import { loadNarrativeForReport } from "@/lib/verify/narrative/cache";
 import type { NarrativeDocument } from "@/lib/verify/narrative/types";
 import { toWatchStatusView, type WatchStatusView } from "@/lib/verify/amend/watch-view";
 import {
+  ReportNotFoundError,
   loadLatestReport,
   type LoadedReport,
 } from "@/lib/verify/report/load";
+import { isPublicVerificationScopeAllowed } from "@/lib/verify/dart/onboarding-catalog";
 import { toDemoView, type DemoView } from "@/lib/verify/report/view-model";
 import { loadRealEstateInvestmentReview } from "@/lib/verify/real-estate-investment-review";
 import { loadRealEstateProductSummary } from "@/lib/verify/real-estate-product-summary";
@@ -84,8 +86,16 @@ const loadInvestmentReview = cache(async (offerId: string) => {
 
 const loadPublishedReport = cache(
   async (offerId: string): Promise<LoadedReport | null> => {
-    if (!isPublishedOfferId(offerId)) return null;
-    return loadLatestReport(offerId);
+    if (
+      !isPublishedOfferId(offerId) ||
+      !isPublicVerificationScopeAllowed(offerId)
+    ) return null;
+    try {
+      return await loadLatestReport(offerId);
+    } catch (error) {
+      if (error instanceof ReportNotFoundError) return null;
+      throw error;
+    }
   },
 );
 const loadOfferView = cache(async (offerId: string): Promise<DemoView | null> => {
@@ -141,7 +151,8 @@ export async function generateStaticParams() {
     await loadScenarios(),
     PUBLISHED_OFFER_IDS,
   ).map((scenario) => scenario.offerId);
-  return [...new Set([...PUBLISHED_OFFER_IDS, ...scenarioIds])].map((id) => ({ id }));
+  const reportIds = PUBLISHED_OFFER_IDS.filter(isPublicVerificationScopeAllowed);
+  return [...new Set([...reportIds, ...scenarioIds])].map((id) => ({ id }));
 }
 
 export const dynamicParams = false;
