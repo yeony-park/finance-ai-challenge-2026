@@ -109,8 +109,8 @@ npm run db:export    # DB → data/public/offerings/index.json (마스킹 게이
 - [ ] DB에서 화면 데이터를 새로 뽑았다면, **직전 `npm run db:export` 산출물이 익명화 게이트 테스트를 그린으로 통과**했는가 (R-STO-03 — DB 유래라고 마스킹 게이트 우회 금지). export는 `DATABASE_URL_DIRECT` 전용, 미설정이면 not_configured로 정직 종료하며 화면 데이터를 만들지 않는다.
 
 Vercel CLI 수동 배포 — git 연동 없음(푸시는 배포를 트리거하지 않는다):
-`npx -y vercel@58.9.2 deploy --prod --scope lostarkofzephyr`
-(58.9.4는 "Not authorized" 회귀. `--scope` 생략 시에도 같은 "Not authorized"로 실패한 사례 있음 — 항상 명시).
+`npx -y vercel@58.9.2 deploy --prod --scope viowlet`
+(58.9.4는 "Not authorized" 회귀. `--scope` 생략 시에도 같은 "Not authorized"로 실패한 사례 있음 — 항상 명시. 팀 슬러그는 2026-08-31 lostarkofzephyr → viowlet으로 변경 — 구 슬러그는 실패한다).
 Vercel CLI는 gitignore를 무시하므로 `.vercelignore`가 PII·env 차단을 담당한다 — 수정 시 dry-run 검증.
 프로덕션: https://jeom-jeom.vercel.app 단일 (구 도메인 finance-hackathon-black.vercel.app은
 2026-08-23 오너 지시로 alias 제거. `jeomjeom.vercel.app`은 제3자 선점으로 사용 불가.
