@@ -1,7 +1,7 @@
 -- R-STO-16 런타임 읽기 전용 역할 (운영 스크립트 — 마이그레이션 아님. db:migrate는 이 파일을 실행하지 않는다).
 -- 적용 시점은 오너 결정. 순서: db:migrate로 0000_init.sql 적용(테이블 생성) → 본 스크립트 → DATABASE_URL을 이 역할 자격증명으로 재발급.
 -- 목적: 런타임(/api/search, M2+)이 rag_documents·rag_chunks만 SELECT하도록 격리 — 공개 검색 경로 취약점이 원장 쓰기로 확대되는 것을 차단(09 §2.1).
--- 원장(offerings·art_auction_records·re_trades)·모든 쓰기·마이그레이션 권한은 이 역할에 부여하지 않는다. 그 권한은 CLI 전용 DATABASE_URL_DIRECT 자격증명에만 남긴다.
+-- 원장(offerings·art_auction_records·real_estate_trades)·모든 쓰기·마이그레이션 권한은 이 역할에 부여하지 않는다. 그 권한은 CLI 전용 DATABASE_URL_DIRECT 자격증명에만 남긴다.
 --
 -- 실행(비밀번호는 커밋 금지 — 실행 시 주입):
 --   psql "$DATABASE_URL_DIRECT" -v ro_password="'<강한-무작위-비밀번호>'" -f db/roles.sql
@@ -17,6 +17,9 @@ GRANT SELECT ON rag_documents, rag_chunks TO jeomjeom_rag_ro;
 -- 라이브 API(POST /api/verify)·cron(GET /api/cron/monitor)은 프로덕션에서 런타임 자격증명만
 -- 갖는다(DATABASE_URL_DIRECT는 CLI 전용, 배포 안 함). 따라서 best-effort 기록은 런타임 역할로 한다.
 GRANT INSERT ON verification_runs TO jeomjeom_rag_ro;
+-- run_key 멱등 INSERT는 onConflictDoNothing(R-STO-19) — ON CONFLICT는 충돌 대상 컬럼의 SELECT 권한을
+-- 요구한다(RDS 실측 2026-08-31, 42501). run_key 단일 컬럼만 부여해 이력 본문 SELECT 불가는 유지한다.
+GRANT SELECT (run_key) ON verification_runs TO jeomjeom_rag_ro;
 GRANT INSERT ON monitor_runs, monitor_events TO jeomjeom_rag_ro;
 -- monitor_events는 monitor_runs.id FK가 필요해 INSERT ... RETURNING id로 링크한다.
 -- Postgres RETURNING은 해당 컬럼 SELECT 권한이 필요하므로 monitor_runs에 한해 SELECT를 부여한다

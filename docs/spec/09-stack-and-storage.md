@@ -1,6 +1,6 @@
 # 기술 스택 · 저장 계층 (Stack & Storage)
 
-> **상태: v1-draft (팀 리뷰 요청)** · 2026-08-23 초안 · **2026-08-29 3관점 리뷰(DB·정합성·보안) 반영 + DB 호스팅 Supabase 오너 확정** · 근거: `05-data-policy.md`(신호등·크롤링 금지가 더미 데이터 필요의 원전), `06-ai-guardrails.md`(RAG·캐시 경계), postgres-patterns 스킬 규약.
+> **상태: v1-draft (팀 리뷰 요청)** · 2026-08-23 초안 · **2026-08-29 3관점 리뷰(DB·정합성·보안) 반영 + DB 호스팅 Supabase 오너 확정 · 2026-08-31 오너 결정 갱신: AWS RDS(ap-northeast-2)로 이전 — §2 갱신 근거 참조** · 근거: `05-data-policy.md`(신호등·크롤링 금지가 더미 데이터 필요의 원전), `06-ai-guardrails.md`(RAG·캐시 경계), postgres-patterns 스킬 규약.
 > DB 스키마의 단일 진실은 도입 후 `src/lib/db/schema.ts`가 된다 — 문서와 다르면 코드를 따르고 문서를 정정한다.
 
 ## 1. 확정 스택 (현행 — 변경은 오너 합의 필수)
@@ -15,7 +15,7 @@
 | 테스트 | Vitest (node 환경) | 익명화 게이트·계약 테스트 포함 |
 | LLM | AI SDK(`ai` + `@ai-sdk/openai`) — 스파인 경계 수렴 | 키 없으면 fake 완주 (`06` §7) |
 | CLI 실행 | tsx (`--env-file-if-exists=.env`) | 수집·생성 파이프라인 진입점 |
-| DB | Supabase Postgres + pgvector (2026-08-29 오너 확정) | §2 저장 3층 — 렌더 경로 접근 금지 |
+| DB | AWS RDS PostgreSQL 18 + pgvector, ap-northeast-2 (2026-08-31 오너 결정 — Supabase에서 이전) | §2 저장 3층 — 렌더 경로 접근 금지 |
 | 배포 | Vercel (CLI 수동, git 연동 없음) | `CLAUDE.md` 배포 절 |
 
 새 의존성 추가 기준: ① 기존 스택으로 불가한가 ② 키·서비스 없이도 빌드·테스트가 완주하는가 ③ `.vercelignore`·데이터 정책에 영향 없는가 — 셋을 PR 본문에 명기.
@@ -26,9 +26,11 @@
 |---|---|---|---|
 | ① 파일 캐시 | `data/public/`·`data/reference/`·`data/offers/` (커밋) | 검증 리포트·시장 통계·공모 좌표 — **모든 화면 수치·근거의 유일한 원천** (사용자 대면 문안의 단일 진실은 `src/lib/content/` — R-INV-01) | 서버 컴포넌트 직독 (유지) |
 | ② Vercel Blob | 정정 감시 이벤트 스토어 | cron 간 상태 보존 | 불가 |
-| ③ Postgres (신설) | **Supabase (관리형 Postgres) + pgvector — 2026-08-29 오너 확정** | §3 더미·참조 데이터 원장 + §4 RAG 코퍼스 + **§5 검증 실행 이력·원장 관측** | **불가 — 렌더 경로에서 DB 조회 금지** (§5 라이브 이력 기록은 쓰기 전용 예외) |
+| ③ Postgres (신설) | **AWS RDS PostgreSQL + pgvector (ap-northeast-2) — 2026-08-31 오너 결정(구 Supabase에서 이전)** | §3 더미·참조 데이터 원장 + §4 RAG 코퍼스 + **§5 검증 실행 이력·원장 관측** | **불가 — 렌더 경로에서 DB 조회 금지** (§5 라이브 이력 기록은 쓰기 전용 예외) |
 
 호스팅 비교 근거 (2026-08-29 실측): Neon(0.5GB·100 CU-h·연결 시 자동 기상) / Supabase(500MB·pgvector 전 플랜·**7일 무활동 시 일시정지 — 대시보드 수동 복구, 90일 초과 시 인프라 회수**·테이블/SQL 대시보드) / Oracle Always Free(관리형 Postgres 없음·VM 셀프호스팅은 idle 회수 정책과 충돌 — 탈락). Supabase 채택 사유: 팀원이 적재 데이터를 눈으로 확인할 대시보드 + 챗 개통 후 대화 로그 저장으로 상시 활동 예상. **일시정지 방어**: 챗 개통 전 구간은 cron(`/api/cron/monitor`, 주 2회)에 경량 DB ping 1쿼리를 포함해 7일 무활동을 구조적으로 차단한다 — ping 실패는 cron 결과에 정직 표기하되 cron 본 임무를 중단시키지 않는다.
+
+**2026-08-31 이전 확정 (오너 결정)**: 레이턴시 벤치 재현성(공유 컴퓨트·풀러 홉 제거)과 Vercel 함수 icn1 고정에 따른 동일 리전 코로케이션을 위해 **AWS RDS PostgreSQL 18(db.t4g.micro, ap-northeast-2)**로 이전 완료. 마이그레이션 0000~0004·roles.sql·ingest·seed·export 재현 검증 그린. RDS는 무활동 일시정지가 없으므로 **위 ping 조항은 폐기**(cron 미구현 상태에서 폐기라 코드 변경 없음). 접속은 풀러 없이 단일 엔드포인트(5432)이며 `rds.force_ssl` 기본 활성 — 연결 문자열에 `sslmode=require` 의무.
 
 **구속 원칙: Postgres 도입은 "화면은 캐시만 읽는다"를 바꾸지 않는다.** DB에 접근하는 경로는 두 개뿐이다:
 
@@ -41,9 +43,9 @@
 
 - 드라이버: **postgres-js(`postgres`) + drizzle-orm** (스키마 = `src/lib/db/schema.ts`, 마이그레이션 = drizzle-kit → `db/migrations/` 커밋). drizzle 대신 직 SQL 여부는 `[팀 결정 대기]` — 단 §2.2 파라미터화 의무는 선택과 무관하게 적용.
 - **연결 문자열 2종 분리 (의무)**:
-  - `DATABASE_URL` — Supavisor **transaction 풀러**(포트 6543) 경유, 런타임(`/api/search`) 전용. 서버리스 동시 인보케이션의 직결 커넥션 고갈 방지.
+  - `DATABASE_URL` — RDS 단일 엔드포인트(5432), **제한 역할(`jeomjeom_rag_ro`)** 자격증명, 런타임 전용. 풀러가 없으므로 서버리스 동시 인보케이션은 postgres-js 커넥션 풀 상한(인스턴스당 1~2)으로 방어하고, 필요 시 RDS Proxy를 후속 옵션으로 둔다. (구 Supavisor 6543 서술은 2026-08-31 이전으로 폐기.)
   - `DATABASE_URL_DIRECT` — 세션 모드 연결(포트 5432), CLI 전용(마이그레이션·시드·export). drizzle-kit은 반드시 이쪽을 쓴다(트랜잭션 풀링 모드에서 DDL·세션 기능 제약). **2026-08-29 오너 실측 정정**: 이 프로젝트의 진짜 직결 호스트(`db.*.supabase.co`)는 IPv6 전용이라 로컬에서 도달 불가 → **세션 풀러(5432)로 대체**한다. 세션 모드라 DDL·마이그레이션·`CREATE ROLE`이 호환된다("직결"이라는 표기는 세션 풀러를 포함하는 뜻으로 읽는다).
-- **자격증명 역할 분리 (의무)**: 런타임 `DATABASE_URL`에는 `rag_documents`·`rag_chunks` **SELECT 전용 Postgres 역할**을 부여한다. 원장 쓰기·마이그레이션 권한은 CLI 전용 자격증명에만. 공개 검색 경로의 취약점이 원장 쓰기로 확대되는 것을 차단하는 유일한 방어선이다(Supabase 무료 플랜에는 IP allow가 없음). Supabase의 `service_role`·`anon` 키는 PostgREST용 — 이 프로젝트는 PostgREST를 쓰지 않으므로 두 키를 코드에 들여오지 않는다. **역할 생성은 마이그레이션과 분리한 운영 스크립트 `db/roles.sql`**로 준비돼 있다(마이그레이션이 아님 — `db:migrate`가 실행하지 않는다). **적용 순서·시점(오너 결정)**: `db:migrate`로 스키마 적용 후 → `db/roles.sql`(비밀번호 실행 시 주입, 커밋 금지) → `DATABASE_URL`을 이 역할로 재발급. 그 전까지는 런타임·CLI 둘 다 `postgres` 사용자지만 `/api/search`가 없어 노출 표면이 없다.
+- **자격증명 역할 분리 (의무)**: 런타임 `DATABASE_URL`에는 `rag_documents`·`rag_chunks` **SELECT 전용 Postgres 역할**을 부여한다. 원장 쓰기·마이그레이션 권한은 CLI 전용 자격증명에만. 공개 검색 경로의 취약점이 원장 쓰기로 확대되는 것을 차단하는 유일한 방어선이다(보안 그룹은 Vercel 유동 IP 때문에 전체 개방 — TLS 강제·강한 비밀번호·역할 분리가 방어선). Supabase의 `service_role`·`anon` 키는 PostgREST용 — 이 프로젝트는 PostgREST를 쓰지 않으므로 두 키를 코드에 들여오지 않는다. **역할 생성은 마이그레이션과 분리한 운영 스크립트 `db/roles.sql`**로 준비돼 있다(마이그레이션이 아님 — `db:migrate`가 실행하지 않는다). **적용 순서·시점(오너 결정)**: `db:migrate`로 스키마 적용 후 → `db/roles.sql`(비밀번호 실행 시 주입, 커밋 금지) → `DATABASE_URL`을 이 역할로 재발급. 2026-08-31 RDS에서 적용 완료 — 런타임 역할 권한 매트릭스(rag SELECT·이력 INSERT·원장 차단) 실측 검증 그린. ON CONFLICT 멱등 경로가 충돌 대상 컬럼 SELECT를 요구해 `verification_runs(run_key)` 컬럼 단위 SELECT를 추가했다(roles.sql 주석 참조).
 - **확장 가용 실측 (2026-08-29 오너)**: `vector` 0.8.2 · `pg_trgm` 1.6 · `unaccent` 1.1 모두 사용 가능. `CREATE EXTENSION`은 마이그레이션에서 수행한다(`vector`는 `0000_init.sql` 선두에 이미 포함; `pg_trgm`은 §4 한국어 보강 [팀 결정 대기] 확정 후 별도 마이그레이션으로 추가).
 - `DATABASE_URL` 미설정이면 **file 모드** — 어댑터 fake 트윈 관례(`01` §1) 그대로, DB 리포지토리의 트윈이 `data/` JSON을 읽어 같은 인터페이스로 응답한다. 팀원 로컬·CI에서 DB 불필요 원칙.
 - 금액은 원화 정수 `bigint`(won), 시각은 `timestamptz`, 문자열은 `text`, id는 `bigint identity` + 공개 슬러그 별도 열. 외래키에는 인덱스 필수.
@@ -123,7 +125,7 @@ CREATE TABLE art_auction_records (                -- 미술품 낙찰 기록 (�
 );
 CREATE INDEX ON art_auction_records (auction_date);
 
-CREATE TABLE re_trades (                          -- 부동산 실거래 (RTMS 수집분 원장화, Green)
+CREATE TABLE real_estate_trades (          -- 0004에서 re_trades를 rename (R-STO-23)                          -- 부동산 실거래 (RTMS 수집분 원장화, Green)
   id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   provenance text NOT NULL DEFAULT 'public_record'
     CHECK (provenance IN ('public_record','manual_verified','synthetic')),
@@ -135,12 +137,12 @@ CREATE TABLE re_trades (                          -- 부동산 실거래 (RTMS �
   created_at timestamptz NOT NULL DEFAULT now(),
   UNIQUE (lawd_cd, deal_ym, dong, deal_on, amount_won)  -- RTMS 자연키 근사 — 멱등 시드 타깃. 공식 거래 고유 id 확보 시 교체
 );
-CREATE INDEX ON re_trades (lawd_cd, deal_ym);
+CREATE INDEX ON real_estate_trades (lawd_cd, deal_ym);
 ```
 
 - 판정·리포트는 DB에 넣지 않는다 — 리포트의 진실은 여전히 파이프라인 산출 JSON(①층)이다. DB는 "대조에 쓸 참조 원장"까지만.
 - 개인정보 포함 원천은 DB에도 넣지 않는다 — `data/raw/` 로컬 전용 원칙은 DB에 그대로 적용된다. Supabase는 커밋 대상이 아니지만 팀 공유 저장소이므로 **마스킹 전 데이터 적재 금지** — 기계 강제는 §3.1 원천 경로 가드.
-- **필드 매핑 원칙**: `data/offers/*.json`의 공모 자체 정보(`offer.*`, 매각·정산 포함)는 `offerings.detail`로, 시장 참조 거래(RTMS 수집분)는 `re_trades` 로우로 — "공모 귀속 정보"와 "시장 참조 원장"의 경계를 섞지 않는다. 필드별 상세 매핑표는 `schema.ts` 구현 PR에서 확정·병기.
+- **필드 매핑 원칙**: `data/offers/*.json`의 공모 자체 정보(`offer.*`, 매각·정산 포함)는 `offerings.detail`로, 시장 참조 거래(RTMS 수집분)는 `real_estate_trades` 로우로 — "공모 귀속 정보"와 "시장 참조 원장"의 경계를 섞지 않는다. 필드별 상세 매핑표는 `schema.ts` 구현 PR에서 확정·병기.
 
 ### 3.3 시드·내보내기 규약
 
@@ -182,7 +184,7 @@ npm run db:export      # DB → data/public/·data/reference/ 화면용 산출�
 
 ### 3.5 카테고리별 참조 원장 통합표 (2026-08-29 전수 인벤토리 기반 — 일괄 적용 대상)
 
-2026-08-29 실측: 현행 5테이블은 보유 데이터의 약 20%만 수용한다. 파일에 실거래 839건·한우 경락가 33개월(~480행)·돼지 경락가 60행이 있으나 DB 적재 경로가 전무하고, `re_trades`는 적재 코드 자체가 없다. 목표 상태:
+2026-08-29 실측: 현행 5테이블은 보유 데이터의 약 20%만 수용한다. 파일에 실거래 839건·한우 경락가 33개월(~480행)·돼지 경락가 60행이 있으나 DB 적재 경로가 전무하고, `real_estate_trades`는 적재 코드 자체가 없다. 목표 상태:
 
 | 카테고리 | 참조 원장 | 대상 테이블 | 작업 |
 |---|---|---|---|
@@ -192,7 +194,7 @@ npm run db:export      # DB → data/public/·data/reference/ 화면용 산출�
 | pig | 회차 3건 (`src/lib/content/pig.ts` 상수) | `offerings` 이관 — provenance=`manual_verified`, 회차 구조는 `detail` 화이트리스트 확장 | pig 공모 행 0건 공백 해소. 문안 상수는 코드 유지(감사 게이트) |
 | art | 낙찰 기록 | `art_auction_records` (기존) | 실데이터 338건은 라이선스 재판정(팀 안건 6) 전 적재 보류 |
 | art | 실측 공모 5건 (`src/lib/content/art.ts` 상수) | `offerings` 이관 — provenance=`manual_verified`, slug 충돌은 §3.1 `ex-` 규칙으로 해소 | |
-| real-estate | 실거래 (RTMS 8파일 839건) | `re_trades` **확장** — +building_type·floor·building_area_sqm·land_area_sqm·build_year·cancelled boolean (면적 없이는 ㎡ 단가 비교 불가) | 새 마이그레이션(append-only) + 적재 CLI |
+| real-estate | 실거래 (RTMS 8파일 839건) | `real_estate_trades` **확장** — +building_type·floor·building_area_sqm·land_area_sqm·build_year·cancelled boolean (면적 없이는 ㎡ 단가 비교 불가) | 새 마이그레이션(append-only) + 적재 CLI |
 | real-estate | 건축물대장 | 보류 — 실데이터 0건(API 403) | 키 승인 후 신설 `[팀 결정 대기]` |
 | 공통 | 신고서 사실 카드 (`data/offers/filing-facts/` 18행) | `offering_filing_facts` **신설** — offer_slug·rcp_no·submitted_on·fact_id·label·value·section·short, UNIQUE(offer_slug,rcp_no,fact_id) | offerings와 DART 계보 연결 확보 |
 | 공통 | 공모 좌표 (`data/offers/*.json`) | `offerings` **확장 파싱** — `asset` jsonb(lawd_cd·bjdong_cd·dong 등 조인 키)·`sale` jsonb·`limits` — 현행 rawOfferSchema가 6개 필드군을 유실 중 | detail 화이트리스트 확장(스키마 컬럼 불변) 또는 컬럼 추가 — 구현 시 확정 |
@@ -230,7 +232,7 @@ CREATE INDEX ON rag_chunks USING hnsw (embedding vector_cosine_ops);
 CREATE INDEX ON rag_chunks USING gin (tsv);
 ```
 
-**한국어 키워드 검색 한계 (인지된 리스크)**: `to_tsvector('simple', …)`은 형태소 분석이 없어 조사 결합형("공모는"/"공모가")이 서로 다른 토큰이 된다 — 한국어 본문에 대한 tsvector 단독 키워드 검색은 정확도가 매우 낮고, **fake 모드(키·DB 없는 환경)의 검색 품질 전체가 이 경로에 의존**하므로 방치 불가. 보강 기본값: ① `pg_trgm` + GIN 인덱스를 키워드 폴백에 병행(형태소 없이 부분 문자열 유사도로 동작 — Supabase 확장 지원 목록에서 확인) ② 적재 CLI에서 조사 스트리핑 등 사전 토큰화 후 `simple`에 투입. 채택 조합은 `[팀 결정 대기]` — 구현 spike로 정확도 비교 후 결정.
+**한국어 키워드 검색 한계 (인지된 리스크)**: `to_tsvector('simple', …)`은 형태소 분석이 없어 조사 결합형("공모는"/"공모가")이 서로 다른 토큰이 된다 — 한국어 본문에 대한 tsvector 단독 키워드 검색은 정확도가 매우 낮고, **fake 모드(키·DB 없는 환경)의 검색 품질 전체가 이 경로에 의존**하므로 방치 불가. 보강 기본값: ① `pg_trgm` + GIN 인덱스를 키워드 폴백에 병행(형태소 없이 부분 문자열 유사도로 동작 — RDS PostgreSQL 18 가용 확장 실측(vector 0.8.1·pg_trgm 1.6·unaccent 1.1, 2026-08-31)) ② 적재 CLI에서 조사 스트리핑 등 사전 토큰화 후 `simple`에 투입. 채택 조합은 `[팀 결정 대기]` — 구현 spike로 정확도 비교 후 결정.
 
 - **출처 강제와 접합**: 검색 결과의 `source_id`가 스파인 코퍼스 등록분이 아니면 인용 불가 — RAG 적재가 곧 출처 등록이 아니다. 등록은 여전히 오너 일괄(`01` §2). RAG 테이블은 등록된 출처의 **본문 확장**일 뿐이다.
 - 하이브리드 검색 기본값: tsvector 키워드(**`websearch_to_tsquery` 경유 — §2.2**) + 벡터 유사도 병합. **fake 모드(키·DB 없음)**: 임베딩 생략, `data/`의 사전 작성 교육 콘텐츠에 대한 키워드 매칭으로 열화 동작 — 06 §4 정적 스캐폴드의 저장 계층 대응물.
@@ -327,7 +329,7 @@ CREATE INDEX ON ledger_observations (subject_key, observed_at);
 
 | 항목 | 확정값 | 근거 |
 |---|---|---|
-| DB 호스팅 | **Supabase** | §2 비교 근거 참조 — 대시보드 가시성 + 챗 개통 후 상시 활동 예상. 일시정지는 cron ping으로 방어 |
+| DB 호스팅 | **AWS RDS PostgreSQL (ap-northeast-2)** — 2026-08-31 오너 결정으로 Supabase에서 이전 | §2 이전 확정 근거 참조 — 레이턴시 벤치 재현성·icn1 코로케이션. 일시정지 없음(ping 조항 폐기) |
 
 ## 팀 결정 대기 (기본값 병기)
 

@@ -93,7 +93,7 @@ export const artAuctionRecords = pgTable(
 );
 
 export const reTrades = pgTable(
-  "re_trades",
+  "real_estate_trades",
   {
     id: bigint("id", { mode: "bigint" }).primaryKey().generatedAlwaysAsIdentity(),
     provenance: text("provenance").notNull().default("public_record"),
@@ -115,16 +115,16 @@ export const reTrades = pgTable(
       .defaultNow(),
   },
   (t) => [
-    provenanceCheck(t.provenance, "re_trades_provenance_check"),
-    check("re_trades_lawd_cd_check", sql`${t.lawdCd} ~ '^\\d{5}$'`),
+    provenanceCheck(t.provenance, "real_estate_trades_provenance_check"),
+    check("real_estate_trades_lawd_cd_check", sql`${t.lawdCd} ~ '^\\d{5}$'`),
     check(
-      "re_trades_deal_ym_check",
+      "real_estate_trades_deal_ym_check",
       sql`${t.dealYm} ~ '^\\d{4}-(0[1-9]|1[0-2])$'`,
     ),
-    unique("re_trades_natural_key")
+    unique("real_estate_trades_natural_key")
       .on(t.lawdCd, t.dealYm, t.dong, t.dealOn, t.amountWon)
       .nullsNotDistinct(),
-    index("re_trades_lawd_deal_ym_idx").on(t.lawdCd, t.dealYm),
+    index("real_estate_trades_lawd_deal_ym_idx").on(t.lawdCd, t.dealYm),
   ],
 );
 
@@ -185,9 +185,9 @@ export const cattleAuctionPrices = pgTable(
     breedCd: text("breed_cd").notNull(),
     sexCd: text("sex_cd").notNull(),
     gradeCd: text("grade_cd").notNull(),
-    pricePerKg: numeric("price_per_kg", { precision: 12, scale: 2 }),
+    pricePerKg: numeric("price_won_per_kg", { precision: 12, scale: 2 }),
     headCount: integer("head_count"),
-    avgPricePerKg: numeric("avg_price_per_kg", { precision: 12, scale: 2 }),
+    avgPricePerKg: numeric("avg_price_won_per_kg", { precision: 12, scale: 2 }),
     sampleSize: integer("sample_size"),
     partial: boolean("partial").notNull().default(false),
     sourceMeta: jsonb("source_meta").$type<Record<string, unknown>>().notNull(),

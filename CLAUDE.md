@@ -63,7 +63,7 @@ npm run db:export    # DB → data/public/offerings/index.json (마스킹 게이
 - `src/app/` — App Router 화면(`/` 입문자 홈, `/offers` 목록, `/offers/[id]` 리포트,
   `/cattle`·`/pig`·`/art`·`/real-estate` 카테고리 착지, `/methodology`) + API
   (`/api/health`, `/api/verify/[id]`, `/api/cron/monitor` — vercel.json cron 주 2회)
-- `src/lib/db/` — Supabase Postgres 저장 계층(schema.ts=스키마 단일 진실, repositories/ file·DB 트윈,
+- `src/lib/db/` — AWS RDS Postgres 저장 계층(ap-northeast-2, 2026-08-31 이전)(schema.ts=스키마 단일 진실, repositories/ file·DB 트윈,
   seed/·ingest/·export/·cli/, ledger/=검증 실행 이력·원장 관측). 렌더 경로 DB 조회 금지 —
   화면 데이터는 `db:export` 산출물만. 계약: `contracts/storage.md`(R-STO-*), 명세: `docs/spec/09`
 - `src/lib/content/` — 홈·체크리스트 문안의 단일 진실. 신규 사용자 대면 문안은 이 모듈에 두고
