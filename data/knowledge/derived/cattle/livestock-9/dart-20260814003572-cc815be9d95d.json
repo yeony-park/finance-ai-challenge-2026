@@ -1,0 +1,446 @@
+{
+  "schemaVersion": 1,
+  "artifactVersion": "cattle-filing-derived-v1",
+  "artifactHash": "962fa51322e08cdc43a76a7e73d197b95297dbce791b03d2f2d496ed80555428",
+  "registry": {
+    "schemaVersion": 1,
+    "registryVersion": "dart-filing-registry-v1",
+    "categoryId": "cattle",
+    "offerId": "livestock-9",
+    "rcpNo": "20260814003572",
+    "submittedOn": "2026-08-14",
+    "entry": {
+      "name": "20260814003572.xml",
+      "sha256": "cc815be9d95de6cbe4a6a16f632cfe65c3f56589ce77caa9c7890fefce8b99e2"
+    },
+    "source": {
+      "landingUrl": "https://dart.fss.or.kr/dsaf001/main.do",
+      "exactPublicUrl": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260814003572",
+      "collectedAtSource": "local raw XML file mtime",
+      "method": "OpenDART document.xml exact rcpNo ZIP entry hash verification"
+    },
+    "relationship": {
+      "type": "issuer_context",
+      "mappingStatus": "confirmed",
+      "mappingEvidence": "기존 live public report의 document.offerId=livestock-9 및 rcpNo=20260814003572, 승인 filing-facts의 동일 offerId·rcpNo, 그리고 livestock-9 pilot 범위 승인에 의해 이 공시를 해당 상품의 issuer context로 확정합니다. primary 관계는 주장하지 않습니다.",
+      "limitations": [
+        "발행 주체·기초자산의 동일성을 자동 확정하지 않으며, primary·correction_of·supplement_to 관계로 승격하지 않습니다."
+      ]
+    },
+    "approval": {
+      "policyId": "cattle-product-filing-review-v1",
+      "scope": "livestock-9 product-specific filing facts only",
+      "externalAiApproved": false,
+      "piiReviewStatus": "passed"
+    },
+    "sectionLocators": [
+      {
+        "factId": "issuer-allocation",
+        "anchor": "선배정",
+        "sectionPath": [
+          "제1부 모집 또는 매출에 관한 사항",
+          "I. 모집 또는 매출에 관한 일반사항",
+          "2. 공모방법",
+          "가. 투자계약증권의 배정내역"
+        ],
+        "occurrence": 2,
+        "evidenceTokens": [
+          "10",
+          "1817"
+        ],
+        "normalizedExcerptHash": "a429a1362bd25827b8bebc99d9f0753359a0c5de19f482c7d90ddbe97f18ee3d"
+      },
+      {
+        "factId": "operation-period",
+        "anchor": "26개월",
+        "sectionPath": [
+          "제1부 모집 또는 매출에 관한 사항",
+          "I. 모집 또는 매출에 관한 일반사항",
+          "1. 공모개요"
+        ],
+        "occurrence": 5,
+        "evidenceTokens": [
+          "20",
+          "26"
+        ],
+        "normalizedExcerptHash": "8faa3e4cb70b192340396cf26094b9da1c446db730415371d33fd27d2a3cc5d0"
+      },
+      {
+        "factId": "investor-fees",
+        "anchor": "청약수수료",
+        "sectionPath": [
+          "제1부 모집 또는 매출에 관한 사항",
+          "I. 모집 또는 매출에 관한 일반사항",
+          "4. 모집 또는 매출절차 등에 관한 사항",
+          "다. 청약 방법"
+        ],
+        "occurrence": 9,
+        "evidenceTokens": [
+          "200"
+        ],
+        "normalizedExcerptHash": "44c28bb5cf7c812dd9f31f49c06722e0affea85553c3ace4290d130c0042e98e"
+      },
+      {
+        "factId": "protection-fund",
+        "anchor": "투자자보호기금",
+        "sectionPath": [
+          "제1부 모집 또는 매출에 관한 사항",
+          "VI. 그 밖에 투자자보호를 위해 필요한 사항",
+          "10. 투자자 보호장치에 관한 사항",
+          "바. 투자자 피해 보상 체계 및 분쟁처리 절차"
+        ],
+        "occurrence": 10,
+        "evidenceTokens": [
+          "투자자보호기금"
+        ],
+        "normalizedExcerptHash": "2f8588bc15f1c6a68ea76e2446a6dfccb7dd9dee6c7dbcc6567527491284fb39"
+      },
+      {
+        "factId": "pricing-basis",
+        "anchor": "수요예측",
+        "sectionPath": [
+          "제1부 모집 또는 매출에 관한 사항",
+          "I. 모집 또는 매출에 관한 일반사항",
+          "3. 공모가격 결정방법",
+          "나. 공모가격 산정개요"
+        ],
+        "occurrence": 7,
+        "evidenceTokens": [
+          "수요예측"
+        ],
+        "normalizedExcerptHash": "3880756bf8802914b34bd0248f8aa7ba9e299683aa57d7086e1c330a0c4aa88c"
+      }
+    ],
+    "maskedObservation": {
+      "reportPath": "public/livestock-9/report-2026-08-15T15-52-44-480Z.json",
+      "sha256": "c989fb5dce8532b849ace669fed17f4b29ae7d5c52db028659a538c312807da3",
+      "allowedFields": [
+        "품종",
+        "성별",
+        "취득시기"
+      ]
+    }
+  },
+  "registryHash": "f1bf3f7024d50d6a31e48916866ad68d7a8f8294e9249df8047537fe5b6ef4fe",
+  "sourceHash": "cc815be9d95de6cbe4a6a16f632cfe65c3f56589ce77caa9c7890fefce8b99e2",
+  "sanitizerVersion": "cattle-filing-sanitizer-v1",
+  "sourceFileMtime": "2026-08-31T12:15:28.877Z",
+  "approval": {
+    "policyId": "cattle-product-filing-review-v1",
+    "scope": "livestock-9 product-specific filing facts only",
+    "externalAiApproved": false,
+    "piiReviewStatus": "passed"
+  },
+  "sections": [
+    {
+      "sectionId": "dart-issuer-allocation",
+      "factId": "issuer-allocation",
+      "title": "발행인 선배정",
+      "text": "증권명칭 청약대상자 증권수 공모가액 공모비율 모집(매출)총액 계좌관리기관 비고 가축투자계약증권 제9호 일반청약자 16,349 20,000원 90% 326,980,000원 NH농협은행,신한투자증권 패키지 발행 공동사업 운영자 선배정 1,817 20,000원 10% 36,340,000원 합계 18,166 363,320,000원",
+      "sectionPath": [
+        "제1부 모집 또는 매출에 관한 사항",
+        "I. 모집 또는 매출에 관한 일반사항",
+        "2. 공모방법",
+        "가. 투자계약증권의 배정내역"
+      ],
+      "charRange": {
+        "start": 247451,
+        "end": 250219
+      },
+      "anchorOffset": 249385,
+      "occurrence": 2,
+      "normalizedExcerptHash": "a429a1362bd25827b8bebc99d9f0753359a0c5de19f482c7d90ddbe97f18ee3d",
+      "sectionHash": "86a3c28fdc4e467cc29d0573bad1de095411e3efecf92ee0b13a03f3b4d91414"
+    },
+    {
+      "sectionId": "dart-operation-period",
+      "factId": "operation-period",
+      "title": "예상 사업기간",
+      "text": "20~26개월",
+      "sectionPath": [
+        "제1부 모집 또는 매출에 관한 사항",
+        "I. 모집 또는 매출에 관한 일반사항",
+        "1. 공모개요"
+      ],
+      "charRange": {
+        "start": 243395,
+        "end": 243409
+      },
+      "anchorOffset": 243401,
+      "occurrence": 5,
+      "normalizedExcerptHash": "8faa3e4cb70b192340396cf26094b9da1c446db730415371d33fd27d2a3cc5d0",
+      "sectionHash": "3842beff4a707100147b52ae831212687dbceb235576d6b8e87c7c24c63a6b05"
+    },
+    {
+      "sectionId": "dart-investor-fees",
+      "factId": "investor-fees",
+      "title": "투자자 부담 비용",
+      "text": "- 청약수수료 : 200원/건",
+      "sectionPath": [
+        "제1부 모집 또는 매출에 관한 사항",
+        "I. 모집 또는 매출에 관한 일반사항",
+        "4. 모집 또는 매출절차 등에 관한 사항",
+        "다. 청약 방법"
+      ],
+      "charRange": {
+        "start": 299140,
+        "end": 299163
+      },
+      "anchorOffset": 299145,
+      "occurrence": 9,
+      "normalizedExcerptHash": "44c28bb5cf7c812dd9f31f49c06722e0affea85553c3ace4290d130c0042e98e",
+      "sectionHash": "c228185ce3e9cd7484998341089909101b6c22f6b25acfd79f663693cccd7a67"
+    },
+    {
+      "sectionId": "dart-protection-fund",
+      "factId": "protection-fund",
+      "title": "투자자보호기금",
+      "text": "기초자산의 폐사 등으로 인한 피해가 타 가축대비 상대적으로 낮고(「제1부 III. 다. 전염병 발생 및 폐사에 따른 위험」을 참조), 상대적으로 높은 보험비로 인해 국내 한우의 가축재해보험 가입률은 낮은 편에 속합니다. 따라서 당사는 공동사업을 위한 예상보험비용이 전체 사육비용의 약 4%인 점, 기초자산의 비교적 낮은 폐사율, 본건 공동사업의 운영 효율성 및 수익성 등을 전반적으로 감안하여 보험에 가입하지 아니합니다. 다만, 당사는 「가축전염병 예방법」, 「살처분 가축 등에 대한 보상금등 지급요령」등 관련 법령에 근거하여 산정된 국가 보상금을 통해 투자자 피해를 최소화하고자 합니다. 이에 대한 자세한 내용은 「제1부. VI. 13. 기초자산 가축전염병에 대한 정보」 참조바랍니다. 한편, 가축전염병예방법 예방법에 따라 보상받지 못하는 질병 및 폐사에 대하여, 투자자는 제1의 투자자보호기금 등을 통하여 보상 받을수 있습니다. 당사는 「투자자보호기금 운영기준」에 따라 투자자보호기금을 적립하고 운영하고 있으며, 이에 대한 자세한 사항은 「제1부. VI. 10. 바. (2) 제1의 투자자보호기금 및 제2의 투자자보호기금」 을 참조하시기 바랍니다. 그럼에도 불구하고 가축자산 재해보험 미가입으로 인해 본건 공동사업 운영의 안정성 및 투자자 수익에 부정적인 영향을 미칠수 있는 점 투자자께서는 유의하시기 바랍니다.",
+      "sectionPath": [
+        "제1부 모집 또는 매출에 관한 사항",
+        "VI. 그 밖에 투자자보호를 위해 필요한 사항",
+        "10. 투자자 보호장치에 관한 사항",
+        "바. 투자자 피해 보상 체계 및 분쟁처리 절차"
+      ],
+      "charRange": {
+        "start": 1515488,
+        "end": 1516176
+      },
+      "anchorOffset": 1515930,
+      "occurrence": 10,
+      "normalizedExcerptHash": "2f8588bc15f1c6a68ea76e2446a6dfccb7dd9dee6c7dbcc6567527491284fb39",
+      "sectionHash": "e18340f43ed3163fe7c79b5a838874488552a9f2d2c60cf5634d1a49f51f4df9"
+    },
+    {
+      "sectionId": "dart-pricing-basis",
+      "factId": "pricing-basis",
+      "title": "공모가격 산정",
+      "text": "수요예측 결과 반영 여부",
+      "sectionPath": [
+        "제1부 모집 또는 매출에 관한 사항",
+        "I. 모집 또는 매출에 관한 일반사항",
+        "3. 공모가격 결정방법",
+        "나. 공모가격 산정개요"
+      ],
+      "charRange": {
+        "start": 261896,
+        "end": 261916
+      },
+      "anchorOffset": 261899,
+      "occurrence": 7,
+      "normalizedExcerptHash": "3880756bf8802914b34bd0248f8aa7ba9e299683aa57d7086e1c330a0c4aa88c",
+      "sectionHash": "4aeff5e740ecbf2a438b3d7c97d641bfe22fdd6bc299813e8a77134c293b937d"
+    }
+  ],
+  "document": {
+    "schemaVersion": 1,
+    "categoryId": "cattle",
+    "productId": "livestock-9",
+    "documentId": "cattle-livestock-9-dart-20260814003572",
+    "title": "축산 투자계약증권 공시 승인 사실",
+    "publisher": "OpenDART",
+    "sourceKind": "official-document",
+    "sourceUrl": "https://dart.fss.or.kr/dsaf001/main.do",
+    "asOf": "2026-08-14",
+    "collectedAt": "2026-08-31T12:15:28.877Z",
+    "dataNature": "observed",
+    "rightsStatus": "unknown",
+    "approvedForPublic": true,
+    "approvedForExternalAi": false,
+    "piiReviewStatus": "passed",
+    "sourceHash": "cc815be9d95de6cbe4a6a16f632cfe65c3f56589ce77caa9c7890fefce8b99e2",
+    "status": "ready",
+    "pages": [
+      {
+        "page": 1,
+        "quality": "ready",
+        "reasonCodes": [
+          "xml-logical-page"
+        ],
+        "metrics": {
+          "itemCount": 5,
+          "characterCount": 897,
+          "density": 0
+        },
+        "limitations": [
+          "원천은 XML이므로 PDF 페이지 대신 논리 페이지 1로 기록했습니다."
+        ]
+      }
+    ],
+    "limitations": [
+      "OpenDART exact rcpNo XML의 승인된 product-specific 사실만 정규화했으며, 원문 XML과 식별정보는 포함하지 않았습니다."
+    ]
+  },
+  "chunks": [
+    {
+      "schemaVersion": 1,
+      "categoryId": "cattle",
+      "productId": "livestock-9",
+      "documentId": "cattle-livestock-9-dart-20260814003572",
+      "chunkId": "cattle-livestock-9-dart-20260814003572-issuer-allocation",
+      "title": "발행인 선배정",
+      "sourceKind": "official-document",
+      "sourceUrl": "https://dart.fss.or.kr/dsaf001/main.do",
+      "asOf": "2026-08-14",
+      "dataNature": "observed",
+      "page": 1,
+      "text": "증권명칭 청약대상자 증권수 공모가액 공모비율 모집(매출)총액 계좌관리기관 비고 가축투자계약증권 제9호 일반청약자 16,349 20,000원 90% 326,980,000원 NH농협은행,신한투자증권 패키지 발행 공동사업 운영자 선배정 1,817 20,000원 10% 36,340,000원 합계 18,166 363,320,000원",
+      "canonicalText": "증권명칭 청약대상자 증권수 공모가액 공모비율 모집(매출)총액 계좌관리기관 비고 가축투자계약증권 제9호 일반청약자 16,349 20,000원 90% 326,980,000원 NH농협은행,신한투자증권 패키지 발행 공동사업 운영자 선배정 1,817 20,000원 10% 36,340,000원 합계 18,166 363,320,000원",
+      "positions": [],
+      "pageQuality": "ready",
+      "sourceHash": "cc815be9d95de6cbe4a6a16f632cfe65c3f56589ce77caa9c7890fefce8b99e2",
+      "chunkHash": "fc59b03f271d79affa18859060f9a02509c3e5d6953db356d10a1ffc69e6799a",
+      "approvedForPublic": true,
+      "approvedForExternalAi": false,
+      "piiReviewStatus": "passed",
+      "status": "ready",
+      "limitations": [
+        "OpenDART exact rcpNo XML의 승인된 product-specific 사실만 정규화했으며, 원문 XML과 식별정보는 포함하지 않았습니다."
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "categoryId": "cattle",
+      "productId": "livestock-9",
+      "documentId": "cattle-livestock-9-dart-20260814003572",
+      "chunkId": "cattle-livestock-9-dart-20260814003572-operation-period",
+      "title": "예상 사업기간",
+      "sourceKind": "official-document",
+      "sourceUrl": "https://dart.fss.or.kr/dsaf001/main.do",
+      "asOf": "2026-08-14",
+      "dataNature": "observed",
+      "page": 1,
+      "text": "20~26개월",
+      "canonicalText": "20~26개월",
+      "positions": [],
+      "pageQuality": "ready",
+      "sourceHash": "cc815be9d95de6cbe4a6a16f632cfe65c3f56589ce77caa9c7890fefce8b99e2",
+      "chunkHash": "294ac85ee1d80a7267b0798cd2022ded3401687bb90ad919a89a39f08e766cf2",
+      "approvedForPublic": true,
+      "approvedForExternalAi": false,
+      "piiReviewStatus": "passed",
+      "status": "ready",
+      "limitations": [
+        "OpenDART exact rcpNo XML의 승인된 product-specific 사실만 정규화했으며, 원문 XML과 식별정보는 포함하지 않았습니다."
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "categoryId": "cattle",
+      "productId": "livestock-9",
+      "documentId": "cattle-livestock-9-dart-20260814003572",
+      "chunkId": "cattle-livestock-9-dart-20260814003572-investor-fees",
+      "title": "투자자 부담 비용",
+      "sourceKind": "official-document",
+      "sourceUrl": "https://dart.fss.or.kr/dsaf001/main.do",
+      "asOf": "2026-08-14",
+      "dataNature": "observed",
+      "page": 1,
+      "text": "- 청약수수료 : 200원/건",
+      "canonicalText": "- 청약수수료 : 200원/건",
+      "positions": [],
+      "pageQuality": "ready",
+      "sourceHash": "cc815be9d95de6cbe4a6a16f632cfe65c3f56589ce77caa9c7890fefce8b99e2",
+      "chunkHash": "6adefb5a8383be9764b64664f0573ed8337f4b942bc3de3c6f6bb29b2040a70e",
+      "approvedForPublic": true,
+      "approvedForExternalAi": false,
+      "piiReviewStatus": "passed",
+      "status": "ready",
+      "limitations": [
+        "OpenDART exact rcpNo XML의 승인된 product-specific 사실만 정규화했으며, 원문 XML과 식별정보는 포함하지 않았습니다."
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "categoryId": "cattle",
+      "productId": "livestock-9",
+      "documentId": "cattle-livestock-9-dart-20260814003572",
+      "chunkId": "cattle-livestock-9-dart-20260814003572-protection-fund",
+      "title": "투자자보호기금",
+      "sourceKind": "official-document",
+      "sourceUrl": "https://dart.fss.or.kr/dsaf001/main.do",
+      "asOf": "2026-08-14",
+      "dataNature": "observed",
+      "page": 1,
+      "text": "기초자산의 폐사 등으로 인한 피해가 타 가축대비 상대적으로 낮고(「제1부 III. 다. 전염병 발생 및 폐사에 따른 위험」을 참조), 상대적으로 높은 보험비로 인해 국내 한우의 가축재해보험 가입률은 낮은 편에 속합니다. 따라서 당사는 공동사업을 위한 예상보험비용이 전체 사육비용의 약 4%인 점, 기초자산의 비교적 낮은 폐사율, 본건 공동사업의 운영 효율성 및 수익성 등을 전반적으로 감안하여 보험에 가입하지 아니합니다. 다만, 당사는 「가축전염병 예방법」, 「살처분 가축 등에 대한 보상금등 지급요령」등 관련 법령에 근거하여 산정된 국가 보상금을 통해 투자자 피해를 최소화하고자 합니다. 이에 대한 자세한 내용은 「제1부. VI. 13. 기초자산 가축전염병에 대한 정보」 참조바랍니다. 한편, 가축전염병예방법 예방법에 따라 보상받지 못하는 질병 및 폐사에 대하여, 투자자는 제1의 투자자보호기금 등을 통하여 보상 받을수 있습니다. 당사는 「투자자보호기금 운영기준」에 따라 투자자보호기금을 적립하고 운영하고 있으며, 이에 대한 자세한 사항은 「제1부. VI. 10. 바. (2) 제1의 투자자보호기금 및 제2의 투자자보호기금」 을 참조하시기 바랍니다. 그럼에도 불구하고 가축자산 재해보험 미가입으로 인해 본건 공동사업 운영의 안정성 및 투자자 수익에 부정적인 영향을 미칠수 있는 점 투자자께서는 유의하시기 바랍니다.",
+      "canonicalText": "기초자산의 폐사 등으로 인한 피해가 타 가축대비 상대적으로 낮고(「제1부 III. 다. 전염병 발생 및 폐사에 따른 위험」을 참조), 상대적으로 높은 보험비로 인해 국내 한우의 가축재해보험 가입률은 낮은 편에 속합니다. 따라서 당사는 공동사업을 위한 예상보험비용이 전체 사육비용의 약 4%인 점, 기초자산의 비교적 낮은 폐사율, 본건 공동사업의 운영 효율성 및 수익성 등을 전반적으로 감안하여 보험에 가입하지 아니합니다. 다만, 당사는 「가축전염병 예방법」, 「살처분 가축 등에 대한 보상금등 지급요령」등 관련 법령에 근거하여 산정된 국가 보상금을 통해 투자자 피해를 최소화하고자 합니다. 이에 대한 자세한 내용은 「제1부. VI. 13. 기초자산 가축전염병에 대한 정보」 참조바랍니다. 한편, 가축전염병예방법 예방법에 따라 보상받지 못하는 질병 및 폐사에 대하여, 투자자는 제1의 투자자보호기금 등을 통하여 보상 받을수 있습니다. 당사는 「투자자보호기금 운영기준」에 따라 투자자보호기금을 적립하고 운영하고 있으며, 이에 대한 자세한 사항은 「제1부. VI. 10. 바. (2) 제1의 투자자보호기금 및 제2의 투자자보호기금」 을 참조하시기 바랍니다. 그럼에도 불구하고 가축자산 재해보험 미가입으로 인해 본건 공동사업 운영의 안정성 및 투자자 수익에 부정적인 영향을 미칠수 있는 점 투자자께서는 유의하시기 바랍니다.",
+      "positions": [],
+      "pageQuality": "ready",
+      "sourceHash": "cc815be9d95de6cbe4a6a16f632cfe65c3f56589ce77caa9c7890fefce8b99e2",
+      "chunkHash": "e3cc315aaea7d416d5f621cbcd69e6e54e3f2b843035e56a5a213ca928a0cf2f",
+      "approvedForPublic": true,
+      "approvedForExternalAi": false,
+      "piiReviewStatus": "passed",
+      "status": "ready",
+      "limitations": [
+        "OpenDART exact rcpNo XML의 승인된 product-specific 사실만 정규화했으며, 원문 XML과 식별정보는 포함하지 않았습니다."
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "categoryId": "cattle",
+      "productId": "livestock-9",
+      "documentId": "cattle-livestock-9-dart-20260814003572",
+      "chunkId": "cattle-livestock-9-dart-20260814003572-pricing-basis",
+      "title": "공모가격 산정",
+      "sourceKind": "official-document",
+      "sourceUrl": "https://dart.fss.or.kr/dsaf001/main.do",
+      "asOf": "2026-08-14",
+      "dataNature": "observed",
+      "page": 1,
+      "text": "수요예측 결과 반영 여부",
+      "canonicalText": "수요예측 결과 반영 여부",
+      "positions": [],
+      "pageQuality": "ready",
+      "sourceHash": "cc815be9d95de6cbe4a6a16f632cfe65c3f56589ce77caa9c7890fefce8b99e2",
+      "chunkHash": "1dec0f46e57dbf892ac0b3d203bd31062c4947f61e49a3c180357d1effb034fe",
+      "approvedForPublic": true,
+      "approvedForExternalAi": false,
+      "piiReviewStatus": "passed",
+      "status": "ready",
+      "limitations": [
+        "OpenDART exact rcpNo XML의 승인된 product-specific 사실만 정규화했으며, 원문 XML과 식별정보는 포함하지 않았습니다."
+      ]
+    }
+  ],
+  "externalObservations": [
+    {
+      "sourceKind": "external-observation",
+      "sourceUrl": "https://www.data.go.kr",
+      "sourceHash": "c989fb5dce8532b849ace669fed17f4b29ae7d5c52db028659a538c312807da3",
+      "observedAt": "2026-08-15T15:52:44.480Z",
+      "allowedFields": [
+        "품종",
+        "성별",
+        "취득시기"
+      ],
+      "fieldSummary": [
+        {
+          "field": "품종",
+          "matchCount": 37,
+          "mismatchCount": 0,
+          "unverifiableCount": 0
+        },
+        {
+          "field": "성별",
+          "matchCount": 37,
+          "mismatchCount": 0,
+          "unverifiableCount": 0
+        },
+        {
+          "field": "취득시기",
+          "matchCount": 36,
+          "mismatchCount": 0,
+          "unverifiableCount": 1
+        }
+      ],
+      "limitations": [
+        "마스킹된 공개 리포트의 허용 필드 집계만 투영했으며, 개체·농장·소유자 식별 정보는 포함하지 않았습니다."
+      ]
+    }
+  ],
+  "limitations": [
+    "단일 versioned derived artifact입니다. runtime/index는 이 artifact를 직접 읽도록 후속 단계에서 연결해야 합니다.",
+    "청약 미달 처리 사실은 발행인과 공동사업 운영자의 동일성을 원문에서 확정하지 못해 RAG 근거에서 제외"
+  ]
+}
