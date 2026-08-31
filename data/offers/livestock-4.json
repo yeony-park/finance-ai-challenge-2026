@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "offerId": "livestock-4",
+  "publicAlias": "한우 4호",
+  "assetKind": "cattle",
+  "license": "green",
+  "offer": {
+    "opensOn": "2025-04-22",
+    "closesOn": "2025-05-02"
+  }
+}

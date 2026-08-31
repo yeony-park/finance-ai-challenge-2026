@@ -213,6 +213,159 @@
       }
     },
     {
+      "offerSlug": "livestock-1",
+      "categoryId": "cattle",
+      "assetLabel": "한우",
+      "titlePublic": "한우 1호",
+      "provenance": "manual_verified",
+      "isExample": false,
+      "amountWon": null,
+      "minimumInvestment": null,
+      "subscription": {
+        "opensOn": "2024-06-20",
+        "closesOn": "2024-07-02",
+        "precision": "day"
+      },
+      "detail": {}
+    },
+    {
+      "offerSlug": "livestock-2",
+      "categoryId": "cattle",
+      "assetLabel": "한우",
+      "titlePublic": "한우 2호",
+      "provenance": "manual_verified",
+      "isExample": false,
+      "amountWon": null,
+      "minimumInvestment": null,
+      "subscription": {
+        "opensOn": "2024-09-13",
+        "closesOn": "2024-10-30",
+        "precision": "day"
+      },
+      "detail": {}
+    },
+    {
+      "offerSlug": "livestock-3",
+      "categoryId": "cattle",
+      "assetLabel": "한우",
+      "titlePublic": "한우 3호",
+      "provenance": "manual_verified",
+      "isExample": false,
+      "amountWon": null,
+      "minimumInvestment": null,
+      "subscription": {
+        "opensOn": "2024-12-24",
+        "closesOn": "2025-01-06",
+        "precision": "day"
+      },
+      "detail": {}
+    },
+    {
+      "offerSlug": "livestock-4",
+      "categoryId": "cattle",
+      "assetLabel": "한우",
+      "titlePublic": "한우 4호",
+      "provenance": "manual_verified",
+      "isExample": false,
+      "amountWon": null,
+      "minimumInvestment": null,
+      "subscription": {
+        "opensOn": "2025-04-22",
+        "closesOn": "2025-05-02",
+        "precision": "day"
+      },
+      "detail": {}
+    },
+    {
+      "offerSlug": "livestock-5",
+      "categoryId": "cattle",
+      "assetLabel": "한우",
+      "titlePublic": "한우 5호",
+      "provenance": "manual_verified",
+      "isExample": false,
+      "amountWon": null,
+      "minimumInvestment": null,
+      "subscription": {
+        "opensOn": "2025-06-19",
+        "closesOn": "2025-07-02",
+        "precision": "day"
+      },
+      "detail": {}
+    },
+    {
+      "offerSlug": "livestock-6",
+      "categoryId": "cattle",
+      "assetLabel": "한우",
+      "titlePublic": "한우 6호",
+      "provenance": "manual_verified",
+      "isExample": false,
+      "amountWon": null,
+      "minimumInvestment": null,
+      "subscription": {
+        "opensOn": "2025-11-22",
+        "closesOn": "2025-12-08",
+        "precision": "day"
+      },
+      "detail": {}
+    },
+    {
+      "offerSlug": "livestock-7",
+      "categoryId": "cattle",
+      "assetLabel": "한우",
+      "titlePublic": "한우 7호",
+      "provenance": "manual_verified",
+      "isExample": false,
+      "amountWon": null,
+      "minimumInvestment": null,
+      "subscription": {
+        "opensOn": "2026-02-28",
+        "closesOn": "2026-03-30",
+        "precision": "minute"
+      },
+      "detail": {
+        "opensAt": "2026-02-28T10:00:00+09:00",
+        "closesAt": "2026-03-30T16:00:00+09:00"
+      }
+    },
+    {
+      "offerSlug": "livestock-8",
+      "categoryId": "cattle",
+      "assetLabel": "한우",
+      "titlePublic": "한우 8호",
+      "provenance": "manual_verified",
+      "isExample": false,
+      "amountWon": null,
+      "minimumInvestment": null,
+      "subscription": {
+        "opensOn": "2026-04-17",
+        "closesOn": "2026-06-10",
+        "precision": "minute"
+      },
+      "detail": {
+        "opensAt": "2026-04-17T10:00:00+09:00",
+        "closesAt": "2026-06-10T16:00:00+09:00"
+      }
+    },
+    {
+      "offerSlug": "livestock-9",
+      "categoryId": "cattle",
+      "assetLabel": "한우",
+      "titlePublic": "한우 9호",
+      "provenance": "manual_verified",
+      "isExample": false,
+      "amountWon": null,
+      "minimumInvestment": null,
+      "subscription": {
+        "opensOn": "2026-09-08",
+        "closesOn": "2026-09-22",
+        "precision": "minute"
+      },
+      "detail": {
+        "opensAt": "2026-09-08T10:00:00+09:00",
+        "closesAt": "2026-09-22T16:00:00+09:00"
+      }
+    },
+    {
       "offerSlug": "pig-1",
       "categoryId": "pig",
       "assetLabel": "한돈",
