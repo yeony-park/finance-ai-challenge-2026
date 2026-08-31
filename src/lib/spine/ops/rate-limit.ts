@@ -10,13 +10,17 @@ export interface RateLimitVerdict {
 }
 
 export interface RateLimiter {
+  check(key: string, now?: number): RateLimitVerdict | Promise<RateLimitVerdict>;
+}
+
+export interface MemoryRateLimiter extends RateLimiter {
   check(key: string, now?: number): RateLimitVerdict;
 }
 
 export const createMemoryRateLimiter = (
   maxRequests: number = RATE_LIMIT_MAX_REQUESTS,
   windowMs: number = RATE_LIMIT_WINDOW_MS,
-): RateLimiter => {
+): MemoryRateLimiter => {
   const hits = new Map<string, number[]>();
 
   return {
