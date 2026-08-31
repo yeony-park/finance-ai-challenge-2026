@@ -2,13 +2,14 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, test } from "vitest";
 
-import { GenericEvidencePanel, NoSearchResultsPanel, ReviewGuidancePanel, SearchResultsPanel } from "../HomeHero";
+import { AiSearchAnswerPanel, GenericEvidencePanel, NoSearchResultsPanel, ReviewGuidancePanel, SearchResultsPanel } from "../HomeHero";
 
 describe("홈 검색 응답 UI", () => {
   test("검색 결과는 상품명, 단계, 상세 링크를 표시한다", () => {
     const markup = renderToStaticMarkup(createElement(SearchResultsPanel, {
       results: [{
         id: "re-offer-01",
+        productId: "re-offer-01",
         title: "서울스퀘어",
         isScenario: true,
         phase: "subscription-open" as const,
@@ -22,10 +23,33 @@ describe("홈 검색 응답 UI", () => {
     expect(markup).toContain('href="/offers/re-offer-01"');
   });
 
+  test("AI 검색 안내는 현재 결과와 교집합인 상품 링크만 사용한다", () => {
+    const markup = renderToStaticMarkup(createElement(AiSearchAnswerPanel, {
+      generatedAnswer: {
+        answer: "조건과 근거를 함께 확인해 주세요.",
+        citedProductIds: ["re-offer-01", "not-in-results"],
+      },
+      results: [{
+        id: "re-offer-01",
+        productId: "re-offer-01",
+        title: "서울스퀘어",
+        isScenario: true,
+        phase: "subscription-open" as const,
+        href: "/offers/re-offer-01",
+      }],
+    }));
+
+    expect(markup).toContain("AI 검색 안내");
+    expect(markup).toContain("조건과 근거를 함께 확인해 주세요.");
+    expect(markup).toContain('href="/offers/re-offer-01"');
+    expect(markup).not.toContain("not-in-results");
+  });
+
   test("실제 OFFERS 결과는 기존 단계 라벨을 유지한다", () => {
     const markup = renderToStaticMarkup(createElement(SearchResultsPanel, {
       results: [{
         id: "livestock-1",
+        productId: "livestock-1",
         title: "가축 1호",
         isScenario: false,
         phase: "closed" as const,

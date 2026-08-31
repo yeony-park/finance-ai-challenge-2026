@@ -8,8 +8,11 @@ import { SCENARIO_DEMO_DISCLOSURE } from "@/lib/knowledge/schema";
 
 import { ScenarioDetail } from "../ScenarioDetail";
 import {
-  ANSWER_SOURCE_LABEL,
+  directLimitations,
+  EvidenceQuery,
+  EvidenceResultPanel,
   evidenceResultTitle,
+  evidenceSourceLabel,
   StructuredSourceList,
 } from "../ScenarioEvidenceQuery";
 
@@ -30,23 +33,129 @@ describe("부동산 시나리오 상세", () => {
   });
 
   test("근거 유형을 생성 경로별 사용자 문구로 구분한다", () => {
-    expect(ANSWER_SOURCE_LABEL).toEqual({
-      structured: "등록 정보 또는 공식 공개정보",
-      approved_cache: "상품 문서",
-      live_llm: "연결된 상품 원문",
-      none: "연결된 문서만 표시",
-    });
     expect(evidenceResultTitle({ outcome: "answer", answerSource: "structured", structuredSources: [] }))
-      .toBe("시나리오 조건에서 확인");
+      .toBe("상품 조건에서 확인");
     expect(evidenceResultTitle({
       outcome: "answer",
       answerSource: "structured",
       structuredSources: [{ label: "공식 원장", url: "https://example.com", asOf: "2026-08-24", dataNature: "observed" }],
     })).toBe("공식 공개정보에서 확인");
     expect(evidenceResultTitle({ outcome: "answer", answerSource: "approved_cache" }))
-      .toBe("상품 문서에서 확인");
+      .toBe("연결된 상품 문서에서 확인");
     expect(evidenceResultTitle({ outcome: "answer", answerSource: "live_llm" }))
-      .toBe("상품 원문 인용으로 확인");
+      .toBe("상품 원문을 바탕으로 생성한 답변");
+
+    const base = {
+      outcome: "answer" as const,
+      answer: "확인한 답변",
+      limitations: [] as const,
+      evidence: [] as const,
+    };
+    expect(evidenceSourceLabel({ ...base, answerSource: "structured", structuredSources: [] }))
+      .toBe("상품 조건");
+    expect(evidenceSourceLabel({
+      ...base,
+      answerSource: "structured",
+      structuredSources: [{ label: "공식 원장", url: "https://example.com", asOf: "2026-08-24", dataNature: "observed" }],
+    })).toBe("공식 공개정보");
+    expect(evidenceSourceLabel({
+      ...base,
+      answerSource: "approved_cache",
+      evidence: [{
+        chunkId: "chunk-1",
+        title: "상품 문서",
+        page: 1,
+        sourceUrl: "/scenario-documents/sample.pdf",
+        asOf: "2026-08-24",
+        excerpt: "문서 인용",
+        dataNature: "scenario",
+        sourceKind: "issuer-claim",
+      }],
+    })).toBe("문서 근거");
+  });
+
+  test("Copilot 결과를 답변·근거·한계로 나누고 직접 연결된 한계만 표시한다", () => {
+    const result = {
+      outcome: "answer" as const,
+      answer: "발행수량은 문서에서 확인했습니다.",
+      answerSource: "approved_cache" as const,
+      evidence: [{
+        chunkId: "chunk-1",
+        title: "상품 문서",
+        page: 2,
+        sourceUrl: "/scenario-documents/sample.pdf",
+        asOf: "2026-08-24",
+        excerpt: "발행수량 관련 문장",
+        dataNature: "scenario" as const,
+        sourceKind: "issuer-claim",
+        limitations: ["추가 계약서는 확인하지 않았습니다.", "추가 계약서는 확인하지 않았습니다."],
+      }],
+      limitations: [
+        "발행수량은 문서에서 확인했습니다.",
+        "질문과 무관한 공통 한계",
+      ],
+    };
+    const markup = renderToStaticMarkup(createElement(EvidenceResultPanel, { result }));
+
+    expect(markup).toContain(">답변<");
+    expect(markup).toContain(">확인 근거<");
+    expect(markup).toContain(">확인 한계<");
+    expect(markup).toContain("근거 유형 · 문서 근거");
+    expect(markup.match(/추가 계약서는 확인하지 않았습니다/g)).toHaveLength(1);
+    expect(markup).not.toContain("질문과 무관한 공통 한계");
+    expect(directLimitations(result)).toEqual(["추가 계약서는 확인하지 않았습니다."]);
+    expect(directLimitations({
+      ...result,
+      answerSource: "structured",
+      evidence: [],
+      limitations: ["질문과 무관한 공통 한계"],
+    })).toEqual([]);
+
+    const structuredMarkup = renderToStaticMarkup(createElement(EvidenceResultPanel, {
+      result: {
+        ...result,
+        answer: "연면적 공개 확인값은 132,792.56㎡입니다.",
+        answerSource: "structured",
+        evidence: [],
+        structuredSources: [{
+          label: "건축물대장 공개정보",
+          url: "https://example.com/building",
+          asOf: "2026-08-24",
+          dataNature: "observed",
+        }],
+        limitations: [
+          "변동금리 부채상환여력은 가정값입니다.",
+          "투자자 보호구조는 계약서 확인이 필요합니다.",
+        ],
+      },
+    }));
+    expect(structuredMarkup).toContain("연면적 공개 확인값은 132,792.56㎡입니다");
+    expect(structuredMarkup).toContain("건축물대장 공개정보");
+    expect(structuredMarkup).not.toContain("변동금리 부채상환여력은 가정값입니다");
+    expect(structuredMarkup).not.toContain("투자자 보호구조는 계약서 확인이 필요합니다");
+  });
+
+  test("답변과 같은 보류 한계를 반복하지 않고 제출 버튼과 상태 영역을 유지한다", () => {
+    const abstain = {
+      outcome: "abstain" as const,
+      answer: "현재 자료만으로 확인할 수 없습니다.",
+      answerSource: "none" as const,
+      evidence: [] as const,
+      limitations: ["현재 자료만으로 확인할 수 없습니다."],
+    };
+    const resultMarkup = renderToStaticMarkup(createElement(EvidenceResultPanel, { result: abstain }));
+    expect(resultMarkup.match(/현재 자료만으로 확인할 수 없습니다/g)).toHaveLength(1);
+    expect(resultMarkup).toContain("추가로 구분해 표시할 확인 한계가 없습니다");
+
+    const queryMarkup = renderToStaticMarkup(createElement(EvidenceQuery, {
+      scope: { scenarioId: "scenario-1", offerId: "offer-1" },
+      examples: ["핵심 조건은 무엇인가요?"],
+      lead: "연결된 범위에서만 확인합니다.",
+    }));
+    expect(queryMarkup).toContain("Copilot에게 묻기");
+    expect(queryMarkup).toContain('aria-busy="false"');
+    expect(queryMarkup).toContain('role="status"');
+    expect(queryMarkup).toContain('aria-live="polite"');
   });
 
   test("공식 공개정보 답변은 안전한 출처와 기준일을 표시한다", () => {
@@ -88,7 +197,7 @@ describe("부동산 시나리오 상세", () => {
     const completion = markup.indexOf("매수부터 종료까지 입력값 한눈에 보기");
     const protection = markup.indexOf('id="scenario-protection-title"');
     const review = markup.indexOf("가상 운영주체의 과거 종료 사례 검토");
-    const query = markup.indexOf("상품 문서 질문");
+    const query = markup.indexOf("AI Copilot");
     expect(basic).toBeGreaterThan(-1);
     expect(completion).toBeGreaterThan(-1);
     expect(building).toBeGreaterThan(completion);

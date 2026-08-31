@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 
 import s from "./scenario.module.css";
 
@@ -11,6 +11,9 @@ interface EvidenceHit {
   readonly sourceUrl: string;
   readonly asOf: string;
   readonly excerpt: string;
+  readonly dataNature?: "observed" | "scenario";
+  readonly sourceKind?: string;
+  readonly limitations?: readonly string[];
 }
 
 interface EvidenceResult {
@@ -41,18 +44,52 @@ export const evidenceResultTitle = (
   if (result.answerSource === "structured") {
     return result.structuredSources && result.structuredSources.length > 0
       ? "공식 공개정보에서 확인"
-      : "시나리오 조건에서 확인";
+      : "상품 조건에서 확인";
   }
-  if (result.answerSource === "approved_cache") return "상품 문서에서 확인";
-  if (result.answerSource === "live_llm") return "상품 원문 인용으로 확인";
+  if (result.answerSource === "approved_cache") return "연결된 상품 문서에서 확인";
+  if (result.answerSource === "live_llm") return "상품 원문을 바탕으로 생성한 답변";
   return OUTCOME_LABEL[result.outcome];
 };
 
-export const ANSWER_SOURCE_LABEL: Readonly<Record<EvidenceResult["answerSource"], string>> = {
-  structured: "등록 정보 또는 공식 공개정보",
-  approved_cache: "상품 문서",
-  live_llm: "연결된 상품 원문",
-  none: "연결된 문서만 표시",
+export const evidenceSourceLabel = (result: EvidenceResult): string => {
+  if (result.answerSource === "structured") {
+    return result.structuredSources && result.structuredSources.length > 0
+      ? "공식 공개정보"
+      : "상품 조건";
+  }
+
+  const evidence = result.evidence;
+  if (evidence.some((item) =>
+    item.dataNature === "observed" &&
+    (item.sourceKind === "official-document" || item.sourceKind === "external-observation")
+  )) return "공식 공개정보";
+  if (evidence.some((item) => item.sourceKind === "scenario-input")) return "상품 조건";
+  if (result.answerSource === "approved_cache" || result.answerSource === "live_llm") {
+    return "문서 근거";
+  }
+  return "확인 가능한 근거 없음";
+};
+
+const comparableText = (value: string): string => value
+  .replace(/\s+/g, " ")
+  .replace(/[.,!?·:;()[\]{}'"“”‘’]/g, "")
+  .trim()
+  .toLocaleLowerCase("ko-KR");
+
+export const directLimitations = (result: EvidenceResult): readonly string[] => {
+  if (result.answerSource === "structured") return [];
+
+  const evidenceLimitations = result.evidence.flatMap((item) => item.limitations ?? []);
+  const candidates = evidenceLimitations.length > 0 ? evidenceLimitations : result.limitations;
+  const answer = comparableText(result.answer);
+  const seen = new Set<string>();
+
+  return candidates.filter((item) => {
+    const normalized = comparableText(item);
+    if (!normalized || seen.has(normalized)) return false;
+    seen.add(normalized);
+    return !answer || (!answer.includes(normalized) && !normalized.includes(answer));
+  }).slice(0, 3);
 };
 
 const SCENARIO_EXAMPLES = [
@@ -98,6 +135,60 @@ export function StructuredSourceList({ sources }: { readonly sources: readonly S
   );
 }
 
+export function EvidenceResultPanel({ result }: { readonly result: EvidenceResult }) {
+  const limitations = directLimitations(result);
+  const hasStructuredSources = result.structuredSources && result.structuredSources.length > 0;
+
+  return (
+    <div className={s.queryResult}>
+      <div className={s.resultGroup}>
+        <h3 className={s.resultHeading}>답변</h3>
+        <p className={s.resultOutcome}>{evidenceResultTitle(result)}</p>
+        <p className={s.resultSource}>근거 유형 · {evidenceSourceLabel(result)}</p>
+        <p className={s.resultAnswer}>{result.answer}</p>
+      </div>
+
+      <div className={s.resultGroup}>
+        <h3 className={s.resultHeading}>확인 근거</h3>
+        {hasStructuredSources ? <StructuredSourceList sources={result.structuredSources ?? []} /> : null}
+        {result.answerSource === "structured" && !hasStructuredSources ? (
+          <p className={s.resultNote}>등록된 상품 조건을 바탕으로 확인했습니다.</p>
+        ) : null}
+        {result.evidence.length > 0 ? (
+          <ul className={s.citationList}>
+            {result.evidence.map((item) => {
+              const url = safeCitationUrl(item.sourceUrl);
+              const href = url ? `${url.replace(/#.*$/, "")}#page=${item.page}` : null;
+              const label = `${item.title} · ${item.page}쪽 · ${item.asOf} 기준`;
+              return (
+                <li key={item.chunkId}>
+                  {href ? (
+                    <a href={href} target="_blank" rel="noopener noreferrer" aria-label={`${label} (새 창)`}>
+                      {label}
+                    </a>
+                  ) : <span>{label}</span>}
+                  <p>{item.excerpt}</p>
+                </li>
+              );
+            })}
+          </ul>
+        ) : result.answerSource !== "structured" ? (
+          <p className={s.resultNote}>질문과 직접 연결된 근거를 찾지 못했습니다.</p>
+        ) : null}
+      </div>
+
+      <div className={s.resultGroup}>
+        <h3 className={s.resultHeading}>확인 한계</h3>
+        {limitations.length > 0 ? (
+          <ul className={s.limitList}>{limitations.map((item) => <li key={item}>{item}</li>)}</ul>
+        ) : (
+          <p className={s.resultNote}>추가로 구분해 표시할 확인 한계가 없습니다.</p>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export type EvidenceQueryScope =
   | { readonly scenarioId: string; readonly offerId: string }
   | {
@@ -133,8 +224,9 @@ export function EvidenceQuery({
   const [question, setQuestion] = useState("");
   const [result, setResult] = useState<EvidenceResult | null>(null);
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
+  const submitButtonRef = useRef<HTMLButtonElement>(null);
 
-  const ask = async (value: string) => {
+  const ask = async (value: string, restoreSubmitFocus = false) => {
     const q = value.trim();
     if (!q) return;
     setQuestion(q);
@@ -151,18 +243,31 @@ export function EvidenceQuery({
       setStatus("idle");
     } catch {
       setStatus("error");
+    } finally {
+      if (restoreSubmitFocus) {
+        window.requestAnimationFrame(() => submitButtonRef.current?.focus());
+      }
     }
   };
 
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    void ask(question);
+    if (status === "loading") return;
+    void ask(question, true);
   };
+
+  const statusMessage = status === "loading"
+    ? "근거 확인 중"
+    : status === "error"
+      ? "근거 확인 실패"
+      : result
+        ? "근거 확인 완료"
+        : "";
 
   return (
     <section className={s.querySection} aria-labelledby="evidence-query-title">
-      <p className={s.eyebrow}>상품 문서 질문</p>
-      <h2 id="evidence-query-title" className={s.sectionTitle}>문서에서 확인할 내용을 물어보세요</h2>
+      <p className={s.eyebrow}>AI Copilot</p>
+      <h2 id="evidence-query-title" className={s.sectionTitle}>상품 조건과 문서 근거를 물어보세요</h2>
       <p className={s.sectionLead}>{lead}</p>
 
       <div className={s.exampleRow} aria-label="예시 질문">
@@ -174,7 +279,7 @@ export function EvidenceQuery({
       </div>
 
       <form className={s.queryForm} onSubmit={submit}>
-        <label htmlFor="scenario-question" className="sr-only">상품 문서 질문</label>
+        <label htmlFor="scenario-question" className="sr-only">AI Copilot 질문</label>
         <input
           id="scenario-question"
           className={s.queryInput}
@@ -183,51 +288,23 @@ export function EvidenceQuery({
           placeholder="예: 수수료와 회수 조건은 무엇인가요?"
           maxLength={200}
         />
-        <button className={s.queryButton} type="submit" disabled={status === "loading" || !question.trim()}>
-          {status === "loading" ? "문서 찾는 중" : "문서에서 찾기"}
+        <button
+          ref={submitButtonRef}
+          className={s.queryButton}
+          type="submit"
+          disabled={status === "loading" || !question.trim()}
+          aria-busy={status === "loading"}
+        >
+          Copilot에게 묻기
         </button>
       </form>
 
-      <div className={s.queryResult} aria-live="polite">
-        {status === "error" ? (
+      <p className="sr-only" role="status" aria-live="polite">{statusMessage}</p>
+      {status === "error" ? (
+        <div className={s.queryResult}>
           <p className={s.queryError}>문서를 불러오지 못했습니다. 잠시 뒤 다시 확인해 주세요.</p>
-        ) : result ? (
-          <>
-            <p className={s.resultOutcome}>{evidenceResultTitle(result)}</p>
-            <p className={s.resultSource}>근거 유형 · {ANSWER_SOURCE_LABEL[result.answerSource]}</p>
-            <p className={s.resultAnswer}>{result.answer}</p>
-            {result.answerSource === "structured" ? (
-              result.structuredSources && result.structuredSources.length > 0 ? (
-                <StructuredSourceList sources={result.structuredSources} />
-              ) : (
-                <p className={s.resultSource}>확인 범위 · 시나리오 조건</p>
-              )
-            ) : null}
-            {result.evidence.length > 0 ? (
-              <ul className={s.citationList}>
-                {result.evidence.map((item) => {
-                  const url = safeCitationUrl(item.sourceUrl);
-                  const href = url ? `${url.replace(/#.*$/, "")}#page=${item.page}` : null;
-                  const label = `${item.title} · ${item.page}쪽 · ${item.asOf} 기준`;
-                  return (
-                    <li key={item.chunkId}>
-                      {href ? (
-                        <a href={href} target="_blank" rel="noopener noreferrer" aria-label={`${label} (새 창)`}>
-                          {label}
-                        </a>
-                      ) : <span>{label}</span>}
-                      <p>{item.excerpt}</p>
-                    </li>
-                  );
-                })}
-              </ul>
-            ) : null}
-            {result.limitations.length > 0 ? (
-              <ul className={s.limitList}>{result.limitations.map((item) => <li key={item}>{item}</li>)}</ul>
-            ) : null}
-          </>
-        ) : null}
-      </div>
+        </div>
+      ) : result ? <EvidenceResultPanel result={result} /> : null}
     </section>
   );
 }

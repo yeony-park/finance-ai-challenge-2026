@@ -145,10 +145,38 @@
 }
 
 .retryButton {
+  min-height: 2.75rem;
   border: 0;
   background: transparent;
   cursor: pointer;
   font: inherit;
+}
+
+.aiCitedLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-2) var(--ds-space-3);
+  align-items: baseline;
+  margin-top: var(--ds-space-4);
+  font-size: var(--ds-text-sm);
+}
+
+.aiCitedLinks span,
+.aiAnswerNote {
+  color: var(--ds-ink-faint);
+}
+
+.aiCitedLinks a {
+  color: var(--ds-ink);
+  font-weight: var(--ds-weight-bold);
+  text-decoration: none;
+  border-bottom: 2px solid var(--ds-accent);
+}
+
+.aiAnswerNote {
+  margin-top: var(--ds-space-4);
+  font-size: var(--ds-text-xs);
+  line-height: var(--ds-leading-relaxed);
 }
 
 @media (max-width: 520px) {
