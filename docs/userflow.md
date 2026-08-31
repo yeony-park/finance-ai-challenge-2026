@@ -248,6 +248,8 @@ sequenceDiagram
 | `/about` | 소개 · 팀 | 정적 |
 | `POST /api/verify/{id}` | 라이브 재검증 | 실패 시 `mode:"snapshot"` 폴백 |
 | `GET /api/cron/monitor` | 정정 감시 | vercel.json cron 주 2회 |
+| `GET /api/products`(·`/{id}`) | 미술 공개 상품 문맥 | 파일 원천, 08 예외 4분류 |
+| `POST /api/ai/ask-product` | 미술 근거 코파일럿 | 한시 표면 — search 개통 시 통합(08 예외 5분류) |
 
 화면은 사전 생성된 `data/public/{offerId}/report-*.json`만 읽는다 — 렌더 경로에서 외부 API를 직접 호출하지 않는다.
 
