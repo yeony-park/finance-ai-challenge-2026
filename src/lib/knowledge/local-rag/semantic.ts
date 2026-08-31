@@ -1,8 +1,10 @@
 import { createFileProductKnowledgeRepository } from "@/lib/db/repositories/product-knowledge";
 import type {
+  ProductKnowledgeChunk,
   ProductKnowledgeRepository,
   ProductKnowledgeScope,
 } from "@/lib/db/repositories/types";
+import type { ChunkRecord, CommonChunkRecord } from "../schema";
 
 import { searchChunks, type SearchHit } from "../search";
 import {
@@ -27,7 +29,18 @@ export interface SemanticKnowledgeResult {
   readonly strategy: "semantic" | "keyword";
   readonly semantic: boolean;
   readonly degraded: boolean;
-  readonly reason?: "disabled" | "unsafe-query" | "provider-failed" | "store-unavailable" | "scope-unavailable";
+  readonly reason?:
+    | "keyword-hit"
+    | "structured-filter"
+    | "amount-filter-invalid"
+    | "score-below-threshold"
+    | "disabled"
+    | "runtime-disabled"
+    | "rate-limited"
+    | "unsafe-query"
+    | "provider-failed"
+    | "store-unavailable"
+    | "scope-unavailable";
 }
 
 export interface SemanticKnowledgeOptions {
@@ -41,6 +54,24 @@ export interface SemanticKnowledgeOptions {
   readonly corpus?: CanonicalSemanticCorpus;
   readonly repository?: ProductKnowledgeRepository;
   readonly embedder?: LocalRagEmbedder;
+  readonly namespace?: CanonicalSemanticChunk["namespace"];
+  readonly fallbackChunks?: readonly (ChunkRecord | CommonChunkRecord | ProductKnowledgeChunk)[];
+}
+
+export interface SemanticProductMatch {
+  readonly categoryId: ProductKnowledgeScope["categoryId"];
+  readonly productId: string;
+  readonly scenarioId?: string;
+  readonly dataNature: ProductKnowledgeScope["dataNature"];
+  readonly namespace: CanonicalSemanticChunk["namespace"];
+  readonly score: number;
+}
+
+export interface SemanticProductSearchResult {
+  readonly matches: readonly SemanticProductMatch[];
+  readonly semantic: boolean;
+  readonly degraded: boolean;
+  readonly reason?: SemanticKnowledgeResult["reason"];
 }
 
 const toLocalScope = (scope: ProductKnowledgeScope) => ({
@@ -80,16 +111,32 @@ export const searchSemanticKnowledge = async (
   options: SemanticKnowledgeOptions,
 ): Promise<SemanticKnowledgeResult> => {
   const limit = Math.min(Math.max(options.limit ?? 5, 1), 20);
-  const repository = options.repository ?? createFileProductKnowledgeRepository(options.dataRoot);
-  const keyword = async (
+  const exactChunks = <T extends ChunkRecord | CommonChunkRecord | ProductKnowledgeChunk>(chunks: readonly T[]): readonly T[] =>
+    chunks.filter((chunk) =>
+      chunk.categoryId === options.scope.categoryId &&
+      ("productId" in chunk ? chunk.productId : chunk.offerId) === options.scope.productId &&
+      chunk.dataNature === options.scope.dataNature &&
+      chunk.scenarioId === options.scope.scenarioId
+    );
+  const keywordHits = async (): Promise<readonly SearchHit[]> => searchChunks(
+    exactChunks(options.fallbackChunks ??
+      (await (options.repository ?? createFileProductKnowledgeRepository(options.dataRoot)).findExact(options.scope)).chunks),
+    options.query,
+    limit,
+  );
+  const lexical = await keywordHits();
+  const keyword = (
     reason: NonNullable<SemanticKnowledgeResult["reason"]>,
-  ): Promise<SemanticKnowledgeResult> => ({
-    hits: searchChunks((await repository.findExact(options.scope)).chunks, options.query, limit),
+    hits = lexical,
+    degraded = true,
+  ): SemanticKnowledgeResult => ({
+    hits,
     strategy: "keyword",
     semantic: false,
-    degraded: true,
+    degraded,
     reason,
   });
+  if (lexical.length > 0) return keyword("keyword-hit", lexical, false);
   if (!(options.enabled ?? process.env.KNOWLEDGE_SEMANTIC_ENABLED === "true")) {
     return keyword("disabled");
   }
@@ -98,7 +145,7 @@ export const searchSemanticKnowledge = async (
   if (!options.embedder && !apiKey?.trim()) return keyword("disabled");
 
   const corpus = options.corpus ?? await collectCanonicalSemanticCorpus(options.dataRoot);
-  const exact = exactCorpusScope(corpus, toLocalScope(options.scope));
+  const exact = exactCorpusScope(corpus, toLocalScope(options.scope), options.namespace);
   if (!exact.scope || exact.chunks.length === 0) return keyword("scope-unavailable");
   let vector: readonly number[];
   try {
@@ -131,5 +178,96 @@ export const searchSemanticKnowledge = async (
     ) return [];
     return [hitFromCanonical(canonical, hit.score)];
   }).slice(0, limit);
+  if (hits.length === 0) return keyword("score-below-threshold", lexical);
   return { hits, strategy: "semantic", semantic: true, degraded: false };
+};
+
+export const searchSemanticProducts = async (options: {
+  readonly query: string;
+  readonly enabled?: boolean;
+  readonly apiKey?: string;
+  readonly categoryId?: ProductKnowledgeScope["categoryId"];
+  readonly dataNature?: ProductKnowledgeScope["dataNature"];
+  readonly dataRoot?: string;
+  readonly dbPath?: string;
+  readonly corpus?: CanonicalSemanticCorpus;
+  readonly embedder?: LocalRagEmbedder;
+}): Promise<SemanticProductSearchResult> => {
+  if (!(options.enabled ?? process.env.KNOWLEDGE_SEMANTIC_ENABLED === "true")) {
+    return { matches: [], semantic: false, degraded: true, reason: "disabled" };
+  }
+  if (!isEmbeddingQueryEligible(options.query)) {
+    return { matches: [], semantic: false, degraded: true, reason: "unsafe-query" };
+  }
+  const apiKey = options.apiKey ?? process.env.OPENAI_API_KEY;
+  if (!options.embedder && !apiKey?.trim()) {
+    return { matches: [], semantic: false, degraded: true, reason: "disabled" };
+  }
+  const corpus = options.corpus ?? await collectCanonicalSemanticCorpus(options.dataRoot);
+  const groups = new Map<string, {
+    scope: Parameters<typeof searchLocalRagStore>[0]["scope"];
+    namespace: CanonicalSemanticChunk["namespace"];
+    chunks: CanonicalSemanticChunk[];
+  }>();
+  for (const chunk of corpus.chunks) {
+    if (
+      (options.categoryId && chunk.scope.categoryId !== options.categoryId) ||
+      (options.dataNature && chunk.scope.dataNature !== options.dataNature)
+    ) continue;
+    const key = `${chunk.approvalReferenceKey}\u0000${chunk.namespace}`;
+    const group = groups.get(key) ?? {
+      scope: { ...chunk.scope, approvalReferenceKey: chunk.approvalReferenceKey },
+      namespace: chunk.namespace,
+      chunks: [],
+    };
+    group.chunks.push(chunk);
+    groups.set(key, group);
+  }
+  if (groups.size === 0) {
+    return { matches: [], semantic: false, degraded: true, reason: "scope-unavailable" };
+  }
+  let vector: readonly number[];
+  try {
+    const embedder = options.embedder ?? createOpenAiLocalRagEmbedder(apiKey!);
+    vector = validateEmbeddingVectors([await embedder.embedQuery(options.query)], 1)[0]!;
+  } catch {
+    return { matches: [], semantic: false, degraded: true, reason: "provider-failed" };
+  }
+  const matches: SemanticProductMatch[] = [];
+  for (const group of groups.values()) {
+    const searched = searchLocalRagStore({
+      dbPath: options.dbPath ?? LOCAL_RAG_DB_PATH,
+      contentVersion: corpus.contentVersion,
+      scope: group.scope,
+      vector,
+      limit: 5,
+    });
+    if (searched.status !== "ok") {
+      return { matches: [], semantic: false, degraded: true, reason: "store-unavailable" };
+    }
+    const chunks = new Map(group.chunks.map((chunk) => [chunk.chunkId, chunk]));
+    const score = Math.max(0, ...searched.hits.flatMap((hit) => {
+      const canonical = chunks.get(hit.chunkId);
+      return canonical &&
+        canonical.documentId === hit.documentId &&
+        canonical.sourceHash === hit.sourceHash &&
+        canonical.chunkHash === hit.chunkHash
+        ? [hit.score]
+        : [];
+    }));
+    if (score < LOCAL_RAG_MIN_SCORE) continue;
+    matches.push({
+      categoryId: group.scope.categoryId,
+      productId: group.scope.productId,
+      ...(group.scope.scenarioId ? { scenarioId: group.scope.scenarioId } : {}),
+      dataNature: group.scope.dataNature,
+      namespace: group.namespace,
+      score,
+    });
+  }
+  matches.sort((left, right) => right.score - left.score || left.productId.localeCompare(right.productId));
+  if (matches.length === 0) {
+    return { matches: [], semantic: false, degraded: true, reason: "score-below-threshold" };
+  }
+  return { matches, semantic: true, degraded: false };
 };

@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   checkLiveAnswerLimit,
   containsCredentialLikeSecret,
+  isLiveAnswerInputEligible,
   isLiveEvidenceEnabled,
   validateLiveAnswerDraft,
   type LiveAnswerInput,
@@ -115,6 +116,18 @@ describe("live evidence answer guardrails", () => {
         sourceKind: "scenario-input",
       }],
     })).toBeNull();
+  });
+
+  it("질문 200자와 근거 5개를 넘으면 provider 입력 전에 거부한다", () => {
+    const value = input();
+    expect(isLiveAnswerInputEligible({ ...value, question: "가".repeat(201) })).toBe(false);
+    expect(isLiveAnswerInputEligible({
+      ...value,
+      evidence: Array.from({ length: 6 }, (_, index) => ({
+        ...value.evidence[0],
+        chunkId: `chunk-${index}`,
+      })),
+    })).toBe(false);
   });
 
   it("원문에 있더라도 투자 행동을 지시하는 답변은 출력 필터로 차단한다", () => {

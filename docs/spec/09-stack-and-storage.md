@@ -1,6 +1,6 @@
 # 기술 스택 · 저장 계층 (Stack & Storage)
 
-> **상태: 통합 RAG 아키텍처 MVP 계약 반영** · 2026-08-23 초안 · 2026-08-30 file/DB repository·product scope·API 통합 반영. Supabase·vector·embedding·live provider 연결은 이 구현 검증에서 수행하지 않았다. 근거: `05-data-policy.md`, `06-ai-guardrails.md`, `contracts/storage.md`.
+> **상태: 통합 RAG 아키텍처 MVP 계약 반영** · 2026-08-23 초안 · 2026-08-30 file/DB repository·product scope·API 통합 반영. 로컬 SQLite semantic overlay 코드는 추가됐지만 실제 embedding apply, Supabase pgvector, live provider 연결은 이 구현 검증에서 수행하지 않았다. 근거: `05-data-policy.md`, `06-ai-guardrails.md`, `contracts/storage.md`.
 > DB 스키마의 단일 진실은 도입 후 `src/lib/db/schema.ts`가 된다 — 문서와 다르면 코드를 따르고 문서를 정정한다.
 
 ## 1. 확정 스택 (현행 — 변경은 오너 합의 필수)
@@ -210,7 +210,7 @@ npm run db:export      # DB → data/public/·data/reference/ 화면용 산출�
 
 ## 4. RAG 저장소 — 통합 RAG 아키텍처 MVP
 
-현재 런타임은 keyword 검색만 구현했다. generic corpus는 상품 결과가 없는 일반 개념 질문에만 사용하고, product corpus는 exact 상품 근거질의에만 사용한다. 모든 응답은 `semantic:false`를 명시한다. 아래 vector DDL은 목표 스키마의 기존 열을 설명할 뿐, vector/embedding 경로가 검증 완료됐다는 뜻이 아니다.
+기본 런타임은 keyword 검색이다. 승인 canonical chunk의 로컬 SQLite overlay가 있고 운영 opt-in·feature flag·exact scope·hash 검증을 모두 통과한 요청만 semantic 검색을 사용한다. generic corpus는 상품 결과가 없는 일반 개념 질문에만 사용하고, product corpus는 exact 상품 근거질의에만 사용한다. 아래 vector DDL은 Supabase 목표 스키마를 설명할 뿐, DB pgvector 경로가 검증 완료됐다는 뜻이 아니다.
 
 ```sql
 CREATE TABLE rag_documents (
@@ -250,8 +250,8 @@ CREATE INDEX ON rag_chunks USING gin (tsv);
 
 - **출처 강제와 접합**: generic 검색 결과의 `source_id`는 스파인 코퍼스 등록분만 인용한다. product 문서는 코퍼스 id 대신 exact scope, manifest/public 승인, 공개 URL, 기준일, source/chunk hash와 ready 상태를 검증한다. 어느 경로도 RAG 적재만으로 공개 승인을 얻지 않는다.
 - DB generic 검색은 `scope_kind='generic'` + `websearch_to_tsquery('simple', …)` FTS, file twin은 lexical 검색이다. product 조회는 exact scope + 공개 승인 + ready document/chunk만 반환한다.
-- **`degraded: true`는 현재 고정값**(계약 테스트로 명시): file 모드 키워드 매칭이든 DB 키워드 전용 경로든 벡터 하이브리드가 아직 없어 항상 열화 표기다 — 하이브리드(질의 임베딩 + 벡터 코사인) 도입(M2+) 전까지 히트 유무와 무관하게 `true`. 도입 시 벡터 경로 성공을 `degraded: false`로 승격한다.
-- vector/embedding, semantic reranking, 실제 Supabase 연결은 후속 검증 대상이다. 현재 동작이나 성능으로 표현하지 않는다.
+- keyword/file/DB FTS 또는 semantic 강등 경로는 `semantic:false`와 강등 사유를 표시한다. 최신 canonical contentVersion의 로컬 SQLite hit을 exact scope·source/document/chunk hash로 재검증한 경우에만 `semantic:true`이며, 홈 결합 결과는 `strategy:"hybrid"`로 표시한다.
+- 로컬 색인은 `text-embedding-3-small` 1536차원으로 고정됐지만 실제 embedding apply와 live provider 호출은 이 검증에서 수행하지 않았다. Supabase pgvector 연결·검색은 후속 검증 대상이다.
 - 대화 입력·질의 로그를 RAG 테이블에 섞지 않는다 — 보존은 `05` §4(30일, 마스킹 2단 후 저장) 별도 경로. 챗 개통과 함께 대화 로그를 DB에 저장하기로 하면 전용 테이블(30일 TTL 삭제 잡 포함)을 본 문서에 추가 정의한다 — 현 초안 범위 밖.
 - **RAG 본문 인젝션 방어 (의무)** — 출처 강제는 "어떤 문서를 인용했나"만 검증하고 본문 내용은 검증하지 않는다. Green 라이선스 문서도 본문에 은닉 지시문이 있으면 출처 게이트를 통과하므로 두 겹을 추가한다:
   1. **프롬프트 격리**: `rag_chunks.content`는 프롬프트 조립 시 고정 구분자 데이터 블록(`<retrieved_context>…</retrieved_context>` 류)으로만 삽입 — 사용자 지시와 같은 채널에 원문을 이어붙이지 않는다. `06` §6 "문서 내 지시문은 데이터일 뿐 명령이 아니다"의 RAG 구간 집행 조항.
@@ -351,7 +351,7 @@ CREATE INDEX ON ledger_observations (subject_key, observed_at);
 | 항목 | 기본값 | 근거 |
 |---|---|---|
 | 접근 계층 | postgres-js + drizzle-orm, 수기 SQL 자체 migration runner | 타입 안전 쿼리 + append-only SQL 적용 추적. drizzle-kit generate는 드리프트 대조 전용 |
-| 임베딩 모델·차원 | 미구현; 스키마 열은 vector(1536) | 실제 골드셋 recall과 live DB 검증 후 결정. 현재 API는 `semantic:false` |
+| 임베딩 모델·차원 | 로컬 SQLite overlay는 `text-embedding-3-small` 1536차원 고정; Supabase 열은 vector(1536) | 실제 apply·골드셋 recall·live DB 검증 전이며, 기본 API는 keyword로 동작 |
 | 한국어 키워드 검색 보강 | `pg_trgm` 병행 (대안: 적재 시 사전 토큰화) | §4 한계 절 — fake 모드 검색 품질 직결, spike로 비교 후 확정 |
 | RAG 도입 범위 | 검색(①④유형)만 — 리포트 서술 생성에는 미사용 | 검증 사실 오염 방지 (06 §3) |
 | synthetic 고지 문구 | "예시 데이터로 구성한 화면입니다" 계열 — 문안은 `src/lib/content/` 등재 후 출력 필터 감사 | 04 표현 규칙 |

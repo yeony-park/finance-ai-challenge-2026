@@ -48,6 +48,12 @@ describe("knowledge API routes", () => {
       isScenario: false,
     });
     expect(body.results[0].matchedFields).toContain("title");
+    expect(body.retrieval).toMatchObject({
+      semantic: false,
+      strategy: "keyword",
+      reason: "disabled",
+      planner: { used: false, degraded: true, reason: "disabled" },
+    });
   });
 
   it("Home UI 호환 200자 상한은 contracts/api의 예약 500자 계약과 다름을 고정한다", async () => {
@@ -332,6 +338,12 @@ describe("knowledge API routes", () => {
         areas: expect.arrayContaining([
           expect.objectContaining({ area: "financing" }),
         ]),
+      },
+      retrieval: {
+        semantic: false,
+        strategy: "keyword",
+        reason: "disabled",
+        planner: { used: false, degraded: false },
       },
     });
     expect(body).not.toHaveProperty("structuredSources");

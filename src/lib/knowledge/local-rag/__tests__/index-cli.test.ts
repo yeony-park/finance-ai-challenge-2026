@@ -30,6 +30,7 @@ const corpus = (contentHash = "c".repeat(64)): CanonicalSemanticCorpus => ({
   contentVersion: `canonical-${contentHash}`,
   scopes: [scope],
   chunks: [{
+    namespace: "legacy-scenario",
     scope: {
       categoryId: scope.categoryId,
       productId: scope.productId,

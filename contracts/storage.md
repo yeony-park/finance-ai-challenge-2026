@@ -42,7 +42,7 @@ rationale: docs/spec/09-stack-and-storage.md
 - **R-STO-12 (MUST)** generic `rag_documents.source_id`는 스파인 코퍼스(`spine/rag/corpus.ts`) 등록 id만 허용한다. product 문서는 대신 exact scope, manifest/public 승인, 출처 URL, 기준일, hash와 상태를 필수 provenance로 가진다. RAG 적재 자체가 generic 출처 등록을 뜻하지 않는다.
 - **R-STO-13 (MUST)** `license`는 `green | yellow_confirmed`만 적재 가능. red·yellow 미확인 금지.
 - **R-STO-14 (MUST)** generic RAG는 일반 개념 질문에만 사용하고 `scope_kind='generic'`으로 제한한다. 상품 근거는 exact `category_id+product_id+data_nature+scenario_id`와 `scope_kind='product'`, public/ready 문서·청크만 조회하며 다른 상품·generic corpus로 보충하지 않는다. 대화 입력 로그를 RAG 테이블에 혼입 금지.
-- **R-STO-15 (현재 구현)** 통합 RAG 아키텍처 MVP는 file lexical 검색과 DB `websearch_to_tsquery('simple', ...)` FTS만 사용한다. 응답은 `semantic:false`, keyword 전략, `degraded:true`를 명시한다. vector/embedding 생성·검색 및 실제 Supabase 연결은 구현 완료로 간주하지 않는다.
+- **R-STO-15 (현재 구현)** 통합 RAG 아키텍처 MVP의 기본 경로는 file lexical 검색과 DB `websearch_to_tsquery('simple', ...)` FTS다. 추가로 승인된 canonical chunk만 `text-embedding-3-small` 1536차원 로컬 SQLite overlay에 명시적으로 색인할 수 있다. 런타임 semantic은 운영 opt-in·feature flag·exact scope·content/hash 검증을 모두 통과할 때만 `semantic:true`이고, store 부재·불일치·저점수·provider 실패는 사유와 함께 keyword로 강등한다. 실제 Supabase pgvector 연결·검색은 구현 완료로 간주하지 않는다.
 - **R-STO-16 (MUST, 2026-08-30 재개정)** 자격증명 역할 분리: 런타임 `DATABASE_URL` 역할은 ①`rag_documents`·`rag_chunks` SELECT ②`offerings`의 공개 9열(`offer_slug,category_id,provenance,title_public,amount_won,opens_on,closes_on,detail,source_meta`) SELECT ③`verification_runs`·`monitor_runs`·`monitor_events` INSERT를 갖는다. 실행 이력 상세 열은 읽지 못하되 멱등 INSERT의 `ON CONFLICT` 타깃인 `verification_runs.run_key`·`monitor_runs.checked_at`, `monitor_events` FK 연결용 `RETURNING` 열인 `monitor_runs.id`만 column-level SELECT하며, 세 테이블의 identity INSERT에 필요한 각 sequence USAGE만 허용한다. 다른 이력 열·원장·sequence 읽기·쓰기와 마이그레이션은 CLI 전용 `DATABASE_URL_DIRECT`에만 둔다. Supabase `service_role`·`anon` 키는 코드에 들여오지 않는다(PostgREST 미사용).
 - **R-STO-17 (MUST)** RAG 청크는 프롬프트 조립 시 고정 구분자 데이터 블록으로만 삽입 — 사용자 지시 채널에 원문 이어붙이기 금지(06 §6의 RAG 집행 조항).
 - **R-STO-18 (MUST)** RAG 적재 CLI는 인젝션 휴리스틱 스캔 통과분만 등록 — 실패분은 license 등급 무관 보류. 챗 게이트 다턴 레드팀에 "RAG 소스 내 인젝션" 시나리오 포함.
@@ -71,6 +71,8 @@ npm run db:export    # DB → data/public/·data/reference/ (마스킹 게이트
 | `DATABASE_URL` (풀러·읽기 전용 역할) | file 모드 (R-STO-02) |
 | `DATABASE_URL_DIRECT` (직결·CLI 전용 RW) | db:* 스크립트 `not_configured` 정직 종료 |
 | `AI_GATEWAY_API_KEY`/`OPENAI_API_KEY` | live evidence 호출 없음; deterministic/근거-only 경로 유지 |
+| `KNOWLEDGE_SEMANTIC_ENABLED` | 기본 false; 로컬 SQLite semantic query 호출 없음 |
+| `KNOWLEDGE_RUNTIME_AI_ENABLED` | 기본 false; 공개 search/evidence의 planner·embedding·생성 답변 호출 없음 |
 | `LIVE_EVIDENCE_ENABLED` | 기본 false; 외부 전송 고지·동의와 분산 제한·비용상한 전에는 활성화 금지 |
 | `ANTHROPIC_API_KEY`·`SPINE_MODEL`·`VERIFY_EXTRACT_MODEL` | 스파인·추출 fake/기본 모델 |
 | `DART_API_KEY`·`DATA_GO_KR_API_KEY` | 라이브 경로 `not_configured` 정직 응답 |

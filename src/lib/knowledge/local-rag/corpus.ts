@@ -13,6 +13,7 @@ import {
 } from "./types";
 
 export interface CanonicalSemanticChunk {
+  readonly namespace: "common" | "legacy-scenario";
   readonly scope: Omit<LocalRagScope, "approvalReferenceKey">;
   readonly approvalReferenceKey: string;
   readonly documentId: string;
@@ -77,6 +78,7 @@ const approvalReferenceKeyOf = (
 const eligibleChunks = (
   documents: readonly CommonDocumentRecord[],
   chunks: readonly CommonChunkRecord[],
+  namespace: CanonicalSemanticChunk["namespace"],
 ): readonly CanonicalSemanticChunk[] => {
   const allowedDocuments = new Map(documents
     .filter((document) =>
@@ -101,6 +103,7 @@ const eligibleChunks = (
       containsObviousPii(chunk.canonicalText)
     ) return [];
     return [{
+      namespace,
       scope,
       approvalReferenceKey,
       documentId: chunk.documentId,
@@ -125,7 +128,11 @@ const eligibleChunks = (
 export const collectCanonicalSemanticCorpus = async (
   dataRoot = "data",
 ): Promise<CanonicalSemanticCorpus> => {
-  const groups: { documents: readonly CommonDocumentRecord[]; chunks: readonly CommonChunkRecord[] }[] = [];
+  const groups: {
+    documents: readonly CommonDocumentRecord[];
+    chunks: readonly CommonChunkRecord[];
+    namespace: CanonicalSemanticChunk["namespace"];
+  }[] = [];
   for (const product of await loadApprovedCommonProducts(dataRoot)) {
     const loaded = await loadCommonKnowledgeScope(
       product.categoryId,
@@ -134,14 +141,14 @@ export const collectCanonicalSemanticCorpus = async (
       dataRoot,
       product.scenarioId,
     );
-    groups.push(loaded);
+    groups.push({ ...loaded, namespace: "common" as const });
   }
   for (const envelope of await loadDerivedRealEstateRegistry(dataRoot)) {
     if (envelope.document) {
-      groups.push({ documents: [envelope.document], chunks: envelope.chunks });
+      groups.push({ documents: [envelope.document], chunks: envelope.chunks, namespace: "legacy-scenario" as const });
     }
   }
-  const chunks = groups.flatMap(({ documents, chunks }) => eligibleChunks(documents, chunks))
+  const chunks = groups.flatMap(({ documents, chunks, namespace }) => eligibleChunks(documents, chunks, namespace))
     .sort((left, right) => left.chunkId.localeCompare(right.chunkId));
   const scopesByKey = new Map<string, LocalRagScope>();
   for (const chunk of chunks) {
@@ -153,6 +160,7 @@ export const collectCanonicalSemanticCorpus = async (
     chunk.scope.productId,
     chunk.scope.scenarioId,
     chunk.scope.dataNature,
+    chunk.namespace,
     chunk.approvalReferenceKey,
     chunk.documentId,
     chunk.chunkId,
@@ -171,12 +179,14 @@ export const collectCanonicalSemanticCorpus = async (
 export const exactCorpusScope = (
   corpus: CanonicalSemanticCorpus,
   scope: Omit<LocalRagScope, "approvalReferenceKey">,
+  namespace?: CanonicalSemanticChunk["namespace"],
 ): { readonly scope: LocalRagScope | null; readonly chunks: readonly CanonicalSemanticChunk[] } => {
   const chunks = corpus.chunks.filter((chunk) =>
     chunk.scope.categoryId === scope.categoryId &&
     chunk.scope.productId === scope.productId &&
     chunk.scope.scenarioId === scope.scenarioId &&
-    chunk.scope.dataNature === scope.dataNature
+    chunk.scope.dataNature === scope.dataNature &&
+    (!namespace || chunk.namespace === namespace)
   );
   const references = new Set(chunks.map((chunk) => chunk.approvalReferenceKey));
   if (references.size !== 1) return { scope: null, chunks: [] };

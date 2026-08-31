@@ -32,6 +32,7 @@ const ragScope = {
   approvalReferenceKey: `canonical:${"a".repeat(64)}`,
 };
 const semanticChunk = {
+  namespace: "common" as const,
   scope: { ...productScope, scenarioId: null },
   approvalReferenceKey: ragScope.approvalReferenceKey,
   documentId: "document-1",
@@ -89,7 +90,7 @@ const repository: ProductKnowledgeRepository = {
 };
 
 describe("exact-scope semantic knowledge adapter", () => {
-  test("exact SQLite hit을 canonical hash로 재검증해 canonical text/provenance를 반환한다", async () => {
+  test("keyword가 없을 때 exact SQLite hit을 canonical hash로 재검증한다", async () => {
     const root = mkdtempSync(path.join(os.tmpdir(), "semantic-search-"));
     roots.push(root);
     const dbPath = path.join(root, "knowledge.sqlite");
@@ -100,7 +101,7 @@ describe("exact-scope semantic knowledge adapter", () => {
     await buildSemanticIndex({ apply: true, apiKey: "fake", dbPath, corpus, embedder });
     const result = await searchSemanticKnowledge({
       scope: productScope,
-      query: "비용이 얼마나 드나요",
+      query: "작품 유지 대가는 어느 정도인가요",
       enabled: true,
       dbPath,
       corpus,
@@ -142,7 +143,7 @@ describe("exact-scope semantic knowledge adapter", () => {
       corpus,
       repository,
     });
-    expect(disabled).toMatchObject({ strategy: "keyword", reason: "disabled" });
+    expect(disabled).toMatchObject({ strategy: "keyword", reason: "keyword-hit" });
     expect(disabled.hits[0]?.chunkId).toBe("chunk-1");
     const unsafe = await searchSemanticKnowledge({
       scope: productScope,
@@ -158,7 +159,7 @@ describe("exact-scope semantic knowledge adapter", () => {
   test("query provider 실패와 SQLite 부재는 keyword로 강등하고 오류를 노출하지 않는다", async () => {
     const failed = await searchSemanticKnowledge({
       scope: productScope,
-      query: "보관",
+      query: "작품 유지 대가",
       enabled: true,
       apiKey: "fake",
       corpus,
@@ -169,13 +170,13 @@ describe("exact-scope semantic knowledge adapter", () => {
       },
     });
     expect(failed).toMatchObject({ strategy: "keyword", reason: "provider-failed" });
-    expect(failed.hits[0]?.chunkId).toBe("chunk-1");
+    expect(failed.hits).toEqual([]);
 
     const root = mkdtempSync(path.join(os.tmpdir(), "semantic-search-"));
     roots.push(root);
     const missing = await searchSemanticKnowledge({
       scope: productScope,
-      query: "보관",
+      query: "작품 유지 대가",
       enabled: true,
       dbPath: path.join(root, "missing.sqlite"),
       corpus,
@@ -206,6 +207,34 @@ describe("exact-scope semantic knowledge adapter", () => {
       repository,
       embedder,
     });
-    expect(result).toMatchObject({ strategy: "semantic", hits: [] });
+    expect(result).toMatchObject({
+      strategy: "keyword",
+      reason: "score-below-threshold",
+      hits: [],
+    });
+  });
+
+  test("keyword hit은 0.24 semantic 후보보다 먼저 반환해 embedding을 호출하지 않는다", async () => {
+    let calls = 0;
+    const result = await searchSemanticKnowledge({
+      scope: productScope,
+      query: "보관",
+      enabled: true,
+      apiKey: "fake",
+      corpus,
+      repository,
+      embedder: {
+        async embedDocuments() { throw new Error("not used"); },
+        async embedQuery() { calls += 1; return vector(); },
+      },
+    });
+    expect(calls).toBe(0);
+    expect(result).toMatchObject({
+      strategy: "keyword",
+      reason: "keyword-hit",
+      semantic: false,
+      degraded: false,
+    });
+    expect(result.hits[0]?.chunkId).toBe("chunk-1");
   });
 });

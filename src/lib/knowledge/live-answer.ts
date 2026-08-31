@@ -8,6 +8,7 @@ import type { SearchHit } from "./search";
 
 export const LIVE_ANSWER_MAX_OUTPUT_TOKENS = 800;
 export const LIVE_ANSWER_TIMEOUT_MS = 15_000;
+export const LIVE_ANSWER_MAX_EVIDENCE = 5;
 
 export interface LiveLimitState {
   readonly calls: readonly number[];
@@ -68,6 +69,8 @@ export const containsCredentialLikeSecret = (value: string): boolean => {
 
 export const isLiveAnswerInputEligible = (input: LiveAnswerInput): boolean =>
   input.evidence.length > 0 &&
+  input.evidence.length <= LIVE_ANSWER_MAX_EVIDENCE &&
+  input.question.length <= 200 &&
   !containsObviousPii(input.question) &&
   !containsCredentialLikeSecret(input.question) &&
   input.evidence.every((item) =>
@@ -114,7 +117,11 @@ export const validateLiveAnswerDraft = (
 let processLimitState: LiveLimitState = { calls: [] };
 
 export const generateLiveEvidenceAnswer: LiveAnswerGenerator = async (input) => {
-  if (!isLiveEvidenceEnabled() || (!process.env.AI_GATEWAY_API_KEY && !process.env.OPENAI_API_KEY)) return null;
+  if (
+    process.env.KNOWLEDGE_RUNTIME_AI_ENABLED !== "true" ||
+    !isLiveEvidenceEnabled() ||
+    (!process.env.AI_GATEWAY_API_KEY && !process.env.OPENAI_API_KEY)
+  ) return null;
   if (!isLiveAnswerInputEligible(input)) return null;
   const nature = input.evidence[0]?.dataNature;
   if (!nature || input.evidence.some((item) => item.dataNature !== nature)) return null;
@@ -145,7 +152,7 @@ export const generateLiveEvidenceAnswer: LiveAnswerGenerator = async (input) => 
           asOf: item.asOf,
           dataNature: item.dataNature,
           excerpt: item.excerpt,
-          limitations: item.limitations,
+          limitations: item.limitations.slice(0, 5).map((value) => value.slice(0, 300)),
         })),
       }),
       temperature: 0,

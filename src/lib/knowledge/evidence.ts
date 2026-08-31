@@ -5,6 +5,7 @@ import { filterOutput } from "@/lib/spine/guardrail/output-filter";
 import {
   generateLiveEvidenceAnswer,
   isLiveAnswerInputEligible,
+  LIVE_ANSWER_MAX_EVIDENCE,
   validateLiveAnswerDraft,
   type LiveAnswerGenerator,
 } from "./live-answer";
@@ -32,6 +33,37 @@ const EVIDENCE_ONLY_TEXT =
   "관련 공식 문서와 공개정보를 찾았습니다. 준비된 설명이 없어 아래 출처·페이지·기준일과 한계를 제공합니다.";
 const MIXED_NATURE_TEXT =
   "공식 공개정보와 시나리오 조건이 함께 확인되었습니다. 두 자료를 구분해 확인할 수 있도록 하나의 답변으로 합치지 않았습니다.";
+
+const evidenceBackedBy = (
+  evidence: readonly SearchHit[],
+  chunks: readonly {
+    readonly chunkId: string;
+    readonly documentId: string;
+    readonly categoryId: SearchHit["categoryId"];
+    readonly productId?: string;
+    readonly offerId?: string;
+    readonly scenarioId?: string;
+    readonly dataNature: SearchHit["dataNature"];
+    readonly page: number;
+    readonly text: string;
+    readonly sourceHash: string;
+    readonly chunkHash: string;
+  }[],
+): readonly SearchHit[] => {
+  const byId = new Map(chunks.map((chunk) => [chunk.chunkId, chunk]));
+  return evidence.filter((item) => {
+    const chunk = byId.get(item.chunkId);
+    return chunk !== undefined &&
+      item.documentId === chunk.documentId &&
+      item.categoryId === chunk.categoryId &&
+      item.productId === (chunk.productId ?? chunk.offerId) &&
+      item.scenarioId === chunk.scenarioId &&
+      item.dataNature === chunk.dataNature &&
+      item.page === chunk.page &&
+      item.sourceHash === chunk.sourceHash &&
+      chunk.text.replace(/\s+/g, " ").trim().includes(item.excerpt);
+  });
+};
 
 export interface EvidenceAnswer {
   readonly outcome: "answer" | "evidence_only" | "abstain";
@@ -244,7 +276,11 @@ export const answerFromOfferingKnowledge = async (
   offering: Offering,
   query: string,
   knowledge: ProductKnowledgeResult,
-  options: { readonly limit?: number; readonly liveAnswer?: LiveAnswerGenerator } = {},
+  options: {
+    readonly limit?: number;
+    readonly liveAnswer?: LiveAnswerGenerator;
+    readonly evidence?: readonly SearchHit[];
+  } = {},
 ): Promise<EvidenceAnswer> => {
   const structured = answerFromOfferingFacts(offering, query);
   const exactChunks = knowledge.chunks.filter((chunk) =>
@@ -254,7 +290,9 @@ export const answerFromOfferingKnowledge = async (
     chunk.scenarioId === undefined &&
     chunk.status === "ready",
   );
-  const evidence = searchChunks(exactChunks, query, options.limit ?? 5);
+  const evidence = options.evidence
+    ? evidenceBackedBy(options.evidence, exactChunks)
+    : searchChunks(exactChunks, query, options.limit ?? 5);
   const pdfLimitation = knowledge.documents.length === 0
     ? "이 상품에 등록된 공개 PDF가 없어 구조화된 공개 항목만 확인했습니다."
     : evidence.length === 0
@@ -284,7 +322,7 @@ export const answerFromOfferingKnowledge = async (
     };
   }
 
-  const liveInput = { question: query, evidence };
+  const liveInput = { question: query, evidence: evidence.slice(0, LIVE_ANSWER_MAX_EVIDENCE) };
   if (isLiveAnswerInputEligible(liveInput)) {
     try {
       const validated = validateLiveAnswerDraft(
@@ -452,6 +490,7 @@ const filtered = (answer: EvidenceAnswer): EvidenceAnswer => {
 export interface EvidenceAnswerOptions {
   readonly population?: readonly NonNullable<KnowledgeScope["scenario"]>[];
   readonly liveAnswer?: LiveAnswerGenerator;
+  readonly evidence?: readonly SearchHit[];
 }
 
 const structuredAnswer = (
@@ -597,7 +636,9 @@ export const answerFromEvidence = async (
   options: EvidenceAnswerOptions = {},
 ): Promise<EvidenceAnswer> => {
   const population = options.population ?? (scope.scenario ? [scope.scenario] : []);
-  const evidence = searchChunks(scope.chunks, query.q, query.limit);
+  const evidence = options.evidence
+    ? evidenceBackedBy(options.evidence, scope.chunks)
+    : searchChunks(scope.chunks, query.q, query.limit);
   const chunks = new Map(scope.chunks.map((chunk) => [chunk.chunkId, chunk]));
   const categoryId = scope.scenario?.categoryId;
   const eligibleForLive =
@@ -616,7 +657,7 @@ export const answerFromEvidence = async (
     });
   // Product contract: grounded live extraction is intentionally attempted before structured/cache fallbacks.
   if (eligibleForLive) {
-    const liveInput = { question: query.q, evidence };
+    const liveInput = { question: query.q, evidence: evidence.slice(0, LIVE_ANSWER_MAX_EVIDENCE) };
     if (isLiveAnswerInputEligible(liveInput)) {
       try {
         const validated = validateLiveAnswerDraft(
@@ -697,7 +738,7 @@ export const answerFromEvidence = async (
 export const answerFromCommonEvidence = async (
   scope: CommonKnowledgeScope,
   query: CommonKnowledgeQuery,
-  options: Pick<EvidenceAnswerOptions, "liveAnswer"> = {},
+  options: Pick<EvidenceAnswerOptions, "liveAnswer" | "evidence"> = {},
 ): Promise<EvidenceAnswer> => {
   if (
     !scope.product ||
@@ -715,7 +756,9 @@ export const answerFromCommonEvidence = async (
       answerSource: "none",
     };
   }
-  const evidence = searchChunks(scope.chunks, query.q, query.limit);
+  const evidence = options.evidence
+    ? evidenceBackedBy(options.evidence, scope.chunks)
+    : searchChunks(scope.chunks, query.q, query.limit);
   if (evidence.length === 0) {
     return {
       outcome: "abstain",
@@ -738,7 +781,7 @@ export const answerFromCommonEvidence = async (
         chunk.scenarioId === scope.product?.scenarioId;
     });
     if (exactScope) {
-      const liveInput = { question: query.q, evidence };
+      const liveInput = { question: query.q, evidence: evidence.slice(0, LIVE_ANSWER_MAX_EVIDENCE) };
       let generated = null;
       if (isLiveAnswerInputEligible(liveInput)) {
         try {

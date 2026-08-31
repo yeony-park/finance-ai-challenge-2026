@@ -16,6 +16,7 @@ import {
 import { evaluateScenarioReview, type ReviewAreaId } from "./scenario-review";
 import { isRankingRequest, normalizeKorean, normalizeSearchQuery } from "./search";
 import type { GlobalSearchQuery, GlobalSearchRequest } from "./schema";
+import type { SemanticProductMatch } from "./local-rag/semantic";
 
 export interface GlobalSearchResult {
   readonly id: string;
@@ -40,6 +41,10 @@ export interface GlobalSearchResult {
 export interface GlobalSearchResponse {
   readonly mode: "matches" | "review-guidance";
   readonly results: readonly GlobalSearchResult[];
+  readonly generatedAnswer?: {
+    readonly answer: string;
+    readonly citedProductIds: readonly string[];
+  };
   readonly guidance?: {
     readonly message: string;
     readonly reviewAreas: readonly ReviewAreaId[];
@@ -51,9 +56,21 @@ export interface GlobalSearchResponse {
       readonly rag: "db" | "file" | "not-used";
     };
     readonly degraded: boolean;
-    readonly semantic: false;
-    readonly strategy: "keyword";
+    readonly semantic: boolean;
+    readonly strategy: "keyword" | "semantic" | "hybrid";
+    readonly reason?: string;
+    readonly planner?: {
+      readonly used: boolean;
+      readonly degraded: boolean;
+      readonly reason?: string;
+    };
   };
+}
+
+export interface GlobalSearchOptions {
+  readonly semanticMatches?: readonly SemanticProductMatch[];
+  readonly minimumInvestmentWonMin?: number;
+  readonly minimumInvestmentWonMax?: number;
 }
 
 const matchFields = (
@@ -140,6 +157,7 @@ export const searchOffers = async (
   query: GlobalSearchQuery | GlobalSearchRequest,
   dataRoot?: string,
   repositories?: RetrievalRepositories,
+  options: GlobalSearchOptions = {},
 ): Promise<GlobalSearchResponse> => {
   const queryText = "query" in query ? query.query : query.q;
   if (isRankingRequest(queryText)) {
@@ -160,6 +178,19 @@ export const searchOffers = async (
   }
   const intent = intentsOf(queryText);
   const normalized = intent.query;
+  const semanticScore = (
+    categoryId: GlobalSearchResult["categoryId"],
+    productId: string,
+    dataNature: GlobalSearchResult["dataNature"],
+    namespace: GlobalSearchResult["namespace"],
+    scenarioId?: string,
+  ): number => options.semanticMatches?.find((item) =>
+    item.categoryId === categoryId &&
+    item.productId === productId &&
+    item.dataNature === dataNature &&
+    item.namespace === namespace &&
+    item.scenarioId === scenarioId
+  )?.score ?? 0;
   const now = new Date();
   const [population, commonProducts, resolvedRepositories] = await Promise.all([
     loadApprovedScenarios(dataRoot),
@@ -183,6 +214,7 @@ export const searchOffers = async (
       repositoryTitle: repositoryById.get(offer.id)?.titlePublic ?? "",
       repositoryAmount: repositoryById.get(offer.id)?.amountWon?.toString() ?? "",
     });
+    const semantic = semanticScore("cattle", offer.id, "observed", "published-offer");
     return {
       id: offer.id,
       productId: offer.id,
@@ -191,11 +223,11 @@ export const searchOffers = async (
       assetKind: offer.assetKind,
       phase,
       href: `/offers/${offer.id}`,
-      matchedFields: match.matchedFields,
+      matchedFields: semantic > 0 ? [...match.matchedFields, "semantic"] : match.matchedFields,
       isScenario: false,
       dataNature: "observed" as const,
       namespace: "published-offer" as const,
-      score: match.score,
+      score: match.score + semantic * 30,
     };
   });
   const scenarios = routableLegacyScenarios(
@@ -226,6 +258,7 @@ export const searchOffers = async (
         ])
         .join(" "),
     });
+    const semantic = semanticScore("real-estate", offer.offerId, "scenario", "legacy-scenario", offer.scenarioId);
     return {
       id: offer.offerId,
       productId: offer.offerId,
@@ -235,11 +268,11 @@ export const searchOffers = async (
       phase,
       minimumInvestmentWon: offer.offering.minimumInvestmentWon,
       href: `/offers/${offer.offerId}`,
-      matchedFields: match.matchedFields,
+      matchedFields: semantic > 0 ? [...match.matchedFields, "semantic"] : match.matchedFields,
       isScenario: true,
       dataNature: "scenario" as const,
       namespace: "legacy-scenario" as const,
-      score: match.score,
+      score: match.score + semantic * 30,
     };
   });
 
@@ -253,6 +286,13 @@ export const searchOffers = async (
       phase: `${phase} ${PHASE_ALIASES[phase]}`,
       status: product.status ?? "",
     });
+    const semantic = semanticScore(
+      product.categoryId,
+      product.productId,
+      product.dataNature,
+      "common",
+      product.scenarioId,
+    );
     return {
       id: product.productId,
       productId: product.productId,
@@ -261,11 +301,11 @@ export const searchOffers = async (
       assetKind: assetKindOf(product.categoryId),
       phase,
       href: commonProductHref(product.categoryId, product.productId),
-      matchedFields: match.matchedFields,
+      matchedFields: semantic > 0 ? [...match.matchedFields, "semantic"] : match.matchedFields,
       isScenario: product.dataNature === "scenario",
       dataNature: product.dataNature,
       namespace: "common" as const,
-      score: match.score,
+      score: match.score + semantic * 30,
     };
   });
 
@@ -279,7 +319,15 @@ export const searchOffers = async (
         (!query.assetKind || item.assetKind === query.assetKind) &&
         (!query.categoryId && !intent.categoryId || item.categoryId === (query.categoryId ?? intent.categoryId)) &&
         (!query.phase || item.phase === query.phase) &&
-        (!intent.phases || intent.phases.has(item.phase)),
+        (!intent.phases || intent.phases.has(item.phase)) &&
+        (options.minimumInvestmentWonMin === undefined ||
+          "minimumInvestmentWon" in item &&
+          typeof item.minimumInvestmentWon === "number" &&
+          item.minimumInvestmentWon >= options.minimumInvestmentWonMin) &&
+        (options.minimumInvestmentWonMax === undefined ||
+          "minimumInvestmentWon" in item &&
+          typeof item.minimumInvestmentWon === "number" &&
+          item.minimumInvestmentWon <= options.minimumInvestmentWonMax),
     )
     .sort(
       (left, right) =>
