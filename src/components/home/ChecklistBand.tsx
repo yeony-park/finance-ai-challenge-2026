@@ -4,7 +4,6 @@ import Link from "next/link";
 
 import { Reveal } from "@/components/motion/Reveal";
 import { OnboardingOpenButton } from "@/components/site/OnboardingOpenButton";
-import { latestOfferEntry, OFFERS } from "@/components/site/offers";
 import { orderByConcern, useProfile } from "@/components/site/profile";
 import {
   CHECKLIST_BRIDGE_NOTE,
@@ -21,10 +20,13 @@ import tags from "./home-tags.module.css";
 import { HomeSectionFrame, HomeSectionHeader } from "./HomeSection";
 import s from "./ChecklistBand.module.css";
 
-export function ChecklistBand() {
+interface ChecklistBandProps {
+  bridgeOffer?: { id: string; title: string } | null;
+}
+
+export function ChecklistBand({ bridgeOffer = null }: ChecklistBandProps) {
   const profile = useProfile();
   const items = orderByConcern(TRUST_CHECKLIST, profile.concern);
-  const bridgeOffer = latestOfferEntry(OFFERS);
 
   return (
     <HomeSectionFrame id="checklist" labelledBy="checklist-title">

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { useWatchedIds } from "@/components/landing/watchlist";
-import { PUBLISHED_OFFER_IDS } from "@/components/site/offers";
+import { PUBLISHED_OFFER_IDS } from "@/components/site/offer-schedule";
 import { hasKnownWatchedOffer } from "@/components/watchlist/watchlist-selection";
 
 import s from "./shell.module.css";
