@@ -1,6 +1,6 @@
 import {
   createMemoryRateLimiter,
-  type RateLimiter,
+  type MemoryRateLimiter,
 } from "@/lib/spine/ops/rate-limit";
 
 export const TRACE_DAILY_CALL_QUOTA = 10_000;
@@ -43,8 +43,8 @@ export type LiveVerifyGate = (
 
 export const createLiveVerifyGate = (
   limiters: {
-    readonly burst?: RateLimiter;
-    readonly daily?: RateLimiter;
+    readonly burst?: MemoryRateLimiter;
+    readonly daily?: MemoryRateLimiter;
   } = {},
 ): LiveVerifyGate => {
   const burst =

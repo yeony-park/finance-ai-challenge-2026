@@ -73,7 +73,7 @@ export const createAskProductHandler =
     try {
       assertAllowedRequestOrigin(request, deps.environment);
 
-      const rate = deps.rateLimiter.check(clientKey(request));
+      const rate = await deps.rateLimiter.check(clientKey(request));
       if (!rate.allowed) {
         const retryAfterSeconds = Math.max(
           1,
