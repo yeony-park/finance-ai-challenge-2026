@@ -158,7 +158,7 @@ const main = async (): Promise<void> => {
 
   assertSeedSourcePathsAllowed(plan.sourcePaths);
 
-  const counts = `cattle ${plan.cattleAuction.length} · re_trades ${plan.reTrades.length} · pig ${plan.pigAuction.length} · filing_facts ${plan.filingFacts.length}`;
+  const counts = `cattle ${plan.cattleAuction.length} · real_estate_trades ${plan.reTrades.length} · pig ${plan.pigAuction.length} · filing_facts ${plan.filingFacts.length}`;
 
   if (!directDatabaseUrl()) {
     console.log(
