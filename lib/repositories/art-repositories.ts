@@ -1,4 +1,6 @@
 import syntheticData from "@/data/synthetic/art-investment.json";
+import { normalizeCatalogKeyword } from "@/lib/art/search";
+import { resolvedTrackReturn } from "@/lib/art/track-return";
 import type { AnalysisResult, ArtDataset, Artist, Artwork, CatalogProductView, CurrentProductView, Evidence, HistoricalCatalogFilter, HistoricalDatasetAggregate, HistoricalOfferingView, HistoricalSort, Offering, OfferingStatus, PageResult, ParsedSearchQuery, Platform, ProductView, RecordLifecycle, TrackRecord, TrackStatus, Verdict } from "@/lib/art/types";
 
 export const dataMode = "synthetic" as const;
@@ -40,10 +42,10 @@ const dataset: ArtDataset = {
   dataMode,
   artists: [...canonicalArtistsByKey.values()],
   platforms: synthetic.platforms.map((platform) => ({ ...platform, website: null })),
-  offerings: synthetic.offerings.map((offering) => ({ ...offering, artistId: artistByOldId.get(offering.artistId) ?? offering.artistId, isDemo: true, dataMode, recordScope: "current", lifecycle: "current", identityStatus: "unknown" })),
+  offerings: synthetic.offerings.map((offering) => ({ ...offering, artistId: artistByOldId.get(offering.artistId) ?? offering.artistId, isDemo: true, dataMode, recordScope: "current", lifecycle: "current", identityStatus: offering.identityStatus ?? "unverified" })),
   artworks: synthetic.artworks.map((artwork) => ({ ...artwork, artistId: artistByOldId.get(artwork.artistId) ?? artwork.artistId, imageUrl: localImage(artwork.imageUrl) })),
   auctions: synthetic.auctions.map((auction) => ({ ...auction, artistId: artistByOldId.get(auction.artistId) ?? auction.artistId })),
-  trackRecords: synthetic.trackRecords.map((record) => ({ ...record, artworkImageUrl: localImage(record.artworkImageUrl), sourceDataset: "synthetic", dataMode, recordScope: "historical", lifecycle: record.lifecycle ?? trackLifecycle(record.status), identityStatus: "unknown", isSelfReported: false })),
+  trackRecords: synthetic.trackRecords.map((record) => ({ ...record, artworkImageUrl: localImage(record.artworkImageUrl), sourceDataset: "synthetic", dataMode, recordScope: "historical", lifecycle: record.lifecycle ?? trackLifecycle(record.status), identityStatus: record.identityStatus ?? "unverified", isSelfReported: record.isSelfReported ?? false })),
   evidence: synthetic.evidence.map((evidence) => ({ ...evidence, sourceUrl: null, sourceTitle: "합성 데이터", sourcePublisher: "DAKER 시뮬레이션" })),
   annualMetrics: Object.entries(synthetic.annualMetrics).reduce<Record<string, typeof synthetic.annualMetrics[string]>>((result, [oldArtistId, metrics]) => { const artistId = artistByOldId.get(oldArtistId) ?? oldArtistId; result[artistId] = [...(result[artistId] ?? []), ...metrics]; return result; }, {}),
 };
@@ -71,43 +73,148 @@ const historicalProducts: HistoricalOfferingView[] = dataset.trackRecords.map((r
   if (!platform) throw new Error(`Synthetic historical record platform not found: ${record.id}`);
   const artworkId = `historical-artwork-${record.id}`;
   const asOfDate = record.liquidatedAt ?? record.soldAt ?? record.subscriptionEnd ?? record.subscriptionStart ?? "2026-01-01";
-  const offering: Offering = { id: `historical-offering-${record.id}`, slug: historicalSlug(record), artworkId, artistId: artist.id, platformId: record.platformId, issuerId: record.issuerId, title: record.productName, status: historicalStatus(record), subscriptionStart: record.subscriptionStart ?? null, subscriptionEnd: record.subscriptionEnd ?? null, unitPrice: null, minimumInvestment: null, numberOfUnits: null, totalOfferingAmount: record.offeringAmount ?? record.reportedAmount ?? null, currency: record.currency ?? null, currencyNote: record.currencyNote ?? null, acquisitionPrice: null, appraisalValue: null, targetHoldingMonths: record.targetHoldingMonths, actualHoldingMonths: record.actualHoldingMonths, distributionTerms: null, exitMethod: null, midTermTransferAvailable: null, disclosedCosts: [], actualDistributionAmount: record.totalDistribution, actualExitAmount: record.exitAmount, finalReturn: record.sourceReportedReturnPct ?? record.finalReturn ?? null, soldAt: record.soldAt, liquidatedAt: record.liquidatedAt, asOfDate, updatedAt: null, sourceIds: record.sourceIds, isDemo: true, dataMode, recordScope: "historical", identityStatus: "unknown", lifecycle: record.lifecycle ?? trackLifecycle(record.status) };
+  const offering: Offering = { id: `historical-offering-${record.id}`, slug: historicalSlug(record), artworkId, artistId: artist.id, platformId: record.platformId, issuerId: record.issuerId, title: record.productName, status: historicalStatus(record), subscriptionStart: record.subscriptionStart ?? null, subscriptionEnd: record.subscriptionEnd ?? null, unitPrice: null, minimumInvestment: null, numberOfUnits: null, totalOfferingAmount: record.offeringAmount ?? record.reportedAmount ?? null, currency: record.currency ?? null, currencyNote: record.currencyNote ?? null, acquisitionPrice: null, appraisalValue: null, targetHoldingMonths: record.targetHoldingMonths, actualHoldingMonths: record.actualHoldingMonths, distributionTerms: null, exitMethod: null, midTermTransferAvailable: null, disclosedCosts: [], actualDistributionAmount: record.totalDistribution, actualExitAmount: record.exitAmount, finalReturn: resolvedTrackReturn(record), soldAt: record.soldAt, liquidatedAt: record.liquidatedAt, asOfDate, updatedAt: null, sourceIds: record.sourceIds, isDemo: true, dataMode, recordScope: "historical", identityStatus: record.identityStatus ?? "unverified", lifecycle: record.lifecycle ?? trackLifecycle(record.status) };
   const artwork: Artwork = { id: artworkId, artistId: artist.id, title: record.artworkTitle, productionYear: record.artworkProductionYear ?? null, medium: record.artworkMedium ?? null, width: record.artworkWidth ?? null, height: record.artworkHeight ?? null, depth: record.artworkDepth ?? null, edition: null, series: null, provenance: null, condition: null, imageUrl: localImage(record.artworkImageUrl), sourceIds: record.sourceIds };
-  return { recordScope: "historical", offering, artwork, artist, platform, trackRecord: record, identityStatus: "unknown", lifecycle: record.lifecycle ?? trackLifecycle(record.status) };
+  return { recordScope: "historical", offering, artwork, artist, platform, trackRecord: record, identityStatus: record.identityStatus ?? "unverified", lifecycle: record.lifecycle ?? trackLifecycle(record.status) };
 });
 
-function normalizedText(value: CatalogProductView) { return cleanName(`${value.offering.title} ${value.artwork.title} ${value.artist.nameKo} ${value.artist.nameEn ?? ""} ${value.platform.name}`).toLowerCase(); }
-function paginate<T>(items: T[], page = 1, pageSize = 25): PageResult<T> { const safePageSize = Math.max(1, Math.min(100, Math.floor(pageSize) || 25)); const pageCount = Math.max(1, Math.ceil(items.length / safePageSize)); const safePage = Math.min(Math.max(1, Math.floor(page) || 1), pageCount); return { items: items.slice((safePage - 1) * safePageSize, safePage * safePageSize), page: safePage, pageSize: safePageSize, total: items.length, pageCount }; }
-type CatalogFilter = HistoricalCatalogFilter & { scope?: "current" | "historical" | "all" };
+function normalizedText(value: CatalogProductView) {
+  const historical = value.recordScope === "historical" ? `${value.trackRecord.soldPlace ?? ""} ${value.trackRecord.status}` : "";
+  return normalizeCatalogKeyword(cleanName(`${value.offering.title} ${value.artwork.title} ${value.artist.nameKo} ${value.artist.nameEn ?? ""} ${value.platform.name} ${historical}`)).toLowerCase();
+}
+function paginate<T>(items: T[], page = 1, pageSize = 25): PageResult<T> {
+  const safePageSize = Math.max(1, Math.min(100, Math.floor(pageSize) || 25));
+  const pageCount = Math.max(1, Math.ceil(items.length / safePageSize));
+  const safePage = Math.min(Math.max(1, Math.floor(page) || 1), pageCount);
+  return { items: items.slice((safePage - 1) * safePageSize, safePage * safePageSize), page: safePage, pageSize: safePageSize, total: items.length, pageCount };
+}
+type CatalogFilter = Omit<HistoricalCatalogFilter, "sort"> & Pick<ParsedSearchQuery, "verdict" | "premiumMin" | "premiumMax" | "auctionVolumeMin" | "sellThroughRateMin" | "delayedExitOnly"> & { scope?: "current" | "historical" | "all"; sort?: HistoricalSort | string };
+function premiumPercent(item: CurrentProductView) {
+  const acquisition = item.offering.acquisitionPrice;
+  const offering = item.offering.totalOfferingAmount;
+  return acquisition != null && acquisition > 0 && offering != null ? (offering - acquisition) / acquisition * 100 : null;
+}
+function recentAuctionCount(item: CurrentProductView) {
+  const asOf = new Date(item.offering.asOfDate);
+  const from = new Date(asOf);
+  from.setFullYear(from.getFullYear() - 3);
+  return item.auctions.filter((auction) => new Date(auction.auctionDate) >= from && (auction.result === "sold" || auction.result === "unsold")).length;
+}
+function currentSellThroughRate(item: CurrentProductView) {
+  const outcomes = item.auctions.filter((auction) => auction.result === "sold" || auction.result === "unsold");
+  return outcomes.length ? outcomes.filter((auction) => auction.result === "sold").length / outcomes.length * 100 : null;
+}
+function maxExitDelay(item: CurrentProductView) { return Math.max(0, ...item.trackRecords.map((record) => record.delayDays ?? 0)); }
+function hasAnalyticalFilter(filter: CatalogFilter) {
+  return !!filter.verdict?.length || filter.premiumMin != null || filter.premiumMax != null || filter.auctionVolumeMin != null || filter.sellThroughRateMin != null || filter.delayedExitOnly === true;
+}
 function filterCatalog(items: CatalogProductView[], filter: CatalogFilter = {}) {
-  const words = cleanName(filter.keyword).toLowerCase().split(/\s+/).filter(Boolean);
+  const words = normalizeCatalogKeyword(cleanName(filter.keyword)).toLowerCase().split(/\s+/).filter(Boolean);
   const artistWords = cleanName(filter.artistQuery).toLowerCase().split(/\s+/).filter(Boolean);
-  return items.filter((item) => {
+  const requiresCurrentAnalysis = hasAnalyticalFilter(filter);
+  const filtered = items.filter((item) => {
     const record = item.recordScope === "historical" ? item.trackRecord : null;
+    const current = item.recordScope === "current" ? item : null;
     const date = item.recordScope === "historical" ? historicalDate(item) : item.offering.subscriptionEnd;
-    const returnValue = item.recordScope === "historical" ? item.trackRecord.sourceReportedReturnPct ?? item.trackRecord.finalReturn ?? null : null;
+    const returnValue = record ? resolvedTrackReturn(record) : null;
+    const premium = current ? premiumPercent(current) : null;
+    const sellThrough = current ? currentSellThroughRate(current) : null;
+    const identity = item.recordScope === "historical" ? item.identityStatus : item.offering.identityStatus ?? "unverified";
     return (filter.scope == null || filter.scope === "all" || item.recordScope === filter.scope)
-      && (!filter.currentStatus?.length || (item.recordScope === "current" && filter.currentStatus.includes(item.offering.status)))
+      && (!requiresCurrentAnalysis || current != null)
+      && (!filter.currentStatus?.length || (current != null && filter.currentStatus.includes(current.offering.status)))
+      && (!filter.verdict?.length || (current != null && filter.verdict.includes(current.analysis.verdict)))
+      && (filter.premiumMin == null || (premium != null && premium >= filter.premiumMin))
+      && (filter.premiumMax == null || (premium != null && premium <= filter.premiumMax))
+      && (filter.auctionVolumeMin == null || (current != null && recentAuctionCount(current) >= filter.auctionVolumeMin))
+      && (filter.sellThroughRateMin == null || (sellThrough != null && sellThrough >= filter.sellThroughRateMin))
+      && (!filter.delayedExitOnly || (current != null && maxExitDelay(current) > 0))
       && (filter.platformId == null || item.platform.id === filter.platformId)
       && (filter.artistId == null || item.artist.id === filter.artistId)
       && (!artistWords.length || artistWords.every((word) => `${item.artist.nameKo} ${item.artist.nameEn ?? ""}`.toLowerCase().includes(word)))
       && (!filter.lifecycle?.length || filter.lifecycle.includes(item.recordScope === "historical" ? item.lifecycle : item.offering.lifecycle ?? "current"))
       && (!filter.status?.length || (record != null && filter.status.includes(record.status)))
-      && (!filter.identityStatus?.length || filter.identityStatus.includes(item.recordScope === "historical" ? item.identityStatus : item.offering.identityStatus ?? "unknown"))
-      && (!filter.sourceDataset?.length || (record != null && filter.sourceDataset.includes("synthetic")))
+      && (!filter.identityStatus?.length || filter.identityStatus.includes(identity))
+      && (!filter.sourceDataset?.length || (record != null && filter.sourceDataset.includes(record.sourceDataset ?? "synthetic")))
       && (filter.dateFrom == null || (date != null && date >= filter.dateFrom))
       && (filter.dateTo == null || (date != null && date <= filter.dateTo))
       && (filter.returnMin == null || (returnValue != null && returnValue >= filter.returnMin))
       && (filter.returnMax == null || (returnValue != null && returnValue <= filter.returnMax))
       && words.every((word) => normalizedText(item).includes(word));
   });
+  const rank: Record<Verdict, number> = { worth_considering: 0, conditional: 1, caution: 2, danger: 3 };
+  if (["verdict", "premium_asc", "premium_desc", "auction_volume_desc", "delay_desc"].includes(filter.sort ?? "")) {
+    filtered.sort((left, right) => {
+      if (left.recordScope !== "current") return 1;
+      if (right.recordScope !== "current") return -1;
+      if (filter.sort === "verdict") return rank[left.analysis.verdict] - rank[right.analysis.verdict] || compareCurrentProducts(left, right);
+      if (filter.sort === "premium_asc" || filter.sort === "premium_desc") {
+        const direction = filter.sort === "premium_asc" ? 1 : -1;
+        const leftValue = premiumPercent(left);
+        const rightValue = premiumPercent(right);
+        if (leftValue == null) return 1;
+        if (rightValue == null) return -1;
+        return (leftValue - rightValue) * direction || compareCurrentProducts(left, right);
+      }
+      if (filter.sort === "auction_volume_desc") return recentAuctionCount(right) - recentAuctionCount(left) || compareCurrentProducts(left, right);
+      if (filter.sort === "delay_desc") return maxExitDelay(right) - maxExitDelay(left) || compareCurrentProducts(left, right);
+      return compareCurrentProducts(left, right);
+    });
+  }
+  return filtered;
 }
-function sortHistorical(items: HistoricalOfferingView[], sort: HistoricalSort = "default") { return [...items].sort((left, right) => { if (sort === "artist") return left.artist.nameKo.localeCompare(right.artist.nameKo) || left.offering.id.localeCompare(right.offering.id); if (sort === "status") return left.trackRecord.status.localeCompare(right.trackRecord.status) || left.offering.id.localeCompare(right.offering.id); if (sort === "return_asc" || sort === "return_desc") { const direction = sort === "return_asc" ? 1 : -1; const leftValue = left.trackRecord.sourceReportedReturnPct ?? left.trackRecord.finalReturn ?? null; const rightValue = right.trackRecord.sourceReportedReturnPct ?? right.trackRecord.finalReturn ?? null; if (leftValue == null && rightValue != null) return 1; if (rightValue == null && leftValue != null) return -1; return ((leftValue ?? 0) - (rightValue ?? 0)) * direction || left.offering.id.localeCompare(right.offering.id); } const direction: 1 | -1 = sort === "date_asc" ? 1 : -1; return compareNullableDate(historicalDate(left), historicalDate(right), direction) || left.offering.id.localeCompare(right.offering.id); }); }
-function aggregateHistorical(items: HistoricalOfferingView[]): HistoricalDatasetAggregate { const lifecycle = ["current", "offering", "operating", "exit_in_progress", "sold", "liquidated", "returned", "loss_confirmed", "unknown"] as const; const status = ["offering", "operating", "exit_in_progress", "sold", "returned", "liquidated", "delayed", "unsold", "loss_confirmed", "unknown"] as const; const byLifecycle = Object.fromEntries(lifecycle.map((key) => [key, 0])) as Record<RecordLifecycle, number>; const byStatus = Object.fromEntries(status.map((key) => [key, 0])) as Record<TrackStatus, number>; for (const item of items) { byLifecycle[item.lifecycle] += 1; byStatus[item.trackRecord.status] += 1; } return { total: items.length, byLifecycle, byStatus, bySourceDataset: { synthetic: items.length } }; }
+function sortHistorical(items: HistoricalOfferingView[], sort: HistoricalSort = "default") {
+  return [...items].sort((left, right) => {
+    if (sort === "artist") return left.artist.nameKo.localeCompare(right.artist.nameKo) || left.offering.id.localeCompare(right.offering.id);
+    if (sort === "status") return left.trackRecord.status.localeCompare(right.trackRecord.status) || left.offering.id.localeCompare(right.offering.id);
+    if (sort === "return_asc" || sort === "return_desc") {
+      const direction = sort === "return_asc" ? 1 : -1;
+      const leftValue = resolvedTrackReturn(left.trackRecord);
+      const rightValue = resolvedTrackReturn(right.trackRecord);
+      if (leftValue == null && rightValue != null) return 1;
+      if (rightValue == null && leftValue != null) return -1;
+      return ((leftValue ?? 0) - (rightValue ?? 0)) * direction || left.offering.id.localeCompare(right.offering.id);
+    }
+    const direction: 1 | -1 = sort === "date_asc" ? 1 : -1;
+    return compareNullableDate(historicalDate(left), historicalDate(right), direction) || left.offering.id.localeCompare(right.offering.id);
+  });
+}
+function aggregateHistorical(items: HistoricalOfferingView[]): HistoricalDatasetAggregate {
+  const lifecycle = ["current", "offering", "operating", "exit_in_progress", "sold", "liquidated", "returned", "loss_confirmed", "unknown"] as const;
+  const status = ["offering", "operating", "exit_in_progress", "sold", "returned", "liquidated", "delayed", "unsold", "loss_confirmed", "unknown"] as const;
+  const byLifecycle = Object.fromEntries(lifecycle.map((key) => [key, 0])) as Record<RecordLifecycle, number>;
+  const byStatus = Object.fromEntries(status.map((key) => [key, 0])) as Record<TrackStatus, number>;
+  const bySourceDataset: Record<string, number> = {};
+  for (const item of items) {
+    byLifecycle[item.lifecycle] += 1;
+    byStatus[item.trackRecord.status] += 1;
+    const source = item.trackRecord.sourceDataset ?? "synthetic";
+    bySourceDataset[source] = (bySourceDataset[source] ?? 0) + 1;
+  }
+  return { total: items.length, byLifecycle, byStatus, bySourceDataset };
+}
 
 export const productRepository = { getList: (): ProductView[] => [...currentProducts], getById: (id: string) => productView(id) };
 export const historicalOfferingRepository = { getList: (): HistoricalOfferingView[] => sortHistorical(historicalProducts), getById: (id: string) => historicalProducts.find((item) => item.offering.id === id) ?? null, getBySlug: (value: string) => historicalProducts.find((item) => item.offering.slug === value) ?? null, search: (keyword: string) => sortHistorical(filterCatalog(historicalProducts, { scope: "historical", keyword }) as HistoricalOfferingView[]), filter: (filter: HistoricalCatalogFilter = {}) => sortHistorical(filterCatalog(historicalProducts, { ...filter, scope: "historical" }) as HistoricalOfferingView[], filter.sort), paginate: (page?: number, pageSize?: number, filter: HistoricalCatalogFilter = {}) => paginate(sortHistorical(filterCatalog(historicalProducts, { ...filter, scope: "historical" }) as HistoricalOfferingView[], filter.sort), page, pageSize), getAggregate: (filter: HistoricalCatalogFilter = {}) => aggregateHistorical(filterCatalog(historicalProducts, { ...filter, scope: "historical" }) as HistoricalOfferingView[]) };
-export const catalogRepository = { getList: (): CatalogProductView[] => [...currentProducts, ...sortHistorical(historicalProducts)], getById: (id: string) => currentProducts.find((item) => item.offering.id === id) ?? historicalOfferingRepository.getById(id), getBySlug: (value: string) => currentProducts.find((item) => item.offering.slug === value) ?? historicalOfferingRepository.getBySlug(value), search: (keyword: string) => filterCatalog([...currentProducts, ...historicalProducts], { keyword }), filter: (filter: CatalogFilter = {}) => filterCatalog([...currentProducts, ...historicalProducts], filter), paginate: (page?: number, pageSize?: number, filter: CatalogFilter = {}) => paginate(filterCatalog([...currentProducts, ...historicalProducts], filter), page, pageSize), getCounts: () => ({ current: currentProducts.length, historical: historicalProducts.length, total: currentProducts.length + historicalProducts.length, realCurrent: 0, demoCurrent: currentProducts.length }), getHistoricalAggregate: (filter: HistoricalCatalogFilter = {}) => historicalOfferingRepository.getAggregate(filter) };
+function catalogFilterOptions() {
+  return {
+    currentStatus: [...new Set(currentProducts.map((item) => item.offering.status))],
+    lifecycle: [...new Set(historicalProducts.map((item) => item.lifecycle))],
+    identityStatus: [...new Set(historicalProducts.map((item) => item.identityStatus))],
+    sourceDataset: ["synthetic"],
+  };
+}
+export const catalogRepository = {
+  getList: (): CatalogProductView[] => [...currentProducts, ...sortHistorical(historicalProducts)],
+  getById: (id: string) => currentProducts.find((item) => item.offering.id === id) ?? historicalOfferingRepository.getById(id),
+  getBySlug: (value: string) => currentProducts.find((item) => item.offering.slug === value) ?? historicalOfferingRepository.getBySlug(value),
+  search: (keyword: string) => filterCatalog([...currentProducts, ...historicalProducts], { keyword }),
+  filter: (filter: CatalogFilter = {}) => filterCatalog([...currentProducts, ...historicalProducts], filter),
+  paginate: (page?: number, pageSize?: number, filter: CatalogFilter = {}) => paginate(filterCatalog([...currentProducts, ...historicalProducts], filter), page, pageSize),
+  getCounts: () => ({ current: currentProducts.length, historical: historicalProducts.length, total: currentProducts.length + historicalProducts.length, realCurrent: 0, demoCurrent: currentProducts.length }),
+  getFilterOptions: catalogFilterOptions,
+  getHistoricalAggregate: (filter: HistoricalCatalogFilter = {}) => historicalOfferingRepository.getAggregate(filter),
+};
 export const artistRepository = { getList: (): Artist[] => dataset.artists, getById: (id: string) => dataset.artists.find((item) => item.id === id) ?? null, getProducts: (id: string) => currentProducts.filter((item) => item.artist.id === id), getCurrentProducts: (id: string) => currentProducts.filter((item) => item.artist.id === id), getHistoricalProducts: (id: string) => historicalProducts.filter((item) => item.artist.id === id), getCatalogProducts: (id: string) => filterCatalog([...currentProducts, ...historicalProducts], { artistId: id }), getAuctions: (id: string) => dataset.auctions.filter((item) => item.artistId === id), getAnnualMetrics: (id: string) => dataset.annualMetrics[id] ?? [] };
 export const platformRepository = { getList: (): Platform[] => dataset.platforms, getById: (id: string) => dataset.platforms.find((item) => item.id === id) ?? null, getProducts: (id: string) => currentProducts.filter((item) => item.platform.id === id), isDemo: (id: string) => { void id; return true; }, getTrackRecords: (id: string) => dataset.trackRecords.filter((item) => item.platformId === id), getHistory: (id: string) => sortHistorical(historicalProducts.filter((item) => item.platform.id === id)), getHistoryPage: (id: string, page?: number, pageSize?: number, filter: HistoricalCatalogFilter = {}) => historicalOfferingRepository.paginate(page, pageSize, { ...filter, platformId: id }) };
 export const analysisRepository = { getByOfferingId: (id: string): AnalysisResult | null => dataset.analyses.find((item) => item.offeringId === id) ?? null, save: async (result: AnalysisResult) => result };

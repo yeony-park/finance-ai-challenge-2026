@@ -18,3 +18,10 @@ test("legacy product research and mutation tool contracts are absent", () => {
 });
 
 const aiSource = readFileSync(new URL("../lib/art/ai.ts", import.meta.url), "utf8");
+
+
+test("search schema accepts nullable live scalars and rejects unknown historical statuses", () => {
+  assert.equal(isParsedSearchQuery({ keyword: null, offeringStatus: [], lifecycle: ["sold"], status: ["loss_confirmed"], verdict: [], premiumMin: null, premiumMax: null, auctionVolumeMin: null, sellThroughRateMin: null, delayedExitOnly: false, sort: null }), true);
+  assert.equal(isParsedSearchQuery({ lifecycle: ["not-a-lifecycle"] }), false);
+  assert.equal(isParsedSearchQuery({ status: ["not-a-status"] }), false);
+});

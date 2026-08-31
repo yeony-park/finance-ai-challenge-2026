@@ -3,14 +3,55 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="합성 조각투자 카탈로그 검색">
-  <title>카탈로그 검색 | DAKER</title>
+  <meta name="description" content="합성 미술품 조각투자 카탈로그와 과거 이력 검색">
+  <title>합성 카탈로그 검색 | DAKER</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="search">
-  <header class="site-header"><nav class="wrap site-nav" aria-label="주요 메뉴"><a class="brand" href="index.html">DAKER</a><span class="badge">SYNTHETIC ONLY</span><a href="suitability.html">데이터 경계</a></nav><div class="wrap page-header"><p class="eyebrow">CATALOG SEARCH</p><h1>합성 카탈로그 검색</h1><form id="search-form" class="search-form" role="search"><label for="search-input">항목 검색</label><div class="search-row"><input id="search-input" name="q" type="search" autocomplete="off" placeholder="예: 합성 항목"><button type="submit">검색</button></div></form><p id="load-state" class="muted" role="status" aria-live="polite">합성 저장본을 불러오는 중입니다.</p><p id="load-error" class="notice" hidden>합성 저장본을 불러오지 못했습니다.</p></div></header>
-  <main class="wrap"><section class="results" aria-labelledby="results-title"><div class="section-heading"><h2 id="results-title">카탈로그 항목</h2><p id="result-summary" class="muted"></p></div><div id="result-list" class="product-cards"></div><p id="result-empty" class="empty" hidden>검색 결과가 없습니다.</p></section><section class="results" aria-labelledby="history-title"><div class="section-heading"><h2 id="history-title">합성 이력</h2></div><div id="history-list" class="history-list"></div><p id="history-empty" class="empty" hidden>등록된 합성 이력이 없습니다.</p></section></main>
-  <footer class="footer">합성 데이터 전용 화면입니다. 투자 권유나 실제 거래 기능을 제공하지 않습니다.</footer>
+  <header class="site-header">
+    <nav class="wrap site-nav" aria-label="주요 메뉴">
+      <a class="brand" href="index.html">DAKER</a>
+      <span class="badge">SYNTHETIC ONLY</span>
+      <a href="suitability.html">데이터 경계</a>
+    </nav>
+    <div class="wrap page-header">
+      <p class="eyebrow">SYNTHETIC SEARCH</p>
+      <h1>합성 미술품 카탈로그</h1>
+      <p>URL의 검색어와 필터를 유지하며 현재 모집과 과거 합성 이력을 함께 탐색합니다.</p>
+      <form id="search-form" class="search-form" role="search">
+        <label for="search-input">상품·작가·작품·상태 검색</label>
+        <div class="search-row"><input id="search-input" name="q" type="search" autocomplete="off" placeholder="예: Prism Drift, liquidated"><button type="submit">검색</button></div>
+      </form>
+      <div class="filter-grid" aria-label="검색 필터">
+        <label>플랫폼<select id="platform-filter" name="platform"><option value="all">전체 플랫폼</option></select></label>
+        <label>상태<select id="status-filter" name="status"><option value="all">전체 상태</option></select></label>
+        <label>자료 범위<select id="scope-filter" name="scope"><option value="all">전체 자료</option></select></label>
+      </div>
+      <p id="load-state" class="muted" role="status" aria-live="polite">합성 저장본을 불러오는 중입니다.</p>
+      <p id="load-error" class="notice" hidden>합성 저장본을 불러오지 못했습니다. 잠시 후 다시 시도하세요.</p>
+    </div>
+  </header>
+  <main class="wrap">
+    <section id="catalog-section" class="results" aria-labelledby="results-title">
+      <div class="section-heading"><h2 id="results-title">합성 현재 모집</h2><p id="result-summary" class="muted" aria-live="polite"></p></div>
+      <div id="result-list" class="product-cards" aria-live="polite"></div>
+      <p id="result-empty" class="empty" hidden>현재 모집 자료가 없습니다.</p>
+      <nav id="catalog-pagination" class="pagination" aria-label="현재 모집 페이지" hidden><button id="catalog-prev" type="button">이전</button><span id="catalog-page-state" aria-live="polite"></span><button id="catalog-next" type="button">다음</button></nav>
+    </section>
+    <section id="history-section" class="results" aria-labelledby="history-title">
+      <div class="section-heading"><h2 id="history-title">합성 과거 이력</h2><p id="history-summary" class="muted" aria-live="polite"></p></div>
+      <div id="history-list" class="history-list" aria-live="polite"></div>
+      <p id="history-empty" class="empty" hidden>검색 조건에 맞는 합성 과거 이력이 없습니다.</p>
+      <nav id="history-pagination" class="pagination" aria-label="과거 이력 페이지" hidden><button id="history-prev" type="button">이전</button><span id="history-page-state" aria-live="polite"></span><button id="history-next" type="button">다음</button></nav>
+    </section>
+  </main>
+  <dialog id="history-detail" class="detail-dialog" aria-labelledby="history-detail-title" hidden>
+    <div class="dialog-shell">
+      <div class="dialog-bar"><p class="eyebrow">SYNTHETIC HISTORY DETAIL</p><button id="history-detail-close" class="dialog-close" type="button" aria-label="합성 과거 이력 닫기">닫기</button></div>
+      <div id="history-detail-content" class="dialog-content" tabindex="-1"><p class="empty">과거 이력을 선택하세요.</p></div>
+    </div>
+  </dialog>
+  <footer class="footer">합성 데이터 전용 화면입니다. 실제 상품·거래·투자 권유를 제공하지 않습니다.</footer>
   <script type="module" src="js/app.js"></script>
 </body>
 </html>

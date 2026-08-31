@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ProductView, TrackRecord, TrackStatus } from "@/lib/art/types";
 import { formatKrw } from "@/lib/domain/calculations";
+import { resolvedTrackReturn } from "@/lib/art/track-return";
 
 function trackOfferingAmount(record: TrackRecord) {
   return record.offeringAmount != null ? formatKrw(record.offeringAmount) : record.reportedAmount != null ? `${record.reportedAmount.toLocaleString("ko-KR")} (통화 미기재)` : "공개되지 않음";
@@ -114,7 +115,7 @@ export function PlatformRecordOutcomeChart({ records }: { records: TrackRecord[]
 
 export function PlatformTrackRecordTable({ records, total, page, pageSize }: { records: TrackRecord[]; total: number; page: number; pageSize: number }) {
   const rangeStart = total === 0 ? 0 : (page - 1) * pageSize + 1;
-  return <><div className="table-wrap"><table><caption className="sr-only">합성 플랫폼 이력</caption><thead><tr><th>상품·작품</th><th>작가</th><th>시뮬레이션 금액</th><th>청약 시작일</th><th>청약 종료일</th><th>청산일</th><th>보유기간</th><th>시뮬레이션 수익률</th><th>최종 상태</th></tr></thead><tbody>{records.map((record) => <tr key={record.id}><td><Link href={`/products/historical-offering-${record.id}`}>{record.productName}</Link><br /><small>{record.artworkTitle}</small></td><td>{record.artistName}</td><td>{trackOfferingAmount(record)}</td><td>{record.subscriptionStart ?? "미기재"}</td><td>{record.subscriptionEnd ?? "미기재"}</td><td>{record.liquidatedAt ?? "미기재"}</td><td>{record.actualHoldingMonths == null ? "미기재" : `${record.actualHoldingMonths.toFixed(1)}개월`}</td><td>{record.sourceReportedReturnPct == null ? "미기재" : `${record.sourceReportedReturnPct.toFixed(2)}%`}</td><td>{trackStatusLabel(record)}</td></tr>)}</tbody></table></div><p className="table-note">검색 결과 {total}건 중 {rangeStart}–{Math.min(page * pageSize, total)}건. 실제 투자 실적이 아닌 합성 시뮬레이션 값입니다.</p></>;
+  return <><div className="table-wrap"><table><caption className="sr-only">합성 플랫폼 이력</caption><thead><tr><th>상품·작품</th><th>작가</th><th>시뮬레이션 금액</th><th>청약 시작일</th><th>청약 종료일</th><th>청산일</th><th>보유기간</th><th>시뮬레이션 수익률</th><th>최종 상태</th></tr></thead><tbody>{records.map((record) => <tr key={record.id}><td><Link href={`/products/historical-offering-${record.id}`}>{record.productName}</Link><br /><small>{record.artworkTitle}</small></td><td>{record.artistName}</td><td>{trackOfferingAmount(record)}</td><td>{record.subscriptionStart ?? "미기재"}</td><td>{record.subscriptionEnd ?? "미기재"}</td><td>{record.liquidatedAt ?? "미기재"}</td><td>{record.actualHoldingMonths == null ? "미기재" : `${record.actualHoldingMonths.toFixed(1)}개월`}</td><td>{resolvedTrackReturn(record) == null ? "미기재" : `${resolvedTrackReturn(record)?.toFixed(2)}%`}</td><td>{trackStatusLabel(record)}</td></tr>)}</tbody></table></div><p className="table-note">검색 결과 {total}건 중 {rangeStart}–{Math.min(page * pageSize, total)}건. 실제 투자 실적이 아닌 합성 시뮬레이션 값입니다.</p></>;
 }
 
 export function ExitTimelineChart({ product }: { product: ProductView }) {

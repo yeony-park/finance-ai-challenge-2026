@@ -1,0 +1,37 @@
+# 비밀 파일: 예제만 허용
+.env
+.env.*
+!.env.example
+
+# 저장소·편집기·에이전트·인계 내부 자료
+/.codex/
+/.vscode/
+/.claude/
+/.git/
+SYNTHETIC_ART_HANDOFF.md
+AGENTS.md
+CODEX_GOAL.md
+PROJECT_STATUS.md
+
+# 로컬·원본·내부 작업물
+/data/demo/
+/public/demo-art/
+/raw/
+/report/
+/snapshot/
+/temp/
+/tmp/
+/internal/
+/docs/
+/workspace/
+/_workspace/
+/deliverables/
+
+# 연결된 합성 미술 화면과 잘못된 경로 차단에 필요한 경로는 항상 허용
+!app/
+!components/
+!lib/
+!proxy.ts
+!data/synthetic/
+!public/synthetic-art/
+!data/art/dart-filing-manifest.json

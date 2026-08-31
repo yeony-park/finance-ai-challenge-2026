@@ -2,6 +2,7 @@ import Link from "next/link";
 import { DataModeBadge, PageContainer } from "@/components/art/ui";
 import { formatKrw, latestAnnualSellThroughRate, medianAuctionPrice } from "@/lib/domain/calculations";
 import { artistRepository } from "@/lib/repositories/art-repositories";
+import { resolvedTrackReturn } from "@/lib/art/track-return";
 
 type Props = { searchParams: Promise<{ q?: string | string[] }> };
 
@@ -24,7 +25,7 @@ export default async function ArtistsPage({ searchParams }: Props) {
       const current = artistRepository.getCurrentProducts(artist.id);
       const history = artistRepository.getHistoricalProducts(artist.id);
       const operating = history.filter((item) => item.lifecycle === "operating" || item.lifecycle === "exit_in_progress");
-      const platformReportedReturn = history.filter((item) => item.trackRecord.sourceReportedReturnPct != null);
+      const displayableSimulationReturn = history.filter((item) => resolvedTrackReturn(item.trackRecord) != null);
       const calculatedSettlementReturn = history.filter((item) => item.trackRecord.calculatedSettlementReturnPct != null);
       const auctions = artistRepository.getAuctions(artist.id);
       const metrics = artistRepository.getAnnualMetrics(artist.id);
@@ -41,8 +42,8 @@ export default async function ArtistsPage({ searchParams }: Props) {
             <div><dt>현재 합성 상품</dt><dd>{current.length}건</dd></div>
             <div><dt>운용·매각 진행</dt><dd>{operating.length}건</dd></div>
             <div><dt>합성 이력</dt><dd>{history.length}건</dd></div>
-            <div><dt>시뮬레이션 수익률</dt><dd>{platformReportedReturn.length}건</dd></div>
-            <div><dt>계산 수익률</dt><dd>{calculatedSettlementReturn.length}건</dd></div>
+            <div><dt>표시 가능한 시뮬레이션 수익률</dt><dd>{displayableSimulationReturn.length}건</dd></div>
+            <div><dt>DAKER 계산 수익률</dt><dd>{calculatedSettlementReturn.length}건</dd></div>
             <div><dt>낙찰률</dt><dd>{rate == null ? "미기재" : `${rate.toFixed(1)}%`}</dd></div>
             <div><dt>중위 낙찰가</dt><dd>{formatKrw(medianAuctionPrice(auctions))}</dd></div>
           </dl>

@@ -48,16 +48,23 @@ async function responsesJson<T>(
 export function isParsedSearchQuery(value: unknown): value is ParsedSearchQuery {
   if (!value || typeof value !== "object" || Array.isArray(value)) return false;
   const query = value as Record<string, unknown>;
-  const allowed = new Set(["keyword", "offeringStatus", "verdict", "premiumMin", "premiumMax", "auctionVolumeMin", "sellThroughRateMin", "delayedExitOnly", "sort"]);
+  const allowed = new Set(["keyword", "offeringStatus", "lifecycle", "status", "verdict", "premiumMin", "premiumMax", "auctionVolumeMin", "sellThroughRateMin", "delayedExitOnly", "sort"]);
   if (!Object.keys(query).every((key) => allowed.has(key))) return false;
   const status = new Set(["upcoming", "open", "operating", "exit_in_progress", "liquidated"]);
+  const lifecycle = new Set(["current", "offering", "operating", "exit_in_progress", "sold", "liquidated", "returned", "loss_confirmed", "unknown"]);
+  const trackStatus = new Set(["offering", "operating", "exit_in_progress", "sold", "returned", "liquidated", "delayed", "unsold", "loss_confirmed", "unknown"]);
   const verdict = new Set(["worth_considering", "conditional", "caution", "danger"]);
-  if (query.keyword !== undefined && (typeof query.keyword !== "string" || query.keyword.length > 200)) return false;
-  if (query.sort !== undefined && (typeof query.sort !== "string" || query.sort.length > 64)) return false;
+  // The live schema uses null for an omitted scalar. parseSearchLive removes
+  // those nulls before returning, while direct validation still accepts the
+  // schema's valid representation.
+  if (query.keyword !== undefined && query.keyword !== null && (typeof query.keyword !== "string" || query.keyword.length > 200)) return false;
+  if (query.sort !== undefined && query.sort !== null && (typeof query.sort !== "string" || query.sort.length > 64)) return false;
   if (query.delayedExitOnly !== undefined && typeof query.delayedExitOnly !== "boolean") return false;
   if (query.offeringStatus !== undefined && (!Array.isArray(query.offeringStatus) || query.offeringStatus.some((item) => typeof item !== "string" || !status.has(item)))) return false;
+  if (query.lifecycle !== undefined && (!Array.isArray(query.lifecycle) || query.lifecycle.some((item) => typeof item !== "string" || !lifecycle.has(item)))) return false;
+  if (query.status !== undefined && (!Array.isArray(query.status) || query.status.some((item) => typeof item !== "string" || !trackStatus.has(item)))) return false;
   if (query.verdict !== undefined && (!Array.isArray(query.verdict) || query.verdict.some((item) => typeof item !== "string" || !verdict.has(item)))) return false;
-  for (const key of ["premiumMin", "premiumMax", "auctionVolumeMin", "sellThroughRateMin"]) if (query[key] !== undefined && (typeof query[key] !== "number" || !Number.isFinite(query[key]))) return false;
+  for (const key of ["premiumMin", "premiumMax", "auctionVolumeMin", "sellThroughRateMin"]) if (query[key] !== undefined && query[key] !== null && (typeof query[key] !== "number" || !Number.isFinite(query[key]))) return false;
   return true;
 }
 
@@ -83,6 +90,8 @@ export async function parseSearchLive(query: string) {
     properties: {
       keyword: { type: ["string", "null"] },
       offeringStatus: { type: "array", items: { enum: ["upcoming", "open", "operating", "exit_in_progress", "liquidated"] } },
+      lifecycle: { type: "array", items: { enum: ["current", "offering", "operating", "exit_in_progress", "sold", "liquidated", "returned", "loss_confirmed", "unknown"] } },
+      status: { type: "array", items: { enum: ["offering", "operating", "exit_in_progress", "sold", "returned", "liquidated", "delayed", "unsold", "loss_confirmed", "unknown"] } },
       verdict: { type: "array", items: { enum: ["worth_considering", "conditional", "caution", "danger"] } },
       premiumMin: { type: ["number", "null"] },
       premiumMax: { type: ["number", "null"] },
@@ -91,7 +100,7 @@ export async function parseSearchLive(query: string) {
       delayedExitOnly: { type: "boolean" },
       sort: { type: ["string", "null"] },
     },
-    required: ["keyword", "offeringStatus", "verdict", "premiumMin", "premiumMax", "auctionVolumeMin", "sellThroughRateMin", "delayedExitOnly", "sort"],
+    required: ["keyword", "offeringStatus", "lifecycle", "status", "verdict", "premiumMin", "premiumMax", "auctionVolumeMin", "sellThroughRateMin", "delayedExitOnly", "sort"],
   };
   const output = await responsesJson<Record<string, unknown>>(
     "parsed_art_product_search",

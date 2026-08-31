@@ -3,6 +3,7 @@ import Link from "next/link";
 import { PlatformRecordOutcomeChart, PlatformTrackRecordTable } from "@/components/art/charts";
 import { Breadcrumb, DataModeBadge, MetricCard, PageContainer, ProductCard } from "@/components/art/ui";
 import { datasetSummaryRepository, historicalOfferingRepository, platformRepository } from "@/lib/repositories/art-repositories";
+import { resolvedTrackReturn } from "@/lib/art/track-return";
 import type { HistoricalSort, TrackStatus } from "@/lib/art/types";
 
 type Props = {
@@ -73,7 +74,7 @@ export default async function PlatformDetail({ params, searchParams }: Props) {
   const artists = [...new Map(history.map((item) => [item.artist.id, item.artist])).values()].sort((left, right) => left.nameKo.localeCompare(right.nameKo));
   const tracks = history.map((item) => item.trackRecord);
   const pageTracks = historyPage.items.map((item) => item.trackRecord);
-  const platformReportedReturn = history.filter((item) => item.trackRecord.sourceReportedReturnPct != null).length;
+  const availableSyntheticReturn = history.filter((item) => resolvedTrackReturn(item.trackRecord) != null).length;
   const calculatedSettlementReturn = history.filter((item) => item.trackRecord.calculatedSettlementReturnPct != null).length;
 
   return <main id="main-content" className="detail-page"><PageContainer>
@@ -96,8 +97,8 @@ export default async function PlatformDetail({ params, searchParams }: Props) {
       <MetricCard label="매각 진행" value={`${aggregate.byLifecycle.exit_in_progress}건`} />
       <MetricCard label="매각 완료" value={`${aggregate.byLifecycle.sold}건`} />
       <MetricCard label="반환" value={`${aggregate.byLifecycle.returned}건`} />
-      <MetricCard label="시뮬레이션 수익률" value={`${platformReportedReturn}건`} note="합성 시뮬레이션 값" />
-      <MetricCard label="계산 수익률" value={`${calculatedSettlementReturn}건`} note="calculated_settlement_return_pct" />
+      <MetricCard label="표시 가능한 시뮬레이션 수익률" value={`${availableSyntheticReturn}건`} note="finalReturn 또는 계산 정산값" />
+      <MetricCard label="계산 수익률" value={`${calculatedSettlementReturn}건`} note="합성 계산 정산값" />
     </div>
     {history.length ? <div className="chart-grid">
       <PlatformRecordOutcomeChart records={tracks} />

@@ -1,13 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { formatKrw, formatPercent } from "@/lib/domain/calculations";
+import { resolvedTrackReturn } from "@/lib/art/track-return";
 import type { HistoricalOfferingView, TrackRecord, TrackStatus } from "@/lib/art/types";
 import { Breadcrumb, MetricCard, PageContainer } from "@/components/art/ui";
 
 const trackStatusLabels: Record<TrackStatus, string> = { offering: "청약", operating: "운용 중", exit_in_progress: "매각 진행", sold: "매각 완료", returned: "반환", liquidated: "청산 완료", delayed: "지연 청산", unsold: "미매각", loss_confirmed: "손실 확인", unknown: "상태 미확인" };
 export function trackStatusLabel(record: TrackRecord) { return trackStatusLabels[record.status]; }
 export function formatRecordedMoney(amount: number | null | undefined, currency: string | null | undefined) { if (amount == null) return "공개되지 않음"; if (currency === "KRW") return formatKrw(amount); return `${amount.toLocaleString("ko-KR")} ${currency ?? "(통화 미확인)"}`; }
-export function sourceReportedReturn(record: TrackRecord) { return record.sourceReportedReturnPct ?? record.finalReturn ?? null; }
+export function sourceReportedReturn(record: TrackRecord) { return resolvedTrackReturn(record); }
 export function calculatedSettlementReturn(record: TrackRecord) { return record.calculatedSettlementReturnPct ?? null; }
 function artworkSize(product: HistoricalOfferingView) { const values = [product.artwork.width, product.artwork.height, product.artwork.depth].filter((item): item is number => item != null); return values.length ? `${values.join(" × ")}cm` : "공개되지 않음"; }
 function recordDate(product: HistoricalOfferingView) { return product.offering.subscriptionEnd ?? product.offering.subscriptionStart ?? product.offering.liquidatedAt ?? product.offering.soldAt ?? product.offering.asOfDate; }

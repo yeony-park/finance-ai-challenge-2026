@@ -4,6 +4,8 @@ import { AuctionResultChart } from "@/components/art/charts";
 import { AuctionVolumeChart, Breadcrumb, DataModeBadge, MetricCard, PageContainer, PriceTrendChart, ProductCard } from "@/components/art/ui";
 import { formatKrw, latestAnnualSellThroughRate, medianAuctionPrice } from "@/lib/domain/calculations";
 import { artistRepository } from "@/lib/repositories/art-repositories";
+import { decodeRouteId } from "@/lib/art/route-id";
+import { resolvedTrackReturn } from "@/lib/art/track-return";
 import type { TrackStatus } from "@/lib/art/types";
 
 type Props = { params: Promise<{ id: string }> };
@@ -32,7 +34,8 @@ function returnValue(value: number | null | undefined) {
 }
 
 export default async function ArtistDetail({ params }: Props) {
-  const { id } = await params;
+  const { id: rawId } = await params;
+  const id = decodeRouteId(rawId);
   const artist = artistRepository.getById(id);
   if (!artist) notFound();
 
@@ -41,6 +44,7 @@ export default async function ArtistDetail({ params }: Props) {
   const operating = historical.filter((item) => item.lifecycle === "operating" || item.lifecycle === "exit_in_progress");
   const completed = historical.filter((item) => item.lifecycle !== "operating" && item.lifecycle !== "exit_in_progress");
   const platformReportedReturn = historical.filter((item) => item.trackRecord.sourceReportedReturnPct != null);
+  const displayableSimulationReturn = historical.filter((item) => resolvedTrackReturn(item.trackRecord) != null);
   const calculatedSettlementReturn = historical.filter((item) => item.trackRecord.calculatedSettlementReturnPct != null);
   const auctions = artistRepository.getAuctions(id);
   const metrics = artistRepository.getAnnualMetrics(id);
@@ -63,8 +67,9 @@ export default async function ArtistDetail({ params }: Props) {
       <MetricCard label="현재 상품" value={`${current.length}건`} />
       <MetricCard label="운용·매각 진행" value={`${operating.length}건`} />
       <MetricCard label="과거 기록" value={`${historical.length}건`} />
-      <MetricCard label="플랫폼 기재 수익률" value={`${platformReportedReturn.length}건`} note="플랫폼 원문값" />
-      <MetricCard label="DAKER 계산 수익률" value={`${calculatedSettlementReturn.length}건`} note="정산 계산값" />
+      <MetricCard label="플랫폼 기재 수익률" value={`${platformReportedReturn.length}건`} note="플랫폼 원문값만 표시" />
+      <MetricCard label="표시 가능한 시뮬레이션 수익률" value={`${displayableSimulationReturn.length}건`} note="최종값 또는 계산 정산값" />
+      <MetricCard label="DAKER 계산 수익률" value={`${calculatedSettlementReturn.length}건`} note="DAKER 정산 계산값" />
       <MetricCard label="연결 거래·가격 표본" value={`${auctions.length}건`} />
       <MetricCard label="낙찰률" value={rate == null ? "미기재" : `${rate.toFixed(1)}%`} />
       <MetricCard label="중위 낙찰가" value={formatKrw(medianAuctionPrice(auctions))} />

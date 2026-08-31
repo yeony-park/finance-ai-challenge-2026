@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
-import { CategoryLanding } from "@/components/category/CategoryLanding";
-import { ArtLiveSection } from "@/components/art-live/art-live-section";
-import { buildArtViewModel } from "@/components/art-live/art-view-model";
-export const metadata: Metadata = { title: "미술품", description: "미술품 합성 데이터 시뮬레이션" };
+import { ArtCatalogPage } from "@/components/art/catalog-page";
+import type { CatalogSearchParams } from "@/lib/art/catalog-query";
+
+export const metadata: Metadata = { title: "미술품", description: "합성 미술품 상품과 이력 카탈로그" };
 export const runtime = "nodejs";
-export default function ArtPage() { const model = buildArtViewModel(); return <CategoryLanding title="미술품" lead="이 화면은 UI와 분석 흐름을 검증하기 위한 합성 미술품 투자 시뮬레이션입니다." customTitle="미술품 합성 데이터 현황" custom={<ArtLiveSection model={model} />} />; }
+
+type Props = { searchParams: Promise<CatalogSearchParams> };
+export default function ArtPage({ searchParams }: Props) {
+  return <ArtCatalogPage basePath="/art" searchParams={searchParams} kicker="ART CATALOG" title="합성 미술품 상품·과거 이력" />;
+}

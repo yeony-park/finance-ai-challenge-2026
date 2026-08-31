@@ -128,6 +128,21 @@ class LiveStaticTest(unittest.TestCase):
                 with self.assertRaises(BUILDER.BuildError):
                     BUILDER._validate_history_svg(mutated.encode("utf-8"), source_path)
 
+    def test_static_explorer_contract_uses_synthetic_navigation_and_detail_fields(self):
+        index = (ROOT / "index.html").read_text(encoding="utf-8")
+        search = (ROOT / "search.html").read_text(encoding="utf-8")
+        app = (ROOT / "js/app.js").read_text(encoding="utf-8")
+        api = (ROOT / "js/api.js").read_text(encoding="utf-8")
+        self.assertIn('action="search.html"', index)
+        self.assertIn('name="q"', index)
+        for marker in ("id=\"platform-filter\"", "id=\"status-filter\"", "id=\"scope-filter\"", "id=\"history-detail\"", "id=\"history-detail-close\""):
+            self.assertIn(marker, search)
+        for marker in ("normalizeUrlState", "filterOfferings", "filterHistory", "paginate", "historyDates", "historyDetailFields", "visibleReturn", "loadHistory"):
+            self.assertIn(marker, app)
+        self.assertIn("/api/catalog", api)
+        self.assertIn("/api/synthetic/history", api)
+        self.assertNotIn("<a", app)
+
     def test_builder_rejects_extra_and_symlink(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

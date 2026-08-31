@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server";
 import { serializeArtist, serializeCurrentProduct, serializeHistoricalProduct, syntheticDataMode } from "@/lib/art/dtos";
 import { artistRepository } from "@/lib/repositories/art-repositories";
+import { decodeRouteId } from "@/lib/art/route-id";
 
 export async function GET(_: Request, { params }: { params: Promise<{ id: string }> }) {
-  const id = (await params).id;
+  const { id: rawId } = await params;
+  const id = decodeRouteId(rawId);
   const artist = artistRepository.getById(id);
   if (!artist) return NextResponse.json({ error: "not found" }, { status: 404 });
   const current = artistRepository.getCurrentProducts(id); const historical = artistRepository.getHistoricalProducts(id); const operating = historical.filter((item) => item.lifecycle === "operating" || item.lifecycle === "exit_in_progress"); const completed = historical.filter((item) => item.lifecycle !== "operating" && item.lifecycle !== "exit_in_progress");
