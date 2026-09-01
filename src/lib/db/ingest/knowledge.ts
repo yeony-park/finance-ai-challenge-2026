@@ -9,6 +9,7 @@ import {
 } from "@/lib/knowledge/schema";
 import { calculateCommonChunkHash } from "@/lib/knowledge/pdf";
 import { loadDerivedRealEstateRegistry } from "@/lib/knowledge/loader";
+import { loadApprovedCattleFilingArtifacts } from "@/lib/knowledge/cattle-filing-artifact";
 import { loadApprovedPigFilingArtifacts } from "@/lib/knowledge/pig-filing-artifact";
 
 type DataNature = "observed" | "scenario";
@@ -296,9 +297,10 @@ const toPlan = (documents: readonly InputDocument[], chunks: readonly InputChunk
 
 export const buildKnowledgeIngestPlan = async (dataRoot = "data"): Promise<KnowledgeIngestPlan> => {
   const root = path.resolve(dataRoot);
-  const [common, derived, pigFilings] = await Promise.all([
+  const [common, derived, cattleFilings, pigFilings] = await Promise.all([
     readCommonIndex(root),
     loadDerivedRealEstateRegistry(root),
+    loadApprovedCattleFilingArtifacts(root),
     loadApprovedPigFilingArtifacts(root),
   ]);
   const publicProducts = new Set(common.products
@@ -343,12 +345,13 @@ export const buildKnowledgeIngestPlan = async (dataRoot = "data"): Promise<Knowl
       throw new KnowledgeIngestError(`derived chunk scope mismatch: ${chunk.chunkId}`);
     }
   }
-  const pigDocuments = pigFilings.map((artifact) => commonDocument(artifact.document, "derived"));
-  const pigChunks = pigFilings.flatMap((artifact) =>
+  const filingArtifacts = [...cattleFilings, ...pigFilings];
+  const filingDocuments = filingArtifacts.map((artifact) => commonDocument(artifact.document, "derived"));
+  const filingChunks = filingArtifacts.flatMap((artifact) =>
     artifact.chunks.map((chunk) => commonChunk(chunk, commonDocument(artifact.document, "derived")))
   );
   return toPlan(
-    [...commonDocuments, ...derivedDocuments, ...pigDocuments],
-    [...commonChunks, ...derivedChunks, ...pigChunks],
+    [...commonDocuments, ...derivedDocuments, ...filingDocuments],
+    [...commonChunks, ...derivedChunks, ...filingChunks],
   );
 };

@@ -114,6 +114,15 @@ export const CATTLE_FILING_EVIDENCE_EXAMPLES = [
   "투자자보호기금은 어떻게 운영되나요?",
 ] as const;
 
+export const PIG_FILING_EVIDENCE_EXAMPLES = [
+  { label: "공모 좌수·단가·총액", q: "공모 좌수·단가·총액" },
+  { label: "청약·배정 및 납입 절차", q: "청약·배정 및 납입 절차" },
+  { label: "투자자 보호기금", q: "투자자 보호기금" },
+  { label: "수수료 부담 위험", q: "한정된 수수료 위험" },
+] as const;
+
+type EvidenceExample = string | { readonly label: string; readonly q: string };
+
 export const safeCitationUrl = (value: string): string | null => {
   if (/^\/scenario-documents\/[a-zA-Z0-9][a-zA-Z0-9._-]*\.pdf$/.test(value)) return value;
   try {
@@ -223,6 +232,13 @@ export const cattleFilingEvidenceScope = (productId: string): EvidenceQueryScope
   namespace: "published-offer",
 });
 
+export const pigFilingEvidenceScope = (productId: string): EvidenceQueryScope => ({
+  categoryId: "pig",
+  productId,
+  dataNature: "observed",
+  namespace: "published-offer",
+});
+
 export const evidenceRequestBody = (scope: EvidenceQueryScope, q: string) => ({
   ...scope,
   q: q.trim(),
@@ -235,7 +251,7 @@ export function EvidenceQuery({
   lead,
 }: {
   readonly scope: EvidenceQueryScope;
-  readonly examples: readonly string[];
+  readonly examples: readonly EvidenceExample[];
   readonly lead: string;
 }) {
   const [question, setQuestion] = useState("");
@@ -288,11 +304,15 @@ export function EvidenceQuery({
       <p className={s.sectionLead}>{lead}</p>
 
       <div className={s.exampleRow} aria-label="예시 질문">
-        {examples.map((example) => (
-          <button key={example} type="button" className={s.exampleButton} onClick={() => void ask(example)}>
-            {example}
-          </button>
-        ))}
+        {examples.map((example) => {
+          const label = typeof example === "string" ? example : example.label;
+          const q = typeof example === "string" ? example : example.q;
+          return (
+            <button key={label} type="button" className={s.exampleButton} onClick={() => void ask(q)}>
+              {label}
+            </button>
+          );
+        })}
       </div>
 
       <form className={s.queryForm} onSubmit={submit}>
@@ -348,6 +368,16 @@ export function CattleFilingEvidenceQuery({ productId }: { readonly productId: s
       scope={cattleFilingEvidenceScope(productId)}
       examples={CATTLE_FILING_EVIDENCE_EXAMPLES}
       lead="DART 공시와 축산물이력 외부 대조를 구분해 확인합니다. 현재는 이 상품에 연결된 공시 근거만 보여주며, 투자 판단이나 생성 답변을 만들지 않습니다."
+    />
+  );
+}
+
+export function PigFilingEvidenceQuery({ productId }: { readonly productId: string }) {
+  return (
+    <EvidenceQuery
+      scope={pigFilingEvidenceScope(productId)}
+      examples={PIG_FILING_EVIDENCE_EXAMPLES}
+      lead="DART 공시의 상품 조건과 축산물이력 외부 대조를 구분해 확인합니다. 현재는 이 상품에 연결된 공시 근거만 보여주며, 투자 판단이나 생성 답변을 만들지 않습니다."
     />
   );
 }

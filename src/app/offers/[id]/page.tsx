@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { cache } from "react";
 
 import { FilingFactsSection } from "@/components/report/FilingFactsSection";
+import { PigFilingArtifactDetail } from "@/components/pig/PigFilingArtifactDetail";
 import { LifecycleStrip } from "@/components/report/LifecycleStrip";
 import { RealEstateInvestmentReviewPanel } from "@/components/report/RealEstateInvestmentReviewPanel";
 import { RealEstateProductOverview } from "@/components/report/RealEstateProductOverview";
@@ -13,7 +14,10 @@ import { ReportFoot } from "@/components/report/ReportFoot";
 import { HistorySection, PriceSection } from "@/components/report/SummaryLayers";
 import { WatchSection } from "@/components/report/WatchSection";
 import { ScenarioDetail } from "@/components/real-estate-scenario/ScenarioDetail";
-import { CattleFilingEvidenceQuery } from "@/components/real-estate-scenario/ScenarioEvidenceQuery";
+import {
+  CattleFilingEvidenceQuery,
+  PigFilingEvidenceQuery,
+} from "@/components/real-estate-scenario/ScenarioEvidenceQuery";
 import {
   buildOfferSchedule,
   classifyRealEstateOffer,
@@ -28,6 +32,10 @@ import {
   routableLegacyScenarios,
 } from "@/lib/knowledge/loader";
 import { loadApprovedCattleFilingArtifact } from "@/lib/knowledge/cattle-filing-artifact";
+import {
+  loadApprovedPigFilingArtifact,
+  loadApprovedPigFilingArtifacts,
+} from "@/lib/knowledge/pig-filing-artifact";
 import { loadLatestReplayDiff } from "@/lib/verify/amend/replay-load";
 import {
   toAmendmentReplayView,
@@ -60,6 +68,9 @@ interface OfferPageProps {
 }
 
 const loadScenarios = cache(loadApprovedScenarios);
+const loadPigFilingArtifact = cache(async (productId: string) =>
+  loadApprovedPigFilingArtifact("pig", productId),
+);
 
 const loadScenarioOffer = cache(async (offerId: string) =>
   findRoutableLegacyScenario(await loadScenarios(), offerId, PUBLISHED_OFFER_IDS),
@@ -152,13 +163,23 @@ export async function generateStaticParams() {
     PUBLISHED_OFFER_IDS,
   ).map((scenario) => scenario.offerId);
   const reportIds = PUBLISHED_OFFER_IDS.filter(isPublicVerificationScopeAllowed);
-  return [...new Set([...reportIds, ...scenarioIds])].map((id) => ({ id }));
+  const pigIds = (await loadApprovedPigFilingArtifacts()).map(
+    (artifact) => artifact.registry.productId,
+  );
+  return [...new Set([...reportIds, ...scenarioIds, ...pigIds])].map((id) => ({ id }));
 }
 
 export const dynamicParams = false;
 
 export async function generateMetadata({ params }: OfferPageProps): Promise<Metadata> {
   const { id } = await params;
+  const pigFilingArtifact = await loadPigFilingArtifact(id);
+  if (pigFilingArtifact) {
+    return {
+      title: `한돈 투자계약증권 · ${id}`,
+      description: `${id}에 연결된 DART 공시 문단과 확인 가능한 문서 근거`,
+    };
+  }
   const scenario = await loadScenarioOffer(id);
   if (scenario) {
     return {
@@ -192,6 +213,39 @@ export async function generateMetadata({ params }: OfferPageProps): Promise<Meta
 
 export default async function OfferReportPage({ params }: OfferPageProps) {
   const { id } = await params;
+  const pigFilingArtifact = await loadPigFilingArtifact(id);
+  if (pigFilingArtifact) {
+    return (
+      <div className={s.reportPage}>
+        <div className={s.breadcrumbBar}>
+          <nav className={`${s.wrap} ${s.breadcrumb}`} aria-label="현재 위치">
+            <Link href="/pig?tab=analysis" className={s.breadcrumbBack}>
+              <span aria-hidden="true">←</span>
+              돼지 상품
+            </Link>
+            <span className={s.breadcrumbDivider} aria-hidden="true">/</span>
+            <span className={s.breadcrumbCurrent} aria-current="page">{id}</span>
+          </nav>
+        </div>
+
+        <header className={`${s.section} ${s.hero}`}>
+          <div className={s.wrap}>
+            <p className={s.offerTag}>한돈 · DART 공시 상세</p>
+            <h1 className={s.title}>한돈 투자계약증권 · {id}</h1>
+            <p className={s.oneLiner}>
+              승인된 DART 공시 문단과 문서 근거만 확인하며, 표시되지 않은 조건은 추정하지 않습니다.
+            </p>
+          </div>
+        </header>
+
+        <PigFilingArtifactDetail artifact={pigFilingArtifact} />
+        <div className={s.wrap}>
+          <PigFilingEvidenceQuery productId={id} />
+        </div>
+        <ReportFoot />
+      </div>
+    );
+  }
   const scenario = await loadScenarioOffer(id);
   if (scenario) {
     const operatorHistory = (await loadScenarios())

@@ -25,6 +25,7 @@ import { searchOffers } from "../global-search";
 import { runKnowledgeIndex } from "../index-cli";
 import { collectCanonicalSemanticCorpus } from "../local-rag/corpus";
 import { retrieveExactProductEvidence } from "../search-orchestration";
+import { loadApprovedCattleFilingArtifact } from "../cattle-filing-artifact";
 import {
   auditPigFilingArtifacts,
   loadApprovedPigFilingArtifact,
@@ -385,6 +386,8 @@ describe("pig DART filing artifact", () => {
   test("canonical pig-1의 갱신된 청약·배정 및 납입 절차 label/hash를 검증한다", async () => {
     await expect(auditPigFilingArtifacts()).resolves.toEqual([]);
     const current = await loadApprovedPigFilingArtifact("pig", "pig-1");
+    const cattle = await loadApprovedCattleFilingArtifact("cattle", "livestock-9");
+    expect(cattle).not.toBeNull();
     const section = current?.sections.find((item) => item.factId === "subscription-payment-schedule");
     const chunk = current?.chunks.find((item) => item.chunkId.endsWith("subscription-payment-schedule"));
     expect(section).toMatchObject({
@@ -394,8 +397,47 @@ describe("pig DART filing artifact", () => {
     });
     expect(chunk?.chunkHash).toBe("30b7a7b9d54693da9ce1878bca30261a3fcf6f4adc5b50c9ea232ac7a86737a7");
     const plan = await buildKnowledgeIngestPlan();
+    const cattleDocuments = plan.documents.filter((item) =>
+      item.categoryId === "cattle" && item.productId === "livestock-9"
+    );
+    const cattleChunks = plan.chunks.filter((item) =>
+      item.categoryId === "cattle" && item.productId === "livestock-9"
+    );
+    const pigDocuments = plan.documents.filter((item) =>
+      item.categoryId === "pig" && item.productId === "pig-1"
+    );
     const pigChunks = plan.chunks.filter((item) => item.categoryId === "pig" && item.productId === "pig-1");
+    expect(cattleDocuments).toHaveLength(1);
+    expect(cattleChunks).toHaveLength(5);
+    expect(cattleDocuments[0]).toMatchObject({
+      documentId: cattle?.document.documentId,
+      sourceHash: cattle?.document.sourceHash,
+      title: cattle?.document.title,
+      approvedForExternalAi: false,
+    });
+    expect(cattleChunks.map((item) => [item.chunkId, item.sourceHash])).toEqual(
+      cattle?.chunks
+        .map((item) => [item.chunkId, item.sourceHash])
+        .sort(([left], [right]) => left!.localeCompare(right!)),
+    );
+    expect(cattleChunks.every((item) => item.approvedForExternalAi === false)).toBe(true);
+    expect(pigDocuments).toHaveLength(1);
+    expect(pigDocuments[0]).toMatchObject({
+      documentId: current?.document.documentId,
+      sourceHash: current?.document.sourceHash,
+      title: current?.document.title,
+    });
     expect(pigChunks).toHaveLength(5);
+    expect(pigChunks.every((item) => item.approvedForExternalAi === false)).toBe(true);
+    expect(plan.documents.some((item) =>
+      item.categoryId === "cattle" && item.productId !== "livestock-9"
+    )).toBe(false);
+    expect(plan.documents.some((item) =>
+      item.categoryId === "pig" && item.productId !== "pig-1"
+    )).toBe(false);
+    expect(plan.documents.some((item) =>
+      item.categoryId === "pig" && item.productId === "livestock-9"
+    )).toBe(false);
     expect(pigChunks.map((item) => item.chunkId)).toContain("pig-pig-1-dart-20251215000259-subscription-payment-schedule");
   });
 
@@ -476,6 +518,15 @@ describe("pig DART filing artifact", () => {
   });
 
   test("홈은 pig 질의에서만 lazy-load하고 exact product route를 반환한다", async () => {
+    const smoke = await searchOffers({ q: "돼지 1호 공시", limit: 10 });
+    expect(smoke.results).toContainEqual(expect.objectContaining({
+      id: "pig-1",
+      categoryId: "pig",
+      title: "가축투자계약증권 제1호",
+      namespace: "published-offer",
+      href: "/offers/pig-1",
+    }));
+
     const built = await loadApprovedPigFilingArtifact("pig", "pig-1");
     expect(built).not.toBeNull();
     if (!built) return;
@@ -524,7 +575,11 @@ describe("pig DART filing artifact", () => {
     expect(pigCalls).toBe(0);
 
     for (const q of [
+      "돼지 1호 공시",
+      "가축투자계약증권 제1호",
+      "한돈 공모가",
       "한돈 수수료",
+      "한돈 위험",
       "한돈 원금 미보장",
       "한돈 투자자 보호기금",
       "한돈 공모 총액",
@@ -541,10 +596,10 @@ describe("pig DART filing artifact", () => {
         id: "pig-1",
         categoryId: "pig",
         namespace: "published-offer",
-        href: "/pig?tab=analysis&product=pig-1#pig-review",
+        href: "/offers/pig-1",
       }));
     }
-    expect(pigCalls).toBe(6);
+    expect(pigCalls).toBe(10);
   });
 
   test("승인 원자 문단은 evidence-only이고 실재·이력 질문과 external AI는 보류한다", async () => {

@@ -2,9 +2,10 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, test } from "vitest";
 
-import { generateMetadata, generateStaticParams } from "@/app/offers/[id]/page";
+import OfferReportPage, { generateMetadata, generateStaticParams } from "@/app/offers/[id]/page";
 import { loadApprovedScenarios } from "@/lib/knowledge/loader";
 import { loadApprovedCattleFilingArtifact } from "@/lib/knowledge/cattle-filing-artifact";
+import { loadApprovedPigFilingArtifact } from "@/lib/knowledge/pig-filing-artifact";
 import { SCENARIO_DEMO_DISCLOSURE } from "@/lib/knowledge/schema";
 
 import { ScenarioDetail } from "../ScenarioDetail";
@@ -17,6 +18,9 @@ import {
   EvidenceResultPanel,
   evidenceResultTitle,
   evidenceSourceLabel,
+  PIG_FILING_EVIDENCE_EXAMPLES,
+  pigFilingEvidenceScope,
+  PigFilingEvidenceQuery,
   StructuredSourceList,
 } from "../ScenarioEvidenceQuery";
 
@@ -187,6 +191,61 @@ describe("부동산 시나리오 상세", () => {
     expect(markup).toContain("DART 공시와 축산물이력 외부 대조를 구분해 확인");
     expect(markup).toContain("투자 판단이나 생성 답변을 만들지 않습니다");
     expect(markup).not.toContain("청약 미달");
+  });
+
+  test("승인된 한돈 1호만 exact 공시 Copilot 범위를 사용한다", async () => {
+    await expect(loadApprovedPigFilingArtifact("pig", "pig-1")).resolves.not.toBeNull();
+    await expect(loadApprovedPigFilingArtifact("pig", "pig-2")).resolves.toBeNull();
+    await expect(loadApprovedPigFilingArtifact("pig", "pig-3")).resolves.toBeNull();
+    expect(evidenceRequestBody(pigFilingEvidenceScope("pig-1"), " 공모가격과 최소 투자금 ")).toEqual({
+      categoryId: "pig",
+      productId: "pig-1",
+      dataNature: "observed",
+      namespace: "published-offer",
+      q: "공모가격과 최소 투자금",
+      limit: 5,
+    });
+
+    const markup = renderToStaticMarkup(createElement(PigFilingEvidenceQuery, {
+      productId: "pig-1",
+    }));
+    for (const example of PIG_FILING_EVIDENCE_EXAMPLES) {
+      expect(markup).toContain(example.label);
+      expect(evidenceRequestBody(pigFilingEvidenceScope("pig-1"), example.q)).toMatchObject({
+        categoryId: "pig",
+        productId: "pig-1",
+        dataNature: "observed",
+        namespace: "published-offer",
+        q: example.q,
+        limit: 5,
+      });
+    }
+    expect(markup).not.toMatch(/청약·납입 일정|투자자보상장치|수수료와 비용/);
+    expect(markup).toContain("DART 공시의 상품 조건과 축산물이력 외부 대조를 구분해 확인");
+    expect(markup).toContain("투자 판단이나 생성 답변을 만들지 않습니다");
+    expect(markup).not.toMatch(/RAG|hash|registry/);
+  });
+
+  test("한돈 1호 상세은 승인 artifact 문단만 표시한다", async () => {
+    const artifact = await loadApprovedPigFilingArtifact("pig", "pig-1");
+    if (!artifact) throw new Error("한돈 1호 승인 artifact가 없습니다");
+    const page = await OfferReportPage({ params: Promise.resolve({ id: "pig-1" }) });
+    const markup = renderToStaticMarkup(page);
+
+    expect(markup).toContain("한돈 투자계약증권 · pig-1");
+    expect(markup).toContain("공시 기준일");
+    expect(markup).toContain(artifact.document.asOf);
+    expect(markup).toContain(`href="${artifact.document.sourceUrl}"`);
+    expect(markup).toContain('target="_blank"');
+    expect(markup).toContain('rel="noopener noreferrer"');
+    for (const chunk of artifact.chunks) {
+      expect(markup).toContain(chunk.title);
+      expect(markup).toContain(chunk.text);
+    }
+    expect(markup.match(/<article/g)).toHaveLength(5);
+    expect(markup).toContain("DART 원문에서 승인된 한돈 상품 확인 문단만 구조화했습니다");
+    expect(markup).toContain("원천은 XML이므로 PDF 페이지 대신 논리 페이지 1로 기록했습니다");
+    expect(markup).not.toMatch(/가축투자계약증권 제[23]호|20260420000157|20260506000437|20260514000004|20260528001031|20260605000175|20260624000508|20260626000400|20260714000008|정산 완료|세전 단순수익률|28,260,808원|농장 A|농장 B·C|filing-facts|\bRAG\b|hash|registry/);
   });
 
   test("공식 공개정보 답변은 안전한 출처와 기준일을 표시한다", () => {
@@ -402,10 +461,16 @@ describe("부동산 시나리오 상세", () => {
   test("승인 ID를 정적 경로에 넣고 검색 차단 메타데이터를 반환한다", async () => {
     const params = await generateStaticParams();
     expect(params).toContainEqual({ id: "re-offer-01" });
+    expect(params).toContainEqual({ id: "pig-1" });
+    expect(params).not.toContainEqual({ id: "pig-2" });
+    expect(params).not.toContainEqual({ id: "pig-3" });
     expect(params).not.toContainEqual({ id: "real-estate-a" });
 
     const metadata = await generateMetadata({ params: Promise.resolve({ id: "re-offer-01" }) });
     expect(metadata.robots).toEqual({ index: false, follow: false });
     expect(metadata.title).toBe("서울스퀘어");
+
+    const pigMetadata = await generateMetadata({ params: Promise.resolve({ id: "pig-1" }) });
+    expect(pigMetadata.title).toBe("한돈 투자계약증권 · pig-1");
   });
 });

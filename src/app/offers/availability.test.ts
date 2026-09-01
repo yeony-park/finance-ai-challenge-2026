@@ -23,9 +23,10 @@ describe("공개 verification route availability", () => {
     ).resolves.toBeTruthy();
   });
 
-  test("정적 경로에는 active cattle만 포함한다", async () => {
+  test("정적 경로에는 active cattle과 승인된 pig 상세만 포함한다", async () => {
     const params = await generateStaticParams();
     expect(params).toContainEqual({ id: "livestock-9" });
+    expect(params).toContainEqual({ id: "pig-1" });
     expect(params).not.toContainEqual({ id: "livestock-1" });
     expect(params).not.toContainEqual({ id: "livestock-8" });
   });

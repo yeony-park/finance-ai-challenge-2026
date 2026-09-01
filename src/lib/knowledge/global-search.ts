@@ -119,6 +119,13 @@ const CATTLE_FILING_SEARCH_TERMS: Readonly<Record<string, string>> = {
   "pricing-basis": "공모가격 가격 산정 수요예측",
 };
 
+const filingSearchText = (
+  sections: readonly { readonly factId: string; readonly title: string; readonly text: string }[],
+  aliases: Readonly<Record<string, string>> = {},
+): string => sections.map((section) =>
+  `${section.title} ${section.text} ${aliases[section.factId] ?? ""}`
+).join(" ");
+
 const CATEGORY_ALIASES: Readonly<Record<GlobalSearchResult["categoryId"], readonly string[]>> = {
   cattle: ["cattle", "한우", "소", "가축"],
   pig: ["pig", "돼지", "돈육", "한돈"],
@@ -174,8 +181,11 @@ const isCattleFilingQuery = (
 const isPigFilingQuery = (
   query: string,
   categoryId?: GlobalSearchResult["categoryId"],
-): boolean => (categoryId === undefined || categoryId === "pig") &&
-  /공모\s*(?:조건|개요|가격|총액|금액)|공모가(?:액)?|좌수|단가|청약|배정|납입|수수료|위험|보상|원금\s*미보장|투자자\s*보호|보호\s*기금/.test(query);
+): boolean => (categoryId === undefined || categoryId === "pig") && (
+  /공모\s*(?:조건|개요|가격|총액|금액)|공모가(?:액)?|좌수|단가|청약|배정|납입|수수료|위험|보상|원금\s*미보장|투자자\s*보호|보호\s*기금/.test(query) ||
+  categoryId === "pig" && /공시|상품\s*명|(?:제\s*)?1\s*호/.test(query) ||
+  /가축\s*투자계약증권\s*(?:제\s*)?1\s*호/.test(query)
+);
 
 const repositoryPhase = (
   offering: { readonly opensOn: string | null; readonly closesOn: string | null },
@@ -242,9 +252,7 @@ export const searchOffers = async (
   ]);
   const cattleFilingByProduct = new Map(cattleFilings.map((artifact) => [
     artifact.registry.offerId,
-    artifact.sections.map((section) =>
-      `${section.title} ${CATTLE_FILING_SEARCH_TERMS[section.factId] ?? ""}`
-    ).join(" "),
+    filingSearchText(artifact.sections, CATTLE_FILING_SEARCH_TERMS),
   ]));
   const repositoryOfferings = await listPublishedRepositoryOfferings(
     resolvedRepositories.offerings,
@@ -375,7 +383,7 @@ export const searchOffers = async (
       title: offering.titlePublic,
       category: `pig ${CATEGORY_ALIASES.pig.join(" ")}`,
       phase: `${phase} ${PHASE_ALIASES[phase]}`,
-      filing: artifact.sections.map((section) => `${section.title} ${section.text}`).join(" "),
+      filing: filingSearchText(artifact.sections),
     });
     const minimumInvestmentWon = typeof offering.detail.unitPriceWon === "number"
       ? offering.detail.unitPriceWon
@@ -388,7 +396,7 @@ export const searchOffers = async (
       assetKind: "livestock" as const,
       phase,
       ...(minimumInvestmentWon === undefined ? {} : { minimumInvestmentWon }),
-      href: `/pig?tab=analysis&product=${offering.offerSlug}#pig-review`,
+      href: `/offers/${offering.offerSlug}`,
       matchedFields: match.matchedFields,
       isScenario: false,
       dataNature: "observed" as const,
