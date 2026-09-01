@@ -1,9 +1,15 @@
 import { existsSync, mkdtempSync, rmSync } from "node:fs";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, test } from "vitest";
 
-import type { CanonicalSemanticCorpus } from "../corpus";
+import {
+  approveFilingCorpusForExternalAi,
+  guardFilingCorpusLiveAnswer,
+  isFilingCorpusApprovedForExternalAi,
+  type CanonicalSemanticCorpus,
+} from "../corpus";
 import type { LocalRagEmbedder } from "../embedding";
 import { buildSemanticIndex } from "../index-cli";
 import { readLocalRagCache, searchLocalRagStore } from "../store";
@@ -57,6 +63,30 @@ const corpus = (contentHash = "c".repeat(64), count = 1): CanonicalSemanticCorpu
 });
 
 describe("semantic index CLI core", () => {
+  test("축산 외부 AI 승인은 현재 filing manifest hash에만 결속된다", async () => {
+    const root = mkdtempSync(path.join(os.tmpdir(), "semantic-approval-"));
+    roots.push(root);
+    const manifest = path.join(root, "knowledge/derived/filing-corpus/manifest.json");
+    await mkdir(path.dirname(manifest), { recursive: true });
+    await writeFile(manifest, "{\"version\":1}\n", "utf8");
+
+    expect(await isFilingCorpusApprovedForExternalAi(root)).toBe(false);
+    const approvedManifestSha256 = await approveFilingCorpusForExternalAi(root);
+    expect(await isFilingCorpusApprovedForExternalAi(root)).toBe(true);
+
+    await writeFile(manifest, `${await readFile(manifest, "utf8")} `, "utf8");
+    expect(await isFilingCorpusApprovedForExternalAi(root)).toBe(false);
+    expect(await isFilingCorpusApprovedForExternalAi(root, approvedManifestSha256)).toBe(false);
+
+    let providerCalls = 0;
+    const guarded = guardFilingCorpusLiveAnswer(root, approvedManifestSha256, async () => {
+      providerCalls += 1;
+      return null;
+    });
+    await expect(guarded({ question: "위험은?", evidence: [] })).resolves.toBeNull();
+    expect(providerCalls).toBe(0);
+  });
+
   test("dry-run은 embedder를 호출하거나 SQLite를 만들지 않는다", async () => {
     let calls = 0;
     const root = mkdtempSync(path.join(os.tmpdir(), "semantic-index-"));

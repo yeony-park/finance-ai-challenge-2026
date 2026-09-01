@@ -4,6 +4,7 @@ import {
   mkdirSync,
   renameSync,
   rmSync,
+  statSync,
 } from "node:fs";
 import path from "node:path";
 import { DatabaseSync } from "node:sqlite";
@@ -28,6 +29,7 @@ const HASH = /^[a-f0-9]{64}$/;
 const REFERENCE_KEY = /^[A-Za-z0-9][A-Za-z0-9._:/-]*$/;
 const CATEGORIES = new Set(["cattle", "pig", "art", "real-estate"]);
 const NORM_TOLERANCE = 1e-4;
+const integrityCache = new Map<string, string>();
 
 const assertReferenceKey = (name: string, value: string): void => {
   if (value.length > 512 || !REFERENCE_KEY.test(value)) {
@@ -150,6 +152,15 @@ const prepareChunk = (chunk: LocalRagChunkInput) => {
 const resolveDbPath = (dbPath?: string): string =>
   path.resolve(dbPath ?? LOCAL_RAG_DB_PATH);
 
+const hasValidIntegrity = (database: DatabaseSync, dbPath: string): boolean => {
+  const stat = statSync(dbPath, { bigint: true });
+  const signature = `${stat.dev}:${stat.ino}:${stat.size}:${stat.mtimeNs}`;
+  if (integrityCache.get(dbPath) === signature) return true;
+  if (database.prepare("PRAGMA quick_check").get()?.quick_check !== "ok") return false;
+  integrityCache.set(dbPath, signature);
+  return true;
+};
+
 const SCHEMA = `
   CREATE TABLE meta (
     singleton INTEGER PRIMARY KEY CHECK (singleton = 1),
@@ -267,6 +278,114 @@ export const buildLocalRagStore = (input: LocalRagBuildInput): void => {
   }
 };
 
+export const appendLocalRagStore = (input: LocalRagBuildInput): void => {
+  assertReferenceKey("contentVersion", input.contentVersion);
+  const approvedScopes = new Set(input.approvedScopes.map((scope) => {
+    assertScope(scope);
+    return scopeKey(scope);
+  }));
+  const chunks = input.chunks.map((chunk) => {
+    const prepared = prepareChunk(chunk);
+    if (!approvedScopes.has(scopeKey(prepared))) {
+      throw new Error("local RAG chunk scope is not pre-approved");
+    }
+    return prepared;
+  });
+  const target = resolveDbPath(input.dbPath);
+  if (!existsSync(target)) {
+    buildLocalRagStore(input);
+    return;
+  }
+  const database = new DatabaseSync(target, {
+    allowExtension: false,
+    enableDoubleQuotedStringLiterals: false,
+  });
+  try {
+    const metadata = database
+      .prepare("SELECT schema_version, model_id, vector_dimension, content_version FROM meta WHERE singleton = 1")
+      .get();
+    if (
+      metadata?.schema_version !== LOCAL_RAG_SCHEMA_VERSION ||
+      metadata.model_id !== LOCAL_RAG_MODEL_ID ||
+      metadata.vector_dimension !== LOCAL_RAG_VECTOR_DIMENSION ||
+      metadata.content_version !== input.contentVersion
+    ) throw new Error("local RAG checkpoint metadata mismatch");
+    database.exec("BEGIN IMMEDIATE;");
+    try {
+      const insert = database.prepare(`
+        INSERT INTO chunks (
+          chunk_id, document_id, source_hash, chunk_hash, content_hash,
+          chunking_version, category_id,
+          product_id, scenario_id, data_nature, approval_reference_key, embedding
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `);
+      for (const chunk of chunks) {
+        insert.run(
+          chunk.chunkId,
+          chunk.documentId,
+          chunk.sourceHash,
+          chunk.chunkHash,
+          chunk.contentHash,
+          chunk.chunkingVersion,
+          chunk.categoryId,
+          chunk.productId,
+          chunk.scenarioId,
+          chunk.dataNature,
+          chunk.approvalReferenceKey,
+          chunk.embedding,
+        );
+      }
+      database.exec("COMMIT;");
+    } catch (error) {
+      if (database.isTransaction) database.exec("ROLLBACK;");
+      throw error;
+    }
+  } finally {
+    if (database.isOpen) database.close();
+  }
+};
+
+export const promoteLocalRagStore = (input: {
+  readonly checkpointPath: string;
+  readonly dbPath: string;
+  readonly contentVersion: string;
+  readonly expectedChunks: number;
+}): void => {
+  assertReferenceKey("contentVersion", input.contentVersion);
+  const checkpointPath = resolveDbPath(input.checkpointPath);
+  const dbPath = resolveDbPath(input.dbPath);
+  let database: DatabaseSync | undefined;
+  try {
+    database = new DatabaseSync(checkpointPath, {
+      allowExtension: false,
+      enableDoubleQuotedStringLiterals: false,
+      readOnly: true,
+    });
+    database.exec("PRAGMA query_only = ON; PRAGMA trusted_schema = OFF;");
+    if (!hasValidIntegrity(database, checkpointPath)) {
+      throw new Error("invalid local RAG checkpoint");
+    }
+    const metadata = database
+      .prepare("SELECT schema_version, model_id, vector_dimension, content_version FROM meta WHERE singleton = 1")
+      .get();
+    const count = database.prepare("SELECT COUNT(*) AS count FROM chunks").get()?.count;
+    if (
+      metadata?.schema_version !== LOCAL_RAG_SCHEMA_VERSION ||
+      metadata.model_id !== LOCAL_RAG_MODEL_ID ||
+      metadata.vector_dimension !== LOCAL_RAG_VECTOR_DIMENSION ||
+      metadata.content_version !== input.contentVersion ||
+      count !== input.expectedChunks
+    ) throw new Error("local RAG checkpoint metadata mismatch");
+    database.close();
+    database = undefined;
+    renameSync(checkpointPath, dbPath);
+    integrityCache.delete(checkpointPath);
+    integrityCache.delete(dbPath);
+  } finally {
+    if (database?.isOpen) database.close();
+  }
+};
+
 export const readLocalRagCache = (
   dbPath: string = LOCAL_RAG_DB_PATH,
 ): readonly LocalRagCachedChunk[] => {
@@ -370,8 +489,7 @@ export const searchLocalRagStore = (
       readOnly: true,
     });
     database.exec("PRAGMA query_only = ON; PRAGMA trusted_schema = OFF;");
-    const integrity = database.prepare("PRAGMA quick_check").get();
-    if (integrity?.quick_check !== "ok") return unavailable("invalid-store");
+    if (!hasValidIntegrity(database, dbPath)) return unavailable("invalid-store");
 
     const metadata = database
       .prepare(
@@ -433,6 +551,102 @@ export const searchLocalRagStore = (
         right.score - left.score || left.chunkId.localeCompare(right.chunkId),
     );
     return { status: "ok", hits: hits.slice(0, limit) };
+  } catch {
+    return unavailable("invalid-store");
+  } finally {
+    if (database?.isOpen) database.close();
+  }
+};
+
+export const searchLocalRagStoreScopes = (input: {
+  readonly contentVersion: string;
+  readonly scopes: readonly LocalRagScope[];
+  readonly vector: ReadonlyArray<number> | Float32Array;
+  readonly limit?: number;
+  readonly dbPath?: string;
+}): LocalRagSearchResult & { readonly hitsByScope?: ReadonlyMap<string, readonly LocalRagHit[]> } => {
+  assertReferenceKey("contentVersion", input.contentVersion);
+  const scopes = new Map(input.scopes.map((scope) => {
+    assertScope(scope);
+    return [scopeKey(scope), scope];
+  }));
+  const query = normalizedVector(input.vector);
+  const limit = input.limit ?? 5;
+  if (!Number.isInteger(limit) || limit < 1 || limit > 100) {
+    throw new Error("invalid local RAG search limit");
+  }
+  const dbPath = resolveDbPath(input.dbPath);
+  if (!existsSync(dbPath)) return unavailable("missing");
+
+  let database: DatabaseSync | undefined;
+  try {
+    database = new DatabaseSync(dbPath, {
+      allowExtension: false,
+      enableDoubleQuotedStringLiterals: false,
+      readOnly: true,
+    });
+    database.exec("PRAGMA query_only = ON; PRAGMA trusted_schema = OFF;");
+    if (!hasValidIntegrity(database, dbPath)) {
+      return unavailable("invalid-store");
+    }
+    const metadata = database
+      .prepare("SELECT schema_version, model_id, vector_dimension, content_version FROM meta WHERE singleton = 1")
+      .get();
+    if (
+      metadata?.schema_version !== LOCAL_RAG_SCHEMA_VERSION ||
+      metadata.model_id !== LOCAL_RAG_MODEL_ID ||
+      metadata.vector_dimension !== LOCAL_RAG_VECTOR_DIMENSION ||
+      metadata.content_version !== input.contentVersion
+    ) return unavailable("metadata-mismatch");
+
+    const hitsByScope = new Map<string, LocalRagHit[]>();
+    for (const key of scopes.keys()) hitsByScope.set(key, []);
+    const rows = database.prepare(`
+      SELECT document_id, chunk_id, source_hash, chunk_hash, category_id,
+             product_id, scenario_id, data_nature, approval_reference_key, embedding
+      FROM chunks
+    `).all();
+    for (const row of rows) {
+      if (
+        typeof row.document_id !== "string" ||
+        typeof row.chunk_id !== "string" ||
+        typeof row.source_hash !== "string" ||
+        typeof row.chunk_hash !== "string" ||
+        typeof row.category_id !== "string" ||
+        typeof row.product_id !== "string" ||
+        !(row.scenario_id === null || typeof row.scenario_id === "string") ||
+        (row.data_nature !== "observed" && row.data_nature !== "scenario") ||
+        typeof row.approval_reference_key !== "string" ||
+        !(row.embedding instanceof Uint8Array)
+      ) throw new Error("invalid local RAG chunk reference");
+      const rowScope: LocalRagScope = {
+        categoryId: row.category_id as LocalRagScope["categoryId"],
+        productId: row.product_id,
+        scenarioId: row.scenario_id,
+        dataNature: row.data_nature,
+        approvalReferenceKey: row.approval_reference_key,
+      };
+      assertScope(rowScope);
+      const key = scopeKey(rowScope);
+      const hits = hitsByScope.get(key);
+      if (!hits) continue;
+      assertReferenceKey("documentId", row.document_id);
+      assertReferenceKey("chunkId", row.chunk_id);
+      assertHash("sourceHash", row.source_hash);
+      assertHash("chunkHash", row.chunk_hash);
+      hits.push({
+        documentId: row.document_id,
+        chunkId: row.chunk_id,
+        sourceHash: row.source_hash,
+        chunkHash: row.chunk_hash,
+        score: dotProduct(query, decodeVector(row.embedding)),
+      });
+    }
+    for (const [key, hits] of hitsByScope) {
+      hits.sort((left, right) => right.score - left.score || left.chunkId.localeCompare(right.chunkId));
+      hitsByScope.set(key, hits.slice(0, limit));
+    }
+    return { status: "ok", hits: [], hitsByScope };
   } catch {
     return unavailable("invalid-store");
   } finally {

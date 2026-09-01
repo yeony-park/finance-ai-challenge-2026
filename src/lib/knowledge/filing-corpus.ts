@@ -545,12 +545,17 @@ export const loadFilingCorpus = async (dataRoot = "data"): Promise<readonly Comm
   const root = corpusRoot(dataRoot);
   const cacheable = root === corpusRoot("data") || process.env.NODE_ENV === "production";
   if (!cacheable) return loadAll(dataRoot);
-  const existing = corpusCache.get(root);
+  const manifestHash = sha256(await readSafeFile(path.join(root, "manifest.json")));
+  const cacheKey = `${root}\u0000${manifestHash}`;
+  const existing = corpusCache.get(cacheKey);
   if (existing) return existing;
   const pending = loadAll(dataRoot);
-  corpusCache.set(root, pending);
+  for (const key of corpusCache.keys()) {
+    if (key.startsWith(`${root}\u0000`) && key !== cacheKey) corpusCache.delete(key);
+  }
+  corpusCache.set(cacheKey, pending);
   void pending.catch(() => {
-    if (corpusCache.get(root) === pending) corpusCache.delete(root);
+    if (corpusCache.get(cacheKey) === pending) corpusCache.delete(cacheKey);
   });
   return pending;
 };
@@ -590,12 +595,16 @@ const loadProductIndex = async (
   };
   const cacheable = root === corpusRoot("data") || process.env.NODE_ENV === "production";
   if (!cacheable) return load();
-  const existing = productIndexCache.get(file);
+  const cacheKey = `${file}\u0000${entry.sha256}`;
+  const existing = productIndexCache.get(cacheKey);
   if (existing) return existing;
   const pending = load();
-  productIndexCache.set(file, pending);
+  for (const key of productIndexCache.keys()) {
+    if (key.startsWith(`${file}\u0000`) && key !== cacheKey) productIndexCache.delete(key);
+  }
+  productIndexCache.set(cacheKey, pending);
   void pending.catch(() => {
-    if (productIndexCache.get(file) === pending) productIndexCache.delete(file);
+    if (productIndexCache.get(cacheKey) === pending) productIndexCache.delete(cacheKey);
   });
   return pending;
 };
@@ -605,11 +614,33 @@ export const loadFilingCorpusForProduct = async (
   productId: string,
   dataRoot = "data",
 ): Promise<CommonKnowledgeIndex | null> => {
+  return (await loadFilingCorpusProductSnapshot(categoryId, productId, dataRoot))?.index ?? null;
+};
+
+export const loadFilingCorpusProductSnapshot = async (
+  categoryId: string,
+  productId: string,
+  dataRoot = "data",
+): Promise<{ readonly index: CommonKnowledgeIndex; readonly manifestSha256: string } | null> => {
   if ((categoryId !== "cattle" && categoryId !== "pig") || !SAFE_ID.test(productId)) return null;
-  const entry = (await loadFilingCorpusSearchEntries(dataRoot)).find((item) =>
+  const manifestFile = path.join(corpusRoot(dataRoot), "manifest.json");
+  const manifestStat = await lstat(manifestFile).catch((error: NodeJS.ErrnoException) => {
+    if (error.code === "ENOENT") return null;
+    throw error;
+  });
+  if (manifestStat === null) return null;
+  const manifestBytes = await readSafeFile(manifestFile);
+  const manifestSha256 = sha256(manifestBytes);
+  const manifest = CorpusManifestSchema.parse(JSON.parse(new TextDecoder().decode(manifestBytes)));
+  const entry = manifest.entries.find((item) =>
     item.categoryId === categoryId && item.productId === productId
   );
-  return entry ? loadProductIndex(entry, dataRoot) : null;
+  if (!entry) return null;
+  const index = await loadProductIndex(entry, dataRoot);
+  if (sha256(await readSafeFile(manifestFile)) !== manifestSha256) {
+    throw new Error("filing corpus manifest가 로드 중 변경되었습니다.");
+  }
+  return { index, manifestSha256 };
 };
 
 export const filingCorpusKnowledge = (index: CommonKnowledgeIndex): ProductKnowledgeResult => ({

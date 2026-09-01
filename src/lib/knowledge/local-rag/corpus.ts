@@ -1,4 +1,6 @@
 import { createHash } from "node:crypto";
+import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
+import path from "node:path";
 
 import {
   loadApprovedCommonProducts,
@@ -8,10 +10,23 @@ import {
 import { containsObviousPii } from "../document-extraction";
 import type { CommonChunkRecord, CommonDocumentRecord } from "../schema";
 import { loadFilingCorpusIfPresent } from "../filing-corpus";
+import type { LiveAnswerGenerator } from "../live-answer";
 import {
   LOCAL_RAG_CHUNKING_VERSION,
+  LOCAL_RAG_MODEL_ID,
   type LocalRagScope,
 } from "./types";
+
+const FILING_EXTERNAL_AI_APPROVAL_FILE = "filing-external-ai-approval.json";
+
+interface FilingExternalAiApproval {
+  readonly schemaVersion: 1;
+  readonly scope: "filing-corpus";
+  readonly provider: "openai";
+  readonly model: typeof LOCAL_RAG_MODEL_ID;
+  readonly manifestSha256: string;
+  readonly approvedAt: string;
+}
 
 export interface CanonicalSemanticChunk {
   readonly namespace: "common" | "legacy-scenario";
@@ -42,6 +57,83 @@ export interface CanonicalSemanticCorpus {
 
 const hashJson = (value: unknown): string =>
   createHash("sha256").update(JSON.stringify(value)).digest("hex");
+
+const hashBytes = (value: Uint8Array): string =>
+  createHash("sha256").update(value).digest("hex");
+
+const filingManifestPath = (dataRoot: string): string =>
+  path.resolve(dataRoot, "knowledge/derived/filing-corpus/manifest.json");
+
+const filingApprovalPath = (dataRoot: string): string =>
+  path.resolve(dataRoot, "scratch-rag", FILING_EXTERNAL_AI_APPROVAL_FILE);
+
+const currentFilingManifestHash = async (dataRoot: string): Promise<string | null> => {
+  try {
+    return hashBytes(new Uint8Array(await readFile(filingManifestPath(dataRoot))));
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") return null;
+    throw error;
+  }
+};
+
+const isFilingApproval = (value: unknown): value is FilingExternalAiApproval => {
+  if (!value || typeof value !== "object") return false;
+  const approval = value as Partial<FilingExternalAiApproval>;
+  return approval.schemaVersion === 1 &&
+    approval.scope === "filing-corpus" &&
+    approval.provider === "openai" &&
+    approval.model === LOCAL_RAG_MODEL_ID &&
+    typeof approval.manifestSha256 === "string" && /^[a-f0-9]{64}$/.test(approval.manifestSha256) &&
+    typeof approval.approvedAt === "string" && !Number.isNaN(Date.parse(approval.approvedAt));
+};
+
+export const approveFilingCorpusForExternalAi = async (
+  dataRoot = "data",
+): Promise<string> => {
+  const manifestSha256 = hashBytes(new Uint8Array(await readFile(filingManifestPath(dataRoot))));
+  const approval: FilingExternalAiApproval = {
+    schemaVersion: 1,
+    scope: "filing-corpus",
+    provider: "openai",
+    model: LOCAL_RAG_MODEL_ID,
+    manifestSha256,
+    approvedAt: new Date().toISOString(),
+  };
+  const target = filingApprovalPath(dataRoot);
+  const temporary = `${target}.tmp-${process.pid}`;
+  await mkdir(path.dirname(target), { recursive: true });
+  await writeFile(temporary, `${JSON.stringify(approval, null, 2)}\n`, "utf8");
+  await rename(temporary, target);
+  return manifestSha256;
+};
+
+export const isFilingCorpusApprovedForExternalAi = async (
+  dataRoot = "data",
+  expectedManifestSha256?: string,
+): Promise<boolean> => {
+  try {
+    const [currentManifestSha256, rawApproval] = await Promise.all([
+      currentFilingManifestHash(dataRoot),
+      readFile(filingApprovalPath(dataRoot), "utf8"),
+    ]);
+    const approval: unknown = JSON.parse(rawApproval);
+    return currentManifestSha256 !== null &&
+      (expectedManifestSha256 === undefined || expectedManifestSha256 === currentManifestSha256) &&
+      isFilingApproval(approval) && approval.manifestSha256 === currentManifestSha256;
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT" || error instanceof SyntaxError) return false;
+    throw error;
+  }
+};
+
+export const guardFilingCorpusLiveAnswer = (
+  dataRoot: string,
+  expectedManifestSha256: string,
+  delegate: LiveAnswerGenerator,
+): LiveAnswerGenerator => async (input) =>
+  await isFilingCorpusApprovedForExternalAi(dataRoot, expectedManifestSha256)
+    ? delegate(input)
+    : null;
 
 const scopeWithoutApproval = (
   value: Pick<CommonChunkRecord, "categoryId" | "productId" | "scenarioId" | "dataNature">,
@@ -149,8 +241,24 @@ export const collectCanonicalSemanticCorpus = async (
       groups.push({ documents: [envelope.document], chunks: envelope.chunks, namespace: "legacy-scenario" as const });
     }
   }
-  for (const index of await loadFilingCorpusIfPresent(dataRoot)) {
-    groups.push({ documents: index.documents, chunks: index.chunks, namespace: "common" as const });
+  const filingManifestBefore = await currentFilingManifestHash(dataRoot);
+  const filingIndexes = await loadFilingCorpusIfPresent(dataRoot);
+  const filingManifestAfter = await currentFilingManifestHash(dataRoot);
+  if (filingManifestBefore !== filingManifestAfter) {
+    throw new Error("filing corpus manifest changed while loading semantic corpus");
+  }
+  const filingApproved = filingManifestAfter !== null &&
+    await isFilingCorpusApprovedForExternalAi(dataRoot, filingManifestAfter);
+  for (const index of filingIndexes) {
+    groups.push({
+      documents: filingApproved
+        ? index.documents.map((document) => ({ ...document, approvedForExternalAi: true }))
+        : index.documents,
+      chunks: filingApproved
+        ? index.chunks.map((chunk) => ({ ...chunk, approvedForExternalAi: true }))
+        : index.chunks,
+      namespace: "common" as const,
+    });
   }
   const chunks = groups.flatMap(({ documents, chunks, namespace }) => eligibleChunks(documents, chunks, namespace))
     .sort((left, right) => left.chunkId.localeCompare(right.chunkId));

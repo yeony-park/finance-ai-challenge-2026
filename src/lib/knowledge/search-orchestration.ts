@@ -398,7 +398,10 @@ export const orchestrateGlobalSearch = async (
   };
   if (initialInvalid) return fallback("amount-filter-invalid");
   const amountLanguage = hasAmountFilterLanguage(request.query);
-  if (keywordResponse.results.length > 0 && !amountLanguage) {
+  const deterministicKeywordHit = keywordResponse.results.some((result) =>
+    result.matchedFields.some((field) => field === "id" || field === "title" || field === "phase")
+  ) || /진행\s*중|현재\s*투자\s*가능|상장|거래\s*가능|청약|공모\s*중|모집\s*중/.test(request.query);
+  if (deterministicKeywordHit && !amountLanguage) {
     const reason = runtimeAiAllowed ? "keyword-hit" : (options.runtimeReason ?? "runtime-disabled");
     return addGeneratedAnswer(withMetadata(
       keywordResponse,

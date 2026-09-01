@@ -19,7 +19,7 @@ import {
   validateEmbeddingVectors,
   type LocalRagEmbedder,
 } from "./embedding";
-import { searchLocalRagStore } from "./store";
+import { searchLocalRagStore, searchLocalRagStoreScopes } from "./store";
 import { LOCAL_RAG_DB_PATH } from "./types";
 
 export const LOCAL_RAG_MIN_SCORE = 0.25;
@@ -80,6 +80,15 @@ const toLocalScope = (scope: ProductKnowledgeScope) => ({
   scenarioId: scope.scenarioId ?? null,
   dataNature: scope.dataNature,
 });
+
+const localScopeKey = (scope: Parameters<typeof searchLocalRagStore>[0]["scope"]): string =>
+  JSON.stringify([
+    scope.categoryId,
+    scope.productId,
+    scope.scenarioId,
+    scope.dataNature,
+    scope.approvalReferenceKey,
+  ]);
 
 const hitFromCanonical = (
   chunk: CanonicalSemanticChunk,
@@ -234,19 +243,19 @@ export const searchSemanticProducts = async (options: {
     return { matches: [], semantic: false, degraded: true, reason: "provider-failed" };
   }
   const matches: SemanticProductMatch[] = [];
+  const searched = searchLocalRagStoreScopes({
+    dbPath: options.dbPath ?? LOCAL_RAG_DB_PATH,
+    contentVersion: corpus.contentVersion,
+    scopes: [...groups.values()].map((group) => group.scope),
+    vector,
+    limit: 5,
+  });
+  if (searched.status !== "ok" || !searched.hitsByScope) {
+    return { matches: [], semantic: false, degraded: true, reason: "store-unavailable" };
+  }
   for (const group of groups.values()) {
-    const searched = searchLocalRagStore({
-      dbPath: options.dbPath ?? LOCAL_RAG_DB_PATH,
-      contentVersion: corpus.contentVersion,
-      scope: group.scope,
-      vector,
-      limit: 5,
-    });
-    if (searched.status !== "ok") {
-      return { matches: [], semantic: false, degraded: true, reason: "store-unavailable" };
-    }
     const chunks = new Map(group.chunks.map((chunk) => [chunk.chunkId, chunk]));
-    const score = Math.max(0, ...searched.hits.flatMap((hit) => {
+    const score = Math.max(0, ...(searched.hitsByScope.get(localScopeKey(group.scope)) ?? []).flatMap((hit) => {
       const canonical = chunks.get(hit.chunkId);
       return canonical &&
         canonical.documentId === hit.documentId &&

@@ -237,7 +237,9 @@ export const searchOffers = async (
     item.categoryId === categoryId &&
     item.productId === productId &&
     item.dataNature === dataNature &&
-    item.namespace === namespace &&
+    (item.namespace === namespace ||
+      namespace === "published-offer" && item.namespace === "common" &&
+        (categoryId === "cattle" || categoryId === "pig")) &&
     item.scenarioId === scenarioId
   )?.score ?? 0;
   const now = new Date();
@@ -409,6 +411,7 @@ export const searchOffers = async (
       category: `pig ${CATEGORY_ALIASES.pig.join(" ")}`,
       filing,
     });
+    const semantic = semanticScore("pig", productId, "observed", "published-offer");
     return [{
       id: productId,
       productId,
@@ -418,11 +421,11 @@ export const searchOffers = async (
       phase: "evidence-only" as const,
       status: "evidence-ready" as const,
       href: `/offers/${productId}`,
-      matchedFields: match.matchedFields,
+      matchedFields: semantic > 0 ? [...match.matchedFields, "semantic"] : match.matchedFields,
       isScenario: false,
       dataNature: "observed" as const,
       namespace: "published-offer" as const,
-      score: match.score,
+      score: match.score + semantic * 30,
     }];
   });
 

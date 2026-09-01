@@ -28,9 +28,15 @@ import {
   matchesPigFilingKnowledge,
 } from "@/lib/knowledge/pig-filing-artifact";
 import {
-  loadFilingCorpusForProduct,
+  filingCorpusKnowledge,
+  loadFilingCorpusProductSnapshot,
   matchesFilingCorpusKnowledge,
 } from "@/lib/knowledge/filing-corpus";
+import {
+  guardFilingCorpusLiveAnswer,
+  isFilingCorpusApprovedForExternalAi,
+} from "@/lib/knowledge/local-rag/corpus";
+import { generateLiveEvidenceAnswer } from "@/lib/knowledge/live-answer";
 
 export const runtime = "nodejs";
 
@@ -94,10 +100,22 @@ export const POST = async (request: Request): Promise<Response> => {
         const pigArtifacts = inferredPigArtifacts.length > 0 ? inferredPigArtifacts : (query.categoryId !== "pig"
           ? []
           : await loadApprovedPigFilingArtifactsForProduct(query.categoryId, query.productId));
-        const filingCorpus = await loadFilingCorpusForProduct(query.categoryId, query.productId);
+        const filingSnapshot = await loadFilingCorpusProductSnapshot(query.categoryId, query.productId);
+        const filingCorpus = filingSnapshot?.index ?? null;
         const publishedArtifactNamespace = query.namespace !== "common" && query.namespace !== "legacy-scenario";
         const corpusBacked = filingCorpus !== null && publishedArtifactNamespace &&
           matchesFilingCorpusKnowledge(filingCorpus, productKnowledge);
+        const filingExternalAiApproved = corpusBacked && filingSnapshot !== null &&
+          await isFilingCorpusApprovedForExternalAi("data", filingSnapshot.manifestSha256);
+        const approvedFilingKnowledge = filingExternalAiApproved && filingCorpus
+          ? filingCorpusKnowledge(filingCorpus)
+          : null;
+        const aiProductKnowledge = approvedFilingKnowledge ? {
+          ...approvedFilingKnowledge,
+          documents: approvedFilingKnowledge.documents.map((item) => ({ ...item, approvedForExternalAi: true })),
+          chunks: approvedFilingKnowledge.chunks.map((item) => ({ ...item, approvedForExternalAi: true })),
+          evidenceGroups: productKnowledge.evidenceGroups,
+        } : productKnowledge;
         const artifactDocumentIds = new Set([...cattleArtifacts, ...pigArtifacts].map((item) => item.document.documentId));
         const artifactKnowledge = {
           documents: productKnowledge.documents.filter((item) => artifactDocumentIds.has(item.documentId)),
@@ -112,9 +130,12 @@ export const POST = async (request: Request): Promise<Response> => {
           query.categoryId === "pig" && pigArtifacts.length > 0 ||
           query.categoryId === "cattle" && cattleArtifacts.length > 0 && registryProduct !== undefined
         );
-        const filingRuntimeReason = artifactBacked
+        const filingRuntimeReason = artifactBacked && !filingExternalAiApproved
           ? "disabled"
           : access.allowed ? undefined : access.reason;
+        const liveAnswer = disabledLiveAnswer ?? (filingExternalAiApproved && filingSnapshot !== null
+          ? guardFilingCorpusLiveAnswer("data", filingSnapshot.manifestSha256, generateLiveEvidenceAnswer)
+          : artifactBacked ? async () => null : undefined);
         if ((cattleArtifacts.length > 0 || query.categoryId === "pig") && publishedArtifactNamespace && !artifactBacked) return invalidRequest();
         if (publishedScope?.status !== "found" && !artifactBacked) return invalidRequest();
         const exactRetrieval = await retrieveExactProductEvidence({
@@ -127,15 +148,15 @@ export const POST = async (request: Request): Promise<Response> => {
           query: query.query,
           limit: query.limit,
           repository: productKnowledgeRepository,
-          fallbackChunks: productKnowledge.chunks,
-          runtimeAiAllowed: artifactBacked ? false : access.allowed,
+          fallbackChunks: aiProductKnowledge.chunks,
+          runtimeAiAllowed: artifactBacked && !filingExternalAiApproved ? false : access.allowed,
           ...(filingRuntimeReason ? { runtimeReason: filingRuntimeReason } : {}),
         });
         if (artifactBacked && exactRetrieval.evidence.some((item) => !productKnowledge.chunks.some((chunk) =>
           chunk.documentId === item.documentId && chunk.chunkId === item.chunkId &&
           chunk.sourceHash === item.sourceHash && chunk.chunkHash === item.chunkHash
         ))) return invalidRequest();
-        return Response.json({
+        const response = {
           categoryId: query.categoryId,
           productId: query.productId,
           dataNature: "observed",
@@ -159,7 +180,7 @@ export const POST = async (request: Request): Promise<Response> => {
                 {
                   limit: query.limit,
                   evidence: exactRetrieval.evidence,
-                  ...((artifactBacked || disabledLiveAnswer) ? { liveAnswer: async () => null } : {}),
+                  ...(liveAnswer ? { liveAnswer } : {}),
                 },
               )
             : await answerFromProductKnowledge(
@@ -173,10 +194,15 @@ export const POST = async (request: Request): Promise<Response> => {
                 {
                   limit: query.limit,
                   evidence: exactRetrieval.evidence,
-                  ...((artifactBacked || disabledLiveAnswer) ? { liveAnswer: async () => null } : {}),
+                  ...(liveAnswer ? { liveAnswer } : {}),
                 },
               )),
-        });
+        };
+        if (filingExternalAiApproved && filingSnapshot !== null &&
+          !await isFilingCorpusApprovedForExternalAi("data", filingSnapshot.manifestSha256)) {
+          throw new Error("filing corpus external AI approval changed during request");
+        }
+        return Response.json(response);
       }
       if (query.namespace === "legacy-scenario" && !scenario) return invalidRequest();
       if (scenario && query.namespace !== "common" && !commonScope?.product) {

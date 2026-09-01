@@ -16,7 +16,10 @@ import {
 } from "../cattle-filing-artifact";
 import { answerFromProductKnowledge } from "../evidence";
 import { runKnowledgeIndex } from "../index-cli";
-import { collectCanonicalSemanticCorpus } from "../local-rag/corpus";
+import {
+  approveFilingCorpusForExternalAi,
+  collectCanonicalSemanticCorpus,
+} from "../local-rag/corpus";
 import { orchestrateGlobalSearch, retrieveExactProductEvidence } from "../search-orchestration";
 
 const PRODUCT_ID = "livestock-9";
@@ -559,10 +562,21 @@ describe("livestock-9 approved filing artifact runtime adapter", () => {
     }
   });
 
-  test("external AI 미승인 artifact는 canonical embedding corpus에 들어가지 않는다", async () => {
-    const corpus = await collectCanonicalSemanticCorpus();
+  test("external AI 미승인 locator artifact는 승인된 전체 filing corpus와 섞이지 않는다", async () => {
+    const root = await mkdtemp(path.join(os.tmpdir(), "filing-corpus-approval-"));
+    roots.push(root);
+    await cp(
+      "data/knowledge/derived/filing-corpus",
+      path.join(root, "knowledge/derived/filing-corpus"),
+      { recursive: true },
+    );
+    await approveFilingCorpusForExternalAi(root);
+    const artifact = await loadApprovedCattleFilingArtifact("cattle", PRODUCT_ID);
+    const artifactChunkIds = new Set(artifact?.chunks.map((chunk) => chunk.chunkId));
+    const corpus = await collectCanonicalSemanticCorpus(root);
     expect(corpus.chunks.some((chunk) =>
-      chunk.scope.categoryId === "cattle" && chunk.scope.productId === PRODUCT_ID
-    )).toBe(false);
+      chunk.scope.productId === PRODUCT_ID && chunk.chunkId.includes("-dart-full-")
+    )).toBe(true);
+    expect(corpus.chunks.some((chunk) => artifactChunkIds.has(chunk.chunkId))).toBe(false);
   });
 });

@@ -284,13 +284,13 @@ describe("bounded search orchestration", () => {
     expect({ plannerCalls, embeddingCalls }).toEqual({ plannerCalls: 2, embeddingCalls: 0 });
   });
 
-  test("strict plan 1회와 query embedding 1회로 semantic 상품을 기존 카드 계약에 더한다", async () => {
+  test("약한 keyword를 조기 확정하지 않고 plan 1회와 embedding 1회로 semantic 상품을 더한다", async () => {
     const corpus = corpusFor();
     const dbPath = await indexed(corpus);
     let plannerCalls = 0;
     let queryCalls = 0;
     const response = await orchestrateGlobalSearch(
-      { query: "제타파동 설명해줘", categoryId: "real-estate", limit: 10 },
+      { query: "투자 손실 설명해줘", categoryId: "real-estate", limit: 10 },
       {
         enabled: true,
         runtimeAiAllowed: true,

@@ -1,8 +1,14 @@
 import { pathToFileURL } from "node:url";
 import { rmSync } from "node:fs";
 
-import { buildLocalRagStore, readLocalRagCache } from "./store";
 import {
+  appendLocalRagStore,
+  buildLocalRagStore,
+  promoteLocalRagStore,
+  readLocalRagCache,
+} from "./store";
+import {
+  approveFilingCorpusForExternalAi,
   collectCanonicalSemanticCorpus,
   type CanonicalSemanticCorpus,
 } from "./corpus";
@@ -85,7 +91,6 @@ export const buildSemanticIndex = async (
   }
   if (!options.apiKey?.trim()) throw new Error("OPENAI_API_KEY is required with --apply");
   const embedder = options.embedder ?? createOpenAiLocalRagEmbedder(options.apiKey);
-  const embedded = new Map<string, readonly number[]>();
   const chunkInput = (chunk: CanonicalSemanticCorpus["chunks"][number]): LocalRagChunkInput => ({
     ...chunk.scope,
     approvalReferenceKey: chunk.approvalReferenceKey,
@@ -95,33 +100,55 @@ export const buildSemanticIndex = async (
     chunkHash: chunk.chunkHash,
     contentHash: chunk.contentHash,
     chunkingVersion: LOCAL_RAG_CHUNKING_VERSION,
-    vector: cached.get(cacheKey(chunk))?.vector ?? embedded.get(cacheKey(chunk))!,
+    vector: cached.get(cacheKey(chunk))!.vector,
   });
-  for (let offset = 0; offset < missing.length; offset += LOCAL_RAG_EMBED_BATCH_SIZE) {
-    const batch = missing.slice(offset, offset + LOCAL_RAG_EMBED_BATCH_SIZE);
-    const vectors = await embedDocumentBatches(embedder, batch.map((chunk) => chunk.canonicalText));
-    batch.forEach((chunk, index) => embedded.set(cacheKey(chunk), vectors[index]!));
-    const checkpointChunks = corpus.chunks
-      .filter((chunk) => cached.has(cacheKey(chunk)) || embedded.has(cacheKey(chunk)))
-      .map(chunkInput);
+  if (missing.length > 0) {
     buildLocalRagStore({
       dbPath: checkpointPath,
       contentVersion: corpus.contentVersion,
       approvedScopes: corpus.scopes,
-      chunks: checkpointChunks,
+      chunks: corpus.chunks.filter((chunk) => cached.has(cacheKey(chunk))).map(chunkInput),
     });
   }
-  const chunks = corpus.chunks.map(chunkInput);
-  buildLocalRagStore({
-    dbPath,
-    contentVersion: corpus.contentVersion,
-    approvedScopes: corpus.scopes,
-    chunks,
-  });
-  rmSync(checkpointPath, { force: true });
+  for (let offset = 0; offset < missing.length; offset += LOCAL_RAG_EMBED_BATCH_SIZE) {
+    const batch = missing.slice(offset, offset + LOCAL_RAG_EMBED_BATCH_SIZE);
+    const vectors = await embedDocumentBatches(embedder, batch.map((chunk) => chunk.canonicalText));
+    appendLocalRagStore({
+      dbPath: checkpointPath,
+      contentVersion: corpus.contentVersion,
+      approvedScopes: corpus.scopes,
+      chunks: batch.map((chunk, index): LocalRagChunkInput => ({
+        ...chunk.scope,
+        approvalReferenceKey: chunk.approvalReferenceKey,
+        documentId: chunk.documentId,
+        chunkId: chunk.chunkId,
+        sourceHash: chunk.sourceHash,
+        chunkHash: chunk.chunkHash,
+        contentHash: chunk.contentHash,
+        chunkingVersion: LOCAL_RAG_CHUNKING_VERSION,
+        vector: vectors[index]!,
+      })),
+    });
+  }
+  if (missing.length > 0) {
+    promoteLocalRagStore({
+      checkpointPath,
+      dbPath,
+      contentVersion: corpus.contentVersion,
+      expectedChunks: corpus.chunks.length,
+    });
+  } else {
+    buildLocalRagStore({
+      dbPath,
+      contentVersion: corpus.contentVersion,
+      approvedScopes: corpus.scopes,
+      chunks: corpus.chunks.map(chunkInput),
+    });
+    rmSync(checkpointPath, { force: true });
+  }
   return {
     status: "written",
-    chunks: chunks.length,
+    chunks: corpus.chunks.length,
     reused: cached.size,
     pending: 0,
     embedded: missing.length,
@@ -138,10 +165,14 @@ export const runSemanticIndexCli = async (
   args = process.argv.slice(2),
 ): Promise<number> => {
   try {
+    const apply = args.includes("--apply");
+    const approveFilings = args.includes("--approve-filing-corpus");
+    const dataRoot = valueAfter(args, "--data-root");
+    if (approveFilings) await approveFilingCorpusForExternalAi(dataRoot);
     const result = await buildSemanticIndex({
-      apply: args.includes("--apply"),
+      apply,
       apiKey: process.env.OPENAI_API_KEY,
-      dataRoot: valueAfter(args, "--data-root"),
+      dataRoot,
       dbPath: valueAfter(args, "--db"),
     });
     process.stdout.write(`${JSON.stringify(result)}\n`);

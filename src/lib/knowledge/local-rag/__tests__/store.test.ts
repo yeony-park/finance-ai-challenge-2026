@@ -9,7 +9,13 @@ import path from "node:path";
 import { DatabaseSync } from "node:sqlite";
 import { afterEach, describe, expect, test } from "vitest";
 
-import { buildLocalRagStore, searchLocalRagStore } from "../store";
+import {
+  appendLocalRagStore,
+  buildLocalRagStore,
+  promoteLocalRagStore,
+  searchLocalRagStore,
+  searchLocalRagStoreScopes,
+} from "../store";
 import {
   LOCAL_RAG_CHUNKING_VERSION,
   LOCAL_RAG_MODEL_ID,
@@ -166,6 +172,34 @@ describe("local semantic RAG SQLite store", () => {
     ).toThrow("invalid local RAG scenario scope");
   });
 
+  test("여러 상품 scope를 한 번에 검색하고 checkpoint에는 새 배치만 추가한다", () => {
+    const dbPath = databasePath();
+    buildLocalRagStore({
+      dbPath,
+      contentVersion: "knowledge-v1",
+      approvedScopes: [scope, otherScope],
+      chunks: [chunk("chunk-a")],
+    });
+    appendLocalRagStore({
+      dbPath,
+      contentVersion: "knowledge-v1",
+      approvedScopes: [scope, otherScope],
+      chunks: [chunk("chunk-other", vector(0, 1), { productId: "art-002" })],
+    });
+
+    const result = searchLocalRagStoreScopes({
+      dbPath,
+      contentVersion: "knowledge-v1",
+      scopes: [scope, otherScope],
+      vector: vector(1),
+    });
+    expect(result.status).toBe("ok");
+    expect([...result.hitsByScope?.values() ?? []].flat().map((hit) => hit.chunkId).sort()).toEqual([
+      "chunk-a",
+      "chunk-other",
+    ]);
+  });
+
   test("중복 청크로 transaction이 실패하면 기존 완성 DB를 atomic rename 전 상태로 보존한다", () => {
     const dbPath = databasePath();
     buildLocalRagStore({
@@ -195,6 +229,36 @@ describe("local semantic RAG SQLite store", () => {
       hits: [{ chunkId: "chunk-original" }],
     });
     expect(readdirSync(path.dirname(dbPath))).toEqual(["knowledge.sqlite"]);
+  });
+
+  test("checkpoint 승격 검증이 실패하면 기존 완성 DB를 보존한다", () => {
+    const dbPath = databasePath();
+    const checkpointPath = `${dbPath}.pending`;
+    buildLocalRagStore({
+      dbPath,
+      contentVersion: "knowledge-v1",
+      approvedScopes: [scope],
+      chunks: [chunk("chunk-original")],
+    });
+    buildLocalRagStore({
+      dbPath: checkpointPath,
+      contentVersion: "knowledge-v2",
+      approvedScopes: [scope],
+      chunks: [chunk("chunk-new")],
+    });
+
+    expect(() => promoteLocalRagStore({
+      checkpointPath,
+      dbPath,
+      contentVersion: "knowledge-v2",
+      expectedChunks: 2,
+    })).toThrow("checkpoint metadata mismatch");
+    expect(searchLocalRagStore({
+      dbPath,
+      contentVersion: "knowledge-v1",
+      scope,
+      vector: vector(1),
+    })).toMatchObject({ status: "ok", hits: [{ chunkId: "chunk-original" }] });
   });
 
   test("runtime 검색은 read-only이고 파일 부재는 fail-closed한다", () => {

@@ -46,4 +46,26 @@ describe("full DART filing corpus", () => {
     expect(result.results.some((item) => item.categoryId === "pig" && item.matchedFields.includes("filing"))).toBe(true);
     expect(result.retrieval.semantic).toBe(false);
   });
+
+  test("common filing 의미 점수를 published 축산 카드에 결합한다", async () => {
+    const result = await searchOffers(
+      { q: "의미로만 찾는 표현", categoryId: "pig", limit: 10 },
+      undefined,
+      undefined,
+      {
+        semanticMatches: [{
+          categoryId: "pig",
+          productId: "pig-1",
+          dataNature: "observed",
+          namespace: "common",
+          score: 0.8,
+        }],
+      },
+    );
+    expect(result.results).toContainEqual(expect.objectContaining({
+      productId: "pig-1",
+      namespace: "published-offer",
+      matchedFields: expect.arrayContaining(["semantic"]),
+    }));
+  });
 });
