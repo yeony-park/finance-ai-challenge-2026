@@ -2,6 +2,7 @@ import { createOpenAI, type OpenAILanguageModelResponsesOptions } from "@ai-sdk/
 import { generateObject } from "ai";
 import { z } from "zod";
 import type { ParsedPdf } from "./pdf";
+import { containsObviousPii } from "./public-safety";
 import {
   calculateExtractionManifestHash,
   isExtractionValueInQuote,
@@ -147,12 +148,7 @@ export const createAiSdkDocumentExtractionClient = (): DocumentExtractionClient 
 
 export { calculateExtractionManifestHash, isExtractionValueInQuote } from "./derived-records";
 
-export const containsObviousPii = (text: string): boolean => [
-  /\b\d{6}[- ]?[1-4]\d{6}\b/,
-  /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i,
-  /(?<!\d)(?:01[016789]|0\d{1,2})[- ]?\d{3,4}[- ]?\d{4}(?!\d)/,
-  /(?:계좌(?:번호)?|account)[^\n\d]{0,12}\d{2,6}(?:[- ]\d{2,6}){2,3}/i,
-].some((pattern) => pattern.test(text));
+export { containsObviousPii };
 
 const equationStatus = (fields: readonly z.infer<typeof ExtractionFieldCandidateSchema>[]) => {
   const number = (field: z.infer<typeof ProductCandidateField>) => {

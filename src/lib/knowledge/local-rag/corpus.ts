@@ -7,6 +7,7 @@ import {
 } from "../loader";
 import { containsObviousPii } from "../document-extraction";
 import type { CommonChunkRecord, CommonDocumentRecord } from "../schema";
+import { loadFilingCorpusIfPresent } from "../filing-corpus";
 import {
   LOCAL_RAG_CHUNKING_VERSION,
   type LocalRagScope,
@@ -147,6 +148,9 @@ export const collectCanonicalSemanticCorpus = async (
     if (envelope.document) {
       groups.push({ documents: [envelope.document], chunks: envelope.chunks, namespace: "legacy-scenario" as const });
     }
+  }
+  for (const index of await loadFilingCorpusIfPresent(dataRoot)) {
+    groups.push({ documents: index.documents, chunks: index.chunks, namespace: "common" as const });
   }
   const chunks = groups.flatMap(({ documents, chunks, namespace }) => eligibleChunks(documents, chunks, namespace))
     .sort((left, right) => left.chunkId.localeCompare(right.chunkId));

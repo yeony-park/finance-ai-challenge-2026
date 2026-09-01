@@ -81,7 +81,7 @@ afterEach(async () => {
 });
 
 describe("knowledge ingest plan", () => {
-  test("실제 승인 cattle/pig 공시 12문서와 21 official 청크를 exact scope로 계획한다", async () => {
+  test("검증 발췌 12문서와 전체 공시 36문서를 함께 exact scope로 계획한다", async () => {
     const plan = await buildKnowledgeIngestPlan("data");
     const documents = plan.documents.filter((item) =>
       item.sourceKind === "official-document" &&
@@ -90,8 +90,14 @@ describe("knowledge ingest plan", () => {
     const documentKeys = new Set(documents.map((item) => item.naturalKey));
     const chunks = plan.chunks.filter((item) => documentKeys.has(item.documentNaturalKey));
 
-    expect(documents).toHaveLength(12);
-    expect(chunks).toHaveLength(21);
+    const excerptDocuments = documents.filter((item) => !item.documentId.includes("-dart-full-"));
+    const fullDocuments = documents.filter((item) => item.documentId.includes("-dart-full-"));
+    const excerptKeys = new Set(excerptDocuments.map((item) => item.naturalKey));
+    const excerptChunks = chunks.filter((item) => excerptKeys.has(item.documentNaturalKey));
+    expect(excerptDocuments).toHaveLength(12);
+    expect(excerptChunks).toHaveLength(21);
+    expect(fullDocuments).toHaveLength(36);
+    expect(chunks.length).toBeGreaterThan(12_000);
     expect(new Set(documents.map((item) => `${item.categoryId}/${item.productId}`)).size).toBe(12);
     expect(documents.every((item) => item.approvedForPublic && !item.approvedForExternalAi)).toBe(true);
     expect(chunks.every((item) => item.approvedForPublic && !item.approvedForExternalAi)).toBe(true);

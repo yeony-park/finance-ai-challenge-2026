@@ -97,16 +97,22 @@ describe("livestock-9 approved filing artifact runtime adapter", () => {
     await expect(loadApprovedCattleFilingArtifact("pig", PRODUCT_ID)).resolves.toBeNull();
 
     const repository = createFileProductKnowledgeRepository();
-    await expect(repository.findExact({
+    const fullKnowledge = await repository.findExact({
       categoryId: "cattle",
       productId: PRODUCT_ID,
       dataNature: "observed",
-    })).resolves.toMatchObject({ chunks: { length: 6 } });
-    await expect(repository.findExact({
+    });
+    expect(fullKnowledge.chunks).toEqual(expect.arrayContaining(
+      knowledge.chunks.map((chunk) => expect.objectContaining({ chunkId: chunk.chunkId, chunkHash: chunk.chunkHash })),
+    ));
+    expect(fullKnowledge.chunks.length).toBeGreaterThan(500);
+    const livestock8 = await repository.findExact({
       categoryId: "cattle",
       productId: "livestock-8",
       dataNature: "observed",
-    })).resolves.toMatchObject({ documents: { length: 1 }, chunks: { length: 1 } });
+    });
+    expect(livestock8.documents.length).toBeGreaterThan(1);
+    expect(livestock8.chunks.length).toBeGreaterThan(1);
     for (const scope of [
       { categoryId: "pig" as const, productId: PRODUCT_ID, dataNature: "observed" as const },
       { categoryId: "cattle" as const, productId: "livestock-99", dataNature: "observed" as const },
@@ -436,12 +442,12 @@ describe("livestock-9 approved filing artifact runtime adapter", () => {
       namespace: "published-offer",
       outcome: "evidence_only",
       answerSource: "none",
-      evidence: [expect.objectContaining({ sourceKind: "official-document" })],
-      evidenceGroups: [
-        expect.objectContaining({ groupKind: "issuer-claim", sourceKind: "official-document" }),
-        expect.objectContaining({ groupKind: "external-observation", sourceKind: "external-observation" }),
-      ],
+      evidence: expect.arrayContaining([expect.objectContaining({ sourceKind: "official-document" })]),
     });
+    expect(responseBody.evidenceGroups).toEqual(expect.arrayContaining([
+      expect.objectContaining({ groupKind: "issuer-claim", sourceKind: "official-document" }),
+      expect.objectContaining({ groupKind: "external-observation", sourceKind: "external-observation" }),
+    ]));
     expect(JSON.stringify(responseBody)).not.toMatch(/exact rcpNo|product-specific|versioned artifact|runtime|\/index|\bRAG\b|relationship|issuer_context/);
 
     for (const query of ["공모가액", "공모가", "가격은 얼마인가요?"] as const) {

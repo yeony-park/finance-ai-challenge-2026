@@ -8,6 +8,10 @@ import {
   loadApprovedPigFilingArtifactsForProduct,
   pigFilingKnowledge,
 } from "@/lib/knowledge/pig-filing-artifact";
+import {
+  filingCorpusKnowledge,
+  loadFilingCorpusForProduct,
+} from "@/lib/knowledge/filing-corpus";
 import type {
   ProductKnowledgeChunk,
   ProductKnowledgeDocument,
@@ -17,6 +21,12 @@ import type {
 } from "./types";
 
 const EMPTY_RESULT: ProductKnowledgeResult = { documents: [], chunks: [] };
+
+const mergeKnowledge = (...values: readonly ProductKnowledgeResult[]): ProductKnowledgeResult => ({
+  documents: [...new Map(values.flatMap((value) => value.documents).map((item) => [item.documentId, item])).values()],
+  chunks: [...new Map(values.flatMap((value) => value.chunks).map((item) => [item.chunkId, item])).values()],
+  evidenceGroups: values.flatMap((value) => value.evidenceGroups ?? []),
+});
 
 const validScope = (scope: ProductKnowledgeScope): boolean =>
   scope.dataNature === "observed"
@@ -150,11 +160,25 @@ export const createFileProductKnowledgeRepository = (
   async findExact(scope) {
     if (!validScope(scope)) return EMPTY_RESULT;
     if (scope.categoryId === "cattle" && scope.dataNature === "observed") {
-      const artifacts = await loadApprovedCattleFilingArtifactsForProduct(scope.categoryId, scope.productId, dataRoot);
+      const [artifacts, corpus] = await Promise.all([
+        loadApprovedCattleFilingArtifactsForProduct(scope.categoryId, scope.productId, dataRoot),
+        loadFilingCorpusForProduct(scope.categoryId, scope.productId, dataRoot),
+      ]);
+      if (corpus) return mergeKnowledge(
+        artifacts.length > 0 ? cattleFilingKnowledge(artifacts) : EMPTY_RESULT,
+        filingCorpusKnowledge(corpus),
+      );
       if (artifacts.length > 0) return cattleFilingKnowledge(artifacts);
     }
     if (scope.categoryId === "pig" && scope.dataNature === "observed") {
-      const artifacts = await loadApprovedPigFilingArtifactsForProduct(scope.categoryId, scope.productId, dataRoot);
+      const [artifacts, corpus] = await Promise.all([
+        loadApprovedPigFilingArtifactsForProduct(scope.categoryId, scope.productId, dataRoot),
+        loadFilingCorpusForProduct(scope.categoryId, scope.productId, dataRoot),
+      ]);
+      if (corpus) return mergeKnowledge(
+        artifacts.length > 0 ? pigFilingKnowledge(artifacts) : EMPTY_RESULT,
+        filingCorpusKnowledge(corpus),
+      );
       if (artifacts.length > 0) return pigFilingKnowledge(artifacts);
     }
     return (await fromCommon(scope, dataRoot)) ?? fromLegacyScenario(scope, dataRoot);

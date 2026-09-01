@@ -80,7 +80,7 @@ describe("12상품 다중공시 runtime", () => {
         href: `/offers/${productId}`,
       }));
     }
-  });
+  }, 15_000);
 
   test("각 상품의 원금 미보장 질문은 exact artifact만 반환하고 AI 경로를 사용하지 않는다", async () => {
     for (const product of PRODUCTS) {

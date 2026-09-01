@@ -537,8 +537,8 @@ describe("common knowledge index", () => {
     expect(packageJson.scripts).toMatchObject({
       "knowledge:onboarding:preflight": "tsx src/lib/verify/dart/onboarding-preflight-cli.ts",
       "knowledge:onboarding:audit": "tsx src/lib/verify/dart/onboarding-build-audit-cli.ts",
-      predev: "npm run knowledge:onboarding:audit && npm run knowledge:index && npm run knowledge:derived:check",
-      prebuild: "npm run knowledge:onboarding:audit && npm run knowledge:index && npm run knowledge:derived:check",
+      predev: "npm run knowledge:onboarding:audit && npm run knowledge:filing-corpus:check && npm run knowledge:index && npm run knowledge:derived:check",
+      prebuild: "npm run knowledge:onboarding:audit && npm run knowledge:filing-corpus:check && npm run knowledge:index && npm run knowledge:derived:check",
     });
     expect((await readFile(path.join(process.cwd(), ".gitignore"), "utf8")).split("\n"))
       .toContain("/data/knowledge/generated/index.json");

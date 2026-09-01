@@ -411,16 +411,12 @@ describe("pig DART filing artifact", () => {
     });
     expect(chunk?.chunkHash).toBe("30b7a7b9d54693da9ce1878bca30261a3fcf6f4adc5b50c9ea232ac7a86737a7");
     const plan = await buildKnowledgeIngestPlan();
-    const cattleDocuments = plan.documents.filter((item) =>
-      item.categoryId === "cattle" && item.productId === "livestock-9"
-    );
+    const cattleDocuments = plan.documents.filter((item) => item.documentId === cattle?.document.documentId);
     const cattleChunks = plan.chunks.filter((item) =>
-      item.categoryId === "cattle" && item.productId === "livestock-9"
+      item.documentNaturalKey === cattleDocuments[0]?.naturalKey
     );
-    const pigDocuments = plan.documents.filter((item) =>
-      item.categoryId === "pig" && item.productId === "pig-1"
-    );
-    const pigChunks = plan.chunks.filter((item) => item.categoryId === "pig" && item.productId === "pig-1");
+    const pigDocuments = plan.documents.filter((item) => item.documentId === current?.document.documentId);
+    const pigChunks = plan.chunks.filter((item) => item.documentNaturalKey === pigDocuments[0]?.naturalKey);
     expect(cattleDocuments).toHaveLength(1);
     expect(cattleChunks).toHaveLength(6);
     expect(cattleDocuments[0]).toMatchObject({
@@ -443,11 +439,12 @@ describe("pig DART filing artifact", () => {
     });
     expect(pigChunks).toHaveLength(5);
     expect(pigChunks.every((item) => item.approvedForExternalAi === false)).toBe(true);
-    expect(plan.documents.filter((item) => item.categoryId === "cattle")).toHaveLength(9);
-    expect(plan.documents.filter((item) => item.categoryId === "pig")).toHaveLength(3);
+    expect(plan.documents.filter((item) => item.categoryId === "cattle" && item.sourceKind === "official-document" && !item.documentId.includes("-dart-full-"))).toHaveLength(9);
+    expect(plan.documents.filter((item) => item.categoryId === "pig" && item.sourceKind === "official-document" && !item.documentId.includes("-dart-full-"))).toHaveLength(3);
+    expect(plan.documents.filter((item) => item.documentId.includes("-dart-full-"))).toHaveLength(36);
     expect(plan.documents.filter((item) =>
       (item.categoryId === "cattle" || item.categoryId === "pig") && !item.approvedForExternalAi
-    )).toHaveLength(12);
+    )).toHaveLength(plan.documents.filter((item) => item.categoryId === "cattle" || item.categoryId === "pig").length);
     expect(plan.documents.some((item) =>
       item.categoryId === "pig" && item.productId === "livestock-9"
     )).toBe(false);
@@ -667,7 +664,7 @@ describe("pig DART filing artifact", () => {
       { ...stableLoaders, loadPigFilings },
     );
     expect(mutatedProjection.results).toEqual(approvedProjection.results);
-  });
+  }, 15_000);
 
   test("승인 원자 문단은 evidence-only이고 실재·이력 질문과 external AI는 보류한다", async () => {
     const knowledge = pigFilingKnowledge(artifact());

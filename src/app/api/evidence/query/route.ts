@@ -27,6 +27,10 @@ import {
   loadApprovedPigFilingArtifactsForProduct,
   matchesPigFilingKnowledge,
 } from "@/lib/knowledge/pig-filing-artifact";
+import {
+  loadFilingCorpusForProduct,
+  matchesFilingCorpusKnowledge,
+} from "@/lib/knowledge/filing-corpus";
 
 export const runtime = "nodejs";
 
@@ -90,21 +94,28 @@ export const POST = async (request: Request): Promise<Response> => {
         const pigArtifacts = inferredPigArtifacts.length > 0 ? inferredPigArtifacts : (query.categoryId !== "pig"
           ? []
           : await loadApprovedPigFilingArtifactsForProduct(query.categoryId, query.productId));
-        const artifacts = cattleArtifacts.length > 0 ? cattleArtifacts : pigArtifacts;
+        const filingCorpus = await loadFilingCorpusForProduct(query.categoryId, query.productId);
         const publishedArtifactNamespace = query.namespace !== "common" && query.namespace !== "legacy-scenario";
-        const cattleArtifactBacked = cattleArtifacts.length > 0 &&
-          publishedArtifactNamespace &&
-          registryProduct !== undefined &&
-          matchesCattleFilingKnowledge(cattleArtifacts, productKnowledge);
-        const pigArtifactBacked = pigArtifacts.length > 0 &&
-          publishedArtifactNamespace &&
-          matchesPigFilingKnowledge(pigArtifacts, productKnowledge);
-        const artifactBacked = cattleArtifactBacked || pigArtifactBacked;
+        const corpusBacked = filingCorpus !== null && publishedArtifactNamespace &&
+          matchesFilingCorpusKnowledge(filingCorpus, productKnowledge);
+        const artifactDocumentIds = new Set([...cattleArtifacts, ...pigArtifacts].map((item) => item.document.documentId));
+        const artifactKnowledge = {
+          documents: productKnowledge.documents.filter((item) => artifactDocumentIds.has(item.documentId)),
+          chunks: productKnowledge.chunks.filter((item) => artifactDocumentIds.has(item.documentId)),
+          evidenceGroups: productKnowledge.evidenceGroups,
+        };
+        const legacyArtifactBacked = publishedArtifactNamespace && (
+          cattleArtifacts.length > 0 && registryProduct !== undefined && matchesCattleFilingKnowledge(cattleArtifacts, artifactKnowledge) ||
+          pigArtifacts.length > 0 && matchesPigFilingKnowledge(pigArtifacts, artifactKnowledge)
+        );
+        const artifactBacked = legacyArtifactBacked || corpusBacked && (
+          query.categoryId === "pig" && pigArtifacts.length > 0 ||
+          query.categoryId === "cattle" && cattleArtifacts.length > 0 && registryProduct !== undefined
+        );
         const filingRuntimeReason = artifactBacked
           ? "disabled"
           : access.allowed ? undefined : access.reason;
-        if (cattleArtifacts.length > 0 && publishedArtifactNamespace && !cattleArtifactBacked) return invalidRequest();
-        if (query.categoryId === "pig" && !pigArtifactBacked) return invalidRequest();
+        if ((cattleArtifacts.length > 0 || query.categoryId === "pig") && publishedArtifactNamespace && !artifactBacked) return invalidRequest();
         if (publishedScope?.status !== "found" && !artifactBacked) return invalidRequest();
         const exactRetrieval = await retrieveExactProductEvidence({
           scope: {
@@ -120,13 +131,10 @@ export const POST = async (request: Request): Promise<Response> => {
           runtimeAiAllowed: artifactBacked ? false : access.allowed,
           ...(filingRuntimeReason ? { runtimeReason: filingRuntimeReason } : {}),
         });
-        if (artifactBacked && exactRetrieval.evidence.some((item) => {
-          const artifact = artifacts.find((candidate) => candidate.document.documentId === item.documentId);
-          return !artifact || item.sourceHash !== artifact.sourceHash ||
-          !artifact.chunks.some((chunk) =>
-            chunk.chunkId === item.chunkId && chunk.chunkHash === item.chunkHash
-          );
-        })) return invalidRequest();
+        if (artifactBacked && exactRetrieval.evidence.some((item) => !productKnowledge.chunks.some((chunk) =>
+          chunk.documentId === item.documentId && chunk.chunkId === item.chunkId &&
+          chunk.sourceHash === item.sourceHash && chunk.chunkHash === item.chunkHash
+        ))) return invalidRequest();
         return Response.json({
           categoryId: query.categoryId,
           productId: query.productId,

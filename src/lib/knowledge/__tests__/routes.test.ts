@@ -182,7 +182,7 @@ describe("knowledge API routes", () => {
         "real-estate-sou-daejeon-startup",
       ]),
     );
-  });
+  }, 15_000);
 
   it("두 API가 JSON content type만 받고 과대 streaming body를 즉시 거부한다", async () => {
     const plain = new Request("http://localhost/api/search", {

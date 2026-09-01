@@ -185,9 +185,10 @@ export const searchChunks = (
           occurrences(body, term),
         0,
       );
+      const curatedExcerptBonus = chunk.chunkId.includes("-dart-") && !chunk.chunkId.includes("-dart-full-") ? 50 : 0;
       return {
         chunk,
-        score: matchesEveryGroup ? phraseScore + termScore : 0,
+        score: matchesEveryGroup ? phraseScore + termScore + curatedExcerptBonus : 0,
       };
     })
     .filter(({ score }) => score > 0)

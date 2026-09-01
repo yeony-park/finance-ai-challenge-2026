@@ -11,6 +11,7 @@ import { calculateCommonChunkHash } from "@/lib/knowledge/pdf";
 import { loadDerivedRealEstateRegistry } from "@/lib/knowledge/loader";
 import { loadApprovedCattleFilingArtifacts } from "@/lib/knowledge/cattle-filing-artifact";
 import { loadApprovedPigFilingArtifacts } from "@/lib/knowledge/pig-filing-artifact";
+import { loadFilingCorpusIfPresent } from "@/lib/knowledge/filing-corpus";
 
 type DataNature = "observed" | "scenario";
 type SourceKind = "issuer-claim" | "platform-claim" | "official-document" | "external-observation" | "scenario-input";
@@ -297,11 +298,12 @@ const toPlan = (documents: readonly InputDocument[], chunks: readonly InputChunk
 
 export const buildKnowledgeIngestPlan = async (dataRoot = "data"): Promise<KnowledgeIngestPlan> => {
   const root = path.resolve(dataRoot);
-  const [common, derived, cattleFilings, pigFilings] = await Promise.all([
+  const [common, derived, cattleFilings, pigFilings, filingCorpus] = await Promise.all([
     readCommonIndex(root),
     loadDerivedRealEstateRegistry(root),
     loadApprovedCattleFilingArtifacts(root),
     loadApprovedPigFilingArtifacts(root),
+    loadFilingCorpusIfPresent(root),
   ]);
   const publicProducts = new Set(common.products
     .filter((product) => product.approvedForPublic)
@@ -350,8 +352,17 @@ export const buildKnowledgeIngestPlan = async (dataRoot = "data"): Promise<Knowl
   const filingChunks = filingArtifacts.flatMap((artifact) =>
     artifact.chunks.map((chunk) => commonChunk(chunk, commonDocument(artifact.document, "derived")))
   );
+  const corpusDocuments = filingCorpus.flatMap((index) =>
+    index.documents.map((document) => commonDocument(document, "derived"))
+  );
+  const corpusDocumentById = new Map(corpusDocuments.map((document) => [document.documentId, document]));
+  const corpusChunks = filingCorpus.flatMap((index) => index.chunks.map((chunk) => {
+    const document = corpusDocumentById.get(chunk.documentId);
+    if (!document) throw new KnowledgeIngestError(`filing corpus document scope missing: ${chunk.documentId}`);
+    return commonChunk(chunk, document);
+  }));
   return toPlan(
-    [...commonDocuments, ...derivedDocuments, ...filingDocuments],
-    [...commonChunks, ...derivedChunks, ...filingChunks],
+    [...commonDocuments, ...derivedDocuments, ...filingDocuments, ...corpusDocuments],
+    [...commonChunks, ...derivedChunks, ...filingChunks, ...corpusChunks],
   );
 };

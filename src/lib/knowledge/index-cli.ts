@@ -8,6 +8,7 @@ import {
 import { auditCattleFilingArtifacts } from "./cattle-filing-artifact";
 import { auditPigFilingArtifacts } from "./pig-filing-artifact";
 import { auditLegacyPublicData } from "./legacy-audit";
+import { auditFilingCorpus } from "./filing-corpus";
 
 export const runKnowledgeIndex = async (
   dataRoot = path.join(process.cwd(), "data"),
@@ -19,6 +20,9 @@ export const runKnowledgeIndex = async (
   ];
   for (const item of filingErrors) console.error(`[error] ${item.code} ${item.file}: ${item.message}`);
   if (filingErrors.length > 0) return 1;
+  const corpusErrors = await auditFilingCorpus(dataRoot);
+  for (const message of corpusErrors) console.error(`[error] FILING_CORPUS_INVALID: ${message}`);
+  if (corpusErrors.length > 0) return 1;
   const legacyErrors = await auditLegacyPublicData(dataRoot);
   for (const item of legacyErrors) console.error(`[error] ${item.code} ${item.file}: ${item.message}`);
   if (legacyErrors.length > 0) {

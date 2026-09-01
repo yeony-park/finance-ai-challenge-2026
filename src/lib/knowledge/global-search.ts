@@ -7,6 +7,7 @@ import {
 } from "./loader";
 import { loadApprovedCattleFilingArtifacts } from "./cattle-filing-artifact";
 import { loadApprovedPigFilingArtifacts } from "./pig-filing-artifact";
+import { loadFilingCorpusSearchEntries } from "./filing-corpus";
 import {
   isGenericKnowledgeQuery,
   listPublishedRepositoryOfferings,
@@ -79,6 +80,7 @@ export interface GlobalSearchOptions {
   readonly loadCommonProducts?: typeof loadApprovedCommonProducts;
   readonly loadCattleFilings?: typeof loadApprovedCattleFilingArtifacts;
   readonly loadPigFilings?: typeof loadApprovedPigFilingArtifacts;
+  readonly loadFilingCorpus?: typeof loadFilingCorpusSearchEntries;
 }
 
 let productionCattleFilings: ReturnType<typeof loadApprovedCattleFilingArtifacts> | undefined;
@@ -137,36 +139,6 @@ const PHASE_ALIASES: Readonly<Record<GlobalSearchResult["phase"], string>> = {
 
 const SCENARIO_TOPICS =
   "최소 투자 공모 가격 배당 분배 수수료 비용 운용기간 보유 매각 회수 연면적 건물정보 자산검토 수익비용 금융 회수검토 운영그룹 과거이력";
-
-const CATTLE_FILING_SEARCH_TERMS: Readonly<Record<string, string>> = {
-  "issuer-allocation": "공모가격 공모가 배정",
-  "operation-period": "사업기간 운용기간",
-  "investor-fees": "수수료 비용",
-  "protection-fund": "보호기금 투자자보호",
-  "pricing-basis": "공모가격 가격 산정 수요예측",
-};
-
-const filingSearchText = (
-  sections: readonly { readonly factId: string; readonly title: string; readonly text: string }[],
-  aliases: Readonly<Record<string, string>> = {},
-): string => sections.map((section) =>
-  `${section.title} ${section.text} ${aliases[section.factId] ?? ""}`
-).join(" ");
-
-const filingSearchByProduct = <T extends {
-  readonly sections: readonly { readonly factId: string; readonly title: string; readonly text: string }[];
-}>(
-  artifacts: readonly T[],
-  productIdOf: (artifact: T) => string,
-  aliases: Readonly<Record<string, string>> = {},
-): ReadonlyMap<string, string> => {
-  const result = new Map<string, string>();
-  for (const artifact of artifacts) {
-    const productId = productIdOf(artifact);
-    result.set(productId, `${result.get(productId) ?? ""} ${filingSearchText(artifact.sections, aliases)}`.trim());
-  }
-  return result;
-};
 
 const CATEGORY_ALIASES: Readonly<Record<GlobalSearchResult["categoryId"], readonly string[]>> = {
   cattle: ["cattle", "한우", "소", "가축"],
@@ -288,22 +260,31 @@ export const searchOffers = async (
       (value) => { productionPigFilings = value; },
     )
     : Promise.resolve([]);
-  const [population, commonProducts, cattleFilings, pigFilings, resolvedRepositories] = await Promise.all([
+  const filingCorpusPromise = (
+    categoryId === "cattle" || categoryId === "pig" ||
+    /한우|돼지|돈육|한돈|가축|공모|청약|배정|수수료|위험|원금|투자자\s*보호|질병|경락|ASF/i.test(queryText)
+  ) ? (options.loadFilingCorpus ?? loadFilingCorpusSearchEntries)(dataRoot) : Promise.resolve([]);
+  const [population, commonProducts, cattleFilings, pigFilings, filingCorpus, resolvedRepositories] = await Promise.all([
     (options.loadScenarios ?? loadApprovedScenarios)(dataRoot),
     (options.loadCommonProducts ?? loadApprovedCommonProducts)(dataRoot),
     cattleFilingsPromise,
     pigFilingsPromise,
+    filingCorpusPromise,
     repositories ?? resolveRetrievalRepositories({ dataDir: dataRoot }),
   ]);
-  const cattleFilingByProduct = filingSearchByProduct(
-    cattleFilings,
-    (artifact) => artifact.registry.offerId,
-    CATTLE_FILING_SEARCH_TERMS,
-  );
-  const pigFilingByProduct = filingSearchByProduct(
-    pigFilings,
-    (artifact) => artifact.registry.productId,
-  );
+  const corpusByCategory = (category: "cattle" | "pig") => filingCorpus.filter((entry) => entry.categoryId === category);
+  const cattleFilingByProduct = new Map(corpusByCategory("cattle").map((entry) => [entry.productId, entry.searchText]));
+  for (const artifact of cattleFilings) {
+    const productId = artifact.registry.offerId;
+    const text = artifact.sections.map((section) => `${section.title} ${section.text}`).join(" ");
+    cattleFilingByProduct.set(productId, `${cattleFilingByProduct.get(productId) ?? ""} ${text}`.trim());
+  }
+  const pigFilingByProduct = new Map(corpusByCategory("pig").map((entry) => [entry.productId, entry.searchText]));
+  for (const artifact of pigFilings) {
+    const productId = artifact.registry.productId;
+    const text = artifact.sections.map((section) => `${section.title} ${section.text}`).join(" ");
+    pigFilingByProduct.set(productId, `${pigFilingByProduct.get(productId) ?? ""} ${text}`.trim());
+  }
   const repositoryOfferings = await listPublishedRepositoryOfferings(
     resolvedRepositories.offerings,
     query.categoryId ?? intent.categoryId,
@@ -418,11 +399,13 @@ export const searchOffers = async (
   });
 
   const pig = [...pigFilingByProduct].flatMap(([productId, filing]) => {
-    const artifact = pigFilings.find((item) => item.registry.productId === productId);
-    if (!artifact) return [];
+    const corpus = filingCorpus.find((entry) => entry.categoryId === "pig" && entry.productId === productId);
+    const title = pigFilings.find((item) => item.registry.productId === productId)?.document.title ??
+      corpus?.title;
+    if (!title) return [];
     const match = matchFields(normalized, {
       id: productId,
-      title: artifact.document.title,
+      title,
       category: `pig ${CATEGORY_ALIASES.pig.join(" ")}`,
       filing,
     });
@@ -430,7 +413,7 @@ export const searchOffers = async (
       id: productId,
       productId,
       categoryId: "pig" as const,
-      title: artifact.document.title,
+      title,
       assetKind: "livestock" as const,
       phase: "evidence-only" as const,
       status: "evidence-ready" as const,
