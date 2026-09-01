@@ -6,7 +6,7 @@ import { afterEach, describe, expect, test } from "vitest";
 import type { CanonicalSemanticCorpus } from "../corpus";
 import type { LocalRagEmbedder } from "../embedding";
 import { buildSemanticIndex } from "../index-cli";
-import { searchLocalRagStore } from "../store";
+import { readLocalRagCache, searchLocalRagStore } from "../store";
 import { LOCAL_RAG_VECTOR_DIMENSION } from "../types";
 
 const roots: string[] = [];
@@ -26,10 +26,10 @@ const scope = {
   dataNature: "scenario" as const,
   approvalReferenceKey: `canonical:${"a".repeat(64)}`,
 };
-const corpus = (contentHash = "c".repeat(64)): CanonicalSemanticCorpus => ({
+const corpus = (contentHash = "c".repeat(64), count = 1): CanonicalSemanticCorpus => ({
   contentVersion: `canonical-${contentHash}`,
   scopes: [scope],
-  chunks: [{
+  chunks: Array.from({ length: count }, (_, index) => ({
     namespace: "legacy-scenario",
     scope: {
       categoryId: scope.categoryId,
@@ -38,22 +38,22 @@ const corpus = (contentHash = "c".repeat(64)): CanonicalSemanticCorpus => ({
       dataNature: scope.dataNature,
     },
     approvalReferenceKey: scope.approvalReferenceKey,
-    documentId: "document-1",
-    chunkId: "chunk-1",
+    documentId: `document-${index + 1}`,
+    chunkId: `chunk-${index + 1}`,
     title: "상품설명서",
     sourceUrl: "/scenario-documents/document-1.pdf",
     sourceKind: "scenario-input",
     asOf: "2026-08-30",
     page: 1,
     text: "연면적 100㎡",
-    canonicalText: "연면적 100㎡",
+    canonicalText: `연면적 ${index + 100}㎡`,
     sourceHash: "1".repeat(64),
-    chunkHash: "2".repeat(64),
-    contentHash,
+    chunkHash: (index + 2).toString(16).padStart(64, "0"),
+    contentHash: count === 1 ? contentHash : (index + 100).toString(16).padStart(64, "0"),
     limitations: [],
     approvedForExternalAi: true,
     piiReviewStatus: "passed",
-  }],
+  })),
 });
 
 describe("semantic index CLI core", () => {
@@ -116,5 +116,43 @@ describe("semantic index CLI core", () => {
       scope,
       vector: vector(),
     }).status).toBe("ok");
+  });
+
+  test("여러 배치 중 실패하면 완료 배치를 checkpoint로 보존하고 다음 실행에서 재개한다", async () => {
+    const root = mkdtempSync(path.join(os.tmpdir(), "semantic-index-"));
+    roots.push(root);
+    const dbPath = path.join(root, "knowledge.sqlite");
+    let calls = 0;
+    await expect(buildSemanticIndex({
+      apply: true,
+      apiKey: "fake",
+      dbPath,
+      corpus: corpus("c".repeat(64), 65),
+      embedder: {
+        async embedDocuments(values) {
+          calls += 1;
+          if (calls === 2) throw new Error("provider");
+          return values.map(() => vector());
+        },
+        async embedQuery() { return vector(); },
+      },
+    })).rejects.toThrow("provider");
+    expect(existsSync(dbPath)).toBe(false);
+    expect(readLocalRagCache(`${dbPath}.pending`)).toHaveLength(64);
+
+    let resumed = 0;
+    const result = await buildSemanticIndex({
+      apply: true,
+      apiKey: "fake",
+      dbPath,
+      corpus: corpus("c".repeat(64), 65),
+      embedder: {
+        async embedDocuments(values) { resumed += values.length; return values.map(() => vector()); },
+        async embedQuery() { return vector(); },
+      },
+    });
+    expect(result).toMatchObject({ status: "written", reused: 64, embedded: 1 });
+    expect(resumed).toBe(1);
+    expect(existsSync(`${dbPath}.pending`)).toBe(false);
   });
 });

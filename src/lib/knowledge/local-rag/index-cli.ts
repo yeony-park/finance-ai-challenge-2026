@@ -1,4 +1,5 @@
 import { pathToFileURL } from "node:url";
+import { rmSync } from "node:fs";
 
 import { buildLocalRagStore, readLocalRagCache } from "./store";
 import {
@@ -8,6 +9,7 @@ import {
 import {
   createOpenAiLocalRagEmbedder,
   embedDocumentBatches,
+  LOCAL_RAG_EMBED_BATCH_SIZE,
   type LocalRagEmbedder,
 } from "./embedding";
 import {
@@ -59,7 +61,11 @@ export const buildSemanticIndex = async (
 ): Promise<BuildSemanticIndexResult> => {
   const corpus = options.corpus ?? await collectCanonicalSemanticCorpus(options.dataRoot);
   const dbPath = options.dbPath ?? LOCAL_RAG_DB_PATH;
-  const cachedById = new Map(readLocalRagCache(dbPath).map((chunk) => [cacheKey(chunk), chunk]));
+  const checkpointPath = `${dbPath}.pending`;
+  const cachedById = new Map([
+    ...readLocalRagCache(dbPath),
+    ...readLocalRagCache(checkpointPath),
+  ].map((chunk) => [cacheKey(chunk), chunk]));
   const cached = new Map<string, LocalRagCachedChunk>();
   const missing = corpus.chunks.filter((chunk) => {
     const previous = cachedById.get(cacheKey(chunk));
@@ -79,13 +85,8 @@ export const buildSemanticIndex = async (
   }
   if (!options.apiKey?.trim()) throw new Error("OPENAI_API_KEY is required with --apply");
   const embedder = options.embedder ?? createOpenAiLocalRagEmbedder(options.apiKey);
-  // All provider work finishes before atomic SQLite replacement, so a failed call preserves the old store.
-  const vectors = await embedDocumentBatches(
-    embedder,
-    missing.map((chunk) => chunk.canonicalText),
-  );
-  const embedded = new Map(missing.map((chunk, index) => [cacheKey(chunk), vectors[index]!]));
-  const chunks: LocalRagChunkInput[] = corpus.chunks.map((chunk) => ({
+  const embedded = new Map<string, readonly number[]>();
+  const chunkInput = (chunk: CanonicalSemanticCorpus["chunks"][number]): LocalRagChunkInput => ({
     ...chunk.scope,
     approvalReferenceKey: chunk.approvalReferenceKey,
     documentId: chunk.documentId,
@@ -95,13 +96,29 @@ export const buildSemanticIndex = async (
     contentHash: chunk.contentHash,
     chunkingVersion: LOCAL_RAG_CHUNKING_VERSION,
     vector: cached.get(cacheKey(chunk))?.vector ?? embedded.get(cacheKey(chunk))!,
-  }));
+  });
+  for (let offset = 0; offset < missing.length; offset += LOCAL_RAG_EMBED_BATCH_SIZE) {
+    const batch = missing.slice(offset, offset + LOCAL_RAG_EMBED_BATCH_SIZE);
+    const vectors = await embedDocumentBatches(embedder, batch.map((chunk) => chunk.canonicalText));
+    batch.forEach((chunk, index) => embedded.set(cacheKey(chunk), vectors[index]!));
+    const checkpointChunks = corpus.chunks
+      .filter((chunk) => cached.has(cacheKey(chunk)) || embedded.has(cacheKey(chunk)))
+      .map(chunkInput);
+    buildLocalRagStore({
+      dbPath: checkpointPath,
+      contentVersion: corpus.contentVersion,
+      approvedScopes: corpus.scopes,
+      chunks: checkpointChunks,
+    });
+  }
+  const chunks = corpus.chunks.map(chunkInput);
   buildLocalRagStore({
     dbPath,
     contentVersion: corpus.contentVersion,
     approvedScopes: corpus.scopes,
     chunks,
   });
+  rmSync(checkpointPath, { force: true });
   return {
     status: "written",
     chunks: chunks.length,

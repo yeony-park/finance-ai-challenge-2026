@@ -83,7 +83,7 @@ export const createOpenAiLocalRagEmbedder = (
 export const embedDocumentBatches = async (
   embedder: LocalRagEmbedder,
   values: readonly string[],
-  signal = AbortSignal.timeout(LOCAL_RAG_EMBED_TIMEOUT_MS),
+  signal?: AbortSignal,
 ): Promise<readonly (readonly number[])[]> => {
   const vectors: (readonly number[])[] = [];
   for (let offset = 0; offset < values.length; offset += LOCAL_RAG_EMBED_BATCH_SIZE) {
