@@ -1,0 +1,203 @@
+{
+  "schemaVersion": 1,
+  "artifactVersion": "cattle-filing-derived-v1",
+  "artifactHash": "a13dc3875fca1dfda98426cdbc65c2258a3c5bdbd85dc83615d81a3f6834f5c7",
+  "registry": {
+    "schemaVersion": 1,
+    "registryVersion": "dart-filing-registry-v1",
+    "categoryId": "cattle",
+    "offerId": "livestock-4",
+    "rcpNo": "20250310000915",
+    "submittedOn": "2025-03-10",
+    "entry": {
+      "name": "20250310000915.xml",
+      "sha256": "079a0827378010c0ce26721842db8a77f4987d00a3b00ebe225038c11db993c6"
+    },
+    "source": {
+      "landingUrl": "https://dart.fss.or.kr/dsaf001/main.do",
+      "exactPublicUrl": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20250310000915",
+      "collectedAtSource": "local raw XML file mtime",
+      "method": "OpenDART document.xml exact rcpNo XML entry hash와 승인된 최소 P excerpt를 로컬에서 검증"
+    },
+    "relationship": {
+      "type": "issuer_context",
+      "mappingStatus": "confirmed",
+      "mappingEvidence": "livestock-4와 후보 RCP 20250310000915의 연결을 승인된 onboarding 입력으로 고정하고, local exact XML의 승인 locator를 결정적으로 재검산했습니다. 공시 간 정정 관계·최신성·현재값은 확정하거나 자동 병합하지 않습니다.",
+      "limitations": [
+        "onboarding catalog의 exact 후보 RCP 연결만 확인했으며, primary·correction_of·supplement_to 또는 최신 문서 관계는 주장하지 않습니다.",
+        "후보 공시 사이의 정정·보충 관계와 현재값은 원문 표지 및 메타만으로 확정하지 않았습니다."
+      ]
+    },
+    "approval": {
+      "policyId": "onboarding-product-filing-review-v2",
+      "scope": "livestock-4 product-specific PII-free XML excerpt 1개",
+      "externalAiApproved": false,
+      "piiReviewStatus": "passed"
+    },
+    "sectionLocators": [
+      {
+        "factId": "principal-not-guaranteed",
+        "title": "원금 미보장",
+        "anchor": "원금 미보장",
+        "sectionPath": [
+          "요약정보",
+          "1. 핵심투자위험",
+          "1. 핵심투자위험"
+        ],
+        "occurrence": 1,
+        "evidenceTokens": [
+          "원금",
+          "미보장"
+        ],
+        "normalizedExcerptHash": "b908494f43183eec74a424c7b354ef119eeee844859d2d5f82ba4568e28833af"
+      }
+    ],
+    "maskedObservation": {
+      "reportPath": "public/livestock-4/report-2026-08-14T18-27-09-373Z.json",
+      "sha256": "a7a8041e7f67b74031c3b259aa9fb19f74bd55557906648868baca5fdfaeaa9b",
+      "allowedFields": [
+        "품종",
+        "성별",
+        "취득시기"
+      ]
+    }
+  },
+  "registryHash": "23c0eda3a90d3f37066a5d8d719a4f2963c3aba46bc6a69c059b48a8515f28d6",
+  "sourceHash": "079a0827378010c0ce26721842db8a77f4987d00a3b00ebe225038c11db993c6",
+  "sanitizerVersion": "cattle-filing-sanitizer-v1",
+  "sourceFileMtime": "2026-09-01T09:30:15.162Z",
+  "approval": {
+    "policyId": "onboarding-product-filing-review-v2",
+    "scope": "livestock-4 product-specific PII-free XML excerpt 1개",
+    "externalAiApproved": false,
+    "piiReviewStatus": "passed"
+  },
+  "sections": [
+    {
+      "sectionId": "dart-principal-not-guaranteed",
+      "factId": "principal-not-guaranteed",
+      "title": "원금 미보장",
+      "text": "나. 원금 미보장과 관련된 위험",
+      "sectionPath": [
+        "요약정보",
+        "1. 핵심투자위험",
+        "1. 핵심투자위험"
+      ],
+      "charRange": {
+        "start": 20087,
+        "end": 20125
+      },
+      "anchorOffset": 20106,
+      "occurrence": 1,
+      "normalizedExcerptHash": "b908494f43183eec74a424c7b354ef119eeee844859d2d5f82ba4568e28833af",
+      "sectionHash": "05e3cd8f84e87a3cb8f4546910474587c1aff1913cbbb88df0354ffb4a5fa9da"
+    }
+  ],
+  "document": {
+    "schemaVersion": 1,
+    "categoryId": "cattle",
+    "productId": "livestock-4",
+    "documentId": "cattle-livestock-4-dart-20250310000915",
+    "title": "축산 투자계약증권 공시 승인 사실",
+    "publisher": "OpenDART",
+    "sourceKind": "official-document",
+    "sourceUrl": "https://dart.fss.or.kr/dsaf001/main.do",
+    "asOf": "2025-03-10",
+    "collectedAt": "2026-09-01T09:30:15.162Z",
+    "dataNature": "observed",
+    "rightsStatus": "unknown",
+    "approvedForPublic": true,
+    "approvedForExternalAi": false,
+    "piiReviewStatus": "passed",
+    "sourceHash": "079a0827378010c0ce26721842db8a77f4987d00a3b00ebe225038c11db993c6",
+    "status": "ready",
+    "pages": [
+      {
+        "page": 1,
+        "quality": "ready",
+        "reasonCodes": [
+          "xml-logical-page"
+        ],
+        "metrics": {
+          "itemCount": 1,
+          "characterCount": 17,
+          "density": 0
+        },
+        "limitations": [
+          "원천은 XML이므로 PDF 페이지 대신 논리 페이지 1로 기록했습니다."
+        ]
+      }
+    ],
+    "limitations": [
+      "OpenDART exact rcpNo XML의 승인된 product-specific 사실만 정규화했으며, 원문 XML과 식별정보는 포함하지 않았습니다."
+    ]
+  },
+  "chunks": [
+    {
+      "schemaVersion": 1,
+      "categoryId": "cattle",
+      "productId": "livestock-4",
+      "documentId": "cattle-livestock-4-dart-20250310000915",
+      "chunkId": "cattle-livestock-4-dart-20250310000915-principal-not-guaranteed",
+      "title": "원금 미보장",
+      "sourceKind": "official-document",
+      "sourceUrl": "https://dart.fss.or.kr/dsaf001/main.do",
+      "asOf": "2025-03-10",
+      "dataNature": "observed",
+      "page": 1,
+      "text": "나. 원금 미보장과 관련된 위험",
+      "canonicalText": "나. 원금 미보장과 관련된 위험",
+      "positions": [],
+      "pageQuality": "ready",
+      "sourceHash": "079a0827378010c0ce26721842db8a77f4987d00a3b00ebe225038c11db993c6",
+      "chunkHash": "a5ddd82fb613fa037c571023e9c79a73d927eb29ea939a1637d6ed23e8a00b34",
+      "approvedForPublic": true,
+      "approvedForExternalAi": false,
+      "piiReviewStatus": "passed",
+      "status": "ready",
+      "limitations": [
+        "OpenDART exact rcpNo XML의 승인된 product-specific 사실만 정규화했으며, 원문 XML과 식별정보는 포함하지 않았습니다."
+      ]
+    }
+  ],
+  "externalObservations": [
+    {
+      "sourceKind": "external-observation",
+      "sourceUrl": "https://www.data.go.kr",
+      "sourceHash": "a7a8041e7f67b74031c3b259aa9fb19f74bd55557906648868baca5fdfaeaa9b",
+      "observedAt": "2026-08-14T18:27:09.373Z",
+      "allowedFields": [
+        "품종",
+        "성별",
+        "취득시기"
+      ],
+      "fieldSummary": [
+        {
+          "field": "품종",
+          "matchCount": 50,
+          "mismatchCount": 0,
+          "unverifiableCount": 0
+        },
+        {
+          "field": "성별",
+          "matchCount": 50,
+          "mismatchCount": 0,
+          "unverifiableCount": 0
+        },
+        {
+          "field": "취득시기",
+          "matchCount": 47,
+          "mismatchCount": 0,
+          "unverifiableCount": 3
+        }
+      ],
+      "limitations": [
+        "마스킹된 공개 리포트의 허용 필드 집계만 투영했으며, 개체·농장·소유자 식별 정보는 포함하지 않았습니다."
+      ]
+    }
+  ],
+  "limitations": [
+    "단일 versioned derived artifact입니다. runtime/index는 이 artifact를 직접 읽도록 후속 단계에서 연결해야 합니다.",
+    "청약 미달 처리 사실은 발행인과 공동사업 운영자의 동일성을 원문에서 확정하지 못해 RAG 근거에서 제외"
+  ]
+}

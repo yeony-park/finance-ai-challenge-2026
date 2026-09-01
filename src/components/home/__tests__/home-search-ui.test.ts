@@ -61,6 +61,23 @@ describe("홈 검색 응답 UI", () => {
     expect(markup).not.toContain("가상 시나리오");
   });
 
+  test("공시 근거만 있는 한돈 결과를 청약 단계처럼 표시하지 않는다", () => {
+    const markup = renderToStaticMarkup(createElement(SearchResultsPanel, {
+      results: [{
+        id: "pig-1",
+        productId: "pig-1",
+        title: "한돈 투자계약증권 · pig-1",
+        isScenario: false,
+        phase: "evidence-only" as const,
+        href: "/offers/pig-1",
+      }],
+    }));
+
+    expect(markup).toContain("공시 근거 확인");
+    expect(markup).not.toMatch(/청약 예정|청약 중|청약 종료|상장 거래/);
+    expect(markup).toContain('href="/offers/pig-1"');
+  });
+
   test("추천 요청은 순위 대신 다섯 검토 영역을 안내한다", () => {
     const markup = renderToStaticMarkup(createElement(ReviewGuidancePanel, {
       guidance: {

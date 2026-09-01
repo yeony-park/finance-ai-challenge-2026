@@ -56,6 +56,25 @@ describe("knowledge API routes", () => {
     });
   });
 
+  it("artifact-only pig는 evidence-only phase로 직렬화하고 상품 단계 필터와 섞지 않는다", async () => {
+    const evidenceOnly = await searchPost(request("http://localhost/api/search", {
+      q: "pig-1",
+      phase: "evidence-only",
+    }));
+    expect(evidenceOnly.status).toBe(200);
+    expect((await evidenceOnly.json()).results).toContainEqual(expect.objectContaining({
+      productId: "pig-1",
+      phase: "evidence-only",
+      status: "evidence-ready",
+    }));
+
+    for (const phase of ["subscription-open", "closed", "listed-trading"] as const) {
+      const response = await searchPost(request("http://localhost/api/search", { q: "pig-1", phase }));
+      expect(response.status).toBe(200);
+      expect((await response.json()).results).not.toContainEqual(expect.objectContaining({ productId: "pig-1" }));
+    }
+  });
+
   it("Home UI 호환 200자 상한은 contracts/api의 예약 500자 계약과 다름을 고정한다", async () => {
     expect(
       (await searchPost(request("http://localhost/api/search", { q: "x".repeat(201) }))).status,

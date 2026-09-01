@@ -81,6 +81,22 @@ afterEach(async () => {
 });
 
 describe("knowledge ingest plan", () => {
+  test("실제 승인 cattle/pig 공시 12문서와 21 official 청크를 exact scope로 계획한다", async () => {
+    const plan = await buildKnowledgeIngestPlan("data");
+    const documents = plan.documents.filter((item) =>
+      item.sourceKind === "official-document" &&
+      (item.categoryId === "cattle" || item.categoryId === "pig")
+    );
+    const documentKeys = new Set(documents.map((item) => item.naturalKey));
+    const chunks = plan.chunks.filter((item) => documentKeys.has(item.documentNaturalKey));
+
+    expect(documents).toHaveLength(12);
+    expect(chunks).toHaveLength(21);
+    expect(new Set(documents.map((item) => `${item.categoryId}/${item.productId}`)).size).toBe(12);
+    expect(documents.every((item) => item.approvedForPublic && !item.approvedForExternalAi)).toBe(true);
+    expect(chunks.every((item) => item.approvedForPublic && !item.approvedForExternalAi)).toBe(true);
+  });
+
   test("legacy 디렉터리 없이 빈 common/derived 입력을 안전하게 dry build한다", async () => {
     const plan = await buildKnowledgeIngestPlan(await fixtureRoot());
     expect(plan).toEqual({ documents: [], chunks: [], scopes: [] });

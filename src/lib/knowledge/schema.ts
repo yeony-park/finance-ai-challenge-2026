@@ -637,6 +637,7 @@ export const GlobalSearchQuerySchema = z.strictObject({
     "closed",
     "listed-trading",
     "settled",
+    "evidence-only",
   ]).optional(),
   limit: z.number().int().min(1).max(20).default(10),
 });
@@ -667,6 +668,7 @@ export const GlobalSearchRequestSchema = z.strictObject({
     "closed",
     "listed-trading",
     "settled",
+    "evidence-only",
   ]).optional(),
   limit: z.number().int().min(1).max(20).default(10),
 }).superRefine(validateCanonicalQuery).transform(({ q, query, ...rest }) => ({

@@ -89,7 +89,7 @@ afterEach(() => {
 });
 
 describe("integration repository API wiring", () => {
-  it("등록된 공개 route의 DB offering을 검색하고 exact scope facts만 반환한다", async () => {
+  it("등록된 공개 route의 DB offering은 검색하되 canonical cattle 근거가 없으면 답변을 보류한다", async () => {
     const search = await searchPost(request("http://localhost/api/search", { query: "통합 저장소 공개명" }));
     expect(search.status).toBe(200);
     expect(await search.json()).toMatchObject({
@@ -112,21 +112,10 @@ describe("integration repository API wiring", () => {
       namespace: "published-offer",
       query: "공모금액과 단가는 얼마인가요",
     }));
-    expect(evidence.status).toBe(200);
-    expect(await evidence.json()).toMatchObject({
-      namespace: "published-offer",
-      outcome: "answer",
-      answerSource: "structured",
-      evidence: [],
-      structuredClaims: [
-        expect.objectContaining({ claim: "amountWon", productId: "livestock-1", dataNature: "observed" }),
-        expect.objectContaining({ claim: "unitPriceWon", productId: "livestock-1", dataNature: "observed" }),
-      ],
-      limitations: expect.arrayContaining([expect.stringContaining("등록된 공개 PDF가 없어")]),
-    });
+    expect(evidence.status).toBe(400);
   });
 
-  it("partial product PDF의 ready chunk provenance를 붙이고 구조화값 충돌을 덮어쓰지 않는다", async () => {
+  it("canonical cattle artifact와 다른 partial DB PDF는 구조화값에 붙이지 않는다", async () => {
     state.pdfAmountWon = 130_000_000;
     const response = await evidencePost(request("http://localhost/api/evidence/query", {
       categoryId: "cattle",
@@ -135,37 +124,8 @@ describe("integration repository API wiring", () => {
       namespace: "published-offer",
       query: "공모금액은 얼마인가요",
     }));
-    expect(response.status).toBe(200);
-    expect(await response.json()).toMatchObject({
-      outcome: "answer",
-      answerSource: "structured",
-      answer: expect.stringContaining("120,000,000원"),
-      evidence: [expect.objectContaining({
-        sourceId: "source-10",
-        documentId: "document-10",
-        chunkId: "chunk-10",
-        categoryId: "cattle",
-        productId: "livestock-1",
-        dataNature: "observed",
-        sourceUrl: "https://example.com/product.pdf",
-        asOf: "2026-08-29",
-        sourceHash: "b".repeat(64),
-        chunkHash: "c".repeat(64),
-        status: "ready",
-        page: 2,
-        sourceKind: "official-document",
-      })],
-      conflicts: [expect.objectContaining({
-        claim: "amountWon",
-        structuredValue: 120_000_000,
-        documentValue: "130000000",
-        sourceId: "source-10",
-        documentId: "document-10",
-        chunkId: "chunk-10",
-        page: 2,
-      })],
-      limitations: expect.arrayContaining([expect.stringContaining("일치하지 않아 두 값을 함께 보존")]),
-    });
+    expect(response.status).toBe(400);
+    expect(JSON.stringify(await response.json())).not.toContain("130,000,000");
   });
 
   it("unknown/category mismatch와 상품 질문의 generic fallback을 fail-closed 처리한다", async () => {
@@ -188,13 +148,7 @@ describe("integration repository API wiring", () => {
       namespace: "published-offer",
       query: "다른 상품 문서로 위험을 알려줘",
     }));
-    expect(await noFallback.json()).toMatchObject({
-      outcome: "abstain",
-      evidence: [],
-      limitations: expect.arrayContaining([
-        expect.stringContaining("다른 상품이나 일반 문서로 보충하지 않았습니다"),
-      ]),
-    });
+    expect(noFallback.status).toBe(400);
   });
 
   it("configured DB 실패는 file fallback 없이 legacy 호환 500 envelope로 응답한다", async () => {

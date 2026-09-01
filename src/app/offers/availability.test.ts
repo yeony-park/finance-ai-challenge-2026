@@ -1,4 +1,5 @@
 import { describe, expect, test } from "vitest";
+import { renderToStaticMarkup } from "react-dom/server";
 
 import CattlePage from "@/app/cattle/page";
 import OfferReportPage, {
@@ -7,27 +8,35 @@ import OfferReportPage, {
 import OffersPage from "@/app/offers/page";
 
 describe("공개 verification route availability", () => {
-  test("목록과 cattle 페이지는 pending 공개 파일 때문에 실패하지 않는다", async () => {
-    await expect(OffersPage()).resolves.toBeTruthy();
+  test("목록은 개별 legacy report 실패를 artifact 카드로 대체하고 전체 렌더를 유지한다", async () => {
+    const markup = renderToStaticMarkup(await OffersPage());
+    for (let round = 1; round <= 8; round += 1) {
+      expect(markup).toContain(`href="/offers/livestock-${round}"`);
+    }
+    expect(markup).toContain("원금 미보장 문단 확인");
     await expect(
       CattlePage({ searchParams: Promise.resolve({}) }),
     ).resolves.toBeTruthy();
   });
 
-  test("pending cattle 상세는 404이고 active cattle 상세은 정상이다", async () => {
-    await expect(
-      OfferReportPage({ params: Promise.resolve({ id: "livestock-1" }) }),
-    ).rejects.toThrow("NEXT_HTTP_ERROR_FALLBACK;404");
+  test("승인 artifact가 있는 한우 1~8호와 기존 9호 상세은 정상이다", async () => {
+    for (let round = 1; round <= 8; round += 1) {
+      await expect(
+        OfferReportPage({ params: Promise.resolve({ id: `livestock-${round}` }) }),
+      ).resolves.toBeTruthy();
+    }
     await expect(
       OfferReportPage({ params: Promise.resolve({ id: "livestock-9" }) }),
     ).resolves.toBeTruthy();
   });
 
-  test("정적 경로에는 active cattle과 승인된 pig 상세만 포함한다", async () => {
+  test("정적 경로에는 승인된 cattle과 pig 상세을 포함한다", async () => {
     const params = await generateStaticParams();
-    expect(params).toContainEqual({ id: "livestock-9" });
-    expect(params).toContainEqual({ id: "pig-1" });
-    expect(params).not.toContainEqual({ id: "livestock-1" });
-    expect(params).not.toContainEqual({ id: "livestock-8" });
+    for (let round = 1; round <= 9; round += 1) {
+      expect(params).toContainEqual({ id: `livestock-${round}` });
+    }
+    for (let round = 1; round <= 3; round += 1) {
+      expect(params).toContainEqual({ id: `pig-${round}` });
+    }
   });
 });

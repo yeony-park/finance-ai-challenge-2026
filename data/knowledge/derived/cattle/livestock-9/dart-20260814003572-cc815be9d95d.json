@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "artifactVersion": "cattle-filing-derived-v1",
-  "artifactHash": "962fa51322e08cdc43a76a7e73d197b95297dbce791b03d2f2d496ed80555428",
+  "artifactHash": "96c45dccbf28cb226777ade18144d29f47700d1dc0bc284b40e54253897db875",
   "registry": {
     "schemaVersion": 1,
     "registryVersion": "dart-filing-registry-v1",
@@ -109,6 +109,22 @@
           "수요예측"
         ],
         "normalizedExcerptHash": "3880756bf8802914b34bd0248f8aa7ba9e299683aa57d7086e1c330a0c4aa88c"
+      },
+      {
+        "factId": "principal-not-guaranteed",
+        "title": "원금 미보장",
+        "anchor": "원금 미보장",
+        "sectionPath": [
+          "요약정보",
+          "1. 핵심투자위험",
+          "1. 핵심투자위험"
+        ],
+        "occurrence": 1,
+        "evidenceTokens": [
+          "원금",
+          "미보장"
+        ],
+        "normalizedExcerptHash": "b908494f43183eec74a424c7b354ef119eeee844859d2d5f82ba4568e28833af"
       }
     ],
     "maskedObservation": {
@@ -121,7 +137,7 @@
       ]
     }
   },
-  "registryHash": "f1bf3f7024d50d6a31e48916866ad68d7a8f8294e9249df8047537fe5b6ef4fe",
+  "registryHash": "33e7c402bb295da407368d44421e6ba0d398ea6b857a1ef1e299503ae84cf1e4",
   "sourceHash": "cc815be9d95de6cbe4a6a16f632cfe65c3f56589ce77caa9c7890fefce8b99e2",
   "sanitizerVersion": "cattle-filing-sanitizer-v1",
   "sourceFileMtime": "2026-08-31T12:15:28.877Z",
@@ -230,6 +246,25 @@
       "occurrence": 7,
       "normalizedExcerptHash": "3880756bf8802914b34bd0248f8aa7ba9e299683aa57d7086e1c330a0c4aa88c",
       "sectionHash": "4aeff5e740ecbf2a438b3d7c97d641bfe22fdd6bc299813e8a77134c293b937d"
+    },
+    {
+      "sectionId": "dart-principal-not-guaranteed",
+      "factId": "principal-not-guaranteed",
+      "title": "원금 미보장",
+      "text": "나. 원금 미보장과 관련된 위험",
+      "sectionPath": [
+        "요약정보",
+        "1. 핵심투자위험",
+        "1. 핵심투자위험"
+      ],
+      "charRange": {
+        "start": 123311,
+        "end": 123349
+      },
+      "anchorOffset": 123330,
+      "occurrence": 1,
+      "normalizedExcerptHash": "b908494f43183eec74a424c7b354ef119eeee844859d2d5f82ba4568e28833af",
+      "sectionHash": "7564b85ed62298cd2a7dc91ec4a4b557eb786e5a438a9a9c0044636eed6b4615"
     }
   ],
   "document": {
@@ -258,8 +293,8 @@
           "xml-logical-page"
         ],
         "metrics": {
-          "itemCount": 5,
-          "characterCount": 897,
+          "itemCount": 6,
+          "characterCount": 914,
           "density": 0
         },
         "limitations": [
@@ -394,6 +429,32 @@
       "pageQuality": "ready",
       "sourceHash": "cc815be9d95de6cbe4a6a16f632cfe65c3f56589ce77caa9c7890fefce8b99e2",
       "chunkHash": "1dec0f46e57dbf892ac0b3d203bd31062c4947f61e49a3c180357d1effb034fe",
+      "approvedForPublic": true,
+      "approvedForExternalAi": false,
+      "piiReviewStatus": "passed",
+      "status": "ready",
+      "limitations": [
+        "OpenDART exact rcpNo XML의 승인된 product-specific 사실만 정규화했으며, 원문 XML과 식별정보는 포함하지 않았습니다."
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "categoryId": "cattle",
+      "productId": "livestock-9",
+      "documentId": "cattle-livestock-9-dart-20260814003572",
+      "chunkId": "cattle-livestock-9-dart-20260814003572-principal-not-guaranteed",
+      "title": "원금 미보장",
+      "sourceKind": "official-document",
+      "sourceUrl": "https://dart.fss.or.kr/dsaf001/main.do",
+      "asOf": "2026-08-14",
+      "dataNature": "observed",
+      "page": 1,
+      "text": "나. 원금 미보장과 관련된 위험",
+      "canonicalText": "나. 원금 미보장과 관련된 위험",
+      "positions": [],
+      "pageQuality": "ready",
+      "sourceHash": "cc815be9d95de6cbe4a6a16f632cfe65c3f56589ce77caa9c7890fefce8b99e2",
+      "chunkHash": "a5ddd82fb613fa037c571023e9c79a73d927eb29ea939a1637d6ed23e8a00b34",
       "approvedForPublic": true,
       "approvedForExternalAi": false,
       "piiReviewStatus": "passed",

@@ -2,9 +2,10 @@ import { loadDartFilingRegistry } from "./filing-registry";
 import { buildAndWriteCattleFilingDerivedArtifact, verifyCattleFilingDerivedArtifact } from "./filing-derived";
 
 const offerId = process.argv[2] ?? "";
+const rcpNo = process.argv[3];
 
 const main = async (): Promise<void> => {
-  const registry = await loadDartFilingRegistry(offerId);
+  const registry = await loadDartFilingRegistry(offerId, "data", rcpNo);
   const result = await buildAndWriteCattleFilingDerivedArtifact(registry);
   const verified = verifyCattleFilingDerivedArtifact(result.artifact);
   console.log(`derived artifact 생성: ${result.path} — sections ${verified.sections.length}, chunks ${verified.chunks.length}`);

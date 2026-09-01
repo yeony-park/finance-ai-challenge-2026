@@ -130,7 +130,7 @@ const asError = (body: LiveVerifyBody | LiveVerifyError): LiveVerifyError =>
   body as LiveVerifyError;
 
 describe("라이브 재검증 — 허용목록·에러 계약", () => {
-  test("pending cattle은 snapshot fallback도 읽지 않는다", async () => {
+  test("active cattle은 외부 key가 없으면 snapshot fallback을 읽는다", async () => {
     let snapshots = 0;
     const result = await revalidateOffer(
       { offerId: "livestock-1", clientKey: "1.1.1.1" },
@@ -143,8 +143,8 @@ describe("라이브 재검증 — 허용목록·에러 계약", () => {
       }),
     );
 
-    expect(result.status).toBe(404);
-    expect(snapshots).toBe(0);
+    expect(result.status).toBe(200);
+    expect(snapshots).toBe(1);
   });
 
   test("공개 목록에 없는 공모는 404이고 원문을 받아 보지도 않는다", async () => {

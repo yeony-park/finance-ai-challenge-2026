@@ -20,11 +20,11 @@ import {
   retrieveExactProductEvidence,
 } from "@/lib/knowledge/search-orchestration";
 import {
-  loadApprovedCattleFilingArtifact,
+  loadApprovedCattleFilingArtifactsForProduct,
   matchesCattleFilingKnowledge,
 } from "@/lib/knowledge/cattle-filing-artifact";
 import {
-  loadApprovedPigFilingArtifact,
+  loadApprovedPigFilingArtifactsForProduct,
   matchesPigFilingKnowledge,
 } from "@/lib/knowledge/pig-filing-artifact";
 
@@ -61,19 +61,19 @@ export const POST = async (request: Request): Promise<Response> => {
       const publishedScope = offeringsRepository
         ? await findPublishedOfferingScope(offeringsRepository, query.categoryId, query.productId)
         : null;
-      const inferredPigArtifact =
+      const inferredPigArtifacts =
         query.namespace === undefined && query.categoryId === "pig" && query.dataNature === "observed"
-          ? await loadApprovedPigFilingArtifact(query.categoryId, query.productId)
-          : null;
+          ? await loadApprovedPigFilingArtifactsForProduct(query.categoryId, query.productId)
+          : [];
       if (publishedScope?.status === "category-mismatch") return invalidRequest();
       if (!query.namespace && [
         Boolean(scenario),
         Boolean(commonScope?.product),
-        publishedScope?.status === "found" || inferredPigArtifact !== null,
+        publishedScope?.status === "found" || inferredPigArtifacts.length > 0,
       ].filter(Boolean).length > 1) {
         return invalidRequest();
       }
-      if (query.namespace === "published-offer" || publishedScope?.status === "found" || inferredPigArtifact) {
+      if (query.namespace === "published-offer" || publishedScope?.status === "found" || inferredPigArtifacts.length > 0) {
         const productKnowledgeRepository = await resolveProductKnowledgeRepository();
         const productKnowledge = await productKnowledgeRepository.findExact({
           categoryId: query.categoryId,
@@ -84,21 +84,26 @@ export const POST = async (request: Request): Promise<Response> => {
           offer.id === query.productId &&
           (offer.assetKind === "real-estate" ? "real-estate" : "cattle") === query.categoryId
         );
-        const cattleArtifact = publishedScope?.status === "found" || query.categoryId !== "cattle"
-          ? null
-          : await loadApprovedCattleFilingArtifact(query.categoryId, query.productId);
-        const pigArtifact = inferredPigArtifact ?? (query.categoryId !== "pig"
-          ? null
-          : await loadApprovedPigFilingArtifact(query.categoryId, query.productId));
-        const artifact = cattleArtifact ?? pigArtifact;
-        const cattleArtifactBacked = cattleArtifact !== null &&
-          query.namespace === "published-offer" &&
+        const cattleArtifacts = query.categoryId !== "cattle"
+          ? []
+          : await loadApprovedCattleFilingArtifactsForProduct(query.categoryId, query.productId);
+        const pigArtifacts = inferredPigArtifacts.length > 0 ? inferredPigArtifacts : (query.categoryId !== "pig"
+          ? []
+          : await loadApprovedPigFilingArtifactsForProduct(query.categoryId, query.productId));
+        const artifacts = cattleArtifacts.length > 0 ? cattleArtifacts : pigArtifacts;
+        const publishedArtifactNamespace = query.namespace !== "common" && query.namespace !== "legacy-scenario";
+        const cattleArtifactBacked = cattleArtifacts.length > 0 &&
+          publishedArtifactNamespace &&
           registryProduct !== undefined &&
-          matchesCattleFilingKnowledge(cattleArtifact, productKnowledge);
-        const pigArtifactBacked = pigArtifact !== null &&
-          query.namespace !== "common" && query.namespace !== "legacy-scenario" &&
-          matchesPigFilingKnowledge(pigArtifact, productKnowledge);
+          matchesCattleFilingKnowledge(cattleArtifacts, productKnowledge);
+        const pigArtifactBacked = pigArtifacts.length > 0 &&
+          publishedArtifactNamespace &&
+          matchesPigFilingKnowledge(pigArtifacts, productKnowledge);
         const artifactBacked = cattleArtifactBacked || pigArtifactBacked;
+        const filingRuntimeReason = artifactBacked
+          ? "disabled"
+          : access.allowed ? undefined : access.reason;
+        if (cattleArtifacts.length > 0 && publishedArtifactNamespace && !cattleArtifactBacked) return invalidRequest();
         if (query.categoryId === "pig" && !pigArtifactBacked) return invalidRequest();
         if (publishedScope?.status !== "found" && !artifactBacked) return invalidRequest();
         const exactRetrieval = await retrieveExactProductEvidence({
@@ -112,16 +117,16 @@ export const POST = async (request: Request): Promise<Response> => {
           limit: query.limit,
           repository: productKnowledgeRepository,
           fallbackChunks: productKnowledge.chunks,
-          runtimeAiAllowed: access.allowed,
-          ...(!access.allowed ? { runtimeReason: access.reason } : {}),
+          runtimeAiAllowed: artifactBacked ? false : access.allowed,
+          ...(filingRuntimeReason ? { runtimeReason: filingRuntimeReason } : {}),
         });
-        if (artifactBacked && artifact && exactRetrieval.evidence.some((item) =>
-          item.documentId !== artifact.document.documentId ||
-          item.sourceHash !== artifact.sourceHash ||
+        if (artifactBacked && exactRetrieval.evidence.some((item) => {
+          const artifact = artifacts.find((candidate) => candidate.document.documentId === item.documentId);
+          return !artifact || item.sourceHash !== artifact.sourceHash ||
           !artifact.chunks.some((chunk) =>
             chunk.chunkId === item.chunkId && chunk.chunkHash === item.chunkHash
-          )
-        )) return invalidRequest();
+          );
+        })) return invalidRequest();
         return Response.json({
           categoryId: query.categoryId,
           productId: query.productId,
@@ -146,7 +151,7 @@ export const POST = async (request: Request): Promise<Response> => {
                 {
                   limit: query.limit,
                   evidence: exactRetrieval.evidence,
-                  ...(disabledLiveAnswer ? { liveAnswer: disabledLiveAnswer } : {}),
+                  ...((artifactBacked || disabledLiveAnswer) ? { liveAnswer: async () => null } : {}),
                 },
               )
             : await answerFromProductKnowledge(
@@ -160,7 +165,7 @@ export const POST = async (request: Request): Promise<Response> => {
                 {
                   limit: query.limit,
                   evidence: exactRetrieval.evidence,
-                  ...(disabledLiveAnswer ? { liveAnswer: disabledLiveAnswer } : {}),
+                  ...((artifactBacked || disabledLiveAnswer) ? { liveAnswer: async () => null } : {}),
                 },
               )),
         });

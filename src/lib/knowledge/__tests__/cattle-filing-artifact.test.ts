@@ -42,7 +42,7 @@ describe("livestock-9 approved filing artifact runtime adapter", () => {
         status: "ready",
       }),
     ]);
-    expect(knowledge.chunks).toHaveLength(5);
+    expect(knowledge.chunks).toHaveLength(6);
     expect(knowledge.chunks.every((chunk) =>
       chunk.status === "ready" && !chunk.approvedForExternalAi
     )).toBe(true);
@@ -101,10 +101,15 @@ describe("livestock-9 approved filing artifact runtime adapter", () => {
       categoryId: "cattle",
       productId: PRODUCT_ID,
       dataNature: "observed",
-    })).resolves.toMatchObject({ chunks: { length: 5 } });
+    })).resolves.toMatchObject({ chunks: { length: 6 } });
+    await expect(repository.findExact({
+      categoryId: "cattle",
+      productId: "livestock-8",
+      dataNature: "observed",
+    })).resolves.toMatchObject({ documents: { length: 1 }, chunks: { length: 1 } });
     for (const scope of [
       { categoryId: "pig" as const, productId: PRODUCT_ID, dataNature: "observed" as const },
-      { categoryId: "cattle" as const, productId: "livestock-8", dataNature: "observed" as const },
+      { categoryId: "cattle" as const, productId: "livestock-99", dataNature: "observed" as const },
       { categoryId: "cattle" as const, productId: PRODUCT_ID, dataNature: "scenario" as const },
     ]) {
       await expect(repository.findExact(scope)).resolves.toEqual({ documents: [], chunks: [] });
@@ -126,8 +131,10 @@ describe("livestock-9 approved filing artifact runtime adapter", () => {
       { recursive: true },
     );
     const registryFile = path.join(root, "knowledge/filing-registry/cattle", `${PRODUCT_ID}.json`);
-    const registry = JSON.parse(await readFile(registryFile, "utf8")) as { source: { method: string } };
-    registry.source.method = "canonical registry tamper";
+    const registry = JSON.parse(await readFile(registryFile, "utf8")) as {
+      approvedFilings: Array<{ registry: { source: { method: string } } }>;
+    };
+    registry.approvedFilings[0].registry.source.method = "canonical registry tamper";
     await writeFile(registryFile, JSON.stringify(registry), "utf8");
 
     await expect(loadApprovedCattleFilingArtifact("cattle", PRODUCT_ID, root)).resolves.toBeNull();
@@ -138,6 +145,23 @@ describe("livestock-9 approved filing artifact runtime adapter", () => {
     expect(await runKnowledgeIndex(root)).toBe(1);
     expect(error).toHaveBeenCalledWith(expect.stringContaining("CATTLE_ARTIFACT_INVALID"));
     error.mockRestore();
+  });
+
+  test("승인 artifact 집합에 missing 또는 extra가 있으면 상품 전체를 공개하지 않는다", async () => {
+    const root = await mkdtemp(path.join(os.tmpdir(), "cattle-artifact-set-"));
+    roots.push(root);
+    await cp("data/knowledge/derived/cattle", path.join(root, "knowledge/derived/cattle"), { recursive: true });
+    await cp("data/knowledge/filing-registry/cattle", path.join(root, "knowledge/filing-registry/cattle"), { recursive: true });
+    const directory = path.join(root, "knowledge/derived/cattle", PRODUCT_ID);
+    const extra = path.join(directory, "dart-extra.json");
+    await writeFile(extra, "{}", "utf8");
+    await expect(loadApprovedCattleFilingArtifact("cattle", PRODUCT_ID, root)).resolves.toBeNull();
+    expect(await auditCattleFilingArtifacts(root)).toContainEqual(expect.objectContaining({ code: "CATTLE_ARTIFACT_EXTRA" }));
+
+    await rm(extra);
+    await rm(path.join(directory, ARTIFACT_NAME));
+    await expect(loadApprovedCattleFilingArtifact("cattle", PRODUCT_ID, root)).resolves.toBeNull();
+    expect(await auditCattleFilingArtifacts(root)).toContainEqual(expect.objectContaining({ code: "CATTLE_ARTIFACT_MISSING" }));
   });
 
   test("DB exact artifact rows도 canonical 응답으로 제한하고 live/semantic 승인을 강제 해제한다", async () => {
@@ -513,7 +537,7 @@ describe("livestock-9 approved filing artifact runtime adapter", () => {
       ]),
     });
 
-    for (const productId of ["livestock-8", "unknown-product"]) {
+    for (const productId of ["livestock-99", "unknown-product"]) {
       const rejected = await evidencePost(new Request("http://localhost/api/evidence/query", {
         method: "POST",
         headers: { "content-type": "application/json" },

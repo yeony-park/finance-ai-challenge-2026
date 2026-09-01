@@ -23,6 +23,7 @@ import {
 import { answerFromProductKnowledge } from "../evidence";
 import { searchOffers } from "../global-search";
 import { runKnowledgeIndex } from "../index-cli";
+import { loadApprovedCommonProducts, loadApprovedScenarios } from "../loader";
 import { collectCanonicalSemanticCorpus } from "../local-rag/corpus";
 import { retrieveExactProductEvidence } from "../search-orchestration";
 import { loadApprovedCattleFilingArtifact } from "../cattle-filing-artifact";
@@ -329,6 +330,19 @@ describe("pig DART filing artifact", () => {
     ]);
   });
 
+  test("pig 승인 artifact 집합의 extra 파일은 상품 전체를 fail-closed한다", async () => {
+    const fixture = await writeFixture();
+    await writeFile(
+      path.join(fixture.root, "knowledge", "derived", "pig", "pig-1", "dart-extra.json"),
+      "{}",
+      "utf8",
+    );
+    await expect(loadApprovedPigFilingArtifact("pig", "pig-1", fixture.root)).resolves.toBeNull();
+    expect(await auditPigFilingArtifacts(fixture.root)).toContainEqual(
+      expect.objectContaining({ code: "PIG_ARTIFACT_EXTRA" }),
+    );
+  });
+
   test("비활성 후보 RCP artifact는 loader·index·evidence 저장소에서 공개하지 않는다", async () => {
     const inactiveRegistry = PigFilingRegistrySchema.parse({
       ...registry(),
@@ -408,7 +422,7 @@ describe("pig DART filing artifact", () => {
     );
     const pigChunks = plan.chunks.filter((item) => item.categoryId === "pig" && item.productId === "pig-1");
     expect(cattleDocuments).toHaveLength(1);
-    expect(cattleChunks).toHaveLength(5);
+    expect(cattleChunks).toHaveLength(6);
     expect(cattleDocuments[0]).toMatchObject({
       documentId: cattle?.document.documentId,
       sourceHash: cattle?.document.sourceHash,
@@ -429,12 +443,11 @@ describe("pig DART filing artifact", () => {
     });
     expect(pigChunks).toHaveLength(5);
     expect(pigChunks.every((item) => item.approvedForExternalAi === false)).toBe(true);
-    expect(plan.documents.some((item) =>
-      item.categoryId === "cattle" && item.productId !== "livestock-9"
-    )).toBe(false);
-    expect(plan.documents.some((item) =>
-      item.categoryId === "pig" && item.productId !== "pig-1"
-    )).toBe(false);
+    expect(plan.documents.filter((item) => item.categoryId === "cattle")).toHaveLength(9);
+    expect(plan.documents.filter((item) => item.categoryId === "pig")).toHaveLength(3);
+    expect(plan.documents.filter((item) =>
+      (item.categoryId === "cattle" || item.categoryId === "pig") && !item.approvedForExternalAi
+    )).toHaveLength(12);
     expect(plan.documents.some((item) =>
       item.categoryId === "pig" && item.productId === "livestock-9"
     )).toBe(false);
@@ -522,10 +535,19 @@ describe("pig DART filing artifact", () => {
     expect(smoke.results).toContainEqual(expect.objectContaining({
       id: "pig-1",
       categoryId: "pig",
-      title: "가축투자계약증권 제1호",
+      title: "공모 좌수·단가·총액",
+      status: "evidence-ready",
+      phase: "evidence-only",
       namespace: "published-offer",
       href: "/offers/pig-1",
     }));
+    expect(smoke.results.find((item) => item.id === "pig-1")).not.toHaveProperty("minimumInvestmentWon");
+    expect((await searchOffers({ q: "pig-1", phase: "evidence-only", limit: 10 })).results)
+      .toContainEqual(expect.objectContaining({ id: "pig-1", phase: "evidence-only" }));
+    for (const phase of ["subscription-open", "closed", "listed-trading"] as const) {
+      expect((await searchOffers({ q: "pig-1", phase, limit: 10 })).results)
+        .not.toContainEqual(expect.objectContaining({ id: "pig-1" }));
+    }
 
     const built = await loadApprovedPigFilingArtifact("pig", "pig-1");
     expect(built).not.toBeNull();
@@ -549,13 +571,21 @@ describe("pig DART filing artifact", () => {
       },
       rag: { mode: "file" as const, async search() { return { hits: [], degraded: true }; } },
     };
+    const [scenarios, commonProducts] = await Promise.all([
+      loadApprovedScenarios(),
+      loadApprovedCommonProducts(),
+    ]);
+    const stableLoaders = {
+      loadScenarios: async () => scenarios,
+      loadCommonProducts: async () => commonProducts,
+    };
     let pigCalls = 0;
     const loadPigFilings = async () => { pigCalls += 1; return [built]; };
     const quiet = await searchOffers(
       { q: "부동산 10만원 이하", categoryId: "real-estate", limit: 10 },
       undefined,
       repositories,
-      { minimumInvestmentWonMax: 100_000, loadPigFilings },
+      { ...stableLoaders, minimumInvestmentWonMax: 100_000, loadPigFilings },
     );
     expect(quiet.results.every((item) => item.categoryId !== "pig")).toBe(true);
     expect(pigCalls).toBe(0);
@@ -564,19 +594,26 @@ describe("pig DART filing artifact", () => {
       { q: "한돈 사육환경", limit: 10 },
       undefined,
       repositories,
-      { loadPigFilings },
+      { ...stableLoaders, loadPigFilings },
     );
     await searchOffers(
       { q: "한우 수수료", categoryId: "cattle", limit: 10 },
       undefined,
       repositories,
-      { loadPigFilings, loadCattleFilings: async () => [] },
+      { ...stableLoaders, loadPigFilings, loadCattleFilings: async () => [] },
     );
     expect(pigCalls).toBe(0);
 
+    await searchOffers(
+      { q: "사육환경", categoryId: "pig", limit: 10 },
+      undefined,
+      repositories,
+      { ...stableLoaders, loadPigFilings },
+    );
+    expect(pigCalls).toBe(1);
+
     for (const q of [
       "돼지 1호 공시",
-      "가축투자계약증권 제1호",
       "한돈 공모가",
       "한돈 수수료",
       "한돈 위험",
@@ -590,7 +627,7 @@ describe("pig DART filing artifact", () => {
         { q, limit: 10 },
         undefined,
         repositories,
-        { loadPigFilings },
+        { ...stableLoaders, loadPigFilings },
       );
       expect(result.results).toContainEqual(expect.objectContaining({
         id: "pig-1",
@@ -600,6 +637,36 @@ describe("pig DART filing artifact", () => {
       }));
     }
     expect(pigCalls).toBe(10);
+
+    const mutatedOffering = offeringRowSchema.parse({
+      ...offering,
+      titlePublic: "승인되지 않은 변조 제목",
+      amountWon: 999_999_999,
+      opensOn: "2099-01-01",
+      closesOn: "2099-12-31",
+      detail: { unitPriceWon: 777_777 },
+    });
+    const mutatedRepositories = {
+      ...repositories,
+      offerings: {
+        ...repositories.offerings,
+        async findBySlug(id: string) { return id === "pig-1" ? mutatedOffering : null; },
+        async listByCategory(categoryId: string) { return categoryId === "pig" ? [mutatedOffering] : []; },
+      },
+    };
+    const approvedProjection = await searchOffers(
+      { q: "한돈 공모가", limit: 10 },
+      undefined,
+      repositories,
+      { ...stableLoaders, loadPigFilings },
+    );
+    const mutatedProjection = await searchOffers(
+      { q: "한돈 공모가", limit: 10 },
+      undefined,
+      mutatedRepositories,
+      { ...stableLoaders, loadPigFilings },
+    );
+    expect(mutatedProjection.results).toEqual(approvedProjection.results);
   });
 
   test("승인 원자 문단은 evidence-only이고 실재·이력 질문과 external AI는 보류한다", async () => {

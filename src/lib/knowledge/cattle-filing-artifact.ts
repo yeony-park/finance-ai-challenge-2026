@@ -14,10 +14,11 @@ import {
 } from "@/lib/verify/dart/filing-derived";
 import {
   isExactDartPublicUrl,
-  loadDartFilingRegistry,
+  loadDartFilingRegistries,
   sha256,
+  type DartFilingRegistry,
 } from "@/lib/verify/dart/filing-registry";
-import { isActiveOnboardingProduct } from "@/lib/verify/dart/onboarding-catalog";
+import { isApprovedOnboardingFiling } from "@/lib/verify/dart/onboarding-catalog";
 import { calculateCommonChunkHash } from "./pdf";
 
 import { resolveWithin } from "./loader";
@@ -30,7 +31,7 @@ export const CATTLE_FILING_PUBLIC_LIMITATIONS = [
 ] as const;
 
 const isPublicReady = (artifact: CattleFilingDerivedArtifact): boolean => {
-  return isActiveOnboardingProduct("cattle", artifact.registry.offerId, artifact.registry.rcpNo) &&
+  return isApprovedOnboardingFiling("cattle", artifact.registry.offerId, artifact.registry.rcpNo) &&
     artifact.registry.relationship.mappingStatus === "confirmed" &&
     artifact.registry.categoryId === "cattle" &&
     artifact.registry.offerId === artifact.document.productId &&
@@ -58,13 +59,12 @@ const isPublicReady = (artifact: CattleFilingDerivedArtifact): boolean => {
 const readArtifact = async (
   file: string,
   expectedProductId: string,
-  dataRoot: string,
+  registry: DartFilingRegistry,
 ): Promise<CattleFilingDerivedArtifact | null> => {
   try {
     const stat = await lstat(file);
     if (!stat.isFile() || stat.isSymbolicLink() || stat.size > MAX_CATTLE_ARTIFACT_BYTES) return null;
     const artifact = verifyCattleFilingDerivedArtifact(JSON.parse(await readFile(file, "utf8")));
-    const registry = await loadDartFilingRegistry(expectedProductId, dataRoot);
     const expectedName = `dart-${artifact.registry.rcpNo}-${artifact.sourceHash.slice(0, 12)}.json`;
     if (
       artifact.registry.offerId !== expectedProductId ||
@@ -79,6 +79,32 @@ const readArtifact = async (
   }
 };
 
+const loadProductArtifacts = async (
+  directory: string,
+  productId: string,
+  dataRoot: string,
+): Promise<readonly CattleFilingDerivedArtifact[]> => {
+  try {
+    const registries = await loadDartFilingRegistries(productId, dataRoot);
+    const expected = new Map(registries.map((registry) => [
+      `dart-${registry.rcpNo}-${registry.entry.sha256.slice(0, 12)}.json`,
+      registry,
+    ]));
+    const files = (await readdir(directory, { withFileTypes: true }))
+      .filter((file) => file.isFile() && !file.isSymbolicLink() && file.name.endsWith(".json"))
+      .sort((left, right) => left.name.localeCompare(right.name));
+    if (files.length !== expected.size || files.some((file) => !expected.has(file.name))) return [];
+    const artifacts = await Promise.all(files.map((file) =>
+      readArtifact(resolveWithin(directory, file.name), productId, expected.get(file.name)!)
+    ));
+    return artifacts.every((artifact) => artifact !== null)
+      ? artifacts as readonly CattleFilingDerivedArtifact[]
+      : [];
+  } catch {
+    return [];
+  }
+};
+
 export const loadApprovedCattleFilingArtifacts = async (
   dataRoot = "data",
 ): Promise<readonly CattleFilingDerivedArtifact[]> => {
@@ -90,18 +116,22 @@ export const loadApprovedCattleFilingArtifacts = async (
   for (const product of products.sort((left, right) => left.name.localeCompare(right.name))) {
     if (!product.isDirectory() || product.isSymbolicLink() || !SAFE_PRODUCT_ID.test(product.name)) continue;
     const directory = resolveWithin(root, product.name);
-    const files = await readdir(directory, { withFileTypes: true });
-    for (const file of files.sort((left, right) => left.name.localeCompare(right.name))) {
-      if (!file.isFile() || file.isSymbolicLink() || !file.name.endsWith(".json")) continue;
-      const artifact = await readArtifact(resolveWithin(directory, file.name), product.name, dataRoot);
-      if (artifact) artifacts.push(artifact);
-    }
+    artifacts.push(...await loadProductArtifacts(directory, product.name, dataRoot));
   }
-  const counts = new Map<string, number>();
-  for (const artifact of artifacts) {
-    counts.set(artifact.registry.offerId, (counts.get(artifact.registry.offerId) ?? 0) + 1);
-  }
-  return artifacts.filter((artifact) => counts.get(artifact.registry.offerId) === 1);
+  return artifacts;
+};
+
+export const loadApprovedCattleFilingArtifactsForProduct = async (
+  categoryId: string,
+  productId: string,
+  dataRoot = "data",
+): Promise<readonly CattleFilingDerivedArtifact[]> => {
+  if (categoryId !== "cattle" || !SAFE_PRODUCT_ID.test(productId)) return [];
+  const directory = resolveWithin(dataRoot, `knowledge/derived/cattle/${productId}`);
+  const stat = await lstat(directory).catch(() => null);
+  return stat?.isDirectory() && !stat.isSymbolicLink()
+    ? loadProductArtifacts(directory, productId, dataRoot)
+    : [];
 };
 
 export interface CattleFilingAuditIssue {
@@ -128,18 +158,20 @@ export const auditCattleFilingArtifacts = async (
       continue;
     }
     try {
-      const registry = await loadDartFilingRegistry(productId, dataRoot);
-      const relative = `${productId}/dart-${registry.rcpNo}-${registry.entry.sha256.slice(0, 12)}.json`;
-      expected.add(relative);
-      const artifactFile = resolveWithin(derivedRoot, relative);
-      const artifact = await readArtifact(artifactFile, productId, dataRoot);
-      if (!artifact) {
-        const exists = await lstat(artifactFile).catch(() => null);
-        issues.push({
-          code: exists ? "CATTLE_ARTIFACT_INVALID" : "CATTLE_ARTIFACT_MISSING",
-          file: relative,
-          message: exists ? "registry와 일치하는 공개 artifact가 아닙니다." : "registry에 대응하는 artifact가 없습니다.",
-        });
+      const registries = await loadDartFilingRegistries(productId, dataRoot);
+      for (const registry of registries) {
+        const relative = `${productId}/dart-${registry.rcpNo}-${registry.entry.sha256.slice(0, 12)}.json`;
+        expected.add(relative);
+        const artifactFile = resolveWithin(derivedRoot, relative);
+        const artifact = await readArtifact(artifactFile, productId, registry);
+        if (!artifact) {
+          const exists = await lstat(artifactFile).catch(() => null);
+          issues.push({
+            code: exists ? "CATTLE_ARTIFACT_INVALID" : "CATTLE_ARTIFACT_MISSING",
+            file: relative,
+            message: exists ? "registry와 일치하는 공개 artifact가 아닙니다." : "registry에 대응하는 artifact가 없습니다.",
+          });
+        }
       }
     } catch {
       issues.push({ code: "CATTLE_REGISTRY_INVALID", file: entry.name, message: "registry 검증에 실패했습니다." });
@@ -167,16 +199,16 @@ export const loadApprovedCattleFilingArtifact = async (
   dataRoot = "data",
 ): Promise<CattleFilingDerivedArtifact | null> => {
   if (categoryId !== "cattle" || !SAFE_PRODUCT_ID.test(productId)) return null;
-  return (await loadApprovedCattleFilingArtifacts(dataRoot))
-    .find((artifact) => artifact.registry.offerId === productId) ?? null;
+  const artifacts = await loadApprovedCattleFilingArtifactsForProduct(categoryId, productId, dataRoot);
+  return artifacts.length === 1 ? artifacts[0]! : null;
 };
 
-export const matchesCattleFilingKnowledge = (
+const matchesSingleCattleFilingKnowledge = (
   artifact: CattleFilingDerivedArtifact | null,
   knowledge: ProductKnowledgeResult,
 ): boolean => {
   if (!artifact || !isPublicReady(artifact) || knowledge.documents.length !== 1 || knowledge.chunks.length !== artifact.chunks.length) return false;
-  const expectedKnowledge = cattleFilingKnowledge(artifact);
+  const expectedKnowledge = cattleFilingKnowledgeSingle(artifact);
   const expectedDocument = expectedKnowledge.documents[0]!;
   const document = knowledge.documents[0]!;
   const storedSourceId = `product:cattle:${artifact.registry.offerId}::observed:official-document:${artifact.document.documentId}`;
@@ -236,10 +268,15 @@ export const matchesCattleFilingKnowledge = (
   });
 };
 
-export const cattleFilingKnowledge = (
+const cattleFilingKnowledgeSingle = (
   artifact: CattleFilingDerivedArtifact,
 ): ProductKnowledgeResult => {
-  const limitations = [...CATTLE_FILING_PUBLIC_LIMITATIONS];
+  const limitations = [
+    ...CATTLE_FILING_PUBLIC_LIMITATIONS,
+    ...(["correction_of", "supplement_to"].includes(artifact.registry.relationship.type)
+      ? ["공시 간 정정 관계와 현재값은 확정하거나 자동 병합하지 않았습니다."]
+      : []),
+  ];
   const document: ProductKnowledgeDocument = {
     categoryId: "cattle",
     productId: artifact.registry.offerId,
@@ -301,4 +338,30 @@ export const cattleFilingKnowledge = (
     })),
   }))];
   return { documents: [document], chunks, evidenceGroups };
+};
+
+export const cattleFilingKnowledge = (
+  input: CattleFilingDerivedArtifact | readonly CattleFilingDerivedArtifact[],
+): ProductKnowledgeResult => {
+  const artifacts = Array.isArray(input) ? input : [input];
+  const results = artifacts.map(cattleFilingKnowledgeSingle);
+  return {
+    documents: results.flatMap((result) => result.documents),
+    chunks: results.flatMap((result) => result.chunks),
+    evidenceGroups: results.flatMap((result) => result.evidenceGroups ?? []),
+  };
+};
+
+export const matchesCattleFilingKnowledge = (
+  input: CattleFilingDerivedArtifact | readonly CattleFilingDerivedArtifact[] | null,
+  knowledge: ProductKnowledgeResult,
+): boolean => {
+  if (!input) return false;
+  const artifacts = Array.isArray(input) ? input : [input];
+  if (artifacts.length === 0 || knowledge.documents.length !== artifacts.length ||
+    knowledge.chunks.length !== artifacts.reduce((sum, artifact) => sum + artifact.chunks.length, 0)) return false;
+  return artifacts.every((artifact) => matchesSingleCattleFilingKnowledge(artifact, {
+    documents: knowledge.documents.filter((document) => document.documentId === artifact.document.documentId),
+    chunks: knowledge.chunks.filter((chunk) => chunk.documentId === artifact.document.documentId),
+  }));
 };

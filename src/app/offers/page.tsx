@@ -8,6 +8,8 @@ import {
   REPORT_COVERAGE,
 } from "@/components/landing/report-catalog";
 import { OFFERS } from "@/components/site/offers";
+import { buildOfferSchedule } from "@/components/site/offers";
+import { loadApprovedCattleFilingArtifacts } from "@/lib/knowledge/cattle-filing-artifact";
 import { loadApprovedScenarios } from "@/lib/knowledge/loader";
 import { loadLatestWatchState } from "@/lib/verify/amend/watch-state";
 import { isPublicVerificationScopeAllowed } from "@/lib/verify/dart/onboarding-catalog";
@@ -29,23 +31,51 @@ export default async function OffersPage() {
     isPublicVerificationScopeAllowed(offer.id),
   );
 
-  const [cards, scenarios] = await Promise.all([
-    Promise.all(publicOffers.map(async (offer) => {
+  const [scenarios, cattleArtifacts] = await Promise.all([
+    loadApprovedScenarios(),
+    loadApprovedCattleFilingArtifacts(),
+  ]);
+  const artifactByProduct = new Map(
+    cattleArtifacts.map((artifact) => [artifact.registry.offerId, artifact]),
+  );
+  const entries = await Promise.all(publicOffers.map(async (offer) => {
+    try {
       const [loaded, watch, filingFacts] = await Promise.all([
         loadLatestReport(offer.id),
         loadLatestWatchState(offer.id),
         loadFilingFacts(offer.id),
       ]);
-      return buildOfferCard({
-        offer,
-        now,
-        ...loaded,
-        watch: watch ?? null,
-        hasFilingFacts: filingFacts !== null,
-      });
-    })),
-    loadApprovedScenarios(),
-  ]);
+      return {
+        card: buildOfferCard({
+          offer,
+          now,
+          ...loaded,
+          watch: watch ?? null,
+          hasFilingFacts: filingFacts !== null,
+        }),
+        artifactCard: null,
+      };
+    } catch {
+      const artifact = artifactByProduct.get(offer.id);
+      if (!artifact || offer.assetKind !== "livestock") return null;
+      const schedule = buildOfferSchedule(offer, now);
+      return {
+        card: null,
+        artifactCard: {
+          id: offer.id,
+          href: `/offers/${offer.id}`,
+          title: offer.title,
+          assetLabel: "한우" as const,
+          badge: "공시 근거 확인",
+          meta: `${artifact.document.title} · ${artifact.document.asOf} 기준`,
+          summary: "원금 미보장 문단 확인 · 정정 관계·최신 조건·개체 실재성 미확인",
+          phase: schedule.phase,
+        },
+      };
+    }
+  }));
+  const cards = entries.flatMap((entry) => entry?.card ? [entry.card] : []);
+  const artifactCards = entries.flatMap((entry) => entry?.artifactCard ? [entry.artifactCard] : []);
 
   const upcoming = cards
     .filter((card) => card.schedule.phase === "upcoming")
@@ -66,7 +96,7 @@ export default async function OffersPage() {
         upcoming={upcoming}
         open={open}
         closed={closed}
-        catalog={REPORT_CATALOG_CARDS}
+        catalog={[...artifactCards, ...REPORT_CATALOG_CARDS]}
       />
       <ScenarioCatalog
         offers={scenarios}

@@ -65,7 +65,24 @@ const state = vi.hoisted(() => {
     }],
   }],
   };
-  return { pigLoadCalls: 0, tamperedArtifact: false, sourceHash, chunkHash, documentId, chunkId, productKnowledge };
+  const secondDocumentId = "pig-pig-1-dart-20260213000150";
+  const secondChunkId = `${secondDocumentId}-risk`;
+  const secondSourceHash = "d".repeat(64);
+  const secondChunkHash = "e".repeat(64);
+  const secondDocument = { ...productKnowledge.documents[0]!, sourceId: secondDocumentId, documentId: secondDocumentId, sourceHash: secondSourceHash };
+  const secondChunk = { ...productKnowledge.chunks[0]!, ...secondDocument, chunkId: secondChunkId, chunkHash: secondChunkHash };
+  return {
+    pigLoadCalls: 0,
+    tamperedArtifact: false,
+    multiArtifact: false,
+    sourceHash,
+    chunkHash,
+    documentId,
+    chunkId,
+    productKnowledge,
+    secondDocument,
+    secondChunk,
+  };
 });
 
 vi.mock("@/lib/db/repositories/offerings", () => ({
@@ -79,31 +96,48 @@ vi.mock("@/lib/db/repositories/offerings", () => ({
 vi.mock("@/lib/db/repositories/product-knowledge", () => ({
   resolveProductKnowledgeRepository: async () => ({
     mode: "file" as const,
-    async findExact() { return state.productKnowledge; },
+    async findExact() {
+      return state.multiArtifact
+        ? {
+            documents: [...state.productKnowledge.documents, state.secondDocument],
+            chunks: [...state.productKnowledge.chunks, state.secondChunk],
+            evidenceGroups: state.productKnowledge.evidenceGroups,
+          }
+        : state.productKnowledge;
+    },
   }),
 }));
 
 vi.mock("@/lib/knowledge/pig-filing-artifact", () => ({
-  loadApprovedPigFilingArtifact: async (categoryId: string, productId: string) => {
+  loadApprovedPigFilingArtifactsForProduct: async (categoryId: string, productId: string) => {
     state.pigLoadCalls += 1;
-    return categoryId === "pig" && productId === "pig-1"
-      ? {
+    const first = {
           sourceHash: state.tamperedArtifact ? "c".repeat(64) : state.sourceHash,
           document: { documentId: state.documentId },
           chunks: [{ chunkId: state.chunkId, chunkHash: state.chunkHash }],
-        }
-      : null;
+        };
+    return categoryId === "pig" && productId === "pig-1"
+      ? [first, ...(state.multiArtifact ? [{
+          sourceHash: state.secondDocument.sourceHash,
+          document: { documentId: state.secondDocument.documentId },
+          chunks: [{ chunkId: state.secondChunk.chunkId, chunkHash: state.secondChunk.chunkHash }],
+        }] : [])]
+      : [];
   },
-  matchesPigFilingKnowledge: (artifact: {
+  matchesPigFilingKnowledge: (artifacts: Array<{
     sourceHash?: string;
+    document: { documentId: string };
     chunks?: Array<{ chunkId?: string; chunkHash?: string }>;
-  } | null, knowledge: typeof state.productKnowledge) => artifact !== null &&
-    artifact.sourceHash === knowledge.documents[0]?.sourceHash &&
-    artifact.chunks?.length === knowledge.chunks.length &&
-    artifact.chunks.every((chunk, index) =>
-      chunk.chunkId === knowledge.chunks[index]?.chunkId &&
-      chunk.chunkHash === knowledge.chunks[index]?.chunkHash
-    ),
+  }>, knowledge: typeof state.productKnowledge) => {
+    return artifacts.length === knowledge.documents.length && artifacts.every((artifact) => {
+      const document = knowledge.documents.find((item) => item.documentId === artifact.document.documentId);
+      const chunks = knowledge.chunks.filter((item) => item.documentId === artifact.document.documentId);
+      return artifact.sourceHash === document?.sourceHash && artifact.chunks?.length === chunks.length &&
+        artifact.chunks.every((chunk, index) =>
+          chunk.chunkId === chunks[index]?.chunkId && chunk.chunkHash === chunks[index]?.chunkHash
+        );
+    });
+  },
 }));
 
 import { POST } from "@/app/api/evidence/query/route";
@@ -126,6 +160,7 @@ const request = (
 afterEach(() => {
   state.pigLoadCalls = 0;
   state.tamperedArtifact = false;
+  state.multiArtifact = false;
 });
 
 describe("pig filing evidence route", () => {
@@ -167,5 +202,11 @@ describe("pig filing evidence route", () => {
     expect(common.status).toBe(200);
     expect(await common.json()).toMatchObject({ namespace: "common" });
     expect(state.pigLoadCalls).toBe(0);
+  });
+
+  test("복수 승인 공시의 exact document/chunk 집합도 같은 상품 route에서 허용한다", async () => {
+    state.multiArtifact = true;
+    const response = await POST(request("pig-1"));
+    expect(response.status).toBe(200);
   });
 });

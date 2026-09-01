@@ -535,8 +535,10 @@ describe("common knowledge index", () => {
   it("dev/build 전에 index를 만들고 생성 index 하나만 Git에서 제외한다", async () => {
     const packageJson = JSON.parse(await readFile(path.join(process.cwd(), "package.json"), "utf8"));
     expect(packageJson.scripts).toMatchObject({
-      predev: "npm run knowledge:onboarding:preflight && npm run knowledge:index && npm run knowledge:derived:check",
-      prebuild: "npm run knowledge:onboarding:preflight && npm run knowledge:index && npm run knowledge:derived:check",
+      "knowledge:onboarding:preflight": "tsx src/lib/verify/dart/onboarding-preflight-cli.ts",
+      "knowledge:onboarding:audit": "tsx src/lib/verify/dart/onboarding-build-audit-cli.ts",
+      predev: "npm run knowledge:onboarding:audit && npm run knowledge:index && npm run knowledge:derived:check",
+      prebuild: "npm run knowledge:onboarding:audit && npm run knowledge:index && npm run knowledge:derived:check",
     });
     expect((await readFile(path.join(process.cwd(), ".gitignore"), "utf8")).split("\n"))
       .toContain("/data/knowledge/generated/index.json");

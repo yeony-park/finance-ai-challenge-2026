@@ -4,14 +4,15 @@ import { isDeepStrictEqual } from "node:util";
 
 import {
   auditCattleFilingArtifacts,
-  loadApprovedCattleFilingArtifact,
+  loadApprovedCattleFilingArtifactsForProduct,
 } from "@/lib/knowledge/cattle-filing-artifact";
 import {
   auditPigFilingArtifacts,
-  loadApprovedPigFilingArtifact,
+  loadApprovedPigFilingArtifactsForProduct,
 } from "@/lib/knowledge/pig-filing-artifact";
 import { CATTLE_RCP_NO_TO_OFFER } from "./cattle-rcp-candidates";
-import { isExactDartPublicUrl } from "./filing-registry";
+import { isExactDartPublicUrl, sha256 } from "./filing-registry";
+import { readExactLocalRawXml } from "./raw-xml";
 import {
   ONBOARDING_CATALOG,
   validateOnboardingCatalog,
@@ -23,6 +24,9 @@ export interface OnboardingPreflightResult {
   readonly readyLocalProducts: number;
   readonly pendingProducts: number;
   readonly pendingCandidateRcpNos: number;
+  readonly totalCandidateRcpNos: number;
+  readonly localCandidateRcpNos: number;
+  readonly unavailableCandidateRcpNos: number;
   readonly minimumFutureDownloads: number;
   readonly externalAiEmbeddingCandidates: number;
 }
@@ -37,11 +41,36 @@ export const summarizeOnboardingCatalog = (
     readyLocalProducts: validated.length - pending.length,
     pendingProducts: pending.length,
     pendingCandidateRcpNos: pending.reduce((sum, item) => sum + item.candidateRcpNos.length, 0),
+    totalCandidateRcpNos: validated.reduce((sum, item) => sum + item.inventory.length, 0),
+    localCandidateRcpNos: validated.reduce((sum, item) =>
+      sum + item.inventory.filter((entry) => entry.status === "local").length, 0),
+    unavailableCandidateRcpNos: validated.reduce((sum, item) =>
+      sum + item.inventory.filter((entry) => entry.status === "source-unavailable").length, 0),
     minimumFutureDownloads: pending.length,
     externalAiEmbeddingCandidates: validated.filter(
       (item) => item.status === "ready-local" && item.externalAiApproved,
     ).length,
   };
+};
+
+export const assertOnboardingInventoryAvailable = async (
+  dataRoot = "data",
+  catalog: readonly OnboardingProduct[] = ONBOARDING_CATALOG,
+): Promise<void> => {
+  for (const product of validateOnboardingCatalog(catalog)) {
+    for (const item of product.inventory) {
+      const source = path.resolve(dataRoot, "raw", item.rcpNo, `${item.rcpNo}.xml`);
+      if (item.status === "source-unavailable") {
+        if (await lstat(source).catch(() => null)) throw new Error(`source-unavailable RCP에 raw XML이 존재합니다: ${item.rcpNo}`);
+        continue;
+      }
+      const raw = await readExactLocalRawXml({ dataDir: dataRoot, rcpNo: item.rcpNo, entryName: `${item.rcpNo}.xml` });
+      const approved = product.approvedFilings.find((filing) => filing.rcpNo === item.rcpNo);
+      if (approved && approved.contentHash !== sha256(raw.bytes)) {
+        throw new Error(`승인 공시 contentHash가 local raw XML과 일치하지 않습니다: ${item.rcpNo}`);
+      }
+    }
+  }
 };
 
 const cattleCandidatesFromPipeline = (productId: string): readonly string[] =>
@@ -108,11 +137,10 @@ export const assertPendingProductsUnprovisioned = async (
   }
 };
 
-export const runOnboardingPreflight = async (
-  dataRoot = "data",
-): Promise<OnboardingPreflightResult> => {
-  const catalog = validateOnboardingCatalog();
-  await assertOnboardingSourceDriftFree(dataRoot, catalog);
+const auditCommittedOnboardingArtifacts = async (
+  dataRoot: string,
+  catalog: readonly OnboardingProduct[],
+): Promise<void> => {
   await assertPendingProductsUnprovisioned(dataRoot, catalog);
 
   const [cattleIssues, pigIssues] = await Promise.all([
@@ -122,16 +150,33 @@ export const runOnboardingPreflight = async (
   if (cattleIssues.length > 0 || pigIssues.length > 0) throw new Error("ready-local registry/artifact audit에 실패했습니다.");
 
   for (const product of catalog.filter((item) => item.status === "ready-local")) {
-    const artifact = product.categoryId === "cattle"
-      ? await loadApprovedCattleFilingArtifact("cattle", product.productId, dataRoot)
-      : await loadApprovedPigFilingArtifact("pig", product.productId, dataRoot);
-    const registryProductId = artifact && ("offerId" in artifact.registry ? artifact.registry.offerId : artifact.registry.productId);
-    if (
-      !artifact || registryProductId !== product.productId ||
-      artifact.registry.rcpNo !== product.activeRcpNo ||
+    const artifacts = product.categoryId === "cattle"
+      ? await loadApprovedCattleFilingArtifactsForProduct("cattle", product.productId, dataRoot)
+      : await loadApprovedPigFilingArtifactsForProduct("pig", product.productId, dataRoot);
+    const approvedRcpNos = product.approvedFilings.map((item) => item.rcpNo).sort();
+    const artifactRcpNos = artifacts.map((artifact) => artifact.registry.rcpNo).sort();
+    if (JSON.stringify(artifactRcpNos) !== JSON.stringify(approvedRcpNos) || artifacts.some((artifact) =>
+      ("offerId" in artifact.registry ? artifact.registry.offerId : artifact.registry.productId) !== product.productId ||
       artifact.approval.externalAiApproved !== product.externalAiApproved ||
       artifact.approval.piiReviewStatus !== "passed"
-    ) throw new Error(`ready-local exact registry/artifact 검증에 실패했습니다: ${product.productId}`);
+    )) throw new Error(`ready-local exact registry/artifact 검증에 실패했습니다: ${product.productId}`);
   }
+};
+
+export const runOnboardingBuildAudit = async (
+  dataRoot = "data",
+): Promise<OnboardingPreflightResult> => {
+  const catalog = validateOnboardingCatalog();
+  await auditCommittedOnboardingArtifacts(dataRoot, catalog);
+  return summarizeOnboardingCatalog(catalog);
+};
+
+export const runOnboardingPreflight = async (
+  dataRoot = "data",
+): Promise<OnboardingPreflightResult> => {
+  const catalog = validateOnboardingCatalog();
+  await assertOnboardingSourceDriftFree(dataRoot, catalog);
+  await assertOnboardingInventoryAvailable(dataRoot, catalog);
+  await auditCommittedOnboardingArtifacts(dataRoot, catalog);
   return summarizeOnboardingCatalog(catalog);
 };

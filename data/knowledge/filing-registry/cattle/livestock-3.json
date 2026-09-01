@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 2,
+  "registryVersion": "dart-product-registry-v2",
+  "categoryId": "cattle",
+  "productId": "livestock-3",
+  "activeRcpNo": "20241202000302",
+  "inventory": [
+    {
+      "rcpNo": "20241202000302",
+      "status": "local"
+    },
+    {
+      "rcpNo": "20241220000182",
+      "status": "local"
+    },
+    {
+      "rcpNo": "20250113000307",
+      "status": "source-unavailable",
+      "unavailableReason": "opendart-014"
+    }
+  ],
+  "approvedFilings": [
+    {
+      "schemaVersion": 1,
+      "rcpNo": "20241202000302",
+      "contentHash": "88651e11da1f123857e192456fe30f50cf14017d1a37380980446858e45e6eee",
+      "sanitizerVersion": "cattle-filing-sanitizer-v1",
+      "chunkerVersion": "cattle-filing-chunker-v1",
+      "documentRole": "issuer-context",
+      "locatorSetHash": "73cb64ad711ada27dc38b92960f07975d620b10f3b88b77e0994649bc1ee97b0",
+      "reviewMethod": "deterministic-local-codex-review-v1",
+      "reviewer": "codex-local-deterministic-check",
+      "reviewedAt": "2026-09-01T00:00:00+09:00",
+      "productMappingEvidence": "livestock-3와 후보 RCP 20241202000302의 연결을 승인된 onboarding 입력으로 고정하고, local exact XML의 승인 locator를 결정적으로 재검산했습니다. 공시 간 정정 관계·최신성·현재값은 확정하거나 자동 병합하지 않습니다.",
+      "registry": {
+        "schemaVersion": 1,
+        "registryVersion": "dart-filing-registry-v1",
+        "categoryId": "cattle",
+        "offerId": "livestock-3",
+        "rcpNo": "20241202000302",
+        "submittedOn": "2024-12-02",
+        "entry": {
+          "name": "20241202000302.xml",
+          "sha256": "88651e11da1f123857e192456fe30f50cf14017d1a37380980446858e45e6eee"
+        },
+        "source": {
+          "landingUrl": "https://dart.fss.or.kr/dsaf001/main.do",
+          "exactPublicUrl": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20241202000302",
+          "collectedAtSource": "local raw XML file mtime",
+          "method": "OpenDART document.xml exact rcpNo XML entry hash와 승인된 최소 P excerpt를 로컬에서 검증"
+        },
+        "relationship": {
+          "type": "issuer_context",
+          "mappingStatus": "confirmed",
+          "mappingEvidence": "livestock-3와 후보 RCP 20241202000302의 연결을 승인된 onboarding 입력으로 고정하고, local exact XML의 승인 locator를 결정적으로 재검산했습니다. 공시 간 정정 관계·최신성·현재값은 확정하거나 자동 병합하지 않습니다.",
+          "limitations": [
+            "onboarding catalog의 exact 후보 RCP 연결만 확인했으며, primary·correction_of·supplement_to 또는 최신 문서 관계는 주장하지 않습니다.",
+            "후보 공시 사이의 정정·보충 관계와 현재값은 원문 표지 및 메타만으로 확정하지 않았습니다."
+          ]
+        },
+        "approval": {
+          "policyId": "onboarding-product-filing-review-v2",
+          "scope": "livestock-3 product-specific PII-free XML excerpt 1개",
+          "externalAiApproved": false,
+          "piiReviewStatus": "passed"
+        },
+        "sectionLocators": [
+          {
+            "factId": "principal-not-guaranteed",
+            "title": "원금 미보장",
+            "anchor": "원금 미보장",
+            "sectionPath": [
+              "요약정보",
+              "1. 핵심투자위험",
+              "1. 핵심투자위험"
+            ],
+            "occurrence": 1,
+            "evidenceTokens": [
+              "원금",
+              "미보장"
+            ],
+            "normalizedExcerptHash": "b908494f43183eec74a424c7b354ef119eeee844859d2d5f82ba4568e28833af"
+          }
+        ],
+        "maskedObservation": {
+          "reportPath": "public/livestock-3/report-2026-08-14T18-21-45-354Z.json",
+          "sha256": "0af18765e6514dc126254b2181dba5ec23e80dbe0d1bbbccf38e7b0279fdb314",
+          "allowedFields": [
+            "품종",
+            "성별",
+            "취득시기"
+          ]
+        }
+      }
+    }
+  ]
+}

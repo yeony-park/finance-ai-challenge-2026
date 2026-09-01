@@ -49,7 +49,7 @@ export const SearchPlanSchema = z.strictObject({
   semanticQuery: z.string().trim().min(1).max(200),
   categoryId: z.enum(["cattle", "pig", "art", "real-estate"]).nullable(),
   assetKind: z.enum(["livestock", "real-estate"]).nullable(),
-  phase: z.enum(["upcoming", "subscription-open", "closed", "listed-trading", "settled"]).nullable(),
+  phase: z.enum(["upcoming", "subscription-open", "closed", "listed-trading", "settled", "evidence-only"]).nullable(),
   minimumInvestmentWonMin: PlannedInvestmentWon,
   minimumInvestmentWonMax: PlannedInvestmentWon,
 }).superRefine((value, context) => {

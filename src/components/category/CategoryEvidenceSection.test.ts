@@ -30,11 +30,13 @@ describe("CategoryEvidenceSection", () => {
       }),
     );
 
-    expect(html.match(/data-category-offer-card="true"/g)).toHaveLength(1);
+    expect(html.match(/data-category-offer-card="true"/g)).toHaveLength(3);
     expect(html).toContain("최근 상품</h2>");
     expect(html).toContain("한우 9호");
-    expect(html).not.toContain("한우 8호");
-    expect(html).not.toContain("한우 7호");
+    expect(html).toContain("한우 8호");
+    expect(html).toContain("한우 7호");
+    expect(html).toContain("공시 근거");
+    expect(html).toContain("원금 미보장 문단 확인");
     expect(html).not.toContain("청약 예정·진행 중");
     expect(html).not.toContain("청약 종료 · 사후 검증");
   });

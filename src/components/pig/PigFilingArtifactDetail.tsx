@@ -19,7 +19,7 @@ export function PigFilingArtifactDetail({
         <header className={`${s.layerHead} ${s.sectionHead}`}>
           <h2 id="pig-filing-title" className={s.layerTitle}>DART 공시에서 확인한 내용</h2>
           <p className={s.sectionLead}>
-            이 상품에 연결된 공개 문서에서 승인된 다섯 문단만 보여줍니다. 표시하지 않은 조건은 추정하지 않습니다.
+            이 상품에 연결된 공개 문서에서 승인된 {artifact.chunks.length}개 문단만 보여줍니다. 표시하지 않은 조건은 추정하지 않습니다.
           </p>
         </header>
 

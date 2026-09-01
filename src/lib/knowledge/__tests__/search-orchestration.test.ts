@@ -19,6 +19,7 @@ import {
   orchestrateGlobalSearch,
   parseDeterministicAmountFilter,
   retrieveExactProductEvidence,
+  SearchPlanSchema,
 } from "../search-orchestration";
 import { ScenarioOfferSchema } from "../schema";
 import { validScenarioOffer } from "./fixtures";
@@ -26,6 +27,17 @@ import { validScenarioOffer } from "./fixtures";
 const roots: string[] = [];
 afterEach(() => {
   for (const root of roots.splice(0)) rmSync(root, { recursive: true, force: true });
+});
+
+test("검색 planner schema는 artifact-only evidence phase를 additive로 허용한다", () => {
+  expect(SearchPlanSchema.parse({
+    semanticQuery: "pig-1",
+    categoryId: "pig",
+    assetKind: "livestock",
+    phase: "evidence-only",
+    minimumInvestmentWonMin: null,
+    minimumInvestmentWonMax: null,
+  }).phase).toBe("evidence-only");
 });
 
 const vector = (index = 0): number[] => {

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { cache } from "react";
 
 import { FilingFactsSection } from "@/components/report/FilingFactsSection";
+import { CattleFilingArtifactDetail } from "@/components/cattle/CattleFilingArtifactDetail";
 import { PigFilingArtifactDetail } from "@/components/pig/PigFilingArtifactDetail";
 import { LifecycleStrip } from "@/components/report/LifecycleStrip";
 import { RealEstateInvestmentReviewPanel } from "@/components/report/RealEstateInvestmentReviewPanel";
@@ -16,6 +17,7 @@ import { WatchSection } from "@/components/report/WatchSection";
 import { ScenarioDetail } from "@/components/real-estate-scenario/ScenarioDetail";
 import {
   CattleFilingEvidenceQuery,
+  CattleMinimumFilingEvidenceQuery,
   PigFilingEvidenceQuery,
 } from "@/components/real-estate-scenario/ScenarioEvidenceQuery";
 import {
@@ -71,6 +73,10 @@ const loadScenarios = cache(loadApprovedScenarios);
 const loadPigFilingArtifact = cache(async (productId: string) =>
   loadApprovedPigFilingArtifact("pig", productId),
 );
+const loadCattleFilingArtifact = cache(async (productId: string) =>
+  loadApprovedCattleFilingArtifact("cattle", productId),
+);
+const isCattleArtifactOnlyId = (productId: string) => /^livestock-[1-8]$/.test(productId);
 
 const loadScenarioOffer = cache(async (offerId: string) =>
   findRoutableLegacyScenario(await loadScenarios(), offerId, PUBLISHED_OFFER_IDS),
@@ -180,6 +186,15 @@ export async function generateMetadata({ params }: OfferPageProps): Promise<Meta
       description: `${id}에 연결된 DART 공시 문단과 확인 가능한 문서 근거`,
     };
   }
+  const fallbackCattleArtifact = isCattleArtifactOnlyId(id)
+    ? await loadCattleFilingArtifact(id)
+    : null;
+  if (fallbackCattleArtifact) {
+    return {
+      title: `한우 투자계약증권 · ${id}`,
+      description: `${id}에 연결된 DART 공시의 원금 미보장 문단과 확인 범위`,
+    };
+  }
   const scenario = await loadScenarioOffer(id);
   if (scenario) {
     return {
@@ -246,6 +261,41 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
       </div>
     );
   }
+  const fallbackCattleArtifact = isCattleArtifactOnlyId(id)
+    ? await loadCattleFilingArtifact(id)
+    : null;
+  if (fallbackCattleArtifact) {
+    return (
+      <div className={s.reportPage}>
+        <div className={s.breadcrumbBar}>
+          <nav className={`${s.wrap} ${s.breadcrumb}`} aria-label="현재 위치">
+            <Link href="/cattle?tab=analysis" className={s.breadcrumbBack}>
+              <span aria-hidden="true">←</span>
+              한우 상품
+            </Link>
+            <span className={s.breadcrumbDivider} aria-hidden="true">/</span>
+            <span className={s.breadcrumbCurrent} aria-current="page">{id}</span>
+          </nav>
+        </div>
+
+        <header className={`${s.section} ${s.hero}`}>
+          <div className={s.wrap}>
+            <p className={s.offerTag}>한우 · DART 공시 상세</p>
+            <h1 className={s.title}>한우 투자계약증권 · {id}</h1>
+            <p className={s.oneLiner}>
+              승인된 원금 미보장 문단만 확인하며, 정정 관계·최신 조건·개체 실재성은 판단하지 않습니다.
+            </p>
+          </div>
+        </header>
+
+        <CattleFilingArtifactDetail artifact={fallbackCattleArtifact} />
+        <div className={s.wrap}>
+          <CattleMinimumFilingEvidenceQuery productId={id} />
+        </div>
+        <ReportFoot />
+      </div>
+    );
+  }
   const scenario = await loadScenarioOffer(id);
   if (scenario) {
     const operatorHistory = (await loadScenarios())
@@ -279,7 +329,7 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
     loadFilingFacts(id),
     loadProductSummary(id),
     loadInvestmentReview(id),
-    loadApprovedCattleFilingArtifact("cattle", id),
+    loadCattleFilingArtifact(id),
   ]);
 
   const offerEntry = OFFERS.find((offer) => offer.id === id) ?? null;

@@ -13,12 +13,14 @@ import { outlineAt, stripMarkup, type OutlineNode } from "../parse/outline";
 import { parseDocument } from "../parse/document";
 import { assertOfferId } from "../paths";
 import { isExactDartPublicUrl, sha256 } from "./filing-registry";
+import { validateProductFilingRegistryV2 } from "./product-filing-registry";
 import { MAX_DART_RAW_XML_BYTES, readExactLocalRawXml } from "./raw-xml";
 
 const HashSchema = z.string().regex(/^[a-f0-9]{64}$/);
 const DateSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
 const ARTIFACT_VERSION = "pig-filing-derived-v1" as const;
-const SANITIZER_VERSION = "pig-filing-sanitizer-v1" as const;
+export const PIG_FILING_SANITIZER_VERSION = "pig-filing-sanitizer-v1" as const;
+export const PIG_FILING_CHUNKER_VERSION = "pig-filing-chunker-v1" as const;
 export const MAX_PIG_XML_BYTES = MAX_DART_RAW_XML_BYTES;
 const DOCUMENT_LIMITATIONS = ["DART 원문에서 승인된 한돈 상품 확인 문단만 구조화했습니다."] as const;
 const ARTIFACT_LIMITATIONS = ["승인된 원자 문단만 포함하며 복합 요약이나 실물 식별정보를 생성하지 않습니다."] as const;
@@ -60,11 +62,12 @@ export const PigFilingRegistrySchema = z.strictObject({
     method: z.string().trim().min(1).max(500),
   }),
   relationship: z.strictObject({
-    type: z.literal("primary"),
+    type: z.enum(["primary", "correction_of", "supplement_to", "issuer_context"]),
     mappingStatus: z.literal("confirmed"),
     mappingEvidence: z.string().trim().min(1).max(1_000),
     limitations: z.array(z.string().trim().min(1).max(500)).min(1).max(20),
   }),
+  documentRole: z.enum(["primary", "correction", "investment-description", "issuance-report", "securities-registration", "other"]).optional(),
   approval: z.strictObject({
     policyId: z.string().trim().min(1).max(120),
     scope: z.string().trim().min(1).max(240),
@@ -106,7 +109,7 @@ export const PigFilingDerivedArtifactSchema = z.strictObject({
   registry: PigFilingRegistrySchema,
   registryHash: HashSchema,
   sourceHash: HashSchema,
-  sanitizerVersion: z.literal(SANITIZER_VERSION),
+  sanitizerVersion: z.literal(PIG_FILING_SANITIZER_VERSION),
   sourceFileMtime: z.string().datetime({ offset: true }),
   approval: PigFilingRegistrySchema.shape.approval,
   sections: z.array(SectionSchema).min(1).max(20),
@@ -268,7 +271,7 @@ export const buildPigFilingDerivedArtifact = (input: {
     registry,
     registryHash: sha256(JSON.stringify(registry)),
     sourceHash: registry.entry.sha256,
-    sanitizerVersion: SANITIZER_VERSION,
+    sanitizerVersion: PIG_FILING_SANITIZER_VERSION,
     sourceFileMtime: input.sourceFileMtime,
     approval: registry.approval,
     sections,
@@ -376,11 +379,44 @@ export const pigFilingRegistryPath = (productId: string, dataDir = "data"): stri
 export const loadPigFilingRegistry = async (
   productId: string,
   dataDir = "data",
+  rcpNo?: string,
 ): Promise<PigFilingRegistry> => {
+  const registries = await loadPigFilingRegistries(productId, dataDir);
+  if (rcpNo) {
+    const exact = registries.find((registry) => registry.rcpNo === rcpNo);
+    if (!exact) throw new Error(`승인된 pig registry에 없는 rcpNo입니다: ${rcpNo}`);
+    return exact;
+  }
+  if (registries.length !== 1) throw new Error(`pig registry가 복수이므로 exact rcpNo가 필요합니다: ${productId}`);
+  return registries[0]!;
+};
+
+export const loadPigFilingRegistries = async (
+  productId: string,
+  dataDir = "data",
+): Promise<readonly PigFilingRegistry[]> => {
   const expected = assertOfferId(productId);
-  const registry = PigFilingRegistrySchema.parse(JSON.parse(await readFile(pigFilingRegistryPath(expected, dataDir), "utf8")));
-  if (registry.productId !== expected) throw new Error("pig filing registry productId 불일치");
-  return registry;
+  const value: unknown = JSON.parse(await readFile(pigFilingRegistryPath(expected, dataDir), "utf8"));
+  const legacy = PigFilingRegistrySchema.safeParse(value);
+  if (legacy.success) {
+    if (legacy.data.productId !== expected) throw new Error("pig filing registry productId 불일치");
+    return [legacy.data];
+  }
+  const { registries } = validateProductFilingRegistryV2({
+    value,
+    categoryId: "pig",
+    productId: expected,
+    parseRegistry: (candidate) => PigFilingRegistrySchema.parse(candidate),
+    registryScope: (registry) => ({
+      categoryId: registry.categoryId,
+      productId: registry.productId,
+      rcpNo: registry.rcpNo,
+      contentHash: registry.entry.sha256,
+      mappingEvidence: registry.relationship.mappingEvidence,
+      locatorSetHash: sha256(JSON.stringify(registry.sectionLocators)),
+    }),
+  });
+  return registries;
 };
 
 export const pigDerivedArtifactPath = (registry: PigFilingRegistry, dataDir = "data"): string =>

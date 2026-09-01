@@ -1,0 +1,158 @@
+{
+  "schemaVersion": 1,
+  "artifactVersion": "pig-filing-derived-v1",
+  "artifactHash": "3f237394efb23eed33ba33de7213559f8f849f090109c0ef4925d9e5d3336bd3",
+  "registry": {
+    "schemaVersion": 1,
+    "registryVersion": "dart-pig-filing-registry-v1",
+    "categoryId": "pig",
+    "productId": "pig-3",
+    "rcpNo": "20260605000175",
+    "submittedOn": "2026-06-05",
+    "entry": {
+      "name": "20260605000175.xml",
+      "sha256": "4c1d0f7358bfea53003e893fd246d9f27582a68436bfd313e28744b0c1ecfd53"
+    },
+    "source": {
+      "landingUrl": "https://dart.fss.or.kr/dsaf001/main.do",
+      "exactPublicUrl": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260605000175",
+      "collectedAtSource": "local raw XML file mtime",
+      "method": "OpenDART document.xml exact rcpNo XML entry hash와 승인된 최소 P excerpt를 로컬에서 검증"
+    },
+    "relationship": {
+      "type": "issuer_context",
+      "mappingStatus": "confirmed",
+      "mappingEvidence": "pig-3와 후보 RCP 20260605000175의 연결을 승인된 onboarding 입력으로 고정했습니다. 문서 역할은 증권신고서로만 기록하며 상품 매핑 근거와 분리합니다.",
+      "limitations": [
+        "문서 역할과 onboarding catalog의 exact product mapping을 분리해 기록했으며, 승인된 최소 excerpt 밖의 상품 사실은 사용하지 않습니다.",
+        "후속 정정·투자설명서·발행실적보고서가 이 문서를 대체하는지 자동 판단하지 않습니다."
+      ]
+    },
+    "documentRole": "securities-registration",
+    "approval": {
+      "policyId": "onboarding-product-filing-review-v2",
+      "scope": "pig-3 product-specific PII-free XML excerpt 1개",
+      "externalAiApproved": false,
+      "piiReviewStatus": "passed"
+    },
+    "sectionLocators": [
+      {
+        "factId": "principal-not-guaranteed",
+        "title": "원금 미보장",
+        "anchor": "원금 미보장",
+        "sectionPath": [
+          "요약정보",
+          "1. 핵심투자위험",
+          "1. 핵심투자위험"
+        ],
+        "occurrence": 1,
+        "evidenceTokens": [
+          "원금",
+          "미보장"
+        ],
+        "normalizedExcerptHash": "b908494f43183eec74a424c7b354ef119eeee844859d2d5f82ba4568e28833af"
+      }
+    ]
+  },
+  "registryHash": "0f3e463d7d1c8b7d1e7b5d75eff85fe5479a1fa08353dde4b032922d0fdc8be0",
+  "sourceHash": "4c1d0f7358bfea53003e893fd246d9f27582a68436bfd313e28744b0c1ecfd53",
+  "sanitizerVersion": "pig-filing-sanitizer-v1",
+  "sourceFileMtime": "2026-09-01T09:30:17.240Z",
+  "approval": {
+    "policyId": "onboarding-product-filing-review-v2",
+    "scope": "pig-3 product-specific PII-free XML excerpt 1개",
+    "externalAiApproved": false,
+    "piiReviewStatus": "passed"
+  },
+  "sections": [
+    {
+      "sectionId": "dart-principal-not-guaranteed",
+      "factId": "principal-not-guaranteed",
+      "title": "원금 미보장",
+      "text": "나. 원금 미보장과 관련된 위험",
+      "sectionPath": [
+        "요약정보",
+        "1. 핵심투자위험",
+        "1. 핵심투자위험"
+      ],
+      "charRange": {
+        "start": 23365,
+        "end": 23407
+      },
+      "anchorOffset": 23389,
+      "occurrence": 1,
+      "normalizedExcerptHash": "b908494f43183eec74a424c7b354ef119eeee844859d2d5f82ba4568e28833af",
+      "sectionHash": "5665c54a740fa6a5db1a071e296306628c5a93f42496882a0a26cd2720fa3b54"
+    }
+  ],
+  "document": {
+    "schemaVersion": 1,
+    "categoryId": "pig",
+    "productId": "pig-3",
+    "documentId": "pig-pig-3-dart-20260605000175",
+    "title": "원금 미보장",
+    "publisher": "OpenDART",
+    "sourceKind": "official-document",
+    "sourceUrl": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260605000175",
+    "asOf": "2026-06-05",
+    "collectedAt": "2026-09-01T09:30:17.240Z",
+    "dataNature": "observed",
+    "rightsStatus": "unknown",
+    "approvedForPublic": true,
+    "approvedForExternalAi": false,
+    "piiReviewStatus": "passed",
+    "sourceHash": "4c1d0f7358bfea53003e893fd246d9f27582a68436bfd313e28744b0c1ecfd53",
+    "status": "ready",
+    "pages": [
+      {
+        "page": 1,
+        "quality": "ready",
+        "reasonCodes": [
+          "xml-logical-page"
+        ],
+        "metrics": {
+          "itemCount": 1,
+          "characterCount": 17,
+          "density": 0
+        },
+        "limitations": [
+          "원천은 XML이므로 PDF 페이지 대신 논리 페이지 1로 기록했습니다."
+        ]
+      }
+    ],
+    "limitations": [
+      "DART 원문에서 승인된 한돈 상품 확인 문단만 구조화했습니다."
+    ]
+  },
+  "chunks": [
+    {
+      "schemaVersion": 1,
+      "categoryId": "pig",
+      "productId": "pig-3",
+      "documentId": "pig-pig-3-dart-20260605000175",
+      "chunkId": "pig-pig-3-dart-20260605000175-principal-not-guaranteed",
+      "title": "원금 미보장",
+      "sourceKind": "official-document",
+      "sourceUrl": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260605000175",
+      "asOf": "2026-06-05",
+      "dataNature": "observed",
+      "page": 1,
+      "text": "나. 원금 미보장과 관련된 위험",
+      "canonicalText": "나. 원금 미보장과 관련된 위험",
+      "positions": [],
+      "pageQuality": "ready",
+      "sourceHash": "4c1d0f7358bfea53003e893fd246d9f27582a68436bfd313e28744b0c1ecfd53",
+      "chunkHash": "a5ddd82fb613fa037c571023e9c79a73d927eb29ea939a1637d6ed23e8a00b34",
+      "approvedForPublic": true,
+      "approvedForExternalAi": false,
+      "piiReviewStatus": "passed",
+      "status": "ready",
+      "limitations": [
+        "DART 원문에서 승인된 한돈 상품 확인 문단만 구조화했습니다."
+      ]
+    }
+  ],
+  "limitations": [
+    "승인된 원자 문단만 포함하며 복합 요약이나 실물 식별정보를 생성하지 않습니다."
+  ]
+}

@@ -131,6 +131,25 @@ describe("DB product knowledge exact scope", () => {
     }
   });
 
+  test("exact scope의 복수 승인 공시 document/chunk를 배열 계약으로 보존한다", async () => {
+    const rows = ["20260806000159", "20260814003572"].map((rcpNo, index) => dbRow({
+      source_id: `source-${index + 1}`,
+      product_id: "livestock-9",
+      document_id: `cattle-livestock-9-dart-${rcpNo}`,
+      chunk_id: `${20 + index}`,
+      source_url: `https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${rcpNo}`,
+      source_hash: `${index + 1}`.repeat(64),
+    }));
+    const result = await createDbProductKnowledgeRepository(async () => rows).findExact({
+      categoryId: "cattle",
+      productId: "livestock-9",
+      dataNature: "observed",
+    });
+    expect(result.documents).toHaveLength(2);
+    expect(result.chunks).toHaveLength(2);
+    expect(result.documents.every((document) => document.productId === "livestock-9" && !document.approvedForExternalAi)).toBe(true);
+  });
+
   test("executor가 다른 scope 행을 반환해도 노출하지 않는다", async () => {
     const repository = createDbProductKnowledgeRepository(async () => [
       dbRow({ product_id: "other-product" }),

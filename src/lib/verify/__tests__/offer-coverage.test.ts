@@ -47,8 +47,8 @@ describe("가축 8호 — 레지스트리 매핑", () => {
     expect(resolveOfferId(AMENDMENT_RCP_NO)).toBe("livestock-8");
   });
 
-  test("복수 후보 중 first/latest를 대표 공시로 자동 선택하지 않는다", () => {
-    expect(rcpNoForOffer("livestock-8")).toBeUndefined();
+  test("복수 후보 중 승인된 active RCP만 대표 공시로 선택한다", () => {
+    expect(rcpNoForOffer("livestock-8")).toBe(BASE_RCP_NO);
   });
 
   test("발행사 프로필이 등록돼 폴백 경고 없이 해석된다", () => {

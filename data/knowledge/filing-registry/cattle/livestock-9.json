@@ -1,77 +1,167 @@
 {
-  "schemaVersion": 1,
-  "registryVersion": "dart-filing-registry-v1",
+  "schemaVersion": 2,
+  "registryVersion": "dart-product-registry-v2",
   "categoryId": "cattle",
-  "offerId": "livestock-9",
-  "rcpNo": "20260814003572",
-  "submittedOn": "2026-08-14",
-  "entry": {
-    "name": "20260814003572.xml",
-    "sha256": "cc815be9d95de6cbe4a6a16f632cfe65c3f56589ce77caa9c7890fefce8b99e2"
-  },
-  "source": {
-    "landingUrl": "https://dart.fss.or.kr/dsaf001/main.do",
-    "exactPublicUrl": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260814003572",
-    "collectedAtSource": "local raw XML file mtime",
-    "method": "OpenDART document.xml exact rcpNo ZIP entry hash verification"
-  },
-  "relationship": {
-    "type": "issuer_context",
-    "mappingStatus": "confirmed",
-    "mappingEvidence": "기존 live public report의 document.offerId=livestock-9 및 rcpNo=20260814003572, 승인 filing-facts의 동일 offerId·rcpNo, 그리고 livestock-9 pilot 범위 승인에 의해 이 공시를 해당 상품의 issuer context로 확정합니다. primary 관계는 주장하지 않습니다.",
-    "limitations": ["발행 주체·기초자산의 동일성을 자동 확정하지 않으며, primary·correction_of·supplement_to 관계로 승격하지 않습니다."]
-  },
-  "approval": {
-    "policyId": "cattle-product-filing-review-v1",
-    "scope": "livestock-9 product-specific filing facts only",
-    "externalAiApproved": false,
-    "piiReviewStatus": "passed"
-  },
-  "sectionLocators": [
+  "productId": "livestock-9",
+  "activeRcpNo": "20260814003572",
+  "inventory": [
     {
-      "factId": "issuer-allocation",
-      "anchor": "선배정",
-      "sectionPath": ["제1부 모집 또는 매출에 관한 사항", "I. 모집 또는 매출에 관한 일반사항", "2. 공모방법", "가. 투자계약증권의 배정내역"],
-      "occurrence": 2,
-      "evidenceTokens": ["10", "1817"],
-      "normalizedExcerptHash": "a429a1362bd25827b8bebc99d9f0753359a0c5de19f482c7d90ddbe97f18ee3d"
+      "rcpNo": "20260806000159",
+      "status": "local"
     },
     {
-      "factId": "operation-period",
-      "anchor": "26개월",
-      "sectionPath": ["제1부 모집 또는 매출에 관한 사항", "I. 모집 또는 매출에 관한 일반사항", "1. 공모개요"],
-      "occurrence": 5,
-      "evidenceTokens": ["20", "26"],
-      "normalizedExcerptHash": "8faa3e4cb70b192340396cf26094b9da1c446db730415371d33fd27d2a3cc5d0"
-    },
-    {
-      "factId": "investor-fees",
-      "anchor": "청약수수료",
-      "sectionPath": ["제1부 모집 또는 매출에 관한 사항", "I. 모집 또는 매출에 관한 일반사항", "4. 모집 또는 매출절차 등에 관한 사항", "다. 청약 방법"],
-      "occurrence": 9,
-      "evidenceTokens": ["200"],
-      "normalizedExcerptHash": "44c28bb5cf7c812dd9f31f49c06722e0affea85553c3ace4290d130c0042e98e"
-    },
-    {
-      "factId": "protection-fund",
-      "anchor": "투자자보호기금",
-      "sectionPath": ["제1부 모집 또는 매출에 관한 사항", "VI. 그 밖에 투자자보호를 위해 필요한 사항", "10. 투자자 보호장치에 관한 사항", "바. 투자자 피해 보상 체계 및 분쟁처리 절차"],
-      "occurrence": 10,
-      "evidenceTokens": ["투자자보호기금"],
-      "normalizedExcerptHash": "2f8588bc15f1c6a68ea76e2446a6dfccb7dd9dee6c7dbcc6567527491284fb39"
-    },
-    {
-      "factId": "pricing-basis",
-      "anchor": "수요예측",
-      "sectionPath": ["제1부 모집 또는 매출에 관한 사항", "I. 모집 또는 매출에 관한 일반사항", "3. 공모가격 결정방법", "나. 공모가격 산정개요"],
-      "occurrence": 7,
-      "evidenceTokens": ["수요예측"],
-      "normalizedExcerptHash": "3880756bf8802914b34bd0248f8aa7ba9e299683aa57d7086e1c330a0c4aa88c"
+      "rcpNo": "20260814003572",
+      "status": "local"
     }
   ],
-  "maskedObservation": {
-    "reportPath": "public/livestock-9/report-2026-08-15T15-52-44-480Z.json",
-    "sha256": "c989fb5dce8532b849ace669fed17f4b29ae7d5c52db028659a538c312807da3",
-    "allowedFields": ["품종", "성별", "취득시기"]
-  }
+  "approvedFilings": [
+    {
+      "schemaVersion": 1,
+      "rcpNo": "20260814003572",
+      "contentHash": "cc815be9d95de6cbe4a6a16f632cfe65c3f56589ce77caa9c7890fefce8b99e2",
+      "sanitizerVersion": "cattle-filing-sanitizer-v1",
+      "chunkerVersion": "cattle-filing-chunker-v1",
+      "documentRole": "issuer-context",
+      "locatorSetHash": "3b009f671f934b92d226274839122f77c32ce76363c7415d2cc5b9a21c9a3bb7",
+      "reviewMethod": "deterministic-local-codex-review-v1",
+      "reviewer": "codex-local-deterministic-check",
+      "reviewedAt": "2026-08-31T00:00:00+09:00",
+      "productMappingEvidence": "기존 live public report의 document.offerId=livestock-9 및 rcpNo=20260814003572, 승인 filing-facts의 동일 offerId·rcpNo, 그리고 livestock-9 pilot 범위 승인에 의해 이 공시를 해당 상품의 issuer context로 확정합니다. primary 관계는 주장하지 않습니다.",
+      "registry": {
+        "schemaVersion": 1,
+        "registryVersion": "dart-filing-registry-v1",
+        "categoryId": "cattle",
+        "offerId": "livestock-9",
+        "rcpNo": "20260814003572",
+        "submittedOn": "2026-08-14",
+        "entry": {
+          "name": "20260814003572.xml",
+          "sha256": "cc815be9d95de6cbe4a6a16f632cfe65c3f56589ce77caa9c7890fefce8b99e2"
+        },
+        "source": {
+          "landingUrl": "https://dart.fss.or.kr/dsaf001/main.do",
+          "exactPublicUrl": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260814003572",
+          "collectedAtSource": "local raw XML file mtime",
+          "method": "OpenDART document.xml exact rcpNo ZIP entry hash verification"
+        },
+        "relationship": {
+          "type": "issuer_context",
+          "mappingStatus": "confirmed",
+          "mappingEvidence": "기존 live public report의 document.offerId=livestock-9 및 rcpNo=20260814003572, 승인 filing-facts의 동일 offerId·rcpNo, 그리고 livestock-9 pilot 범위 승인에 의해 이 공시를 해당 상품의 issuer context로 확정합니다. primary 관계는 주장하지 않습니다.",
+          "limitations": [
+            "발행 주체·기초자산의 동일성을 자동 확정하지 않으며, primary·correction_of·supplement_to 관계로 승격하지 않습니다."
+          ]
+        },
+        "approval": {
+          "policyId": "cattle-product-filing-review-v1",
+          "scope": "livestock-9 product-specific filing facts only",
+          "externalAiApproved": false,
+          "piiReviewStatus": "passed"
+        },
+        "sectionLocators": [
+          {
+            "factId": "issuer-allocation",
+            "anchor": "선배정",
+            "sectionPath": [
+              "제1부 모집 또는 매출에 관한 사항",
+              "I. 모집 또는 매출에 관한 일반사항",
+              "2. 공모방법",
+              "가. 투자계약증권의 배정내역"
+            ],
+            "occurrence": 2,
+            "evidenceTokens": [
+              "10",
+              "1817"
+            ],
+            "normalizedExcerptHash": "a429a1362bd25827b8bebc99d9f0753359a0c5de19f482c7d90ddbe97f18ee3d"
+          },
+          {
+            "factId": "operation-period",
+            "anchor": "26개월",
+            "sectionPath": [
+              "제1부 모집 또는 매출에 관한 사항",
+              "I. 모집 또는 매출에 관한 일반사항",
+              "1. 공모개요"
+            ],
+            "occurrence": 5,
+            "evidenceTokens": [
+              "20",
+              "26"
+            ],
+            "normalizedExcerptHash": "8faa3e4cb70b192340396cf26094b9da1c446db730415371d33fd27d2a3cc5d0"
+          },
+          {
+            "factId": "investor-fees",
+            "anchor": "청약수수료",
+            "sectionPath": [
+              "제1부 모집 또는 매출에 관한 사항",
+              "I. 모집 또는 매출에 관한 일반사항",
+              "4. 모집 또는 매출절차 등에 관한 사항",
+              "다. 청약 방법"
+            ],
+            "occurrence": 9,
+            "evidenceTokens": [
+              "200"
+            ],
+            "normalizedExcerptHash": "44c28bb5cf7c812dd9f31f49c06722e0affea85553c3ace4290d130c0042e98e"
+          },
+          {
+            "factId": "protection-fund",
+            "anchor": "투자자보호기금",
+            "sectionPath": [
+              "제1부 모집 또는 매출에 관한 사항",
+              "VI. 그 밖에 투자자보호를 위해 필요한 사항",
+              "10. 투자자 보호장치에 관한 사항",
+              "바. 투자자 피해 보상 체계 및 분쟁처리 절차"
+            ],
+            "occurrence": 10,
+            "evidenceTokens": [
+              "투자자보호기금"
+            ],
+            "normalizedExcerptHash": "2f8588bc15f1c6a68ea76e2446a6dfccb7dd9dee6c7dbcc6567527491284fb39"
+          },
+          {
+            "factId": "pricing-basis",
+            "anchor": "수요예측",
+            "sectionPath": [
+              "제1부 모집 또는 매출에 관한 사항",
+              "I. 모집 또는 매출에 관한 일반사항",
+              "3. 공모가격 결정방법",
+              "나. 공모가격 산정개요"
+            ],
+            "occurrence": 7,
+            "evidenceTokens": [
+              "수요예측"
+            ],
+            "normalizedExcerptHash": "3880756bf8802914b34bd0248f8aa7ba9e299683aa57d7086e1c330a0c4aa88c"
+          },
+          {
+            "factId": "principal-not-guaranteed",
+            "title": "원금 미보장",
+            "anchor": "원금 미보장",
+            "sectionPath": [
+              "요약정보",
+              "1. 핵심투자위험",
+              "1. 핵심투자위험"
+            ],
+            "occurrence": 1,
+            "evidenceTokens": [
+              "원금",
+              "미보장"
+            ],
+            "normalizedExcerptHash": "b908494f43183eec74a424c7b354ef119eeee844859d2d5f82ba4568e28833af"
+          }
+        ],
+        "maskedObservation": {
+          "reportPath": "public/livestock-9/report-2026-08-15T15-52-44-480Z.json",
+          "sha256": "c989fb5dce8532b849ace669fed17f4b29ae7d5c52db028659a538c312807da3",
+          "allowedFields": [
+            "품종",
+            "성별",
+            "취득시기"
+          ]
+        }
+      }
+    }
+  ]
 }

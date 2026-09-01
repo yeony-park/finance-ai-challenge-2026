@@ -4,6 +4,7 @@ import path from "node:path";
 import { z } from "zod";
 
 import { assertOfferId, assertRcpNo } from "../paths";
+import { validateProductFilingRegistryV2 } from "./product-filing-registry";
 
 const HashSchema = z.string().regex(/^[a-f0-9]{64}$/);
 const IsoDateSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
@@ -58,6 +59,7 @@ export const DartFilingRegistrySchema = z.strictObject({
   }),
   sectionLocators: z.array(z.strictObject({
     factId: z.string().regex(/^[a-z][a-z0-9-]*$/),
+    title: z.string().trim().min(1).max(120).optional(),
     anchor: z.string().trim().min(1).max(120),
     sectionPath: z.array(z.string().trim().min(1).max(240)).min(1).max(10),
     occurrence: z.number().int().positive(),
@@ -99,13 +101,49 @@ export const sha256 = (value: Uint8Array | string): string =>
 export const loadDartFilingRegistry = async (
   offerId: string,
   dataDir = "data",
+  rcpNo?: string,
 ): Promise<DartFilingRegistry> => {
+  const registries = await loadDartFilingRegistries(offerId, dataDir);
+  if (rcpNo) {
+    const exact = registries.find((registry) => registry.rcpNo === assertRcpNo(rcpNo));
+    if (!exact) throw new Error(`승인된 cattle registry에 없는 rcpNo입니다: ${rcpNo}`);
+    return exact;
+  }
+  if (registries.length !== 1) throw new Error(`cattle registry가 복수이므로 exact rcpNo가 필요합니다: ${offerId}`);
+  return registries[0]!;
+};
+
+export const loadDartFilingRegistries = async (
+  offerId: string,
+  dataDir = "data",
+): Promise<readonly DartFilingRegistry[]> => {
   const expectedOfferId = assertOfferId(offerId);
-  const registry = DartFilingRegistrySchema.parse(JSON.parse(await readFile(filingRegistryPath(expectedOfferId, dataDir), "utf8")));
+  const value: unknown = JSON.parse(await readFile(filingRegistryPath(expectedOfferId, dataDir), "utf8"));
+  const legacy = DartFilingRegistrySchema.safeParse(value);
+  if (legacy.success) {
+    if (legacy.data.offerId !== expectedOfferId) throw new Error(`filing registry offerId 불일치: ${legacy.data.offerId}`);
+    return [legacy.data];
+  }
+  const { registries } = validateProductFilingRegistryV2({
+    value,
+    categoryId: "cattle",
+    productId: expectedOfferId,
+    parseRegistry: (candidate) => DartFilingRegistrySchema.parse(candidate),
+    registryScope: (registry) => ({
+      categoryId: registry.categoryId,
+      productId: registry.offerId,
+      rcpNo: registry.rcpNo,
+      contentHash: registry.entry.sha256,
+      mappingEvidence: registry.relationship.mappingEvidence,
+      locatorSetHash: sha256(JSON.stringify(registry.sectionLocators)),
+    }),
+  });
+  for (const registry of registries) {
   if (registry.offerId !== expectedOfferId) {
     throw new Error(`filing registry offerId 불일치: ${registry.offerId}`);
   }
-  return registry;
+  }
+  return registries;
 };
 
 export const requireExactRcpNo = (registry: DartFilingRegistry, rcpNo: string): string => {

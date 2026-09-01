@@ -372,6 +372,16 @@ export function CattleFilingEvidenceQuery({ productId }: { readonly productId: s
   );
 }
 
+export function CattleMinimumFilingEvidenceQuery({ productId }: { readonly productId: string }) {
+  return (
+    <EvidenceQuery
+      scope={cattleFilingEvidenceScope(productId)}
+      examples={["원금 미보장"]}
+      lead="현재는 이 상품에 연결된 DART 공시의 원금 미보장 문단만 확인합니다. 정정 관계, 최신 조건, 개체 실재성은 답으로 만들지 않습니다."
+    />
+  );
+}
+
 export function PigFilingEvidenceQuery({ productId }: { readonly productId: string }) {
   return (
     <EvidenceQuery

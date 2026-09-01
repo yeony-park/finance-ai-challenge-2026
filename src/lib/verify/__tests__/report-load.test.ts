@@ -42,12 +42,15 @@ describe("loadLatestReport — 스냅샷 JSON 로딩 (읽기 전용)", () => {
     expect(loaded.report.document.rcpNo).toBe("20260814003572");
   });
 
-  test("pending cattle의 남아 있는 공개 파일은 loader에서 모두 숨긴다", async () => {
+  test("active RCP와 다른 report/narrative는 숨기고 exact watch state만 읽는다", async () => {
     await expect(loadLatestReport("livestock-1")).rejects.toThrow(
       /리포트를 찾을 수 없습니다/,
     );
     await expect(loadLatestReplayDiff("livestock-1")).resolves.toBeUndefined();
-    await expect(loadLatestWatchState("livestock-1")).resolves.toBeUndefined();
+    await expect(loadLatestWatchState("livestock-1")).resolves.toMatchObject({
+      offerId: "livestock-1",
+      baseRcpNo: "20240220002223",
+    });
     await expect(
       loadNarrative("livestock-1", "20240619000091"),
     ).resolves.toBeNull();

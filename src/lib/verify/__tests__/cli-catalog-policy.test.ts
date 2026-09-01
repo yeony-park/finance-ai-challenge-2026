@@ -2,7 +2,6 @@ import { describe, expect, test } from "vitest";
 
 import {
   parseArgs as parseMonitorArgs,
-  runDetection,
   targetsFor,
 } from "../amend/monitor-cli";
 import { parseArgs as parseVerifyArgs } from "../cli";
@@ -45,9 +44,9 @@ describe("verification CLI catalog policy", () => {
       baseRcpNo: "20260806000159",
       write: true,
     });
-    expect(() => parseReplayArgs([
+    expect(parseReplayArgs([
       "--offer", "livestock-7", "--base-rcp-no", "20260203000427",
-    ])).toThrow("--no-write");
+    ])).toMatchObject({ write: true });
     expect(parseReplayArgs([
       "--offer", "livestock-7", "--base-rcp-no", "20260203000427", "--no-write",
     ])).toMatchObject({
@@ -79,7 +78,7 @@ describe("verification CLI catalog policy", () => {
     expect(lineage.baseRcpNo).toBe("20260806000159");
   });
 
-  test("pending replay는 default write에서 loader를 호출하지 않고 no-write만 허용한다", async () => {
+  test("ready replay는 default write와 no-write 모두 명시 base만 loader에 전달한다", async () => {
     let calls = 0;
     const fetcher = async (rcpNo: string) => {
       calls += 1;
@@ -98,15 +97,15 @@ describe("verification CLI catalog policy", () => {
       { offerId: "livestock-7", baseRcpNo: "20260203000427", write: true },
       "test-key",
       fetcher,
-    )).rejects.toThrow("ready-local");
-    expect(calls).toBe(0);
+    )).resolves.toMatchObject({ baseRcpNo: "20260203000427" });
+    expect(calls).toBe(1);
 
     await expect(loadReplayLineage(
       { offerId: "livestock-7", baseRcpNo: "20260203000427", write: false },
       "test-key",
       fetcher,
     )).resolves.toMatchObject({ baseRcpNo: "20260203000427" });
-    expect(calls).toBe(1);
+    expect(calls).toBe(2);
   });
 
   test("ready replay는 after document가 active RCP와 일치할 때만 기록한다", async () => {
@@ -138,8 +137,11 @@ describe("verification CLI catalog policy", () => {
 
   test("narrative는 active cattle만 후보로 삼되 외부 AI 미승인이면 provider 0회다", async () => {
     const options = parseNarrativeArgs([]);
-    expect(options.offerIds).toEqual(["livestock-9"]);
-    expect(parseNarrativeArgs(["--offer", "livestock-1"]).offerIds).toEqual([]);
+    expect(options.offerIds).toEqual([
+      "livestock-1", "livestock-2", "livestock-3", "livestock-4", "livestock-5",
+      "livestock-6", "livestock-7", "livestock-8", "livestock-9",
+    ]);
+    expect(parseNarrativeArgs(["--offer", "livestock-1"]).offerIds).toEqual(["livestock-1"]);
 
     let providers = 0;
     await runNarrativeCli(options, async () => {
@@ -149,21 +151,11 @@ describe("verification CLI catalog policy", () => {
     expect(providers).toBe(0);
   });
 
-  test("monitor는 pending cattle을 fetch·write 대상에서 제외한다", async () => {
+  test("monitor는 승인된 active cattle의 exact RCP만 대상으로 삼는다", () => {
     const options = parseMonitorArgs(["--offer", "livestock-1"]);
-    expect(targetsFor(options)).toEqual([]);
-    let fetches = 0;
-    let writes = 0;
-    await runDetection(options, {
-      fetchLineage: async () => {
-        fetches += 1;
-        throw new Error("호출되면 안 됩니다");
-      },
-      writeState: async () => {
-        writes += 1;
-        return "written";
-      },
-    });
-    expect({ fetches, writes }).toEqual({ fetches: 0, writes: 0 });
+    expect(targetsFor(options)).toEqual([{
+      offerId: "livestock-1",
+      rcpNo: "20240220002223",
+    }]);
   });
 });

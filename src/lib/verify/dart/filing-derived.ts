@@ -20,7 +20,8 @@ import {
 import { readExactLocalRawXml } from "./raw-xml";
 
 const SAFE_DART_URL = "https://dart.fss.or.kr/dsaf001/main.do";
-const SANITIZER_VERSION = "cattle-filing-sanitizer-v1" as const;
+export const CATTLE_FILING_SANITIZER_VERSION = "cattle-filing-sanitizer-v1" as const;
+export const CATTLE_FILING_CHUNKER_VERSION = "cattle-filing-chunker-v1" as const;
 const ARTIFACT_VERSION = "cattle-filing-derived-v1" as const;
 const FORBIDDEN_KEY = /(?:traceNo|cattleNo|farmNo|currentFarmNo|farmer|address|farmHistory)/i;
 const FORBIDDEN_TEXT = /(?:이력번호|농장번호|농장주|상세주소|사육이력)/;
@@ -60,7 +61,7 @@ export const CattleFilingDerivedArtifactSchema = z.strictObject({
   registry: DartFilingRegistrySchema,
   registryHash: z.string().regex(/^[a-f0-9]{64}$/),
   sourceHash: z.string().regex(/^[a-f0-9]{64}$/),
-  sanitizerVersion: z.literal(SANITIZER_VERSION),
+  sanitizerVersion: z.literal(CATTLE_FILING_SANITIZER_VERSION),
   sourceFileMtime: z.string().datetime({ offset: true }),
   approval: DartFilingRegistrySchema.shape.approval,
   sections: z.array(SectionSchema).min(1).max(50),
@@ -74,18 +75,16 @@ export type CattleFilingDerivedArtifact = z.infer<typeof CattleFilingDerivedArti
 
 const canonicalText = (value: string): string => value.normalize("NFKC").replace(/\s+/g, " ").trim();
 
-const assertFactMatchesExcerpt = (
-  fact: FilingFacts["facts"][number],
+const assertLocatorMatchesExcerpt = (
   locator: DartFilingRegistry["sectionLocators"][number],
   excerpt: string,
 ): void => {
-  const factText = canonicalText(`${fact.label} ${fact.value}`).replaceAll(",", "");
   const excerptText = canonicalText(excerpt).replaceAll(",", "");
   const missing = locator.evidenceTokens.filter((token) =>
-    !factText.includes(token.replaceAll(",", "")) || !excerptText.includes(token.replaceAll(",", "")),
+    !excerptText.includes(token.replaceAll(",", "")),
   );
   if (missing.length > 0) {
-    throw new Error(`승인 filing fact 핵심값이 XML excerpt에 없습니다: ${fact.id}`);
+    throw new Error(`승인 locator 핵심값이 XML excerpt에 없습니다: ${locator.factId}`);
   }
 };
 
@@ -218,23 +217,21 @@ const projectMaskedObservation = (
 export const buildCattleFilingDerivedArtifact = (input: {
   readonly registry: DartFilingRegistry;
   readonly xml: string;
-  readonly filingFacts: FilingFacts;
+  readonly filingFacts?: FilingFacts;
   readonly maskedObservationRaw: Uint8Array;
   readonly sourceFileMtime: string;
 }): CattleFilingDerivedArtifact => {
   const { registry, xml, filingFacts } = input;
-  if (filingFacts.offerId !== registry.offerId || filingFacts.rcpNo !== registry.rcpNo) {
+  if (filingFacts && (filingFacts.offerId !== registry.offerId || filingFacts.rcpNo !== registry.rcpNo)) {
     throw new Error("approved filing facts의 offerId 또는 rcpNo가 registry와 일치하지 않습니다.");
   }
   if (sha256(xml) !== registry.entry.sha256) throw new Error("XML sourceHash가 registry와 일치하지 않습니다.");
   const parsed = parseDocument(xml);
-  const factsById = new Map(filingFacts.facts.map((fact) => [fact.id, fact]));
-  if (registry.sectionLocators.some((locator) => !factsById.has(locator.factId))) {
-    throw new Error("승인 registry locator에 대응하는 filing fact가 없습니다.");
-  }
+  const factsById = new Map((filingFacts?.facts ?? []).map((fact) => [fact.id, fact]));
   const sections = registry.sectionLocators.map((locator) => {
     const fact = factsById.get(locator.factId);
-    if (!fact) throw new Error(`승인 filing fact가 없습니다: ${locator.factId}`);
+    const title = locator.title ?? fact?.label;
+    if (!title) throw new Error(`승인 locator title이 없습니다: ${locator.factId}`);
     const resolved = findLocator(xml, parsed.outline, locator);
     const sectionPath = resolved.sectionPath.map((node) => node.title);
     const excerpt = enclosingExcerpt(xml, resolved.anchorOffset, locator.anchor);
@@ -245,11 +242,11 @@ export const buildCattleFilingDerivedArtifact = (input: {
     if (normalizedExcerptHash !== locator.normalizedExcerptHash) {
       throw new Error(`승인 locator excerpt hash가 XML과 일치하지 않습니다: ${locator.factId}`);
     }
-    assertFactMatchesExcerpt(fact, locator, excerpt.text);
+    assertLocatorMatchesExcerpt(locator, excerpt.text);
     return SectionSchema.parse({
       sectionId: `dart-${locator.factId}`,
       factId: locator.factId,
-      title: fact.label,
+      title,
       text: excerpt.text,
       sectionPath,
       charRange: excerpt.charRange,
@@ -313,7 +310,7 @@ export const buildCattleFilingDerivedArtifact = (input: {
     registry,
     registryHash: sha256(JSON.stringify(registry)),
     sourceHash: registry.entry.sha256,
-    sanitizerVersion: SANITIZER_VERSION,
+    sanitizerVersion: CATTLE_FILING_SANITIZER_VERSION,
     sourceFileMtime: input.sourceFileMtime,
     approval: registry.approval,
     sections,
@@ -377,15 +374,18 @@ export const buildAndWriteCattleFilingDerivedArtifact = async (
   dataDir = "data",
 ): Promise<{ readonly path: string; readonly artifact: CattleFilingDerivedArtifact }> => {
   const approvedRegistry = DartFilingRegistrySchema.parse(registry);
+  const needsLegacyFacts = approvedRegistry.sectionLocators.some((locator) => locator.title === undefined);
   const [source, factsRaw, observationRaw] = await Promise.all([
     readExactLocalRawXml({ dataDir, rcpNo: approvedRegistry.rcpNo, entryName: approvedRegistry.entry.name }),
-    readFile(path.resolve(dataDir, "offers", "filing-facts", `${approvedRegistry.offerId}.json`), "utf8"),
+    needsLegacyFacts
+      ? readFile(path.resolve(dataDir, "offers", "filing-facts", `${approvedRegistry.offerId}.json`), "utf8")
+      : Promise.resolve(null),
     readFile(path.resolve(dataDir, approvedRegistry.maskedObservation.reportPath)),
   ]);
   const artifact = buildCattleFilingDerivedArtifact({
     registry: approvedRegistry,
     xml: new TextDecoder("utf-8").decode(source.bytes),
-    filingFacts: parseFilingFacts(JSON.parse(factsRaw)),
+    ...(factsRaw === null ? {} : { filingFacts: parseFilingFacts(JSON.parse(factsRaw)) }),
     maskedObservationRaw: new Uint8Array(observationRaw),
     sourceFileMtime: source.mtime,
   });

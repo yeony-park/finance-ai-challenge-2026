@@ -7,6 +7,7 @@ const main = async (): Promise<void> => {
     return;
   }
   console.log(`onboarding preflight: total ${result.totalProducts}, ready ${result.readyLocalProducts}, pending ${result.pendingProducts}`);
+  console.log(`filing inventory: total ${result.totalCandidateRcpNos}, local ${result.localCandidateRcpNos}, source-unavailable ${result.unavailableCandidateRcpNos}`);
   console.log(`pending candidates ${result.pendingCandidateRcpNos}, minimum downloads ${result.minimumFutureDownloads}, external-AI/embedding candidates ${result.externalAiEmbeddingCandidates}`);
 };
 

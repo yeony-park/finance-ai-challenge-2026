@@ -108,6 +108,19 @@ describe("cattle filing derived artifact", () => {
     expect(JSON.stringify(first)).not.toMatch(/traceNo|cattleNo|farmNo|currentFarmNo|farmer|address|farmHistory/i);
   });
 
+  it("신규 registry는 locator title과 token/hash만으로 filing-facts 없이 chunk를 만든다", () => {
+    const input = registry();
+    input.sectionLocators = [{ ...input.sectionLocators[0]!, title: "예상 사업기간" }];
+    input.maskedObservation = { ...input.maskedObservation, sha256: sha256(report) };
+    const artifact = buildCattleFilingDerivedArtifact({
+      registry: input,
+      xml,
+      maskedObservationRaw: report,
+      sourceFileMtime: "2026-08-31T01:02:03.000Z",
+    });
+    expect(artifact.chunks[0]).toMatchObject({ title: "예상 사업기간", text: "26개월" });
+  });
+
   it("exact registry가 있으면 livestock-N scope와 masked report 경로를 일반화한다", () => {
     const genericReport = new TextEncoder().encode(JSON.stringify({
       offerId: "livestock-8",

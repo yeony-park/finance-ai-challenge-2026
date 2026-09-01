@@ -2,10 +2,10 @@ import { storageMode } from "../env";
 import { loadCommonKnowledgeScope, loadKnowledgeScope } from "@/lib/knowledge/loader";
 import {
   cattleFilingKnowledge,
-  loadApprovedCattleFilingArtifact,
+  loadApprovedCattleFilingArtifactsForProduct,
 } from "@/lib/knowledge/cattle-filing-artifact";
 import {
-  loadApprovedPigFilingArtifact,
+  loadApprovedPigFilingArtifactsForProduct,
   pigFilingKnowledge,
 } from "@/lib/knowledge/pig-filing-artifact";
 import type {
@@ -150,12 +150,12 @@ export const createFileProductKnowledgeRepository = (
   async findExact(scope) {
     if (!validScope(scope)) return EMPTY_RESULT;
     if (scope.categoryId === "cattle" && scope.dataNature === "observed") {
-      const artifact = await loadApprovedCattleFilingArtifact(scope.categoryId, scope.productId, dataRoot);
-      if (artifact) return cattleFilingKnowledge(artifact);
+      const artifacts = await loadApprovedCattleFilingArtifactsForProduct(scope.categoryId, scope.productId, dataRoot);
+      if (artifacts.length > 0) return cattleFilingKnowledge(artifacts);
     }
     if (scope.categoryId === "pig" && scope.dataNature === "observed") {
-      const artifact = await loadApprovedPigFilingArtifact(scope.categoryId, scope.productId, dataRoot);
-      if (artifact) return pigFilingKnowledge(artifact);
+      const artifacts = await loadApprovedPigFilingArtifactsForProduct(scope.categoryId, scope.productId, dataRoot);
+      if (artifacts.length > 0) return pigFilingKnowledge(artifacts);
     }
     return (await fromCommon(scope, dataRoot)) ?? fromLegacyScenario(scope, dataRoot);
   },

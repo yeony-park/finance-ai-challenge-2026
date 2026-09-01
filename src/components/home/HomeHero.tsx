@@ -39,6 +39,7 @@ const SEARCH_PHASE_LABEL: Readonly<Record<SearchResult["phase"], string>> = {
   closed: "청약 종료",
   "listed-trading": "상장 거래",
   settled: "종료",
+  "evidence-only": "공시 근거 확인",
 };
 
 const SCENARIO_PHASE_LABEL: Readonly<Record<SearchResult["phase"], string>> = {
@@ -47,6 +48,7 @@ const SCENARIO_PHASE_LABEL: Readonly<Record<SearchResult["phase"], string>> = {
   closed: "가상 청약 종료 시나리오",
   "listed-trading": "가상 상장 거래 시나리오",
   settled: "가상 종료 사례",
+  "evidence-only": "가상 공시 근거 확인",
 };
 
 const REVIEW_AREA_LABEL: Readonly<Record<ReviewArea, string>> = {

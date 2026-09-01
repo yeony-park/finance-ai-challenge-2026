@@ -31,13 +31,15 @@ export interface GlobalSearchResult {
     | "subscription-open"
     | "closed"
     | "listed-trading"
-    | "settled";
+    | "settled"
+    | "evidence-only";
   readonly minimumInvestmentWon?: number;
   readonly href: string;
   readonly matchedFields: readonly string[];
   readonly isScenario: boolean;
   readonly dataNature: "observed" | "scenario";
   readonly namespace: "published-offer" | "common" | "legacy-scenario";
+  readonly status?: "evidence-ready";
 }
 
 export interface GlobalSearchResponse {
@@ -73,9 +75,33 @@ export interface GlobalSearchOptions {
   readonly semanticMatches?: readonly SemanticProductMatch[];
   readonly minimumInvestmentWonMin?: number;
   readonly minimumInvestmentWonMax?: number;
+  readonly loadScenarios?: typeof loadApprovedScenarios;
+  readonly loadCommonProducts?: typeof loadApprovedCommonProducts;
   readonly loadCattleFilings?: typeof loadApprovedCattleFilingArtifacts;
   readonly loadPigFilings?: typeof loadApprovedPigFilingArtifacts;
 }
+
+let productionCattleFilings: ReturnType<typeof loadApprovedCattleFilingArtifacts> | undefined;
+let productionPigFilings: ReturnType<typeof loadApprovedPigFilingArtifacts> | undefined;
+
+const loadDefaultFilings = <T>(
+  dataRoot: string | undefined,
+  injected: ((dataRoot?: string) => Promise<T>) | undefined,
+  load: (dataRoot?: string) => Promise<T>,
+  cached: () => Promise<T> | undefined,
+  setCached: (value: Promise<T> | undefined) => void,
+): Promise<T> => {
+  if (injected) return injected(dataRoot);
+  if (process.env.NODE_ENV !== "production" || dataRoot !== undefined) return load(dataRoot);
+  const existing = cached();
+  if (existing) return existing;
+  const pending = load();
+  setCached(pending);
+  void pending.catch(() => {
+    if (cached() === pending) setCached(undefined);
+  });
+  return pending;
+};
 
 const matchFields = (
   query: string,
@@ -106,6 +132,7 @@ const PHASE_ALIASES: Readonly<Record<GlobalSearchResult["phase"], string>> = {
   closed: "청약 종료 모집 종료",
   "listed-trading": "상장 상장 거래 거래 가능 매매 가능",
   settled: "종료 정산 정산 완료 운용 종료",
+  "evidence-only": "공개 근거 확인 근거만",
 };
 
 const SCENARIO_TOPICS =
@@ -125,6 +152,21 @@ const filingSearchText = (
 ): string => sections.map((section) =>
   `${section.title} ${section.text} ${aliases[section.factId] ?? ""}`
 ).join(" ");
+
+const filingSearchByProduct = <T extends {
+  readonly sections: readonly { readonly factId: string; readonly title: string; readonly text: string }[];
+}>(
+  artifacts: readonly T[],
+  productIdOf: (artifact: T) => string,
+  aliases: Readonly<Record<string, string>> = {},
+): ReadonlyMap<string, string> => {
+  const result = new Map<string, string>();
+  for (const artifact of artifacts) {
+    const productId = productIdOf(artifact);
+    result.set(productId, `${result.get(productId) ?? ""} ${filingSearchText(artifact.sections, aliases)}`.trim());
+  }
+  return result;
+};
 
 const CATEGORY_ALIASES: Readonly<Record<GlobalSearchResult["categoryId"], readonly string[]>> = {
   cattle: ["cattle", "한우", "소", "가축"],
@@ -181,21 +223,12 @@ const isCattleFilingQuery = (
 const isPigFilingQuery = (
   query: string,
   categoryId?: GlobalSearchResult["categoryId"],
-): boolean => (categoryId === undefined || categoryId === "pig") && (
+): boolean => categoryId === "pig" || categoryId === undefined && (
+  /^pig-[1-9]\d*$/.test(query.trim().toLowerCase()) ||
   /공모\s*(?:조건|개요|가격|총액|금액)|공모가(?:액)?|좌수|단가|청약|배정|납입|수수료|위험|보상|원금\s*미보장|투자자\s*보호|보호\s*기금/.test(query) ||
-  categoryId === "pig" && /공시|상품\s*명|(?:제\s*)?1\s*호/.test(query) ||
-  /가축\s*투자계약증권\s*(?:제\s*)?1\s*호/.test(query)
+  /돼지|돈육|한돈|pig|가축\s*투자계약증권/i.test(query) &&
+    /공시|상품\s*명|(?:제\s*)?[1-9]\d*\s*호/.test(query)
 );
-
-const repositoryPhase = (
-  offering: { readonly opensOn: string | null; readonly closesOn: string | null },
-  now: Date,
-): GlobalSearchResult["phase"] => {
-  const today = now.toISOString().slice(0, 10);
-  if (offering.opensOn && offering.opensOn > today) return "upcoming";
-  if (offering.closesOn && offering.closesOn >= today) return "subscription-open";
-  return "closed";
-};
 
 export const searchOffers = async (
   query: GlobalSearchQuery | GlobalSearchRequest,
@@ -238,34 +271,44 @@ export const searchOffers = async (
   const now = new Date();
   const categoryId = query.categoryId ?? intent.categoryId;
   const cattleFilingsPromise = isCattleFilingQuery(queryText, categoryId)
-    ? (options.loadCattleFilings ?? loadApprovedCattleFilingArtifacts)(dataRoot)
+    ? loadDefaultFilings(
+      dataRoot,
+      options.loadCattleFilings,
+      loadApprovedCattleFilingArtifacts,
+      () => productionCattleFilings,
+      (value) => { productionCattleFilings = value; },
+    )
     : Promise.resolve([]);
-  const pigFilingsPromise = isPigFilingQuery(queryText, categoryId)
-    ? (options.loadPigFilings ?? loadApprovedPigFilingArtifacts)(dataRoot)
+  const pigFilingsPromise = isPigFilingQuery(queryText, query.categoryId)
+    ? loadDefaultFilings(
+      dataRoot,
+      options.loadPigFilings,
+      loadApprovedPigFilingArtifacts,
+      () => productionPigFilings,
+      (value) => { productionPigFilings = value; },
+    )
     : Promise.resolve([]);
   const [population, commonProducts, cattleFilings, pigFilings, resolvedRepositories] = await Promise.all([
-    loadApprovedScenarios(dataRoot),
-    loadApprovedCommonProducts(dataRoot),
+    (options.loadScenarios ?? loadApprovedScenarios)(dataRoot),
+    (options.loadCommonProducts ?? loadApprovedCommonProducts)(dataRoot),
     cattleFilingsPromise,
     pigFilingsPromise,
     repositories ?? resolveRetrievalRepositories({ dataDir: dataRoot }),
   ]);
-  const cattleFilingByProduct = new Map(cattleFilings.map((artifact) => [
-    artifact.registry.offerId,
-    filingSearchText(artifact.sections, CATTLE_FILING_SEARCH_TERMS),
-  ]));
+  const cattleFilingByProduct = filingSearchByProduct(
+    cattleFilings,
+    (artifact) => artifact.registry.offerId,
+    CATTLE_FILING_SEARCH_TERMS,
+  );
+  const pigFilingByProduct = filingSearchByProduct(
+    pigFilings,
+    (artifact) => artifact.registry.productId,
+  );
   const repositoryOfferings = await listPublishedRepositoryOfferings(
     resolvedRepositories.offerings,
     query.categoryId ?? intent.categoryId,
   );
   const repositoryById = new Map(repositoryOfferings.map((item) => [item.entry.id, item.offering]));
-  const pigRepositoryById = new Map(
-    (pigFilings.length > 0
-      ? await resolvedRepositories.offerings.listByCategory("pig")
-      : []
-    ).filter((offering) => offering.provenance !== "synthetic")
-      .map((offering) => [offering.offerSlug, offering]),
-  );
   const published = OFFERS.map((offer) => {
     const schedulePhase = buildOfferSchedule(offer, now).phase;
     const phase: GlobalSearchResult["phase"] =
@@ -374,29 +417,24 @@ export const searchOffers = async (
     };
   });
 
-  const pig = pigFilings.flatMap((artifact) => {
-    const offering = pigRepositoryById.get(artifact.registry.productId);
-    if (!offering || offering.categoryId !== "pig") return [];
-    const phase = repositoryPhase(offering, now);
+  const pig = [...pigFilingByProduct].flatMap(([productId, filing]) => {
+    const artifact = pigFilings.find((item) => item.registry.productId === productId);
+    if (!artifact) return [];
     const match = matchFields(normalized, {
-      id: offering.offerSlug,
-      title: offering.titlePublic,
+      id: productId,
+      title: artifact.document.title,
       category: `pig ${CATEGORY_ALIASES.pig.join(" ")}`,
-      phase: `${phase} ${PHASE_ALIASES[phase]}`,
-      filing: filingSearchText(artifact.sections),
+      filing,
     });
-    const minimumInvestmentWon = typeof offering.detail.unitPriceWon === "number"
-      ? offering.detail.unitPriceWon
-      : undefined;
     return [{
-      id: offering.offerSlug,
-      productId: offering.offerSlug,
+      id: productId,
+      productId,
       categoryId: "pig" as const,
-      title: offering.titlePublic,
+      title: artifact.document.title,
       assetKind: "livestock" as const,
-      phase,
-      ...(minimumInvestmentWon === undefined ? {} : { minimumInvestmentWon }),
-      href: `/offers/${offering.offerSlug}`,
+      phase: "evidence-only" as const,
+      status: "evidence-ready" as const,
+      href: `/offers/${productId}`,
       matchedFields: match.matchedFields,
       isScenario: false,
       dataNature: "observed" as const,
@@ -446,6 +484,9 @@ export const searchOffers = async (
       isScenario: item.isScenario,
       dataNature: item.dataNature,
       namespace: item.namespace,
+      ...("status" in item && item.status === "evidence-ready"
+        ? { status: item.status }
+        : {}),
     }));
   const generic = results.length === 0 && isGenericKnowledgeQuery(queryText)
     ? await retrieveGenericKnowledge(resolvedRepositories.rag, queryText, query.categoryId ?? intent.categoryId)

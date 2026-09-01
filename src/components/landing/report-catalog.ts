@@ -8,7 +8,7 @@ export interface ReportCatalogCardView {
   readonly id: string;
   readonly href: string;
   readonly title: string;
-  readonly assetLabel: "한돈" | "미술품";
+  readonly assetLabel: "한우" | "한돈" | "미술품";
   readonly badge: string;
   readonly meta: string;
   readonly summary: string;
