@@ -34,7 +34,7 @@ const commonIndex = (documentId: string, includeChunk = false) => {
     title: "공개 시나리오 문서",
     publisher: "공개 시나리오",
     sourceKind: "scenario-input",
-    sourceUrl: "/scenario-documents/re-scenario-01-guide.pdf",
+    sourceUrl: "/scenario-documents/re-scenario-01-product-description.pdf",
     asOf: "2026-08-24",
     collectedAt: "2026-08-30T00:00:00.000Z",
     dataNature: "scenario",
