@@ -7,10 +7,10 @@
   "documentId": "re-scenario-01-product-description",
   "dataNature": "scenario",
   "sourceKind": "scenario-input",
-  "sourceHash": "f4866f2c48cbd15c46b8ba34e8407f9f9812a657ae80d8c3ccace29527af2599",
-  "manifestHash": "bbb3c031780a5347fa26bfc5cdf16b5847e49b5ba360e33b99892646bc4c01de",
+  "sourceHash": "ae341c33c8625c9ef60e4b5e8d78e1ae853718136532fdd9919a71a7aa66b51a",
+  "manifestHash": "9dafa6f53b5457d7114836086755bb1957d526a48add301f98ecbcf1e9eb45a0",
   "status": "ready",
-  "createdAt": "2026-08-30T12:48:32.825Z",
+  "createdAt": "2026-08-30T04:00:00.000Z",
   "pages": [
     {
       "page": 1,
@@ -38,21 +38,21 @@
       "page": 2,
       "native": {
         "quality": "ready",
-        "text": "시나리오 안내\n시나리오 데이터 안내: 이 화면의 투자조건은 실제 건축물의 공개정보를 기반으로 구성한 시나리오이며, 실제 청약·\n판매 중인 상품이 아닙니다.\n이 문서는 서울스퀘어의 subscription-open 상태를 가정한 상품설명서이며, 실제 투자 권유나 상품 청약 자료가\n아닙니다.",
-        "canonicalText": "시나리오 안내 시나리오 데이터 안내: 이 화면의 투자조건은 실제 건축물의 공개정보를 기반으로 구성한 시나리오이며, 실제 청약· 판매 중인 상품이 아닙니다. 이 문서는 서울스퀘어의 subscription-open 상태를 가정한 상품설명서이며, 실제 투자 권유나 상품 청약 자료가 아닙니다.",
+        "text": "문서 식별·목차\n문서명: 서울스퀘어 시나리오 상품설명서\n문서 식별: re-scenario-01 / re-offer-01\n기준일: 2026-08-24\n목차: 핵심 요약 · 상품·증권 조건 · 청약·배정·납입·상장 일정 · 건물·공개 원장 · 취득·운영 계획 · 대출/LTV/임대/\n공실 가정 · 분배 구조 · 수수료·세금 · 투자자 보호 · 주요 위험 · 매각·회수 · 출처·가정·한계 · 데이터 정의·출처 부록\n핵심 요약\n구분 확인 범위 또는 시나리오 조건\n상품 단계 subscription-open\n기초자산 공개명 서울스퀘어\n공모총액 12,000,000,000원\n목표 보유기간 30개월\n운영그룹 operator-a\n고지 실제 청약·판매 상품이 아닌 시나리오 입력\n상품·증권 조건\n항목 시나리오 조건\n단위 권리 시나리오 조건상 1좌는 가상 조건을 표시하기 위한 단위이며 실제 권리 또는 증권을 뜻하지\n않습니다.\n단가 5,000원\n수량 2400000좌\n최소투자금 100,000원\n배정·환급 가상 배정은 신청 단위 기준으로 가정하며 미배정분·취소분은 시나리오상 전액 환불로 처리합니다.\n거래 가능\n상태\nnot-listed",
+        "canonicalText": "문서 식별·목차 문서명: 서울스퀘어 시나리오 상품설명서 문서 식별: re-scenario-01 / re-offer-01 기준일: 2026-08-24 목차: 핵심 요약 · 상품·증권 조건 · 청약·배정·납입·상장 일정 · 건물·공개 원장 · 취득·운영 계획 · 대출/LTV/임대/ 공실 가정 · 분배 구조 · 수수료·세금 · 투자자 보호 · 주요 위험 · 매각·회수 · 출처·가정·한계 · 데이터 정의·출처 부록 핵심 요약 구분 확인 범위 또는 시나리오 조건 상품 단계 subscription-open 기초자산 공개명 서울스퀘어 공모총액 12,000,000,000원 목표 보유기간 30개월 운영그룹 operator-a 고지 실제 청약·판매 상품이 아닌 시나리오 입력 상품·증권 조건 항목 시나리오 조건 단위 권리 시나리오 조건상 1좌는 가상 조건을 표시하기 위한 단위이며 실제 권리 또는 증권을 뜻하지 않습니다. 단가 5,000원 수량 2400000좌 최소투자금 100,000원 배정·환급 가상 배정은 신청 단위 기준으로 가정하며 미배정분·취소분은 시나리오상 전액 환불로 처리합니다. 거래 가능 상태 not-listed",
         "positions": [],
         "reasonCodes": [],
         "metrics": {
-          "itemCount": 72,
-          "characterCount": 127,
-          "density": 0.0002528424706121987
+          "itemCount": 273,
+          "characterCount": 448,
+          "density": 0.0008919167467264963
         },
         "limitations": []
       },
       "selected": {
         "origin": "native_text",
-        "text": "시나리오 안내\n시나리오 데이터 안내: 이 화면의 투자조건은 실제 건축물의 공개정보를 기반으로 구성한 시나리오이며, 실제 청약·\n판매 중인 상품이 아닙니다.\n이 문서는 서울스퀘어의 subscription-open 상태를 가정한 상품설명서이며, 실제 투자 권유나 상품 청약 자료가\n아닙니다.",
-        "canonicalText": "시나리오 안내 시나리오 데이터 안내: 이 화면의 투자조건은 실제 건축물의 공개정보를 기반으로 구성한 시나리오이며, 실제 청약· 판매 중인 상품이 아닙니다. 이 문서는 서울스퀘어의 subscription-open 상태를 가정한 상품설명서이며, 실제 투자 권유나 상품 청약 자료가 아닙니다."
+        "text": "문서 식별·목차\n문서명: 서울스퀘어 시나리오 상품설명서\n문서 식별: re-scenario-01 / re-offer-01\n기준일: 2026-08-24\n목차: 핵심 요약 · 상품·증권 조건 · 청약·배정·납입·상장 일정 · 건물·공개 원장 · 취득·운영 계획 · 대출/LTV/임대/\n공실 가정 · 분배 구조 · 수수료·세금 · 투자자 보호 · 주요 위험 · 매각·회수 · 출처·가정·한계 · 데이터 정의·출처 부록\n핵심 요약\n구분 확인 범위 또는 시나리오 조건\n상품 단계 subscription-open\n기초자산 공개명 서울스퀘어\n공모총액 12,000,000,000원\n목표 보유기간 30개월\n운영그룹 operator-a\n고지 실제 청약·판매 상품이 아닌 시나리오 입력\n상품·증권 조건\n항목 시나리오 조건\n단위 권리 시나리오 조건상 1좌는 가상 조건을 표시하기 위한 단위이며 실제 권리 또는 증권을 뜻하지\n않습니다.\n단가 5,000원\n수량 2400000좌\n최소투자금 100,000원\n배정·환급 가상 배정은 신청 단위 기준으로 가정하며 미배정분·취소분은 시나리오상 전액 환불로 처리합니다.\n거래 가능\n상태\nnot-listed",
+        "canonicalText": "문서 식별·목차 문서명: 서울스퀘어 시나리오 상품설명서 문서 식별: re-scenario-01 / re-offer-01 기준일: 2026-08-24 목차: 핵심 요약 · 상품·증권 조건 · 청약·배정·납입·상장 일정 · 건물·공개 원장 · 취득·운영 계획 · 대출/LTV/임대/ 공실 가정 · 분배 구조 · 수수료·세금 · 투자자 보호 · 주요 위험 · 매각·회수 · 출처·가정·한계 · 데이터 정의·출처 부록 핵심 요약 구분 확인 범위 또는 시나리오 조건 상품 단계 subscription-open 기초자산 공개명 서울스퀘어 공모총액 12,000,000,000원 목표 보유기간 30개월 운영그룹 operator-a 고지 실제 청약·판매 상품이 아닌 시나리오 입력 상품·증권 조건 항목 시나리오 조건 단위 권리 시나리오 조건상 1좌는 가상 조건을 표시하기 위한 단위이며 실제 권리 또는 증권을 뜻하지 않습니다. 단가 5,000원 수량 2400000좌 최소투자금 100,000원 배정·환급 가상 배정은 신청 단위 기준으로 가정하며 미배정분·취소분은 시나리오상 전액 환불로 처리합니다. 거래 가능 상태 not-listed"
       },
       "limitations": []
     },
@@ -60,21 +60,21 @@
       "page": 3,
       "native": {
         "quality": "ready",
-        "text": "상품 개요와 건물·원장\n공개명 서울스퀘어, 지역 서울 중구, 도로명 주소 서울 중구 한강대로 416. 주용도 업무시설, 연면적 132792.56㎡,\n대지면적 10583.4㎡, 사용승인일 1970-12-23. 관찰 사실과 시나리오 주장은 데이터 정의·출처 부록에서 분리해\n표시합니다.",
-        "canonicalText": "상품 개요와 건물·원장 공개명 서울스퀘어, 지역 서울 중구, 도로명 주소 서울 중구 한강대로 416. 주용도 업무시설, 연면적 132792.56m2, 대지면적 10583.4m2, 사용승인일 1970-12-23. 관찰 사실과 시나리오 주장은 데이터 정의·출처 부록에서 분리해 표시합니다.",
+        "text": "청약·배정·납입·상장 일정\n일정 항목 시나리오 조건\n모집 시작일 2026-08-18\n모집 종료일 2026-09-11\n상장일 미확인\n거래 유효기한 미확인\n배정·환급\n절차\n가상 배정은 신청 단위 기준으로 가정하며 미배정분·취소분은 시나리오상 전액 환불로\n처리합니다.",
+        "canonicalText": "청약·배정·납입·상장 일정 일정 항목 시나리오 조건 모집 시작일 2026-08-18 모집 종료일 2026-09-11 상장일 미확인 거래 유효기한 미확인 배정·환급 절차 가상 배정은 신청 단위 기준으로 가정하며 미배정분·취소분은 시나리오상 전액 환불로 처리합니다.",
         "positions": [],
         "reasonCodes": [],
         "metrics": {
-          "itemCount": 72,
-          "characterCount": 127,
-          "density": 0.0002528424706121987
+          "itemCount": 65,
+          "characterCount": 117,
+          "density": 0.0002329336146584823
         },
         "limitations": []
       },
       "selected": {
         "origin": "native_text",
-        "text": "상품 개요와 건물·원장\n공개명 서울스퀘어, 지역 서울 중구, 도로명 주소 서울 중구 한강대로 416. 주용도 업무시설, 연면적 132792.56㎡,\n대지면적 10583.4㎡, 사용승인일 1970-12-23. 관찰 사실과 시나리오 주장은 데이터 정의·출처 부록에서 분리해\n표시합니다.",
-        "canonicalText": "상품 개요와 건물·원장 공개명 서울스퀘어, 지역 서울 중구, 도로명 주소 서울 중구 한강대로 416. 주용도 업무시설, 연면적 132792.56m2, 대지면적 10583.4m2, 사용승인일 1970-12-23. 관찰 사실과 시나리오 주장은 데이터 정의·출처 부록에서 분리해 표시합니다."
+        "text": "청약·배정·납입·상장 일정\n일정 항목 시나리오 조건\n모집 시작일 2026-08-18\n모집 종료일 2026-09-11\n상장일 미확인\n거래 유효기한 미확인\n배정·환급\n절차\n가상 배정은 신청 단위 기준으로 가정하며 미배정분·취소분은 시나리오상 전액 환불로\n처리합니다.",
+        "canonicalText": "청약·배정·납입·상장 일정 일정 항목 시나리오 조건 모집 시작일 2026-08-18 모집 종료일 2026-09-11 상장일 미확인 거래 유효기한 미확인 배정·환급 절차 가상 배정은 신청 단위 기준으로 가정하며 미배정분·취소분은 시나리오상 전액 환불로 처리합니다."
       },
       "limitations": []
     },
@@ -82,21 +82,21 @@
       "page": 4,
       "native": {
         "quality": "ready",
-        "text": "공모·모집·상장\n공모 금액 요약\n항목 시나리오 조건\n단가 5,000원\n수량 2400000좌\n공모총액 12,000,000,000원\n최소투자금 100,000원\n모집·상장 일정표\n일정 항목 시나리오 조건\n모집 시작일 2026-08-18\n모집 종료일 2026-09-11\n상장일 미확인\n거래 유효기한 미확인\n거래 가능 상태 not-listed",
-        "canonicalText": "공모·모집·상장 공모 금액 요약 항목 시나리오 조건 단가 5,000원 수량 2400000좌 공모총액 12,000,000,000원 최소투자금 100,000원 모집·상장 일정표 일정 항목 시나리오 조건 모집 시작일 2026-08-18 모집 종료일 2026-09-11 상장일 미확인 거래 유효기한 미확인 거래 가능 상태 not-listed",
+        "text": "건물·공개 원장\n항목 공개 확인 범위\n공개명 서울스퀘어\n지역 서울 중구\n도로명 주소 서울 중구 한강대로 416\n주용도 업무시설\n연면적 132792.56㎡\n대지면적 10583.4㎡\n사용승인일 1970-12-23\nbuilding-name confirmed · 서울스퀘어\nmain-use confirmed · 업무시설\ngross-floor-area confirmed · 132792.56㎡\nland-area confirmed · 10583.4㎡\nuse-approval-date confirmed · 1970-12-23\n취득·운영 계획\n개별 취득가격·취득일·실제 소유권은 이 시나리오 입력에 별도 값이 없어 미확인입니다. 운용 주체와 역할은\noperator-a 시나리오 조건으로만 표시하며 실제 법인·소유자·임차인과 연결하지 않습니다. 시나리오 운영위원회",
+        "canonicalText": "건물·공개 원장 항목 공개 확인 범위 공개명 서울스퀘어 지역 서울 중구 도로명 주소 서울 중구 한강대로 416 주용도 업무시설 연면적 132792.56m2 대지면적 10583.4m2 사용승인일 1970-12-23 building-name confirmed · 서울스퀘어 main-use confirmed · 업무시설 gross-floor-area confirmed · 132792.56m2 land-area confirmed · 10583.4m2 use-approval-date confirmed · 1970-12-23 취득·운영 계획 개별 취득가격·취득일·실제 소유권은 이 시나리오 입력에 별도 값이 없어 미확인입니다. 운용 주체와 역할은 operator-a 시나리오 조건으로만 표시하며 실제 법인·소유자·임차인과 연결하지 않습니다. 시나리오 운영위원회",
         "positions": [],
         "reasonCodes": [],
         "metrics": {
-          "itemCount": 76,
-          "characterCount": 151,
-          "density": 0.00030062372490111816
+          "itemCount": 135,
+          "characterCount": 349,
+          "density": 0.0006948190727847036
         },
         "limitations": []
       },
       "selected": {
         "origin": "native_text",
-        "text": "공모·모집·상장\n공모 금액 요약\n항목 시나리오 조건\n단가 5,000원\n수량 2400000좌\n공모총액 12,000,000,000원\n최소투자금 100,000원\n모집·상장 일정표\n일정 항목 시나리오 조건\n모집 시작일 2026-08-18\n모집 종료일 2026-09-11\n상장일 미확인\n거래 유효기한 미확인\n거래 가능 상태 not-listed",
-        "canonicalText": "공모·모집·상장 공모 금액 요약 항목 시나리오 조건 단가 5,000원 수량 2400000좌 공모총액 12,000,000,000원 최소투자금 100,000원 모집·상장 일정표 일정 항목 시나리오 조건 모집 시작일 2026-08-18 모집 종료일 2026-09-11 상장일 미확인 거래 유효기한 미확인 거래 가능 상태 not-listed"
+        "text": "건물·공개 원장\n항목 공개 확인 범위\n공개명 서울스퀘어\n지역 서울 중구\n도로명 주소 서울 중구 한강대로 416\n주용도 업무시설\n연면적 132792.56㎡\n대지면적 10583.4㎡\n사용승인일 1970-12-23\nbuilding-name confirmed · 서울스퀘어\nmain-use confirmed · 업무시설\ngross-floor-area confirmed · 132792.56㎡\nland-area confirmed · 10583.4㎡\nuse-approval-date confirmed · 1970-12-23\n취득·운영 계획\n개별 취득가격·취득일·실제 소유권은 이 시나리오 입력에 별도 값이 없어 미확인입니다. 운용 주체와 역할은\noperator-a 시나리오 조건으로만 표시하며 실제 법인·소유자·임차인과 연결하지 않습니다. 시나리오 운영위원회",
+        "canonicalText": "건물·공개 원장 항목 공개 확인 범위 공개명 서울스퀘어 지역 서울 중구 도로명 주소 서울 중구 한강대로 416 주용도 업무시설 연면적 132792.56m2 대지면적 10583.4m2 사용승인일 1970-12-23 building-name confirmed · 서울스퀘어 main-use confirmed · 업무시설 gross-floor-area confirmed · 132792.56m2 land-area confirmed · 10583.4m2 use-approval-date confirmed · 1970-12-23 취득·운영 계획 개별 취득가격·취득일·실제 소유권은 이 시나리오 입력에 별도 값이 없어 미확인입니다. 운용 주체와 역할은 operator-a 시나리오 조건으로만 표시하며 실제 법인·소유자·임차인과 연결하지 않습니다. 시나리오 운영위원회"
       },
       "limitations": []
     },
@@ -104,21 +104,21 @@
       "page": 5,
       "native": {
         "quality": "ready",
-        "text": "대출·LTV·임대·공실·분배·비용 요약\n구분 항목 시나리오 조건\n분배 예상 연 분배율 4.6%\n분배 분배 주기 3개월\n비용 거래 수수료율 0.2%\n비용 총비용률 0.9%\n차입 LTV 45%\n차입 연이율 4.5%\n차입 만기 2030-12-31\n임대 공실률 5%\n보유 목표 보유기간 30개월",
-        "canonicalText": "대출·LTV·임대·공실·분배·비용 요약 구분 항목 시나리오 조건 분배 예상 연 분배율 4.6% 분배 분배 주기 3개월 비용 거래 수수료율 0.2% 비용 총비용률 0.9% 차입 LTV 45% 차입 연이율 4.5% 차입 만기 2030-12-31 임대 공실률 5% 보유 목표 보유기간 30개월",
+        "text": "대출·LTV·임대·공실 가정\n구분 항목 시나리오 조건 또는 한계\n차입 LTV 45%\n차입 연이율 4.5%\n차입 만기 2030-12-31\n차입 한계 실제 대출·담보·금리 조건이 아닌 시나리오 가정입니다.\n임대 공실률 5%\n임대 집중도 특정 실제 임차인과 연결하지 않은 가상 임차 집중도 가정입니다.\n임대 한계 실제 임대차·공실·임차인 정보를 확인하지 않았습니다.\n현금흐름 검토 한계 임대수익·운영비·부채상환액은 실제 건물의 재무정보가 아닌 세전 시나리오 입력입니다.\n분배 구조\n항목 시나리오 조건\n예상 연 분배율 4.6%\n분배 주기 3개월\n분배 기준 예상 분배율은 세전 단순 가정이며 임대수익·비용·보유기간 변화에 따라 달라질 수 있습니다.\n연 임대수익 2,000,000,000원\n연 운영비 800,000,000원\n연 부채상환 600,000,000원",
+        "canonicalText": "대출·LTV·임대·공실 가정 구분 항목 시나리오 조건 또는 한계 차입 LTV 45% 차입 연이율 4.5% 차입 만기 2030-12-31 차입 한계 실제 대출·담보·금리 조건이 아닌 시나리오 가정입니다. 임대 공실률 5% 임대 집중도 특정 실제 임차인과 연결하지 않은 가상 임차 집중도 가정입니다. 임대 한계 실제 임대차·공실·임차인 정보를 확인하지 않았습니다. 현금흐름 검토 한계 임대수익·운영비·부채상환액은 실제 건물의 재무정보가 아닌 세전 시나리오 입력입니다. 분배 구조 항목 시나리오 조건 예상 연 분배율 4.6% 분배 주기 3개월 분배 기준 예상 분배율은 세전 단순 가정이며 임대수익·비용·보유기간 변화에 따라 달라질 수 있습니다. 연 임대수익 2,000,000,000원 연 운영비 800,000,000원 연 부채상환 600,000,000원",
         "positions": [],
         "reasonCodes": [],
         "metrics": {
-          "itemCount": 84,
-          "characterCount": 123,
-          "density": 0.00024487892823071215
+          "itemCount": 207,
+          "characterCount": 328,
+          "density": 0.0006530104752818991
         },
         "limitations": []
       },
       "selected": {
         "origin": "native_text",
-        "text": "대출·LTV·임대·공실·분배·비용 요약\n구분 항목 시나리오 조건\n분배 예상 연 분배율 4.6%\n분배 분배 주기 3개월\n비용 거래 수수료율 0.2%\n비용 총비용률 0.9%\n차입 LTV 45%\n차입 연이율 4.5%\n차입 만기 2030-12-31\n임대 공실률 5%\n보유 목표 보유기간 30개월",
-        "canonicalText": "대출·LTV·임대·공실·분배·비용 요약 구분 항목 시나리오 조건 분배 예상 연 분배율 4.6% 분배 분배 주기 3개월 비용 거래 수수료율 0.2% 비용 총비용률 0.9% 차입 LTV 45% 차입 연이율 4.5% 차입 만기 2030-12-31 임대 공실률 5% 보유 목표 보유기간 30개월"
+        "text": "대출·LTV·임대·공실 가정\n구분 항목 시나리오 조건 또는 한계\n차입 LTV 45%\n차입 연이율 4.5%\n차입 만기 2030-12-31\n차입 한계 실제 대출·담보·금리 조건이 아닌 시나리오 가정입니다.\n임대 공실률 5%\n임대 집중도 특정 실제 임차인과 연결하지 않은 가상 임차 집중도 가정입니다.\n임대 한계 실제 임대차·공실·임차인 정보를 확인하지 않았습니다.\n현금흐름 검토 한계 임대수익·운영비·부채상환액은 실제 건물의 재무정보가 아닌 세전 시나리오 입력입니다.\n분배 구조\n항목 시나리오 조건\n예상 연 분배율 4.6%\n분배 주기 3개월\n분배 기준 예상 분배율은 세전 단순 가정이며 임대수익·비용·보유기간 변화에 따라 달라질 수 있습니다.\n연 임대수익 2,000,000,000원\n연 운영비 800,000,000원\n연 부채상환 600,000,000원",
+        "canonicalText": "대출·LTV·임대·공실 가정 구분 항목 시나리오 조건 또는 한계 차입 LTV 45% 차입 연이율 4.5% 차입 만기 2030-12-31 차입 한계 실제 대출·담보·금리 조건이 아닌 시나리오 가정입니다. 임대 공실률 5% 임대 집중도 특정 실제 임차인과 연결하지 않은 가상 임차 집중도 가정입니다. 임대 한계 실제 임대차·공실·임차인 정보를 확인하지 않았습니다. 현금흐름 검토 한계 임대수익·운영비·부채상환액은 실제 건물의 재무정보가 아닌 세전 시나리오 입력입니다. 분배 구조 항목 시나리오 조건 예상 연 분배율 4.6% 분배 주기 3개월 분배 기준 예상 분배율은 세전 단순 가정이며 임대수익·비용·보유기간 변화에 따라 달라질 수 있습니다. 연 임대수익 2,000,000,000원 연 운영비 800,000,000원 연 부채상환 600,000,000원"
       },
       "limitations": []
     },
@@ -126,21 +126,21 @@
       "page": 6,
       "native": {
         "quality": "ready",
-        "text": "분배·비용·세금·회수 조건\n예상 분배율은 세전 단순 가정이며 임대수익·비용·보유기간 변화에 따라 달라질 수 있습니다. 거래 수수료율과\n총비용률은 시나리오상 비용 범위이며 실제 플랫폼·운용보수·세금의 확정값이 아닙니다. 세금·원천징수·개인별\n과세는 반영하지 않은 세전 가정입니다. 실제 세무 판단을 대신하지 않습니다.\n회수 검토상 최대 연장기간은 12개월입니다. 목표 보유기간 이후 가상 매각 검토가 가능한 경우에만 회수 절차를\n진행합니다. 매각가격·시점·회수금은 보장하지 않으며 가상 시나리오 조건입니다. 매수자 확보 지연, 임대차 변경\n또는 자금조달 조건 변화가 있으면 목표 보유기간 연장을 검토하는 시나리오 가정입니다. 시나리오상 자산\n처분대금에서 차입금·처분비용을 우선 반영한 뒤 남은 금액을 단위 기준으로 배분합니다.",
-        "canonicalText": "분배·비용·세금·회수 조건 예상 분배율은 세전 단순 가정이며 임대수익·비용·보유기간 변화에 따라 달라질 수 있습니다. 거래 수수료율과 총비용률은 시나리오상 비용 범위이며 실제 플랫폼·운용보수·세금의 확정값이 아닙니다. 세금·원천징수·개인별 과세는 반영하지 않은 세전 가정입니다. 실제 세무 판단을 대신하지 않습니다. 회수 검토상 최대 연장기간은 12개월입니다. 목표 보유기간 이후 가상 매각 검토가 가능한 경우에만 회수 절차를 진행합니다. 매각가격·시점·회수금은 보장하지 않으며 가상 시나리오 조건입니다. 매수자 확보 지연, 임대차 변경 또는 자금조달 조건 변화가 있으면 목표 보유기간 연장을 검토하는 시나리오 가정입니다. 시나리오상 자산 처분대금에서 차입금·처분비용을 우선 반영한 뒤 남은 금액을 단위 기준으로 배분합니다.",
+        "text": "수수료·세금\n항목 시나리오 조건\n거래\n수수료율\n0.2%\n총비용률 0.9%\n비용 범위 거래 수수료율과 총비용률은 시나리오상 비용 범위이며 실제 플랫폼·운용보수·세금의 확정값이\n아닙니다.\n세금 고지 세금·원천징수·개인별 과세는 반영하지 않은 세전 가정입니다. 실제 세무 판단을 대신하지\n않습니다.\n투자자 보호\n보호 항목 상태 시나리오 조건 및 한계\n권리 형태 confirmed-in-\nscenario\n시나리오 조건상 권리 형태와 행사 범위를 별도 절차로 정한 가정입니다. 실제\n계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다.\n투자금\n보관\nconfirmed-in-\nscenario\n시나리오 조건상 투자금 보관 절차를 별도 절차로 정한 가정입니다. 실제 계약·\n법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다.\n재산 분리 confirmed-in-\nscenario\n시나리오 조건상 운영주체와의 재산 분리 조건을 별도 절차로 정한 가정입니다.\n실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다.\n권리 관리 confirmed-in-\nscenario\n시나리오 조건상 권리자 명부와 분배 내역 관리를 별도 절차로 정한 가정입니다.\n실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다.\n분쟁 조정 confirmed-in-\nscenario\n시나리오 조건상 이의 제기·분쟁 조정 절차를 별도 절차로 정한 가정입니다. 실제\n계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다.\n발행·분배\n구분\nconfirmed-in-\nscenario\n시나리오 조건상 발행·배정과 운용·분배 절차의 구분을 별도 절차로 정한\n가정입니다. 실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이\n아닙니다.",
+        "canonicalText": "수수료·세금 항목 시나리오 조건 거래 수수료율 0.2% 총비용률 0.9% 비용 범위 거래 수수료율과 총비용률은 시나리오상 비용 범위이며 실제 플랫폼·운용보수·세금의 확정값이 아닙니다. 세금 고지 세금·원천징수·개인별 과세는 반영하지 않은 세전 가정입니다. 실제 세무 판단을 대신하지 않습니다. 투자자 보호 보호 항목 상태 시나리오 조건 및 한계 권리 형태 confirmed-in- scenario 시나리오 조건상 권리 형태와 행사 범위를 별도 절차로 정한 가정입니다. 실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다. 투자금 보관 confirmed-in- scenario 시나리오 조건상 투자금 보관 절차를 별도 절차로 정한 가정입니다. 실제 계약· 법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다. 재산 분리 confirmed-in- scenario 시나리오 조건상 운영주체와의 재산 분리 조건을 별도 절차로 정한 가정입니다. 실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다. 권리 관리 confirmed-in- scenario 시나리오 조건상 권리자 명부와 분배 내역 관리를 별도 절차로 정한 가정입니다. 실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다. 분쟁 조정 confirmed-in- scenario 시나리오 조건상 이의 제기·분쟁 조정 절차를 별도 절차로 정한 가정입니다. 실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다. 발행·분배 구분 confirmed-in- scenario 시나리오 조건상 발행·배정과 운용·분배 절차의 구분을 별도 절차로 정한 가정입니다. 실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다.",
         "positions": [],
         "reasonCodes": [],
         "metrics": {
-          "itemCount": 197,
-          "characterCount": 322,
-          "density": 0.0006410651617096692
+          "itemCount": 404,
+          "characterCount": 677,
+          "density": 0.0013478295480666028
         },
         "limitations": []
       },
       "selected": {
         "origin": "native_text",
-        "text": "분배·비용·세금·회수 조건\n예상 분배율은 세전 단순 가정이며 임대수익·비용·보유기간 변화에 따라 달라질 수 있습니다. 거래 수수료율과\n총비용률은 시나리오상 비용 범위이며 실제 플랫폼·운용보수·세금의 확정값이 아닙니다. 세금·원천징수·개인별\n과세는 반영하지 않은 세전 가정입니다. 실제 세무 판단을 대신하지 않습니다.\n회수 검토상 최대 연장기간은 12개월입니다. 목표 보유기간 이후 가상 매각 검토가 가능한 경우에만 회수 절차를\n진행합니다. 매각가격·시점·회수금은 보장하지 않으며 가상 시나리오 조건입니다. 매수자 확보 지연, 임대차 변경\n또는 자금조달 조건 변화가 있으면 목표 보유기간 연장을 검토하는 시나리오 가정입니다. 시나리오상 자산\n처분대금에서 차입금·처분비용을 우선 반영한 뒤 남은 금액을 단위 기준으로 배분합니다.",
-        "canonicalText": "분배·비용·세금·회수 조건 예상 분배율은 세전 단순 가정이며 임대수익·비용·보유기간 변화에 따라 달라질 수 있습니다. 거래 수수료율과 총비용률은 시나리오상 비용 범위이며 실제 플랫폼·운용보수·세금의 확정값이 아닙니다. 세금·원천징수·개인별 과세는 반영하지 않은 세전 가정입니다. 실제 세무 판단을 대신하지 않습니다. 회수 검토상 최대 연장기간은 12개월입니다. 목표 보유기간 이후 가상 매각 검토가 가능한 경우에만 회수 절차를 진행합니다. 매각가격·시점·회수금은 보장하지 않으며 가상 시나리오 조건입니다. 매수자 확보 지연, 임대차 변경 또는 자금조달 조건 변화가 있으면 목표 보유기간 연장을 검토하는 시나리오 가정입니다. 시나리오상 자산 처분대금에서 차입금·처분비용을 우선 반영한 뒤 남은 금액을 단위 기준으로 배분합니다."
+        "text": "수수료·세금\n항목 시나리오 조건\n거래\n수수료율\n0.2%\n총비용률 0.9%\n비용 범위 거래 수수료율과 총비용률은 시나리오상 비용 범위이며 실제 플랫폼·운용보수·세금의 확정값이\n아닙니다.\n세금 고지 세금·원천징수·개인별 과세는 반영하지 않은 세전 가정입니다. 실제 세무 판단을 대신하지\n않습니다.\n투자자 보호\n보호 항목 상태 시나리오 조건 및 한계\n권리 형태 confirmed-in-\nscenario\n시나리오 조건상 권리 형태와 행사 범위를 별도 절차로 정한 가정입니다. 실제\n계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다.\n투자금\n보관\nconfirmed-in-\nscenario\n시나리오 조건상 투자금 보관 절차를 별도 절차로 정한 가정입니다. 실제 계약·\n법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다.\n재산 분리 confirmed-in-\nscenario\n시나리오 조건상 운영주체와의 재산 분리 조건을 별도 절차로 정한 가정입니다.\n실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다.\n권리 관리 confirmed-in-\nscenario\n시나리오 조건상 권리자 명부와 분배 내역 관리를 별도 절차로 정한 가정입니다.\n실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다.\n분쟁 조정 confirmed-in-\nscenario\n시나리오 조건상 이의 제기·분쟁 조정 절차를 별도 절차로 정한 가정입니다. 실제\n계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다.\n발행·분배\n구분\nconfirmed-in-\nscenario\n시나리오 조건상 발행·배정과 운용·분배 절차의 구분을 별도 절차로 정한\n가정입니다. 실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이\n아닙니다.",
+        "canonicalText": "수수료·세금 항목 시나리오 조건 거래 수수료율 0.2% 총비용률 0.9% 비용 범위 거래 수수료율과 총비용률은 시나리오상 비용 범위이며 실제 플랫폼·운용보수·세금의 확정값이 아닙니다. 세금 고지 세금·원천징수·개인별 과세는 반영하지 않은 세전 가정입니다. 실제 세무 판단을 대신하지 않습니다. 투자자 보호 보호 항목 상태 시나리오 조건 및 한계 권리 형태 confirmed-in- scenario 시나리오 조건상 권리 형태와 행사 범위를 별도 절차로 정한 가정입니다. 실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다. 투자금 보관 confirmed-in- scenario 시나리오 조건상 투자금 보관 절차를 별도 절차로 정한 가정입니다. 실제 계약· 법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다. 재산 분리 confirmed-in- scenario 시나리오 조건상 운영주체와의 재산 분리 조건을 별도 절차로 정한 가정입니다. 실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다. 권리 관리 confirmed-in- scenario 시나리오 조건상 권리자 명부와 분배 내역 관리를 별도 절차로 정한 가정입니다. 실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다. 분쟁 조정 confirmed-in- scenario 시나리오 조건상 이의 제기·분쟁 조정 절차를 별도 절차로 정한 가정입니다. 실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다. 발행·분배 구분 confirmed-in- scenario 시나리오 조건상 발행·배정과 운용·분배 절차의 구분을 별도 절차로 정한 가정입니다. 실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다."
       },
       "limitations": []
     },
@@ -148,48 +148,26 @@
       "page": 7,
       "native": {
         "quality": "ready",
-        "text": "투자자 보호·주요 위험요인\n보호 항목 상태 시나리오 조건 및 한계\n권리 형태 confirmed-in-\nscenario\n시나리오 조건상 권리 형태와 행사 범위를 별도 절차로 정한 가정입니다. 실제\n계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다.\n투자금\n보관\nconfirmed-in-\nscenario\n시나리오 조건상 투자금 보관 절차를 별도 절차로 정한 가정입니다. 실제 계약·\n법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다.\n재산 분리 confirmed-in-\nscenario\n시나리오 조건상 운영주체와의 재산 분리 조건을 별도 절차로 정한 가정입니다.\n실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다.\n권리 관리 confirmed-in-\nscenario\n시나리오 조건상 권리자 명부와 분배 내역 관리를 별도 절차로 정한 가정입니다.\n실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다.\n분쟁 조정 confirmed-in-\nscenario\n시나리오 조건상 이의 제기·분쟁 조정 절차를 별도 절차로 정한 가정입니다. 실제\n계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다.\n발행·분배\n구분\nconfirmed-in-\nscenario\n시나리오 조건상 발행·배정과 운용·분배 절차의 구분을 별도 절차로 정한\n가정입니다. 실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이\n아닙니다.",
-        "canonicalText": "투자자 보호·주요 위험요인 보호 항목 상태 시나리오 조건 및 한계 권리 형태 confirmed-in- scenario 시나리오 조건상 권리 형태와 행사 범위를 별도 절차로 정한 가정입니다. 실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다. 투자금 보관 confirmed-in- scenario 시나리오 조건상 투자금 보관 절차를 별도 절차로 정한 가정입니다. 실제 계약· 법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다. 재산 분리 confirmed-in- scenario 시나리오 조건상 운영주체와의 재산 분리 조건을 별도 절차로 정한 가정입니다. 실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다. 권리 관리 confirmed-in- scenario 시나리오 조건상 권리자 명부와 분배 내역 관리를 별도 절차로 정한 가정입니다. 실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다. 분쟁 조정 confirmed-in- scenario 시나리오 조건상 이의 제기·분쟁 조정 절차를 별도 절차로 정한 가정입니다. 실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다. 발행·분배 구분 confirmed-in- scenario 시나리오 조건상 발행·배정과 운용·분배 절차의 구분을 별도 절차로 정한 가정입니다. 실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다.",
+        "text": "주요 위험\n공모·배당·거래·매각·정산 조건과 운영그룹은 모두 scenario-input입니다. 실제 법인·플랫폼·은행·소유자·임차인과\n연결하지 않습니다. 이 시나리오는 실제 청약·판매 상태나 실제 건물 거래·운영 성과를 나타내지 않습니다. 실제 투자\n손실 가능성, 권리·대출·임대 조건의 미확인 범위는 이 문서만으로 해소되지 않습니다.\n매각·회수\n완료 이력은 아직 없는 현재 시나리오입니다.\n회수 조건: 목표 보유기간 이후 가상 매각 검토가 가능한 경우에만 회수 절차를 진행합니다. 매각가격·시점·회수금은\n보장하지 않으며 가상 시나리오 조건입니다.\n연장 조건: 매수자 확보 지연, 임대차 변경 또는 자금조달 조건 변화가 있으면 목표 보유기간 연장을 검토하는\n시나리오 가정입니다.\n청산 우선순위: 시나리오상 자산 처분대금에서 차입금·처분비용을 우선 반영한 뒤 남은 금액을 단위 기준으로\n배분합니다.\n출처·가정·한계\n출처\n출처 기준일 확인 방법 한계\n국토교통부\n건축HUB\n건축물대장\n표제부\n2025-\n07-01\n공식 주소정보로 정확 지번을\n확인한 뒤 표제부 1회 조회\n결과에서 후보 건물명·도로명이\n일치하는 레코드를 연결\n같은 정확 필지에서 표제부 2건이\n반환됐습니다. 후보 건물명과 도로명이 함께\n일치하는 주 표제부만 연결했으며, 다른\n표제부의 용도·면적은 합산하지 않았습니다.\n시나리오 가정\n항목 내용\n운영그룹 operator-a\n공통\n가정\n공모·배당·거래·매각·정산 조건과 운영그룹은 모두 scenario-input입니다. 실제 법인·플랫폼·은행·\n소유자·임차인과 연결하지 않습니다.\n문서\n한계\n이 시나리오는 실제 청약·판매 상태나 실제 건물 거래·운영 성과를 나타내지 않습니다.",
+        "canonicalText": "주요 위험 공모·배당·거래·매각·정산 조건과 운영그룹은 모두 scenario-input입니다. 실제 법인·플랫폼·은행·소유자·임차인과 연결하지 않습니다. 이 시나리오는 실제 청약·판매 상태나 실제 건물 거래·운영 성과를 나타내지 않습니다. 실제 투자 손실 가능성, 권리·대출·임대 조건의 미확인 범위는 이 문서만으로 해소되지 않습니다. 매각·회수 완료 이력은 아직 없는 현재 시나리오입니다. 회수 조건: 목표 보유기간 이후 가상 매각 검토가 가능한 경우에만 회수 절차를 진행합니다. 매각가격·시점·회수금은 보장하지 않으며 가상 시나리오 조건입니다. 연장 조건: 매수자 확보 지연, 임대차 변경 또는 자금조달 조건 변화가 있으면 목표 보유기간 연장을 검토하는 시나리오 가정입니다. 청산 우선순위: 시나리오상 자산 처분대금에서 차입금·처분비용을 우선 반영한 뒤 남은 금액을 단위 기준으로 배분합니다. 출처·가정·한계 출처 출처 기준일 확인 방법 한계 국토교통부 건축HUB 건축물대장 표제부 2025- 07-01 공식 주소정보로 정확 지번을 확인한 뒤 표제부 1회 조회 결과에서 후보 건물명·도로명이 일치하는 레코드를 연결 같은 정확 필지에서 표제부 2건이 반환됐습니다. 후보 건물명과 도로명이 함께 일치하는 주 표제부만 연결했으며, 다른 표제부의 용도·면적은 합산하지 않았습니다. 시나리오 가정 항목 내용 운영그룹 operator-a 공통 가정 공모·배당·거래·매각·정산 조건과 운영그룹은 모두 scenario-input입니다. 실제 법인·플랫폼·은행· 소유자·임차인과 연결하지 않습니다. 문서 한계 이 시나리오는 실제 청약·판매 상태나 실제 건물 거래·운영 성과를 나타내지 않습니다.",
         "positions": [],
         "reasonCodes": [],
         "metrics": {
-          "itemCount": 330,
-          "characterCount": 554,
-          "density": 0.0011029506198358904
+          "itemCount": 404,
+          "characterCount": 660,
+          "density": 0.0013139844929452847
         },
         "limitations": []
       },
       "selected": {
         "origin": "native_text",
-        "text": "투자자 보호·주요 위험요인\n보호 항목 상태 시나리오 조건 및 한계\n권리 형태 confirmed-in-\nscenario\n시나리오 조건상 권리 형태와 행사 범위를 별도 절차로 정한 가정입니다. 실제\n계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다.\n투자금\n보관\nconfirmed-in-\nscenario\n시나리오 조건상 투자금 보관 절차를 별도 절차로 정한 가정입니다. 실제 계약·\n법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다.\n재산 분리 confirmed-in-\nscenario\n시나리오 조건상 운영주체와의 재산 분리 조건을 별도 절차로 정한 가정입니다.\n실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다.\n권리 관리 confirmed-in-\nscenario\n시나리오 조건상 권리자 명부와 분배 내역 관리를 별도 절차로 정한 가정입니다.\n실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다.\n분쟁 조정 confirmed-in-\nscenario\n시나리오 조건상 이의 제기·분쟁 조정 절차를 별도 절차로 정한 가정입니다. 실제\n계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다.\n발행·분배\n구분\nconfirmed-in-\nscenario\n시나리오 조건상 발행·배정과 운용·분배 절차의 구분을 별도 절차로 정한\n가정입니다. 실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이\n아닙니다.",
-        "canonicalText": "투자자 보호·주요 위험요인 보호 항목 상태 시나리오 조건 및 한계 권리 형태 confirmed-in- scenario 시나리오 조건상 권리 형태와 행사 범위를 별도 절차로 정한 가정입니다. 실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다. 투자금 보관 confirmed-in- scenario 시나리오 조건상 투자금 보관 절차를 별도 절차로 정한 가정입니다. 실제 계약· 법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다. 재산 분리 confirmed-in- scenario 시나리오 조건상 운영주체와의 재산 분리 조건을 별도 절차로 정한 가정입니다. 실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다. 권리 관리 confirmed-in- scenario 시나리오 조건상 권리자 명부와 분배 내역 관리를 별도 절차로 정한 가정입니다. 실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다. 분쟁 조정 confirmed-in- scenario 시나리오 조건상 이의 제기·분쟁 조정 절차를 별도 절차로 정한 가정입니다. 실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다. 발행·분배 구분 confirmed-in- scenario 시나리오 조건상 발행·배정과 운용·분배 절차의 구분을 별도 절차로 정한 가정입니다. 실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다."
+        "text": "주요 위험\n공모·배당·거래·매각·정산 조건과 운영그룹은 모두 scenario-input입니다. 실제 법인·플랫폼·은행·소유자·임차인과\n연결하지 않습니다. 이 시나리오는 실제 청약·판매 상태나 실제 건물 거래·운영 성과를 나타내지 않습니다. 실제 투자\n손실 가능성, 권리·대출·임대 조건의 미확인 범위는 이 문서만으로 해소되지 않습니다.\n매각·회수\n완료 이력은 아직 없는 현재 시나리오입니다.\n회수 조건: 목표 보유기간 이후 가상 매각 검토가 가능한 경우에만 회수 절차를 진행합니다. 매각가격·시점·회수금은\n보장하지 않으며 가상 시나리오 조건입니다.\n연장 조건: 매수자 확보 지연, 임대차 변경 또는 자금조달 조건 변화가 있으면 목표 보유기간 연장을 검토하는\n시나리오 가정입니다.\n청산 우선순위: 시나리오상 자산 처분대금에서 차입금·처분비용을 우선 반영한 뒤 남은 금액을 단위 기준으로\n배분합니다.\n출처·가정·한계\n출처\n출처 기준일 확인 방법 한계\n국토교통부\n건축HUB\n건축물대장\n표제부\n2025-\n07-01\n공식 주소정보로 정확 지번을\n확인한 뒤 표제부 1회 조회\n결과에서 후보 건물명·도로명이\n일치하는 레코드를 연결\n같은 정확 필지에서 표제부 2건이\n반환됐습니다. 후보 건물명과 도로명이 함께\n일치하는 주 표제부만 연결했으며, 다른\n표제부의 용도·면적은 합산하지 않았습니다.\n시나리오 가정\n항목 내용\n운영그룹 operator-a\n공통\n가정\n공모·배당·거래·매각·정산 조건과 운영그룹은 모두 scenario-input입니다. 실제 법인·플랫폼·은행·\n소유자·임차인과 연결하지 않습니다.\n문서\n한계\n이 시나리오는 실제 청약·판매 상태나 실제 건물 거래·운영 성과를 나타내지 않습니다.",
+        "canonicalText": "주요 위험 공모·배당·거래·매각·정산 조건과 운영그룹은 모두 scenario-input입니다. 실제 법인·플랫폼·은행·소유자·임차인과 연결하지 않습니다. 이 시나리오는 실제 청약·판매 상태나 실제 건물 거래·운영 성과를 나타내지 않습니다. 실제 투자 손실 가능성, 권리·대출·임대 조건의 미확인 범위는 이 문서만으로 해소되지 않습니다. 매각·회수 완료 이력은 아직 없는 현재 시나리오입니다. 회수 조건: 목표 보유기간 이후 가상 매각 검토가 가능한 경우에만 회수 절차를 진행합니다. 매각가격·시점·회수금은 보장하지 않으며 가상 시나리오 조건입니다. 연장 조건: 매수자 확보 지연, 임대차 변경 또는 자금조달 조건 변화가 있으면 목표 보유기간 연장을 검토하는 시나리오 가정입니다. 청산 우선순위: 시나리오상 자산 처분대금에서 차입금·처분비용을 우선 반영한 뒤 남은 금액을 단위 기준으로 배분합니다. 출처·가정·한계 출처 출처 기준일 확인 방법 한계 국토교통부 건축HUB 건축물대장 표제부 2025- 07-01 공식 주소정보로 정확 지번을 확인한 뒤 표제부 1회 조회 결과에서 후보 건물명·도로명이 일치하는 레코드를 연결 같은 정확 필지에서 표제부 2건이 반환됐습니다. 후보 건물명과 도로명이 함께 일치하는 주 표제부만 연결했으며, 다른 표제부의 용도·면적은 합산하지 않았습니다. 시나리오 가정 항목 내용 운영그룹 operator-a 공통 가정 공모·배당·거래·매각·정산 조건과 운영그룹은 모두 scenario-input입니다. 실제 법인·플랫폼·은행· 소유자·임차인과 연결하지 않습니다. 문서 한계 이 시나리오는 실제 청약·판매 상태나 실제 건물 거래·운영 성과를 나타내지 않습니다."
       },
       "limitations": []
     },
     {
       "page": 8,
-      "native": {
-        "quality": "ready",
-        "text": "매각·회수 및 운영 이력\n완료 이력은 아직 없는 현재 시나리오입니다.\n운영그룹 operator-a의 완료 이력은 본 시나리오 안의 완료 상품만 표로 정리한 가상 입력이며 실제 법인 성과와\n연결하지 않습니다.",
-        "canonicalText": "매각·회수 및 운영 이력 완료 이력은 아직 없는 현재 시나리오입니다. 운영그룹 operator-a의 완료 이력은 본 시나리오 안의 완료 상품만 표로 정리한 가상 입력이며 실제 법인 성과와 연결하지 않습니다.",
-        "positions": [],
-        "reasonCodes": [],
-        "metrics": {
-          "itemCount": 59,
-          "characterCount": 88,
-          "density": 0.00017519793239270464
-        },
-        "limitations": []
-      },
-      "selected": {
-        "origin": "native_text",
-        "text": "매각·회수 및 운영 이력\n완료 이력은 아직 없는 현재 시나리오입니다.\n운영그룹 operator-a의 완료 이력은 본 시나리오 안의 완료 상품만 표로 정리한 가상 입력이며 실제 법인 성과와\n연결하지 않습니다.",
-        "canonicalText": "매각·회수 및 운영 이력 완료 이력은 아직 없는 현재 시나리오입니다. 운영그룹 operator-a의 완료 이력은 본 시나리오 안의 완료 상품만 표로 정리한 가상 입력이며 실제 법인 성과와 연결하지 않습니다."
-      },
-      "limitations": []
-    },
-    {
-      "page": 9,
       "native": {
         "quality": "ready",
         "text": "데이터 정의·출처 부록\n아래는 문서에서 구조화할 수 있도록 표시한 사람 친화적 라벨, 필드 경로와 원시값입니다. 관찰 사실과 scenario-input을 혼동하지 마세요.\n스키마 버전 [schemaVersion]: 1버전 raw=1\n자산 분류 [categoryId]: real-estate raw=real-estate\n시나리오 ID [scenarioId]: re-scenario-01 raw=re-scenario-01\n상품 ID [offerId]: re-offer-01 raw=re-offer-01\n데이터 성격 [dataNature]: scenario raw=scenario\n입력 종류 [sourceKind]: scenario-input raw=scenario-input\n상품명 [title]: 서울스퀘어 raw=서울스퀘어\n기준일 [asOf]: 2026-08-24 raw=2026-08-24\n공개 승인 [approvedForPublic]: 예 (raw true) raw=true\n상태 [status]: approved raw=approved\n데모 고지 · 문구 [disclosure.text]: 시나리오 데이터 안내: 이 화면의 투자조건은 실제 건축물의 공개정보를 기반으로 구성한\n시나리오이며, 실제 청약·판매 중인 상품이 아닙니다. raw=시나리오 데이터 안내: 이 화면의 투자조건은 실제 건축물의 공개정보를\n기반으로 구성한 시나리오이며, 실제 청약·판매 중인 상품이 아닙니다.\n데모 고지 · 작성일 [disclosure.createdOn]: 2026-08-24 raw=2026-08-24\n데모 고지 · 목적 [disclosure.purpose]: 부동산 검토 흐름과 출처 연결 기능의 데모 raw=부동산 검토 흐름과 출처 연결 기능의\n데모\n기초자산 · 공개 건물명 [asset.publicName]: 서울스퀘어 raw=서울스퀘어\n기초자산 · 도로명 주소 [asset.roadAddress]: 서울 중구 한강대로 416 raw=서울 중구 한강대로 416\n기초자산 · 지역 [asset.region]: 서울 중구 raw=서울 중구\n기초자산 · 주용도 [asset.mainUse]: 업무시설 raw=업무시설\n기초자산 · 연면적 [asset.grossFloorAreaM2]: 132792.56㎡ raw=132792.56\n기초자산 · 대지면적 [asset.landAreaM2]: 10583.4㎡ raw=10583.4\n기초자산 · 사용승인일 [asset.approvedOn]: 1970-12-23 raw=1970-12-23\n기초자산 · 관찰 사실 · 항목 1 · 필드 [asset.facts.0.field]: building-name raw=building-name\n기초자산 · 관찰 사실 · 항목 1 · 값 [asset.facts.0.value]: 서울스퀘어 raw=서울스퀘어\n기초자산 · 관찰 사실 · 항목 1 · 상태 [asset.facts.0.status]: confirmed raw=confirmed\n기초자산 · 관찰 사실 · 항목 1 · 데이터 성격 [asset.facts.0.dataNature]: observed raw=observed\n기초자산 · 관찰 사실 · 항목 1 · 근거 [asset.facts.0.basis]: source raw=source\n기초자산 · 관찰 사실 · 항목 1 · 출처 ID [asset.facts.0.sourceId]: molit-building-hub-title raw=molit-building-hub-title\n기초자산 · 관찰 사실 · 항목 1 · 유효기한 [asset.facts.0.validThrough]: 미확인 (raw null) raw=null\n기초자산 · 관찰 사실 · 항목 1 · 한계 · 항목 1 [asset.facts.0.limitations.0]: 같은 정확 필지에서 표제부 2건이\n반환됐습니다. 후보 건물명과 도로명이 함께 일치하는 주 표제부만 연결했으며, 다른 표제부의 용도·면적은 합산하지 않았습니다. raw=\n같은 정확 필지에서 표제부 2건이 반환됐습니다. 후보 건물명과 도로명이 함께 일치하는 주 표제부만 연결했으며, 다른 표제부의 용도·\n면적은 합산하지 않았습니다.\n기초자산 · 관찰 사실 · 항목 2 · 필드 [asset.facts.1.field]: main-use raw=main-use\n기초자산 · 관찰 사실 · 항목 2 · 값 [asset.facts.1.value]: 업무시설 raw=업무시설\n기초자산 · 관찰 사실 · 항목 2 · 상태 [asset.facts.1.status]: confirmed raw=confirmed",
@@ -211,7 +189,7 @@
       "limitations": []
     },
     {
-      "page": 10,
+      "page": 9,
       "native": {
         "quality": "ready",
         "text": "기초자산 · 관찰 사실 · 항목 2 · 데이터 성격 [asset.facts.1.dataNature]: observed raw=observed\n기초자산 · 관찰 사실 · 항목 2 · 근거 [asset.facts.1.basis]: source raw=source\n기초자산 · 관찰 사실 · 항목 2 · 출처 ID [asset.facts.1.sourceId]: molit-building-hub-title raw=molit-building-hub-title\n기초자산 · 관찰 사실 · 항목 2 · 유효기한 [asset.facts.1.validThrough]: 미확인 (raw null) raw=null\n기초자산 · 관찰 사실 · 항목 2 · 한계 · 항목 1 [asset.facts.1.limitations.0]: 같은 정확 필지에서 표제부 2건이\n반환됐습니다. 후보 건물명과 도로명이 함께 일치하는 주 표제부만 연결했으며, 다른 표제부의 용도·면적은 합산하지 않았습니다. raw=\n같은 정확 필지에서 표제부 2건이 반환됐습니다. 후보 건물명과 도로명이 함께 일치하는 주 표제부만 연결했으며, 다른 표제부의 용도·\n면적은 합산하지 않았습니다.\n기초자산 · 관찰 사실 · 항목 3 · 필드 [asset.facts.2.field]: gross-floor-area raw=gross-floor-area\n기초자산 · 관찰 사실 · 항목 3 · 값 [asset.facts.2.value]: 132792.56㎡ raw=132792.56\n기초자산 · 관찰 사실 · 항목 3 · 단위 [asset.facts.2.unit]: m2 raw=m2\n기초자산 · 관찰 사실 · 항목 3 · 상태 [asset.facts.2.status]: confirmed raw=confirmed\n기초자산 · 관찰 사실 · 항목 3 · 데이터 성격 [asset.facts.2.dataNature]: observed raw=observed\n기초자산 · 관찰 사실 · 항목 3 · 근거 [asset.facts.2.basis]: source raw=source\n기초자산 · 관찰 사실 · 항목 3 · 출처 ID [asset.facts.2.sourceId]: molit-building-hub-title raw=molit-building-hub-title\n기초자산 · 관찰 사실 · 항목 3 · 유효기한 [asset.facts.2.validThrough]: 미확인 (raw null) raw=null\n기초자산 · 관찰 사실 · 항목 3 · 한계 · 항목 1 [asset.facts.2.limitations.0]: 같은 정확 필지에서 표제부 2건이\n반환됐습니다. 후보 건물명과 도로명이 함께 일치하는 주 표제부만 연결했으며, 다른 표제부의 용도·면적은 합산하지 않았습니다. raw=\n같은 정확 필지에서 표제부 2건이 반환됐습니다. 후보 건물명과 도로명이 함께 일치하는 주 표제부만 연결했으며, 다른 표제부의 용도·\n면적은 합산하지 않았습니다.\n기초자산 · 관찰 사실 · 항목 4 · 필드 [asset.facts.3.field]: land-area raw=land-area\n기초자산 · 관찰 사실 · 항목 4 · 값 [asset.facts.3.value]: 10583.4㎡ raw=10583.4\n기초자산 · 관찰 사실 · 항목 4 · 단위 [asset.facts.3.unit]: m2 raw=m2\n기초자산 · 관찰 사실 · 항목 4 · 상태 [asset.facts.3.status]: confirmed raw=confirmed\n기초자산 · 관찰 사실 · 항목 4 · 데이터 성격 [asset.facts.3.dataNature]: observed raw=observed\n기초자산 · 관찰 사실 · 항목 4 · 근거 [asset.facts.3.basis]: source raw=source\n기초자산 · 관찰 사실 · 항목 4 · 출처 ID [asset.facts.3.sourceId]: molit-building-hub-title raw=molit-building-hub-title\n기초자산 · 관찰 사실 · 항목 4 · 유효기한 [asset.facts.3.validThrough]: 미확인 (raw null) raw=null\n기초자산 · 관찰 사실 · 항목 4 · 한계 · 항목 1 [asset.facts.3.limitations.0]: 같은 정확 필지에서 표제부 2건이\n반환됐습니다. 후보 건물명과 도로명이 함께 일치하는 주 표제부만 연결했으며, 다른 표제부의 용도·면적은 합산하지 않았습니다. raw=\n같은 정확 필지에서 표제부 2건이 반환됐습니다. 후보 건물명과 도로명이 함께 일치하는 주 표제부만 연결했으며, 다른 표제부의 용도·\n면적은 합산하지 않았습니다.\n기초자산 · 관찰 사실 · 항목 5 · 필드 [asset.facts.4.field]: use-approval-date raw=use-approval-date\n기초자산 · 관찰 사실 · 항목 5 · 값 [asset.facts.4.value]: 1970-12-23 raw=1970-12-23\n기초자산 · 관찰 사실 · 항목 5 · 상태 [asset.facts.4.status]: confirmed raw=confirmed\n기초자산 · 관찰 사실 · 항목 5 · 데이터 성격 [asset.facts.4.dataNature]: observed raw=observed\n기초자산 · 관찰 사실 · 항목 5 · 근거 [asset.facts.4.basis]: source raw=source\n기초자산 · 관찰 사실 · 항목 5 · 출처 ID [asset.facts.4.sourceId]: molit-building-hub-title raw=molit-building-hub-title\n기초자산 · 관찰 사실 · 항목 5 · 유효기한 [asset.facts.4.validThrough]: 미확인 (raw null) raw=null",
@@ -233,7 +211,7 @@
       "limitations": []
     },
     {
-      "page": 11,
+      "page": 10,
       "native": {
         "quality": "ready",
         "text": "기초자산 · 관찰 사실 · 항목 5 · 한계 · 항목 1 [asset.facts.4.limitations.0]: 같은 정확 필지에서 표제부 2건이\n반환됐습니다. 후보 건물명과 도로명이 함께 일치하는 주 표제부만 연결했으며, 다른 표제부의 용도·면적은 합산하지 않았습니다. raw=\n같은 정확 필지에서 표제부 2건이 반환됐습니다. 후보 건물명과 도로명이 함께 일치하는 주 표제부만 연결했으며, 다른 표제부의 용도·\n면적은 합산하지 않았습니다.\n시나리오 주장 · 항목 1 · 필드 [claimedAssetFacts.0.field]: building-name raw=building-name\n시나리오 주장 · 항목 1 · 값 [claimedAssetFacts.0.value]: 서울스퀘어 raw=서울스퀘어\n시나리오 주장 · 항목 1 · 데이터 성격 [claimedAssetFacts.0.dataNature]: scenario raw=scenario\n시나리오 주장 · 항목 1 · 근거 [claimedAssetFacts.0.basis]: scenario-input raw=scenario-input\n시나리오 주장 · 항목 1 · 한계 · 항목 1 [claimedAssetFacts.0.limitations.0]: 실제 건축물 공개정보와 별도로 구성한\n시나리오 주장입니다. raw=실제 건축물 공개정보와 별도로 구성한 시나리오 주장입니다.\n시나리오 주장 · 항목 2 · 필드 [claimedAssetFacts.1.field]: main-use raw=main-use\n시나리오 주장 · 항목 2 · 값 [claimedAssetFacts.1.value]: 업무시설 raw=업무시설\n시나리오 주장 · 항목 2 · 데이터 성격 [claimedAssetFacts.1.dataNature]: scenario raw=scenario\n시나리오 주장 · 항목 2 · 근거 [claimedAssetFacts.1.basis]: scenario-input raw=scenario-input\n시나리오 주장 · 항목 2 · 한계 · 항목 1 [claimedAssetFacts.1.limitations.0]: 실제 건축물 공개정보와 별도로 구성한\n시나리오 주장입니다. raw=실제 건축물 공개정보와 별도로 구성한 시나리오 주장입니다.\n시나리오 주장 · 항목 3 · 필드 [claimedAssetFacts.2.field]: gross-floor-area raw=gross-floor-area\n시나리오 주장 · 항목 3 · 값 [claimedAssetFacts.2.value]: 132792.56㎡ raw=132792.56\n시나리오 주장 · 항목 3 · 단위 [claimedAssetFacts.2.unit]: m2 raw=m2\n시나리오 주장 · 항목 3 · 데이터 성격 [claimedAssetFacts.2.dataNature]: scenario raw=scenario\n시나리오 주장 · 항목 3 · 근거 [claimedAssetFacts.2.basis]: scenario-input raw=scenario-input\n시나리오 주장 · 항목 3 · 한계 · 항목 1 [claimedAssetFacts.2.limitations.0]: 실제 건축물 공개정보와 별도로 구성한\n시나리오 주장입니다. raw=실제 건축물 공개정보와 별도로 구성한 시나리오 주장입니다.\n시나리오 주장 · 항목 4 · 필드 [claimedAssetFacts.3.field]: land-area raw=land-area\n시나리오 주장 · 항목 4 · 값 [claimedAssetFacts.3.value]: 10583.4㎡ raw=10583.4\n시나리오 주장 · 항목 4 · 단위 [claimedAssetFacts.3.unit]: m2 raw=m2\n시나리오 주장 · 항목 4 · 데이터 성격 [claimedAssetFacts.3.dataNature]: scenario raw=scenario\n시나리오 주장 · 항목 4 · 근거 [claimedAssetFacts.3.basis]: scenario-input raw=scenario-input\n시나리오 주장 · 항목 4 · 한계 · 항목 1 [claimedAssetFacts.3.limitations.0]: 실제 건축물 공개정보와 별도로 구성한\n시나리오 주장입니다. raw=실제 건축물 공개정보와 별도로 구성한 시나리오 주장입니다.\n시나리오 주장 · 항목 5 · 필드 [claimedAssetFacts.4.field]: use-approval-date raw=use-approval-date\n시나리오 주장 · 항목 5 · 값 [claimedAssetFacts.4.value]: 1970-12-23 raw=1970-12-23\n시나리오 주장 · 항목 5 · 데이터 성격 [claimedAssetFacts.4.dataNature]: scenario raw=scenario\n시나리오 주장 · 항목 5 · 근거 [claimedAssetFacts.4.basis]: scenario-input raw=scenario-input\n시나리오 주장 · 항목 5 · 한계 · 항목 1 [claimedAssetFacts.4.limitations.0]: 실제 건축물 공개정보와 별도로 구성한\n시나리오 주장입니다. raw=실제 건축물 공개정보와 별도로 구성한 시나리오 주장입니다.\n출처 · 항목 1 · 출처 ID [sources.0.sourceId]: molit-building-hub-title raw=molit-building-hub-title\n출처 · 항목 1 · 데이터 성격 [sources.0.dataNature]: observed raw=observed\n출처 · 항목 1 · 입력 종류 [sources.0.sourceKind]: official-document raw=official-document",
@@ -255,7 +233,7 @@
       "limitations": []
     },
     {
-      "page": 12,
+      "page": 11,
       "native": {
         "quality": "ready",
         "text": "출처 · 항목 1 · 라벨 [sources.0.label]: 국토교통부 건축HUB 건축물대장 표제부 raw=국토교통부 건축HUB 건축물대장 표제부\n출처 · 항목 1 · URL [sources.0.url]: https://www.data.go.kr/data/15134735/openapi.do\nraw=https://www.data.go.kr/data/15134735/openapi.do\n출처 · 항목 1 · 기준일 [sources.0.asOf]: 2025-07-01 raw=2025-07-01\n출처 · 항목 1 · 수집시각 [sources.0.collectedAt]: 2026-08-24T16:39:46.568Z raw=2026-08-24T16:39:46.568Z\n출처 · 항목 1 · 확인 방법 [sources.0.method]: 공식 주소정보로 정확 지번을 확인한 뒤 표제부 1회 조회 결과에서 후보 건물명·\n도로명이 일치하는 레코드를 연결 raw=공식 주소정보로 정확 지번을 확인한 뒤 표제부 1회 조회 결과에서 후보 건물명·도로명이\n일치하는 레코드를 연결\n출처 · 항목 1 · 한계 · 항목 1 [sources.0.limitations.0]: 같은 정확 필지에서 표제부 2건이 반환됐습니다. 후보 건물명과\n도로명이 함께 일치하는 주 표제부만 연결했으며, 다른 표제부의 용도·면적은 합산하지 않았습니다. raw=같은 정확 필지에서 표제부\n2건이 반환됐습니다. 후보 건물명과 도로명이 함께 일치하는 주 표제부만 연결했으며, 다른 표제부의 용도·면적은 합산하지 않았습니다.\n운영그룹 [operatorGroupId]: operator-a raw=operator-a\n참여주체 · 발행주체 · 라벨 [participants.issuer.label]: 운영그룹 A 시나리오 발행주체 raw=운영그룹 A 시나리오 발행주체\n참여주체 · 발행주체 · 데이터 성격 [participants.issuer.dataNature]: scenario raw=scenario\n참여주체 · 플랫폼 · 라벨 [participants.platformOperator.label]: 운영그룹 A 시나리오 플랫폼 raw=운영그룹 A 시나리오\n플랫폼\n참여주체 · 플랫폼 · 데이터 성격 [participants.platformOperator.dataNature]: scenario raw=scenario\n참여주체 · 운용주체 · 라벨 [participants.assetManager.label]: 운영그룹 A 시나리오 운용주체 raw=운영그룹 A 시나리오\n운용주체\n참여주체 · 운용주체 · 데이터 성격 [participants.assetManager.dataNature]: scenario raw=scenario\n참여주체 · 수탁주체 · 라벨 [participants.trustee.label]: 운영그룹 A 시나리오 수탁주체 raw=운영그룹 A 시나리오\n수탁주체\n참여주체 · 수탁주체 · 데이터 성격 [participants.trustee.dataNature]: scenario raw=scenario\n투자자 보호구조 · 데이터 성격 [investorProtection.dataNature]: scenario raw=scenario\n투자자 보호구조 · 근거 [investorProtection.basis]: scenario-input raw=scenario-input\n투자자 보호구조 · 권리 형태 · 설명 [investorProtection.rightForm.statement]: 시나리오 조건상 권리 형태와 행사\n범위를 별도 절차로 정한 가정입니다. raw=시나리오 조건상 권리 형태와 행사 범위를 별도 절차로 정한 가정입니다.\n투자자 보호구조 · 권리 형태 · 상태 [investorProtection.rightForm.status]: confirmed-in-scenario raw=confirmed-in-\nscenario\n투자자 보호구조 · 권리 형태 · 데이터 성격 [investorProtection.rightForm.dataNature]: scenario raw=scenario\n투자자 보호구조 · 권리 형태 · 근거 [investorProtection.rightForm.basis]: scenario-input raw=scenario-input\n투자자 보호구조 · 권리 형태 · 한계 · 항목 1 [investorProtection.rightForm.limitations.0]: 실제 계약·법률·운영 상태\n또는 보호 효과를 확인한 사실이 아닙니다. raw=실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다.\n투자자 보호구조 · 투자금 보관 · 설명 [investorProtection.fundsSafekeeping.statement]: 시나리오 조건상 투자금\n보관 절차를 별도 절차로 정한 가정입니다. raw=시나리오 조건상 투자금 보관 절차를 별도 절차로 정한 가정입니다.\n투자자 보호구조 · 투자금 보관 · 상태 [investorProtection.fundsSafekeeping.status]: confirmed-in-scenario\nraw=confirmed-in-scenario\n투자자 보호구조 · 투자금 보관 · 데이터 성격 [investorProtection.fundsSafekeeping.dataNature]: scenario\nraw=scenario\n투자자 보호구조 · 투자금 보관 · 근거 [investorProtection.fundsSafekeeping.basis]: scenario-input raw=scenario-\ninput",
@@ -277,7 +255,7 @@
       "limitations": []
     },
     {
-      "page": 13,
+      "page": 12,
       "native": {
         "quality": "ready",
         "text": "투자자 보호구조 · 투자금 보관 · 한계 · 항목 1 [investorProtection.fundsSafekeeping.limitations.0]: 실제 계약·\n법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다. raw=실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다.\n투자자 보호구조 · 재산 분리 · 설명 [investorProtection.bankruptcyRemoteness.statement]: 시나리오 조건상\n운영주체와의 재산 분리 조건을 별도 절차로 정한 가정입니다. raw=시나리오 조건상 운영주체와의 재산 분리 조건을 별도 절차로 정한\n가정입니다.\n투자자 보호구조 · 재산 분리 · 상태 [investorProtection.bankruptcyRemoteness.status]: confirmed-in-scenario\nraw=confirmed-in-scenario\n투자자 보호구조 · 재산 분리 · 데이터 성격 [investorProtection.bankruptcyRemoteness.dataNature]: scenario\nraw=scenario\n투자자 보호구조 · 재산 분리 · 근거 [investorProtection.bankruptcyRemoteness.basis]: scenario-input\nraw=scenario-input\n투자자 보호구조 · 재산 분리 · 한계 · 항목 1 [investorProtection.bankruptcyRemoteness.limitations.0]: 실제 계약\n·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다. raw=실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다.\n투자자 보호구조 · 권리 관리 · 설명 [investorProtection.rightsAdministration.statement]: 시나리오 조건상 권리자\n명부와 분배 내역 관리를 별도 절차로 정한 가정입니다. raw=시나리오 조건상 권리자 명부와 분배 내역 관리를 별도 절차로 정한\n가정입니다.\n투자자 보호구조 · 권리 관리 · 상태 [investorProtection.rightsAdministration.status]: confirmed-in-scenario\nraw=confirmed-in-scenario\n투자자 보호구조 · 권리 관리 · 데이터 성격 [investorProtection.rightsAdministration.dataNature]: scenario\nraw=scenario\n투자자 보호구조 · 권리 관리 · 근거 [investorProtection.rightsAdministration.basis]: scenario-input\nraw=scenario-input\n투자자 보호구조 · 권리 관리 · 한계 · 항목 1 [investorProtection.rightsAdministration.limitations.0]: 실제 계약\n·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다. raw=실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다.\n투자자 보호구조 · 분쟁 조정 · 설명 [investorProtection.disputeResolution.statement]: 시나리오 조건상 이의 제기·\n분쟁 조정 절차를 별도 절차로 정한 가정입니다. raw=시나리오 조건상 이의 제기·분쟁 조정 절차를 별도 절차로 정한 가정입니다.\n투자자 보호구조 · 분쟁 조정 · 상태 [investorProtection.disputeResolution.status]: confirmed-in-scenario\nraw=confirmed-in-scenario\n투자자 보호구조 · 분쟁 조정 · 데이터 성격 [investorProtection.disputeResolution.dataNature]: scenario\nraw=scenario\n투자자 보호구조 · 분쟁 조정 · 근거 [investorProtection.disputeResolution.basis]: scenario-input raw=scenario-\ninput\n투자자 보호구조 · 분쟁 조정 · 한계 · 항목 1 [investorProtection.disputeResolution.limitations.0]: 실제 계약·\n법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다. raw=실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다.\n투자자 보호구조 · 발행·분배 구분 · 설명 [investorProtection.issuanceDistributionSeparation.statement]:\n시나리오 조건상 발행·배정과 운용·분배 절차의 구분을 별도 절차로 정한 가정입니다. raw=시나리오 조건상 발행·배정과 운용·분배\n절차의 구분을 별도 절차로 정한 가정입니다.\n투자자 보호구조 · 발행·분배 구분 · 상태 [investorProtection.issuanceDistributionSeparation.status]:\nconfirmed-in-scenario raw=confirmed-in-scenario\n투자자 보호구조 · 발행·분배 구분 · 데이터 성격\n[investorProtection.issuanceDistributionSeparation.dataNature]: scenario raw=scenario\n투자자 보호구조 · 발행·분배 구분 · 근거 [investorProtection.issuanceDistributionSeparation.basis]: scenario-\ninput raw=scenario-input\n투자자 보호구조 · 발행·분배 구분 · 한계 · 항목 1\n[investorProtection.issuanceDistributionSeparation.limitations.0]: 실제 계약·법률·운영 상태 또는 보호\n효과를 확인한 사실이 아닙니다. raw=실제 계약·법률·운영 상태 또는 보호 효과를 확인한 사실이 아닙니다.",
@@ -299,7 +277,7 @@
       "limitations": []
     },
     {
-      "page": 14,
+      "page": 13,
       "native": {
         "quality": "ready",
         "text": "투자조건 · 단계 [offering.phase]: subscription-open raw=subscription-open\n투자조건 · 모집 시작일 [offering.opensOn]: 2026-08-18 raw=2026-08-18\n투자조건 · 모집 종료일 [offering.closesOn]: 2026-09-11 raw=2026-09-11\n투자조건 · 단가 [offering.unitPriceWon]: 5000원 raw=5000\n투자조건 · 수량 [offering.unitCount]: 2400000개 raw=2400000\n투자조건 · 공모총액 [offering.amountWon]: 12000000000원 raw=12000000000\n투자조건 · 최소투자금 [offering.minimumInvestmentWon]: 100000원 raw=100000\n투자조건 · 예상 연 분배율 [offering.expectedAnnualDistributionRatePercent]: 4.6% raw=4.6\n투자조건 · 분배 주기 [offering.distributionCycleMonths]: 3개월 raw=3\n투자조건 · 거래 수수료율 [offering.tradingFeeRatePercent]: 0.2% raw=0.2\n투자조건 · 총비용률 [offering.totalExpenseRatePercent]: 0.9% raw=0.9\n투자조건 · 목표 보유기간 [offering.targetHoldingMonths]: 30개월 raw=30\n투자조건 · 회수 조건 · 항목 1 [offering.exitConditions.0]: 목표 보유기간 이후 가상 매각 검토가 가능한 경우에만 회수\n절차를 진행합니다. raw=목표 보유기간 이후 가상 매각 검토가 가능한 경우에만 회수 절차를 진행합니다.\n투자조건 · 회수 조건 · 항목 2 [offering.exitConditions.1]: 매각가격·시점·회수금은 보장하지 않으며 가상 시나리오\n조건입니다. raw=매각가격·시점·회수금은 보장하지 않으며 가상 시나리오 조건입니다.\n투자조건 · 단위 권리 요약 [offering.unitRightsSummary]: 시나리오 조건상 1좌는 가상 조건을 표시하기 위한 단위이며 실제\n권리 또는 증권을 뜻하지 않습니다. raw=시나리오 조건상 1좌는 가상 조건을 표시하기 위한 단위이며 실제 권리 또는 증권을 뜻하지\n않습니다.\n투자조건 · 분배 기준 [offering.distributionBasis]: 예상 분배율은 세전 단순 가정이며 임대수익·비용·보유기간 변화에 따라\n달라질 수 있습니다. raw=예상 분배율은 세전 단순 가정이며 임대수익·비용·보유기간 변화에 따라 달라질 수 있습니다.\n투자조건 · 비용 범위 [offering.feeScope]: 거래 수수료율과 총비용률은 시나리오상 비용 범위이며 실제 플랫폼·운용보수·세금의\n확정값이 아닙니다. raw=거래 수수료율과 총비용률은 시나리오상 비용 범위이며 실제 플랫폼·운용보수·세금의 확정값이 아닙니다.\n투자조건 · 세금 고지 [offering.taxNotice]: 세금·원천징수·개인별 과세는 반영하지 않은 세전 가정입니다. 실제 세무 판단을\n대신하지 않습니다. raw=세금·원천징수·개인별 과세는 반영하지 않은 세전 가정입니다. 실제 세무 판단을 대신하지 않습니다.\n투자조건 · 배정·환급 [offering.allocationRefundPolicy]: 가상 배정은 신청 단위 기준으로 가정하며 미배정분·취소분은\n시나리오상 전액 환불로 처리합니다. raw=가상 배정은 신청 단위 기준으로 가정하며 미배정분·취소분은 시나리오상 전액 환불로\n처리합니다.\n투자조건 · 연장 조건 · 항목 1 [offering.extensionConditions.0]: 매수자 확보 지연, 임대차 변경 또는 자금조달 조건\n변화가 있으면 목표 보유기간 연장을 검토하는 시나리오 가정입니다. raw=매수자 확보 지연, 임대차 변경 또는 자금조달 조건 변화가\n있으면 목표 보유기간 연장을 검토하는 시나리오 가정입니다.\n투자조건 · 청산 우선순위 [offering.liquidationPriority]: 시나리오상 자산 처분대금에서 차입금·처분비용을 우선 반영한\n뒤 남은 금액을 단위 기준으로 배분합니다. raw=시나리오상 자산 처분대금에서 차입금·처분비용을 우선 반영한 뒤 남은 금액을 단위\n기준으로 배분합니다.\n투자조건 · 차입 가정 · 데이터 성격 [offering.financing.dataNature]: scenario raw=scenario\n투자조건 · 차입 가정 · 근거 [offering.financing.basis]: scenario-input raw=scenario-input\n투자조건 · 차입 가정 · LTV [offering.financing.ltvPercent]: 45% raw=45\n투자조건 · 차입 가정 · 연이율 [offering.financing.annualInterestRatePercent]: 4.5% raw=4.5\n투자조건 · 차입 가정 · 만기일 [offering.financing.maturityOn]: 2030-12-31 raw=2030-12-31\n투자조건 · 차입 가정 · 금리 유형 [offering.financing.rateType]: fixed raw=fixed\n투자조건 · 차입 가정 · 금리 재설정일 [offering.financing.resetOn]: 미확인 (raw null) raw=null",
@@ -321,7 +299,7 @@
       "limitations": []
     },
     {
-      "page": 15,
+      "page": 14,
       "native": {
         "quality": "ready",
         "text": "투자조건 · 차입 가정 · 한계 · 항목 1 [offering.financing.limitations.0]: 실제 대출·담보·금리 조건이 아닌 시나리오\n가정입니다. raw=실제 대출·담보·금리 조건이 아닌 시나리오 가정입니다.\n투자조건 · 현금흐름 검토 · 데이터 성격 [offering.cashFlowReview.dataNature]: scenario raw=scenario\n투자조건 · 현금흐름 검토 · 근거 [offering.cashFlowReview.basis]: scenario-input raw=scenario-input\n투자조건 · 현금흐름 검토 · 연 임대수익 [offering.cashFlowReview.annualRentalIncomeWon]: 2000000000원\nraw=2000000000\n투자조건 · 현금흐름 검토 · 연 운영비 [offering.cashFlowReview.annualOperatingExpenseWon]: 800000000원\nraw=800000000\n투자조건 · 현금흐름 검토 · 연 부채상환액 [offering.cashFlowReview.annualDebtServiceWon]: 600000000원\nraw=600000000\n투자조건 · 현금흐름 검토 · 한계 · 항목 1 [offering.cashFlowReview.limitations.0]: 임대수익·운영비·부채상환액은 실제\n건물의 재무정보가 아닌 세전 시나리오 입력입니다. raw=임대수익·운영비·부채상환액은 실제 건물의 재무정보가 아닌 세전 시나리오\n입력입니다.\n투자조건 · 회수 검토 · 데이터 성격 [offering.exitReview.dataNature]: scenario raw=scenario\n투자조건 · 회수 검토 · 근거 [offering.exitReview.basis]: scenario-input raw=scenario-input\n투자조건 · 회수 검토 · 회수 결정권 [offering.exitReview.decisionAuthority]: 시나리오 운영위원회 raw=시나리오\n운영위원회\n투자조건 · 회수 검토 · 최대 연장기간 [offering.exitReview.maximumExtensionMonths]: 12개월 raw=12\n투자조건 · 회수 검토 · 한계 · 항목 1 [offering.exitReview.limitations.0]: 회수 결정·연장 조건은 실제 계약 또는\n권리관계가 아닌 시나리오 입력입니다. raw=회수 결정·연장 조건은 실제 계약 또는 권리관계가 아닌 시나리오 입력입니다.\n투자조건 · 임대 가정 · 공실률 [offering.leaseAssumptions.vacancyRatePercent]: 5% raw=5\n투자조건 · 임대 가정 · 임차 집중도 메모 [offering.leaseAssumptions.tenantConcentrationNote]: 특정 실제\n임차인과 연결하지 않은 가상 임차 집중도 가정입니다. raw=특정 실제 임차인과 연결하지 않은 가상 임차 집중도 가정입니다.\n투자조건 · 임대 가정 · 한계 · 항목 1 [offering.leaseAssumptions.limitations.0]: 실제 임대차·공실·임차인 정보를\n확인하지 않았습니다. raw=실제 임대차·공실·임차인 정보를 확인하지 않았습니다.\n투자조건 · 거래 가능 상태 [offering.tradabilityStatus]: not-listed raw=not-listed\n공통 가정 · 항목 1 [assumptions.0]: 공모·배당·거래·매각·정산 조건과 운영그룹은 모두 scenario-input입니다. raw=공모·배당·\n거래·매각·정산 조건과 운영그룹은 모두 scenario-input입니다.\n공통 가정 · 항목 2 [assumptions.1]: 실제 법인·플랫폼·은행·소유자·임차인과 연결하지 않습니다. raw=실제 법인·플랫폼·은행·\n소유자·임차인과 연결하지 않습니다.\n한계 · 항목 1 [limitations.0]: 이 시나리오는 실제 청약·판매 상태나 실제 건물 거래·운영 성과를 나타내지 않습니다. raw=이\n시나리오는 실제 청약·판매 상태나 실제 건물 거래·운영 성과를 나타내지 않습니다.",

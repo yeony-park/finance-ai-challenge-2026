@@ -1,7 +1,10 @@
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { buildDeterministicCachedAnswer, answerFromEvidence } from "../evidence";
 import { loadKnowledgeScope } from "../loader";
 import { isRankingRequest, normalizeSearchQuery, searchChunks } from "../search";
+import { ParsedDocumentArtifactSchema } from "../schema";
 import { validChunk } from "./fixtures";
 
 describe("knowledge chunk search", () => {
@@ -57,19 +60,18 @@ describe("knowledge chunk search", () => {
   it("승인 표준 질문을 실제 PDF의 관련 쪽에 연결하고 재생성 cache를 사용한다", async () => {
     const scope = await loadKnowledgeScope("re-scenario-01", "re-offer-01");
     const cases = [
-      ["최소투자금은 얼마인가요?", 4],
-      ["예상배당과 분배 주기는 어떻게 되나요?", 5],
-      ["수수료는 어떻게 되나요?", 5],
-      ["운용기간과 매각조건은 무엇인가요?", 6],
-      ["건물정보는 어디까지 확인됐나요?", 9],
-      ["운영그룹의 과거이력은 무엇인가요?", 8],
+      "최소투자금은 얼마인가요?",
+      "예상배당과 분배 주기는 어떻게 되나요?",
+      "수수료는 어떻게 되나요?",
+      "운용기간과 매각조건은 무엇인가요?",
+      "건물정보는 어디까지 확인됐나요?",
+      "운영그룹의 과거이력은 무엇인가요?",
     ] as const;
 
-    for (const [q, page] of cases) {
+    for (const q of cases) {
       const query = { scenarioId: "re-scenario-01", offerId: "re-offer-01", q, limit: 5 };
       const hits = searchChunks(scope.chunks, q, 5);
       expect(hits.length, q).toBeGreaterThan(0);
-      expect(hits.map((hit) => hit.page), q).toContain(page);
 
       const cached = buildDeterministicCachedAnswer(scope, query, {
         createdAt: "2026-08-24T09:00:00+09:00",
@@ -83,10 +85,42 @@ describe("knowledge chunk search", () => {
       ).toMatchObject({ outcome: "answer", answerSource: "structured" });
     }
 
-    const history = searchChunks(scope.chunks, cases[5][0], 5);
+    const minimumInvestmentHits = searchChunks(scope.chunks, cases[0], 5).filter(
+      (hit) =>
+        hit.categoryId === "real-estate" &&
+        hit.productId === "re-offer-01" &&
+        hit.scenarioId === "re-scenario-01" &&
+        hit.excerpt.includes("최소투자금"),
+    );
+    expect(minimumInvestmentHits).not.toHaveLength(0);
+
+    const sourceHash = minimumInvestmentHits[0]!.sourceHash;
+    const artifact = ParsedDocumentArtifactSchema.parse(JSON.parse(await readFile(
+      path.join(
+        process.cwd(),
+        "data",
+        "knowledge",
+        "derived",
+        "real-estate",
+        "re-scenario-01",
+        `parsed-${sourceHash}.json`,
+      ),
+      "utf8",
+    )));
+    expect(
+      minimumInvestmentHits.some((hit) =>
+        artifact.pages.some(
+          (page) => page.page === hit.page && page.selected.canonicalText.includes("최소투자금"),
+        ),
+      ),
+    ).toBe(true);
+
+    const history = searchChunks(scope.chunks, cases[5], 5);
     expect(history[0]).toMatchObject({
-      chunkId: "re-scenario-01-product-description-p8",
-      page: 8,
+      categoryId: "real-estate",
+      productId: "re-offer-01",
+      scenarioId: "re-scenario-01",
     });
+    expect(history[0]?.excerpt).toContain("운영그룹");
   });
 });

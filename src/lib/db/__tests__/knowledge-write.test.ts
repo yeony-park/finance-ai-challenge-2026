@@ -176,11 +176,30 @@ describe("product knowledge DB write", () => {
     const executor = new MemoryKnowledgeExecutor();
     const documentCount = plan.documents.length;
     const chunkCount = plan.chunks.length;
+    const scopeTotals = plan.scopes.reduce<Record<string, { documents: number; chunks: number }>>(
+      (totals, scope) => {
+        const total = totals[scope.categoryId] ?? { documents: 0, chunks: 0 };
+        totals[scope.categoryId] = {
+          documents: total.documents + scope.documents,
+          chunks: total.chunks + scope.chunks,
+        };
+        return totals;
+      },
+      {},
+    );
 
     await writeKnowledgeIngestPlan(plan, executor, KNOWLEDGE_FULL_SNAPSHOT);
     await writeKnowledgeIngestPlan(plan, executor, KNOWLEDGE_FULL_SNAPSHOT);
 
-    expect({ documentCount, chunkCount }).toEqual({ documentCount: 25, chunkCount: 211 });
+    expect(documentCount).toBe(25);
+    expect(scopeTotals).toEqual({
+      cattle: { documents: 9, chunks: 14 },
+      pig: { documents: 3, chunks: 7 },
+      "real-estate": { documents: 13, chunks: 177 },
+    });
+    expect(chunkCount).toBe(
+      Object.values(scopeTotals).reduce((total, scope) => total + scope.chunks, 0),
+    );
     expect(executor.documents).toHaveLength(documentCount);
     expect(executor.chunks).toHaveLength(chunkCount);
     const transactionEventCount = documentCount + chunkCount + 1;
