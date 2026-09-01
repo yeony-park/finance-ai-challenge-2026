@@ -195,7 +195,7 @@ describe("product knowledge DB write", () => {
     expect(scopeTotals).toEqual({
       cattle: { documents: 9, chunks: 14 },
       pig: { documents: 3, chunks: 7 },
-      "real-estate": { documents: 13, chunks: 177 },
+      "real-estate": { documents: 13, chunks: 255 },
     });
     expect(chunkCount).toBe(
       Object.values(scopeTotals).reduce((total, scope) => total + scope.chunks, 0),

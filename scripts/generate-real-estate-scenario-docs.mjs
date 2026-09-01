@@ -10,8 +10,6 @@ import { parsePdf, sha256 } from "../src/lib/knowledge/pdf.ts";
 import { DerivedScenarioProductEnvelopeSchema, ParsedDocumentArtifactSchema, ScenarioOfferSchema, SourceManifestSchema } from "../src/lib/knowledge/schema.ts";
 
 const defaultWorkspaceRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const COLLECTED_AT = "2026-08-30T04:00:00.000Z";
-
 const canonical = (value) => value.normalize("NFKC").replace(/\s+/g, " ").trim();
 const escapeHtml = (value) => value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
 const money = (value) => `${new Intl.NumberFormat("ko-KR").format(value)}원`;
@@ -55,55 +53,121 @@ const scalarUnit = (offer, fieldPath, value) => {
 const displayValue = (offer, fieldPath, value) => value === null ? "미확인 (raw null)" : typeof value === "boolean" ? `${value ? "예" : "아니오"} (raw ${value})` : `${String(value)}${scalarUnit(offer, fieldPath, value)}`;
 const rawValue = (value) => value === null ? "null" : typeof value === "boolean" ? String(value) : String(value);
 
-const section = (heading, text) => `<section><h2>${escapeHtml(heading)}</h2><p>${escapeHtml(text)}</p></section>`;
-const table = (headers, rows) => `<table><thead><tr>${headers.map((header) => `<th scope="col">${escapeHtml(header)}</th>`).join("")}</tr></thead><tbody>${rows.map((row) => `<tr>${row.map((cell) => `<td>${escapeHtml(String(cell))}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
-const tableSection = (heading, headers, rows) => `<section><h2>${escapeHtml(heading)}</h2>${table(headers, rows)}</section>`;
-const groupedTableSection = (heading, tables) => `<section><h2>${escapeHtml(heading)}</h2>${tables.map(({ heading: tableHeading, headers, rows }) => `<h3>${escapeHtml(tableHeading)}</h3>${table(headers, rows)}`).join("")}</section>`;
 const valueOrUnknown = (value) => value ?? "미확인";
 
 const REQUIRED_SECTIONS = [
-  "문서 식별·목차", "핵심 요약", "상품·증권 조건", "청약·배정·납입·상장 일정",
-  "건물·공개 원장", "취득·운영 계획", "대출·LTV·임대·공실 가정", "분배 구조",
-  "수수료·세금", "투자자 보호", "주요 위험", "매각·회수", "출처·가정·한계", "데이터 정의·출처 부록",
+  "문서 식별 및 작성 기준", "제1부 모집 또는 매출에 관한 사항", "공모 개요", "모집·배정·납입 및 거래 일정",
+  "제2부 권리 및 공동사업 구조", "투자자 보호 구조", "제3부 기초자산 및 운영 구조", "공개 원장 정보",
+  "제4부 손익·분배·비용 및 세금", "제5부 투자위험", "제6부 매각·회수 및 완료 이력",
+  "제7부 출처·검증 상태 및 문서 한계", "부록 A. 구조화 데이터 필드 사전",
 ];
 
-const overview = (offer) => {
+const table = ({ id, caption, headers, rows, note = "" }) => `<figure class="table-block${rows.length <= 5 ? " keep-together" : ""}" id="${escapeHtml(id)}"><figcaption>${escapeHtml(caption)}</figcaption><table><thead><tr>${headers.map((header) => `<th scope="col">${escapeHtml(header)}</th>`).join("")}</tr></thead><tbody>${rows.map((row) => `<tr>${row.map((cell) => `<td>${escapeHtml(String(cell))}</td>`).join("")}</tr>`).join("")}</tbody></table>${note ? `<p class="table-note">${escapeHtml(note)}</p>` : ""}</figure>`;
+const clause = (id, number, heading, body) => `<section class="clause" id="${escapeHtml(id)}" data-section-path="${escapeHtml(number)} ${escapeHtml(heading)}"><h3><span>${escapeHtml(number)}</span> ${escapeHtml(heading)}</h3>${body}</section>`;
+const chapter = (id, number, heading, body) => `<section class="chapter" id="${escapeHtml(id)}" data-section-path="${escapeHtml(number)} ${escapeHtml(heading)}"><h2><span>${escapeHtml(number)}</span> ${escapeHtml(heading)}</h2>${body}</section>`;
+const part = (id, number, heading, body) => `<section class="part" id="${escapeHtml(id)}" data-section-path="${escapeHtml(number)} ${escapeHtml(heading)}"><h1><span>${escapeHtml(number)}</span> ${escapeHtml(heading)}</h1>${body}</section>`;
+const paragraphs = (...items) => items.filter(Boolean).map((item) => `<p>${escapeHtml(item)}</p>`).join("");
+const list = (items) => `<ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;
+const natureLabel = (nature) => nature === "observed" ? "외부 관찰" : "시나리오 입력";
+const statusLabel = (status) => ({ confirmed: "확인", unknown: "미확인", "confirmed-in-scenario": "시나리오 내 확인" }[status] ?? status);
+const assetFactLabel = (field) => ({ "building-name": "건물명", "main-use": "주용도", "gross-floor-area": "연면적", "land-area": "대지면적", "use-approval-date": "사용승인일" }[field] ?? field);
+const factValue = (fact) => fact.value === null || fact.value === undefined ? "미확인" : `${fact.value}${fact.unit === "m2" ? "㎡" : ""}`;
+
+const documentBody = (offer) => {
   const { offering, asset } = offer;
   const completed = offer.completion
     ? `완료 이력: 목표 종료일 ${offer.completion.targetExitOn}, 실제 종료일 ${offer.completion.actualExitOn}, 누적 분배 ${money(offer.completion.cumulativeDistributionWon)}, 매각 회수 ${money(offer.completion.saleProceedsWon)}, 환급 ${money(offer.completion.refundsWon)}, 비용 ${money(offer.completion.feesWon)}.`
     : "완료 이력은 아직 없는 현재 시나리오입니다.";
+  const amountEquationValid = offering.unitPriceWon * offering.unitCount === offering.amountWon;
+  const minimumUnits = Math.ceil(offering.minimumInvestmentWon / offering.unitPriceWon);
+  const availableCashFlow = [offering.cashFlowReview.annualRentalIncomeWon, offering.cashFlowReview.annualOperatingExpenseWon, offering.cashFlowReview.annualDebtServiceWon].every((item) => item !== null);
+  const netCashFlow = availableCashFlow
+    ? offering.cashFlowReview.annualRentalIncomeWon - offering.cashFlowReview.annualOperatingExpenseWon - offering.cashFlowReview.annualDebtServiceWon
+    : null;
+  const factRows = [...new Set([...asset.facts.map((fact) => fact.field), ...offer.claimedAssetFacts.map((fact) => fact.field)])].map((field) => {
+    const observed = asset.facts.find((fact) => fact.field === field);
+    const scenario = offer.claimedAssetFacts.find((fact) => fact.field === field);
+    return [assetFactLabel(field), observed ? factValue(observed) : "미확인", observed ? statusLabel(observed.status) : "미확인", scenario ? factValue(scenario) : "미확인", observed?.sourceId ?? "출처 없음"];
+  });
+  const observedAsOf = (field) => {
+    const sourceId = asset.facts.find((fact) => fact.field === field)?.sourceId;
+    return offer.sources.find((source) => source.sourceId === sourceId)?.asOf ?? offer.sources.find((source) => source.dataNature === "observed")?.asOf ?? "미확인";
+  };
+  const sourceRows = offer.sources.map((source) => [source.sourceId, source.label, natureLabel(source.dataNature), source.asOf]);
+  const sourceDetails = offer.sources.map((source) => `${source.sourceId} · 확인 방법: ${source.method}\nURL: ${source.url}\n한계: ${source.limitations.join(" ")}`);
+
   return [
-    section("문서 식별·목차", `문서명: ${offer.title} 시나리오 상품설명서\n문서 식별: ${offer.scenarioId} / ${offer.offerId}\n기준일: ${offer.asOf}\n목차: 핵심 요약 · 상품·증권 조건 · 청약·배정·납입·상장 일정 · 건물·공개 원장 · 취득·운영 계획 · 대출/LTV/임대/공실 가정 · 분배 구조 · 수수료·세금 · 투자자 보호 · 주요 위험 · 매각·회수 · 출처·가정·한계 · 데이터 정의·출처 부록`),
-    tableSection("핵심 요약", ["구분", "확인 범위 또는 시나리오 조건"], [["상품 단계", offering.phase], ["기초자산 공개명", asset.publicName], ["공모총액", money(offering.amountWon)], ["목표 보유기간", `${offering.targetHoldingMonths}개월`], ["운영그룹", offer.operatorGroupId], ["고지", "실제 청약·판매 상품이 아닌 시나리오 입력"]]),
-    tableSection("상품·증권 조건", ["항목", "시나리오 조건"], [["단위 권리", offering.unitRightsSummary], ["단가", money(offering.unitPriceWon)], ["수량", `${offering.unitCount}좌`], ["최소투자금", money(offering.minimumInvestmentWon)], ["배정·환급", offering.allocationRefundPolicy], ["거래 가능 상태", valueOrUnknown(offering.tradabilityStatus)]]),
-    tableSection("청약·배정·납입·상장 일정", ["일정 항목", "시나리오 조건"], [["모집 시작일", offering.opensOn], ["모집 종료일", offering.closesOn], ["상장일", valueOrUnknown(offering.listedOn)], ["거래 유효기한", valueOrUnknown(offering.tradabilityValidThrough)], ["배정·환급 절차", offering.allocationRefundPolicy]]),
-    tableSection("건물·공개 원장", ["항목", "공개 확인 범위"], [["공개명", asset.publicName], ["지역", asset.region], ["도로명 주소", asset.roadAddress], ["주용도", valueOrUnknown(asset.mainUse)], ["연면적", asset.grossFloorAreaM2 === null ? "미확인" : `${asset.grossFloorAreaM2}㎡`], ["대지면적", asset.landAreaM2 === null ? "미확인" : `${asset.landAreaM2}㎡`], ["사용승인일", valueOrUnknown(asset.approvedOn)], ...asset.facts.map((fact) => [fact.field, `${fact.status} · ${fact.value ?? "미확인"}${fact.unit === "m2" && fact.value !== null ? "㎡" : ""}`])]),
-    section("취득·운영 계획", `개별 취득가격·취득일·실제 소유권은 이 시나리오 입력에 별도 값이 없어 미확인입니다. 운용 주체와 역할은 ${offer.operatorGroupId} 시나리오 조건으로만 표시하며 실제 법인·소유자·임차인과 연결하지 않습니다. ${offering.exitReview.decisionAuthority ?? "회수 결정권은 시나리오 입력에 미확인입니다."}`),
-    tableSection("대출·LTV·임대·공실 가정", ["구분", "항목", "시나리오 조건 또는 한계"], [["차입", "LTV", percent(offering.financing.ltvPercent)], ["차입", "연이율", percent(offering.financing.annualInterestRatePercent)], ["차입", "만기", valueOrUnknown(offering.financing.maturityOn)], ["차입", "한계", offering.financing.limitations], ["임대", "공실률", percent(offering.leaseAssumptions.vacancyRatePercent)], ["임대", "집중도", offering.leaseAssumptions.tenantConcentrationNote], ["임대", "한계", offering.leaseAssumptions.limitations], ["현금흐름", "검토 한계", offering.cashFlowReview.limitations]]),
-    tableSection("분배 구조", ["항목", "시나리오 조건"], [["예상 연 분배율", percent(offering.expectedAnnualDistributionRatePercent)], ["분배 주기", `${offering.distributionCycleMonths}개월`], ["분배 기준", offering.distributionBasis], ["연 임대수익", valueOrUnknown(offering.cashFlowReview.annualRentalIncomeWon) === "미확인" ? "미확인" : money(offering.cashFlowReview.annualRentalIncomeWon)], ["연 운영비", valueOrUnknown(offering.cashFlowReview.annualOperatingExpenseWon) === "미확인" ? "미확인" : money(offering.cashFlowReview.annualOperatingExpenseWon)], ["연 부채상환", valueOrUnknown(offering.cashFlowReview.annualDebtServiceWon) === "미확인" ? "미확인" : money(offering.cashFlowReview.annualDebtServiceWon)]]),
-    tableSection("수수료·세금", ["항목", "시나리오 조건"], [["거래 수수료율", percent(offering.tradingFeeRatePercent)], ["총비용률", percent(offering.totalExpenseRatePercent)], ["비용 범위", offering.feeScope], ["세금 고지", offering.taxNotice]]),
-    tableSection("투자자 보호", ["보호 항목", "상태", "시나리오 조건 및 한계"], Object.entries(offer.investorProtection)
-      .filter(([key]) => !["dataNature", "basis"].includes(key))
-      .map(([key, item]) => [humanLabel(key), item.status, `${item.statement} ${item.limitations.join(" ")}`])),
-    section("주요 위험", `${offer.assumptions.join(" ")} ${offer.limitations.join(" ")} 실제 투자 손실 가능성, 권리·대출·임대 조건의 미확인 범위는 이 문서만으로 해소되지 않습니다.`),
-    section("매각·회수", `${completed}\n회수 조건: ${offering.exitConditions.join(" ")}\n연장 조건: ${offering.extensionConditions.join(" ")}\n청산 우선순위: ${offering.liquidationPriority}`),
-    groupedTableSection("출처·가정·한계", [{ heading: "출처", headers: ["출처", "기준일", "확인 방법", "한계"], rows: offer.sources.map((source) => [source.label, source.asOf, source.method, source.limitations.join(" ")]) }, { heading: "시나리오 가정", headers: ["항목", "내용"], rows: [["운영그룹", offer.operatorGroupId], ["공통 가정", offer.assumptions.join(" ")], ["문서 한계", offer.limitations.join(" ")]] }]),
+    `<section class="document-control" id="document-control"><h1>문서 식별 및 작성 기준</h1>${table({ id: "table-document-control", caption: "표 0-1. 문서 관리 정보", headers: ["항목", "내용"], rows: [["문서명", `${offer.title} 시나리오 상품설명서`], ["문서 식별자", `${offer.scenarioId} / ${offer.offerId}`], ["기준일", offer.asOf], ["문서 성격", "부동산 공개 원장 관찰값과 가상 투자조건을 구분한 검토용 시나리오 문서"], ["공개 상태", "시나리오 데이터 · 실제 청약/판매 상품 아님"], ["구조화 원칙", "PART-장-절-표 계층, 기준일·출처·데이터 성격·미확인 상태 명시"]], note: "이 문서는 증권신고서가 아니며 OpenDART의 정보 계층 원칙만 참고했습니다." })}</section>`,
+    `<nav class="toc" aria-label="문서 목차"><h1>목차</h1><ol><li>제1부 모집 또는 매출에 관한 사항</li><li>제2부 권리 및 공동사업 구조</li><li>제3부 기초자산 및 운영 구조</li><li>제4부 손익·분배·비용 및 세금</li><li>제5부 투자위험</li><li>제6부 매각·회수 및 완료 이력</li><li>제7부 출처·검증 상태 및 문서 한계</li><li>부록 A. 구조화 데이터 필드 사전</li></ol></nav>`,
+    part("part-1-offering", "제1부", "모집 또는 매출에 관한 사항", [
+      chapter("part-1-chapter-1", "I.", "공모 개요", [
+        clause("part-1-chapter-1-clause-1", "1.", "핵심 조건", table({ id: "table-offering-summary", caption: "표 1-1. 공모 조건 요약", headers: ["항목", "시나리오 조건", "데이터 성격"], rows: [["상품 단계", offering.phase, "시나리오 입력"], ["기초자산 공개명", asset.publicName, "외부 관찰"], ["1좌당 단가", money(offering.unitPriceWon), "시나리오 입력"], ["발행 수량", `${offering.unitCount}좌`, "시나리오 입력"], ["공모총액", money(offering.amountWon), "시나리오 입력"], ["최소투자금", money(offering.minimumInvestmentWon), "시나리오 입력"], ["목표 보유기간", `${offering.targetHoldingMonths}개월`, "시나리오 입력"]], note: "가격·수량·공모총액은 실제 발행 조건이 아니라 시나리오 입력입니다." })),
+        clause("part-1-chapter-1-clause-2", "2.", "금액 및 수량 검산", `${table({ id: "table-offering-equation", caption: "표 1-2. 공모금액 산술 검산", headers: ["산식", "결과", "판정"], rows: [[`${money(offering.unitPriceWon)} × ${new Intl.NumberFormat("ko-KR").format(offering.unitCount)}좌`, money(offering.unitPriceWon * offering.unitCount), amountEquationValid ? "공모총액과 일치" : "불일치"], [`최소투자금 ÷ 1좌당 단가`, `${minimumUnits}좌`, `${minimumUnits}좌 × ${money(offering.unitPriceWon)} = ${money(minimumUnits * offering.unitPriceWon)}`]] })}${paragraphs("이 표는 입력값의 산술 일치만 확인합니다. 실제 모집, 납입 또는 증권 발행 사실을 확인하는 검증이 아닙니다.")}`),
+      ].join("")),
+      chapter("part-1-chapter-2", "II.", "모집·배정·납입 및 거래 일정", [
+        clause("part-1-chapter-2-clause-1", "1.", "일정", table({ id: "table-offering-schedule", caption: "표 1-3. 모집 및 거래 일정", headers: ["절차", "일자 또는 상태", "확인 범위"], rows: [["모집 개시", offering.opensOn, "시나리오 입력"], ["모집 종료", offering.closesOn, "시나리오 입력"], ["상장일", valueOrUnknown(offering.listedOn), offering.listedOn ? "시나리오 입력" : "미확인"], ["거래 유효기한", valueOrUnknown(offering.tradabilityValidThrough), offering.tradabilityValidThrough ? "시나리오 입력" : "미확인"], ["거래 가능 상태", valueOrUnknown(offering.tradabilityStatus), "시나리오 입력"]] })),
+        clause("part-1-chapter-2-clause-2", "2.", "배정·환급 및 납입", paragraphs(offering.allocationRefundPolicy, "납입계좌, 예치기관, 납입일 및 환불 처리기한은 입력 자료에 없어 미확인입니다.")),
+      ].join("")),
+      chapter("part-1-chapter-3", "III.", "자금 사용 및 취득 계획", clause("part-1-chapter-3-clause-1", "1.", "확인되지 않은 항목", `${table({ id: "table-use-of-proceeds", caption: "표 1-4. 자금 사용·취득 정보 확인 상태", headers: ["항목", "상태", "설명"], rows: [["부동산 취득가격", "미확인", "입력 자료에 값이 없음"], ["취득 예정일", "미확인", "입력 자료에 값이 없음"], ["실제 소유권 및 담보권", "미확인", "등기·계약 자료를 연결하지 않음"], ["공모자금 세부 사용계획", "미확인", "항목별 자금 집행표가 없음"]] })}${paragraphs("미확인 값을 일반적인 시장 관행으로 보완하거나 추정하지 않습니다.")}`)),
+    ].join("")),
+    part("part-2-rights", "제2부", "권리 및 공동사업 구조", [
+      chapter("part-2-chapter-1", "I.", "권리의 주요 내용", [
+        clause("part-2-chapter-1-clause-1", "1.", "단위 권리와 분배 기준", paragraphs(offering.unitRightsSummary, offering.distributionBasis)),
+        clause("part-2-chapter-1-clause-2", "2.", "청산 우선순위", paragraphs(offering.liquidationPriority)),
+      ].join("")),
+      chapter("part-2-chapter-2", "II.", "참여주체 및 역할", [
+        clause("part-2-chapter-2-clause-1", "1.", "운영 구조", table({ id: "table-participants", caption: "표 2-1. 참여주체 역할", headers: ["역할", "표시명", "데이터 성격"], rows: [["발행주체", offer.participants.issuer.label, natureLabel(offer.participants.issuer.dataNature)], ["플랫폼 운영", offer.participants.platformOperator.label, natureLabel(offer.participants.platformOperator.dataNature)], ["자산 운용", offer.participants.assetManager.label, natureLabel(offer.participants.assetManager.dataNature)], ["수탁", offer.participants.trustee.label, natureLabel(offer.participants.trustee.dataNature)]], note: `운영그룹 식별자 ${offer.operatorGroupId}; 실제 법인과 연결하지 않은 시나리오 역할입니다.` })),
+        clause("part-2-chapter-2-clause-2", "2.", "운영그룹 과거 완료 이력", paragraphs("운영그룹의 과거 완료 이력은 이 상품 입력 문서에 포함되지 않아 미확인입니다. 다른 상품의 완료 이력을 현재 상품의 실적으로 추정하거나 합산하지 않습니다.")),
+      ].join("")),
+      chapter("part-2-chapter-3", "III.", "투자자 보호 구조", clause("part-2-chapter-3-clause-1", "1.", "투자자 보호 구조", table({ id: "table-investor-protection", caption: "표 2-2. 보호 항목별 상태", headers: ["항목", "상태", "내용", "한계"], rows: Object.entries(offer.investorProtection).filter(([key]) => !["dataNature", "basis"].includes(key)).map(([key, item]) => [humanLabel(key), statusLabel(item.status), item.statement, item.limitations.join(" ")]), note: "모든 보호 항목은 실제 계약·법률·운영 효과를 확인한 것이 아니라 시나리오 조건입니다." }))),
+    ].join("")),
+    part("part-3-asset", "제3부", "기초자산 및 운영 구조", [
+      chapter("part-3-chapter-1", "I.", "공개 원장 정보", [
+        clause("part-3-chapter-1-clause-1", "1.", "기초자산 식별", table({ id: "table-public-register", caption: "표 3-1. 공개 원장 관찰값", headers: ["항목", "값", "데이터 성격", "출처 기준일"], rows: [["공개 건물명", asset.publicName, "외부 관찰", observedAsOf("building-name")], ["도로명 주소", asset.roadAddress, "외부 관찰", observedAsOf("road-address")], ["지역", asset.region, "외부 관찰", observedAsOf("region")], ["주용도", valueOrUnknown(asset.mainUse), "외부 관찰", observedAsOf("main-use")], ["연면적", asset.grossFloorAreaM2 === null ? "미확인" : `${asset.grossFloorAreaM2}㎡`, "외부 관찰", observedAsOf("gross-floor-area")], ["대지면적", asset.landAreaM2 === null ? "미확인" : `${asset.landAreaM2}㎡`, "외부 관찰", observedAsOf("land-area")], ["사용승인일", valueOrUnknown(asset.approvedOn), "외부 관찰", observedAsOf("use-approval-date")]], note: "상업용 건축물의 공개 원장 범위만 표시하며 소유자·임차인·호실 정보는 포함하지 않습니다." })),
+        clause("part-3-chapter-1-clause-2", "2.", "관찰값과 시나리오 주장 대조", table({ id: "table-fact-comparison", caption: "표 3-2. 데이터 성격별 사실 대조", headers: ["항목", "외부 관찰값", "관찰 상태", "시나리오 주장", "관찰 출처 ID"], rows: factRows, note: "두 열의 값이 같더라도 출처 성격은 합쳐지지 않습니다." })),
+      ].join("")),
+      chapter("part-3-chapter-2", "II.", "취득·소유 및 운영 상태", clause("part-3-chapter-2-clause-1", "1.", "확인 범위", paragraphs("개별 취득가격·취득일·실제 소유권·담보권·임차인 계약은 입력 자료에 없어 미확인입니다.", `운용 의사결정 주체는 ${offering.exitReview.decisionAuthority ?? "미확인"}로 설정된 시나리오 조건입니다.`))),
+      chapter("part-3-chapter-3", "III.", "차입·임대 및 공실 가정", [
+        clause("part-3-chapter-3-clause-1", "1.", "차입 조건", table({ id: "table-financing", caption: "표 3-3. 차입 가정", headers: ["항목", "값", "성격 또는 한계"], rows: [["LTV", percent(offering.financing.ltvPercent), "시나리오 입력"], ["연이율", percent(offering.financing.annualInterestRatePercent), "시나리오 입력"], ["만기일", valueOrUnknown(offering.financing.maturityOn), "시나리오 입력"], ["금리 유형", offering.financing.rateType, "시나리오 입력"], ["금리 재설정일", valueOrUnknown(offering.financing.resetOn), offering.financing.resetOn ? "시나리오 입력" : "미확인"], ["검증 한계", offering.financing.limitations.join(" "), "실제 대출 계약 미확인"]] })),
+        clause("part-3-chapter-3-clause-2", "2.", "임대 및 공실", table({ id: "table-lease", caption: "표 3-4. 임대 가정", headers: ["항목", "값", "확인 범위"], rows: [["공실률", percent(offering.leaseAssumptions.vacancyRatePercent), "시나리오 입력"], ["임차 집중도", offering.leaseAssumptions.tenantConcentrationNote, "시나리오 입력"], ["한계", offering.leaseAssumptions.limitations.join(" "), "실제 임대차 미확인"]] })),
+      ].join("")),
+    ].join("")),
+    part("part-4-cash-flow", "제4부", "손익·분배·비용 및 세금", [
+      chapter("part-4-chapter-1", "I.", "현금흐름 검토", clause("part-4-chapter-1-clause-1", "1.", "입력값과 산술 잔여액", `${table({ id: "table-cash-flow", caption: "표 4-1. 연간 현금흐름 가정", headers: ["항목", "금액", "데이터 성격"], rows: [["연 임대수익", offering.cashFlowReview.annualRentalIncomeWon === null ? "미확인" : money(offering.cashFlowReview.annualRentalIncomeWon), "시나리오 입력"], ["연 운영비", offering.cashFlowReview.annualOperatingExpenseWon === null ? "미확인" : money(offering.cashFlowReview.annualOperatingExpenseWon), "시나리오 입력"], ["연 부채상환액", offering.cashFlowReview.annualDebtServiceWon === null ? "미확인" : money(offering.cashFlowReview.annualDebtServiceWon), "시나리오 입력"], ["산술 잔여액", netCashFlow === null ? "계산 불가" : money(netCashFlow), "임대수익 - 운영비 - 부채상환액"]] })}${paragraphs(offering.cashFlowReview.limitations.join(" "), "산술 잔여액은 배당가능이익·유보금·세금·추가비용을 반영한 확정 분배재원이 아닙니다.")}`)),
+      chapter("part-4-chapter-2", "II.", "분배 구조", clause("part-4-chapter-2-clause-1", "1.", "예상 분배 조건", table({ id: "table-distribution", caption: "표 4-2. 분배 조건", headers: ["항목", "값", "확인 범위"], rows: [["예상 연 분배율", percent(offering.expectedAnnualDistributionRatePercent), "세전 시나리오"], ["분배 주기", `${offering.distributionCycleMonths}개월`, "시나리오 입력"], ["분배 기준", offering.distributionBasis, "시나리오 입력"]] }))),
+      chapter("part-4-chapter-3", "III.", "수수료 및 세금", clause("part-4-chapter-3-clause-1", "1.", "비용·과세 고지", table({ id: "table-fees-tax", caption: "표 4-3. 수수료·비용·세금", headers: ["항목", "값", "설명"], rows: [["거래 수수료율", percent(offering.tradingFeeRatePercent), offering.feeScope], ["총비용률", percent(offering.totalExpenseRatePercent), offering.feeScope], ["세금", "개인별 미반영", offering.taxNotice]] }))),
+    ].join("")),
+    part("part-5-risks", "제5부", "투자위험", [
+      chapter("part-5-chapter-1", "I.", "핵심 위험요인", clause("part-5-chapter-1-clause-1", "1.", "위험요인별 확인 범위", table({ id: "table-risks", caption: "표 5-1. 주요 위험요인", headers: ["위험 구분", "위험 내용", "현재 확인 상태"], rows: [["원금 및 수익", "분배율·매각가격·회수금은 보장되지 않음", "시나리오 결과 미확정"], ["기초자산", "공개 원장 정보와 실제 소유·계약·운영 상태가 다를 수 있음", "공개 원장 일부만 관찰"], ["차입", `LTV ${percent(offering.financing.ltvPercent)}, 연이율 ${percent(offering.financing.annualInterestRatePercent)} 가정 변동 시 현금흐름 영향`, "실제 대출 미확인"], ["임대", `공실률 ${percent(offering.leaseAssumptions.vacancyRatePercent)} 및 임차 집중도 변화`, "실제 임대차 미확인"], ["유동성", `${valueOrUnknown(offering.tradabilityStatus)} 상태이며 중도매각 시장·가격 미확인`, "거래 가능성 미확인"], ["권리", "투자자 보호 문구는 실제 계약·법률 효과를 보증하지 않음", "시나리오 구조만 기재"], ["세금·비용", "개인별 과세와 실제 수수료가 시나리오와 다를 수 있음", "확정값 미확인"]] }))),
+      chapter("part-5-chapter-2", "II.", "시나리오 및 모델 한계", clause("part-5-chapter-2-clause-1", "1.", "가정과 사용 제한", `${list([...offer.assumptions, ...offer.limitations])}${paragraphs("이 문서는 투자 추천, 수익률 약속, 감정평가, 법률·세무 검토를 대신하지 않습니다.")}`)),
+    ].join("")),
+    part("part-6-exit", "제6부", "매각·회수 및 완료 이력", [
+      chapter("part-6-chapter-1", "I.", "매각·회수 조건", clause("part-6-chapter-1-clause-1", "1.", "회수 의사결정", `${table({ id: "table-exit", caption: "표 6-1. 회수 조건", headers: ["항목", "내용"], rows: [["목표 보유기간", `${offering.targetHoldingMonths}개월`], ["결정권", valueOrUnknown(offering.exitReview.decisionAuthority)], ["최대 연장기간", offering.exitReview.maximumExtensionMonths === null ? "미확인" : `${offering.exitReview.maximumExtensionMonths}개월`], ["회수 조건", offering.exitConditions.join(" ")], ["연장 조건", offering.extensionConditions.join(" ")], ["청산 우선순위", offering.liquidationPriority]] })}${paragraphs(offering.exitReview.limitations.join(" "))}`)),
+      chapter("part-6-chapter-2", "II.", "완료 이력", clause("part-6-chapter-2-clause-1", "1.", "완료 상태", paragraphs(completed))),
+    ].join("")),
+    part("part-7-sources", "제7부", "출처·검증 상태 및 문서 한계", [
+      chapter("part-7-chapter-1", "I.", "출처 목록", clause("part-7-chapter-1-clause-1", "1.", "출처 원장", `${table({ id: "table-sources", caption: "표 7-1. 출처 및 수집 기준", headers: ["출처 ID", "출처명", "성격", "기준일"], rows: sourceRows })}${sourceDetails.map((detail) => `<p class="source-detail">${escapeHtml(detail)}</p>`).join("")}`)),
+      chapter("part-7-chapter-2", "II.", "검증 상태", clause("part-7-chapter-2-clause-1", "1.", "검증 행렬", table({ id: "table-verification", caption: "표 7-2. 정보군별 검증 상태", headers: ["정보군", "성격", "상태", "추가 확인이 필요한 자료"], rows: [["건물 공개 원장", "외부 관찰", "출처 연결", "소유권·담보권·임대차·최신 변동"], ["공모·분배·비용", "시나리오 입력", "산술 검산", "실제 발행·예치·배정·회계 자료"], ["투자자 보호", "시나리오 입력", "문구 존재", "계약서·신탁·법률 검토"], ["매각·회수", "시나리오 입력", "조건 기재", "실제 매각계약·정산서"]] }))),
+      chapter("part-7-chapter-3", "III.", "문서 한계", clause("part-7-chapter-3-clause-1", "1.", "미확인 및 비포함 범위", `${list([...offer.assumptions, ...offer.limitations, ...offer.sources.flatMap((source) => source.limitations)])}${paragraphs("출처 URL과 기준일은 근거 위치를 식별하기 위한 정보이며, 해당 출처가 시나리오 투자조건을 승인했다는 뜻이 아닙니다.")}`)),
+    ].join("")),
   ].join("\n");
 };
 
 const appendix = (offer) => {
   const rows = scalarEntries(offer).map(({ path: fieldPath, value }) =>
     `<li><strong>${escapeHtml(humanLabel(fieldPath))}</strong> <code>[${escapeHtml(fieldPath)}]</code>: ${escapeHtml(displayValue(offer, fieldPath, value))} <span class="raw">raw=${escapeHtml(rawValue(value))}</span></li>`).join("");
-  return `<section class="appendix"><h2>데이터 정의·출처 부록</h2><p>아래는 문서에서 구조화할 수 있도록 표시한 사람 친화적 라벨, 필드 경로와 원시값입니다. 관찰 사실과 scenario-input을 혼동하지 마세요.</p><ul>${rows}</ul></section>`;
+  return `<section class="appendix part" id="appendix-a" data-section-path="부록 A 구조화 데이터 필드 사전"><h1>부록 A. 구조화 데이터 필드 사전</h1><p>이 부록은 PDF 파싱 결과에서 구조화 상품 레코드를 재현하고 원문 인용을 대조하기 위한 기술 부록입니다. 본문의 설명을 대체하지 않으며 외부 관찰값과 시나리오 입력을 구분해 해석해야 합니다.</p><ul>${rows}</ul></section>`;
 };
 
-const htmlFor = (offer) => `<!doctype html><html lang="ko"><head><meta charset="utf-8"><style>
+export const buildRealEstateScenarioDocumentHtml = (offer) => `<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="author" content="점점 데모 시나리오"><meta name="subject" content="부동산 공개 원장과 시나리오 투자조건 검토"><title>${escapeHtml(offer.title)} 시나리오 상품설명서</title><style>
 @page { size: A4; margin: 17mm 15mm 18mm; }
-body { font-family: Arial, 'Noto Sans KR', sans-serif; color: #18212f; font-size: 10.5pt; line-height: 1.58; word-break: keep-all; overflow-wrap: break-word; line-break: strict; }
-h1 { color: #0b4dbb; font-size: 24pt; font-weight: 600; margin: 0 0 5mm; } h2 { color: #17365d; font-size: 14pt; margin: 0 0 3mm; } h3 { color: #294b78; font-size: 11pt; margin: 5mm 0 2mm; } p { white-space: pre-line; margin: 0; }
-.cover { min-height: 250mm; display: flex; flex-direction: column; justify-content: center; } .eyebrow { color: #0b4dbb; font-size: 10pt; font-weight: 700; letter-spacing: .04em; } .notice { margin-top: 12mm; padding: 5mm; background: #f2f6ff; border-left: 3px solid #0b4dbb; }
-section { margin: 0 0 8mm; break-inside: avoid-page; } table { width: 100%; border-collapse: collapse; margin-top: 4mm; font-size: 10pt; } thead { display: table-header-group; } tr { break-inside: avoid; page-break-inside: avoid; } th, td { border: 1px solid #b9c6d8; padding: 3mm; text-align: left; vertical-align: top; } th { background: #eaf1ff; color: #17365d; font-weight: 700; } .appendix { font-size: 8.7pt; line-height: 1.45; } .appendix ul { margin: 0; padding-left: 5mm; } .appendix li { margin: 0 0 2.5mm; break-inside: avoid; } code { font-family: 'Courier New', monospace; color: #43536a; } .raw { color: #526273; }
-</style></head><body><article class="cover"><div class="eyebrow">REAL ESTATE · SCENARIO INPUT · PRODUCT DESCRIPTION</div><h1>${escapeHtml(offer.title)} 시나리오 상품설명서</h1><p>기준일: ${escapeHtml(offer.asOf)}\n시나리오 ID: ${escapeHtml(offer.scenarioId)} · 상품 ID: ${escapeHtml(offer.offerId)}</p><p class="notice">${escapeHtml(offer.disclosure.text)}</p></article>${overview(offer)}${appendix(offer)}</body></html>`;
+html { print-color-adjust: exact; } body { margin: 0; font-family: 'Noto Sans KR', 'Malgun Gothic', Arial, sans-serif; color: #171717; font-size: 9.4pt; line-height: 1.55; word-break: keep-all; overflow-wrap: break-word; line-break: strict; }
+h1, h2, h3 { color: #111; font-weight: 700; break-after: avoid-page; page-break-after: avoid; } h1 { font-size: 18pt; margin: 0 0 7mm; border-bottom: 2px solid #222; padding-bottom: 3mm; } h2 { font-size: 13pt; margin: 8mm 0 4mm; } h3 { font-size: 10.5pt; margin: 6mm 0 3mm; } h1 span, h2 span, h3 span { display: inline-block; min-width: 13mm; } p { margin: 0 0 3mm; white-space: pre-line; }
+.cover { min-height: 250mm; display: flex; flex-direction: column; justify-content: space-between; break-after: page; page-break-after: always; } .cover-main { margin-top: 55mm; } .document-class { font-size: 11pt; letter-spacing: .12em; border-top: 1px solid #222; border-bottom: 1px solid #222; padding: 3mm 0; } .cover h1 { margin-top: 14mm; font-size: 26pt; border: 0; line-height: 1.3; } .cover-meta { display: grid; grid-template-columns: 35mm 1fr; border-top: 1px solid #555; } .cover-meta dt, .cover-meta dd { margin: 0; padding: 2.5mm; border-bottom: 1px solid #bbb; } .cover-meta dt { background: #f0f0f0; font-weight: 700; } .notice { margin-top: 8mm; padding: 5mm; background: #f1f1f1; border: 1px solid #777; font-weight: 600; }
+.document-control, .toc { break-after: page; page-break-after: always; } .toc ol { columns: 1; padding-left: 8mm; } .toc li { margin: 0 0 4mm; border-bottom: 1px dotted #999; padding-bottom: 2mm; }
+.part { break-before: page; page-break-before: always; } .part:first-of-type { break-before: auto; page-break-before: auto; } .chapter, .clause { margin: 0 0 7mm; } .table-block { margin: 4mm 0 7mm; break-inside: auto; page-break-inside: auto; } .table-block.keep-together { break-inside: avoid-page; page-break-inside: avoid; } figcaption { font-weight: 700; margin-bottom: 2mm; } table { width: 100%; border-collapse: collapse; font-size: 8.8pt; } thead { display: table-header-group; } tr { break-inside: avoid; page-break-inside: avoid; } th, td { border: 1px solid #777; padding: 2.2mm; text-align: left; vertical-align: top; } th { background: #e8e8e8; color: #111; font-weight: 700; } .table-note { margin-top: 1.5mm; color: #444; font-size: 8pt; } .source-detail { border-left: 2px solid #777; padding-left: 3mm; font-size: 8.5pt; } ul { margin: 2mm 0 4mm; padding-left: 6mm; } li { margin-bottom: 2mm; }
+.appendix { font-size: 8pt; line-height: 1.42; } .appendix ul { margin: 0; padding-left: 5mm; } .appendix li { margin: 0 0 2mm; break-inside: avoid; page-break-inside: avoid; } code { font-family: 'Courier New', monospace; color: #222; } .raw { color: #555; }
+</style></head><body><main role="document"><article class="cover"><div class="cover-main"><div class="document-class">가상 부동산 투자계약 구조 · 검토용 상품설명서</div><h1>${escapeHtml(offer.title)}<br>시나리오 상품설명서</h1><dl class="cover-meta"><dt>문서 ID</dt><dd>${escapeHtml(offer.scenarioId)}</dd><dt>상품 ID</dt><dd>${escapeHtml(offer.offerId)}</dd><dt>기준일</dt><dd>${escapeHtml(offer.asOf)}</dd><dt>데이터 성격</dt><dd>공개 원장 관찰값 + 시나리오 입력</dd><dt>문서 상태</dt><dd>검토용 가상 상품 · 실제 청약/판매 아님</dd></dl><p class="notice">${escapeHtml(offer.disclosure.text)}</p></div><p>발행주체·플랫폼·운용주체·수탁주체는 실제 법인이 아닌 시나리오 역할입니다.</p></article>${documentBody(offer)}${appendix(offer)}</main></body></html>`;
 
 const assertPdfCoverage = (offer, parsed) => {
   if (parsed.status !== "ready" || parsed.pages.some((page) => page.quality !== "ready")) {
@@ -172,16 +236,16 @@ const readApprovedPrior = async (paths, offer) => {
   return { manifest, envelope };
 };
 
-const rebindDerivedProduct = async (offer, manifest, parsed, prior) => {
+const rebindDerivedProduct = async (offer, manifest, parsed, prior, generatedAt) => {
   if (prior.status !== "auto-approved" || !prior.product || JSON.stringify(prior.product) !== JSON.stringify(offer)) throw new Error(`${offer.scenarioId}: 기존 auto-approved product와 seed가 일치하지 않습니다.`);
-  const artifact = ParsedDocumentArtifactSchema.parse(buildParsedDocumentArtifact(manifest, parsed, COLLECTED_AT));
+  const artifact = ParsedDocumentArtifactSchema.parse(buildParsedDocumentArtifact(manifest, parsed, generatedAt));
   const { schemaVersion, categoryId, scenarioId, offerId, dataNature, sourceKind, approvedForPublic, status, ...payload } = prior.product;
   void schemaVersion; void categoryId; void scenarioId; void offerId; void dataNature; void sourceKind; void approvedForPublic; void status;
   const candidate = await deriveRealEstateScenarioProduct({
     manifest,
     artifact,
     client: { model: prior.model, extract: async () => ({ product: payload, fieldCitations: [], warnings: ["기존 auto-approved product를 새 PDF appendix로 로컬 재검증했습니다."] }) },
-    createdAt: COLLECTED_AT,
+    createdAt: generatedAt,
   });
   const resolved = resolveReviewedDerivedScenarioProduct(candidate, artifact, {
     schemaVersion: 1,
@@ -192,7 +256,7 @@ const rebindDerivedProduct = async (offer, manifest, parsed, prior) => {
     documentId: manifest.documentId,
     sourceHash: manifest.sourceHash,
     manifestHash: artifact.manifestHash,
-    reviewedAt: COLLECTED_AT,
+    reviewedAt: generatedAt,
     reviewer: "pdf-first-local-rebind",
     resolutionNote: "새 PDF의 scalar appendix와 기존 auto-approved product payload를 로컬에서 전 항목 대조했습니다.",
     product: prior.product,
@@ -390,6 +454,7 @@ export const generateRealEstateScenarioDocuments = async ({ workspaceRoot = defa
   const offers = await loadSeeds(paths.scenarioRoot);
   for (const offer of offers) assertPublicContentSafe(`${offer.scenarioId}: seed`, offer);
   const priors = new Map(await Promise.all(offers.map(async (offer) => [offer.scenarioId, await readApprovedPrior(paths, offer)])));
+  const generatedAt = new Date().toISOString();
   const stage = journalRootFor(workspaceRoot);
   await mkdir(stage, { recursive: true });
   await syncDirectory(paths.workspaceRoot);
@@ -402,14 +467,22 @@ export const generateRealEstateScenarioDocuments = async ({ workspaceRoot = defa
     for (const offer of offers) {
       const filename = `${offer.scenarioId}-product-description.pdf`;
       const documentId = `${offer.scenarioId}-product-description`;
-      const html = htmlFor(offer);
+      const html = buildRealEstateScenarioDocumentHtml(offer);
       assertPublicContentSafe(`${offer.scenarioId}: HTML`, html);
       const pdfRelative = path.join("input", offer.offerId, filename);
       const stagedPdf = stagedPath(stage, pdfRelative);
       await mkdir(path.dirname(stagedPdf), { recursive: true });
       const page = await browser.newPage();
       await page.setContent(html, { waitUntil: "load" });
-      await page.pdf({ path: stagedPdf, format: "A4", printBackground: true, margin: { top: "17mm", right: "15mm", bottom: "18mm", left: "15mm" } });
+      await page.pdf({
+        path: stagedPdf,
+        format: "A4",
+        printBackground: true,
+        preferCSSPageSize: true,
+        tagged: true,
+        outline: true,
+        margin: { top: "17mm", right: "15mm", bottom: "18mm", left: "15mm" },
+      });
       await page.close();
       const bytes = new Uint8Array(await readFile(stagedPdf));
       const parsed = await parsePdf(bytes);
@@ -434,13 +507,13 @@ export const generateRealEstateScenarioDocuments = async ({ workspaceRoot = defa
         localPath: `real-estate/${offer.offerId}/${filename}`,
         sourceHash,
         asOf: offer.asOf,
-        collectedAt: COLLECTED_AT,
+        collectedAt: generatedAt,
         dataNature: "scenario",
         rightsStatus: prior.manifest.rightsStatus,
         approvedForPublic: prior.manifest.approvedForPublic,
         limitations: prior.manifest.limitations,
       });
-      const { artifact, resolved } = await rebindDerivedProduct(offer, manifest, parsed, prior.envelope);
+      const { artifact, resolved } = await rebindDerivedProduct(offer, manifest, parsed, prior.envelope, generatedAt);
       for (const [scope, value] of [
         [`${offer.scenarioId}: manifest`, manifest],
         [`${offer.scenarioId}: parsed artifact`, artifact],

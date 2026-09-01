@@ -6,6 +6,7 @@ import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 
 import {
+  buildRealEstateScenarioDocumentHtml,
   commitStagedFiles,
   generateRealEstateScenarioDocuments,
   prepareRealEstateTransaction,
@@ -44,6 +45,31 @@ afterEach(async () => {
 });
 
 describe("real-estate PDF generator safety gates", () => {
+  it("renders an OpenDART-style logical hierarchy without inventing unavailable facts", async () => {
+    const offer = JSON.parse(await readFile(path.join(projectRoot, "data/scenarios/real-estate/re-scenario-01.json"), "utf8"));
+    const html = buildRealEstateScenarioDocumentHtml(offer);
+
+    expect(html).toContain("<title>서울스퀘어 시나리오 상품설명서</title>");
+    expect(html).toContain('role="document"');
+    expect(html).toContain('aria-label="문서 목차"');
+    expect(html).toContain('data-section-path="제1부 모집 또는 매출에 관한 사항"');
+    expect(html).toContain('data-section-path="I. 공모 개요"');
+    expect(html).toContain('data-section-path="1. 핵심 조건"');
+    expect(html).toContain("제2부 권리 및 공동사업 구조");
+    expect(html).toContain("제3부 기초자산 및 운영 구조");
+    expect(html).toContain("제4부 손익·분배·비용 및 세금");
+    expect(html).toContain("제5부 투자위험");
+    expect(html).toContain("제6부 매각·회수 및 완료 이력");
+    expect(html).toContain("제7부 출처·검증 상태 및 문서 한계");
+    expect(html).toContain("표 3-2. 데이터 성격별 사실 대조");
+    expect(html).toContain("외부 관찰값");
+    expect(html).toContain("시나리오 주장");
+    expect(html).toContain("미확인 값을 일반적인 시장 관행으로 보완하거나 추정하지 않습니다.");
+    expect(html).toContain("부록 A. 구조화 데이터 필드 사전");
+    expect(html).toContain("[offering.unitPriceWon]");
+    expect(html.match(/<figcaption>/g)?.length).toBeGreaterThanOrEqual(18);
+  });
+
   it.each([
     "api_key=fixture-only-value",
     "AKIA1234567890ABCDEF",
