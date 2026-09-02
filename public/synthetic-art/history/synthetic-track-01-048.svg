@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-01-048" data-record-index="47" data-seed="4503">
+<title>작은 흙언덕 — 씨앗 곁의 낮은 길 · Small Earth Rise / Low Path Beside a Seed</title>
+<rect x="0" y="0" width="800" height="1000" fill="#E4D1A6"/>
+<path d="M0 310 C112 244 208 334 282 454 C344 552 304 679 362 1000 L0 1000 Z" fill="#795548"/>
+<path d="M800 248 C688 214 606 316 539 426 C463 553 504 688 434 1000 L800 1000 Z" fill="#A97855"/>
+<path d="M0 574 C159 520 251 602 336 741 C374 803 372 886 401 1000 L0 1000 Z" fill="#3E2C24" opacity="0.72"/>
+<path d="M800 544 C660 524 566 631 486 753 C453 805 432 900 421 1000 L800 1000 Z" fill="#3E2C24" opacity="0.82"/>
+<path d="M398 1000 C424 910 469 824 487 726 C507 620 435 520 411 448 C391 388 416 346 454 304 C418 355 447 430 477 493 C528 598 513 672 478 770 C450 849 434 932 432 1000 Z" fill="#C7A77B" opacity="0.86"/>
+<polygon points="193,389 155,373 133,413 174,424" fill="#A97855" opacity="0.74"/>
+<polygon points="654,480 692,464 714,504 673,515" fill="#6A7B58" opacity="0.74"/>
+<polygon points="99,571 61,555 39,595 80,606" fill="#6A7B58" opacity="0.74"/>
+<polygon points="598,662 636,646 658,686 617,697" fill="#A97855" opacity="0.74"/>
+<polygon points="155,753 117,737 95,777 136,788" fill="#6A7B58" opacity="0.74"/>
+<polygon points="692,844 730,828 752,868 711,879" fill="#6A7B58" opacity="0.74"/>
+<polygon points="211,425 173,409 151,449 192,460" fill="#A97855" opacity="0.74"/>
+<circle cx="376" cy="266" r="10" fill="#6A7B58" opacity="0.82"/>
+<text x="66" y="953" fill="#795548" font-family="sans-serif" font-size="9" letter-spacing="3" opacity="0.34">SYNTHETIC</text>
+</svg>

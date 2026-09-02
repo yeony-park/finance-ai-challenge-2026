@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-02-021" data-record-index="194" data-seed="5910">
+<title>비늘그림자의 면 — 평평해진 밤의 조각 · Scaled Shadow Plane / Fragment of a Flattened Night</title>
+<rect x="0" y="0" width="800" height="1000" fill="#3A2D32"/>
+<polygon points="300,70 500,70 585,930 222,930" fill="#704C5E"/>
+<polygon points="262,75 540,75 550,123 460,273 400,295 340,273 250,123" fill="#3A2D32"/>
+<polygon points="250,65 540,65 550,123 456,265 400,287 344,265 250,123" fill="#9E6A7A" stroke="#687A8B" stroke-width="5"/>
+<polygon points="237,250 565,250 575,310 470,498 400,520 330,498 225,310" fill="#3A2D32"/>
+<polygon points="225,240 565,240 575,310 466,490 400,512 334,490 225,310" fill="#C8A2A8" stroke="#687A8B" stroke-width="5"/>
+<polygon points="257,475 545,475 555,528 462,693 400,715 338,693 245,528" fill="#3A2D32"/>
+<polygon points="245,465 545,465 555,528 458,685 400,707 342,685 245,528" fill="#EBD8C3" stroke="#687A8B" stroke-width="5"/>
+<polygon points="287,680 515,680 525,730 450,888 400,910 350,888 275,730" fill="#3A2D32"/>
+<polygon points="275,670 515,670 525,730 446,880 400,902 354,880 275,730" fill="#687A8B" stroke="#687A8B" stroke-width="5"/>
+<polygon points="58,90 142,185 110,420 45,345" fill="#EBD8C3"/>
+<polygon points="655,620 760,540 800,660 731,795" fill="#C8A2A8"/>
+<text x="750" y="955" text-anchor="end" fill="#EBD8C3" opacity="0.32" font-family="sans-serif" font-size="12" letter-spacing="4">SYNTHETIC</text>
+</svg>

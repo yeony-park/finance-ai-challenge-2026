@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Jangyeolsup Aven | 온기 윤곽 드로잉" data-record-id="synthetic-track-01-140" data-seed="5404" data-index="139">
+<title>온기의 윤곽 — 살며시 열린 가장자리 · Warm Contour / Edge Opened Softly</title>
+<rect x="0" y="0" width="800" height="1000" fill="#F0D9B5"/>
+<path d="M0 0 C145 72 182 183 115 281 C61 359 68 432 0 480" fill="none" stroke="#5E8064" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M0 47 C104 115 127 188 79 260 C41 316 44 391 0 426" fill="none" stroke="#B86F52" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M800 0 C653 74 618 176 680 277 C732 359 726 427 800 482" fill="none" stroke="#4A2C2A" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M800 60 C702 120 681 187 720 260 C756 326 750 392 800 431" fill="none" stroke="#D9A441" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M0 1000 C133 921 185 834 126 746 C72 668 76 578 0 522" fill="none" stroke="#4A2C2A" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M800 1000 C667 926 617 839 678 750 C724 683 725 592 800 528" fill="none" stroke="#5E8064" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="402" cy="500" rx="80" ry="121" fill="#F0D9B5" stroke="#7A4E48" stroke-width="5"/>
+<circle cx="402" cy="500" r="24" fill="#D9A441"/>
+<text x="22" y="978" fill="#F0D9B5" font-family="sans-serif" font-size="8" letter-spacing="2">SYNTHETIC</text>
+</svg>

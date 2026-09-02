@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-02-047" data-record-index="220" data-seed="6203">
+<title>눈금 없는 지도 — 방향을 잊은 붓질 · Unscaled Map / Brushwork That Forgot Direction</title>
+<rect x="0" y="0" width="800" height="1000" fill="#202C39"/>
+<path d="M108 0C180 112 151 205 218 291C287 380 260 473 337 554C416 637 368 748 457 814C512 854 532 925 550 1000H85C103 918 124 855 105 768C82 666 173 606 129 506C89 415 147 326 105 247C71 183 97 84 108 0Z" fill="#5C7C89" stroke="#E6D5B8" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M505 0C462 128 574 203 521 328C475 439 570 519 518 657C483 748 594 818 639 1000H800V0Z" fill="#A6B8A1" stroke="#C66B3D" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M332 0C388 135 280 225 359 353C414 443 339 532 420 654C472 734 420 853 465 1000" fill="none" stroke="#C66B3D" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M210 140C155 235 260 319 200 403C145 480 240 576 190 675" fill="none" stroke="#364F6B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+<path d="M285 140C230 235 335 319 275 403C220 480 315 576 265 675" fill="none" stroke="#364F6B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+<path d="M430 140C375 235 480 319 420 403C365 480 460 576 410 675" fill="none" stroke="#364F6B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+<path d="M560 140C505 235 610 319 550 403C495 480 590 576 540 675" fill="none" stroke="#364F6B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+<text x="748" y="955" text-anchor="end" fill="#E6D5B8" opacity="0.32" font-family="sans-serif" font-size="12" letter-spacing="4">SYNTHETIC</text>
+</svg>

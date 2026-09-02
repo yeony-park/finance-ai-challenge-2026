@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-02-069" data-record-index="242" data-seed="6407">
+<title>작은불씨의 면 — 불씨가 눌러 둔 결 · Little Ember Plane / Grain Pressed by an Ember</title>
+<rect x="0" y="0" width="800" height="1000" fill="#261C15"/>
+<rect x="72" y="80" width="656" height="840" fill="#4E342E" stroke="#DDB892" stroke-width="6"/>
+<polygon points="110,165 292,106 474,193 667,133 688,336 535,450 617,645 440,836 246,748 111,577 192,389" fill="#8D6E63" stroke="#261C15" stroke-width="12"/>
+<polygon points="292,106 354,357 192,389 110,165" fill="#BC8A5F" stroke="#F3E9D2" stroke-width="5"/>
+<polygon points="354,357 535,450 440,836 246,748" fill="#DDB892" stroke="#261C15" stroke-width="7"/>
+<polygon points="535,450 667,133 688,336 617,645" fill="#F3E9D2" stroke="#8D6E63" stroke-width="6"/>
+<line x1="354" y1="357" x2="535" y2="450" stroke="#261C15" stroke-width="10" stroke-linecap="round"/>
+<line x1="354" y1="357" x2="440" y2="836" stroke="#261C15" stroke-width="7" stroke-linecap="round"/>
+<text x="748" y="955" text-anchor="end" fill="#DDB892" opacity="0.32" font-family="sans-serif" font-size="12" letter-spacing="4">SYNTHETIC</text>
+</svg>

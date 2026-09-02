@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Jangyeolsup Aven | 온기 윤곽 드로잉" data-record-id="synthetic-track-01-138" data-seed="5402" data-index="137">
+<title>온기의 윤곽 — 손등을 닮은 윤곽 · Warm Contour / Contour Resembling a Hand</title>
+<rect x="0" y="0" width="800" height="1000" fill="#F0D9B5"/>
+<path d="M-30 222 C78 157 182 158 283 221 C379 281 492 278 590 213 C675 157 748 173 836 235" fill="none" stroke="#4A2C2A" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M-30 259 C81 206 178 208 274 263 C381 324 488 319 593 251 C690 190 759 213 836 269" fill="none" stroke="#5E8064" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M-20 667 C90 599 196 615 295 678 C389 738 488 745 581 675 C685 596 757 617 830 692" fill="none" stroke="#B86F52" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M-20 712 C89 653 190 669 286 727 C395 792 496 797 598 724 C687 660 758 676 830 724" fill="none" stroke="#D9A441" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="585" cy="465" rx="93" ry="93" fill="#B86F52" opacity=".86"/>
+<ellipse cx="585" cy="465" rx="57" ry="57" fill="none" stroke="#D9A441" stroke-width="8"/>
+<circle cx="585" cy="465" r="15" fill="#4A2C2A"/>
+<line x1="92" y1="466" x2="454" y2="466" stroke="#7A4E48" stroke-width="3"/>
+<text x="22" y="978" fill="#F0D9B5" font-family="sans-serif" font-size="8" letter-spacing="2">SYNTHETIC</text>
+</svg>

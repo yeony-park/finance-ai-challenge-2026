@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="물비늘 — 새벽 격자 명상" data-record-id="synthetic-track-01-091" data-index="90" data-seed="4905">
+<title>새벽 칸의 숨 — 잔잔한 선 사이 · Breath Between Dawn / Between Still Lines</title>
+<rect x="0" y="0" width="800" height="1000" fill="#E9E0C9"/>
+<rect x="250" y="322" width="300" height="300" fill="none" stroke="#243447" stroke-width="3"/>
+<line x1="350" y1="322" x2="350" y2="622" stroke="#243447" stroke-width="3"/>
+<line x1="450" y1="322" x2="450" y2="622" stroke="#243447" stroke-width="3"/>
+<line x1="250" y1="422" x2="550" y2="422" stroke="#243447" stroke-width="3"/>
+<line x1="250" y1="522" x2="550" y2="522" stroke="#243447" stroke-width="3"/>
+<rect x="250" y="322" width="100" height="100" fill="#3F6C7D"/>
+<rect x="350" y="422" width="100" height="100" fill="#D38B67"/>
+<rect x="450" y="522" width="100" height="100" fill="#7199A0"/>
+<rect x="450" y="322" width="100" height="100" fill="#BBD1C8"/>
+<circle cx="400" cy="472" r="27" fill="#E9E0C9" stroke="#D38B67" stroke-width="4"/>
+<line x1="296" y1="677" x2="503" y2="677" stroke="#243447" stroke-width="2"/>
+<line x1="400" y1="690" x2="400" y2="825" stroke="#3F6C7D" stroke-width="3"/>
+<text x="34" y="968" fill="#D38B67" font-family="sans-serif" font-size="11" letter-spacing="3">SYNTHETIC</text>
+</svg>

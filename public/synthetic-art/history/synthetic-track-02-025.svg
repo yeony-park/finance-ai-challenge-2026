@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-02-025" data-record-index="198" data-seed="6003">
+<title>사잇결의 겹 — 겹 너머의 맑은 선 · Between-Grain Overlap / Clear Line Beyond the Layers</title>
+<rect x="0" y="0" width="800" height="1000" fill="#1F2933"/>
+<ellipse cx="145" cy="170" rx="118" ry="150" fill="#7B8794" stroke="#F0EBD8" stroke-width="4" opacity="0.4" transform="rotate(-18 145 170)"/>
+<ellipse cx="145" cy="170" rx="84" ry="98" fill="#9FB3C8" stroke="#C98276" stroke-width="3" opacity="0.32" transform="rotate(-18 145 170)"/>
+<ellipse cx="655" cy="205" rx="95" ry="214" fill="#9FB3C8" stroke="#F0EBD8" stroke-width="4" opacity="0.4" transform="rotate(21 655 205)"/>
+<ellipse cx="655" cy="205" rx="61" ry="162" fill="#F0EBD8" stroke="#C98276" stroke-width="3" opacity="0.32" transform="rotate(21 655 205)"/>
+<ellipse cx="208" cy="804" rx="180" ry="110" fill="#F0EBD8" stroke="#F0EBD8" stroke-width="4" opacity="0.4" transform="rotate(12 208 804)"/>
+<ellipse cx="208" cy="804" rx="146" ry="58" fill="#9FB3C8" stroke="#C98276" stroke-width="3" opacity="0.32" transform="rotate(12 208 804)"/>
+<ellipse cx="675" cy="785" rx="120" ry="155" fill="#7B8794" stroke="#F0EBD8" stroke-width="4" opacity="0.4" transform="rotate(-28 675 785)"/>
+<ellipse cx="675" cy="785" rx="86" ry="103" fill="#F0EBD8" stroke="#C98276" stroke-width="3" opacity="0.32" transform="rotate(-28 675 785)"/>
+<line x1="285" y1="510" x2="514" y2="510" stroke="#C98276" stroke-width="3" stroke-linecap="round" opacity="0.34"/>
+<line x1="400" y1="275" x2="400" y2="740" stroke="#F0EBD8" stroke-width="2" stroke-linecap="round" opacity="0.3"/>
+<text x="735" y="952" text-anchor="end" fill="#F0EBD8" opacity="0.32" font-family="sans-serif" font-size="12" letter-spacing="4">SYNTHETIC</text>
+</svg>

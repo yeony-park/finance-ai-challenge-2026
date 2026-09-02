@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-01-020" data-record-index="19" data-seed="4208">
+<title>잔물결의 방 — 흐르는 색의 가장자리 · Rill Room / Edge of a Flowing Color</title>
+<rect x="0" y="0" width="800" height="1000" fill="#312E4A"/>
+<g transform="rotate(180 400 500)">
+<path d="M0 -162 C170 -72 310 -252 480 -132 C620 -82 710 -174 800 -122 L800 -12 C650 -82 566 18 420 -50 C260 -132 124 18 0 -60 Z" fill="#5B4E78" opacity="0.4"/>
+<path d="M0 -30 C170 94 310 -154 480 0 C620 50 710 -42 800 10 L800 120 C650 50 566 150 420 82 C260 0 124 150 0 72 Z" fill="#8C79A8" opacity="0.46"/>
+<path d="M0 102 C170 260 310 -56 480 132 C620 182 710 90 800 142 L800 252 C650 182 566 282 420 214 C260 132 124 282 0 204 Z" fill="#D6B3A6" opacity="0.52"/>
+<path d="M0 234 C170 324 310 144 480 264 C620 314 710 222 800 274 L800 384 C650 314 566 414 420 346 C260 264 124 414 0 336 Z" fill="#F0D8B8" opacity="0.58"/>
+<ellipse cx="384" cy="434" rx="102" ry="231" fill="#F0D8B8" opacity="0.55"/>
+<ellipse cx="370" cy="443" rx="72" ry="98" fill="#8EA6A8" opacity="0.66"/>
+<circle cx="358" cy="264" r="5" fill="#F0D8B8" opacity="0.72"/>
+<circle cx="455" cy="385" r="9" fill="#F0D8B8" opacity="0.72"/>
+<circle cx="552" cy="506" r="13" fill="#F0D8B8" opacity="0.72"/>
+<text x="690" y="952" fill="#D6B3A6" font-family="sans-serif" font-size="9" letter-spacing="3" text-anchor="end" opacity="0.34">SYNTHETIC</text>
+</g>
+</svg>

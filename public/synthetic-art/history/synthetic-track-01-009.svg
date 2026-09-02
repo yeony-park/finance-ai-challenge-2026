@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-01-009" data-record-index="8" data-seed="4109">
+<title>맑은 격자 — 수평선 없는 창 · Clear Lattice / Window Without a Horizon</title>
+<rect x="0" y="0" width="800" height="1000" fill="#1E2A3A"/>
+<g transform="rotate(90 400 500)">
+<rect x="58" y="76" width="286" height="812" fill="#38566B" opacity="0.72"/>
+<rect x="322" y="132" width="214" height="650" fill="#6D8A99" opacity="0.52"/>
+<rect x="508" y="214" width="184" height="502" fill="#B8C4C0" opacity="0.48"/>
+<rect x="110" y="504" width="204" height="164" fill="#E6D7C4" opacity="0.34"/>
+<line x1="84" y1="94" x2="166" y2="876" stroke="#B8C4C0" stroke-width="2" stroke-opacity="0.34"/>
+<line x1="147" y1="94" x2="229" y2="876" stroke="#B8C4C0" stroke-width="3" stroke-opacity="0.38"/>
+<line x1="210" y1="94" x2="292" y2="876" stroke="#B8C4C0" stroke-width="2" stroke-opacity="0.42"/>
+<line x1="273" y1="94" x2="355" y2="876" stroke="#B8C4C0" stroke-width="3" stroke-opacity="0.34"/>
+<line x1="336" y1="94" x2="418" y2="876" stroke="#B8C4C0" stroke-width="2" stroke-opacity="0.38"/>
+<line x1="399" y1="94" x2="481" y2="876" stroke="#B8C4C0" stroke-width="3" stroke-opacity="0.42"/>
+<line x1="462" y1="94" x2="544" y2="876" stroke="#B8C4C0" stroke-width="2" stroke-opacity="0.34"/>
+<line x1="48" y1="140" x2="694" y2="158" stroke="#E6D7C4" stroke-width="2" stroke-opacity="0.5"/>
+<line x1="48" y1="226" x2="694" y2="244" stroke="#E6D7C4" stroke-width="2" stroke-opacity="0.5"/>
+<line x1="48" y1="312" x2="694" y2="330" stroke="#E6D7C4" stroke-width="2" stroke-opacity="0.5"/>
+<line x1="48" y1="398" x2="694" y2="416" stroke="#E6D7C4" stroke-width="2" stroke-opacity="0.5"/>
+<line x1="48" y1="484" x2="694" y2="502" stroke="#E6D7C4" stroke-width="2" stroke-opacity="0.5"/>
+<line x1="48" y1="570" x2="694" y2="588" stroke="#E6D7C4" stroke-width="2" stroke-opacity="0.5"/>
+<line x1="48" y1="656" x2="694" y2="674" stroke="#E6D7C4" stroke-width="2" stroke-opacity="0.5"/>
+<line x1="48" y1="742" x2="694" y2="760" stroke="#E6D7C4" stroke-width="2" stroke-opacity="0.5"/>
+<rect x="251" y="270" width="184" height="244" fill="#1E2A3A" opacity="0.66"/>
+<rect x="269" y="288" width="148" height="206" fill="none" stroke="#E6D7C4" stroke-width="3" stroke-opacity="0.68"/>
+<line x1="269" y1="392" x2="417" y2="392" stroke="#B8C4C0" stroke-width="2"/>
+<text x="70" y="955" fill="#E6D7C4" font-family="sans-serif" font-size="9" letter-spacing="3" opacity="0.3">SYNTHETIC</text>
+</g>
+</svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-02-053" data-record-index="226" data-seed="6209">
+<title>눈금 없는 지도 — 흘러가는 경계의 기록 · Unscaled Map / Record of a Drifting Boundary</title>
+<rect x="0" y="0" width="800" height="1000" fill="#202C39"/>
+<path d="M0 0H800V1000H0Z" fill="#364F6B"/>
+<path d="M101 84C223 23 361 82 394 192C423 289 537 287 606 369C675 451 602 540 661 642C711 731 647 842 543 864C452 883 406 805 325 835C232 870 148 801 169 715C191 621 99 562 124 470C148 385 82 298 111 223C121 166 147 126 101 84Z" fill="#5C7C89" stroke="#E6D5B8" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M184 161C273 108 348 165 349 244C350 326 443 341 499 397C547 448 494 507 528 583C560 655 505 742 431 736C356 728 323 678 263 696C205 714 189 651 217 596C249 535 185 486 206 426C236 339 164 276 184 161Z" fill="#A6B8A1" stroke="#C66B3D" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M270 259C325 217 360 271 347 324C331 387 395 416 424 461C447 500 406 557 362 546C319 534 303 500 272 512" fill="none" stroke="#C66B3D" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="748" y="955" text-anchor="end" fill="#E6D5B8" opacity="0.32" font-family="sans-serif" font-size="12" letter-spacing="4">SYNTHETIC</text>
+</svg>

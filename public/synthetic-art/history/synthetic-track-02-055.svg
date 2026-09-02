@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-02-055" data-record-index="228" data-seed="6302">
+<title>새벽물의 흐름 — 흐르는 수면의 안쪽 · Dawnwater Flow / Inside a Flowing Surface</title>
+<rect x="0" y="0" width="800" height="1000" fill="#0B132B"/>
+<path d="M120 -20C35 120 192 200 120 326C32 460 196 544 120 680C48 801 172 900 102 1020L218 1020C190 876 270 786 199 657C124 519 263 426 203 286C142 151 252 94 232 -20Z" fill="#1C2541" stroke="#CDE8E5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M270 -20C185 120 342 200 270 326C182 460 346 544 270 680C198 801 322 900 252 1020L368 1020C340 876 420 786 349 657C274 519 413 426 353 286C292 151 402 94 382 -20Z" fill="#3A506B" stroke="#CDE8E5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M425 -20C340 120 497 200 425 326C337 460 501 544 425 680C353 801 477 900 407 1020L523 1020C495 876 575 786 504 657C429 519 568 426 508 286C447 151 557 94 537 -20Z" fill="#5BC0BE" stroke="#CDE8E5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M590 -20C505 120 662 200 590 326C502 460 666 544 590 680C518 801 642 900 572 1020L688 1020C660 876 740 786 669 657C594 519 733 426 673 286C612 151 722 94 702 -20Z" fill="#CDE8E5" stroke="#CDE8E5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M740 -20C655 120 812 200 740 326C652 460 816 544 740 680C668 801 792 900 722 1020L838 1020C810 876 890 786 819 657C744 519 883 426 823 286C762 151 872 94 852 -20Z" fill="#1C2541" stroke="#CDE8E5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="400" cy="510" r="54" fill="#F4D35E"/>
+<circle cx="400" cy="510" r="21" fill="#5BC0BE"/>
+<text x="748" y="955" text-anchor="end" fill="#CDE8E5" opacity="0.32" font-family="sans-serif" font-size="12" letter-spacing="4">SYNTHETIC</text>
+</svg>

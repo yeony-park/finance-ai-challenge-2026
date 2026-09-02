@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-label="Original synthetic abstract artwork 02" data-seed="synthetic-artwork-02">
+  <defs>
+    <linearGradient id="gradient-synthetic-artwork-02" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="hsl(328,70%,23%)"/>
+      <stop offset="0.5" stop-color="hsl(83,73%,46%)"/>
+      <stop offset="1" stop-color="hsl(227,70%,74%)"/>
+    </linearGradient>
+    <filter id="grain-synthetic-artwork-02"><feTurbulence type="fractalNoise" baseFrequency="0.72" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0.2"/><feComponentTransfer><feFuncA type="table" tableValues="0 0.14"/></feComponentTransfer></filter>
+  </defs>
+  <rect width="800" height="800" fill="url(#gradient-synthetic-artwork-02)"/>
+  <circle cx="248" cy="265" r="264" fill="hsla(83,90%,85%,0.20)"/>
+  <polygon points="51,120 468,765 99,510 180,342 37,768 225,54 570,549 264,34 702,234" fill="hsla(227,78%,30%,0.38)" stroke="hsla(328,90%,92%,0.72)" stroke-width="8"/>
+  <rect x="476" y="510" width="77" height="87" rx="12" transform="rotate(10 514 553)" fill="hsla(227,78%,68%,0.34)"/><rect x="161" y="325" width="216" height="92" rx="15" transform="rotate(-5 269 371)" fill="hsla(244,78%,68%,0.34)"/><rect x="175" y="185" width="93" height="100" rx="18" transform="rotate(9 221 235)" fill="hsla(261,78%,68%,0.34)"/><rect x="153" y="400" width="120" height="26" rx="21" transform="rotate(11 213 413)" fill="hsla(278,78%,68%,0.34)"/><rect x="682" y="435" width="139" height="52" rx="24" transform="rotate(-17 751 461)" fill="hsla(295,78%,68%,0.34)"/>
+  <path d="M70 258 C220 244, 450 570, 730 465" fill="none" stroke="hsla(328,98%,95%,0.68)" stroke-width="11"/>
+  <rect width="800" height="800" filter="url(#grain-synthetic-artwork-02)" opacity="0.7"/>
+</svg>

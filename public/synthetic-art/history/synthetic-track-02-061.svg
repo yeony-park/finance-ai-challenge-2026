@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-02-061" data-record-index="234" data-seed="6308">
+<title>새벽물의 흐름 — 천천히 풀리는 물빛 · Dawnwater Flow / Water Light Slowly Unfurling</title>
+<rect x="0" y="0" width="800" height="1000" fill="#0B132B"/>
+<path d="M-30 210C151 120 239 276 350 376C463 477 583 502 830 352V625C639 730 485 668 359 565C239 466 136 391 -30 493Z" fill="#1C2541" stroke="#CDE8E5" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M-20 450C130 384 227 500 344 596C467 698 594 742 820 604V793C630 868 480 795 352 696C242 610 130 540 -20 612Z" fill="#3A506B" stroke="#F4D35E" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M90 854C221 784 329 896 440 860C559 821 668 897 768 850" fill="none" stroke="#5BC0BE" stroke-width="19" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="670" cy="170" rx="72" ry="32" fill="#F4D35E" opacity="0.9" transform="rotate(-18 670 170)"/>
+<text x="748" y="955" text-anchor="end" fill="#CDE8E5" opacity="0.32" font-family="sans-serif" font-size="12" letter-spacing="4">SYNTHETIC</text>
+</svg>

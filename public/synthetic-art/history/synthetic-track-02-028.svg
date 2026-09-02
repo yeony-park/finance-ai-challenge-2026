@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-02-028" data-record-index="201" data-seed="6006">
+<title>사잇결의 겹 — 겹침이 만든 새벽 · Between-Grain Overlap / Dawn Made by Overlap</title>
+<rect x="0" y="0" width="800" height="1000" fill="#1F2933"/>
+<ellipse cx="403" cy="500" rx="112" ry="415" fill="#7B8794" stroke="#F0EBD8" stroke-width="5" opacity="0.25" transform="rotate(-7 403 500)"/>
+<ellipse cx="430" cy="500" rx="82" ry="360" fill="#9FB3C8" stroke="#C98276" stroke-width="4" opacity="0.3" transform="rotate(11 430 500)"/>
+<ellipse cx="455" cy="500" rx="53" ry="295" fill="#F0EBD8" stroke="#7B8794" stroke-width="3" opacity="0.44" transform="rotate(-4 455 500)"/>
+<line x1="360" y1="260" x2="530" y2="280" stroke="#C98276" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+<line x1="360" y1="390" x2="530" y2="410" stroke="#C98276" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+<line x1="360" y1="520" x2="530" y2="540" stroke="#C98276" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+<line x1="360" y1="650" x2="530" y2="670" stroke="#C98276" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+<line x1="360" y1="780" x2="530" y2="800" stroke="#C98276" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+<text x="735" y="952" text-anchor="end" fill="#F0EBD8" opacity="0.32" font-family="sans-serif" font-size="12" letter-spacing="4">SYNTHETIC</text>
+</svg>

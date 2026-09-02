@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-02-059" data-record-index="232" data-seed="6306">
+<title>새벽물의 흐름 — 유동하는 빛의 틈 · Dawnwater Flow / Gap in Moving Light</title>
+<rect x="0" y="0" width="800" height="1000" fill="#0B132B"/>
+<path d="M0 657C123 548 220 591 309 666C395 739 468 735 541 646C614 557 694 562 800 636V1000H0Z" fill="#1C2541" stroke="#CDE8E5" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M0 755C113 657 205 697 290 764C390 843 483 815 574 731C662 652 733 696 800 738V1000H0Z" fill="#3A506B" stroke="#F4D35E" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="126" cy="218" rx="36" ry="75" fill="#5BC0BE" stroke="#CDE8E5" stroke-width="3" opacity="0.83" transform="rotate(-20 126 218)"/>
+<ellipse cx="295" cy="340" rx="22" ry="51" fill="#CDE8E5" stroke="#CDE8E5" stroke-width="3" opacity="0.83" transform="rotate(-6 295 340)"/>
+<ellipse cx="518" cy="170" rx="50" ry="95" fill="#F4D35E" stroke="#CDE8E5" stroke-width="3" opacity="0.83" transform="rotate(8 518 170)"/>
+<ellipse cx="688" cy="420" rx="25" ry="56" fill="#5BC0BE" stroke="#CDE8E5" stroke-width="3" opacity="0.83" transform="rotate(22 688 420)"/>
+<ellipse cx="382" cy="125" rx="12" ry="25" fill="#CDE8E5" stroke="#CDE8E5" stroke-width="3" opacity="0.83" transform="rotate(36 382 125)"/>
+<circle cx="400" cy="535" r="26" fill="#F4D35E"/>
+<text x="748" y="955" text-anchor="end" fill="#CDE8E5" opacity="0.32" font-family="sans-serif" font-size="12" letter-spacing="4">SYNTHETIC</text>
+</svg>

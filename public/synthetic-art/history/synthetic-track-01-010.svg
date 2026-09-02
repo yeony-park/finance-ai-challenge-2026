@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-01-010" data-record-index="9" data-seed="4110">
+<title>맑은 격자 — 결 사이의 여백 · Clear Lattice / Margin Between Grains</title>
+<rect x="0" y="0" width="800" height="1000" fill="#1E2A3A"/>
+<g transform="rotate(90 400 500)">
+<polygon points="0,142 172,52 760,346 800,414 800,552 670,502 82,242 0,278" fill="#38566B" opacity="0.65"/>
+<polygon points="0,364 92,328 800,732 800,874 690,824 0,492" fill="#6D8A99" opacity="0.46"/>
+<polygon points="174,0 244,0 800,436 800,512 736,482" fill="#B8C4C0" opacity="0.38"/>
+<line x1="98" y1="64" x2="494" y2="490" stroke="#E6D7C4" stroke-width="2" stroke-opacity="0.28"/>
+<line x1="189" y1="64" x2="585" y2="490" stroke="#E6D7C4" stroke-width="2" stroke-opacity="0.33"/>
+<line x1="280" y1="64" x2="676" y2="490" stroke="#E6D7C4" stroke-width="2" stroke-opacity="0.37"/>
+<line x1="371" y1="64" x2="767" y2="490" stroke="#E6D7C4" stroke-width="2" stroke-opacity="0.42"/>
+<line x1="462" y1="64" x2="858" y2="490" stroke="#E6D7C4" stroke-width="2" stroke-opacity="0.28"/>
+<line x1="553" y1="64" x2="949" y2="490" stroke="#E6D7C4" stroke-width="2" stroke-opacity="0.33"/>
+<line x1="644" y1="64" x2="1040" y2="490" stroke="#E6D7C4" stroke-width="2" stroke-opacity="0.37"/>
+<line x1="735" y1="64" x2="1131" y2="490" stroke="#E6D7C4" stroke-width="2" stroke-opacity="0.42"/>
+<line x1="38" y1="598" x2="694" y2="618" stroke="#B8C4C0" stroke-width="2" stroke-opacity="0.46"/>
+<line x1="38" y1="665" x2="694" y2="685" stroke="#B8C4C0" stroke-width="2" stroke-opacity="0.46"/>
+<line x1="38" y1="732" x2="694" y2="752" stroke="#B8C4C0" stroke-width="2" stroke-opacity="0.46"/>
+<line x1="38" y1="799" x2="694" y2="819" stroke="#B8C4C0" stroke-width="2" stroke-opacity="0.46"/>
+<line x1="38" y1="866" x2="694" y2="886" stroke="#B8C4C0" stroke-width="2" stroke-opacity="0.46"/>
+<rect x="256" y="410" width="202" height="184" fill="#1E2A3A" opacity="0.78"/>
+<rect x="279" y="431" width="156" height="142" fill="none" stroke="#E6D7C4" stroke-width="4" stroke-opacity="0.62"/>
+<line x1="279" y1="502" x2="435" y2="502" stroke="#38566B" stroke-width="2"/>
+<text x="70" y="955" fill="#E6D7C4" font-family="sans-serif" font-size="9" letter-spacing="3" opacity="0.3">SYNTHETIC</text>
+</g>
+</svg>

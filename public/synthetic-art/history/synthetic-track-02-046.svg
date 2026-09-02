@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-02-046" data-record-index="219" data-seed="6202">
+<title>눈금 없는 지도 — 경계 밖으로 번진 지도 · Unscaled Map / Map Spreading Beyond Its Edge</title>
+<rect x="0" y="0" width="800" height="1000" fill="#202C39"/>
+<path d="M100 180C135 106 239 112 265 184C282 242 237 302 167 291C99 281 73 233 100 180Z" fill="#5C7C89" stroke="#E6D5B8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M120 220C180 185 210 255 275 230" fill="none" stroke="#364F6B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.72"/>
+<path d="M370 158C426 93 515 120 529 197C541 263 475 292 421 264C367 236 341 194 370 158Z" fill="#A6B8A1" stroke="#C66B3D" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M215 325C250 290 300 360 370 335" fill="none" stroke="#364F6B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.72"/>
+<path d="M604 320C664 261 749 294 754 366C760 440 700 473 644 448C589 422 566 359 604 320Z" fill="#E6D5B8" stroke="#E6D5B8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M310 430C320 395 390 465 465 440" fill="none" stroke="#364F6B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.72"/>
+<path d="M218 570C271 514 354 539 370 610C388 689 318 731 255 699C192 667 180 610 218 570Z" fill="#C66B3D" stroke="#C66B3D" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M405 535C390 500 480 570 560 545" fill="none" stroke="#364F6B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.72"/>
+<path d="M521 728C560 678 640 694 652 756C664 821 612 870 549 851C491 832 488 773 521 728Z" fill="#5C7C89" stroke="#E6D5B8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M500 640C460 605 570 675 655 650" fill="none" stroke="#364F6B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.72"/>
+<text x="748" y="955" text-anchor="end" fill="#E6D5B8" opacity="0.32" font-family="sans-serif" font-size="12" letter-spacing="4">SYNTHETIC</text>
+</svg>

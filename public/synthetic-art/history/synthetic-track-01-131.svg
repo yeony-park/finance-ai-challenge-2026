@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Byeolmuni Eno | 구름잠 청색 추상" data-record-id="synthetic-track-01-131" data-seed="5305" data-index="130">
+<title>구름잠의 파랑 — 잠든 구름의 가장자리 · Cloudsleep Blue / Edge of a Sleeping Cloud</title>
+<rect x="0" y="0" width="800" height="1000" fill="#D9E2EC"/>
+<path d="M-60 85 C121 128 184 275 310 340 C434 404 541 357 865 107 L865 243 C589 467 452 490 300 409 C162 335 68 199 -60 222Z" fill="#486581"/>
+<path d="M-50 482 C133 444 215 544 340 623 C465 702 615 683 855 511 L855 640 C629 802 467 828 318 732 C181 644 94 553 -50 621Z" fill="#829AB1"/>
+<path d="M12 886 C183 818 291 850 413 900 C532 949 631 925 804 823" fill="none" stroke="#D9E2EC" stroke-width="15" stroke-linecap="round"/>
+<ellipse cx="150" cy="338" rx="55" ry="38" fill="#243B53"/>
+<ellipse cx="154" cy="331" rx="30" ry="17" fill="#D9E2EC"/>
+<circle cx="672" cy="752" r="33" fill="#D6B370"/>
+<circle cx="672" cy="752" r="11" fill="#D9E2EC"/>
+<line x1="448" y1="98" x2="400" y2="838" stroke="#102A43" stroke-width="3"/>
+<text x="22" y="978" fill="#D9E2EC" font-family="sans-serif" font-size="8" letter-spacing="2">SYNTHETIC</text>
+</svg>

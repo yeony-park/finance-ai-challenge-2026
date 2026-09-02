@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-01-021" data-record-index="20" data-seed="4209">
+<title>잔물결의 방 — 비늘처럼 번진 하늘 · Rill Room / Sky Spreading Like Scales</title>
+<rect x="0" y="0" width="800" height="1000" fill="#312E4A"/>
+<g transform="rotate(90 400 500)">
+<path d="M0 167 C130 95 220 239 350 167 C490 95 640 239 800 163 L800 271 C660 349 520 225 390 287 C250 349 110 225 0 291 Z" fill="#5B4E78" opacity="0.48"/>
+<path d="M0 287 C130 205 220 369 350 287 C490 205 640 369 800 283 L800 391 C660 479 520 335 390 407 C250 479 110 335 0 411 Z" fill="#8C79A8" opacity="0.54"/>
+<path d="M0 407 C130 315 220 499 350 407 C490 315 640 499 800 403 L800 511 C660 609 520 445 390 527 C250 609 110 445 0 531 Z" fill="#D6B3A6" opacity="0.6"/>
+<path d="M0 527 C130 455 220 599 350 527 C490 455 640 599 800 523 L800 631 C660 709 520 585 390 647 C250 709 110 585 0 651 Z" fill="#F0D8B8" opacity="0.66"/>
+<path d="M0 647 C130 565 220 729 350 647 C490 565 640 729 800 643 L800 751 C660 839 520 695 390 767 C250 839 110 695 0 771 Z" fill="#8EA6A8" opacity="0.48"/>
+<path d="M0 767 C130 675 220 859 350 767 C490 675 640 859 800 763 L800 871 C660 969 520 805 390 887 C250 969 110 805 0 891 Z" fill="#5B4E78" opacity="0.54"/>
+<ellipse cx="508" cy="407" rx="166" ry="128" fill="#F0D8B8" opacity="0.42"/>
+<ellipse cx="523" cy="399" rx="93" ry="42" fill="#8C79A8" opacity="0.42"/>
+<ellipse cx="536" cy="394" rx="47" ry="23" fill="#8EA6A8" opacity="0.72"/>
+<path d="M408 512 C470 493 553 533 634 512" fill="none" stroke="#D6B3A6" stroke-width="3" stroke-opacity="0.55" stroke-linecap="round"/>
+<path d="M395 544 C457 525 540 565 621 544" fill="none" stroke="#D6B3A6" stroke-width="3" stroke-opacity="0.55" stroke-linecap="round"/>
+<path d="M382 576 C444 557 527 597 608 576" fill="none" stroke="#D6B3A6" stroke-width="3" stroke-opacity="0.55" stroke-linecap="round"/>
+<text x="690" y="952" fill="#D6B3A6" font-family="sans-serif" font-size="9" letter-spacing="3" text-anchor="end" opacity="0.34">SYNTHETIC</text>
+</g>
+</svg>

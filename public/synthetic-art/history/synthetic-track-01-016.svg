@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-01-016" data-record-index="15" data-seed="4204">
+<title>잔물결의 방 — 잔물결을 닮은 벽 · Rill Room / Wall Resembling a Small Ripple</title>
+<rect x="0" y="0" width="800" height="1000" fill="#312E4A"/>
+<path d="M0 -171 C170 -81 310 -261 480 -141 C620 -91 710 -183 800 -131 L800 -21 C650 -91 566 9 420 -59 C260 -141 124 9 0 -69 Z" fill="#5B4E78" opacity="0.4"/>
+<path d="M0 -39 C170 85 310 -163 480 -9 C620 41 710 -51 800 1 L800 111 C650 41 566 141 420 73 C260 -9 124 141 0 63 Z" fill="#8C79A8" opacity="0.46"/>
+<path d="M0 93 C170 251 310 -65 480 123 C620 173 710 81 800 133 L800 243 C650 173 566 273 420 205 C260 123 124 273 0 195 Z" fill="#D6B3A6" opacity="0.52"/>
+<path d="M0 225 C170 315 310 135 480 255 C620 305 710 213 800 265 L800 375 C650 305 566 405 420 337 C260 255 124 405 0 327 Z" fill="#F0D8B8" opacity="0.58"/>
+<path d="M0 357 C170 481 310 233 480 387 C620 437 710 345 800 397 L800 507 C650 437 566 537 420 469 C260 387 124 537 0 459 Z" fill="#8EA6A8" opacity="0.4"/>
+<path d="M0 489 C170 647 310 331 480 519 C620 569 710 477 800 529 L800 639 C650 569 566 669 420 601 C260 519 124 669 0 591 Z" fill="#5B4E78" opacity="0.46"/>
+<path d="M0 621 C170 711 310 531 480 651 C620 701 710 609 800 661 L800 771 C650 701 566 801 420 733 C260 651 124 801 0 723 Z" fill="#8C79A8" opacity="0.52"/>
+<ellipse cx="322" cy="562" rx="102" ry="203" fill="#F0D8B8" opacity="0.55"/>
+<ellipse cx="308" cy="571" rx="63" ry="98" fill="#8EA6A8" opacity="0.66"/>
+<circle cx="234" cy="172" r="5" fill="#F0D8B8" opacity="0.72"/>
+<circle cx="331" cy="293" r="9" fill="#F0D8B8" opacity="0.72"/>
+<circle cx="428" cy="414" r="13" fill="#F0D8B8" opacity="0.72"/>
+<text x="690" y="952" fill="#D6B3A6" font-family="sans-serif" font-size="9" letter-spacing="3" text-anchor="end" opacity="0.34">SYNTHETIC</text>
+</svg>

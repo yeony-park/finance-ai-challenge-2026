@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-02-049" data-record-index="222" data-seed="6205">
+<title>눈금 없는 지도 — 선 없는 이동 · Unscaled Map / Movement Without Lines</title>
+<rect x="0" y="0" width="800" height="1000" fill="#202C39"/>
+<circle cx="410" cy="515" r="330" fill="#364F6B" opacity="0.9"/>
+<path d="M145 480C179 286 354 217 522 284C681 348 713 514 637 658C561 802 360 830 220 718C157 668 130 575 145 480Z" fill="#5C7C89" stroke="#E6D5B8" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M223 482C254 366 363 322 475 351C584 380 626 489 584 587C531 710 378 733 276 651C224 609 208 541 223 482Z" fill="#A6B8A1" stroke="#C66B3D" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M300 500C326 431 389 404 454 425C523 447 542 513 516 578C481 648 384 655 329 607C293 576 286 536 300 500Z" fill="#C66B3D" stroke="#364F6B" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="408" cy="524" r="30" fill="#E6D5B8"/>
+<text x="748" y="955" text-anchor="end" fill="#E6D5B8" opacity="0.32" font-family="sans-serif" font-size="12" letter-spacing="4">SYNTHETIC</text>
+</svg>
