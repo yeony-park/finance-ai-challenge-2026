@@ -1,4 +1,7 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it } from "vitest";
+import { cpSync, mkdirSync, mkdtempSync, rmSync } from "node:fs";
+import os from "node:os";
+import path from "node:path";
 
 import {
   listSyntheticArtCurrentProducts,
@@ -7,6 +10,12 @@ import {
   loadSyntheticArtDataset,
   SYNTHETIC_ART_SCENARIO_ID,
 } from "./synthetic-catalog";
+
+const roots: string[] = [];
+
+afterEach(() => {
+  for (const root of roots.splice(0)) rmSync(root, { recursive: true, force: true });
+});
 
 describe("synthetic art catalog", () => {
   it("validates and joins the canonical synthetic dataset", async () => {
@@ -28,9 +37,14 @@ describe("synthetic art catalog", () => {
   });
 
   it("derives product and full platform-history RAG candidates without pre-approving external AI", async () => {
+    const root = mkdtempSync(path.join(os.tmpdir(), "synthetic-art-candidates-"));
+    roots.push(root);
+    mkdirSync(path.join(root, "synthetic"), { recursive: true });
+    cpSync("data/synthetic/art-investment.json", path.join(root, "synthetic/art-investment.json"));
+
     const [dataset, results] = await Promise.all([
-      loadSyntheticArtDataset(),
-      listSyntheticArtKnowledge(),
+      loadSyntheticArtDataset(root),
+      listSyntheticArtKnowledge(root),
     ]);
 
     expect(results).toHaveLength(9);

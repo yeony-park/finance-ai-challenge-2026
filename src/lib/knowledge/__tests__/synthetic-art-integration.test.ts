@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { cpSync, mkdirSync, mkdtempSync, rmSync, unlinkSync } from "node:fs";
+import { appendFileSync, cpSync, mkdirSync, mkdtempSync, rmSync, unlinkSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 
@@ -32,6 +32,14 @@ const originalSemantic = process.env.KNOWLEDGE_SEMANTIC_ENABLED;
 const originalRuntime = process.env.KNOWLEDGE_RUNTIME_AI_ENABLED;
 const originalLive = process.env.KNOWLEDGE_LIVE_ANSWER_ENABLED;
 const roots: string[] = [];
+
+const createUnapprovedSyntheticArtRoot = (): string => {
+  const root = mkdtempSync(path.join(os.tmpdir(), "synthetic-art-approval-"));
+  roots.push(root);
+  mkdirSync(path.join(root, "synthetic"), { recursive: true });
+  cpSync("data/synthetic/art-investment.json", path.join(root, "synthetic/art-investment.json"));
+  return root;
+};
 
 beforeEach(() => {
   process.env.KNOWLEDGE_SEMANTIC_ENABLED = "false";
@@ -82,20 +90,18 @@ describe("synthetic art search and RAG integration", () => {
   });
 
   it("keeps art candidates out of the embedding corpus before hash-bound approval", async () => {
-    const corpus = await collectCanonicalSemanticCorpus();
+    const root = createUnapprovedSyntheticArtRoot();
+    const corpus = await collectCanonicalSemanticCorpus(root);
     const artChunks = corpus.chunks.filter((chunk) =>
       chunk.scope.categoryId === "art" && chunk.scope.scenarioId === SYNTHETIC_ART_SCENARIO_ID
     );
 
     expect(artChunks).toHaveLength(0);
-    expect(await isSyntheticArtApprovedForExternalAi()).toBe(false);
+    expect(await isSyntheticArtApprovedForExternalAi(root)).toBe(false);
   });
 
   it("includes all 111 candidates only after approving the exact source hash", async () => {
-    const root = mkdtempSync(path.join(os.tmpdir(), "synthetic-art-approval-"));
-    roots.push(root);
-    mkdirSync(path.join(root, "synthetic"), { recursive: true });
-    cpSync("data/synthetic/art-investment.json", path.join(root, "synthetic/art-investment.json"));
+    const root = createUnapprovedSyntheticArtRoot();
 
     expect(await isSyntheticArtApprovedForExternalAi(root)).toBe(false);
     const sourceHash = await approveSyntheticArtForExternalAi(root);
@@ -116,6 +122,17 @@ describe("synthetic art search and RAG integration", () => {
     unlinkSync(path.join(root, SYNTHETIC_ART_APPROVAL_FILE));
     await expect(guarded({ question: "공모 조건", evidence: [] })).resolves.toBeNull();
     expect(providerCalls).toBe(0);
+  });
+
+  it("invalidates approval and excludes art chunks when the source bytes change", async () => {
+    const root = createUnapprovedSyntheticArtRoot();
+    await approveSyntheticArtForExternalAi(root);
+
+    appendFileSync(path.join(root, "synthetic/art-investment.json"), "\n");
+
+    expect(await isSyntheticArtApprovedForExternalAi(root)).toBe(false);
+    const corpus = await collectCanonicalSemanticCorpus(root);
+    expect(corpus.chunks.filter((chunk) => chunk.scope.categoryId === "art")).toHaveLength(0);
   });
 
   it("answers the art Copilot endpoint from exact lexical chunks while live AI is off", async () => {
