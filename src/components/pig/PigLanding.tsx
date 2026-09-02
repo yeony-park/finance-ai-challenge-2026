@@ -7,6 +7,8 @@ import {
 import { PIG_EXTRA_DISTRIBUTION_FILING } from "@/lib/content/pig-review";
 import type { FilingFacts } from "@/lib/verify/report/filing-facts";
 import type { Verdict } from "@/lib/verify/types";
+import type { AiSummaryDocument } from "@/lib/ai-summary/schema";
+import { AiSummary } from "@/components/ai-summary/AiSummary";
 
 import { PigDisclosureDetail } from "./PigDisclosureDetail";
 import { PigDisclosureGallery } from "./PigDisclosureGallery";
@@ -18,6 +20,7 @@ interface PigLandingProps {
   readonly filingFacts?: readonly FilingFacts[];
   readonly analysisStatus?: SubscriptionPhase | null;
   readonly analysisVerdict?: Verdict | null;
+  readonly aiSummary?: AiSummaryDocument | null;
 }
 
 const dartAsOf = (): string => {
@@ -34,6 +37,7 @@ export function PigLanding({
   filingFacts,
   analysisStatus = null,
   analysisVerdict = null,
+  aiSummary = null,
 }: PigLandingProps) {
   const selected = getPigProduct(selectedProductId);
   const matchesFilters =
@@ -52,6 +56,8 @@ export function PigLanding({
         analysisStatus={analysisStatus}
         analysisVerdict={analysisVerdict}
       />
+
+      {aiSummary ? <AiSummary summary={aiSummary} /> : null}
 
       <PigReviewSections product={selected} />
 

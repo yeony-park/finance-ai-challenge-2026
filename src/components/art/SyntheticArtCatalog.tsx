@@ -2,6 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { EvidenceQuery } from "@/components/real-estate-scenario/ScenarioEvidenceQuery";
+import { AiSummary } from "@/components/ai-summary/AiSummary";
+import { loadAiSummary } from "@/lib/ai-summary/cache";
+import type { AiSummaryDocument } from "@/lib/ai-summary/schema";
 import {
   listSyntheticArtCurrentProducts,
   listSyntheticArtHistoricalProducts,
@@ -157,7 +160,13 @@ function HistoricalCard({ item }: { readonly item: Extract<SyntheticArtCatalogIt
   );
 }
 
-function CurrentProductDetail({ product }: { readonly product: SyntheticArtCurrentProduct }) {
+function CurrentProductDetail({
+  product,
+  aiSummary,
+}: {
+  readonly product: SyntheticArtCurrentProduct;
+  readonly aiSummary: AiSummaryDocument | null;
+}) {
   const { offering, artwork, artist, platform, analysis, evidence } = product;
   return (
     <section id="selected-art-product" className={styles.detail} aria-labelledby="selected-art-title">
@@ -168,6 +177,7 @@ function CurrentProductDetail({ product }: { readonly product: SyntheticArtCurre
         <div className={styles.badgeRow}><span className={styles.syntheticBadge}>합성 상품 상세</span><span>{offering.asOfDate} 기준</span></div>
         <h2 id="selected-art-title">{artwork.title}</h2>
         <p className={styles.detailLead}>{artist.nameKo} · {artwork.productionYear ?? "연도 미확인"} · {artwork.medium ?? "재료 미확인"}</p>
+        {aiSummary ? <AiSummary summary={aiSummary} /> : null}
         <p>{analysis.summary}</p>
         <dl className={styles.detailFacts}>
           <div><dt>가상 플랫폼</dt><dd>{platform.name}</dd></div>
@@ -221,6 +231,7 @@ export async function SyntheticArtCatalog({ searchParams }: SyntheticArtCatalogP
   const page = Number.isFinite(requestedPage) && requestedPage > 0 ? Math.floor(requestedPage) : 1;
   const selectedId = first(searchParams.product);
   const selected = current.find((item) => item.offering.id === selectedId);
+  const aiSummary = selected ? await loadAiSummary("art", selected.offering.id) : null;
   const tokens = normalized(query).split(" ").filter(Boolean);
   const all: SyntheticArtCatalogItem[] = [
     ...(scope === "historical" ? [] : current),
@@ -258,7 +269,7 @@ export async function SyntheticArtCatalog({ searchParams }: SyntheticArtCatalogP
         <aside><strong>합성 데이터 전용</strong><span>실제 투자 상품이나 거래 이력이 아닙니다.</span></aside>
       </header>
 
-      {selected ? <CurrentProductDetail product={selected} /> : null}
+      {selected ? <CurrentProductDetail product={selected} aiSummary={aiSummary} /> : null}
 
       <nav className={styles.scopeTabs} aria-label="미술품 데이터 범위">
         <Link href={href({ q: query || undefined })} aria-current={scope === "all" ? "page" : undefined}>전체 <span>{current.length + historical.length}</span></Link>

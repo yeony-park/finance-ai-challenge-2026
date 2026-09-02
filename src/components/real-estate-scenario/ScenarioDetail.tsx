@@ -1,5 +1,8 @@
 import type { ReactNode } from "react";
 
+import { AiSummary } from "@/components/ai-summary/AiSummary";
+import type { AiSummaryDocument } from "@/lib/ai-summary/schema";
+
 import {
   calculateCompletionMetrics,
   SCENARIO_DEMO_DISCLOSURE,
@@ -402,9 +405,11 @@ function InvestorProtectionBlock({ offer }: { readonly offer: ScenarioOffer }) {
 export function ScenarioDetail({
   offer,
   operatorHistory,
+  aiSummary,
 }: {
   readonly offer: ScenarioOffer;
   readonly operatorHistory: readonly ScenarioOffer[];
+  readonly aiSummary?: AiSummaryDocument | null;
 }) {
   const listedDate = offer.offering.listedOn ? formatDate(offer.offering.listedOn) : "상장 전";
   const history = operatorHistory
@@ -425,6 +430,7 @@ export function ScenarioDetail({
           <p className={s.detailLead}>
             {isSettled ? "과거 검토 사례" : "검토 결과"} · {reviewHeadline(review)}. 기준일 {formatDate(offer.asOf)}.
           </p>
+          {aiSummary ? <AiSummary summary={aiSummary} /> : null}
           <p className={s.demoNote}>검토용 시나리오 · 실제 청약·판매 상품이 아닙니다.</p>
         </div>
       </header>

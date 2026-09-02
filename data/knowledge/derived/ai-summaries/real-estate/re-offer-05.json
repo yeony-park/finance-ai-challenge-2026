@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "promptVersion": 3,
+  "categoryId": "real-estate",
+  "productId": "re-offer-05",
+  "scenarioId": "re-scenario-05",
+  "dataNature": "scenario",
+  "asOf": "2026-08-24",
+  "inputHash": "73381ff657bdc7d4ea1bb9dfb1ce53b0f9266881a49ae643a6fd0d8bc4cb2add",
+  "generatedAt": "2026-09-02T10:12:44.421Z",
+  "generator": "llm",
+  "model": "openai:gpt-5.6-luna",
+  "sentences": [
+    "연결된 공개정보 범위에서 핵심적으로 서로 다른 값을 찾지 못했지만, 실제 상품이 아닌 검토용 시나리오입니다.",
+    "투자자보호 조건은 화면에 표시됐으나 실제 계약·법적 효력·파산 시 재산 분리 여부를 확인한 자료는 아닙니다."
+  ],
+  "sentenceEvidencePaths": [
+    [
+      "/dataNotice",
+      "/overallState",
+      "/overallLabel",
+      "/findings/0/area",
+      "/findings/0/state",
+      "/findings/0/message"
+    ],
+    [
+      "/findings/3/message",
+      "/findings/3/impact",
+      "/limitations/2"
+    ]
+  ],
+  "sourceReferences": [
+    "re-scenario-05",
+    "molit-building-hub-title"
+  ]
+}

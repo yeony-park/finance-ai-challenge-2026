@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { cache } from "react";
 
 import { FilingFactsSection } from "@/components/report/FilingFactsSection";
+import { AiSummary } from "@/components/ai-summary/AiSummary";
 import { CattleFilingArtifactDetail } from "@/components/cattle/CattleFilingArtifactDetail";
 import { PigFilingArtifactDetail } from "@/components/pig/PigFilingArtifactDetail";
 import { LifecycleStrip } from "@/components/report/LifecycleStrip";
@@ -58,6 +59,8 @@ import { loadRealEstateInvestmentReview } from "@/lib/verify/real-estate-investm
 import { loadRealEstateProductSummary } from "@/lib/verify/real-estate-product-summary";
 import { issuerKeyForOffer } from "@/lib/verify/track-record/registry";
 import { loadTrackRecord } from "@/lib/verify/track-record/store";
+import { loadAiSummary } from "@/lib/ai-summary/cache";
+import type { AiSummaryCategoryId } from "@/lib/ai-summary/schema";
 import {
   toTrackRecordView,
   type TrackRecordCardView,
@@ -77,6 +80,12 @@ const loadCattleFilingArtifact = cache(async (productId: string) =>
   loadApprovedCattleFilingArtifact("cattle", productId),
 );
 const isCattleArtifactOnlyId = (productId: string) => /^livestock-[1-8]$/.test(productId);
+
+const aiSummaryCategory = (productId: string): AiSummaryCategoryId | null =>
+  productId.startsWith("livestock-") ? "cattle"
+    : productId.startsWith("pig-") ? "pig"
+      : productId.startsWith("re-offer-") ? "real-estate"
+        : null;
 
 const loadScenarioOffer = cache(async (offerId: string) =>
   findRoutableLegacyScenario(await loadScenarios(), offerId, PUBLISHED_OFFER_IDS),
@@ -228,6 +237,8 @@ export async function generateMetadata({ params }: OfferPageProps): Promise<Meta
 
 export default async function OfferReportPage({ params }: OfferPageProps) {
   const { id } = await params;
+  const categoryId = aiSummaryCategory(id);
+  const aiSummary = categoryId ? await loadAiSummary(categoryId, id) : null;
   const pigFilingArtifact = await loadPigFilingArtifact(id);
   if (pigFilingArtifact) {
     return (
@@ -250,6 +261,7 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
             <p className={s.oneLiner}>
               승인된 DART 공시 문단과 문서 근거만 확인하며, 표시되지 않은 조건은 추정하지 않습니다.
             </p>
+            {aiSummary ? <AiSummary summary={aiSummary} /> : null}
           </div>
         </header>
 
@@ -285,6 +297,7 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
             <p className={s.oneLiner}>
               승인된 원금 미보장 문단만 확인하며, 정정 관계·최신 조건·개체 실재성은 판단하지 않습니다.
             </p>
+            {aiSummary ? <AiSummary summary={aiSummary} /> : null}
           </div>
         </header>
 
@@ -304,7 +317,7 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
           entry.operatorGroupId === scenario.operatorGroupId &&
           entry.offering.phase === "settled",
       );
-    return <ScenarioDetail offer={scenario} operatorHistory={operatorHistory} />;
+    return <ScenarioDetail offer={scenario} operatorHistory={operatorHistory} aiSummary={aiSummary} />;
   }
   const view = await loadOfferView(id);
 
@@ -369,6 +382,7 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
       <ReportDocument
         view={view}
         narrative={narrative?.levels ?? null}
+        aiSummary={aiSummary ? <AiSummary summary={aiSummary} /> : null}
         overview={
           productSummary ? (
             <>

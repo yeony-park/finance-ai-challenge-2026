@@ -6,8 +6,7 @@ import { z } from "zod";
 
 import type { ProductKnowledgeResult } from "@/lib/db/repositories/types";
 import { calculateCommonChunkHash } from "@/lib/knowledge/pdf";
-import { containsObviousPii } from "@/lib/knowledge/document-extraction";
-import type { LiveAnswerGenerator } from "@/lib/knowledge/live-answer";
+import { containsObviousPii } from "@/lib/knowledge/public-safety";
 import type {
   CommonChunkRecord,
   CommonDocumentRecord,
@@ -296,11 +295,11 @@ export const isSyntheticArtApprovedForExternalAi = async (
   }
 };
 
-export const guardSyntheticArtLiveAnswer = (
+export const guardSyntheticArtLiveAnswer = <Input, Output>(
   dataRoot: string,
   expectedSourceHash: string,
-  delegate: LiveAnswerGenerator,
-): LiveAnswerGenerator => async (input) =>
+  delegate: (input: Input) => Promise<Output>,
+): ((input: Input) => Promise<Output | null>) => async (input) =>
   await isSyntheticArtApprovedForExternalAi(dataRoot, expectedSourceHash)
     ? delegate(input)
     : null;

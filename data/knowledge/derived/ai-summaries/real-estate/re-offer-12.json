@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "promptVersion": 3,
+  "categoryId": "real-estate",
+  "productId": "re-offer-12",
+  "scenarioId": "re-scenario-12",
+  "dataNature": "scenario",
+  "asOf": "2026-08-24",
+  "inputHash": "fb3730ace610387a3ece6624fa93a40565764041a2f4595da5027e7c5337badd",
+  "generatedAt": "2026-09-02T10:13:02.013Z",
+  "generator": "llm",
+  "model": "openai:gpt-5.6-luna",
+  "sentences": [
+    "이 부동산 자료는 실제 청약·판매나 거래·운영 성과가 아닌 검토용 시나리오이며, 추가 확인이 필요한 조건이 있습니다.",
+    "건축물대장 공개정보와 5개 항목은 같은 값이고, 예상 분배 충당배수와 금리상승 가정 부채상환여력은 각각 2배입니다."
+  ],
+  "sentenceEvidencePaths": [
+    [
+      "/dataNotice",
+      "/overallState",
+      "/overallLabel",
+      "/limitations/3"
+    ],
+    [
+      "/findings/1/area",
+      "/findings/1/state",
+      "/findings/1/message",
+      "/findings/2/area",
+      "/findings/2/state",
+      "/findings/2/message"
+    ]
+  ],
+  "sourceReferences": [
+    "re-scenario-12",
+    "molit-building-hub-title"
+  ]
+}

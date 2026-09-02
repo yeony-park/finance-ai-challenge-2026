@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "promptVersion": 3,
+  "categoryId": "cattle",
+  "productId": "livestock-9",
+  "dataNature": "observed",
+  "asOf": "2026-08-14",
+  "inputHash": "919e3d23068fb79d524a547a28ecb540e939764fb317b8d66487a56d1fecfa6d",
+  "generatedAt": "2026-09-02T10:13:20.878Z",
+  "generator": "llm",
+  "model": "openai:gpt-5.6-luna",
+  "sentences": [
+    "공시된 37개체 중 36개체가 공적 원장과 일치하며, 1개체는 원장 불일치입니다.",
+    "1개체는 취득시기를 확인할 수 없고, 취득원가도 기준 월을 확정하지 못해 확인되지 않았습니다."
+  ],
+  "sentenceEvidencePaths": [
+    [
+      "/reality/subjectLevel/합계",
+      "/reality/subjectLevel/일치",
+      "/reality/subjectLevel/원장 불일치"
+    ],
+    [
+      "/reality/flagged/0/verdictLabel",
+      "/reality/flagged/0/rationale",
+      "/reality/unjudged/0/field",
+      "/reality/unjudged/0/reason",
+      "/reality/unjudged/0/count"
+    ]
+  ],
+  "sourceReferences": [
+    "report-2026-08-15T15-52-44-480Z.json",
+    "2026-08-15T15:52:44.480Z",
+    "축산물이력제 개체정보 (축산물품질평가원 · data.go.kr 15058923)",
+    "축산물등급판정정보 소도체 등급별 경락가격 (축산물품질평가원 · data.go.kr 15058822) — 월 집계 사전 수집본"
+  ]
+}

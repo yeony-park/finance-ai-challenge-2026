@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "promptVersion": 3,
+  "categoryId": "art",
+  "productId": "synthetic-offering-08",
+  "scenarioId": "synthetic-art-catalog",
+  "dataNature": "scenario",
+  "asOf": "2026-08-30",
+  "inputHash": "f83f7b4d677aa8e3b4999669e6df4ff2bf519960a17fb3342ef8927606e8e45a",
+  "generatedAt": "2026-09-02T10:13:42.694Z",
+  "generator": "llm",
+  "model": "openai:gpt-5.6-luna",
+  "sentences": [
+    "이 상품은 합성·가상 데이터로 검토한 시나리오이며, 실제 작품·거래의 확인 자료가 아닙니다.",
+    "공모 조건과 플랫폼 과거 이력은 합성 데이터에서 확인되지만, 실제 감정·소유·보관 상태는 미확인이라는 한계가 있습니다."
+  ],
+  "sentenceEvidencePaths": [
+    [
+      "/dataMode",
+      "/missingInformationRisks/0",
+      "/limitation"
+    ],
+    [
+      "/analysisSummary",
+      "/keyReasons/0/implication",
+      "/keyReasons/1/implication",
+      "/keyReasons/2/implication",
+      "/limitation"
+    ]
+  ],
+  "sourceReferences": [
+    "29b7d80b8a36a36b9d550694adf2c951de9f5ff3b2357e28111569ebd9ae716d",
+    "synthetic-art-catalog"
+  ]
+}

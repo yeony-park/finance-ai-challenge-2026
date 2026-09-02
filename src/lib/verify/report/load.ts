@@ -48,11 +48,14 @@ const listReportFiles = async (dir: string): Promise<readonly string[]> => {
   }
 };
 
-export const loadLatestReport = async (offerId: string): Promise<LoadedReport> => {
+export const loadLatestReport = async (
+  offerId: string,
+  dataRoot = path.join(process.cwd(), "data"),
+): Promise<LoadedReport> => {
   if (!isPublicVerificationScopeAllowed(offerId)) {
     throw new ReportNotFoundError("공개 리포트를 찾을 수 없습니다.");
   }
-  const dir = path.join(process.cwd(), "data", "public", assertOfferId(offerId));
+  const dir = path.join(path.resolve(dataRoot), "public", assertOfferId(offerId));
   const files = await listReportFiles(dir);
   const fileName = pickLatestFileName(files);
   if (!fileName) {

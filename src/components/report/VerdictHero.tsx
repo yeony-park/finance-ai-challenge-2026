@@ -44,6 +44,7 @@ export function VerdictHero({
   view,
   level,
   narrative,
+  aiSummary,
   overview,
   lifecycle,
   onLevelChange,
@@ -51,6 +52,7 @@ export function VerdictHero({
   readonly view: DemoView;
   readonly level: ExplainLevel;
   readonly narrative: Readonly<Record<ExplainLevel, NarrativeLevel>> | null;
+  readonly aiSummary?: ReactNode;
   readonly overview?: ReactNode;
   readonly lifecycle?: ReactNode;
   readonly onLevelChange: (level: ExplainLevel) => void;
@@ -134,6 +136,8 @@ export function VerdictHero({
               ))}
             </dl>
           </div>
+
+          {aiSummary}
 
           <AnimatePresence mode="wait" initial={false}>
             <m.div

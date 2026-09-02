@@ -15,6 +15,7 @@ import {
 import { getPigProduct } from "@/lib/content/pig";
 import { PIG_CATEGORY } from "@/lib/verify/contract/pig";
 import { type FilingFacts, loadFilingFacts } from "@/lib/verify/report/filing-facts";
+import { loadAiSummary } from "@/lib/ai-summary/cache";
 
 const INFO = categoryById("pig");
 
@@ -33,6 +34,7 @@ export default async function PigPage({ searchParams }: PigPageProps) {
   const params = await searchParams;
   const requested = Array.isArray(params.product) ? params.product[0] : params.product;
   const selected = getPigProduct(requested);
+  const aiSummary = await loadAiSummary("pig", `pig-${selected.round}`);
   const { activeTab, analysisStatus, analysisVerdict } =
     categoryPageStateFromSearchParams(params);
 
@@ -64,6 +66,7 @@ export default async function PigPage({ searchParams }: PigPageProps) {
           filingFacts={filingFacts}
           analysisStatus={analysisStatus}
           analysisVerdict={analysisVerdict}
+          aiSummary={aiSummary}
         />
       }
       customTitle="최근 상품"
