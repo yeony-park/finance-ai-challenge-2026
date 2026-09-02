@@ -209,6 +209,7 @@ a.imageLink:hover img { transform: scale(1.02); }
 .reasonGrid p, .reasonGrid small { color: var(--ds-ink-muted); font-size: var(--ds-text-xs); }
 .sourceNote, .limitation { color: var(--ds-ink-faint); font-size: var(--ds-text-xs); }
 .limitation { padding-left: var(--ds-space-3); border-left: 3px solid var(--ds-line-strong); }
+.copilot { margin: var(--ds-space-6) calc(var(--ds-space-4) * -1) var(--ds-space-5); }
 .closeLink { color: var(--ds-accent-ink); font-size: var(--ds-text-sm); }
 
 .pagination { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; margin: var(--ds-space-7) 0; }

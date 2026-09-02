@@ -629,7 +629,7 @@ export const KnowledgeQuerySchema = z.strictObject({
 
 export const GlobalSearchQuerySchema = z.strictObject({
   q: z.string().trim().min(1).max(200),
-  assetKind: z.enum(["livestock", "real-estate"]).optional(),
+  assetKind: z.enum(["livestock", "art", "real-estate"]).optional(),
   categoryId: CategoryId.optional(),
   phase: z.enum([
     "upcoming",
@@ -660,7 +660,7 @@ const validateCanonicalQuery = (
 
 export const GlobalSearchRequestSchema = z.strictObject({
   ...CanonicalQueryFields,
-  assetKind: z.enum(["livestock", "real-estate"]).optional(),
+  assetKind: z.enum(["livestock", "art", "real-estate"]).optional(),
   categoryId: CategoryId.optional(),
   phase: z.enum([
     "upcoming",

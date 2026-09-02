@@ -22,10 +22,20 @@ import {
   PIG_FILING_EVIDENCE_EXAMPLES,
   pigFilingEvidenceScope,
   PigFilingEvidenceQuery,
+  safeCitationUrl,
   StructuredSourceList,
 } from "../ScenarioEvidenceQuery";
 
 describe("부동산 시나리오 상세", () => {
+  test("합성 미술품 내부 근거 링크만 엄격하게 허용한다", () => {
+    expect(safeCitationUrl("/art?product=synthetic-offering-01"))
+      .toBe("/art?product=synthetic-offering-01");
+    expect(safeCitationUrl("/art?product=synthetic-offering-1"))
+      .toBeNull();
+    expect(safeCitationUrl("/art?product=synthetic-offering-01&next=https://example.com"))
+      .toBeNull();
+  });
+
   test("모든 상세 화면에서 내부 구현 문구를 노출하지 않는다", async () => {
     const offers = await loadApprovedScenarios();
     for (const offer of offers) {

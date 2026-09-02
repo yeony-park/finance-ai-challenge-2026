@@ -37,6 +37,12 @@ import {
   isFilingCorpusApprovedForExternalAi,
 } from "@/lib/knowledge/local-rag/corpus";
 import { generateLiveEvidenceAnswer } from "@/lib/knowledge/live-answer";
+import {
+  loadSyntheticArtCommonKnowledgeScope,
+  isSyntheticArtApprovedForExternalAi,
+  guardSyntheticArtLiveAnswer,
+  SYNTHETIC_ART_SCENARIO_ID,
+} from "@/lib/art/synthetic-catalog";
 
 export const runtime = "nodejs";
 
@@ -58,13 +64,15 @@ export const POST = async (request: Request): Promise<Response> => {
         : null;
       const commonScope = query.namespace === "legacy-scenario"
         ? null
-        : await loadCommonKnowledgeScope(
-            query.categoryId,
-            query.productId,
-            query.dataNature,
-            undefined,
-            query.scenarioId,
-          );
+        : query.categoryId === "art" && query.dataNature === "scenario" && query.scenarioId === SYNTHETIC_ART_SCENARIO_ID
+          ? await loadSyntheticArtCommonKnowledgeScope(query.productId)
+          : await loadCommonKnowledgeScope(
+              query.categoryId,
+              query.productId,
+              query.dataNature,
+              undefined,
+              query.scenarioId,
+            );
       const offeringsRepository = query.namespace === "common" || query.namespace === "legacy-scenario"
         ? null
         : await resolveOfferingsRepository();
@@ -242,6 +250,15 @@ export const POST = async (request: Request): Promise<Response> => {
         });
       }
       const scope = commonScope ?? { product: null, documents: [], chunks: [] };
+      const isSyntheticArtScope = query.categoryId === "art" &&
+        query.dataNature === "scenario" &&
+        query.scenarioId === SYNTHETIC_ART_SCENARIO_ID;
+      const syntheticArtSourceHash = isSyntheticArtScope ? scope.documents[0]?.sourceHash : undefined;
+      const syntheticArtExternalAiApproved = !isSyntheticArtScope || (
+        syntheticArtSourceHash !== undefined &&
+        await isSyntheticArtApprovedForExternalAi("data", syntheticArtSourceHash)
+      );
+      const commonRuntimeAiAllowed = access.allowed && syntheticArtExternalAiApproved;
       const exactRetrieval = await retrieveExactProductEvidence({
         scope: {
           categoryId: query.categoryId,
@@ -253,9 +270,14 @@ export const POST = async (request: Request): Promise<Response> => {
         query: query.query,
         limit: query.limit,
         fallbackChunks: scope.chunks,
-        runtimeAiAllowed: access.allowed,
-        ...(!access.allowed ? { runtimeReason: access.reason } : {}),
+        runtimeAiAllowed: commonRuntimeAiAllowed,
+        ...(!commonRuntimeAiAllowed ? { runtimeReason: access.allowed ? "disabled" : access.reason } : {}),
       });
+      const commonLiveAnswer = disabledLiveAnswer ?? (isSyntheticArtScope
+        ? syntheticArtExternalAiApproved && syntheticArtSourceHash
+          ? guardSyntheticArtLiveAnswer("data", syntheticArtSourceHash, generateLiveEvidenceAnswer)
+          : async () => null
+        : undefined);
       return Response.json({
         categoryId: query.categoryId,
         productId: query.productId,
@@ -268,7 +290,7 @@ export const POST = async (request: Request): Promise<Response> => {
           { ...query, q: query.query },
           {
             evidence: exactRetrieval.evidence,
-            ...(disabledLiveAnswer ? { liveAnswer: disabledLiveAnswer } : {}),
+            ...(commonLiveAnswer ? { liveAnswer: commonLiveAnswer } : {}),
           },
         )),
       });

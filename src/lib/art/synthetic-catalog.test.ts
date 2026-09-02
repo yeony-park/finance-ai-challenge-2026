@@ -27,21 +27,30 @@ describe("synthetic art catalog", () => {
     expect(historical.every((item) => item.record.artworkImageUrl?.startsWith("/synthetic-art/history/"))).toBe(true);
   });
 
-  it("derives three externally eligible RAG chunks for every current product", async () => {
-    const results = await listSyntheticArtKnowledge();
+  it("derives product and full platform-history RAG candidates without pre-approving external AI", async () => {
+    const [dataset, results] = await Promise.all([
+      loadSyntheticArtDataset(),
+      listSyntheticArtKnowledge(),
+    ]);
 
     expect(results).toHaveLength(9);
     expect(results.flatMap((item) => item.knowledge.documents)).toHaveLength(9);
-    expect(results.flatMap((item) => item.knowledge.chunks)).toHaveLength(27);
+    expect(results.flatMap((item) => item.knowledge.chunks)).toHaveLength(111);
     expect(results.every(({ product, knowledge }) =>
       knowledge.chunks.every((chunk) =>
         chunk.categoryId === "art" &&
         chunk.productId === product.offering.id &&
         chunk.scenarioId === SYNTHETIC_ART_SCENARIO_ID &&
         chunk.dataNature === "scenario" &&
-        chunk.approvedForExternalAi &&
-        chunk.piiReviewStatus === "passed"
+        !chunk.approvedForExternalAi &&
+        chunk.piiReviewStatus === "not-reviewed"
       )
     )).toBe(true);
+    for (const { product, knowledge } of results) {
+      const text = knowledge.chunks.map((chunk) => chunk.text).join("\n");
+      const platformRecords = dataset.trackRecords.filter((record) => record.platformId === product.platform.id);
+      expect(platformRecords.length).toBeGreaterThan(0);
+      expect(platformRecords.every((record) => text.includes(`이력 ID ${record.id}.`))).toBe(true);
+    }
   });
 });

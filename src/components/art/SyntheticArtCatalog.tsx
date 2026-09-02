@@ -1,10 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { EvidenceQuery } from "@/components/real-estate-scenario/ScenarioEvidenceQuery";
 import {
   listSyntheticArtCurrentProducts,
   listSyntheticArtHistoricalProducts,
   SYNTHETIC_ART_LIMITATION,
+  SYNTHETIC_ART_SCENARIO_ID,
   type SyntheticArtCatalogItem,
   type SyntheticArtCurrentProduct,
 } from "@/lib/art/synthetic-catalog";
@@ -182,6 +184,23 @@ function CurrentProductDetail({ product }: { readonly product: SyntheticArtCurre
         </div>
         <p className={styles.sourceNote}>합성 원천 근거 {evidence.length}건 · 외부 실재 출처 없음</p>
         <p className={styles.limitation}>{SYNTHETIC_ART_LIMITATION}</p>
+        <div className={styles.copilot}>
+          <EvidenceQuery
+            scope={{
+              categoryId: "art",
+              productId: offering.id,
+              scenarioId: SYNTHETIC_ART_SCENARIO_ID,
+              dataNature: "scenario",
+              namespace: "common",
+            }}
+            examples={[
+              "최소투자금과 공모 조건은 무엇인가요?",
+              "비용과 회수 조건을 설명해 주세요.",
+              "이 가상 플랫폼의 과거 청산·지연 이력은 어떤가요?",
+            ]}
+            lead="선택한 합성 상품의 조건과 같은 가상 플랫폼의 합성 과거 이력만 검색합니다. 실제 투자 판단이나 수익 예측에는 사용할 수 없습니다."
+          />
+        </div>
         <Link href="/art?scope=current" className={styles.closeLink}>상세 닫기</Link>
       </div>
     </section>

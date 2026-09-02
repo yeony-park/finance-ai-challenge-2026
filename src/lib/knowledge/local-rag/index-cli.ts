@@ -12,6 +12,7 @@ import {
   collectCanonicalSemanticCorpus,
   type CanonicalSemanticCorpus,
 } from "./corpus";
+import { approveSyntheticArtForExternalAi } from "@/lib/art/synthetic-catalog";
 import {
   createOpenAiLocalRagEmbedder,
   embedDocumentBatches,
@@ -167,8 +168,10 @@ export const runSemanticIndexCli = async (
   try {
     const apply = args.includes("--apply");
     const approveFilings = args.includes("--approve-filing-corpus");
+    const approveSyntheticArt = args.includes("--approve-synthetic-art");
     const dataRoot = valueAfter(args, "--data-root");
     if (approveFilings) await approveFilingCorpusForExternalAi(dataRoot);
+    if (approveSyntheticArt) await approveSyntheticArtForExternalAi(dataRoot);
     const result = await buildSemanticIndex({
       apply,
       apiKey: process.env.OPENAI_API_KEY,

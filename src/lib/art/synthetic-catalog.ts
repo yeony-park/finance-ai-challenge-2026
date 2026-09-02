@@ -1,11 +1,18 @@
 import { createHash } from "node:crypto";
-import { readFile } from "node:fs/promises";
+import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import { z } from "zod";
 
 import type { ProductKnowledgeResult } from "@/lib/db/repositories/types";
 import { calculateCommonChunkHash } from "@/lib/knowledge/pdf";
+import { containsObviousPii } from "@/lib/knowledge/document-extraction";
+import type { LiveAnswerGenerator } from "@/lib/knowledge/live-answer";
+import type {
+  CommonChunkRecord,
+  CommonDocumentRecord,
+  CommonProductRecord,
+} from "@/lib/knowledge/schema";
 
 const Id = z.string().trim().min(1).max(160);
 const DateValue = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
@@ -183,6 +190,7 @@ export type SyntheticArtCatalogItem = SyntheticArtCurrentProduct | SyntheticArtH
 
 export const SYNTHETIC_ART_SCENARIO_ID = "synthetic-art-catalog";
 export const SYNTHETIC_ART_DATA_PATH = "data/synthetic/art-investment.json";
+export const SYNTHETIC_ART_APPROVAL_FILE = "scratch-rag/synthetic-art-external-ai-approval.json";
 export const SYNTHETIC_ART_LIMITATION =
   "화면·검색·RAG 흐름 검증을 위해 생성한 합성 데이터이며 실제 작품, 거래, 투자 권유 또는 수익 예측이 아닙니다.";
 
@@ -233,27 +241,73 @@ const validateDataset = (dataset: SyntheticArtDataset): SyntheticArtDataset => {
   return dataset;
 };
 
-let productionDataset: Promise<SyntheticArtDataset> | undefined;
+interface SyntheticArtSnapshot {
+  readonly dataset: SyntheticArtDataset;
+  readonly sourceHash: string;
+}
 
-export const loadSyntheticArtDataset = async (
-  dataRoot = "data",
-): Promise<SyntheticArtDataset> => {
-  const load = async () => {
+const SyntheticArtApprovalSchema = z.object({
+  schemaVersion: z.literal(1),
+  scope: z.literal("synthetic-art-external-ai"),
+  provider: z.literal("openai"),
+  embeddingModel: z.literal("text-embedding-3-small"),
+  sourceHash: z.string().regex(/^[a-f0-9]{64}$/),
+  piiReviewStatus: z.literal("passed"),
+  approvedAt: z.string().datetime({ offset: true }),
+}).strict();
+
+let productionSnapshot: Promise<SyntheticArtSnapshot> | undefined;
+
+const loadSyntheticArtSnapshot = async (dataRoot = "data"): Promise<SyntheticArtSnapshot> => {
+  const load = async (): Promise<SyntheticArtSnapshot> => {
     const file = path.resolve(dataRoot, "synthetic/art-investment.json");
     const raw = await readFile(file);
     if (raw.byteLength > 2 * 1024 * 1024) throw new Error("합성 미술품 JSON 크기 제한을 초과했습니다.");
-    return validateDataset(ArtDatasetSchema.parse(JSON.parse(raw.toString("utf8"))));
+    return {
+      dataset: validateDataset(ArtDatasetSchema.parse(JSON.parse(raw.toString("utf8")))),
+      sourceHash: hash(raw),
+    };
   };
   if (process.env.NODE_ENV !== "production" || path.resolve(dataRoot) !== path.resolve("data")) return load();
-  productionDataset ??= load();
-  void productionDataset.catch(() => { productionDataset = undefined; });
-  return productionDataset;
+  productionSnapshot ??= load();
+  void productionSnapshot.catch(() => { productionSnapshot = undefined; });
+  return productionSnapshot;
 };
 
-export const listSyntheticArtCurrentProducts = async (
+export const loadSyntheticArtDataset = async (
   dataRoot = "data",
-): Promise<readonly SyntheticArtCurrentProduct[]> => {
-  const dataset = await loadSyntheticArtDataset(dataRoot);
+): Promise<SyntheticArtDataset> => (await loadSyntheticArtSnapshot(dataRoot)).dataset;
+
+export const isSyntheticArtApprovedForExternalAi = async (
+  dataRoot = "data",
+  expectedSourceHash?: string,
+): Promise<boolean> => {
+  try {
+    const [snapshot, raw] = await Promise.all([
+      loadSyntheticArtSnapshot(dataRoot),
+      readFile(path.resolve(dataRoot, SYNTHETIC_ART_APPROVAL_FILE), "utf8"),
+    ]);
+    const approval = SyntheticArtApprovalSchema.parse(JSON.parse(raw));
+    return approval.sourceHash === snapshot.sourceHash &&
+      (expectedSourceHash === undefined || expectedSourceHash === snapshot.sourceHash);
+  } catch (error) {
+    if (isMissingFile(error) || error instanceof SyntaxError || error instanceof z.ZodError) return false;
+    throw error;
+  }
+};
+
+export const guardSyntheticArtLiveAnswer = (
+  dataRoot: string,
+  expectedSourceHash: string,
+  delegate: LiveAnswerGenerator,
+): LiveAnswerGenerator => async (input) =>
+  await isSyntheticArtApprovedForExternalAi(dataRoot, expectedSourceHash)
+    ? delegate(input)
+    : null;
+
+const currentProductsFromDataset = (
+  dataset: SyntheticArtDataset,
+): readonly SyntheticArtCurrentProduct[] => {
   const artworks = new Map(dataset.artworks.map((item) => [item.id, item]));
   const artists = new Map(dataset.artists.map((item) => [item.id, item]));
   const platforms = new Map(dataset.platforms.map((item) => [item.id, item]));
@@ -268,6 +322,27 @@ export const listSyntheticArtCurrentProducts = async (
     analysis: analyses.get(offering.id)!,
     evidence: offering.sourceIds.flatMap((id) => evidence.get(id) ?? []),
   }));
+};
+
+export const listSyntheticArtCurrentProducts = async (
+  dataRoot = "data",
+): Promise<readonly SyntheticArtCurrentProduct[]> => {
+  const snapshot = await loadSyntheticArtSnapshot(dataRoot);
+  return currentProductsFromDataset(snapshot.dataset);
+};
+
+const isMissingFile = (error: unknown): boolean =>
+  (error as NodeJS.ErrnoException).code === "ENOENT";
+
+export const listSyntheticArtCurrentProductsIfPresent = async (
+  dataRoot = "data",
+): Promise<readonly SyntheticArtCurrentProduct[]> => {
+  try {
+    return await listSyntheticArtCurrentProducts(dataRoot);
+  } catch (error) {
+    if (isMissingFile(error)) return [];
+    throw error;
+  }
 };
 
 export const listSyntheticArtHistoricalProducts = async (
@@ -321,7 +396,40 @@ const currentSections = (product: SyntheticArtCurrentProduct): readonly { readon
   ];
 };
 
-const knowledgeFor = (product: SyntheticArtCurrentProduct, sourceHash: string): ProductKnowledgeResult => {
+const platformHistorySections = (
+  product: SyntheticArtCurrentProduct,
+  dataset: SyntheticArtDataset,
+): readonly { readonly title: string; readonly text: string }[] => {
+  const records = dataset.trackRecords.filter((record) => record.platformId === product.platform.id);
+  const sections = [];
+  for (let offset = 0; offset < records.length; offset += 12) {
+    const batch = records.slice(offset, offset + 12);
+    sections.push({
+      title: `${product.platform.name} 합성 과거 이력 ${offset + 1}-${offset + batch.length}`,
+      text: [
+        ...batch.map((record) => [
+          `이력 ID ${record.id}.`, `상품명 ${record.productName}.`, `작품 ${record.artworkTitle}.`,
+          `가상 작가 ${record.artistName}.`, `상태 ${record.status}.`, `공모금액 ${money(record.offeringAmount)}.`,
+          `목표 보유기간 ${record.targetHoldingMonths ?? "미확인"}개월.`,
+          `실제 보유기간 ${record.actualHoldingMonths ?? "미확인"}개월.`,
+          `분배액 ${money(record.totalDistribution)}.`, `회수액 ${money(record.exitAmount)}.`,
+          `정산 수익률 ${record.finalReturn === null ? "미확인" : `${record.finalReturn}%`}.`,
+          `지연일 ${record.delayDays ?? "미확인"}일.`, `매각일 ${record.soldAt ?? "미확인"}.`,
+          `청산일 ${record.liquidatedAt ?? "미확인"}.`, record.evidenceNote ?? "",
+        ].join(" ")),
+        SYNTHETIC_ART_LIMITATION,
+      ].join("\n"),
+    });
+  }
+  return sections;
+};
+
+const knowledgeFor = (
+  product: SyntheticArtCurrentProduct,
+  dataset: SyntheticArtDataset,
+  sourceHash: string,
+  externalAiApproved: boolean,
+): ProductKnowledgeResult => {
   const { offering } = product;
   const documentId = `art-${offering.id}-synthetic-json`;
   const sourceUrl = `/art?product=${encodeURIComponent(offering.id)}`;
@@ -339,11 +447,11 @@ const knowledgeFor = (product: SyntheticArtCurrentProduct, sourceHash: string): 
     asOf: offering.asOfDate,
     sourceHash,
     approvedForPublic: true,
-    approvedForExternalAi: true,
-    piiReviewStatus: "passed" as const,
+    approvedForExternalAi: externalAiApproved,
+    piiReviewStatus: externalAiApproved ? "passed" as const : "not-reviewed" as const,
     limitations,
   };
-  const chunks = currentSections(product).map((section, index) => {
+  const chunks = [...currentSections(product), ...platformHistorySections(product, dataset)].map((section, index) => {
     const text = canonical(`${section.title}\n${section.text}`);
     const canonicalText = text;
     return {
@@ -359,28 +467,179 @@ const knowledgeFor = (product: SyntheticArtCurrentProduct, sourceHash: string): 
   return { documents: [{ ...base, status: "ready" }], chunks };
 };
 
+const loadSyntheticArtKnowledgeBundle = async (
+  productId: string,
+  dataRoot: string,
+): Promise<{ readonly product: SyntheticArtCurrentProduct | null; readonly knowledge: ProductKnowledgeResult }> => {
+  const snapshot = await loadSyntheticArtSnapshot(dataRoot);
+  const product = currentProductsFromDataset(snapshot.dataset)
+    .find((item) => item.offering.id === productId) ?? null;
+  if (!product) return { product: null, knowledge: { documents: [], chunks: [] } };
+  const approved = await isSyntheticArtApprovedForExternalAi(dataRoot, snapshot.sourceHash);
+  return {
+    product,
+    knowledge: knowledgeFor(product, snapshot.dataset, snapshot.sourceHash, approved),
+  };
+};
+
 export const loadSyntheticArtKnowledge = async (
   productId: string,
   dataRoot = "data",
 ): Promise<ProductKnowledgeResult> => {
-  const [raw, products] = await Promise.all([
-    readFile(path.resolve(dataRoot, "synthetic/art-investment.json")),
-    listSyntheticArtCurrentProducts(dataRoot),
-  ]);
-  const product = products.find((item) => item.offering.id === productId);
-  return product ? knowledgeFor(product, hash(raw)) : { documents: [], chunks: [] };
+  return (await loadSyntheticArtKnowledgeBundle(productId, dataRoot)).knowledge;
+};
+
+export const loadSyntheticArtKnowledgeIfPresent = async (
+  productId: string,
+  dataRoot = "data",
+): Promise<ProductKnowledgeResult> => {
+  try {
+    return await loadSyntheticArtKnowledge(productId, dataRoot);
+  } catch (error) {
+    if (isMissingFile(error)) return { documents: [], chunks: [] };
+    throw error;
+  }
 };
 
 export const listSyntheticArtKnowledge = async (
   dataRoot = "data",
 ): Promise<readonly { readonly product: SyntheticArtCurrentProduct; readonly knowledge: ProductKnowledgeResult }[]> => {
-  const [raw, products] = await Promise.all([
-    readFile(path.resolve(dataRoot, "synthetic/art-investment.json")),
-    listSyntheticArtCurrentProducts(dataRoot),
-  ]);
-  const sourceHash = hash(raw);
-  return products.map((product) => ({ product, knowledge: knowledgeFor(product, sourceHash) }));
+  const snapshot = await loadSyntheticArtSnapshot(dataRoot);
+  const products = currentProductsFromDataset(snapshot.dataset);
+  const approved = await isSyntheticArtApprovedForExternalAi(dataRoot, snapshot.sourceHash);
+  return products.map((product) => ({
+    product,
+    knowledge: knowledgeFor(product, snapshot.dataset, snapshot.sourceHash, approved),
+  }));
+};
+
+export const listSyntheticArtKnowledgeIfPresent = async (
+  dataRoot = "data",
+): Promise<readonly { readonly product: SyntheticArtCurrentProduct; readonly knowledge: ProductKnowledgeResult }[]> => {
+  try {
+    return await listSyntheticArtKnowledge(dataRoot);
+  } catch (error) {
+    if (isMissingFile(error)) return [];
+    throw error;
+  }
 };
 
 export const syntheticArtContentHash = (knowledge: ProductKnowledgeResult): string =>
   hash(knowledge.chunks.map((chunk) => `${chunk.chunkId}:${chunk.chunkHash}`).join("\n"));
+
+export const approveSyntheticArtForExternalAi = async (
+  dataRoot = "data",
+): Promise<string> => {
+  const snapshot = await loadSyntheticArtSnapshot(dataRoot);
+  const products = currentProductsFromDataset(snapshot.dataset);
+  const candidateChunks = products.flatMap((product) =>
+    knowledgeFor(product, snapshot.dataset, snapshot.sourceHash, false).chunks
+  );
+  if (candidateChunks.length === 0 || candidateChunks.some((chunk) => containsObviousPii(chunk.canonicalText))) {
+    throw new Error("합성 미술품 외부 AI 승인 전에 PII 검토를 통과해야 합니다.");
+  }
+  const approval = {
+    schemaVersion: 1,
+    scope: "synthetic-art-external-ai",
+    provider: "openai",
+    embeddingModel: "text-embedding-3-small",
+    sourceHash: snapshot.sourceHash,
+    piiReviewStatus: "passed",
+    approvedAt: new Date().toISOString(),
+  } as const;
+  const target = path.resolve(dataRoot, SYNTHETIC_ART_APPROVAL_FILE);
+  const temporary = `${target}.tmp-${process.pid}`;
+  await mkdir(path.dirname(target), { recursive: true });
+  await writeFile(temporary, `${JSON.stringify(approval, null, 2)}\n`, "utf8");
+  await rename(temporary, target);
+  return snapshot.sourceHash;
+};
+
+export interface SyntheticArtCommonKnowledgeScope {
+  readonly product: CommonProductRecord | null;
+  readonly documents: readonly CommonDocumentRecord[];
+  readonly chunks: readonly CommonChunkRecord[];
+}
+
+export const loadSyntheticArtCommonKnowledgeScope = async (
+  productId: string,
+  dataRoot = "data",
+): Promise<SyntheticArtCommonKnowledgeScope> => {
+  const { product: selected, knowledge } = await loadSyntheticArtKnowledgeBundle(productId, dataRoot);
+  if (!selected || knowledge.documents.length !== 1) return { product: null, documents: [], chunks: [] };
+  const product: CommonProductRecord = {
+    schemaVersion: 1,
+    categoryId: "art",
+    productId,
+    scenarioId: SYNTHETIC_ART_SCENARIO_ID,
+    title: `${selected.artwork.title} · ${selected.artist.nameKo}`,
+    aliases: [selected.offering.title, selected.artwork.title, selected.artist.nameKo, selected.platform.name],
+    dataNature: "scenario",
+    asOf: selected.offering.asOfDate,
+    status: CURRENT_STATUS_FOR_COMMON[selected.offering.status],
+    phase: selected.offering.status === "upcoming" ? "upcoming" : selected.offering.status === "open" ? "subscription-open" : "closed",
+    approvedForPublic: true,
+  };
+  const documents: CommonDocumentRecord[] = knowledge.documents.map((document) => ({
+    schemaVersion: 1,
+    categoryId: document.categoryId,
+    productId: document.productId,
+    scenarioId: document.scenarioId,
+    documentId: document.documentId,
+    title: document.title,
+    publisher: "JeomJeom 합성 데이터셋",
+    sourceKind: document.sourceKind,
+    sourceUrl: document.sourceUrl,
+    asOf: document.asOf,
+    collectedAt: `${document.asOf}T00:00:00+09:00`,
+    dataNature: document.dataNature,
+    rightsStatus: "permission-confirmed",
+    approvedForPublic: document.approvedForPublic,
+    approvedForExternalAi: document.approvedForExternalAi,
+    piiReviewStatus: document.piiReviewStatus,
+    sourceHash: document.sourceHash,
+    status: "ready",
+    pages: knowledge.chunks.map((chunk) => ({
+      page: chunk.page,
+      quality: "ready" as const,
+      metrics: { itemCount: 1, characterCount: chunk.text.length, density: chunk.text.length },
+      limitations: [...chunk.limitations],
+    })),
+    limitations: [...document.limitations],
+  }));
+  const chunks: CommonChunkRecord[] = knowledge.chunks.map((chunk) => ({
+    schemaVersion: 1,
+    categoryId: chunk.categoryId,
+    productId: chunk.productId,
+    scenarioId: chunk.scenarioId,
+    documentId: chunk.documentId,
+    chunkId: chunk.chunkId,
+    title: chunk.title,
+    sourceKind: chunk.sourceKind,
+    sourceUrl: chunk.sourceUrl,
+    asOf: chunk.asOf,
+    dataNature: chunk.dataNature,
+    page: chunk.page,
+    text: chunk.text,
+    canonicalText: chunk.canonicalText,
+    positions: [],
+    pageQuality: "ready",
+    sourceHash: chunk.sourceHash,
+    chunkHash: chunk.chunkHash,
+    approvedForPublic: chunk.approvedForPublic,
+    approvedForExternalAi: chunk.approvedForExternalAi,
+    piiReviewStatus: chunk.piiReviewStatus,
+    status: "ready",
+    limitations: [...chunk.limitations],
+  }));
+  return { product, documents, chunks };
+};
+
+const CURRENT_STATUS_FOR_COMMON: Readonly<Record<SyntheticArtOffering["status"], string>> = {
+  upcoming: "청약 예정",
+  open: "청약 중",
+  operating: "운용 중",
+  exit_in_progress: "매각 진행",
+  liquidated: "청산 완료",
+  unverified: "상태 미확인",
+};

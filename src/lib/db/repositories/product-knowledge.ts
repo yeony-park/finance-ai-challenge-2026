@@ -19,6 +19,10 @@ import type {
   ProductKnowledgeResult,
   ProductKnowledgeScope,
 } from "./types";
+import {
+  loadSyntheticArtKnowledgeIfPresent,
+  SYNTHETIC_ART_SCENARIO_ID,
+} from "@/lib/art/synthetic-catalog";
 
 const EMPTY_RESULT: ProductKnowledgeResult = { documents: [], chunks: [] };
 
@@ -159,6 +163,11 @@ export const createFileProductKnowledgeRepository = (
   mode: "file",
   async findExact(scope) {
     if (!validScope(scope)) return EMPTY_RESULT;
+    if (
+      scope.categoryId === "art" &&
+      scope.dataNature === "scenario" &&
+      scope.scenarioId === SYNTHETIC_ART_SCENARIO_ID
+    ) return loadSyntheticArtKnowledgeIfPresent(scope.productId, dataRoot);
     if (scope.categoryId === "cattle" && scope.dataNature === "observed") {
       const [artifacts, corpus] = await Promise.all([
         loadApprovedCattleFilingArtifactsForProduct(scope.categoryId, scope.productId, dataRoot),

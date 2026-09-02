@@ -20,13 +20,18 @@ import { evaluateScenarioReview, type ReviewAreaId } from "./scenario-review";
 import { isRankingRequest, normalizeKorean, normalizeSearchQuery } from "./search";
 import type { GlobalSearchQuery, GlobalSearchRequest } from "./schema";
 import type { SemanticProductMatch } from "./local-rag/semantic";
+import {
+  listSyntheticArtCurrentProductsIfPresent,
+  SYNTHETIC_ART_SCENARIO_ID,
+  type SyntheticArtCurrentProduct,
+} from "@/lib/art/synthetic-catalog";
 
 export interface GlobalSearchResult {
   readonly id: string;
   readonly productId: string;
   readonly categoryId: "cattle" | "pig" | "art" | "real-estate";
   readonly title: string;
-  readonly assetKind: "livestock" | "real-estate";
+  readonly assetKind: "livestock" | "art" | "real-estate";
   readonly phase:
     | "upcoming"
     | "subscription-open"
@@ -85,6 +90,7 @@ export interface GlobalSearchOptions {
   readonly loadCattleFilings?: typeof loadApprovedCattleFilingArtifacts;
   readonly loadPigFilings?: typeof loadApprovedPigFilingArtifacts;
   readonly loadFilingCorpus?: typeof loadFilingCorpusSearchEntries;
+  readonly loadArtProducts?: (dataRoot?: string) => Promise<readonly SyntheticArtCurrentProduct[]>;
 }
 
 let productionCattleFilings: ReturnType<typeof loadApprovedCattleFilingArtifacts> | undefined;
@@ -188,7 +194,15 @@ const intentsOf = (value: string): {
 };
 
 const assetKindOf = (categoryId: GlobalSearchResult["categoryId"]): GlobalSearchResult["assetKind"] =>
-  categoryId === "real-estate" ? "real-estate" : "livestock";
+  categoryId === "real-estate" ? "real-estate" : categoryId === "art" ? "art" : "livestock";
+
+const artPhase = (status: SyntheticArtCurrentProduct["offering"]["status"]): GlobalSearchResult["phase"] => {
+  if (status === "upcoming") return "upcoming";
+  if (status === "open") return "subscription-open";
+  if (status === "operating" || status === "exit_in_progress") return "listed-trading";
+  if (status === "liquidated") return "settled";
+  return "evidence-only";
+};
 
 const isCattleFilingQuery = (
   query: string,
@@ -270,12 +284,18 @@ export const searchOffers = async (
     categoryId === "cattle" || categoryId === "pig" ||
     /한우|돼지|돈육|한돈|가축|공모|청약|배정|수수료|위험|원금|투자자\s*보호|질병|경락|ASF/i.test(queryText)
   ) ? (options.loadFilingCorpus ?? loadFilingCorpusSearchEntries)(dataRoot) : Promise.resolve([]);
-  const [population, commonProducts, cattleFilings, pigFilings, filingCorpus, resolvedRepositories] = await Promise.all([
+  const artProductsPromise = (options.loadArtProducts ?? listSyntheticArtCurrentProductsIfPresent)(dataRoot)
+    .catch((error) => {
+      if (categoryId === "art") throw error;
+      return [];
+    });
+  const [population, commonProducts, cattleFilings, pigFilings, filingCorpus, artProducts, resolvedRepositories] = await Promise.all([
     (options.loadScenarios ?? loadApprovedScenarios)(dataRoot),
     (options.loadCommonProducts ?? loadApprovedCommonProducts)(dataRoot),
     cattleFilingsPromise,
     pigFilingsPromise,
     filingCorpusPromise,
+    artProductsPromise,
     repositories ?? resolveRetrievalRepositories({ dataDir: dataRoot }),
   ]);
   const corpusByCategory = (category: "cattle" | "pig") => filingCorpus.filter((entry) => entry.categoryId === category);
@@ -404,6 +424,38 @@ export const searchOffers = async (
     };
   });
 
+  const art = artProducts.map((product) => {
+    const { offering, artwork, artist, platform, analysis } = product;
+    const phase = artPhase(offering.status);
+    const match = matchFields(normalized, {
+      id: offering.id,
+      title: `${artwork.title} ${offering.title}`,
+      artist: `${artist.nameKo} ${artist.nameEn ?? ""}`,
+      artwork: `${artwork.medium ?? ""} ${artwork.productionYear ?? ""} ${artwork.series ?? ""}`,
+      platform: platform.name,
+      category: `art ${CATEGORY_ALIASES.art.join(" ")}`,
+      phase: `${phase} ${PHASE_ALIASES[phase]}`,
+      amount: `${offering.minimumInvestment ?? ""} ${offering.unitPrice ?? ""} ${offering.totalOfferingAmount ?? ""}`,
+      analysis: `${analysis.headline} ${analysis.summary} ${analysis.keyReasons.map((reason) => `${reason.title} ${reason.finding} ${reason.implication}`).join(" ")}`,
+    });
+    const semantic = semanticScore("art", offering.id, "scenario", "common", SYNTHETIC_ART_SCENARIO_ID);
+    return {
+      id: offering.id,
+      productId: offering.id,
+      categoryId: "art" as const,
+      title: `${artwork.title} · ${artist.nameKo}`,
+      assetKind: "art" as const,
+      phase,
+      ...(offering.minimumInvestment === null ? {} : { minimumInvestmentWon: offering.minimumInvestment }),
+      href: `/art?scope=current&product=${encodeURIComponent(offering.id)}#selected-art-product`,
+      matchedFields: semantic > 0 ? [...match.matchedFields, "semantic"] : match.matchedFields,
+      isScenario: true,
+      dataNature: "scenario" as const,
+      namespace: "common" as const,
+      score: match.score + semantic * 30,
+    };
+  });
+
   const pig = [...pigFilingByProduct].flatMap(([productId, filing]) => {
     const corpus = filingCorpus.find((entry) => entry.categoryId === "pig" && entry.productId === productId);
     const title = pigFilings.find((item) => item.registry.productId === productId)?.document.title ??
@@ -433,7 +485,7 @@ export const searchOffers = async (
     }];
   });
 
-  const results = [...new Map([...published, ...pig, ...common, ...scenarios].map((item) => [
+  const results = [...new Map([...published, ...pig, ...art, ...common, ...scenarios].map((item) => [
     `${item.categoryId}/${item.id}/${item.dataNature}/${item.namespace}`,
     item,
   ])).values()]

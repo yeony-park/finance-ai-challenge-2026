@@ -125,6 +125,7 @@ type EvidenceExample = string | { readonly label: string; readonly q: string };
 
 export const safeCitationUrl = (value: string): string | null => {
   if (/^\/scenario-documents\/[a-zA-Z0-9][a-zA-Z0-9._-]*\.pdf$/.test(value)) return value;
+  if (/^\/art\?product=synthetic-offering-\d{2}$/.test(value)) return value;
   try {
     const url = new URL(value);
     return url.protocol === "http:" || url.protocol === "https:" ? value : null;
@@ -177,8 +178,12 @@ export function EvidenceResultPanel({ result }: { readonly result: EvidenceResul
           <ul className={s.citationList}>
             {result.evidence.map((item) => {
               const url = safeCitationUrl(item.sourceUrl);
-              const href = url ? `${url.replace(/#.*$/, "")}#page=${item.page}` : null;
-              const label = `${item.title} · ${item.page}쪽 · ${item.asOf} 기준`;
+              const isArtJson = url?.startsWith("/art?product=synthetic-offering-") === true;
+              const href = url
+                ? isArtJson ? `${url}#selected-art-product` : `${url.replace(/#.*$/, "")}#page=${item.page}`
+                : null;
+              const locator = isArtJson ? `근거 섹션 ${item.page}` : `${item.page}쪽`;
+              const label = `${item.title} · ${locator} · ${item.asOf} 기준`;
               return (
                 <li key={item.chunkId}>
                   {href ? (

@@ -11,6 +11,7 @@ import { containsObviousPii } from "../document-extraction";
 import type { CommonChunkRecord, CommonDocumentRecord } from "../schema";
 import { loadFilingCorpusIfPresent } from "../filing-corpus";
 import type { LiveAnswerGenerator } from "../live-answer";
+import { listSyntheticArtKnowledgeIfPresent } from "@/lib/art/synthetic-catalog";
 import { loadGenericCorpusDocuments } from "./generic-corpus";
 import {
   LOCAL_RAG_CHUNKING_VERSION,
@@ -271,6 +272,55 @@ const genericSemanticChunks = async (
   });
 };
 
+const syntheticArtSemanticChunks = async (
+  dataRoot: string,
+): Promise<readonly CanonicalSemanticChunk[]> => {
+  const groups = await listSyntheticArtKnowledgeIfPresent(dataRoot);
+  return groups.flatMap(({ knowledge }) => {
+    const document = knowledge.documents[0];
+    if (!document || !document.approvedForExternalAi || document.piiReviewStatus !== "passed") return [];
+    const scope = {
+      categoryId: document.categoryId,
+      productId: document.productId,
+      scenarioId: document.scenarioId ?? null,
+      dataNature: document.dataNature,
+    };
+    const approvalReferenceKey = `synthetic-art:${hashJson({
+      scope,
+      sourceHash: document.sourceHash,
+      chunks: knowledge.chunks.map((chunk) => [chunk.chunkId, chunk.chunkHash]),
+    })}`;
+    return knowledge.chunks.flatMap((chunk): CanonicalSemanticChunk[] => {
+      if (
+        !chunk.approvedForExternalAi ||
+        chunk.piiReviewStatus !== "passed" ||
+        chunk.sourceHash !== document.sourceHash ||
+        containsObviousPii(chunk.canonicalText)
+      ) return [];
+      return [{
+        namespace: "common",
+        scope,
+        approvalReferenceKey,
+        documentId: chunk.documentId,
+        chunkId: chunk.chunkId,
+        title: chunk.title,
+        sourceUrl: chunk.sourceUrl,
+        sourceKind: chunk.sourceKind,
+        asOf: chunk.asOf,
+        page: chunk.page,
+        text: chunk.text,
+        canonicalText: chunk.canonicalText,
+        sourceHash: chunk.sourceHash,
+        chunkHash: chunk.chunkHash,
+        contentHash: hashJson(chunk.canonicalText),
+        limitations: chunk.limitations,
+        approvedForExternalAi: true,
+        piiReviewStatus: "passed",
+      }];
+    });
+  });
+};
+
 export const collectCanonicalSemanticCorpus = async (
   dataRoot = "data",
 ): Promise<CanonicalSemanticCorpus> => {
@@ -315,6 +365,7 @@ export const collectCanonicalSemanticCorpus = async (
   }
   const chunks = [
     ...groups.flatMap(({ documents, chunks, namespace }) => eligibleChunks(documents, chunks, namespace)),
+    ...await syntheticArtSemanticChunks(dataRoot),
     ...await genericSemanticChunks(dataRoot),
   ]
     .sort((left, right) => left.chunkId.localeCompare(right.chunkId));
