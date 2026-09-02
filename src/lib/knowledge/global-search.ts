@@ -50,6 +50,10 @@ export interface GlobalSearchResponse {
     readonly answer: string;
     readonly citedProductIds: readonly string[];
   };
+  readonly generatedGeneralAnswer?: {
+    readonly answer: string;
+    readonly citedSourceIds: readonly string[];
+  };
   readonly guidance?: {
     readonly message: string;
     readonly reviewAreas: readonly ReviewAreaId[];

@@ -20,6 +20,7 @@ import {
   parseDeterministicAmountFilter,
   retrieveExactProductEvidence,
   SearchPlanSchema,
+  validateGeneralAnswer,
 } from "../search-orchestration";
 import { ScenarioOfferSchema } from "../schema";
 import { validScenarioOffer } from "./fixtures";
@@ -328,6 +329,200 @@ describe("bounded search orchestration", () => {
       strategy: "hybrid",
       planner: { used: true, degraded: false },
     });
+  });
+
+  test("직접 입력한 일반 질의는 상품 결과와 분리해 semantic 근거와 검증된 AI 답변을 반환한다", async () => {
+    const root = mkdtempSync(path.join(os.tmpdir(), "general-search-"));
+    roots.push(root);
+    const dbPath = path.join(root, "knowledge.sqlite");
+    const approvalReferenceKey = `canonical:${"9".repeat(64)}`;
+    const generalCorpus: CanonicalSemanticCorpus = {
+      contentVersion: `canonical-${"8".repeat(64)}`,
+      scopes: [{
+        categoryId: "general",
+        productId: "general-knowledge",
+        scenarioId: null,
+        dataNature: "observed",
+        approvalReferenceKey,
+      }],
+      chunks: [{
+        namespace: "general",
+        scope: { categoryId: "general", productId: "general-knowledge", scenarioId: null, dataNature: "observed" },
+        approvalReferenceKey,
+        documentId: "fsc-guide",
+        chunkId: "general-fsc-guide-0001",
+        title: "금융위원회 조각투자 가이드라인",
+        sourceUrl: "https://example.com/fsc-guide",
+        sourceKind: "official-document",
+        asOf: "2026-09-02",
+        page: 1,
+        text: "조각투자는 권리 구조와 유동성 위험을 확인해야 합니다.",
+        canonicalText: "조각투자는 권리 구조와 유동성 위험을 확인해야 합니다.",
+        sourceHash: "6".repeat(64),
+        chunkHash: "7".repeat(64),
+        contentHash: "5".repeat(64),
+        limitations: [],
+        approvedForExternalAi: true,
+        piiReviewStatus: "passed",
+      }],
+    };
+    const embedder = {
+      async embedDocuments() { return [vector()]; },
+      async embedQuery() { return vector(); },
+    };
+    await buildSemanticIndex({ apply: true, apiKey: "fake", dbPath, corpus: generalCorpus, embedder });
+    const response = await orchestrateGlobalSearch(
+      { query: "조각투자는 어떤 위험을 확인해야 하나요?", limit: 10 },
+      {
+        enabled: true,
+        runtimeAiAllowed: true,
+        answerEnabled: true,
+        apiKey: "fake",
+        dbPath,
+        corpus: generalCorpus,
+        embedder,
+        planner: async () => ({
+          target: "general",
+          semanticQuery: "조각투자 권리 구조 유동성 위험",
+          categoryId: null,
+          assetKind: null,
+          phase: null,
+          minimumInvestmentWonMin: null,
+          minimumInvestmentWonMax: null,
+        }),
+        generalAnswerer: async () => ({
+          citedEvidenceHashes: ["7".repeat(64)],
+        }),
+      },
+    );
+    expect(response.results).toEqual([]);
+    expect(response.genericEvidence).toEqual([expect.objectContaining({ sourceId: "fsc-guide" })]);
+    expect(response.generatedGeneralAnswer).toEqual({
+      answer: "조각투자는 권리 구조와 유동성 위험을 확인해야 합니다.",
+      citedSourceIds: ["fsc-guide"],
+    });
+    expect(response.retrieval).toMatchObject({
+      semantic: true,
+      strategy: "semantic",
+      planner: { used: true, degraded: false },
+      storage: { offerings: "not-used" },
+    });
+    const methodology = await orchestrateGlobalSearch(
+      { query: "이 서비스에서 대조 불가는 무슨 뜻이고 출처 기준일은 왜 확인해야 하나요?", limit: 10 },
+      {
+        enabled: true,
+        runtimeAiAllowed: true,
+        answerEnabled: false,
+        apiKey: "fake",
+        dbPath,
+        corpus: generalCorpus,
+        embedder,
+        planner: async () => ({
+          target: "general",
+          semanticQuery: "대조 불가 출처 기준일",
+          categoryId: null,
+          assetKind: null,
+          phase: null,
+          minimumInvestmentWonMin: null,
+          minimumInvestmentWonMax: null,
+        }),
+      },
+    );
+    expect(methodology.results).toEqual([]);
+    expect(methodology.retrieval).toMatchObject({ semantic: true, strategy: "semantic" });
+  });
+
+  test("일반 답변은 LLM 자유문을 거부하고 선택된 근거 원문만 서버에서 조합한다", () => {
+    const hash = "a".repeat(64);
+    const input = {
+      query: "조각투자는 무엇인가요?",
+      evidence: [{
+        sourceId: "fsc-guide",
+        label: "금융위원회 가이드라인",
+        excerpt: "조각투자는 분할한 청구권에 투자하거나 거래하는 형태입니다.",
+        asOf: "2026-09-02",
+        hash,
+      }],
+    };
+    expect(validateGeneralAnswer({ citedEvidenceHashes: [hash] }, input)).toEqual({
+      answer: input.evidence[0]!.excerpt,
+      citedSourceIds: ["fsc-guide"],
+    });
+    expect(validateGeneralAnswer({
+      answer: "모든 조각투자는 금융위 사전승인을 받습니다.",
+      citedEvidenceHashes: [hash],
+    }, input)).toBeUndefined();
+    expect(validateGeneralAnswer({ citedEvidenceHashes: ["b".repeat(64)] }, input)).toBeUndefined();
+    expect(validateGeneralAnswer({ citedEvidenceHashes: [hash, hash] }, input)).toBeUndefined();
+  });
+
+  test("명시 상품 질의는 planner가 general로 오분류해도 상품 경로를 유지한다", async () => {
+    let generalAnswerCalls = 0;
+    const response = await orchestrateGlobalSearch(
+      { query: "한우 1호 위험은 무엇인가요?", limit: 10 },
+      {
+        enabled: true,
+        runtimeAiAllowed: true,
+        answerEnabled: true,
+        apiKey: "fake",
+        planner: async () => ({
+          target: "general",
+          semanticQuery: "한우 1호 위험",
+          categoryId: null,
+          assetKind: null,
+          phase: null,
+          minimumInvestmentWonMin: null,
+          minimumInvestmentWonMax: null,
+        }),
+        embedder: {
+          async embedDocuments() { throw new Error("not used"); },
+          async embedQuery() { throw new Error("provider unavailable"); },
+        },
+        generalAnswerer: async () => {
+          generalAnswerCalls += 1;
+          return { citedEvidenceHashes: [] };
+        },
+        answerer: async ({ products }) => ({ citedProductIds: [products[0]!.productId] }),
+      },
+    );
+    expect(generalAnswerCalls).toBe(0);
+    expect(response.results).toEqual(expect.arrayContaining([
+      expect.objectContaining({ productId: "livestock-1" }),
+    ]));
+    expect(response.generatedGeneralAnswer).toBeUndefined();
+  });
+
+  test("planner가 자산군 조건을 추출하면 general target이어도 상품 경로를 강제한다", async () => {
+    let generalAnswerCalls = 0;
+    const response = await orchestrateGlobalSearch(
+      { query: "돼지 상품 위험은 무엇인가요?", limit: 10 },
+      {
+        enabled: true,
+        runtimeAiAllowed: true,
+        answerEnabled: true,
+        apiKey: "fake",
+        planner: async () => ({
+          target: "general",
+          semanticQuery: "돼지 상품 위험",
+          categoryId: "pig",
+          assetKind: "livestock",
+          phase: null,
+          minimumInvestmentWonMin: null,
+          minimumInvestmentWonMax: null,
+        }),
+        embedder: {
+          async embedDocuments() { throw new Error("not used"); },
+          async embedQuery() { throw new Error("provider unavailable"); },
+        },
+        generalAnswerer: async () => {
+          generalAnswerCalls += 1;
+          return { citedEvidenceHashes: [] };
+        },
+      },
+    );
+    expect(generalAnswerCalls).toBe(0);
+    expect(response.generatedGeneralAnswer).toBeUndefined();
+    expect(response.retrieval.planner).toMatchObject({ used: true });
   });
 
   test("extra SQL 필드 plan은 거부하고 SQL이나 embedding을 실행하지 않는다", async () => {

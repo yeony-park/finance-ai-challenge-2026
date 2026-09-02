@@ -80,7 +80,7 @@ export const findPublishedOfferingScope = async (
 };
 
 export const isGenericKnowledgeQuery = (query: string): boolean =>
-  /(?:공시|원장|대조|검증|확인|제도|방법|무엇|어떻게|주의|위험)/.test(query);
+  /(?:공시|원장|대조|검증|확인|제도|방법|절차|무엇|뭐|어떻게|주의|위험|원금|유동성|수수료|세금|출처|기준일)/.test(query);
 
 export const retrieveGenericKnowledge = async (
   repository: RagSearchRepository,

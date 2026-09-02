@@ -11,6 +11,7 @@ import { containsObviousPii } from "../document-extraction";
 import type { CommonChunkRecord, CommonDocumentRecord } from "../schema";
 import { loadFilingCorpusIfPresent } from "../filing-corpus";
 import type { LiveAnswerGenerator } from "../live-answer";
+import { loadGenericCorpusDocuments } from "./generic-corpus";
 import {
   LOCAL_RAG_CHUNKING_VERSION,
   LOCAL_RAG_MODEL_ID,
@@ -29,7 +30,7 @@ interface FilingExternalAiApproval {
 }
 
 export interface CanonicalSemanticChunk {
-  readonly namespace: "common" | "legacy-scenario";
+  readonly namespace: "common" | "legacy-scenario" | "general";
   readonly scope: Omit<LocalRagScope, "approvalReferenceKey">;
   readonly approvalReferenceKey: string;
   readonly documentId: string;
@@ -48,6 +49,13 @@ export interface CanonicalSemanticChunk {
   readonly approvedForExternalAi: true;
   readonly piiReviewStatus: "passed";
 }
+
+export const GENERAL_KNOWLEDGE_SCOPE = {
+  categoryId: "general",
+  productId: "general-knowledge",
+  scenarioId: null,
+  dataNature: "observed",
+} as const satisfies Omit<LocalRagScope, "approvalReferenceKey">;
 
 export interface CanonicalSemanticCorpus {
   readonly contentVersion: string;
@@ -218,6 +226,51 @@ const eligibleChunks = (
   });
 };
 
+const genericSemanticChunks = async (
+  dataRoot: string,
+): Promise<readonly CanonicalSemanticChunk[]> => {
+  const documents = await loadGenericCorpusDocuments(dataRoot);
+  const approvalReferenceKey = `canonical:${hashJson(documents)}`;
+  return documents.flatMap((document) => {
+    const sourceHash = hashJson({
+      sourceId: document.sourceId,
+      title: document.title,
+      sourceUrl: document.sourceUrl,
+      asOf: document.asOf,
+      chunks: document.chunks,
+    });
+    return document.chunks.flatMap((chunk): CanonicalSemanticChunk[] => {
+      const canonicalText = chunk.content.replace(/\s+/g, " ").trim();
+      if (containsObviousPii(canonicalText)) return [];
+      const chunkHash = hashJson({
+        sourceHash,
+        chunkIndex: chunk.chunkIndex,
+        canonicalText,
+      });
+      return [{
+        namespace: "general",
+        scope: GENERAL_KNOWLEDGE_SCOPE,
+        approvalReferenceKey,
+        documentId: document.sourceId,
+        chunkId: `general-${document.sourceId}-${String(chunk.chunkIndex + 1).padStart(4, "0")}`,
+        title: document.title,
+        sourceUrl: document.sourceUrl,
+        sourceKind: "official-document",
+        asOf: document.asOf,
+        page: chunk.chunkIndex + 1,
+        text: canonicalText,
+        canonicalText,
+        sourceHash,
+        chunkHash,
+        contentHash: hashJson(canonicalText),
+        limitations: ["공개 자료를 일반 질의 검색용으로 정규화한 청크입니다."],
+        approvedForExternalAi: true,
+        piiReviewStatus: "passed",
+      }];
+    });
+  });
+};
+
 export const collectCanonicalSemanticCorpus = async (
   dataRoot = "data",
 ): Promise<CanonicalSemanticCorpus> => {
@@ -260,7 +313,10 @@ export const collectCanonicalSemanticCorpus = async (
       namespace: "common" as const,
     });
   }
-  const chunks = groups.flatMap(({ documents, chunks, namespace }) => eligibleChunks(documents, chunks, namespace))
+  const chunks = [
+    ...groups.flatMap(({ documents, chunks, namespace }) => eligibleChunks(documents, chunks, namespace)),
+    ...await genericSemanticChunks(dataRoot),
+  ]
     .sort((left, right) => left.chunkId.localeCompare(right.chunkId));
   const scopesByKey = new Map<string, LocalRagScope>();
   for (const chunk of chunks) {

@@ -8,7 +8,7 @@ import type { ProductKnowledgeRepository } from "@/lib/db/repositories/types";
 import type { CanonicalSemanticCorpus } from "../corpus";
 import type { LocalRagEmbedder } from "../embedding";
 import { buildSemanticIndex } from "../index-cli";
-import { searchSemanticKnowledge } from "../semantic";
+import { searchSemanticGeneralKnowledge, searchSemanticKnowledge } from "../semantic";
 import { LOCAL_RAG_VECTOR_DIMENSION } from "../types";
 
 const roots: string[] = [];
@@ -56,6 +56,42 @@ const corpus: CanonicalSemanticCorpus = {
   scopes: [ragScope],
   chunks: [semanticChunk],
 };
+const generalScope = {
+  categoryId: "general" as const,
+  productId: "general-knowledge",
+  scenarioId: null,
+  dataNature: "observed" as const,
+  approvalReferenceKey: `canonical:${"9".repeat(64)}`,
+};
+const generalCorpus: CanonicalSemanticCorpus = {
+  contentVersion: `canonical-${"8".repeat(64)}`,
+  scopes: [generalScope],
+  chunks: [{
+    namespace: "general",
+    scope: {
+      categoryId: generalScope.categoryId,
+      productId: generalScope.productId,
+      scenarioId: null,
+      dataNature: generalScope.dataNature,
+    },
+    approvalReferenceKey: generalScope.approvalReferenceKey,
+    documentId: "fsc-guide",
+    chunkId: "general-fsc-guide-0001",
+    title: "금융위원회 조각투자 가이드라인",
+    sourceUrl: "https://example.com/fsc-guide",
+    sourceKind: "official-document",
+    asOf: "2026-09-02",
+    page: 1,
+    text: "조각투자에서는 취득하는 권리와 유동성 위험을 확인해야 합니다.",
+    canonicalText: "조각투자에서는 취득하는 권리와 유동성 위험을 확인해야 합니다.",
+    sourceHash: "6".repeat(64),
+    chunkHash: "7".repeat(64),
+    contentHash: "5".repeat(64),
+    limitations: ["공식 가이드라인 요약"],
+    approvedForExternalAi: true,
+    piiReviewStatus: "passed",
+  }],
+};
 const repository: ProductKnowledgeRepository = {
   mode: "file",
   async findExact(scope) {
@@ -91,6 +127,31 @@ const repository: ProductKnowledgeRepository = {
 };
 
 describe("exact-scope semantic knowledge adapter", () => {
+  test("일반 지식은 상품 scope와 분리된 SQLite 범위에서 출처 근거로 검색한다", async () => {
+    const root = mkdtempSync(path.join(os.tmpdir(), "semantic-general-"));
+    roots.push(root);
+    const dbPath = path.join(root, "knowledge.sqlite");
+    const embedder: LocalRagEmbedder = {
+      async embedDocuments() { return [vector()]; },
+      async embedQuery() { return vector(); },
+    };
+    await buildSemanticIndex({ apply: true, apiKey: "fake", dbPath, corpus: generalCorpus, embedder });
+    const result = await searchSemanticGeneralKnowledge({
+      query: "조각투자에서 무엇을 확인해야 하나요",
+      enabled: true,
+      dbPath,
+      corpus: generalCorpus,
+      embedder,
+    });
+    expect(result).toMatchObject({ semantic: true, degraded: false });
+    expect(result.evidence).toEqual([expect.objectContaining({
+      sourceId: "fsc-guide",
+      excerpt: generalCorpus.chunks[0]!.text,
+      productId: null,
+      categoryId: null,
+    })]);
+  });
+
   test("keyword가 없을 때 exact SQLite hit을 canonical hash로 재검증한다", async () => {
     const root = mkdtempSync(path.join(os.tmpdir(), "semantic-search-"));
     roots.push(root);

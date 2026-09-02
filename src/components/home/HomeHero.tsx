@@ -109,6 +109,33 @@ export function AiSearchAnswerPanel({
   );
 }
 
+export function GeneralAiAnswerPanel({
+  generatedAnswer,
+  evidence,
+}: {
+  readonly generatedAnswer: NonNullable<SearchResponse["generatedGeneralAnswer"]>;
+  readonly evidence: readonly GenericKnowledgeEvidence[];
+}) {
+  const citedIds = new Set(generatedAnswer.citedSourceIds);
+  const citedEvidence = evidence.filter((item) => citedIds.has(item.sourceId));
+  return (
+    <div className={`${search.panel} ${visual.panel}`}>
+      <h3 className={`${search.panelTitle} ${visual.panelTitle}`}>AI 일반 안내</h3>
+      <div className={`${search.panelBody} ${visual.panelBody}`}>
+        <p>{generatedAnswer.answer}</p>
+      </div>
+      {citedEvidence.length > 0 ? (
+        <p className={home.aiAnswerNote}>
+          근거 · {[...new Set(citedEvidence.map((item) => item.label))].join(" · ")}
+        </p>
+      ) : null}
+      <p className={home.aiAnswerNote}>
+        공개 근거를 바탕으로 생성한 일반 안내이며, 특정 상품의 최신 조건은 해당 공시를 확인해야 합니다.
+      </p>
+    </div>
+  );
+}
+
 export function ReviewGuidancePanel({ guidance }: { readonly guidance: NonNullable<SearchResponse["guidance"]> }) {
   return (
     <div className={`${search.panel} ${visual.panel}`}>
@@ -177,6 +204,7 @@ export function HomeHero() {
   const [match, setMatch] = useState<ScaffoldMatch | null>(null);
   const [results, setResults] = useState<readonly SearchResult[] | null>(null);
   const [generatedAnswer, setGeneratedAnswer] = useState<SearchResponse["generatedAnswer"] | null>(null);
+  const [generatedGeneralAnswer, setGeneratedGeneralAnswer] = useState<SearchResponse["generatedGeneralAnswer"] | null>(null);
   const [guidance, setGuidance] = useState<SearchResponse["guidance"] | null>(null);
   const [genericEvidence, setGenericEvidence] = useState<readonly GenericKnowledgeEvidence[] | null>(null);
   const [hasEmptyResults, setHasEmptyResults] = useState(false);
@@ -194,7 +222,7 @@ export function HomeHero() {
   const titlePrefixRef = useRef<HTMLSpanElement>(null);
   const titleQuestionRef = useRef<HTMLSpanElement>(null);
   const scaffoldRef = useRef<HTMLDivElement>(null);
-  const hasApiOutput = results !== null || generatedAnswer !== null || guidance !== null || genericEvidence !== null || hasEmptyResults || hasSearchError;
+  const hasApiOutput = results !== null || generatedAnswer !== null || generatedGeneralAnswer !== null || guidance !== null || genericEvidence !== null || hasEmptyResults || hasSearchError;
   const isSearchOpen = match !== null || hasApiOutput || isSearching || isSearchClosing;
   const visualMatch: ScaffoldMatch | null = isSearchOpen ? match ?? { kind: "none" } : null;
 
@@ -217,6 +245,7 @@ export function HomeHero() {
       setQuery("");
       setResults(null);
       setGeneratedAnswer(null);
+      setGeneratedGeneralAnswer(null);
       setGuidance(null);
       setGenericEvidence(null);
       setHasEmptyResults(false);
@@ -237,6 +266,7 @@ export function HomeHero() {
     setMatch(null);
     setResults(null);
     setGeneratedAnswer(null);
+    setGeneratedGeneralAnswer(null);
     setGuidance(null);
     setGenericEvidence(null);
     setHasEmptyResults(false);
@@ -254,9 +284,10 @@ export function HomeHero() {
       const generic = body.genericEvidence ?? [];
       setResults(body.mode === "matches" && found.length > 0 ? found : null);
       setGeneratedAnswer(body.generatedAnswer ?? null);
+      setGeneratedGeneralAnswer(body.generatedGeneralAnswer ?? null);
       setGuidance(body.mode === "review-guidance" ? body.guidance ?? null : null);
       setGenericEvidence(generic.length > 0 ? generic : null);
-      setHasEmptyResults(body.mode === "matches" && found.length === 0 && generic.length === 0 && !body.generatedAnswer);
+      setHasEmptyResults(body.mode === "matches" && found.length === 0 && generic.length === 0 && !body.generatedAnswer && !body.generatedGeneralAnswer);
     } catch {
       setHasSearchError(true);
     } finally {
@@ -275,6 +306,7 @@ export function HomeHero() {
     setQuery(label);
     setResults(null);
     setGeneratedAnswer(null);
+    setGeneratedGeneralAnswer(null);
     setGuidance(null);
     setGenericEvidence(null);
     setHasEmptyResults(false);
@@ -293,6 +325,7 @@ export function HomeHero() {
       setQuery("");
       setResults(null);
       setGeneratedAnswer(null);
+      setGeneratedGeneralAnswer(null);
       setGuidance(null);
       setGenericEvidence(null);
       setHasEmptyResults(false);
@@ -319,8 +352,9 @@ export function HomeHero() {
           <HomeSearchScaffold scaffoldRef={scaffoldRef} query={query} match={match} isSuggestionsOpen={isSuggestionsOpen} onQueryChange={setQuery} onSuggestionsOpenChange={setIsSuggestionsOpen} onSubmit={handleSubmit} onChip={handleChip} />
           {hasApiOutput || isSearching ? (
             <div className={`${search.answer} ${home.apiAnswer}`} aria-live="polite">
-              {isSearching ? <div className={`${search.panel} ${visual.panel}`}><p className={`${search.panelBody} ${visual.panelBody}`}>상품을 찾고 있습니다.</p></div> : null}
+              {isSearching ? <div className={`${search.panel} ${visual.panel}`}><p className={`${search.panelBody} ${visual.panelBody}`}>관련 상품과 근거를 찾고 있습니다.</p></div> : null}
               {generatedAnswer ? <AiSearchAnswerPanel generatedAnswer={generatedAnswer} results={results ?? []} /> : null}
+              {generatedGeneralAnswer ? <GeneralAiAnswerPanel generatedAnswer={generatedGeneralAnswer} evidence={genericEvidence ?? []} /> : null}
               {results ? <SearchResultsPanel results={results} /> : null}
               {guidance ? <ReviewGuidancePanel guidance={guidance} /> : null}
               {genericEvidence ? <GenericEvidencePanel evidence={genericEvidence} /> : null}

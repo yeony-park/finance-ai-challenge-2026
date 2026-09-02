@@ -2,7 +2,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, test } from "vitest";
 
-import { AiSearchAnswerPanel, GenericEvidencePanel, NoSearchResultsPanel, ReviewGuidancePanel, SearchResultsPanel } from "../HomeHero";
+import { AiSearchAnswerPanel, GeneralAiAnswerPanel, GenericEvidencePanel, NoSearchResultsPanel, ReviewGuidancePanel, SearchResultsPanel } from "../HomeHero";
 
 describe("홈 검색 응답 UI", () => {
   test("검색 결과는 상품명, 단계, 상세 링크를 표시한다", () => {
@@ -121,5 +121,32 @@ describe("홈 검색 응답 UI", () => {
     expect(markup).toContain('href="https://example.com/methodology"');
     expect(markup).toContain('rel="noopener noreferrer"');
     expect(markup).not.toContain("검색 결과 없음");
+  });
+
+  test("직접 입력 일반 질의의 AI 답변은 인용된 일반 근거 이름만 표시한다", () => {
+    const evidence = [{
+      sourceId: "fsc-guide",
+      label: "금융위원회 조각투자 가이드라인",
+      url: "https://example.com/fsc-guide",
+      excerpt: "권리 구조와 유동성 위험을 확인합니다.",
+      asOf: "2026-09-02",
+      hash: "a".repeat(64),
+      status: "approved" as const,
+      dataNature: "observed" as const,
+      categoryId: null,
+      productId: null,
+      score: 1,
+    }];
+    const markup = renderToStaticMarkup(createElement(GeneralAiAnswerPanel, {
+      generatedAnswer: {
+        answer: "권리 구조와 현금화 조건을 함께 확인해야 합니다.",
+        citedSourceIds: ["fsc-guide", "not-retrieved"],
+      },
+      evidence,
+    }));
+    expect(markup).toContain("AI 일반 안내");
+    expect(markup).toContain("권리 구조와 현금화 조건을 함께 확인해야 합니다.");
+    expect(markup).toContain("금융위원회 조각투자 가이드라인");
+    expect(markup).not.toContain("not-retrieved");
   });
 });

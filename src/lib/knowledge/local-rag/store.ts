@@ -27,7 +27,7 @@ import {
 const VECTOR_BYTES = LOCAL_RAG_VECTOR_DIMENSION * Float32Array.BYTES_PER_ELEMENT;
 const HASH = /^[a-f0-9]{64}$/;
 const REFERENCE_KEY = /^[A-Za-z0-9][A-Za-z0-9._:/-]*$/;
-const CATEGORIES = new Set(["cattle", "pig", "art", "real-estate"]);
+const CATEGORIES = new Set(["general", "cattle", "pig", "art", "real-estate"]);
 const NORM_TOLERANCE = 1e-4;
 const integrityCache = new Map<string, string>();
 
@@ -177,7 +177,7 @@ const SCHEMA = `
     chunk_hash TEXT NOT NULL CHECK (length(chunk_hash) = 64),
     content_hash TEXT NOT NULL CHECK (length(content_hash) = 64),
     chunking_version TEXT NOT NULL,
-    category_id TEXT NOT NULL CHECK (category_id IN ('cattle','pig','art','real-estate')),
+    category_id TEXT NOT NULL CHECK (category_id IN ('general','cattle','pig','art','real-estate')),
     product_id TEXT NOT NULL,
     scenario_id TEXT,
     data_nature TEXT NOT NULL CHECK (data_nature IN ('observed','scenario')),
@@ -404,7 +404,7 @@ export const readLocalRagCache = (
       .prepare("SELECT schema_version, model_id, vector_dimension FROM meta WHERE singleton = 1")
       .get();
     if (
-      metadata?.schema_version !== LOCAL_RAG_SCHEMA_VERSION ||
+      (metadata?.schema_version !== LOCAL_RAG_SCHEMA_VERSION && metadata?.schema_version !== 2) ||
       metadata.model_id !== LOCAL_RAG_MODEL_ID ||
       metadata.vector_dimension !== LOCAL_RAG_VECTOR_DIMENSION
     ) return [];

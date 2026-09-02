@@ -2,6 +2,7 @@ import { existsSync, mkdtempSync, rmSync } from "node:fs";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
+import { DatabaseSync } from "node:sqlite";
 import { afterEach, describe, expect, test } from "vitest";
 
 import {
@@ -120,6 +121,26 @@ describe("semantic index CLI core", () => {
     expect(reused).toMatchObject({ reused: 1, embedded: 0 });
     await buildSemanticIndex({ apply: true, apiKey: "fake", dbPath, corpus: corpus("d".repeat(64)), embedder });
     expect(calls).toBe(2);
+  });
+
+  test("schema v2 상품 벡터는 v3 일반 지식 색인 전환 때 재사용한다", async () => {
+    const root = mkdtempSync(path.join(os.tmpdir(), "semantic-index-"));
+    roots.push(root);
+    const dbPath = path.join(root, "knowledge.sqlite");
+    await buildSemanticIndex({
+      apply: true,
+      apiKey: "fake",
+      dbPath,
+      corpus: corpus(),
+      embedder: { async embedDocuments() { return [vector()]; }, async embedQuery() { return vector(); } },
+    });
+    const database = new DatabaseSync(dbPath);
+    database.prepare("UPDATE meta SET schema_version = 2 WHERE singleton = 1").run();
+    database.close();
+    await expect(buildSemanticIndex({ apply: false, dbPath, corpus: corpus() })).resolves.toMatchObject({
+      reused: 1,
+      pending: 0,
+    });
   });
 
   test("provider 실패 시 기존 SQLite contentVersion을 보존한다", async () => {
