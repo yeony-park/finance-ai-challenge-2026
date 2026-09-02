@@ -120,7 +120,7 @@ export function GeneralAiAnswerPanel({
   const citedEvidence = evidence.filter((item) => citedIds.has(item.sourceId));
   return (
     <div className={`${search.panel} ${visual.panel}`}>
-      <h3 className={`${search.panelTitle} ${visual.panelTitle}`}>AI 일반 안내</h3>
+      <h3 className={`${search.panelTitle} ${visual.panelTitle}`}>AI 답변</h3>
       <div className={`${search.panelBody} ${visual.panelBody}`}>
         <p>{generatedAnswer.answer}</p>
       </div>
@@ -130,7 +130,7 @@ export function GeneralAiAnswerPanel({
         </p>
       ) : null}
       <p className={home.aiAnswerNote}>
-        공개 근거를 바탕으로 생성한 일반 안내이며, 특정 상품의 최신 조건은 해당 공시를 확인해야 합니다.
+        검색된 공개 근거만 사용해 생성한 AI 답변이며, 특정 상품의 최신 조건은 해당 공시를 확인해야 합니다.
       </p>
     </div>
   );
@@ -167,9 +167,9 @@ export function GenericEvidencePanel({
 }) {
   return (
     <div className={`${search.panel} ${visual.panel}`}>
-      <h3 className={`${search.panelTitle} ${visual.panelTitle}`}>일반 검토 근거</h3>
+      <h3 className={`${search.panelTitle} ${visual.panelTitle}`}>관련 근거</h3>
       <p className={`${search.panelBody} ${visual.panelBody}`}>
-        상품 검색 결과와 별도로, 공개된 검토 자료에서 관련 내용을 찾았습니다.
+        답변과 관련해 검색된 공개 근거입니다. 출처와 기준일을 함께 확인해 주세요.
       </p>
       <ul className={`${content.sourceList} ${visual.sourceList}`}>
         {evidence.map((item) => {
@@ -352,7 +352,7 @@ export function HomeHero() {
           <HomeSearchScaffold scaffoldRef={scaffoldRef} query={query} match={match} isSuggestionsOpen={isSuggestionsOpen} onQueryChange={setQuery} onSuggestionsOpenChange={setIsSuggestionsOpen} onSubmit={handleSubmit} onChip={handleChip} />
           {hasApiOutput || isSearching ? (
             <div className={`${search.answer} ${home.apiAnswer}`} aria-live="polite">
-              {isSearching ? <div className={`${search.panel} ${visual.panel}`}><p className={`${search.panelBody} ${visual.panelBody}`}>관련 상품과 근거를 찾고 있습니다.</p></div> : null}
+              {isSearching ? <div className={`${search.panel} ${visual.panel}`}><p className={`${search.panelBody} ${visual.panelBody}`}>답변과 근거를 준비하고 있습니다.</p></div> : null}
               {generatedAnswer ? <AiSearchAnswerPanel generatedAnswer={generatedAnswer} results={results ?? []} /> : null}
               {generatedGeneralAnswer ? <GeneralAiAnswerPanel generatedAnswer={generatedGeneralAnswer} evidence={genericEvidence ?? []} /> : null}
               {results ? <SearchResultsPanel results={results} /> : null}

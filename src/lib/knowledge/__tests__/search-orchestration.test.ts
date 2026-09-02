@@ -21,6 +21,8 @@ import {
   retrieveExactProductEvidence,
   SearchPlanSchema,
   validateGeneralAnswer,
+  validateGeneralAnswerCandidate,
+  validateGeneralGroundingReview,
 } from "../search-orchestration";
 import { ScenarioOfferSchema } from "../schema";
 import { validScenarioOffer } from "./fixtures";
@@ -391,14 +393,19 @@ describe("bounded search orchestration", () => {
           minimumInvestmentWonMax: null,
         }),
         generalAnswerer: async () => ({
-          citedEvidenceHashes: ["7".repeat(64)],
+          claims: [{
+            sentence: "조각투자를 검토할 때는 권리 구조와 유동성 위험을 확인해야 합니다.",
+            evidenceHash: "7".repeat(64),
+            exactQuote: "권리 구조와 유동성 위험을 확인해야 합니다.",
+          }],
         }),
+        generalAnswerVerifier: async () => ({ supported: true, unsupportedClaimIndexes: [] }),
       },
     );
     expect(response.results).toEqual([]);
     expect(response.genericEvidence).toEqual([expect.objectContaining({ sourceId: "fsc-guide" })]);
     expect(response.generatedGeneralAnswer).toEqual({
-      answer: "조각투자는 권리 구조와 유동성 위험을 확인해야 합니다.",
+      answer: "조각투자를 검토할 때는 권리 구조와 유동성 위험을 확인해야 합니다.",
       citedSourceIds: ["fsc-guide"],
     });
     expect(response.retrieval).toMatchObject({
@@ -432,7 +439,7 @@ describe("bounded search orchestration", () => {
     expect(methodology.retrieval).toMatchObject({ semantic: true, strategy: "semantic" });
   });
 
-  test("일반 답변은 LLM 자유문을 거부하고 선택된 근거 원문만 서버에서 조합한다", () => {
+  test("일반 AI 답변은 문장별 원문 인용과 근거 해시를 검증한다", () => {
     const hash = "a".repeat(64);
     const input = {
       query: "조각투자는 무엇인가요?",
@@ -444,16 +451,151 @@ describe("bounded search orchestration", () => {
         hash,
       }],
     };
-    expect(validateGeneralAnswer({ citedEvidenceHashes: [hash] }, input)).toEqual({
-      answer: input.evidence[0]!.excerpt,
+    const validDraft = {
+      claims: [{
+        sentence: "조각투자는 분할된 청구권에 투자하거나 이를 거래하는 방식입니다.",
+        evidenceHash: hash,
+        exactQuote: "분할한 청구권에 투자하거나 거래하는 형태입니다.",
+      }],
+    };
+    expect(validateGeneralAnswer(validDraft, input)).toEqual({
+      answer: validDraft.claims[0]!.sentence,
       citedSourceIds: ["fsc-guide"],
     });
     expect(validateGeneralAnswer({
-      answer: "모든 조각투자는 금융위 사전승인을 받습니다.",
-      citedEvidenceHashes: [hash],
+      claims: [{
+        sentence: "모든 조각투자는 금융위 사전승인을 받습니다.",
+        evidenceHash: hash,
+        exactQuote: "금융위 사전승인을 받습니다.",
+      }],
     }, input)).toBeUndefined();
-    expect(validateGeneralAnswer({ citedEvidenceHashes: ["b".repeat(64)] }, input)).toBeUndefined();
-    expect(validateGeneralAnswer({ citedEvidenceHashes: [hash, hash] }, input)).toBeUndefined();
+    expect(validateGeneralAnswer({
+      claims: [{
+        sentence: "조각투자는 청구권을 거래하는 형태입니다.",
+        evidenceHash: "b".repeat(64),
+        exactQuote: "청구권에 투자하거나 거래하는 형태입니다.",
+      }],
+    }, input)).toBeUndefined();
+    expect(validateGeneralAnswer({
+      claims: [{
+        sentence: "이 상품은 안전합니다.",
+        evidenceHash: hash,
+        exactQuote: "분할한 청구권에 투자하거나 거래하는 형태입니다.",
+      }],
+    }, input)).toBeUndefined();
+    expect(validateGeneralAnswer(validDraft, {
+      ...input,
+      evidence: [
+        ...input.evidence,
+        { ...input.evidence[0]!, sourceId: "another-source" },
+      ],
+    })).toBeUndefined();
+
+    const candidate = validateGeneralAnswerCandidate(validDraft, input)!;
+    expect(validateGeneralGroundingReview({
+      supported: true,
+      unsupportedClaimIndexes: [],
+    }, candidate)).toBe(true);
+    expect(validateGeneralGroundingReview({
+      supported: false,
+      unsupportedClaimIndexes: [0],
+    }, candidate)).toBe(false);
+    expect(validateGeneralGroundingReview({
+      supported: true,
+      unsupportedClaimIndexes: [0],
+    }, candidate)).toBe(false);
+    expect(validateGeneralGroundingReview({ supported: true }, candidate)).toBe(false);
+  });
+
+  test("근거 충실성 검증이 실패하면 AI 답변만 생략하고 관련 근거는 유지한다", async () => {
+    const root = mkdtempSync(path.join(os.tmpdir(), "general-grounding-"));
+    roots.push(root);
+    const dbPath = path.join(root, "knowledge.sqlite");
+    const hash = "7".repeat(64);
+    const generalCorpus: CanonicalSemanticCorpus = {
+      contentVersion: `canonical-${"8".repeat(64)}`,
+      scopes: [{
+        categoryId: "general",
+        productId: "general-knowledge",
+        scenarioId: null,
+        dataNature: "observed",
+        approvalReferenceKey: `canonical:${"9".repeat(64)}`,
+      }],
+      chunks: [{
+        namespace: "general",
+        scope: { categoryId: "general", productId: "general-knowledge", scenarioId: null, dataNature: "observed" },
+        approvalReferenceKey: `canonical:${"9".repeat(64)}`,
+        documentId: "fsc-guide",
+        chunkId: "general-fsc-guide-0001",
+        title: "금융위원회 조각투자 가이드라인",
+        sourceUrl: "https://example.com/fsc-guide",
+        sourceKind: "official-document",
+        asOf: "2026-09-02",
+        page: 1,
+        text: "조각투자는 권리 구조와 유동성 위험을 확인해야 합니다.",
+        canonicalText: "조각투자는 권리 구조와 유동성 위험을 확인해야 합니다.",
+        sourceHash: "6".repeat(64),
+        chunkHash: hash,
+        contentHash: "5".repeat(64),
+        limitations: [],
+        approvedForExternalAi: true,
+        piiReviewStatus: "passed",
+      }],
+    };
+    const embedder = {
+      async embedDocuments() { return [vector()]; },
+      async embedQuery() { return vector(); },
+    };
+    await buildSemanticIndex({ apply: true, apiKey: "fake", dbPath, corpus: generalCorpus, embedder });
+    const baseOptions = {
+      enabled: true,
+      runtimeAiAllowed: true,
+      answerEnabled: true,
+      apiKey: "fake",
+      dbPath,
+      corpus: generalCorpus,
+      embedder,
+      planner: async () => ({
+        target: "general" as const,
+        semanticQuery: "조각투자 권리 구조 유동성 위험",
+        categoryId: null,
+        assetKind: null,
+        phase: null,
+        minimumInvestmentWonMin: null,
+        minimumInvestmentWonMax: null,
+      }),
+      generalAnswerer: async () => ({
+        claims: [{
+          sentence: "조각투자를 검토할 때는 유동성 위험을 확인해야 합니다.",
+          evidenceHash: hash,
+          exactQuote: "유동성 위험을 확인해야 합니다.",
+        }],
+      }),
+    };
+    const query = { query: "조각투자는 어떤 위험을 확인해야 하나요?", limit: 10 };
+    const response = await orchestrateGlobalSearch(
+      query,
+      {
+        ...baseOptions,
+        generalAnswerVerifier: async () => ({ supported: false, unsupportedClaimIndexes: [0] }),
+      },
+    );
+    expect(response.genericEvidence).toEqual([expect.objectContaining({ sourceId: "fsc-guide" })]);
+    expect(response.generatedGeneralAnswer).toBeUndefined();
+
+    const malformed = await orchestrateGlobalSearch(query, {
+      ...baseOptions,
+      generalAnswerVerifier: async () => ({ supported: true }),
+    });
+    expect(malformed.genericEvidence).toEqual([expect.objectContaining({ sourceId: "fsc-guide" })]);
+    expect(malformed.generatedGeneralAnswer).toBeUndefined();
+
+    const thrown = await orchestrateGlobalSearch(query, {
+      ...baseOptions,
+      generalAnswerVerifier: async () => { throw new Error("provider unavailable"); },
+    });
+    expect(thrown.genericEvidence).toEqual([expect.objectContaining({ sourceId: "fsc-guide" })]);
+    expect(thrown.generatedGeneralAnswer).toBeUndefined();
   });
 
   test("명시 상품 질의는 planner가 general로 오분류해도 상품 경로를 유지한다", async () => {
@@ -480,7 +622,7 @@ describe("bounded search orchestration", () => {
         },
         generalAnswerer: async () => {
           generalAnswerCalls += 1;
-          return { citedEvidenceHashes: [] };
+          return { claims: [] };
         },
         answerer: async ({ products }) => ({ citedProductIds: [products[0]!.productId] }),
       },
@@ -516,7 +658,7 @@ describe("bounded search orchestration", () => {
         },
         generalAnswerer: async () => {
           generalAnswerCalls += 1;
-          return { citedEvidenceHashes: [] };
+          return { claims: [] };
         },
       },
     );

@@ -99,7 +99,7 @@ describe("홈 검색 응답 UI", () => {
     expect(markup).not.toContain("한우");
   });
 
-  test("상품 결과가 없어도 일반 검토 근거와 안전한 출처를 표시한다", () => {
+  test("상품 결과가 없어도 관련 근거와 안전한 출처를 표시한다", () => {
     const markup = renderToStaticMarkup(createElement(GenericEvidencePanel, {
       evidence: [{
         sourceId: "verification-methodology",
@@ -116,7 +116,8 @@ describe("홈 검색 응답 UI", () => {
       }],
     }));
 
-    expect(markup).toContain("일반 검토 근거");
+    expect(markup).toContain("관련 근거");
+    expect(markup).toContain("답변과 관련해 검색된 공개 근거입니다");
     expect(markup).toContain("공시와 공공 원장을 같은 기준으로 대조합니다.");
     expect(markup).toContain('href="https://example.com/methodology"');
     expect(markup).toContain('rel="noopener noreferrer"');
@@ -144,7 +145,8 @@ describe("홈 검색 응답 UI", () => {
       },
       evidence,
     }));
-    expect(markup).toContain("AI 일반 안내");
+    expect(markup).toContain("AI 답변");
+    expect(markup).toContain("검색된 공개 근거만 사용해 생성한 AI 답변");
     expect(markup).toContain("권리 구조와 현금화 조건을 함께 확인해야 합니다.");
     expect(markup).toContain("금융위원회 조각투자 가이드라인");
     expect(markup).not.toContain("not-retrieved");
