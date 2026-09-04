@@ -60,6 +60,73 @@
   background: var(--ds-bg-muted);
 }
 
+.tabWorkspace {
+  min-width: 0;
+}
+
+.tabNav {
+  position: sticky;
+  z-index: 20;
+  top: var(--ds-header-h);
+  margin-inline: calc(-1 * var(--ds-gutter));
+  padding-inline: var(--ds-gutter);
+  border-bottom: 1px solid var(--ds-line);
+  background: var(--ds-bg);
+}
+
+.tabNavRow {
+  display: flex;
+  gap: var(--ds-space-5);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tabNavRow::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  min-height: var(--ds-control-h-sm);
+  align-items: center;
+  padding: 0 var(--ds-space-1) calc(var(--ds-space-2) - 1px);
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--ds-ink-muted);
+  font: inherit;
+  font-size: var(--ds-text-sm);
+  font-weight: var(--ds-weight-bold);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.tab:hover {
+  color: var(--ds-ink);
+}
+
+.tab:focus-visible {
+  border-radius: var(--ds-radius-sm);
+  outline: none;
+  box-shadow: var(--ds-focus-ring);
+}
+
+.tabActive {
+  border-color: var(--ds-accent);
+  color: var(--ds-ink);
+}
+
+.tabPanel {
+  min-width: 0;
+  min-height: 32rem;
+}
+
+.tabPanel > .section {
+  border-top: 0;
+}
+
 .section {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
