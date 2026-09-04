@@ -188,15 +188,30 @@
   position: relative;
   min-height: 100vh;
   min-height: 100svh;
-  min-height: 100dvh;
+  min-height: max(
+    100dvh,
+    calc(100dvh + var(--ds-section-y-tight) - var(--ds-header-h))
+  );
   padding-block: var(--ds-section-y-tight) var(--ds-space-5);
   overflow: hidden;
-  background: var(--ds-bg-muted);
+  background: var(--ds-hero-dark);
   isolation: isolate;
 }
 
 .introSection::before {
-  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-color: var(--ds-hero-dark);
+  background-image:
+    linear-gradient(var(--ds-hero-blue-tint), var(--ds-hero-blue-tint)),
+    linear-gradient(180deg, rgb(7 17 29 / 0.04), rgb(7 17 29 / 0.34)),
+    url("/intro-first-step-background.webp");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  content: "";
+  pointer-events: none;
 }
 
 .introSection .wrap {
@@ -210,11 +225,12 @@
 }
 
 .introSection .sectionTitle {
-  color: var(--ds-ink);
+  color: var(--ds-ink-invert);
 }
 
 .introSectionHead {
   grid-template-columns: minmax(0, 1fr);
+  border-top-color: rgb(255 255 255 / 0.2);
 }
 
 .introSection .roadmap {
@@ -281,6 +297,10 @@
 }
 
 @media (max-width: 760px) {
+  .introSection::before {
+    background-position: 68% center;
+  }
+
   .roadStep {
     flex-basis: min(88vw, 30rem);
     min-width: min(88vw, 30rem);
