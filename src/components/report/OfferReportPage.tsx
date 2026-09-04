@@ -18,7 +18,7 @@ import {
   buildOfferSchedule,
   isPublishedOfferId,
   OFFERS,
-  PUBLISHED_OFFER_IDS,
+  type OfferEntry,
 } from "@/components/site/offers";
 import { categoryById } from "@/lib/content/categories";
 import { loadFilingFacts } from "@/lib/verify/report/filing-facts";
@@ -46,8 +46,12 @@ import type { AssetKind } from "@/lib/verify/types";
 
 import s from "@/components/report/report.module.css";
 
-interface OfferPageProps {
+export interface OfferPageProps {
   readonly params: Promise<{ readonly id: string }>;
+}
+
+interface OfferReportPageProps extends OfferPageProps {
+  readonly assetKind: AssetKind;
 }
 
 const reportAnalysisHref = (assetKind: AssetKind): string => {
@@ -110,14 +114,30 @@ const loadTrackRecordCard = cache(
   },
 );
 
-export function generateStaticParams() {
-  return PUBLISHED_OFFER_IDS.map((id) => ({ id }));
-}
+const offerForRoute = (
+  offerId: string,
+  assetKind: AssetKind,
+): OfferEntry | null =>
+  OFFERS.find(
+    (offer) => offer.id === offerId && offer.assetKind === assetKind,
+  ) ?? null;
 
-export const dynamicParams = false;
+export const offerStaticParamsFor = (assetKind: AssetKind) =>
+  OFFERS.filter((offer) => offer.assetKind === assetKind).map(({ id }) => ({
+    id,
+  }));
 
-export async function generateMetadata({ params }: OfferPageProps): Promise<Metadata> {
+export async function offerReportMetadata(
+  { params }: OfferPageProps,
+  assetKind: AssetKind,
+): Promise<Metadata> {
   const { id } = await params;
+  if (!offerForRoute(id, assetKind)) {
+    return {
+      title: "리포트를 찾을 수 없습니다",
+      robots: { index: false, follow: false },
+    };
+  }
   const view = await loadOfferView(id);
 
   if (!view) {
@@ -141,14 +161,20 @@ export async function generateMetadata({ params }: OfferPageProps): Promise<Meta
   };
 }
 
-export default async function OfferReportPage({ params }: OfferPageProps) {
+export async function OfferReportPage({
+  params,
+  assetKind,
+}: OfferReportPageProps) {
   const { id } = await params;
+  const offerEntry = offerForRoute(id, assetKind);
+  if (!offerEntry) notFound();
+
   const [view, loaded] = await Promise.all([
     loadOfferView(id),
     loadPublishedReport(id),
   ]);
 
-  if (!view || !loaded) notFound();
+  if (!view || !loaded || loaded.report.assetKind !== assetKind) notFound();
 
   const [watch, replay, narrative, trackRecord, filingFacts] = await Promise.all([
     loadWatchStatus(id),
@@ -158,18 +184,16 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
     loadFilingFacts(id),
   ]);
 
-  const offerEntry = OFFERS.find((offer) => offer.id === id) ?? null;
   const diseaseContext =
-    loaded.report.assetKind === "livestock"
+    assetKind === "livestock"
       ? cattleDiseaseContextForReport(loaded.report)
       : null;
   const sections = reportSectionsFor({
     hasFilingFacts: filingFacts !== null,
     hasDiseaseContext: diseaseContext !== null,
   });
-  const analysisHref = reportAnalysisHref(offerEntry?.assetKind ?? "livestock");
-  const schedule = offerEntry ? buildOfferSchedule(offerEntry, new Date()) : null;
-  const assetKind = offerEntry?.assetKind ?? loaded.report.assetKind;
+  const analysisHref = reportAnalysisHref(assetKind);
+  const schedule = buildOfferSchedule(offerEntry, new Date());
   const categoryLabel = assetKind === "livestock" ? "한우" : "부동산";
 
   return (
@@ -197,11 +221,11 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
               ? "/category-cattle.jpg"
               : "/category-real-estate.jpg",
           imageAlt: `${categoryLabel} 분석 대표 이미지`,
-          status: schedule?.badge ?? "분석 리포트",
+          status: schedule.badge,
           title: view.offer.title,
           meta: view.offer.tag,
           facts: [
-            { label: "청약 기간", value: schedule?.label ?? "공개되지 않음" },
+            { label: "청약 기간", value: schedule.label },
             { label: "대조 기준", value: view.verdict.eyebrow },
             { label: "리포트 기준", value: view.verdict.when },
             { label: "판정 집계", value: view.verdict.itemLine },
@@ -218,15 +242,13 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
           ) : null,
           price: <PriceSection view={view} />,
         }}
-        lifecycle={
-          offerEntry ? (
-            <LifecycleStrip
-              schedule={buildOfferSchedule(offerEntry, new Date())}
-              assetKind={offerEntry.assetKind}
-              isExitVerified={offerEntry.assetKind === "real-estate"}
-            />
-          ) : null
-        }
+        lifecycle={(
+          <LifecycleStrip
+            schedule={schedule}
+            assetKind={offerEntry.assetKind}
+            isExitVerified={offerEntry.assetKind === "real-estate"}
+          />
+        )}
       />
       <ReportFoot analysisHref={analysisHref} />
     </div>

@@ -232,7 +232,7 @@ describe("카테고리 착지 — 입문 어휘 정합", () => {
     expect(leadText).toContain("2,090건");
   });
 
-  test("청약 그룹 어휘는 /offers 목록과 동일하다", () => {
+  test("청약 그룹 어휘는 공모 카드와 동일하다", () => {
     expect(ACTIVE_GROUP_TITLE).toBe("청약 예정·진행 중");
     expect(CLOSED_GROUP_TITLE).toBe("청약 종료 · 사후 검증");
   });

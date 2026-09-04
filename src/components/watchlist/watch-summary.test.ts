@@ -20,6 +20,17 @@ const OFFER: OfferEntry = {
   },
 };
 
+const REAL_ESTATE_OFFER: OfferEntry = {
+  id: "real-estate-a",
+  title: "부동산 A",
+  assetLabel: "부동산",
+  assetKind: "real-estate",
+  subscription: {
+    opensAt: "2025-09-08T10:00:00+09:00",
+    closesAt: "2025-09-22T16:00:00+09:00",
+  },
+};
+
 const WATCH: WatchState = {
   offerId: OFFER.id,
   checkedAt: "2026-08-16T00:52:00+09:00",
@@ -37,8 +48,17 @@ describe("관심 공모 정정 감시 요약", () => {
     const summary = buildWatchSummaryEntry(OFFER, null);
 
     expect(summary.amendmentLine).toBe(WATCH_NO_RECORD);
+    expect(summary.reportHref).toBe("/cattle/products/livestock-9");
     expect(summary.checkedLine).toBeNull();
     expect(summary.isDetectionFailed).toBe(false);
+  });
+
+  test("부동산 관심 공모는 부동산 상품 상세 경로를 사용한다", () => {
+    const summary = buildWatchSummaryEntry(REAL_ESTATE_OFFER, null);
+
+    expect(summary.reportHref).toBe(
+      "/real-estate/products/real-estate-a",
+    );
   });
 
   test("정정 0건과 최근 감시 시각을 표시한다", () => {

@@ -11,6 +11,10 @@ import {
   checklistBridgeLabel,
   TRUST_CHECKLIST,
 } from "@/lib/content/checklist";
+import {
+  checklistReportHref,
+  type ChecklistBridgeOffer,
+} from "@/lib/content/checklist-links";
 import { CONCERN_TAG } from "@/lib/content/onboarding";
 
 import controls from "./home-controls.module.css";
@@ -21,7 +25,7 @@ import { HomeSectionFrame, HomeSectionHeader } from "./HomeSection";
 import s from "./ChecklistBand.module.css";
 
 interface ChecklistBandProps {
-  bridgeOffer?: { id: string; title: string } | null;
+  bridgeOffer?: ChecklistBridgeOffer | null;
 }
 
 export function ChecklistBand({ bridgeOffer = null }: ChecklistBandProps) {
@@ -48,44 +52,53 @@ export function ChecklistBand({ bridgeOffer = null }: ChecklistBandProps) {
         </HomeSectionHeader>
         <Reveal>
         <div>
-          {items.map((item) => (
-            <details key={item.id} className={s.checkItem}>
-              <summary>
-                <span className={s.checkSummaryText}>{item.title}</span>
-                {item.id === profile.concern ? (
-                  <span className={tags.checkTag}>{CONCERN_TAG}</span>
-                ) : null}
-              </summary>
-              <div className={s.checkDetail}>
-                <p>{item.question}</p>
-                <p>{item.why}</p>
-                <p>{item.engineNote}</p>
-                {item.reportChapter && bridgeOffer ? (
-                  <p className={s.checkBridge}>
-                    <Link
-                      href={`/offers/${bridgeOffer.id}#${item.reportChapter.headingId}`}
-                    >
-                      {checklistBridgeLabel(
-                        bridgeOffer.title,
-                        item.reportChapter.label,
-                      )}
-                    </Link>
-                  </p>
-                ) : null}
-                <ul className={content.sourceList}>
-                  {item.sources.map((source) => (
-                    <li key={`${item.id}-${source.url}`}>
-                      확인 경로:{" "}
-                      <a href={source.url} target="_blank" rel="noopener noreferrer">
-                        {source.label}
-                      </a>
-                      {source.note ? ` — ${source.note}` : null}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </details>
-          ))}
+          {items.map((item) => {
+            const reportHref =
+              item.reportChapter && bridgeOffer
+                ? checklistReportHref(bridgeOffer, item.reportChapter)
+                : null;
+
+            return (
+              <details key={item.id} className={s.checkItem}>
+                <summary>
+                  <span className={s.checkSummaryText}>{item.title}</span>
+                  {item.id === profile.concern ? (
+                    <span className={tags.checkTag}>{CONCERN_TAG}</span>
+                  ) : null}
+                </summary>
+                <div className={s.checkDetail}>
+                  <p>{item.question}</p>
+                  <p>{item.why}</p>
+                  <p>{item.engineNote}</p>
+                  {item.reportChapter && bridgeOffer && reportHref ? (
+                    <p className={s.checkBridge}>
+                      <Link href={reportHref}>
+                        {checklistBridgeLabel(
+                          bridgeOffer.title,
+                          item.reportChapter.label,
+                        )}
+                      </Link>
+                    </p>
+                  ) : null}
+                  <ul className={content.sourceList}>
+                    {item.sources.map((source) => (
+                      <li key={`${item.id}-${source.url}`}>
+                        확인 경로:{" "}
+                        <a
+                          href={source.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {source.label}
+                        </a>
+                        {source.note ? ` — ${source.note}` : null}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </details>
+            );
+          })}
         </div>
         </Reveal>
         <ul className={s.checkNotices}>

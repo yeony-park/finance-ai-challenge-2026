@@ -58,6 +58,14 @@ export const categoryIdToAssetKind = (categoryId: string): AssetKind => {
   return assetKind;
 };
 
+export const reportHrefForOffer = (
+  offer: Pick<OfferEntry, "id" | "assetKind">,
+): string => {
+  const categoryId =
+    offer.assetKind === "livestock" ? "cattle" : "real-estate";
+  return `/${categoryId}/products/${encodeURIComponent(offer.id)}`;
+};
+
 export const latestOfferEntry = (
   offers: readonly OfferEntry[],
 ): OfferEntry | null =>

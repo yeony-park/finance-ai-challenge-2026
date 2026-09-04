@@ -50,7 +50,7 @@ export function WatchlistView({
                   ) : null}
                 </div>
                 <Link
-                  href={`/offers/${entry.id}#${WATCH_HEADING_ID}`}
+                  href={`${entry.reportHref}#${WATCH_HEADING_ID}`}
                   className={s.watchLink}
                   aria-label={`${entry.title} ${WATCH_REPORT_LINK_LABEL.replace(" →", "")}`}
                 >

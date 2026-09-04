@@ -134,7 +134,7 @@ flowchart TD
 ### ⑥ 관심 공모 정정 감시 (홈 섹션)
 
 `gongsi.watchlist.v1`에 담긴 공모만 렌더된다. 비어 있으면 섹션 자체가 없다.
-행마다 정정 건수·최근 대조 시각 → `/offers/{id}#report-watch-heading`.
+행마다 정정 건수·최근 대조 시각 → `/{category}/products/{id}#report-watch-heading`.
 
 ### ⑦ 믿을만한지 확인하는 8가지 질문 (홈 섹션)
 
@@ -157,7 +157,7 @@ flowchart TD
   발행사 트랙레코드 → 경락 시장 대조(한우) → 확인 질문).
 - **카테고리 특화 슬롯**: 한돈은 공시 축 정리(회차·가격·질병 맥락), 미술품은 공모 5건 공시 원문 대조.
 
-### ⑨ 리포트 상세 — `/offers/{id}`
+### ⑨ 리포트 상세 — `/{category}/products/{id}`
 
 목차: **요약 → 신고서 정보 → 정정 이력 → 이행 이력 → 실재 확인 → 가격 위치**
 (신고서 정보는 팩트가 있을 때만 노출)
@@ -172,7 +172,7 @@ flowchart TD
 | 실재 확인 | 개체 단위 대조 매트릭스(부록 위계) |
 | 가격 위치 | 경락가·실거래가 대비 위치 |
 
-`generateStaticParams` + `dynamicParams = false` — 등록되지 않은 id는 404.
+카테고리별 `generateStaticParams` + `dynamicParams = false` — 다른 카테고리나 등록되지 않은 id는 404.
 
 ### ⑪ 검증 방법 — `/methodology` / ⑫ About — `/about`
 
@@ -233,7 +233,7 @@ sequenceDiagram
 |---|---|---|
 | `/` | 입문자 홈 (5구간) | 서버 + 클라이언트 상태 |
 | `/cattle` `/pig` `/art` `/real-estate` | 카테고리 착지 (설명 / 분석) | 서버, `tab`·`status` 쿼리 |
-| `/offers/{id}` | 리포트 상세 | 정적 생성, 미등록 id 404 |
+| `/{category}/products/{id}` | 카테고리별 리포트 상세 | 정적 생성, 타 카테고리·미등록 id 404 |
 | `/methodology` | 검증 방법 | 정적 |
 | `/about` | 소개 · 팀 | 정적 |
 | `POST /api/verify/{id}` | 라이브 재검증 | 실패 시 `mode:"snapshot"` 폴백 |

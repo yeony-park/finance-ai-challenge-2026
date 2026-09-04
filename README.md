@@ -76,7 +76,7 @@ npm run track-record   # 실키 전용 · DART 공시검색 2회 + 증권발행�
 
 실모델 연결은 `.env.example` 참조. 키가 없으면 전 구간 fake 모드로 완주하며, claim 추출은 `AI_GATEWAY_API_KEY` 또는 `OPENAI_API_KEY` 직결을 지원한다(현재 프로덕션은 OpenAI 직결).
 
-> `npm run dev`는 서비스 화면을 띄운다 — 랜딩(`/`), 검증 방법(`/methodology`), 검증 리포트 상세(`/offers/[id]`).
+> `npm run dev`는 서비스 화면을 띄운다 — 랜딩(`/`), 검증 방법(`/methodology`), 카테고리별 검증 리포트 상세(`/{category}/products/[id]`).
 > 화면에 찍히는 수치·문구는 전부 검증 엔진 산출 리포트(`data/public/{offerId}/report-*.json`)에서 파생되며 익명화가 적용된 상태다.
 
 ## 구조

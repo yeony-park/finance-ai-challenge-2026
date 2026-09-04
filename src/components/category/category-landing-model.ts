@@ -4,6 +4,7 @@ import type {
   SubscriptionPhase,
 } from "@/components/site/offers";
 import { categoryById, type CategoryId } from "@/lib/content/categories";
+import type { ChecklistBridgeOffer } from "@/lib/content/checklist-links";
 import {
   loadLatestWatchState,
   type WatchState,
@@ -50,7 +51,7 @@ export interface CategoryLandingModel {
   readonly categoryHref: string;
   readonly analysisLayout: CategoryAnalysisLayout;
   readonly trackRecord: TrackRecordCardView | null;
-  readonly bridgeOffer: OfferEntry | null;
+  readonly bridgeOffer: ChecklistBridgeOffer | null;
 }
 
 interface CategoryLandingModelOptions {
@@ -141,6 +142,7 @@ export async function loadCategoryLandingModel({
     .sort()
     .at(-1);
   const analysisLayout = categoryAnalysisLayout(categoryId);
+  const bridgeEvidence = evidence.at(-1) ?? null;
 
   return {
     evidence,
@@ -151,6 +153,14 @@ export async function loadCategoryLandingModel({
     categoryHref: categoryById(categoryId).href,
     analysisLayout,
     trackRecord,
-    bridgeOffer: byOpenAsc.at(-1) ?? null,
+    bridgeOffer: bridgeEvidence
+      ? {
+          id: bridgeEvidence.offer.id,
+          title: bridgeEvidence.offer.title,
+          assetKind: bridgeEvidence.offer.assetKind,
+          hasFilingFacts: bridgeEvidence.filingFacts !== null,
+          hasTrackRecord: trackRecord !== null,
+        }
+      : null,
   };
 }

@@ -3,7 +3,6 @@ import {
   HISTORY_HEADING_ID,
   PRICE_HEADING_ID,
   REALITY_HEADING_ID,
-  TRACK_RECORD_HEADING_ID,
   VERDICT_HEADING_ID,
   WATCH_HEADING_ID,
 } from "@/components/report/ids";
@@ -17,6 +16,7 @@ export interface PublicSourceRef {
 export interface ReportChapterRef {
   readonly headingId: string;
   readonly label: string;
+  readonly requires?: "filing-facts" | "track-record";
 }
 
 export interface ChecklistItem {
@@ -147,7 +147,11 @@ export const TRUST_CHECKLIST: readonly ChecklistItem[] = [
     ],
     engineNote:
       "발행사 트랙레코드 카드 — 과거 공모의 청약 결과·정정 횟수를 원문 실측으로 요약합니다.",
-    reportChapter: { headingId: TRACK_RECORD_HEADING_ID, label: "발행사 기록" },
+    reportChapter: {
+      headingId: HISTORY_HEADING_ID,
+      label: "발행사 기록",
+      requires: "track-record",
+    },
   },
   {
     id: "protection-scope",
@@ -168,7 +172,11 @@ export const TRUST_CHECKLIST: readonly ChecklistItem[] = [
     ],
     engineNote:
       "입문 안내 — 예금자보호 서술은 항상 3요소(비대상·예탁금 한도 보호·보호장치의 성격)를 함께 제시합니다. 상품별 보호기금 구조는 신고서 구조 정보에 옮겨 적습니다.",
-    reportChapter: { headingId: FILING_HEADING_ID, label: "신고서 정보" },
+    reportChapter: {
+      headingId: FILING_HEADING_ID,
+      label: "신고서 정보",
+      requires: "filing-facts",
+    },
   },
   {
     id: "exit-structure",
@@ -188,6 +196,10 @@ export const TRUST_CHECKLIST: readonly ChecklistItem[] = [
     ],
     engineNote:
       "입문 안내 — 청약·보유·매각의 단계별 확인 항목을 상품 공시 기준으로 안내합니다. 예상 사업기간·매각 결정 구조는 신고서 구조 정보에 옮겨 적습니다.",
-    reportChapter: { headingId: FILING_HEADING_ID, label: "신고서 정보" },
+    reportChapter: {
+      headingId: FILING_HEADING_ID,
+      label: "신고서 정보",
+      requires: "filing-facts",
+    },
   },
 ];

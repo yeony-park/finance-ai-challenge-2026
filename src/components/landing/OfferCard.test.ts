@@ -10,7 +10,7 @@ import s from "./landing.module.css";
 
 const cardFor = (phase: SubscriptionPhase): OfferCardView => ({
   id: `offer-${phase}`,
-  href: `/offers/offer-${phase}`,
+  href: `/cattle/products/offer-${phase}`,
   title: `${phase} 공모`,
   assetLabel: "한우",
   schedule: {

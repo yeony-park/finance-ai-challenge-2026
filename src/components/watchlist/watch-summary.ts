@@ -1,4 +1,8 @@
-import { OFFERS, type OfferEntry } from "@/components/site/offers";
+import {
+  OFFERS,
+  reportHrefForOffer,
+  type OfferEntry,
+} from "@/components/site/offers";
 import { watchCheckedLine } from "@/lib/content/watch-band";
 import { watchAmendmentSummary } from "@/lib/verify/amend/watch-label";
 import {
@@ -10,6 +14,7 @@ import { formatKstDateTime } from "@/lib/verify/report/format";
 export interface WatchSummaryEntry {
   readonly id: string;
   readonly title: string;
+  readonly reportHref: string;
   readonly amendmentLine: string;
   readonly checkedLine: string | null;
   readonly isDetectionFailed: boolean;
@@ -21,6 +26,7 @@ export const buildWatchSummaryEntry = (
 ): WatchSummaryEntry => ({
   id: offer.id,
   title: offer.title,
+  reportHref: reportHrefForOffer(offer),
   amendmentLine: watchAmendmentSummary(watch),
   checkedLine: watch
     ? watchCheckedLine(formatKstDateTime(watch.checkedAt))
