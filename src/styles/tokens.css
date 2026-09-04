@@ -43,9 +43,9 @@
   --ds-verdict-unknown-soft: #f1f1ee;
   --ds-verdict-unknown-line: #dedcd5;
 
-  --ds-font-sans: var(--font-sans-kr), "Apple SD Gothic Neo", system-ui, sans-serif;
-  --ds-font-serif: var(--font-serif-kr), "Apple SD Gothic Neo", serif;
-  --ds-font-mono: var(--font-plex-mono), ui-monospace, Consolas, monospace;
+  --ds-font-sans: "Pretendard Variable", Pretendard, system-ui, sans-serif;
+  --ds-font-serif: var(--ds-font-sans);
+  --ds-font-mono: var(--ds-font-sans);
 
   --ds-text-2xs: 0.75rem;
   --ds-text-xs: 0.8125rem;

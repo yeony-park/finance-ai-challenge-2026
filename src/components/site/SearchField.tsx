@@ -10,12 +10,15 @@ import s from "./SearchField.module.css";
 interface SearchFieldProps {
   readonly id: string;
   readonly label: string;
-  readonly value: string;
   readonly placeholder: string;
+  readonly value?: string;
+  readonly defaultValue?: string;
+  readonly name?: string;
+  readonly action?: string;
   readonly className?: string;
   readonly autoComplete?: string;
   readonly children?: ReactNode;
-  readonly onChange: (value: string) => void;
+  readonly onChange?: (value: string) => void;
   readonly onClick?: MouseEventHandler<HTMLInputElement>;
   readonly onFocus?: FocusEventHandler<HTMLInputElement>;
   readonly onBlur?: FocusEventHandler<HTMLInputElement>;
@@ -26,6 +29,9 @@ export function SearchField({
   id,
   label,
   value,
+  defaultValue,
+  name,
+  action,
   placeholder,
   className,
   autoComplete = "off",
@@ -40,12 +46,13 @@ export function SearchField({
     <form
       className={`${s.field} ${className ?? ""}`}
       role="search"
+      action={action}
       onSubmit={(event) => {
         if (onSubmit) {
           onSubmit(event);
           return;
         }
-        event.preventDefault();
+        if (!action) event.preventDefault();
       }}
     >
       <label htmlFor={id} className={s.label}>
@@ -54,11 +61,13 @@ export function SearchField({
       <input
         id={id}
         className={s.input}
-        type="text"
+        type="search"
+        name={name}
         inputMode="search"
         enterKeyHint="search"
         value={value}
-        onChange={(event) => onChange(event.target.value)}
+        defaultValue={defaultValue}
+        onChange={(event) => onChange?.(event.target.value)}
         onClick={onClick}
         onFocus={onFocus}
         onBlur={onBlur}
