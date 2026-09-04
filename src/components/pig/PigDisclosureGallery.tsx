@@ -3,6 +3,7 @@ import {
   CategoryOfferCardGrid,
 } from "@/components/landing/CategoryOfferCard";
 import offerStyles from "@/components/landing/landing.module.css";
+import { OfferWatchIconButton } from "@/components/landing/OfferWatchControl";
 import { ANALYSIS_CARD_COPY } from "@/lib/content/analysis-cards";
 import { categoryById } from "@/lib/content/categories";
 import { PIG_GALLERY, type PigDisclosureProduct } from "@/lib/content/pig";
@@ -37,7 +38,7 @@ export function PigDisclosureGallery({
   return (
     <section className={s.gallerySection} aria-labelledby="pig-gallery-title">
       <h2 className={offerStyles.categoryOfferSectionTitle} id="pig-gallery-title">
-        최근 상품
+        공모 상품
       </h2>
 
       {products.length > 0 ? (
@@ -77,6 +78,12 @@ export function PigDisclosureGallery({
                 appearance="analysis"
                 footerMeta={`${ANALYSIS_CARD_COPY.recentDisclosurePrefix} ${product.settlement.sourceFiledAt}`}
                 ctaLabel={ANALYSIS_CARD_COPY.reportCta}
+                action={(
+                  <OfferWatchIconButton
+                    offerId={`pig-${product.id}`}
+                    offerTitle={`한돈 ${product.round}호`}
+                  />
+                )}
                 media={{
                   src: "/category-pig.jpg",
                   alt: "",

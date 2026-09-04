@@ -6,7 +6,6 @@ import type { SubscriptionPhase } from "@/components/site/offers";
 import type { CategoryId } from "@/lib/content/categories";
 import { ISSUER_SLOT_TITLE } from "@/lib/content/category-landing";
 
-import home from "@/components/home/home.module.css";
 import type { CategoryLandingModel } from "./category-landing-model";
 import type { CategoryAnalysisSlot } from "./category-analysis-layout";
 import { CategoryAnalysisWorkspace } from "./CategoryAnalysisWorkspace";
@@ -105,7 +104,7 @@ export function CategoryAnalysisView({
   };
 
   return (
-    <div className={`${home.section} ${shell.analysisSection}`}>
+    <div className={shell.analysisSection}>
       <CategoryAnalysisWorkspace
         categoryId={categoryId}
         categoryHref={model.categoryHref}
@@ -114,6 +113,7 @@ export function CategoryAnalysisView({
         showStatusTabs={showStatusTabs}
         statusTabsSearchParams={statusTabsSearchParams}
         searchQuery={searchQuery}
+        headerClassName={shell.analysisHeaderSticky}
       >
         <div className={shell.analysisArea}>
           {model.analysisLayout.slots.map((slot) => (

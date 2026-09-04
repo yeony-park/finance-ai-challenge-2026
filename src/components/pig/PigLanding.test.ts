@@ -53,7 +53,7 @@ describe("한돈 분석 정적 렌더링 회귀", () => {
     expect(html).toContain('data-category-analysis-card="true"');
     expect(html).toContain("category-pig.jpg");
     expect(html).toContain(">대조 불가</dt><dd>1</dd>");
-    expect(html).toContain("최근 상품</h2>");
+    expect(html).toContain("공모 상품</h2>");
     expect(html).not.toContain("최근 발행된 한돈 STO 3개 회차");
     expect(html).not.toContain(sourceState.dartValue);
     expect(html).not.toContain(`href="${LIVESTOCK_TRACE_URL}"`);

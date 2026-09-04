@@ -30,7 +30,7 @@ describe("CategoryEvidenceSection", () => {
     expect(html.match(/data-category-analysis-card="true"/g)).toHaveLength(
       model.visibleEvidence.length,
     );
-    expect(html).toContain("최근 상품</h2>");
+    expect(html).toContain("공모 상품</h2>");
     expect(html).toContain("한우 9호");
     expect(html).toContain("한우 8호");
     expect(html).toContain("한우 7호");

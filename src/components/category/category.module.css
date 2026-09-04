@@ -181,7 +181,7 @@
   font-weight: var(--ds-weight-bold);
   color: var(--ds-ink);
   text-decoration: none;
-  border-bottom: 2px solid var(--ds-accent);
+  border-bottom: var(--ds-underline-w) solid var(--ds-accent);
   padding-bottom: 1px;
   word-break: keep-all;
 }
@@ -233,7 +233,7 @@ span.offerName {
   font-weight: var(--ds-weight-bold);
   color: var(--ds-ink);
   text-decoration: none;
-  border-bottom: 2px solid var(--ds-accent);
+  border-bottom: var(--ds-underline-w) solid var(--ds-accent);
   padding-bottom: 1px;
   transition: border-color var(--ds-duration-base) var(--ds-ease);
 }

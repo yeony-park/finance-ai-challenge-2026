@@ -36,15 +36,26 @@ export const isPublishedOfferId = (offerId: string): boolean =>
 
 export const TOTAL_2026_OFFER_COUNT = 8;
 
-export const categoryIdToAssetKind = (categoryId: string): AssetKind => {
+/** 공모 목록을 가진 카테고리만 자산 종류를 갖는다(한돈·미술품은 없음). */
+export const optionalCategoryAssetKind = (
+  categoryId: string,
+): AssetKind | null => {
   switch (categoryId) {
     case "cattle":
       return "livestock";
     case "real-estate":
       return "real-estate";
     default:
-      throw new Error(`[offers] 매핑 불가 categoryId: ${categoryId}`);
+      return null;
   }
+};
+
+export const categoryIdToAssetKind = (categoryId: string): AssetKind => {
+  const assetKind = optionalCategoryAssetKind(categoryId);
+  if (assetKind === null) {
+    throw new Error(`[offers] 매핑 불가 categoryId: ${categoryId}`);
+  }
+  return assetKind;
 };
 
 export const latestOfferEntry = (

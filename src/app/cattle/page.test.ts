@@ -37,6 +37,11 @@ describe("한우 기본 분석 화면", () => {
       expect(html).toContain('aria-current="page"');
       expect(html).toContain(">전체</a>");
       expect(html).toContain('data-category-analysis-card="true"');
+      expect(model.analysisLayout.slots).toEqual(["evidence"]);
+      expect(html).not.toContain('id="한우-verdicts"');
+      expect(html).not.toContain('aria-label="발행사의 과거 기록"');
+      expect(html).not.toContain('id="market-context-title"');
+      expect(html).not.toContain('id="한우-questions"');
       expect(html).not.toContain(">설명<");
       expect(html).not.toContain(">분석<");
     },

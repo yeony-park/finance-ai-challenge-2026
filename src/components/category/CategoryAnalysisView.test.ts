@@ -5,6 +5,7 @@ import { describe, expect, test, vi } from "vitest";
 import type { CategoryLandingModel } from "./category-landing-model";
 import { categoryAnalysisLayout } from "./category-analysis-layout";
 import { CategoryAnalysisView } from "./CategoryAnalysisView";
+import shell from "./category-shell.module.css";
 
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ replace: vi.fn() }),
@@ -37,7 +38,7 @@ describe("카테고리 분석 템플릿", () => {
           { "data-template-marker": "pig-custom" },
           "한돈 특화 콘텐츠",
         ),
-        customTitle: "최근 상품",
+        customTitle: "공모 상품",
         market: null,
       }),
     );
@@ -51,6 +52,7 @@ describe("카테고리 분석 템플릿", () => {
     expect(html).not.toContain('id="한돈-verdicts"');
     expect(html).not.toContain('id="한돈-custom"');
     expect(html).toContain('aria-label="한돈 공모 상태"');
+    expect(html).toContain(shell.analysisHeaderSticky);
     expect(html).toContain(">전체<");
     expect(html).not.toContain(">설명<");
     expect(html).not.toContain(">분석<");

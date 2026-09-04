@@ -40,7 +40,7 @@ export function CategoryAboutView({
   const hasInlineVisuals = leadVisual !== null || analysisHintVisual !== null;
 
   return (
-    <div className={`${home.section} ${s.categorySection}`}>
+    <div className={s.categorySection}>
       <div
         className={`${home.wrap} ${s.landingHero} ${
           descriptionContent ? s.landingHeroWithDescription : ""
