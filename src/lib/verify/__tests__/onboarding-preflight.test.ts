@@ -24,8 +24,16 @@ import {
   summarizeOnboardingCatalog,
 } from "../dart/onboarding-preflight";
 import { rcpNoForOffer, resolveOfferId } from "../pipeline";
+import { hasLocalFile, rawXmlPath, skipReason } from "./local-data";
 
 const roots: string[] = [];
+const localRawPaths = ONBOARDING_CATALOG.flatMap((product) =>
+  product.inventory
+    .filter((item) => item.status === "local")
+    .map((item) => rawXmlPath(item.rcpNo)),
+);
+const missingLocalRawPath = localRawPaths.find((file) => !hasLocalFile(file));
+const hasFullLocalInventory = missingLocalRawPath === undefined;
 
 afterEach(async () => {
   await Promise.all(roots.splice(0).map((root) => rm(root, { recursive: true, force: true })));
@@ -57,7 +65,6 @@ describe("12상품 onboarding preflight", () => {
       minimumFutureDownloads: 0,
       externalAiEmbeddingCandidates: 0,
     });
-    await expect(runOnboardingPreflight()).resolves.toEqual(summarizeOnboardingCatalog());
     for (const [file, documentRole] of [
       ["data/knowledge/filing-registry/cattle/livestock-9.json", "issuer-context"],
       ["data/knowledge/filing-registry/pig/pig-1.json", "primary"],
@@ -76,6 +83,17 @@ describe("12상품 onboarding preflight", () => {
     }
   });
 
+  test.skipIf(!hasFullLocalInventory)(
+    `full-local preflight는 36개 raw XML을 exact hash로 검증한다 ${
+      missingLocalRawPath ? skipReason(missingLocalRawPath) : ""
+    }`,
+    async () => {
+      await expect(runOnboardingPreflight()).resolves.toEqual(
+        summarizeOnboardingCatalog(),
+      );
+    },
+  );
+
   test("catalog 누락·상품/RCP 중복·후보 밖 active를 fail-closed한다", () => {
     expect(() => validateOnboardingCatalog(ONBOARDING_CATALOG.slice(1))).toThrow("12개 정본");
     const duplicateProduct: OnboardingProduct[] = [...ONBOARDING_CATALOG.slice(0, -1), ONBOARDING_CATALOG[0]!];
@@ -90,7 +108,7 @@ describe("12상품 onboarding preflight", () => {
     expect(() => validateOnboardingCatalog(activeOutside)).toThrow("후보 집합");
   });
 
-  test("승인 binding contentHash를 local raw exact bytes와 대조한다", async () => {
+  test.skipIf(!hasFullLocalInventory)("승인 binding contentHash를 local raw exact bytes와 대조한다", async () => {
     const tampered: readonly OnboardingProduct[] = ONBOARDING_CATALOG.map((item) =>
       item.productId === "livestock-1"
         ? {
