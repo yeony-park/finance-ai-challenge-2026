@@ -68,14 +68,20 @@
   position: sticky;
   z-index: 20;
   top: var(--ds-header-h);
-  margin-inline: calc(-1 * var(--ds-gutter));
-  padding-inline: var(--ds-gutter);
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+  padding-inline: max(
+    var(--ds-gutter),
+    calc((100vw - var(--ds-maxw)) / 2 + var(--ds-gutter))
+  );
   border-bottom: 1px solid var(--ds-line);
   background: var(--ds-bg);
 }
 
 .tabNavRow {
   display: flex;
+  width: min(100%, var(--ds-maxw));
+  margin-inline: auto;
   gap: var(--ds-space-5);
   overflow-x: auto;
   scrollbar-width: none;
