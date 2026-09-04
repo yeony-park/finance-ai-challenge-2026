@@ -15,6 +15,7 @@ interface CategoryEvidenceSectionProps {
   readonly visibleEvidence: readonly OfferEvidence[];
   readonly analysisStatus: SubscriptionPhase | null;
   readonly preview: readonly string[] | null;
+  readonly searchQuery?: string;
 }
 
 export function CategoryEvidenceSection({
@@ -24,6 +25,7 @@ export function CategoryEvidenceSection({
   visibleEvidence,
   analysisStatus,
   preview,
+  searchQuery = "",
 }: CategoryEvidenceSectionProps) {
   const listedEvidence = [...visibleEvidence]
     .sort(
@@ -47,9 +49,17 @@ export function CategoryEvidenceSection({
         {listedEvidence.length > 0 ? (
           <CategoryOfferCardGrid>
             {listedEvidence.map((entry) => (
-              <OfferCard key={entry.offer.id} card={entry.card} />
+              <OfferCard
+                key={entry.offer.id}
+                card={entry.card}
+                appearance="analysis"
+              />
             ))}
           </CategoryOfferCardGrid>
+        ) : searchQuery ? (
+          <p className={base.emptyNote}>
+            “{searchQuery}”에 해당하는 공모가 없습니다.
+          </p>
         ) : analysisStatus !== null && evidence.length > 0 ? (
           <p className={base.emptyNote}>선택한 상태에 해당하는 공모가 없습니다.</p>
         ) : preview ? (

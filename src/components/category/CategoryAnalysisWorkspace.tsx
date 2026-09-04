@@ -15,6 +15,9 @@ interface CategoryAnalysisWorkspaceProps {
   readonly selectedPhase: SubscriptionPhase | null;
   readonly showStatusTabs: boolean;
   readonly statusTabsSearchParams?: string;
+  readonly searchQuery?: string;
+  readonly analysisControls?: ReactNode;
+  readonly headerClassName?: string;
   readonly children: ReactNode;
 }
 
@@ -25,28 +28,34 @@ export function CategoryAnalysisWorkspace({
   selectedPhase,
   showStatusTabs,
   statusTabsSearchParams,
+  searchQuery = "",
+  analysisControls,
+  headerClassName,
   children,
 }: CategoryAnalysisWorkspaceProps) {
+  const statusControls = analysisControls ?? (
+    showStatusTabs ? (
+      <CategoryAnalysisStatusTabs
+        categoryHref={categoryHref}
+        selectedPhase={selectedPhase}
+        preservedSearchParams={statusTabsSearchParams}
+        searchQuery={searchQuery}
+        title={title}
+      />
+    ) : undefined
+  );
+
   return (
     <div className={`${home.wrap} ${s.analysisPage}`}>
-      <header className={s.analysisHeader}>
+      <header className={`${s.analysisHeader} ${headerClassName ?? ""}`}>
         <div className={s.analysisHeaderIdentity}>
           <h1>{title}</h1>
           <CategoryPageNav
             title={title}
-            href={categoryHref}
-            activeTab="analysis"
+            analysisControls={statusControls}
           />
         </div>
       </header>
-
-      {showStatusTabs && (
-        <CategoryAnalysisStatusTabs
-          categoryHref={categoryHref}
-          selectedPhase={selectedPhase}
-          preservedSearchParams={statusTabsSearchParams}
-        />
-      )}
 
       <main className={s.analysisMain} id={`${categoryId}-analysis-results`}>
         {children}

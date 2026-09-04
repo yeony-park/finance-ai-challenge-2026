@@ -26,7 +26,7 @@
 
 .slotTitle {
   font-size: var(--ds-section-title);
-  font-weight: var(--ds-weight-bold);
+  font-weight: var(--ds-weight-medium);
   letter-spacing: var(--ds-tracking-tight);
   line-height: var(--ds-leading-tight);
   word-break: keep-all;
@@ -81,7 +81,7 @@
 .layerTable th {
   padding-block: var(--ds-space-3);
   font-size: var(--ds-text-xs);
-  font-weight: var(--ds-weight-bold);
+  font-weight: var(--ds-weight-medium);
   letter-spacing: var(--ds-tracking-normal);
   color: var(--ds-ink-muted);
 }
@@ -91,7 +91,7 @@
 }
 
 .layerName {
-  font-weight: var(--ds-weight-bold);
+  font-weight: var(--ds-weight-medium);
   color: var(--ds-ink);
   line-height: var(--ds-leading-snug);
   word-break: keep-all;
@@ -269,7 +269,7 @@ span.offerName {
   margin-top: var(--ds-space-5);
   margin-bottom: var(--ds-space-3);
   font-size: var(--ds-text-sm);
-  font-weight: var(--ds-weight-bold);
+  font-weight: var(--ds-weight-medium);
   letter-spacing: 0.02em;
   color: var(--ds-ink-muted);
 }
@@ -284,7 +284,7 @@ span.offerName {
 .timelineTitle {
   margin: 0 0 var(--ds-space-2);
   font-size: var(--ds-text-md);
-  font-weight: var(--ds-weight-bold);
+  font-weight: var(--ds-weight-medium);
   word-break: keep-all;
 }
 
@@ -332,7 +332,7 @@ span.offerName {
 
 .tileNum {
   font-size: var(--ds-numeral);
-  font-weight: var(--ds-weight-black);
+  font-weight: var(--ds-weight-bold);
   letter-spacing: var(--ds-tracking-tight);
   line-height: 1;
   font-variant-numeric: tabular-nums;

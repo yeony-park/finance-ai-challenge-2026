@@ -34,4 +34,17 @@ describe("카테고리 분석 공모 상태 필터", () => {
       );
     },
   );
+
+  test("검색어와 공모 상태를 함께 적용한다", async () => {
+    const model = await loadCategoryLandingModel({
+      categoryId: "cattle",
+      offers: cattleOffers,
+      analysisStatus: null,
+      searchQuery: "한우 1호",
+    });
+
+    expect(model.visibleEvidence.map((entry) => entry.offer.title)).toEqual([
+      "한우 1호",
+    ]);
+  });
 });

@@ -50,5 +50,10 @@ describe("카테고리 분석 템플릿", () => {
     expect(html).not.toContain('id="한돈-evidence"');
     expect(html).not.toContain('id="한돈-verdicts"');
     expect(html).not.toContain('id="한돈-custom"');
+    expect(html).toContain('aria-label="한돈 공모 상태"');
+    expect(html).toContain(">전체<");
+    expect(html).not.toContain(">설명<");
+    expect(html).not.toContain(">분석<");
+    expect(html).not.toContain("<details");
   });
 });

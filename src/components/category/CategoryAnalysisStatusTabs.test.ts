@@ -14,6 +14,8 @@ describe("카테고리 분석 청약 상태 탭", () => {
         categoryHref: "/pig",
         selectedPhase: "closed",
         preservedSearchParams: "product=round-2",
+        searchQuery: "한돈 2호",
+        title: "한돈",
       }),
     );
 
@@ -30,8 +32,13 @@ describe("카테고리 분석 청약 상태 탭", () => {
     expect(html).toContain(">전체<");
     expect(html).toContain(">청약 예정<");
     expect(html).toContain(">진행 중<");
-    expect(html).toContain(">종료<");
+    expect(html).toContain(">청약 종료<");
     expect(html.match(/aria-current="page"/g)).toHaveLength(1);
+    expect(html).toContain('role="search"');
+    expect(html).toContain('placeholder="궁금한 것을 질문하세요"');
+    expect(html).toContain('name="product" value="round-2"');
+    expect(html).toContain('name="status" value="closed"');
+    expect(html).toContain('name="q" value="한돈 2호"');
   });
 
   test("상태를 교체하면서 상품·비교 상태를 보존하고 은퇴한 판정 필터는 제거한다", () => {

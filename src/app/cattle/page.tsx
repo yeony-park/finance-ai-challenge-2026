@@ -1,20 +1,14 @@
 import type { Metadata } from "next";
 
 import { AuctionMarketSection } from "@/components/category/AuctionMarketSection";
-import {
-  AnalysisEvidenceDiagram,
-  CattleCrossCheckDiagram,
-} from "@/components/category/CattleAboutDiagrams";
-import { CattleFlowBand } from "@/components/category/CattleFlowBand";
 import { CategoryLanding } from "@/components/category/CategoryLanding";
 import { OFFERS } from "@/components/site/offers";
 import {
   categoryAnalysisPreservedSearchParams,
   categoryPageStateFromSearchParams,
+  categorySearchQueryFromSearchParam,
   type CategoryPageSearchParams,
 } from "@/lib/content/category-tabs";
-import { CATTLE_FLOW_TITLE } from "@/lib/content/cattle";
-import { CATTLE_CATEGORY } from "@/lib/verify/contract/cattle";
 import { loadCattleAuctionSeries } from "@/lib/verify/reference/auction-series";
 
 export const metadata: Metadata = {
@@ -30,11 +24,12 @@ interface CattlePageProps {
 
 export default async function CattlePage({ searchParams }: CattlePageProps) {
   const params = await searchParams;
-  const { activeTab, analysisStatus } = categoryPageStateFromSearchParams(
+  const { analysisStatus } = categoryPageStateFromSearchParams(
     params,
   );
+  const searchQuery = categorySearchQueryFromSearchParam(params.q);
   const statusTabsSearchParams = categoryAnalysisPreservedSearchParams(params);
-  const series = activeTab === "analysis" ? await loadCattleAuctionSeries() : null;
+  const series = await loadCattleAuctionSeries();
   const cattleOffers = OFFERS.filter((offer) => offer.assetKind === "livestock");
   const markers = cattleOffers.map((offer) => ({
     month: kstMonth(offer.subscription.opensAt),
@@ -44,22 +39,15 @@ export default async function CattlePage({ searchParams }: CattlePageProps) {
   return (
     <CategoryLanding
       categoryId="cattle"
-      activeTab={activeTab}
       analysisStatus={analysisStatus}
+      searchQuery={searchQuery}
       showStatusTabs
       statusTabsSearchParams={statusTabsSearchParams}
       title="한우"
-      lead="공시된 개체를 축산물이력제 원장과 대조하고, 공모가의 시장 위치와 정정 이력을 함께 보여줍니다."
-      descriptor={CATTLE_CATEGORY}
       offers={cattleOffers}
-      heroImage="/category-cattle.jpg"
-      leadVisual={<CattleCrossCheckDiagram />}
-      analysisHintVisual={<AnalysisEvidenceDiagram />}
       market={
         series ? <AuctionMarketSection series={series} markers={markers} /> : null
       }
-      descriptionContentTitle={CATTLE_FLOW_TITLE}
-      descriptionContent={<CattleFlowBand />}
     />
   );
 }

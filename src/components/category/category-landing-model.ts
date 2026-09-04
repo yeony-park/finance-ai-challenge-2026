@@ -57,7 +57,14 @@ interface CategoryLandingModelOptions {
   readonly categoryId: CategoryId;
   readonly offers: readonly OfferEntry[];
   readonly analysisStatus: SubscriptionPhase | null;
+  readonly searchQuery?: string;
 }
+
+const includesSearchQuery = (offer: OfferEntry, query: string): boolean => {
+  const normalizedQuery = query.toLocaleLowerCase("ko-KR");
+  return [offer.title, offer.assetLabel, offer.id]
+    .some((value) => value.toLocaleLowerCase("ko-KR").includes(normalizedQuery));
+};
 
 const loadEvidence = async (
   offers: readonly OfferEntry[],
@@ -104,6 +111,7 @@ export async function loadCategoryLandingModel({
   categoryId,
   offers,
   analysisStatus,
+  searchQuery = "",
 }: CategoryLandingModelOptions): Promise<CategoryLandingModel> {
   const byOpenAsc = [...offers].sort(
     (a, b) =>
@@ -116,7 +124,8 @@ export async function loadCategoryLandingModel({
 
   const visibleEvidence = evidence.filter(
     (entry) =>
-      analysisStatus === null || entry.schedule.phase === analysisStatus,
+      (analysisStatus === null || entry.schedule.phase === analysisStatus) &&
+      includesSearchQuery(entry.offer, searchQuery),
   );
   const totals = evidence.reduce<CategoryVerdictTotals>(
     (sum, entry) => ({

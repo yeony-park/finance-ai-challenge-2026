@@ -1,7 +1,9 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { Pressable } from "@/components/motion/Pressable";
+import { ANALYSIS_CARD_COPY } from "@/lib/content/analysis-cards";
 
 import s from "./landing.module.css";
 
@@ -10,6 +12,15 @@ export interface CategoryOfferCardMetric {
   readonly value: ReactNode;
   readonly tone?: "good" | "warn" | "unknown";
 }
+
+export interface CategoryOfferCardMedia {
+  readonly src: string;
+  readonly alt: string;
+  readonly label: string;
+  readonly unoptimized?: boolean;
+}
+
+export type CategoryOfferCardAppearance = "compact" | "analysis";
 
 const METRIC_TONE_CLASS: Record<
   NonNullable<CategoryOfferCardMetric["tone"]>,
@@ -48,13 +59,23 @@ export function CategoryOfferCard({
   ctaLabel,
   action = null,
   current = false,
+  appearance = "compact",
+  description = null,
+  primaryMetric = null,
+  facts = [],
+  footerMeta = null,
+  notice = null,
+  metricsLabel = ANALYSIS_CARD_COPY.verificationLabel,
+  media = null,
+  showEyebrow = true,
+  compactHeader = false,
 }: {
   readonly id: string;
   readonly title: string;
   readonly assetLabel: string;
   readonly badge: string;
   readonly badgeTone?: keyof typeof BADGE_TONE_CLASS;
-  readonly meta: string;
+  readonly meta: ReactNode;
   readonly metrics: readonly CategoryOfferCardMetric[];
   readonly note: ReactNode;
   readonly noteAlert?: boolean;
@@ -62,8 +83,167 @@ export function CategoryOfferCard({
   readonly ctaLabel?: string;
   readonly action?: ReactNode;
   readonly current?: boolean;
+  readonly appearance?: CategoryOfferCardAppearance;
+  readonly description?: ReactNode;
+  readonly primaryMetric?: CategoryOfferCardMetric | null;
+  readonly facts?: readonly CategoryOfferCardMetric[];
+  readonly footerMeta?: ReactNode;
+  readonly notice?: string | null;
+  readonly metricsLabel?: string;
+  readonly media?: CategoryOfferCardMedia | null;
+  readonly showEyebrow?: boolean;
+  readonly compactHeader?: boolean;
 }) {
   const titleId = `category-offer-${id}-title`;
+
+  if (appearance === "analysis") {
+    const cardClassName = current
+      ? `${s.analysisOfferCard} ${s.analysisOfferCardCurrent}`
+      : s.analysisOfferCard;
+    const cta = ctaLabel ?? ANALYSIS_CARD_COPY.reportCta;
+
+    return (
+      <article
+        className={cardClassName}
+        aria-labelledby={titleId}
+        data-category-offer-card
+        data-category-analysis-card
+      >
+        {media ? (
+          <div className={s.analysisCardMedia}>
+            <Image
+              src={media.src}
+              alt={media.alt}
+              fill
+              sizes="(max-width: 699px) 100vw, (max-width: 1099px) 50vw, 33vw"
+              className={s.analysisCardImage}
+              unoptimized={media.unoptimized}
+            />
+            <span className={s.analysisCardMediaLabel} aria-hidden="true">
+              {media.label}
+            </span>
+            {action ? (
+              <span className={s.analysisCardMediaAction}>{action}</span>
+            ) : null}
+          </div>
+        ) : null}
+
+        <Link
+          href={href}
+          className={s.analysisCardHitArea}
+          aria-label={`${title} ${cta}`}
+          aria-current={current ? "page" : undefined}
+        />
+
+        <div className={s.analysisCardBody}>
+          <header
+            className={
+              compactHeader
+                ? `${s.analysisCardHeader} ${s.analysisCardHeaderCompact}`
+                : s.analysisCardHeader
+            }
+          >
+            {showEyebrow ? (
+              <div className={s.analysisCardTop}>
+                <p className={s.analysisCardEyebrow}>
+                  <span>{assetLabel}</span>
+                  <span aria-hidden="true">·</span>
+                  <span>{badge}</span>
+                  {notice ? (
+                    <>
+                      <span aria-hidden="true">·</span>
+                      <span className={s.analysisCardNotice}>{notice}</span>
+                    </>
+                  ) : null}
+                </p>
+                {action && !media ? (
+                  <span className={s.analysisCardAction}>{action}</span>
+                ) : null}
+              </div>
+            ) : null}
+            <h3 id={titleId} className={s.analysisCardTitle}>
+              <Link href={href}>{title}</Link>
+            </h3>
+            {meta ? <div className={s.analysisCardMeta}>{meta}</div> : null}
+            {description ? (
+              <div className={s.analysisCardDescription}>{description}</div>
+            ) : null}
+          </header>
+
+          {primaryMetric ? (
+            <dl className={s.analysisPrimaryFact}>
+              <div>
+                <dt>{primaryMetric.label}</dt>
+                <dd>{primaryMetric.value}</dd>
+              </div>
+            </dl>
+          ) : null}
+
+          {facts.length > 0 ? (
+            <dl
+              className={s.analysisFacts}
+              aria-label={`${title} ${ANALYSIS_CARD_COPY.factsLabel}`}
+            >
+              {facts.map((fact) => (
+                <div key={fact.label}>
+                  <dt>{fact.label}</dt>
+                  <dd>{fact.value}</dd>
+                </div>
+              ))}
+            </dl>
+          ) : null}
+
+          {note ? (
+            <div
+              className={
+                noteAlert
+                  ? `${s.analysisCardNote} ${s.analysisCardNoteAlert}`
+                  : s.analysisCardNote
+              }
+            >
+              {note}
+            </div>
+          ) : null}
+
+          {metrics.length > 0 ? (
+            <section
+              className={s.analysisVerification}
+              aria-label={`${title} ${metricsLabel}`}
+            >
+              <p>{metricsLabel}</p>
+              <dl className={s.analysisVerificationCounts}>
+                {metrics.map((metric) => (
+                  <div key={metric.label}>
+                    <span
+                      className={s.analysisVerificationMark}
+                      data-tone={metric.tone ?? "unknown"}
+                      aria-hidden="true"
+                    />
+                    <dt>{metric.label}</dt>
+                    <dd>{metric.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </section>
+          ) : null}
+
+          <footer className={s.analysisCardFooter}>
+            {footerMeta ? <span>{footerMeta}</span> : <span />}
+            <Link
+              href={href}
+              className={s.analysisCardLink}
+              aria-current={current ? "page" : undefined}
+            >
+              {cta}
+              <span className={s.arrow} aria-hidden="true">
+                →
+              </span>
+            </Link>
+          </footer>
+        </div>
+      </article>
+    );
+  }
 
   return (
     <Pressable hover={1.01} tap={0.99}>

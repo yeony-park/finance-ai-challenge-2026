@@ -1,6 +1,9 @@
 import Link from "next/link";
 
 import type { SubscriptionPhase } from "@/components/site/offers";
+import { SearchField } from "@/components/site/SearchField";
+import { CATEGORY_TAB_COPY } from "@/lib/content/category-tabs";
+import { SEARCH_PLACEHOLDER } from "@/lib/content/home";
 
 import s from "./category-shell.module.css";
 
@@ -8,10 +11,10 @@ const STATUS_TABS: readonly {
   readonly phase: SubscriptionPhase | null;
   readonly label: string;
 }[] = [
-  { phase: null, label: "전체" },
-  { phase: "upcoming", label: "청약 예정" },
-  { phase: "open", label: "진행 중" },
-  { phase: "closed", label: "종료" },
+  { phase: null, label: CATEGORY_TAB_COPY.all },
+  { phase: "upcoming", label: CATEGORY_TAB_COPY.upcoming },
+  { phase: "open", label: CATEGORY_TAB_COPY.open },
+  { phase: "closed", label: CATEGORY_TAB_COPY.closed },
 ];
 
 export const buildCategoryAnalysisStatusHref = ({
@@ -38,34 +41,67 @@ export function CategoryAnalysisStatusTabs({
   categoryHref,
   selectedPhase,
   preservedSearchParams,
+  searchQuery = "",
+  title = "카테고리",
 }: {
   readonly categoryHref: string;
   readonly selectedPhase: SubscriptionPhase | null;
   readonly preservedSearchParams?: string;
+  readonly searchQuery?: string;
+  readonly title?: string;
 }) {
+  const preservedFields = [...new URLSearchParams(preservedSearchParams)].filter(
+    ([key]) => key !== "q",
+  );
+
   return (
-    <nav className={s.analysisStatusTabs} aria-label="공모 상태">
-      {STATUS_TABS.map((tab) => {
-        const isActive = tab.phase === selectedPhase;
-        return (
-          <Link
-            key={tab.label}
-            href={buildCategoryAnalysisStatusHref({
-              categoryHref,
-              phase: tab.phase,
-              preservedSearchParams,
-            })}
-            className={
-              isActive
-                ? `${s.analysisStatusTab} ${s.analysisStatusTabActive}`
-                : s.analysisStatusTab
-            }
-            aria-current={isActive ? "page" : undefined}
-          >
-            {tab.label}
-          </Link>
-        );
-      })}
-    </nav>
+    <div className={s.categoryControls}>
+      <div className={s.categoryStatusTabs}>
+        {STATUS_TABS.map((tab) => {
+          const isActive = tab.phase === selectedPhase;
+          return (
+            <Link
+              key={tab.label}
+              href={buildCategoryAnalysisStatusHref({
+                categoryHref,
+                phase: tab.phase,
+                preservedSearchParams,
+              })}
+              className={
+                isActive
+                  ? `${s.pageNavLink} ${s.pageNavLinkCurrent}`
+                  : s.pageNavLink
+              }
+              aria-current={isActive ? "page" : undefined}
+            >
+              {tab.label}
+            </Link>
+          );
+        })}
+      </div>
+
+      <SearchField
+        id={`${title}-search`}
+        className={s.categorySearchForm}
+        action={categoryHref}
+        label={`${title} 검색`}
+        name="q"
+        defaultValue={searchQuery}
+        placeholder={SEARCH_PLACEHOLDER}
+      >
+        <input type="hidden" name="tab" value="analysis" />
+        {selectedPhase !== null ? (
+          <input type="hidden" name="status" value={selectedPhase} />
+        ) : null}
+        {preservedFields.map(([key, value], index) => (
+          <input
+            type="hidden"
+            name={key}
+            value={value}
+            key={`${key}-${index}`}
+          />
+        ))}
+      </SearchField>
+    </div>
   );
 }

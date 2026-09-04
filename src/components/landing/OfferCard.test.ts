@@ -101,6 +101,48 @@ describe("상태별 공모 카드 공통 구조", () => {
     },
   );
 
+  test("카테고리 분석 카드는 색면 없이 타이포 위계와 명시적 CTA를 쓴다", () => {
+    const card = cardFor("closed");
+    const html = renderToStaticMarkup(
+      createElement(OfferCard, { card, appearance: "analysis" }),
+    );
+
+    expect(html).toContain("data-category-analysis-card");
+    expect(html).toContain(card.verdictLine);
+    expect(html).toContain(card.lastVerifiedAt);
+    expect(html).toContain(">37두</dd>");
+    expect(html).toContain(card.schedule.label);
+    expect(html).toContain(">검증 리포트 보기");
+    expect(html).toContain("category-cattle.jpg");
+    expect(html).toContain('alt=""');
+    expect(html).toContain(`class="${s.analysisOfferCard}"`);
+    expect(html).toContain(`class="${s.analysisCardHitArea}"`);
+    expect(html).toContain(
+      `aria-label="${card.title} 검증 리포트 보기"`,
+    );
+    expect(html).not.toContain(s.ddayClosed);
+    expect(html).not.toContain(s.toneGood);
+    expect(html).not.toContain(s.toneWarn);
+    expect(html).not.toContain(s.toneUnk);
+  });
+
+  test("부동산 분석 카드는 부동산 캔버스와 건 단위를 사용한다", () => {
+    const card = {
+      ...cardFor("closed"),
+      id: "real-estate-a",
+      title: "서초 지웰타워 12층",
+      assetLabel: "부동산",
+    };
+    const html = renderToStaticMarkup(
+      createElement(OfferCard, { card, appearance: "analysis" }),
+    );
+
+    expect(html).toContain(">37건</dd>");
+    expect(html).toContain("category-real-estate-card-v2.png");
+    expect(html).toContain('alt=""');
+    expect(html).not.toContain("category-cattle.jpg");
+  });
+
   test("카탈로그 카드도 별도 CTA 없이 카드 전체 링크를 렌더한다", () => {
     const card: ReportCatalogCardView = {
       id: "pig-3",

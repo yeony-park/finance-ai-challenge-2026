@@ -3,16 +3,23 @@ import {
   CategoryOfferCardGrid,
 } from "@/components/landing/CategoryOfferCard";
 import offerStyles from "@/components/landing/landing.module.css";
-import type { SubscriptionPhase } from "@/components/site/offers";
+import { ANALYSIS_CARD_COPY } from "@/lib/content/analysis-cards";
+import { categoryById } from "@/lib/content/categories";
 import { PIG_GALLERY, type PigDisclosureProduct } from "@/lib/content/pig";
+import { VERDICT_LABEL } from "@/lib/verify/report/view-model/labels";
 
 import s from "./pig.module.css";
 
 interface PigDisclosureGalleryProps {
   readonly products: readonly PigDisclosureProduct[];
-  readonly selectedProductId: PigDisclosureProduct["id"];
-  readonly analysisStatus: SubscriptionPhase | null;
 }
+
+const PIG_ASSET_LABEL = categoryById("pig").label;
+const UNVERIFIABLE_METRICS = [
+  { label: VERDICT_LABEL.match, value: 0 },
+  { label: VERDICT_LABEL.mismatch, value: 0 },
+  { label: VERDICT_LABEL.unverifiable, value: 1 },
+] as const;
 
 function formatWon(value: number): string {
   if (value >= 100_000_000) {
@@ -21,22 +28,11 @@ function formatWon(value: number): string {
   return `${value.toLocaleString("ko-KR")}원`;
 }
 
-const buildProductHref = ({
-  productId,
-  analysisStatus,
-}: {
-  readonly productId: PigDisclosureProduct["id"];
-  readonly analysisStatus: SubscriptionPhase | null;
-}): string => {
-  const params = new URLSearchParams({ tab: "analysis", product: productId });
-  if (analysisStatus !== null) params.set("status", analysisStatus);
-  return `/pig?${params.toString()}#pig-review`;
-};
+const buildProductHref = (productId: PigDisclosureProduct["id"]): string =>
+  `/pig/products/${productId}`;
 
 export function PigDisclosureGallery({
   products,
-  selectedProductId,
-  analysisStatus,
 }: PigDisclosureGalleryProps) {
   return (
     <section className={s.gallerySection} aria-labelledby="pig-gallery-title">
@@ -47,7 +43,6 @@ export function PigDisclosureGallery({
       {products.length > 0 ? (
         <CategoryOfferCardGrid>
           {products.map((product) => {
-            const isSelected = product.id === selectedProductId;
             const returnNote =
               product.settlement.realizedReturnPercent === null
                 ? PIG_GALLERY.noReturn
@@ -57,11 +52,17 @@ export function PigDisclosureGallery({
                 key={product.id}
                 id={`pig-${product.round}`}
                 title={`한돈 ${product.round}호`}
-                assetLabel="한돈"
+                assetLabel={PIG_ASSET_LABEL}
                 badge={product.statusLabel}
                 badgeTone="closed"
                 meta={`${product.offering.subscriptionPeriod} · ${product.farm.region} · ${product.farm.name}`}
-                metrics={[
+                metrics={UNVERIFIABLE_METRICS}
+                description={returnNote}
+                primaryMetric={{
+                  label: ANALYSIS_CARD_COPY.minimumInvestmentLabel,
+                  value: formatWon(product.offering.unitPriceWon),
+                }}
+                facts={[
                   {
                     label: PIG_GALLERY.headsLabel,
                     value: `${product.offering.heads.toLocaleString("ko-KR")}두`,
@@ -71,15 +72,16 @@ export function PigDisclosureGallery({
                     value: formatWon(product.offering.issueAmountWon),
                   },
                 ]}
-                note={returnNote}
-                href={buildProductHref({
-                  productId: product.id,
-                  analysisStatus,
-                })}
-                ctaLabel={
-                  isSelected ? PIG_GALLERY.ctaSelected : PIG_GALLERY.ctaOpen
-                }
-                current={isSelected}
+                note={null}
+                href={buildProductHref(product.id)}
+                appearance="analysis"
+                footerMeta={`${ANALYSIS_CARD_COPY.recentDisclosurePrefix} ${product.settlement.sourceFiledAt}`}
+                ctaLabel={ANALYSIS_CARD_COPY.reportCta}
+                media={{
+                  src: "/category-pig.jpg",
+                  alt: "",
+                  label: PIG_ASSET_LABEL,
+                }}
               />
             );
           })}

@@ -23,6 +23,7 @@ interface CategoryAnalysisViewProps {
   readonly analysisStatus: SubscriptionPhase | null;
   readonly showStatusTabs: boolean;
   readonly statusTabsSearchParams?: string;
+  readonly searchQuery?: string;
   readonly preview: readonly string[] | null;
   readonly custom: ReactNode;
   readonly customTitle: string;
@@ -36,6 +37,7 @@ export function CategoryAnalysisView({
   analysisStatus,
   showStatusTabs,
   statusTabsSearchParams,
+  searchQuery = "",
   preview,
   custom,
   customTitle,
@@ -52,6 +54,7 @@ export function CategoryAnalysisView({
             visibleEvidence={model.visibleEvidence}
             analysisStatus={analysisStatus}
             preview={preview}
+            searchQuery={searchQuery}
           />
         );
       case "custom":
@@ -110,6 +113,7 @@ export function CategoryAnalysisView({
         selectedPhase={analysisStatus}
         showStatusTabs={showStatusTabs}
         statusTabsSearchParams={statusTabsSearchParams}
+        searchQuery={searchQuery}
       >
         <div className={shell.analysisArea}>
           {model.analysisLayout.slots.map((slot) => (
