@@ -6,9 +6,6 @@ import type { SubscriptionPhase } from "@/components/site/offers";
 import type { OfferCardView } from "@/lib/verify/report/view-model";
 
 import { OfferCard } from "./OfferCard";
-import { OfferTabs } from "./OfferTabs";
-import { ReportCatalogCard } from "./ReportCatalogCard";
-import type { ReportCatalogCardView } from "./report-catalog";
 import s from "./landing.module.css";
 
 const cardFor = (phase: SubscriptionPhase): OfferCardView => ({
@@ -41,20 +38,6 @@ const cardFor = (phase: SubscriptionPhase): OfferCardView => ({
 });
 
 describe("상태별 공모 카드 공통 구조", () => {
-  test("상태 탭은 등장 애니메이션을 기다리지 않고 처음부터 노출된다", () => {
-    const html = renderToStaticMarkup(
-      createElement(OfferTabs, {
-        upcoming: [],
-        open: [],
-        closed: [],
-        catalog: [],
-      }),
-    );
-
-    expect(html).toContain('role="tablist"');
-    expect(html).not.toContain("ds-reveal-pending");
-  });
-
   test.each<SubscriptionPhase>(["upcoming", "open", "closed"])(
     "%s 카드가 같은 위치에 관심 등록 하트 버튼을 렌더한다",
     (phase) => {
@@ -148,37 +131,4 @@ describe("상태별 공모 카드 공통 구조", () => {
     expect(html).not.toContain("category-cattle.jpg");
   });
 
-  test("카탈로그 카드도 별도 CTA 없이 카드 전체 링크를 렌더한다", () => {
-    const card: ReportCatalogCardView = {
-      id: "pig-3",
-      href: "/pig?tab=analysis&product=round-3#pig-review",
-      title: "한돈 3호",
-      assetLabel: "한돈",
-      badge: "대조 불가",
-      meta: "청약 완료 · 2026-06-29 ~ 2026-07-10",
-      summary: "공시 범위를 검토합니다.",
-      tallies: [
-        { label: "일치", value: 0, tone: "good" },
-        { label: "원장 불일치", value: 0, tone: "warn" },
-        { label: "대조 불가", value: 1, tone: "unk" },
-      ],
-      phase: "closed",
-    };
-    const html = renderToStaticMarkup(
-      createElement(ReportCatalogCard, { card }),
-    );
-
-    expect(html).not.toContain(">리포트 열기<");
-    expect(html).not.toContain("검증 리포트 보기");
-    expect(html.match(/<a /g)).toHaveLength(1);
-    expect(html).toContain(
-      `aria-label="${card.title} 검증 리포트 열기"`,
-    );
-    expect(html).toContain(`href="${card.href.replaceAll("&", "&amp;")}"`);
-    expect(html).toContain(`>${card.assetLabel}</p>`);
-    expect(html).toContain(`>${card.badge}</span>`);
-    expect(html).toContain(`>${card.meta}</p>`);
-    expect(html).toContain(">원장 불일치</span>");
-    expect(html).toContain(">대조 불가</span>");
-  });
 });

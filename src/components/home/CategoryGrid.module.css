@@ -137,10 +137,6 @@
     gap: var(--ds-space-3);
   }
 
-  .sectionAllReports {
-    font-size: var(--ds-text-xs);
-  }
-
   .categoryGrid {
     grid-template-columns: minmax(0, 1fr);
   }

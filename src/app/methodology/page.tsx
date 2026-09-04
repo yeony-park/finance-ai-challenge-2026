@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 
 import { CategoryMethodologyContent } from "@/components/methodology/CategoryMethodologyContent";
 import {
@@ -72,10 +71,6 @@ export default function MethodologyPage() {
 
       <div className={`${s.wrap} ${s.body}`}>
         <MethodologyTabs tabs={TABS} />
-        <Link href="/offers" className={s.backLink}>
-          <span aria-hidden="true">←</span>
-          공모 목록으로 돌아가기
-        </Link>
       </div>
     </>
   );

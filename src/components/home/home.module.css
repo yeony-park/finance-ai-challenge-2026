@@ -97,30 +97,6 @@
   gap: var(--ds-space-5);
 }
 
-.sectionAllReports {
-  flex: 0 0 auto;
-  display: inline-flex;
-  align-items: center;
-  gap: var(--ds-space-2);
-  padding-bottom: 2px;
-  border-bottom: 2px solid var(--ds-accent);
-  color: var(--ds-ink);
-  font-size: var(--ds-text-sm);
-  font-weight: var(--ds-weight-bold);
-  text-decoration: none;
-  white-space: nowrap;
-  transition: gap var(--ds-duration-base) var(--ds-ease);
-}
-
-.sectionAllReports:hover {
-  gap: 0.65rem;
-}
-
-.sectionAllReports:focus-visible {
-  outline: none;
-  box-shadow: var(--ds-focus-ring);
-}
-
 @media (max-width: 760px) {
   .sectionHead {
     grid-template-columns: 1fr;

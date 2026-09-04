@@ -69,9 +69,6 @@ export function WatchlistView({
               검증 리포트 카드의 하트를 누르면 이곳에서 정정 감시 상태를
               모아볼 수 있습니다.
             </p>
-            <Link href="/offers" className={s.emptyLink}>
-              검증 리포트 둘러보기 →
-            </Link>
           </div>
         )}
       </div>

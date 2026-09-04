@@ -440,24 +440,6 @@
   font-weight: var(--ds-weight-bold);
 }
 
-.backLink {
-  margin-top: var(--ds-space-7);
-  justify-self: start;
-  display: inline-flex;
-  align-items: center;
-  gap: var(--ds-space-2);
-  padding: 0.55rem 1rem;
-  border: 1px solid var(--ds-line-strong);
-  border-radius: var(--ds-radius-pill);
-  color: var(--ds-ink);
-  font-size: var(--ds-text-sm);
-  font-weight: var(--ds-weight-medium);
-  text-decoration: none;
-  transition:
-    background-color var(--ds-duration-base) var(--ds-ease),
-    border-color var(--ds-duration-base) var(--ds-ease);
-}
-
 @media (max-width: 900px) {
   .header .wrap {
     grid-template-columns: 1fr;
@@ -483,8 +465,4 @@
   .ruleList {
     grid-template-columns: 1fr;
   }
-}
-.backLink:hover {
-  background: var(--ds-bg-sunken);
-  border-color: var(--ds-ink);
 }
