@@ -1,12 +1,12 @@
-import { Reveal } from "@/components/motion/Reveal";
 import type { AmendmentReplayView } from "@/lib/verify/amend/replay-view";
 import type { WatchStatusView } from "@/lib/verify/amend/watch-view";
 
 import { METHODOLOGY_ANCHOR } from "@/app/methodology/anchors";
 
 import { AmendmentReplay } from "./AmendmentReplay";
-import { reportSectionTitleId, WATCH_HEADING_ID } from "./ids";
+import { WATCH_HEADING_ID } from "./ids";
 import { ReportSectionFooter } from "./ReportSectionFooter";
+import { ReportSectionFrame } from "./ReportSectionFrame";
 import s from "./report.module.css";
 
 const UNCONNECTED_WATCH_TEXT =
@@ -35,60 +35,14 @@ interface WatchSectionProps {
 
 export function WatchSection({ watch, replay }: WatchSectionProps) {
   const latestAmendment = watch?.amendments.at(-1);
-  const titleId = reportSectionTitleId(WATCH_HEADING_ID);
 
   return (
-    <section
-      className={`${s.section} ${s.sectionMuted} ${s.reportContentSection}`}
-      aria-labelledby={titleId}
-    >
-      <span id={WATCH_HEADING_ID} className={s.sectionAnchor} aria-hidden="true" />
-      <Reveal className={s.wrap}>
-        <header className={`${s.layerHead} ${s.sectionHead}`}>
-          <h2 id={titleId} className={s.layerTitle}>
-            정정 이력
-          </h2>
-          <p className={s.sectionLead}>
-            정정신고서가 접수되면 같은 절차로 다시 대조하고 변경 기록을 남깁니다.
-          </p>
-        </header>
-
-        <dl className={s.watchOverview}>
-          <div className={s.watchMetric} data-tone="accent">
-            <dt>정정신고서</dt>
-            <dd>
-              {watch?.isDetectionFailed ? "—" : (watch?.amendmentCount ?? 0)}
-              {!watch?.isDetectionFailed ? <small>건</small> : null}
-            </dd>
-            <p>
-              {watch?.isDetectionFailed
-                ? "조회 결과 확인 불가"
-                : latestAmendment
-                  ? `최근 접수 ${latestAmendment.receivedOnLabel}`
-                  : "접수 기록 없음"}
-            </p>
-          </div>
-          <div className={s.watchMetric}>
-            <dt>자동 재조회</dt>
-            <dd>주 2회</dd>
-            <p>월·목 기준으로 정정 접수를 다시 확인합니다.</p>
-          </div>
-        </dl>
-
-        {replay ? (
-          <AmendmentReplay replay={replay} />
-        ) : (
-          <p className={s.watchPending}>{pendingText(watch)}</p>
-        )}
-
-        <details className={`${s.supportingDetails} ${s.questionDetails}`}>
-          <summary className={s.supportingSummary}>조회·알림 운영 정보 보기</summary>
-          <div className={s.supportingTextBody}>
-            <p>{watch ? watchStatusText(watch) : UNCONNECTED_WATCH_TEXT}</p>
-            <p>{NOTIFY_CHANNEL_TEXT}</p>
-          </div>
-        </details>
-
+    <ReportSectionFrame
+      headingId={WATCH_HEADING_ID}
+      title="정정 이력"
+      lead="정정신고서가 접수되면 같은 절차로 다시 대조하고 변경 기록을 남깁니다."
+      muted
+      footer={(
         <ReportSectionFooter
           sources={[
             watch
@@ -98,7 +52,43 @@ export function WatchSection({ watch, replay }: WatchSectionProps) {
           anchor={METHODOLOGY_ANCHOR.amendment}
           label="정정은 어떻게 다시 대조되나요?"
         />
-      </Reveal>
-    </section>
+      )}
+    >
+      <dl className={s.watchOverview}>
+        <div className={s.watchMetric} data-tone="accent">
+          <dt>정정신고서</dt>
+          <dd>
+            {watch?.isDetectionFailed ? "—" : (watch?.amendmentCount ?? 0)}
+            {!watch?.isDetectionFailed ? <small>건</small> : null}
+          </dd>
+          <p>
+            {watch?.isDetectionFailed
+              ? "조회 결과 확인 불가"
+              : latestAmendment
+                ? `최근 접수 ${latestAmendment.receivedOnLabel}`
+                : "접수 기록 없음"}
+          </p>
+        </div>
+        <div className={s.watchMetric}>
+          <dt>자동 재조회</dt>
+          <dd>주 2회</dd>
+          <p>월·목 기준으로 정정 접수를 다시 확인합니다.</p>
+        </div>
+      </dl>
+
+      {replay ? (
+        <AmendmentReplay replay={replay} />
+      ) : (
+        <p className={s.watchPending}>{pendingText(watch)}</p>
+      )}
+
+      <details className={`${s.supportingDetails} ${s.questionDetails}`}>
+        <summary className={s.supportingSummary}>조회·알림 운영 정보 보기</summary>
+        <div className={s.supportingTextBody}>
+          <p>{watch ? watchStatusText(watch) : UNCONNECTED_WATCH_TEXT}</p>
+          <p>{NOTIFY_CHANNEL_TEXT}</p>
+        </div>
+      </details>
+    </ReportSectionFrame>
   );
 }

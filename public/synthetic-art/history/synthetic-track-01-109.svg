@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="바람결 — 빛씨앗 혼합표면" data-record-id="synthetic-track-01-109" data-index="108" data-seed="5103">
+<title>빛씨앗 표면 — 작은 발아의 온도 · Lightseed Surface / Temperature of a Small Germination</title>
+<rect x="0" y="0" width="800" height="1000" fill="#1B2845"/>
+<polygon points="84,172 302,114 260,330 115,398" fill="#6096BA"/>
+<polygon points="556,114 732,188 631,347 512,276" fill="#A3CEF1"/>
+<polygon points="98,694 268,608 351,824 118,881" fill="#D4A373"/>
+<polygon points="520,662 738,593 698,882 485,811" fill="#F2E9E4"/>
+<circle cx="114" cy="430" r="8" fill="#274C77"/>
+<circle cx="197" cy="477" r="12" fill="#6096BA"/>
+<circle cx="280" cy="524" r="16" fill="#A3CEF1"/>
+<circle cx="363" cy="571" r="20" fill="#F2E9E4"/>
+<circle cx="446" cy="468" r="8" fill="#1B2845"/>
+<circle cx="529" cy="515" r="12" fill="#274C77"/>
+<circle cx="612" cy="562" r="16" fill="#6096BA"/>
+<circle cx="115" cy="459" r="20" fill="#A3CEF1"/>
+<line x1="360" y1="122" x2="412" y2="865" stroke="#274C77" stroke-width="5"/>
+<line x1="392" y1="210" x2="618" y2="456" stroke="#274C77" stroke-width="3"/>
+<text x="34" y="968" fill="#D4A373" font-family="sans-serif" font-size="11" letter-spacing="3">SYNTHETIC</text>
+</svg>

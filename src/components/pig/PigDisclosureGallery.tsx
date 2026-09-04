@@ -5,7 +5,6 @@ import {
 import offerStyles from "@/components/landing/landing.module.css";
 import type { SubscriptionPhase } from "@/components/site/offers";
 import { PIG_GALLERY, type PigDisclosureProduct } from "@/lib/content/pig";
-import type { Verdict } from "@/lib/verify/types";
 
 import s from "./pig.module.css";
 
@@ -13,7 +12,6 @@ interface PigDisclosureGalleryProps {
   readonly products: readonly PigDisclosureProduct[];
   readonly selectedProductId: PigDisclosureProduct["id"];
   readonly analysisStatus: SubscriptionPhase | null;
-  readonly analysisVerdict: Verdict | null;
 }
 
 function formatWon(value: number): string {
@@ -26,15 +24,12 @@ function formatWon(value: number): string {
 const buildProductHref = ({
   productId,
   analysisStatus,
-  analysisVerdict,
 }: {
   readonly productId: PigDisclosureProduct["id"];
   readonly analysisStatus: SubscriptionPhase | null;
-  readonly analysisVerdict: Verdict | null;
 }): string => {
   const params = new URLSearchParams({ tab: "analysis", product: productId });
   if (analysisStatus !== null) params.set("status", analysisStatus);
-  if (analysisVerdict !== null) params.set("verdict", analysisVerdict);
   return `/pig?${params.toString()}#pig-review`;
 };
 
@@ -42,7 +37,6 @@ export function PigDisclosureGallery({
   products,
   selectedProductId,
   analysisStatus,
-  analysisVerdict,
 }: PigDisclosureGalleryProps) {
   return (
     <section className={s.gallerySection} aria-labelledby="pig-gallery-title">
@@ -81,7 +75,6 @@ export function PigDisclosureGallery({
                 href={buildProductHref({
                   productId: product.id,
                   analysisStatus,
-                  analysisVerdict,
                 })}
                 ctaLabel={
                   isSelected ? PIG_GALLERY.ctaSelected : PIG_GALLERY.ctaOpen

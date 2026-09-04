@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="나루온 — 밤숲 기호 회화" data-record-id="synthetic-track-01-068" data-index="67" data-seed="4702">
+<title>밤숲의 표식 — 밤숲을 건너는 눈 · Nightwood Mark / Eye Crossing the Nightwood</title>
+<rect x="0" y="0" width="800" height="1000" fill="#17231B"/>
+<path d="M -40 760 C 140 700 182 512 346 520 S 570 374 838 180" fill="none" stroke="#819A70" stroke-width="12"/>
+<path d="M 340 520 C 300 438 280 328 306 208" fill="none" stroke="#4F7154" stroke-width="5"/>
+<path d="M 535 400 C 598 342 664 318 754 330" fill="none" stroke="#4F7154" stroke-width="4"/>
+<polygon points="100,700 140,674 162,704 118,734" fill="#C8B77C"/>
+<polygon points="192,644 232,618 254,648 210,678" fill="#819A70"/>
+<polygon points="284,588 324,562 346,592 302,622" fill="#C8B77C"/>
+<polygon points="376,484 416,458 438,488 394,518" fill="#819A70"/>
+<polygon points="468,428 508,402 530,432 486,462" fill="#C8B77C"/>
+<polygon points="560,372 600,346 622,376 578,406" fill="#819A70"/>
+<polygon points="652,268 692,242 714,272 670,302" fill="#C8B77C"/>
+<circle cx="665" cy="135" r="34" fill="none" stroke="#E6D9B8" stroke-width="3"/>
+<circle cx="665" cy="135" r="7" fill="#E6D9B8"/>
+<text x="34" y="968" fill="#C8B77C" font-family="sans-serif" font-size="11" letter-spacing="3">SYNTHETIC</text>
+</svg>

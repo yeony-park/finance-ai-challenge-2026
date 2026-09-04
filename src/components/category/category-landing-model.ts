@@ -1,17 +1,9 @@
-import {
-  TRACK_RECORD_HEADING_ID,
-} from "@/components/report/ids";
 import type {
   OfferEntry,
   OfferSchedule,
   SubscriptionPhase,
 } from "@/components/site/offers";
 import { categoryById, type CategoryId } from "@/lib/content/categories";
-import {
-  ISSUER_SLOT_TITLE,
-  OFFERS_SECTION_TITLE,
-  VERDICT_SECTION_TITLE,
-} from "@/lib/content/category-landing";
 import {
   loadLatestWatchState,
   type WatchState,
@@ -28,20 +20,11 @@ import {
   toTrackRecordView,
   type TrackRecordCardView,
 } from "@/lib/verify/track-record/view";
-import type { Verdict } from "@/lib/verify/types";
 
-import type { AnalysisSectionLink } from "./CategoryAnalysisSidebar";
 import {
   categoryAnalysisLayout,
   type CategoryAnalysisLayout,
 } from "./category-analysis-layout";
-
-const CATEGORY_ANALYSIS_KEYWORDS: Record<CategoryId, readonly string[]> = {
-  art: ["상품", "작품", "작가", "플랫폼", "미술품"],
-  cattle: ["공모", "개체", "이력번호", "판정", "축산물이력제"],
-  pig: ["공모", "발행사", "신고서", "판정", "한돈", "회차"],
-  "real-estate": ["공모", "소재지", "사업자", "거래 근거", "실거래가"],
-};
 
 export interface OfferEvidence {
   readonly offer: OfferEntry;
@@ -61,27 +44,19 @@ export interface CategoryVerdictTotals {
 export interface CategoryLandingModel {
   readonly evidence: readonly OfferEvidence[];
   readonly visibleEvidence: readonly OfferEvidence[];
-  readonly activeEvidence: readonly OfferEvidence[];
-  readonly closedEvidence: readonly OfferEvidence[];
   readonly totals: CategoryVerdictTotals;
   readonly totalItems: number;
   readonly latestGeneratedAt: string | undefined;
   readonly categoryHref: string;
   readonly analysisLayout: CategoryAnalysisLayout;
-  readonly analysisSections: readonly AnalysisSectionLink[];
   readonly trackRecord: TrackRecordCardView | null;
   readonly bridgeOffer: OfferEntry | null;
 }
 
 interface CategoryLandingModelOptions {
   readonly categoryId: CategoryId;
-  readonly title: string;
   readonly offers: readonly OfferEntry[];
   readonly analysisStatus: SubscriptionPhase | null;
-  readonly analysisVerdict: Verdict | null;
-  readonly hasCustomContent: boolean;
-  readonly customTitle: string;
-  readonly hasMarketContent: boolean;
 }
 
 const loadEvidence = async (
@@ -125,88 +100,10 @@ const loadCategoryTrackRecord = async (
     .catch(() => null);
 };
 
-const buildAnalysisSections = ({
-  title,
-  categoryKeywords,
-  layout,
-  hasCustomContent,
-  customTitle,
-  hasTrackRecord,
-  hasMarketContent,
-}: {
-  readonly title: string;
-  readonly categoryKeywords: readonly string[];
-  readonly layout: CategoryAnalysisLayout;
-  readonly hasCustomContent: boolean;
-  readonly customTitle: string;
-  readonly hasTrackRecord: boolean;
-  readonly hasMarketContent: boolean;
-}): readonly AnalysisSectionLink[] => {
-  const sections: AnalysisSectionLink[] = [];
-
-  for (const slot of layout.slots) {
-    switch (slot) {
-      case "evidence":
-        sections.push({
-          id: `${title}-evidence`,
-          label: OFFERS_SECTION_TITLE,
-          keywords: [...categoryKeywords, "공모", "리포트", "신고서", "원문"],
-        });
-        break;
-      case "custom":
-        if (hasCustomContent) {
-          sections.push(
-            ...(layout.customNavigation ?? [
-              {
-                id: `${title}-custom`,
-                label: customTitle,
-                keywords: categoryKeywords,
-              },
-            ]),
-          );
-        }
-        break;
-      case "verdict":
-        sections.push({
-          id: `${title}-verdicts`,
-          label: VERDICT_SECTION_TITLE,
-          keywords: ["판정", "일치", "원장 불일치", "대조 불가"],
-        });
-        break;
-      case "track-record":
-        if (hasTrackRecord) {
-          sections.push({
-            id: TRACK_RECORD_HEADING_ID,
-            label: ISSUER_SLOT_TITLE,
-            keywords: ["발행사", "이력", "정정", "공모"],
-          });
-        }
-        break;
-      case "market":
-        if (hasMarketContent) sections.push(layout.marketNavigation);
-        break;
-      case "questions":
-        sections.push({
-          id: `${title}-questions`,
-          label: "확인 질문",
-          keywords: ["질문", "확인 항목", "검색"],
-        });
-        break;
-    }
-  }
-
-  return sections;
-};
-
 export async function loadCategoryLandingModel({
   categoryId,
-  title,
   offers,
   analysisStatus,
-  analysisVerdict,
-  hasCustomContent,
-  customTitle,
-  hasMarketContent,
 }: CategoryLandingModelOptions): Promise<CategoryLandingModel> {
   const byOpenAsc = [...offers].sort(
     (a, b) =>
@@ -219,15 +116,7 @@ export async function loadCategoryLandingModel({
 
   const visibleEvidence = evidence.filter(
     (entry) =>
-      (analysisStatus === null || entry.schedule.phase === analysisStatus) &&
-      (analysisVerdict === null ||
-        entry.loaded.report.summary[analysisVerdict] > 0),
-  );
-  const activeEvidence = visibleEvidence.filter(
-    (entry) => entry.schedule.phase !== "closed",
-  );
-  const closedEvidence = visibleEvidence.filter(
-    (entry) => entry.schedule.phase === "closed",
+      analysisStatus === null || entry.schedule.phase === analysisStatus,
   );
   const totals = evidence.reduce<CategoryVerdictTotals>(
     (sum, entry) => ({
@@ -242,28 +131,16 @@ export async function loadCategoryLandingModel({
     .map((entry) => entry.loaded.report.generatedAt)
     .sort()
     .at(-1);
-  const categoryKeywords = CATEGORY_ANALYSIS_KEYWORDS[categoryId];
   const analysisLayout = categoryAnalysisLayout(categoryId);
 
   return {
     evidence,
     visibleEvidence,
-    activeEvidence,
-    closedEvidence,
     totals,
     totalItems: totals.match + totals.mismatch + totals.unverifiable,
     latestGeneratedAt,
     categoryHref: categoryById(categoryId).href,
     analysisLayout,
-    analysisSections: buildAnalysisSections({
-      title,
-      categoryKeywords,
-      layout: analysisLayout,
-      hasCustomContent,
-      customTitle,
-      hasTrackRecord: trackRecord !== null,
-      hasMarketContent,
-    }),
     trackRecord,
     bridgeOffer: byOpenAsc.at(-1) ?? null,
   };

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Ongyeoldam Riva | 저녁편지 층위회화" data-record-id="synthetic-track-02-003" data-seed="5803" data-index="176">
+<title>저녁편지의 층 — 긴 하루 뒤의 층 · Evening Letter Layers / Layer After a Long Day</title>
+<rect x="0" y="0" width="800" height="1000" fill="#2F3E46"/>
+<polygon points="0,55 243,109 201,291 0,249" fill="#52796F"/>
+<polygon points="800,127 592,76 554,273 800,321" fill="#354F52"/>
+<polygon points="0,361 279,318 319,514 0,572" fill="#84A98C"/>
+<polygon points="800,410 548,347 503,558 800,619" fill="#52796F"/>
+<polygon points="0,706 242,662 301,909 0,964" fill="#354F52"/>
+<polygon points="800,704 578,673 523,913 800,968" fill="#84A98C"/>
+<rect x="316" y="164" width="166" height="672" fill="#2F3E46"/>
+<line x1="350" y1="252" x2="451" y2="252" stroke="#CAD2C5" stroke-width="6"/>
+<line x1="350" y1="309" x2="430" y2="309" stroke="#DDA15E" stroke-width="4"/>
+<line x1="350" y1="622" x2="447" y2="622" stroke="#CAD2C5" stroke-width="5"/>
+<line x1="350" y1="678" x2="415" y2="678" stroke="#DDA15E" stroke-width="3"/>
+<circle cx="400" cy="477" r="22" fill="#DDA15E"/>
+<text x="22" y="978" fill="#CAD2C5" font-family="sans-serif" font-size="8" letter-spacing="2">SYNTHETIC</text>
+</svg>

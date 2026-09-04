@@ -4,7 +4,6 @@ import type { OfferEntry, SubscriptionPhase } from "@/components/site/offers";
 import { categoryById, type CategoryId } from "@/lib/content/categories";
 import type { CategoryTab } from "@/lib/content/category-tabs";
 import type { CategoryDescriptor } from "@/lib/verify/contract/category";
-import type { Verdict } from "@/lib/verify/types";
 
 import { CategoryAboutView } from "./CategoryAboutView";
 import { CategoryAnalysisView } from "./CategoryAnalysisView";
@@ -28,8 +27,8 @@ export interface CategoryLandingProps {
   readonly descriptionContent?: ReactNode;
   readonly descriptionContentTitle?: string;
   readonly analysisStatus?: SubscriptionPhase | null;
-  readonly analysisVerdict?: Verdict | null;
-  readonly filterControlsEnabled?: boolean;
+  readonly showStatusTabs?: boolean;
+  readonly statusTabsSearchParams?: string;
 }
 
 export async function CategoryLanding({
@@ -48,8 +47,8 @@ export async function CategoryLanding({
   descriptionContent = null,
   descriptionContentTitle = "카테고리 안내",
   analysisStatus = null,
-  analysisVerdict = null,
-  filterControlsEnabled,
+  showStatusTabs = false,
+  statusTabsSearchParams,
   activeTab,
   categoryId,
 }: CategoryLandingProps) {
@@ -75,13 +74,8 @@ export async function CategoryLanding({
 
   const model = await loadCategoryLandingModel({
     categoryId,
-    title,
     offers,
     analysisStatus,
-    analysisVerdict,
-    hasCustomContent: custom !== null,
-    customTitle,
-    hasMarketContent: market !== null,
   });
   return (
     <CategoryAnalysisView
@@ -89,8 +83,8 @@ export async function CategoryLanding({
       title={title}
       model={model}
       analysisStatus={analysisStatus}
-      analysisVerdict={analysisVerdict}
-      filterControlsEnabled={filterControlsEnabled}
+      showStatusTabs={showStatusTabs}
+      statusTabsSearchParams={statusTabsSearchParams}
       preview={preview}
       custom={custom}
       customTitle={customTitle}

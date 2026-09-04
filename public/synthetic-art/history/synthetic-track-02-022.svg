@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-02-022" data-record-index="195" data-seed="5911">
+<title>비늘그림자의 면 — 그늘이 만든 얕은 깊이 · Scaled Shadow Plane / Shallow Depth Made by Shade</title>
+<rect x="0" y="0" width="800" height="1000" fill="#3A2D32"/>
+<polygon points="0,0 800,0 800,1000 0,1000" fill="#704C5E"/>
+<polygon points="34,75 132,75 142,110 106,223 82,245 58,223 22,110" fill="#3A2D32"/>
+<polygon points="22,65 132,65 142,110 102,215 82,237 62,215 22,110" fill="#9E6A7A" stroke="#687A8B" stroke-width="3"/>
+<polygon points="199,75 297,75 307,110 271,223 247,245 223,223 187,110" fill="#3A2D32"/>
+<polygon points="187,65 297,65 307,110 267,215 247,237 227,215 187,110" fill="#C8A2A8"/>
+<polygon points="364,75 462,75 472,110 436,223 412,245 388,223 352,110" fill="#3A2D32"/>
+<polygon points="352,65 462,65 472,110 432,215 412,237 392,215 352,110" fill="#EBD8C3"/>
+<polygon points="529,75 627,75 637,110 601,223 577,245 553,223 517,110" fill="#3A2D32"/>
+<polygon points="517,65 627,65 637,110 597,215 577,237 557,215 517,110" fill="#687A8B" stroke="#687A8B" stroke-width="3"/>
+<polygon points="694,75 792,75 802,110 766,223 742,245 718,223 682,110" fill="#3A2D32"/>
+<polygon points="682,65 792,65 802,110 762,215 742,237 722,215 682,110" fill="#9E6A7A"/>
+<polygon points="54,415 152,415 162,450 126,563 102,585 78,563 42,450" fill="#3A2D32"/>
+<polygon points="42,405 152,405 162,450 122,555 102,577 82,555 42,450" fill="#C8A2A8"/>
+<polygon points="549,415 647,415 657,450 621,563 597,585 573,563 537,450" fill="#3A2D32"/>
+<polygon points="537,405 647,405 657,450 617,555 597,577 577,555 537,450" fill="#9E6A7A"/>
+<polygon points="714,415 812,415 822,450 786,563 762,585 738,563 702,450" fill="#3A2D32"/>
+<polygon points="702,405 812,405 822,450 782,555 762,577 742,555 702,450" fill="#C8A2A8"/>
+<polygon points="34,755 132,755 142,790 106,903 82,925 58,903 22,790" fill="#3A2D32"/>
+<polygon points="22,745 132,745 142,790 102,895 82,917 62,895 22,790" fill="#EBD8C3"/>
+<polygon points="199,755 297,755 307,790 271,903 247,925 223,903 187,790" fill="#3A2D32"/>
+<polygon points="187,745 297,745 307,790 267,895 247,917 227,895 187,790" fill="#687A8B" stroke="#687A8B" stroke-width="3"/>
+<polygon points="364,755 462,755 472,790 436,903 412,925 388,903 352,790" fill="#3A2D32"/>
+<polygon points="352,745 462,745 472,790 432,895 412,917 392,895 352,790" fill="#9E6A7A"/>
+<polygon points="529,755 627,755 637,790 601,903 577,925 553,903 517,790" fill="#3A2D32"/>
+<polygon points="517,745 627,745 637,790 597,895 577,917 557,895 517,790" fill="#C8A2A8"/>
+<polygon points="694,755 792,755 802,790 766,903 742,925 718,903 682,790" fill="#3A2D32"/>
+<polygon points="682,745 792,745 802,790 762,895 742,917 722,895 682,790" fill="#EBD8C3" stroke="#687A8B" stroke-width="3"/>
+<polygon points="275,278 534,278 588,475 531,718 280,718 215,493" fill="#3A2D32" stroke="#687A8B" stroke-width="6"/>
+<text x="750" y="955" text-anchor="end" fill="#EBD8C3" opacity="0.32" font-family="sans-serif" font-size="12" letter-spacing="4">SYNTHETIC</text>
+</svg>

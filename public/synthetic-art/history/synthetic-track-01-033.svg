@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-01-033" data-record-index="32" data-seed="4310">
+<title>달선의 문장 — 빛과 선의 약속 · Moonline Sentence / Promise Between Light and Line</title>
+<rect x="0" y="0" width="800" height="1000" fill="#20252B"/>
+<g transform="rotate(90 400 500)">
+<circle cx="500" cy="625" r="70" fill="#E7D9C8" opacity="0.84"/>
+<circle cx="517" cy="617" r="70" fill="#20252B" opacity="0.94"/>
+<ellipse cx="500" cy="625" rx="88" ry="44" fill="none" stroke="#4A5862" stroke-width="2" stroke-opacity="0.5"/>
+<ellipse cx="500" cy="625" rx="131" ry="76" fill="none" stroke="#8797A0" stroke-width="3" stroke-opacity="0.56"/>
+<ellipse cx="500" cy="625" rx="174" ry="108" fill="none" stroke="#C9B7A5" stroke-width="4" stroke-opacity="0.62"/>
+<ellipse cx="500" cy="625" rx="217" ry="140" fill="none" stroke="#E7D9C8" stroke-width="2" stroke-opacity="0.5"/>
+<ellipse cx="500" cy="625" rx="260" ry="172" fill="none" stroke="#4A5862" stroke-width="3" stroke-opacity="0.56"/>
+<ellipse cx="500" cy="625" rx="303" ry="204" fill="none" stroke="#8797A0" stroke-width="4" stroke-opacity="0.62"/>
+<circle cx="390.73" cy="755.23" r="3" fill="#C9B7A5" opacity="0.78"/>
+<circle cx="281.74" cy="675.39" r="5" fill="#E7D9C8" opacity="0.78"/>
+<circle cx="246.03" cy="511.93" r="3" fill="#C9B7A5" opacity="0.78"/>
+<circle cx="417.58" cy="476.31" r="5" fill="#E7D9C8" opacity="0.78"/>
+<circle cx="531.17" cy="403.18" r="3" fill="#C9B7A5" opacity="0.78"/>
+<circle cx="696.58" cy="428.42" r="5" fill="#E7D9C8" opacity="0.78"/>
+<path d="M0 873 C370 765 390 535 480 471 C590 395 694 493 800 399" fill="none" stroke="#C9B7A5" stroke-width="5" stroke-linecap="round"/>
+<path d="M75 140 C113 115 154 171 187 140" fill="none" stroke="#8797A0" stroke-width="2" stroke-linecap="round"/>
+<path d="M223 281 C261 256 302 312 335 281" fill="none" stroke="#8797A0" stroke-width="2" stroke-linecap="round"/>
+<text x="54" y="954" fill="#8797A0" font-family="sans-serif" font-size="9" letter-spacing="3" opacity="0.32">SYNTHETIC</text>
+</g>
+</svg>

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-02-038" data-record-index="211" data-seed="6105">
+<title>풀씨의 리듬 — 바람 따라 흩어진 박자 · Grassseed Rhythm / Beats Scattered with the Wind</title>
+<rect x="0" y="0" width="800" height="1000" fill="#253D2C"/>
+<circle cx="400" cy="500" r="290" fill="#31572C" opacity="0.32"/>
+<circle cx="400" cy="500" r="172" fill="#253D2C" stroke="#ECF39E" stroke-width="8"/>
+<line x1="655" y1="500" x2="585" y2="500" stroke="#90A955" stroke-width="5" stroke-linecap="round"/>
+<ellipse cx="655" cy="500" rx="18" ry="40" fill="#4F772D" stroke="#E09F3E" stroke-width="2" opacity="0.92" transform="rotate(90 655 500)"/>
+<line x1="620" y1="650" x2="560" y2="605" stroke="#ECF39E" stroke-width="5" stroke-linecap="round"/>
+<ellipse cx="620" cy="650" rx="22" ry="52" fill="#90A955" stroke="#E09F3E" stroke-width="2" opacity="0.92" transform="rotate(120 620 650)"/>
+<line x1="620" y1="598" x2="628" y2="580" stroke="#E09F3E" stroke-width="1" stroke-linecap="round" opacity="0.68"/>
+<line x1="527" y1="759" x2="492" y2="681" stroke="#90A955" stroke-width="5" stroke-linecap="round"/>
+<ellipse cx="527" cy="759" rx="26" ry="40" fill="#ECF39E" stroke="#E09F3E" stroke-width="2" opacity="0.92" transform="rotate(150 527 759)"/>
+<line x1="527" y1="719" x2="535" y2="701" stroke="#E09F3E" stroke-width="1" stroke-linecap="round" opacity="0.68"/>
+<line x1="400" y1="800" x2="400" y2="710" stroke="#ECF39E" stroke-width="5" stroke-linecap="round"/>
+<ellipse cx="400" cy="800" rx="18" ry="52" fill="#E09F3E" stroke="#E09F3E" stroke-width="2" opacity="0.92" transform="rotate(180 400 800)"/>
+<line x1="272" y1="759" x2="307" y2="681" stroke="#90A955" stroke-width="5" stroke-linecap="round"/>
+<ellipse cx="272" cy="759" rx="22" ry="40" fill="#4F772D" stroke="#E09F3E" stroke-width="2" opacity="0.92" transform="rotate(210 272 759)"/>
+<line x1="272" y1="719" x2="280" y2="701" stroke="#E09F3E" stroke-width="1" stroke-linecap="round" opacity="0.68"/>
+<line x1="179" y1="650" x2="239" y2="605" stroke="#ECF39E" stroke-width="5" stroke-linecap="round"/>
+<ellipse cx="179" cy="650" rx="26" ry="52" fill="#90A955" stroke="#E09F3E" stroke-width="2" opacity="0.92" transform="rotate(240 179 650)"/>
+<line x1="179" y1="598" x2="187" y2="580" stroke="#E09F3E" stroke-width="1" stroke-linecap="round" opacity="0.68"/>
+<line x1="145" y1="500" x2="215" y2="500" stroke="#90A955" stroke-width="5" stroke-linecap="round"/>
+<ellipse cx="145" cy="500" rx="18" ry="40" fill="#ECF39E" stroke="#E09F3E" stroke-width="2" opacity="0.92" transform="rotate(270 145 500)"/>
+<line x1="179" y1="350" x2="239" y2="395" stroke="#ECF39E" stroke-width="5" stroke-linecap="round"/>
+<ellipse cx="179" cy="350" rx="22" ry="52" fill="#E09F3E" stroke="#E09F3E" stroke-width="2" opacity="0.92" transform="rotate(300 179 350)"/>
+<line x1="179" y1="298" x2="187" y2="280" stroke="#E09F3E" stroke-width="1" stroke-linecap="round" opacity="0.68"/>
+<line x1="272" y1="240" x2="307" y2="318" stroke="#90A955" stroke-width="5" stroke-linecap="round"/>
+<ellipse cx="272" cy="240" rx="26" ry="40" fill="#4F772D" stroke="#E09F3E" stroke-width="2" opacity="0.92" transform="rotate(330 272 240)"/>
+<line x1="272" y1="200" x2="280" y2="182" stroke="#E09F3E" stroke-width="1" stroke-linecap="round" opacity="0.68"/>
+<line x1="399" y1="200" x2="399" y2="290" stroke="#ECF39E" stroke-width="5" stroke-linecap="round"/>
+<ellipse cx="399" cy="200" rx="18" ry="52" fill="#90A955" stroke="#E09F3E" stroke-width="2" opacity="0.92" transform="rotate(360 399 200)"/>
+<line x1="527" y1="240" x2="492" y2="318" stroke="#90A955" stroke-width="5" stroke-linecap="round"/>
+<ellipse cx="527" cy="240" rx="22" ry="40" fill="#ECF39E" stroke="#E09F3E" stroke-width="2" opacity="0.92" transform="rotate(390 527 240)"/>
+<line x1="527" y1="200" x2="535" y2="182" stroke="#E09F3E" stroke-width="1" stroke-linecap="round" opacity="0.68"/>
+<line x1="620" y1="349" x2="560" y2="394" stroke="#ECF39E" stroke-width="5" stroke-linecap="round"/>
+<ellipse cx="620" cy="349" rx="26" ry="52" fill="#E09F3E" stroke="#E09F3E" stroke-width="2" opacity="0.92" transform="rotate(419 620 349)"/>
+<line x1="620" y1="297" x2="628" y2="279" stroke="#E09F3E" stroke-width="1" stroke-linecap="round" opacity="0.68"/>
+<text x="748" y="955" text-anchor="end" fill="#ECF39E" opacity="0.32" font-family="sans-serif" font-size="12" letter-spacing="4">SYNTHETIC</text>
+</svg>

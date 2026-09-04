@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-02-045" data-record-index="218" data-seed="6201">
+<title>눈금 없는 지도 — 길을 재지 않는 바다 · Unscaled Map / Sea That Measures No Road</title>
+<rect x="0" y="0" width="800" height="1000" fill="#202C39"/>
+<path d="M120 182C188 90 329 118 374 205C420 294 516 248 616 322C713 393 699 528 624 591C549 656 591 757 493 814C385 878 292 803 225 735C158 667 188 570 116 503C49 442 51 281 120 182Z" fill="#5C7C89" stroke="#E6D5B8" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M150 350C250 270 309 402 396 355C478 310 546 392 650 370" fill="none" stroke="#A6B8A1" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M178 465C250 385 309 517 396 470C478 425 546 507 620 485" fill="none" stroke="#E6D5B8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M206 580C250 500 309 632 396 585C478 540 546 622 590 600" fill="none" stroke="#A6B8A1" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="376" cy="448" rx="72" ry="110" fill="#C66B3D" opacity="0.8" transform="rotate(22 376 448)"/>
+<text x="748" y="955" text-anchor="end" fill="#E6D5B8" opacity="0.32" font-family="sans-serif" font-size="12" letter-spacing="4">SYNTHETIC</text>
+</svg>

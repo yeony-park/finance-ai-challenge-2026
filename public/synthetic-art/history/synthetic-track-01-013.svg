@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-01-013" data-record-index="12" data-seed="4201">
+<title>잔물결의 방 — 물결이 머문 면 · Rill Room / Surface Where Ripples Rest</title>
+<rect x="0" y="0" width="800" height="1000" fill="#312E4A"/>
+<path d="M0 157 C130 118 220 196 350 157 C490 118 640 196 800 153 L800 285 C660 330 520 272 390 301 C250 330 110 272 0 305 Z" fill="#5B4E78" opacity="0.48"/>
+<path d="M0 301 C130 252 220 350 350 301 C490 252 640 350 800 297 L800 429 C660 484 520 406 390 445 C250 484 110 406 0 449 Z" fill="#8C79A8" opacity="0.54"/>
+<path d="M0 445 C130 386 220 504 350 445 C490 386 640 504 800 441 L800 573 C660 638 520 540 390 589 C250 638 110 540 0 593 Z" fill="#D6B3A6" opacity="0.6"/>
+<path d="M0 589 C130 550 220 628 350 589 C490 550 640 628 800 585 L800 717 C660 762 520 704 390 733 C250 762 110 704 0 737 Z" fill="#F0D8B8" opacity="0.66"/>
+<path d="M0 733 C130 684 220 782 350 733 C490 684 640 782 800 729 L800 861 C660 916 520 838 390 877 C250 916 110 838 0 881 Z" fill="#8EA6A8" opacity="0.48"/>
+<ellipse cx="242" cy="339" rx="166" ry="86" fill="#F0D8B8" opacity="0.42"/>
+<ellipse cx="257" cy="331" rx="108" ry="50" fill="#8C79A8" opacity="0.42"/>
+<ellipse cx="270" cy="326" rx="47" ry="23" fill="#8EA6A8" opacity="0.72"/>
+<path d="M142 444 C204 425 287 465 368 444" fill="none" stroke="#D6B3A6" stroke-width="3" stroke-opacity="0.55" stroke-linecap="round"/>
+<path d="M129 476 C191 457 274 497 355 476" fill="none" stroke="#D6B3A6" stroke-width="3" stroke-opacity="0.55" stroke-linecap="round"/>
+<path d="M116 508 C178 489 261 529 342 508" fill="none" stroke="#D6B3A6" stroke-width="3" stroke-opacity="0.55" stroke-linecap="round"/>
+<text x="690" y="952" fill="#D6B3A6" font-family="sans-serif" font-size="9" letter-spacing="3" text-anchor="end" opacity="0.34">SYNTHETIC</text>
+</svg>

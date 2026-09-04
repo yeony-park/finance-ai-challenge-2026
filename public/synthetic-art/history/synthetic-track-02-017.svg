@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-02-017" data-record-index="190" data-seed="5906">
+<title>비늘그림자의 면 — 단단한 그림자의 표피 · Scaled Shadow Plane / Surface of a Firm Shadow</title>
+<rect x="0" y="0" width="800" height="1000" fill="#3A2D32"/>
+<polygon points="120,0 270,0 420,1000 170,1000" fill="#704C5E"/>
+<polygon points="225,3 357,3 367,44 321,175 290,197 259,175 213,44" fill="#3A2D32"/>
+<polygon points="213,-7 357,-7 367,44 317,167 290,189 263,167 213,44" fill="#9E6A7A"/>
+<polygon points="390,158 552,158 562,199 507,330 470,352 433,330 378,199" fill="#3A2D32"/>
+<polygon points="378,148 552,148 562,199 503,322 470,344 437,322 378,199" fill="#C8A2A8" stroke="#687A8B" stroke-width="4"/>
+<polygon points="195,313 387,313 397,354 333,485 290,507 247,485 183,354" fill="#3A2D32"/>
+<polygon points="183,303 387,303 397,354 329,477 290,499 251,477 183,354" fill="#EBD8C3"/>
+<polygon points="405,468 537,468 547,509 501,640 470,662 439,640 393,509" fill="#3A2D32"/>
+<polygon points="393,458 537,458 547,509 497,632 470,654 443,632 393,509" fill="#687A8B" stroke="#687A8B" stroke-width="4"/>
+<polygon points="210,623 372,623 382,664 327,795 290,817 253,795 198,664" fill="#3A2D32"/>
+<polygon points="198,613 372,613 382,664 323,787 290,809 257,787 198,664" fill="#9E6A7A"/>
+<polygon points="375,778 567,778 577,819 513,950 470,972 427,950 363,819" fill="#3A2D32"/>
+<polygon points="363,768 567,768 577,819 509,942 470,964 431,942 363,819" fill="#C8A2A8" stroke="#687A8B" stroke-width="4"/>
+<polygon points="590,120 735,240 690,560 570,435" fill="#EBD8C3" stroke="#687A8B" stroke-width="4"/>
+<text x="750" y="955" text-anchor="end" fill="#EBD8C3" opacity="0.32" font-family="sans-serif" font-size="12" letter-spacing="4">SYNTHETIC</text>
+</svg>

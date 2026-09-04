@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-02-050" data-record-index="223" data-seed="6206">
+<title>눈금 없는 지도 — 멀어지는 지형의 숨 · Unscaled Map / Breath of a Receding Terrain</title>
+<rect x="0" y="0" width="800" height="1000" fill="#202C39"/>
+<path d="M0 0H800V1000H0Z" fill="#364F6B"/>
+<path d="M0 680C95 570 168 584 232 672C293 758 350 726 385 808C426 901 352 958 286 1000H0Z" fill="#5C7C89" stroke="#E6D5B8" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M0 752C77 675 126 675 176 741C222 802 279 805 320 870C345 909 322 959 294 1000H0Z" fill="#A6B8A1" stroke="#C66B3D" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M55 848C120 791 172 821 202 876C220 909 204 953 175 1000" fill="none" stroke="#E6D5B8" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="678" cy="165" r="30" fill="#C66B3D"/>
+<circle cx="613" cy="205" r="12" fill="#A6B8A1"/>
+<text x="748" y="955" text-anchor="end" fill="#E6D5B8" opacity="0.32" font-family="sans-serif" font-size="12" letter-spacing="4">SYNTHETIC</text>
+</svg>

@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 
-import { ArtFactsSection } from "@/components/art/ArtFactsSection";
+import { SyntheticArtCatalog } from "@/components/art/synthetic/SyntheticArtCatalog";
 import {
   ArtAnalysisScopeDiagram,
   ArtDisclosureOverviewDiagram,
 } from "@/components/category/ArtAboutDiagrams";
+import { CategoryAnalysisWorkspace } from "@/components/category/CategoryAnalysisWorkspace";
 import { CategoryLanding } from "@/components/category/CategoryLanding";
 import { categoryById } from "@/lib/content/categories";
 import {
@@ -12,11 +13,9 @@ import {
   type CategoryPageSearchParams,
 } from "@/lib/content/category-tabs";
 import {
-  ART_CUSTOM_TITLE,
   ART_PAGE_DESCRIPTION,
   ART_PAGE_LEAD,
 } from "@/lib/content/art";
-import { listArtProducts } from "@/lib/art/product-repository";
 
 const INFO = categoryById("art");
 
@@ -31,23 +30,26 @@ interface ArtPageProps {
 
 export default async function ArtPage({ searchParams }: ArtPageProps) {
   const params = await searchParams;
-  const { activeTab, analysisStatus, analysisVerdict } =
-    categoryPageStateFromSearchParams(params);
-  const products = activeTab === "analysis" ? await listArtProducts() : [];
-  const requestedProductId = Array.isArray(params.product)
-    ? params.product[0]
-    : params.product;
-  const initialProductId =
-    products.find((product) => product.id === requestedProductId)?.id ??
-    products[0]?.id ??
-    "";
+  const { activeTab } = categoryPageStateFromSearchParams(params);
+
+  if (activeTab === "analysis") {
+    return (
+      <CategoryAnalysisWorkspace
+        categoryId="art"
+        categoryHref={INFO.href}
+        title={INFO.label}
+        selectedPhase={null}
+        showStatusTabs={false}
+      >
+        <SyntheticArtCatalog searchParams={params} />
+      </CategoryAnalysisWorkspace>
+    );
+  }
 
   return (
     <CategoryLanding
       categoryId="art"
       activeTab={activeTab}
-      analysisStatus={analysisStatus}
-      analysisVerdict={analysisVerdict}
       title={INFO.label}
       lead={ART_PAGE_LEAD}
       descriptor={null}
@@ -57,13 +59,6 @@ export default async function ArtPage({ searchParams }: ArtPageProps) {
       replaceCopyWithVisuals
       offers={[]}
       preview={INFO.preview}
-      custom={
-        <ArtFactsSection
-          products={products}
-          initialProductId={initialProductId}
-        />
-      }
-      customTitle={ART_CUSTOM_TITLE}
     />
   );
 }

@@ -101,39 +101,38 @@ describe("한돈 분석 정적 렌더링 회귀", () => {
     );
   });
 
-  test("공통 판정·청약 필터를 회차 카드와 링크에 반영한다", () => {
+  test("청약 상태 필터를 회차 카드와 링크에 반영한다", () => {
     const matchingHtml = renderToStaticMarkup(
       createElement(PigLanding, {
         selectedProductId: "round-1",
         analysisStatus: "closed",
-        analysisVerdict: "unverifiable",
       }),
     );
     const emptyHtml = renderToStaticMarkup(
       createElement(PigLanding, {
         selectedProductId: "round-1",
-        analysisVerdict: "mismatch",
+        analysisStatus: "open",
       }),
     );
 
     expect(matchingHtml).toContain(
-      'href="/pig?tab=analysis&amp;product=round-1&amp;status=closed&amp;verdict=unverifiable#pig-review"',
+      'href="/pig?tab=analysis&amp;product=round-1&amp;status=closed#pig-review"',
     );
     expect(matchingHtml).not.toContain("선택한 필터에 해당하는 공모가 없습니다.");
     expect(emptyHtml).toContain("선택한 필터에 해당하는 공모가 없습니다.");
   });
 
-  test("ASF·구제역 맥락은 공식 파일을 재가공해 Kakao Maps용 지도를 표시한다", () => {
+  test("ASF·구제역 맥락은 고정 프레임을 먼저 그리고 지도를 지연 로딩한다", () => {
     const html = renderRoundOne();
 
     expect(html).toContain(PIG_DISEASE.mapTitle);
-    expect(html).toContain("국내 양돈농장 ASF·구제역 발생 분포");
-    expect(html).toContain('aria-label="지도 질병 필터"');
+    expect(html).toContain('aria-busy="true"');
+    expect(html).toContain("질병 지도를 불러오는 중입니다.");
     expect(html).toContain(`${PIG_ASF_EVENTS.length}건`);
     expect(html).toContain(`href="${PIG_ASF_BOARD_URL}"`);
     expect(html).toContain(`href="${PIG_ASF_MAP_URL}"`);
     expect(html).toContain("농장명·농장주 미사용");
-    expect(html).toContain('data-map-provider="kakao"');
+    expect(html).not.toContain('data-map-provider="kakao"');
     expect(html).not.toContain("<iframe");
   });
 });

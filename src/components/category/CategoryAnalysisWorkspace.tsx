@@ -2,14 +2,10 @@ import type { ReactNode } from "react";
 
 import type { SubscriptionPhase } from "@/components/site/offers";
 import type { CategoryId } from "@/lib/content/categories";
-import type { Verdict } from "@/lib/verify/types";
 
 import home from "@/components/home/home.module.css";
-import {
-  CategoryAnalysisSidebar,
-  type AnalysisSectionLink,
-} from "./CategoryAnalysisSidebar";
 import { CategoryPageNav } from "./CategoryPageNav";
+import { CategoryAnalysisStatusTabs } from "./CategoryAnalysisStatusTabs";
 import s from "./category-shell.module.css";
 
 interface CategoryAnalysisWorkspaceProps {
@@ -17,9 +13,8 @@ interface CategoryAnalysisWorkspaceProps {
   readonly categoryHref: string;
   readonly title: string;
   readonly selectedPhase: SubscriptionPhase | null;
-  readonly selectedVerdict: Verdict | null;
-  readonly hasFilterableOffers: boolean;
-  readonly sections: readonly AnalysisSectionLink[];
+  readonly showStatusTabs: boolean;
+  readonly statusTabsSearchParams?: string;
   readonly children: ReactNode;
 }
 
@@ -28,9 +23,8 @@ export function CategoryAnalysisWorkspace({
   categoryHref,
   title,
   selectedPhase,
-  selectedVerdict,
-  hasFilterableOffers,
-  sections,
+  showStatusTabs,
+  statusTabsSearchParams,
   children,
 }: CategoryAnalysisWorkspaceProps) {
   return (
@@ -46,19 +40,17 @@ export function CategoryAnalysisWorkspace({
         </div>
       </header>
 
-      <div className={s.analysisWorkspace}>
-        <CategoryAnalysisSidebar
-          categoryId={categoryId}
+      {showStatusTabs && (
+        <CategoryAnalysisStatusTabs
           categoryHref={categoryHref}
           selectedPhase={selectedPhase}
-          selectedVerdict={selectedVerdict}
-          hasFilterableOffers={hasFilterableOffers}
-          sections={sections}
+          preservedSearchParams={statusTabsSearchParams}
         />
-        <main className={s.analysisMain} id={`${categoryId}-analysis-results`}>
-          {children}
-        </main>
-      </div>
+      )}
+
+      <main className={s.analysisMain} id={`${categoryId}-analysis-results`}>
+        {children}
+      </main>
     </div>
   );
 }

@@ -13,17 +13,11 @@ vi.mock("next/navigation", () => ({
 const pigModel: CategoryLandingModel = {
   evidence: [],
   visibleEvidence: [],
-  activeEvidence: [],
-  closedEvidence: [],
   totals: { match: 0, mismatch: 0, unverifiable: 0 },
   totalItems: 0,
   latestGeneratedAt: undefined,
   categoryHref: "/pig",
   analysisLayout: categoryAnalysisLayout("pig"),
-  analysisSections: [
-    ...(categoryAnalysisLayout("pig").customNavigation ?? []),
-    { id: "한돈-questions", label: "확인 질문", keywords: ["질문"] },
-  ],
   trackRecord: null,
   bridgeOffer: null,
 };
@@ -36,8 +30,7 @@ describe("카테고리 분석 템플릿", () => {
         title: "한돈",
         model: pigModel,
         analysisStatus: null,
-        analysisVerdict: null,
-        filterControlsEnabled: true,
+        showStatusTabs: true,
         preview: null,
         custom: createElement(
           "section",

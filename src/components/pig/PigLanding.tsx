@@ -6,7 +6,6 @@ import {
 } from "@/lib/content/pig";
 import { PIG_EXTRA_DISTRIBUTION_FILING } from "@/lib/content/pig-review";
 import type { FilingFacts } from "@/lib/verify/report/filing-facts";
-import type { Verdict } from "@/lib/verify/types";
 
 import { PigDisclosureDetail } from "./PigDisclosureDetail";
 import { PigDisclosureGallery } from "./PigDisclosureGallery";
@@ -17,7 +16,6 @@ interface PigLandingProps {
   readonly selectedProductId?: string;
   readonly filingFacts?: readonly FilingFacts[];
   readonly analysisStatus?: SubscriptionPhase | null;
-  readonly analysisVerdict?: Verdict | null;
 }
 
 const dartAsOf = (): string => {
@@ -33,12 +31,9 @@ export function PigLanding({
   selectedProductId,
   filingFacts,
   analysisStatus = null,
-  analysisVerdict = null,
 }: PigLandingProps) {
   const selected = getPigProduct(selectedProductId);
-  const matchesFilters =
-    (analysisStatus === null || analysisStatus === "closed") &&
-    (analysisVerdict === null || analysisVerdict === "unverifiable");
+  const matchesFilters = analysisStatus === null || analysisStatus === "closed";
   const visibleProducts = matchesFilters ? PIG_DISCLOSURE_PRODUCTS : [];
   const selectedFacts = filingFacts?.find(
     (facts) => facts.offerId === `pig-${selected.round}`,
@@ -50,7 +45,6 @@ export function PigLanding({
         products={visibleProducts}
         selectedProductId={selected.id}
         analysisStatus={analysisStatus}
-        analysisVerdict={analysisVerdict}
       />
 
       <PigReviewSections product={selected} />

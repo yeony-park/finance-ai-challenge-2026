@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-02-060" data-record-index="233" data-seed="6307">
+<title>새벽물의 흐름 — 물이 흘러간 뒤의 면 · Dawnwater Flow / Plane After the Water Passed</title>
+<rect x="0" y="0" width="800" height="1000" fill="#0B132B"/>
+<circle cx="92" cy="490" r="168" fill="#1C2541" opacity="0.7"/>
+<path d="M50 190C180 60 240 310 370 175C500 40 630 280 835 170L835 262C650 348 510 155 385 270C250 360 150 160 50 282Z" fill="#3A506B"/>
+<path d="M50 285C200 155 260 405 390 270C512 135 640 375 835 265L835 357C660 443 522 250 405 365C270 455 170 255 50 377Z" fill="#5BC0BE" stroke="#CDE8E5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M50 380C220 250 280 500 410 365C524 230 650 470 835 360L835 452C670 538 534 345 425 460C290 550 190 350 50 472Z" fill="#CDE8E5"/>
+<path d="M50 475C240 345 300 595 430 460C536 325 660 565 835 455L835 547C680 633 546 440 445 555C310 645 210 445 50 567Z" fill="#F4D35E" stroke="#CDE8E5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M50 570C260 440 320 690 450 555C548 420 670 660 835 550L835 642C690 728 558 535 465 650C330 740 230 540 50 662Z" fill="#3A506B"/>
+<path d="M50 665C280 535 340 785 470 650C560 515 680 755 835 645L835 737C700 823 570 630 485 745C350 835 250 635 50 757Z" fill="#5BC0BE" stroke="#CDE8E5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M50 760C300 630 360 880 490 745C572 610 690 850 835 740L835 832C710 918 582 725 505 840C370 930 270 730 50 852Z" fill="#CDE8E5"/>
+<path d="M50 855C320 725 380 975 510 840C584 705 700 945 835 835L835 927C720 1013 594 820 525 935C390 1025 290 825 50 947Z" fill="#F4D35E" stroke="#CDE8E5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="94" cy="490" r="50" fill="#F4D35E"/>
+<circle cx="94" cy="490" r="19" fill="#CDE8E5"/>
+<text x="748" y="955" text-anchor="end" fill="#CDE8E5" opacity="0.32" font-family="sans-serif" font-size="12" letter-spacing="4">SYNTHETIC</text>
+</svg>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-02-052" data-record-index="225" data-seed="6208">
+<title>눈금 없는 지도 — 바깥으로 열린 평면 · Unscaled Map / Plane Open to the Outside</title>
+<rect x="0" y="0" width="800" height="1000" fill="#202C39"/>
+<path d="M0 120C98 71 166 152 257 123C364 89 408 181 503 139C618 89 689 174 800 108V1000H0Z" fill="#364F6B"/>
+<path d="M0 270C112 238 160 320 270 283C373 248 448 345 538 298C655 238 713 328 800 280V1000H0Z" fill="#5C7C89" stroke="#E6D5B8" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M0 452C120 405 187 492 302 449C420 405 495 512 599 455C686 408 735 480 800 454V1000H0Z" fill="#A6B8A1" stroke="#C66B3D" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M30 0L760 1000" fill="none" stroke="#E6D5B8" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M175 0L800 816" fill="none" stroke="#202C39" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="748" y="955" text-anchor="end" fill="#E6D5B8" opacity="0.32" font-family="sans-serif" font-size="12" letter-spacing="4">SYNTHETIC</text>
+</svg>

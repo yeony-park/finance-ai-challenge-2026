@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-02-071" data-record-index="244" data-seed="6409">
+<title>작은불씨의 면 — 식어 가는 빛의 조각 · Little Ember Plane / Fragment of Cooling Light</title>
+<rect x="0" y="0" width="800" height="1000" fill="#261C15"/>
+<rect x="58" y="72" width="684" height="860" fill="#4E342E" stroke="#F3E9D2" stroke-width="7"/>
+<polygon points="94,193 287,103 532,170 700,120 625,316 706,492 594,664 688,857 430,786 250,890 118,726 185,532" fill="#8D6E63" stroke="#261C15" stroke-width="13"/>
+<polygon points="181,532 326,420 491,475 594,664 430,786 250,890" fill="#BC8A5F" stroke="#F3E9D2" stroke-width="7"/>
+<polygon points="326,420 382,211 532,170 625,316 491,475" fill="#DDB892" stroke="#261C15" stroke-width="8"/>
+<path d="M107 552L185 532L326 420L382 211" fill="none" stroke="#F3E9D2" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="470" cy="544" r="34" fill="#261C15" stroke="#DDB892" stroke-width="5"/>
+<text x="748" y="955" text-anchor="end" fill="#DDB892" opacity="0.32" font-family="sans-serif" font-size="12" letter-spacing="4">SYNTHETIC</text>
+</svg>

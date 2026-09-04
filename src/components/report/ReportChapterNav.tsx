@@ -1,93 +1,65 @@
 "use client";
 
-import { useEffect, useState, type MouseEvent } from "react";
+import { type KeyboardEvent, useRef } from "react";
 
-import { VERDICT_HEADING_ID } from "./ids";
 import type { ReportSection } from "./report-sections";
 import s from "./report.module.css";
 
 export function ReportChapterNav({
   sections,
+  activeId,
+  onSelect,
 }: {
   readonly sections: readonly ReportSection[];
+  readonly activeId: string;
+  readonly onSelect: (sectionId: string) => void;
 }) {
-  const [activeId, setActiveId] = useState(VERDICT_HEADING_ID);
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
-  const handleChapterClick = (
-    event: MouseEvent<HTMLAnchorElement>,
-    chapterId: string,
+  const selectByKeyboard = (
+    event: KeyboardEvent<HTMLButtonElement>,
+    currentIndex: number,
   ) => {
-    const target = document.getElementById(chapterId);
-    if (!target) return;
+    let nextIndex: number | null = null;
 
+    if (event.key === "ArrowRight") {
+      nextIndex = (currentIndex + 1) % sections.length;
+    } else if (event.key === "ArrowLeft") {
+      nextIndex = (currentIndex - 1 + sections.length) % sections.length;
+    } else if (event.key === "Home") {
+      nextIndex = 0;
+    } else if (event.key === "End") {
+      nextIndex = sections.length - 1;
+    }
+
+    if (nextIndex === null) return;
     event.preventDefault();
-
-    const sectionStart =
-      target.classList.contains(s.sectionAnchor) &&
-      target.nextElementSibling instanceof HTMLElement
-        ? target.nextElementSibling
-        : target;
-    const stickyBottom =
-      event.currentTarget.closest("nav")?.getBoundingClientRect().bottom ?? 0;
-    const targetTop = sectionStart.getBoundingClientRect().top + window.scrollY;
-    const behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches
-      ? "auto"
-      : "smooth";
-
-    window.history.pushState(null, "", `#${chapterId}`);
-    window.scrollTo({
-      top: Math.max(0, targetTop - stickyBottom),
-      behavior,
-    });
-    setActiveId(chapterId);
+    tabRefs.current[nextIndex]?.focus();
+    onSelect(sections[nextIndex].id);
   };
-
-  useEffect(() => {
-    let frame = 0;
-    const visibleChapterIds = sections.map((section) => section.id);
-
-    const updateActiveChapter = () => {
-      window.cancelAnimationFrame(frame);
-      frame = window.requestAnimationFrame(() => {
-        const anchorOffset = Math.min(window.innerHeight * 0.42, 320);
-        let nextId = visibleChapterIds[0] ?? VERDICT_HEADING_ID;
-
-        visibleChapterIds.forEach((id) => {
-          const heading = document.getElementById(id);
-          if (heading && heading.getBoundingClientRect().top <= anchorOffset) {
-            nextId = id;
-          }
-        });
-
-        setActiveId(nextId);
-      });
-    };
-
-    updateActiveChapter();
-    window.addEventListener("scroll", updateActiveChapter, { passive: true });
-    window.addEventListener("hashchange", updateActiveChapter);
-
-    return () => {
-      window.cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", updateActiveChapter);
-      window.removeEventListener("hashchange", updateActiveChapter);
-    };
-  }, [sections]);
 
   return (
     <nav className={s.chapterNav} aria-label="리포트 목차">
-      <div className={s.chapterNavRow}>
-        {sections.map((section) => (
-          <a
+      <div className={s.chapterNavRow} role="tablist" aria-label="리포트 섹션">
+        {sections.map((section, index) => (
+          <button
             key={section.id}
+            ref={(node) => {
+              tabRefs.current[index] = node;
+            }}
+            id={`report-tab-${section.id}`}
+            type="button"
+            role="tab"
             className={s.chapterLink}
-            href={`#${section.id}`}
             data-active={activeId === section.id}
-            aria-current={activeId === section.id ? "location" : undefined}
-            onClick={(event) => handleChapterClick(event, section.id)}
+            aria-selected={activeId === section.id}
+            aria-controls="report-section-panel"
+            tabIndex={activeId === section.id ? 0 : -1}
+            onClick={() => onSelect(section.id)}
+            onKeyDown={(event) => selectByKeyboard(event, index)}
           >
             {section.label}
-          </a>
+          </button>
         ))}
       </div>
     </nav>

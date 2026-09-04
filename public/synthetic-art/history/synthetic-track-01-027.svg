@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-01-027" data-record-index="26" data-seed="4304">
+<title>달선의 문장 — 초승달 곁의 쉼표 · Moonline Sentence / Comma Beside a Crescent</title>
+<rect x="0" y="0" width="800" height="1000" fill="#20252B"/>
+<circle cx="361" cy="346" r="88" fill="#E7D9C8" opacity="0.85"/>
+<circle cx="378" cy="336" r="88" fill="#20252B" opacity="0.97"/>
+<path d="M-80 838 C95 704 166 570 274 470 C393 360 526 301 840 203" fill="none" stroke="#4A5862" stroke-width="2" stroke-linecap="round" stroke-opacity="0.48"/>
+<path d="M-53 811 C122 677 193 543 301 443 C420 333 553 274 867 176" fill="none" stroke="#8797A0" stroke-width="3" stroke-linecap="round" stroke-opacity="0.55"/>
+<path d="M-26 784 C149 650 220 516 328 416 C447 306 580 247 894 149" fill="none" stroke="#C9B7A5" stroke-width="2" stroke-linecap="round" stroke-opacity="0.62"/>
+<path d="M1 757 C176 623 247 489 355 389 C474 279 607 220 921 122" fill="none" stroke="#E7D9C8" stroke-width="3" stroke-linecap="round" stroke-opacity="0.48"/>
+<path d="M28 730 C203 596 274 462 382 362 C501 252 634 193 948 95" fill="none" stroke="#4A5862" stroke-width="2" stroke-linecap="round" stroke-opacity="0.55"/>
+<path d="M55 703 C230 569 301 435 409 335 C528 225 661 166 975 68" fill="none" stroke="#8797A0" stroke-width="3" stroke-linecap="round" stroke-opacity="0.62"/>
+<path d="M82 676 C257 542 328 408 436 308 C555 198 688 139 1002 41" fill="none" stroke="#C9B7A5" stroke-width="2" stroke-linecap="round" stroke-opacity="0.48"/>
+<path d="M109 649 C284 515 355 381 463 281 C582 171 715 112 1029 14" fill="none" stroke="#E7D9C8" stroke-width="3" stroke-linecap="round" stroke-opacity="0.55"/>
+<circle cx="139" cy="160" r="2" fill="#C9B7A5" opacity="0.75"/>
+<circle cx="322" cy="297" r="3" fill="#C9B7A5" opacity="0.75"/>
+<circle cx="505" cy="434" r="4" fill="#C9B7A5" opacity="0.75"/>
+<circle cx="688" cy="571" r="2" fill="#C9B7A5" opacity="0.75"/>
+<circle cx="251" cy="708" r="3" fill="#C9B7A5" opacity="0.75"/>
+<circle cx="434" cy="145" r="4" fill="#C9B7A5" opacity="0.75"/>
+<circle cx="617" cy="282" r="2" fill="#C9B7A5" opacity="0.75"/>
+<path d="M191 536 C269 440 416 437 511 352" fill="none" stroke="#AF6F5A" stroke-width="4" stroke-linecap="round"/>
+<text x="54" y="954" fill="#8797A0" font-family="sans-serif" font-size="9" letter-spacing="3" opacity="0.32">SYNTHETIC</text>
+</svg>

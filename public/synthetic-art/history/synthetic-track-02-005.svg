@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Ongyeoldam Riva | 저녁편지 층위회화" data-record-id="synthetic-track-02-005" data-seed="5805" data-index="178">
+<title>저녁편지의 층 — 말보다 늦은 온기 · Evening Letter Layers / Warmth Later Than Words</title>
+<rect x="0" y="0" width="800" height="1000" fill="#2F3E46"/>
+<path d="M0 726 C147 670 260 688 363 734 C475 783 613 783 800 711V1000H0Z" fill="#354F52"/>
+<path d="M0 799 C138 749 261 767 370 811 C489 858 625 850 800 786" fill="none" stroke="#84A98C" stroke-width="11"/>
+<path d="M0 864 C142 823 270 835 379 878 C505 928 631 913 800 853" fill="none" stroke="#52796F" stroke-width="5"/>
+<rect x="197" y="175" width="420" height="396" fill="#CAD2C5"/>
+<rect x="242" y="222" width="326" height="302" fill="#DDA15E"/>
+<line x1="285" y1="291" x2="524" y2="291" stroke="#2F3E46" stroke-width="8"/>
+<line x1="285" y1="346" x2="490" y2="346" stroke="#2F3E46" stroke-width="6"/>
+<line x1="285" y1="400" x2="514" y2="400" stroke="#2F3E46" stroke-width="4"/>
+<line x1="285" y1="451" x2="451" y2="451" stroke="#2F3E46" stroke-width="3"/>
+<circle cx="675" cy="204" r="28" fill="#84A98C"/>
+<circle cx="675" cy="204" r="10" fill="#CAD2C5"/>
+<text x="22" y="978" fill="#CAD2C5" font-family="sans-serif" font-size="8" letter-spacing="2">SYNTHETIC</text>
+</svg>

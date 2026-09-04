@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-02-035" data-record-index="208" data-seed="6102">
+<title>풀씨의 리듬 — 들판에서 튄 작은 리듬 · Grassseed Rhythm / Small Rhythm Springing from a Field</title>
+<rect x="0" y="0" width="800" height="1000" fill="#253D2C"/>
+<line x1="160" y1="910" x2="118" y2="200" stroke="#90A955" stroke-width="10" stroke-linecap="round" opacity="0.9"/>
+<ellipse cx="118" cy="200" rx="42" ry="86" fill="#ECF39E" stroke="#4F772D" stroke-width="4" opacity="0.92" transform="rotate(-21 118 200)"/>
+<line x1="118" y1="114" x2="126" y2="96" stroke="#4F772D" stroke-width="2" stroke-linecap="round" opacity="0.68"/>
+<line x1="118" y1="280" x2="63" y2="350" stroke="#E09F3E" stroke-width="4" stroke-linecap="round"/>
+<line x1="390" y1="910" x2="408" y2="90" stroke="#ECF39E" stroke-width="10" stroke-linecap="round" opacity="0.9"/>
+<ellipse cx="408" cy="90" rx="36" ry="78" fill="#90A955" stroke="#4F772D" stroke-width="4" opacity="0.92" transform="rotate(9 408 90)"/>
+<line x1="408" y1="12" x2="416" y2="-6" stroke="#4F772D" stroke-width="2" stroke-linecap="round" opacity="0.68"/>
+<line x1="408" y1="170" x2="353" y2="240" stroke="#E09F3E" stroke-width="4" stroke-linecap="round"/>
+<line x1="650" y1="910" x2="702" y2="290" stroke="#E09F3E" stroke-width="10" stroke-linecap="round" opacity="0.9"/>
+<ellipse cx="702" cy="290" rx="30" ry="70" fill="#ECF39E" stroke="#4F772D" stroke-width="4" opacity="0.92" transform="rotate(26 702 290)"/>
+<line x1="702" y1="220" x2="710" y2="202" stroke="#4F772D" stroke-width="2" stroke-linecap="round" opacity="0.68"/>
+<line x1="702" y1="370" x2="647" y2="440" stroke="#E09F3E" stroke-width="4" stroke-linecap="round"/>
+<polygon points="0,910 250,850 500,900 800,840 800,1000 0,1000" fill="#31572C"/>
+<text x="748" y="955" text-anchor="end" fill="#ECF39E" opacity="0.32" font-family="sans-serif" font-size="12" letter-spacing="4">SYNTHETIC</text>
+</svg>

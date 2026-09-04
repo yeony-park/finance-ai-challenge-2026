@@ -2,7 +2,7 @@
 
 # data/ 매니페스트
 
-생성 시각: 2026-08-30T06:29:17.788Z
+생성 시각: 2026-09-01T07:49:45.413Z
 
 ## 저장 정책
 
@@ -21,6 +21,7 @@
 | 실거래 월 신고 | `data/reference/rtms/` | **커밋**(시장 통계 — 개인정보 없음) |
 | 정제 참조 JSON | `data/reference/**/*.json` (`raw/` 제외) | **커밋**(비식별·출처 메타데이터 포함) |
 | 공모 기초자료 | `data/offers/{offerId}.json` | **커밋**(공개 자료 정리 — 개인정보 없음) |
+| 합성 미술품 fixture | `data/synthetic/art-investment.json` | **커밋**(화면 검증용 — 실제 투자 데이터 아님) |
 | 매니페스트 | `data/MANIFEST.md` | **커밋** |
 
 신규 클론에서 로컬 전용 파일이 없어도 `npm test`·`npm run build`는 통과한다
@@ -292,3 +293,13 @@ _현재 로컬에 파일이 없습니다._
 | `data/offers/pig-2.json` | 1,116 | `71ed1f1184bb213a35c1572eec2e0f2fcaeb5bd7c540b8848aee87add430eb29` |
 | `data/offers/pig-3.json` | 1,116 | `cb4cf817c92a7d97e384f76bc89a66f2a44a6eb625f02e4e2559218c69e96536` |
 | `data/offers/real-estate-a.json` | 2,399 | `ec380f2f23d763d365db2aca2022c221d9bf89ca3c4e18a4bc6f733580975c08` |
+
+### 합성 미술품 카탈로그 (화면 검증용 · 커밋 대상)
+
+- **출처**: synthetic-feature-restore e65337f 합성 fixture (실제 작품·작가·플랫폼과 무관)
+- **재확보**: `git show e65337f:data/synthetic/art-investment.json > data/synthetic/art-investment.json`
+- **비고**: 화면·검색·상세 흐름 검증용. 외부 원문 대조나 투자 판단에 사용하지 않는다.
+
+| 경로 | 바이트 | sha256 |
+|---|---:|---|
+| `data/synthetic/art-investment.json` | 762,052 | `29b7d80b8a36a36b9d550694adf2c951de9f5ff3b2357e28111569ebd9ae716d` |

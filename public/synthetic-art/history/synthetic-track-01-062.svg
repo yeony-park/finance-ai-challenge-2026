@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-01-062" data-record-index="61" data-seed="4606">
+<title>유리결의 반사 — 유리 가장자리의 숨 · Glassgrain Reflection / Breath at a Glass Edge</title>
+<rect x="0" y="0" width="800" height="1000" fill="#17324D"/>
+<g transform="rotate(180 400 500)">
+<polygon points="0,66 800,174 772,866 35,844" fill="#2D5873" opacity="0.18"/>
+<polygon points="54,90 746,150 718,890 89,820" fill="#5C8EA3" opacity="0.23"/>
+<polygon points="108,114 692,126 664,914 143,796" fill="#A9CDD0" opacity="0.29"/>
+<polygon points="162,66 638,174 610,866 197,844" fill="#E2F0EA" opacity="0.34"/>
+<polygon points="216,90 584,150 556,890 251,820" fill="#D6A85F" opacity="0.18"/>
+<polygon points="270,114 530,126 502,914 305,796" fill="#2D5873" opacity="0.23"/>
+<polygon points="324,66 476,174 448,866 359,844" fill="#5C8EA3" opacity="0.29"/>
+<polygon points="378,90 422,150 394,890 413,820" fill="#A9CDD0" opacity="0.34"/>
+<polygon points="432,114 368,126 340,914 467,796" fill="#E2F0EA" opacity="0.18"/>
+<polygon points="486,66 314,174 286,866 521,844" fill="#D6A85F" opacity="0.23"/>
+<polygon points="118,196 682,231 632,775 164,730" fill="none" stroke="#E2F0EA" stroke-width="5" stroke-opacity="0.74"/>
+<polygon points="280,340 530,360 508,648 307,625" fill="none" stroke="#A9CDD0" stroke-width="4" stroke-opacity="0.72"/>
+<polygon points="377,421 444,427 437,560 386,552" fill="#E2F0EA" opacity="0.68"/>
+<line x1="80" y1="78" x2="22" y2="918" stroke="#A9CDD0" stroke-width="2" stroke-opacity="0.5"/>
+<line x1="144" y1="78" x2="144" y2="918" stroke="#D6A85F" stroke-width="3" stroke-opacity="0.5"/>
+<line x1="208" y1="78" x2="266" y2="918" stroke="#A9CDD0" stroke-width="4" stroke-opacity="0.5"/>
+<line x1="272" y1="78" x2="214" y2="918" stroke="#D6A85F" stroke-width="2" stroke-opacity="0.5"/>
+<line x1="336" y1="78" x2="336" y2="918" stroke="#A9CDD0" stroke-width="3" stroke-opacity="0.5"/>
+<line x1="400" y1="78" x2="458" y2="918" stroke="#D6A85F" stroke-width="4" stroke-opacity="0.5"/>
+<line x1="464" y1="78" x2="406" y2="918" stroke="#A9CDD0" stroke-width="2" stroke-opacity="0.5"/>
+<line x1="528" y1="78" x2="528" y2="918" stroke="#D6A85F" stroke-width="3" stroke-opacity="0.5"/>
+<line x1="592" y1="78" x2="650" y2="918" stroke="#A9CDD0" stroke-width="4" stroke-opacity="0.5"/>
+<line x1="656" y1="78" x2="598" y2="918" stroke="#D6A85F" stroke-width="2" stroke-opacity="0.5"/>
+<line x1="720" y1="78" x2="720" y2="918" stroke="#A9CDD0" stroke-width="3" stroke-opacity="0.5"/>
+<text x="728" y="953" fill="#A9CDD0" font-family="sans-serif" font-size="9" letter-spacing="3" text-anchor="end" opacity="0.34">SYNTHETIC</text>
+</g>
+</svg>

@@ -14,7 +14,6 @@ interface NavItem {
 }
 
 const UTILITY_ITEMS: readonly NavItem[] = [
-  { href: "/offers", label: "검증 리포트", match: "/offers" },
   { href: "/methodology", label: "검증 방법", match: "/methodology" },
 ];
 

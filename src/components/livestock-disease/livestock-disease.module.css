@@ -1,0 +1,323 @@
+.mapFrame {
+  min-width: 0;
+  max-width: 100%;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-bg-muted);
+}
+
+.lazyBoundary {
+  min-width: 0;
+}
+
+.mapHead {
+  display: grid;
+  gap: var(--ds-space-1);
+  padding: var(--ds-space-4) var(--ds-space-5);
+}
+
+.mapEyebrow {
+  color: var(--ds-ink-faint);
+  font-size: var(--ds-text-2xs);
+  font-weight: var(--ds-weight-bold);
+  letter-spacing: var(--ds-tracking-wide);
+  text-transform: uppercase;
+}
+
+.mapHead h3 {
+  margin: 0;
+  color: var(--ds-ink);
+  font-size: var(--ds-text-md);
+}
+
+.mapHead p,
+.mapCaption {
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: var(--ds-ink-muted);
+  font-size: var(--ds-text-xs);
+  line-height: var(--ds-leading-relaxed);
+  word-break: keep-all;
+}
+
+.mapMeta {
+  color: var(--ds-ink-faint);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+  line-height: 1.6;
+}
+
+.mapLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--ds-space-5);
+  padding: var(--ds-space-5);
+  border-top: 1px solid var(--ds-line);
+  background: var(--ds-surface);
+}
+
+.mapCanvas {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--ds-line-soft);
+  border-radius: var(--ds-radius-md);
+  background: #edf5f7;
+}
+
+.mapCanvas > svg,
+.mapCanvas [data-map-placeholder] > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.mapPlaceholder {
+  display: grid;
+  min-height: clamp(27rem, 56vw, 39rem);
+  place-items: center;
+  padding: var(--ds-space-5);
+  color: var(--ds-ink-muted);
+  font-size: var(--ds-text-xs);
+  text-align: center;
+}
+
+.mapPlaceholder[data-state="loading"]::before {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    rgb(255 255 255 / 48%) 48%,
+    transparent 66%
+  );
+  content: "";
+  animation: disease-map-loading 1.4s linear infinite;
+  transform: translateX(-100%);
+}
+
+.mapStateText {
+  position: relative;
+  z-index: 1;
+  max-width: 24rem;
+  padding: var(--ds-space-3) var(--ds-space-4);
+  border: 1px solid rgb(255 255 255 / 80%);
+  border-radius: var(--ds-radius-sm);
+  background: rgb(255 255 255 / 90%);
+  line-height: var(--ds-leading-relaxed);
+  backdrop-filter: blur(6px);
+}
+
+.retryButton {
+  position: relative;
+  z-index: 1;
+  min-height: var(--ds-control-h-sm);
+  margin-top: var(--ds-space-3);
+  padding: 0.35rem 0.85rem;
+  border: 1px solid var(--ds-line-strong);
+  border-radius: var(--ds-radius-pill);
+  background: var(--ds-surface);
+  color: var(--ds-ink);
+  font: inherit;
+  font-size: var(--ds-text-xs);
+  font-weight: var(--ds-weight-bold);
+  cursor: pointer;
+}
+
+.retryButton:focus-visible {
+  outline: none;
+  box-shadow: var(--ds-focus-ring);
+}
+
+.mapLegend {
+  position: absolute;
+  z-index: 7;
+  bottom: var(--ds-space-3);
+  left: var(--ds-space-3);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-2) var(--ds-space-4);
+  padding: var(--ds-space-2) var(--ds-space-3);
+  border: 1px solid rgb(255 255 255 / 80%);
+  border-radius: var(--ds-radius-sm);
+  background: rgb(255 255 255 / 88%);
+  color: var(--ds-ink-muted);
+  font-size: var(--ds-text-2xs);
+  backdrop-filter: blur(6px);
+}
+
+.mapLegend span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-1);
+}
+
+.mapLegend i {
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 50%;
+}
+
+.legendPast {
+  background: #829294;
+}
+
+.legendCurrent {
+  background: #326fa8;
+}
+
+.mapLegend .legendFmd {
+  border-radius: 1px;
+  background: #d96c1f;
+  transform: rotate(45deg) scale(0.78);
+}
+
+.mapLegend .legendLsd {
+  border-radius: 2px;
+  background: #7048a8;
+}
+
+.mapStats {
+  display: grid;
+  gap: var(--ds-space-5);
+  align-content: start;
+}
+
+.metricGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--ds-space-2);
+}
+
+.metricGrid > div {
+  display: grid;
+  gap: var(--ds-space-1);
+  min-width: 0;
+  padding: var(--ds-space-3);
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius-sm);
+  background: var(--ds-bg-muted);
+}
+
+.metricGrid span,
+.yearRow span,
+.yearRow strong {
+  color: var(--ds-ink-muted);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-2xs);
+}
+
+.metricGrid strong {
+  color: var(--ds-ink);
+  font-size: var(--ds-text-lg);
+}
+
+.yearList {
+  display: grid;
+  gap: var(--ds-space-2);
+}
+
+.yearRow {
+  display: grid;
+  grid-template-columns: 2.7rem minmax(0, 1fr) 2rem;
+  align-items: center;
+  gap: var(--ds-space-2);
+}
+
+.yearRow i {
+  height: 0.5rem;
+  overflow: hidden;
+  border-radius: var(--ds-radius-pill);
+  background: var(--ds-bg-sunken);
+}
+
+.yearRow b {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #326fa8;
+}
+
+.yearRow strong {
+  color: var(--ds-ink);
+  text-align: right;
+}
+
+.mapNote {
+  margin: 0;
+  padding: var(--ds-space-3);
+  border-left: 3px solid var(--ds-line-strong);
+  background: var(--ds-bg-muted);
+  color: var(--ds-ink-muted);
+  font-size: var(--ds-text-xs);
+  line-height: var(--ds-leading-relaxed);
+  word-break: keep-all;
+}
+
+.mapCaption {
+  padding: var(--ds-space-3) var(--ds-space-5);
+  border-top: 1px solid var(--ds-line);
+  background: var(--ds-surface);
+}
+
+.land {
+  fill: #f8f7f2;
+  stroke: #9faeaf;
+  stroke-width: 1.2;
+  vector-effect: non-scaling-stroke;
+}
+
+.pointPast,
+.pointCurrent,
+.pointFocus,
+.pointFmd,
+.pointLsd {
+  stroke: var(--ds-surface);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+
+.pointPast {
+  fill: #829294;
+  opacity: 0.72;
+}
+
+.pointCurrent {
+  fill: #326fa8;
+}
+
+.pointFocus {
+  fill: #b42318;
+  stroke-width: 2.5;
+}
+
+.pointFmd {
+  fill: #d96c1f;
+  stroke-width: 2;
+}
+
+.pointLsd {
+  fill: #7048a8;
+  stroke-width: 2;
+}
+
+@media (min-width: 60rem) {
+  .mapLayout {
+    grid-template-columns: minmax(22rem, 1.1fr) minmax(17rem, 0.9fr);
+    align-items: start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mapPlaceholder[data-state="loading"]::before {
+    animation: none;
+  }
+}
+
+@keyframes disease-map-loading {
+  to {
+    transform: translateX(100%);
+  }
+}

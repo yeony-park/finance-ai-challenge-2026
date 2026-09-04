@@ -546,6 +546,12 @@
   padding-top: var(--ds-space-4);
   border-top: 1px solid var(--ds-line);
 }
+
+.sectionExtension {
+  display: grid;
+  gap: var(--ds-space-4);
+  min-width: 0;
+}
 .sectionSources {
   display: grid;
   gap: var(--ds-space-1);
@@ -815,11 +821,15 @@
   align-items: center;
   min-height: 3.5rem;
   padding-inline: var(--ds-space-1);
+  border: 0;
+  background: transparent;
   color: var(--ds-ink-faint);
+  font: inherit;
   font-size: var(--ds-text-sm);
   font-weight: var(--ds-weight-medium);
   text-decoration: none;
   white-space: nowrap;
+  cursor: pointer;
   transition:
     color var(--ds-duration-fast) var(--ds-ease);
 }

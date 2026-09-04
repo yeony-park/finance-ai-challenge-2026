@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-02-065" data-record-index="238" data-seed="6403">
+<title>작은불씨의 면 — 온도가 잠든 조각 · Little Ember Plane / Fragment Where Temperature Slept</title>
+<rect x="0" y="0" width="800" height="1000" fill="#261C15"/>
+<rect x="120" y="62" width="560" height="878" fill="#4E342E" stroke="#F3E9D2" stroke-width="7"/>
+<rect x="236" y="118" width="328" height="766" fill="#8D6E63" stroke="#261C15" stroke-width="12"/>
+<line x1="280" y1="182" x2="280" y2="815" stroke="#BC8A5F" stroke-width="8" stroke-linecap="round"/>
+<line x1="345" y1="182" x2="331" y2="815" stroke="#BC8A5F" stroke-width="8" stroke-linecap="round"/>
+<line x1="410" y1="182" x2="424" y2="815" stroke="#BC8A5F" stroke-width="8" stroke-linecap="round"/>
+<line x1="475" y1="182" x2="475" y2="815" stroke="#BC8A5F" stroke-width="8" stroke-linecap="round"/>
+<line x1="520" y1="182" x2="520" y2="815" stroke="#BC8A5F" stroke-width="8" stroke-linecap="round"/>
+<polygon points="255,164 535,164 499,247 286,247" fill="#DDB892" stroke="#F3E9D2" stroke-width="5"/>
+<polygon points="286,754 500,754 543,839 249,839" fill="#DDB892" stroke="#261C15" stroke-width="5"/>
+<circle cx="400" cy="490" r="67" fill="#F3E9D2" stroke="#8D6E63" stroke-width="8"/>
+<circle cx="400" cy="490" r="27" fill="#261C15"/>
+<text x="748" y="955" text-anchor="end" fill="#DDB892" opacity="0.32" font-family="sans-serif" font-size="12" letter-spacing="4">SYNTHETIC</text>
+</svg>

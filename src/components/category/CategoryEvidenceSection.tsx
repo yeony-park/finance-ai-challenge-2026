@@ -4,7 +4,6 @@ import offerStyles from "@/components/landing/landing.module.css";
 import { Reveal } from "@/components/motion/Reveal";
 import { OFFERS_SECTION_TITLE } from "@/lib/content/category-landing";
 import type { SubscriptionPhase } from "@/components/site/offers";
-import type { Verdict } from "@/lib/verify/types";
 
 import type { OfferEvidence } from "./category-landing-model";
 import base from "./category.module.css";
@@ -15,7 +14,6 @@ interface CategoryEvidenceSectionProps {
   readonly evidence: readonly OfferEvidence[];
   readonly visibleEvidence: readonly OfferEvidence[];
   readonly analysisStatus: SubscriptionPhase | null;
-  readonly analysisVerdict: Verdict | null;
   readonly preview: readonly string[] | null;
 }
 
@@ -25,16 +23,14 @@ export function CategoryEvidenceSection({
   evidence,
   visibleEvidence,
   analysisStatus,
-  analysisVerdict,
   preview,
 }: CategoryEvidenceSectionProps) {
-  const recentEvidence = [...visibleEvidence]
+  const listedEvidence = [...visibleEvidence]
     .sort(
       (left, right) =>
         Date.parse(right.offer.subscription.opensAt) -
         Date.parse(left.offer.subscription.opensAt),
-    )
-    .slice(0, 3);
+    );
 
   return (
     <section
@@ -48,15 +44,14 @@ export function CategoryEvidenceSection({
         >
           {OFFERS_SECTION_TITLE}
         </h2>
-        {recentEvidence.length > 0 ? (
+        {listedEvidence.length > 0 ? (
           <CategoryOfferCardGrid>
-            {recentEvidence.map((entry) => (
+            {listedEvidence.map((entry) => (
               <OfferCard key={entry.offer.id} card={entry.card} />
             ))}
           </CategoryOfferCardGrid>
-        ) : (analysisStatus !== null || analysisVerdict !== null) &&
-          evidence.length > 0 ? (
-          <p className={base.emptyNote}>선택한 필터에 해당하는 공모가 없습니다.</p>
+        ) : analysisStatus !== null && evidence.length > 0 ? (
+          <p className={base.emptyNote}>선택한 상태에 해당하는 공모가 없습니다.</p>
         ) : preview ? (
           <ul className={base.previewList}>
             {preview.map((line) => (

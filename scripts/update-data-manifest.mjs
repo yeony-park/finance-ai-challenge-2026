@@ -59,6 +59,15 @@ const PUBLIC_GROUPS = [
     recover: "수기 정리 — 새 공모 추가 시 `data/offers/{offerId}.json`을 만든다",
     note: "개인정보 없음(상업용 건물의 공개 실거래 단위 정보). 화면에는 익명화(발행사·건물명 중립 표기, 지번 마스킹) 후 노출된다.",
   },
+  {
+    dir: "synthetic",
+    title: "합성 미술품 카탈로그 (화면 검증용 · 커밋 대상)",
+    source:
+      "synthetic-feature-restore e65337f 합성 fixture (실제 작품·작가·플랫폼과 무관)",
+    recover:
+      "`git show e65337f:data/synthetic/art-investment.json > data/synthetic/art-investment.json`",
+    note: "화면·검색·상세 흐름 검증용. 외부 원문 대조나 투자 판단에 사용하지 않는다.",
+  },
 ];
 
 const listFilesRecursively = async (dir, skipDirectoryNames = []) => {
@@ -143,6 +152,7 @@ const render = (groups, publicGroups, generatedAt) =>
     "| 실거래 월 신고 | `data/reference/rtms/` | **커밋**(시장 통계 — 개인정보 없음) |",
     "| 정제 참조 JSON | `data/reference/**/*.json` (`raw/` 제외) | **커밋**(비식별·출처 메타데이터 포함) |",
     "| 공모 기초자료 | `data/offers/{offerId}.json` | **커밋**(공개 자료 정리 — 개인정보 없음) |",
+    "| 합성 미술품 fixture | `data/synthetic/art-investment.json` | **커밋**(화면 검증용 — 실제 투자 데이터 아님) |",
     "| 매니페스트 | `data/MANIFEST.md` | **커밋** |",
     "",
     "신규 클론에서 로컬 전용 파일이 없어도 `npm test`·`npm run build`는 통과한다",

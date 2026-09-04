@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-01-053" data-record-index="52" data-seed="4508">
+<title>작은 흙언덕 — 마른 둔덕의 그늘 · Small Earth Rise / Shade of a Dry Rise</title>
+<rect x="0" y="0" width="800" height="1000" fill="#E4D1A6"/>
+<g transform="rotate(180 400 500)">
+<path d="M0 432 C114 364 221 430 301 514 C364 579 411 592 472 516 C548 420 657 404 800 463 L800 1000 L0 1000 Z" fill="#795548"/>
+<path d="M0 568 C105 519 201 562 274 639 C347 716 407 728 479 643 C559 548 662 542 800 596 L800 1000 L0 1000 Z" fill="#A97855"/>
+<path d="M0 733 C130 675 232 742 309 808 C389 876 445 873 525 795 C613 709 706 708 800 754 L800 1000 L0 1000 Z" fill="#3E2C24"/>
+<path d="M74 724 C162 688 228 716 294 776 C367 843 447 845 517 777 C590 706 680 702 748 731" fill="none" stroke="#C7A77B" stroke-width="8" stroke-opacity="0.75" stroke-linecap="round"/>
+<path d="M208 454 l48 -14" fill="none" stroke="#C7A77B" stroke-width="3" stroke-opacity="0.65" stroke-linecap="round"/>
+<path d="M309 520 l64 -6" fill="none" stroke="#6A7B58" stroke-width="3" stroke-opacity="0.65" stroke-linecap="round"/>
+<path d="M410 586 l80 2" fill="none" stroke="#C7A77B" stroke-width="3" stroke-opacity="0.65" stroke-linecap="round"/>
+<path d="M511 282 l96 -14" fill="none" stroke="#6A7B58" stroke-width="3" stroke-opacity="0.65" stroke-linecap="round"/>
+<ellipse cx="332" cy="822" rx="28" ry="10" fill="#6A7B58" opacity="0.75"/>
+<ellipse cx="523" cy="853" rx="40" ry="14" fill="#6A7B58" opacity="0.75"/>
+<ellipse cx="714" cy="884" rx="28" ry="18" fill="#6A7B58" opacity="0.75"/>
+<text x="66" y="953" fill="#795548" font-family="sans-serif" font-size="9" letter-spacing="3" opacity="0.34">SYNTHETIC</text>
+</g>
+</svg>

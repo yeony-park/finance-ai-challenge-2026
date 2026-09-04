@@ -9,7 +9,7 @@ import s from "./report.module.css";
 
 const FOOT_HEADING_ID = "report-foot-heading";
 
-export function ReportFoot() {
+export function ReportFoot({ analysisHref }: { readonly analysisHref: string }) {
   return (
     <section
       className={`${s.section} ${s.reportContentSection}`}
@@ -48,9 +48,9 @@ export function ReportFoot() {
         />
 
         <div className={s.footLinks}>
-          <Link href="/offers" className={s.buttonGhost}>
+          <Link href={analysisHref} className={s.buttonGhost}>
             <span aria-hidden="true">←</span>
-            공모 목록으로 돌아가기
+            분석으로 돌아가기
           </Link>
           <Link href="/#checklist" className={s.buttonGhost}>
             확인 질문 8가지 보기

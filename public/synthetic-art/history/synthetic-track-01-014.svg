@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-01-014" data-record-index="13" data-seed="4202">
+<title>잔물결의 방 — 얕은 물의 오후 · Rill Room / Afternoon in Shallow Water</title>
+<rect x="0" y="0" width="800" height="1000" fill="#312E4A"/>
+<path d="M180 0 C150 170 210 290 192 452 C150 610 210 780 184 1000 L210 1000 C240 790 180 622 210 454 C240 295 210 164 195 0 Z" fill="#5B4E78" opacity="0.32"/>
+<path d="M236 0 C191 170 281 290 248 452 C191 610 281 780 240 1000 L281 1000 C326 790 236 622 281 454 C326 295 281 164 258 0 Z" fill="#8C79A8" opacity="0.38"/>
+<path d="M292 0 C232 170 352 290 304 452 C232 610 352 780 296 1000 L352 1000 C412 790 292 622 352 454 C412 295 352 164 322 0 Z" fill="#D6B3A6" opacity="0.44"/>
+<path d="M348 0 C273 170 423 290 360 452 C273 610 423 780 352 1000 L423 1000 C498 790 348 622 423 454 C498 295 423 164 385 0 Z" fill="#F0D8B8" opacity="0.5"/>
+<path d="M404 0 C374 170 434 290 416 452 C374 610 434 780 408 1000 L434 1000 C464 790 404 622 434 454 C464 295 434 164 419 0 Z" fill="#8EA6A8" opacity="0.56"/>
+<ellipse cx="302" cy="530" rx="140" ry="250" fill="#F0D8B8" opacity="0.35"/>
+<ellipse cx="302" cy="530" rx="89" ry="165" fill="#8EA6A8" opacity="0.6"/>
+<ellipse cx="154" cy="112" rx="16" ry="5" fill="#D6B3A6" opacity="0.58"/>
+<ellipse cx="238" cy="283" rx="23" ry="8" fill="#D6B3A6" opacity="0.58"/>
+<ellipse cx="322" cy="454" rx="30" ry="5" fill="#D6B3A6" opacity="0.58"/>
+<ellipse cx="154" cy="625" rx="16" ry="8" fill="#D6B3A6" opacity="0.58"/>
+<ellipse cx="238" cy="796" rx="23" ry="5" fill="#D6B3A6" opacity="0.58"/>
+<ellipse cx="322" cy="967" rx="30" ry="8" fill="#D6B3A6" opacity="0.58"/>
+<text x="690" y="952" fill="#D6B3A6" font-family="sans-serif" font-size="9" letter-spacing="3" text-anchor="end" opacity="0.34">SYNTHETIC</text>
+</svg>

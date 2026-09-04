@@ -13,7 +13,7 @@ export interface KakaoDiseaseEvent {
   readonly diseaseLabel: string;
   readonly occurredAt: string;
   readonly region: string;
-  readonly raisedHeadCount: number | null;
+  readonly raisedHeadCount?: number | null;
   readonly headCountLabel?: string;
   readonly latitude: number;
   readonly longitude: number;
@@ -92,7 +92,8 @@ const groupEvents = (events: readonly KakaoDiseaseEvent[]): readonly EventGroup[
 
 const DISEASE_ORDER: readonly DiseaseCode[] = ["ASF", "FMD", "LSD"];
 
-const formatHeadCount = (event: KakaoDiseaseEvent): string => {
+const formatHeadCount = (event: KakaoDiseaseEvent): string | null => {
+  if (event.raisedHeadCount === undefined) return null;
   const label = event.headCountLabel ?? "사육";
   return event.raisedHeadCount === null
     ? `${label} 규모 미수록`
@@ -187,12 +188,16 @@ export function PigAsfKakaoMap({
                 ? s.asfKakaoMarkerFocus
                 : group.tone === "current"
                   ? s.asfKakaoMarkerCurrent
-                  : s.asfKakaoMarkerPast;
+                      : s.asfKakaoMarkerPast;
+          const focusClassName =
+            group.disease !== "ASF" && group.tone === "focus"
+              ? s.diseaseKakaoMarkerFocus
+              : "";
           const regions = [...new Set(group.events.map((event) => event.region))].join(", ");
           const clickHandler = () => setSelectedGroup(group);
 
           marker.type = "button";
-          marker.className = `${s.asfKakaoMarker} ${className}`;
+          marker.className = `${s.asfKakaoMarker} ${className} ${focusClassName}`;
           marker.textContent = group.events.length > 1 ? String(group.events.length) : "";
           marker.title = `${regions} · ${group.diseaseLabel} ${group.events.length}건`;
           marker.setAttribute("aria-label", marker.title);
@@ -245,11 +250,12 @@ export function PigAsfKakaoMap({
         ref={containerRef}
         className={s.asfKakaoMap}
         data-ready={status === "ready"}
+        role="region"
         aria-label={ariaLabel}
       />
 
       {availableDiseases.length > 1 ? (
-        <div className={s.diseaseMapFilters} aria-label="지도 질병 필터">
+        <div className={s.diseaseMapFilters} role="group" aria-label="지도 질병 필터">
           {([
             ["all", "전체"] as const,
             ...availableDiseases.map(
@@ -304,7 +310,7 @@ export function PigAsfKakaoMap({
               <li key={event.id}>
                 <time dateTime={event.occurredAt}>{event.occurredAt}</time>
                 <span>{event.region}</span>
-                <small>{formatHeadCount(event)}</small>
+                {formatHeadCount(event) ? <small>{formatHeadCount(event)}</small> : null}
               </li>
             ))}
           </ol>

@@ -3,9 +3,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 
+import {
+  CattleDiseaseContext,
+  cattleDiseaseContextForReport,
+} from "@/components/cattle/CattleDiseaseContext";
 import { FilingFactsSection } from "@/components/report/FilingFactsSection";
 import { LifecycleStrip } from "@/components/report/LifecycleStrip";
-import { ReportChapterNav } from "@/components/report/ReportChapterNav";
 import { ReportDocument } from "@/components/report/ReportDocument";
 import { ReportFoot } from "@/components/report/ReportFoot";
 import { reportSectionsFor } from "@/components/report/report-sections";
@@ -17,6 +20,7 @@ import {
   OFFERS,
   PUBLISHED_OFFER_IDS,
 } from "@/components/site/offers";
+import { categoryById } from "@/lib/content/categories";
 import { loadFilingFacts } from "@/lib/verify/report/filing-facts";
 import { loadLatestReplayDiff } from "@/lib/verify/amend/replay-load";
 import {
@@ -38,12 +42,18 @@ import {
   toTrackRecordView,
   type TrackRecordCardView,
 } from "@/lib/verify/track-record/view";
+import type { AssetKind } from "@/lib/verify/types";
 
 import s from "@/components/report/report.module.css";
 
 interface OfferPageProps {
   readonly params: Promise<{ readonly id: string }>;
 }
+
+const reportAnalysisHref = (assetKind: AssetKind): string => {
+  const categoryId = assetKind === "livestock" ? "cattle" : "real-estate";
+  return `${categoryById(categoryId).href}?tab=analysis`;
+};
 
 const loadPublishedReport = cache(
   async (offerId: string): Promise<LoadedReport | null> => {
@@ -133,9 +143,12 @@ export async function generateMetadata({ params }: OfferPageProps): Promise<Meta
 
 export default async function OfferReportPage({ params }: OfferPageProps) {
   const { id } = await params;
-  const view = await loadOfferView(id);
+  const [view, loaded] = await Promise.all([
+    loadOfferView(id),
+    loadPublishedReport(id),
+  ]);
 
-  if (!view) notFound();
+  if (!view || !loaded) notFound();
 
   const [watch, replay, narrative, trackRecord, filingFacts] = await Promise.all([
     loadWatchStatus(id),
@@ -146,15 +159,23 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
   ]);
 
   const offerEntry = OFFERS.find((offer) => offer.id === id) ?? null;
-  const sections = reportSectionsFor({ hasFilingFacts: filingFacts !== null });
+  const diseaseContext =
+    loaded.report.assetKind === "livestock"
+      ? cattleDiseaseContextForReport(loaded.report)
+      : null;
+  const sections = reportSectionsFor({
+    hasFilingFacts: filingFacts !== null,
+    hasDiseaseContext: diseaseContext !== null,
+  });
+  const analysisHref = reportAnalysisHref(offerEntry?.assetKind ?? "livestock");
 
   return (
     <div className={s.reportPage}>
       <div className={s.breadcrumbBar}>
         <nav className={`${s.wrap} ${s.breadcrumb}`} aria-label="현재 위치">
-          <Link href="/offers" className={s.breadcrumbBack}>
+          <Link href={analysisHref} className={s.breadcrumbBack}>
             <span aria-hidden="true">←</span>
-            검증 리포트
+            분석
           </Link>
           <span className={s.breadcrumbDivider} aria-hidden="true">
             /
@@ -165,8 +186,6 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
         </nav>
       </div>
 
-      <ReportChapterNav sections={sections} />
-
       <ReportDocument
         view={view}
         narrative={narrative?.levels ?? null}
@@ -175,6 +194,9 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
           filing: filingFacts ? <FilingFactsSection facts={filingFacts} /> : null,
           watch: <WatchSection watch={watch} replay={replay} />,
           history: <HistorySection view={view} trackRecord={trackRecord} />,
+          disease: diseaseContext ? (
+            <CattleDiseaseContext context={diseaseContext} />
+          ) : null,
           price: <PriceSection view={view} />,
         }}
         lifecycle={
@@ -187,7 +209,7 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
           ) : null
         }
       />
-      <ReportFoot />
+      <ReportFoot analysisHref={analysisHref} />
     </div>
   );
 }
