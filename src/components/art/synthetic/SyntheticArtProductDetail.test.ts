@@ -37,7 +37,7 @@ describe("합성 미술품 상세 화면", () => {
     expect(html).not.toContain("Synthetic positive signal");
   });
 
-  test("과거 이력도 같은 분석 복귀 경로와 상세 값을 제공한다", () => {
+  test("과거 이력도 같은 7개 탭과 분석 복귀 경로를 제공한다", () => {
     const product = getSyntheticArtProductById("synthetic-track-01-001");
     if (!product || product.kind !== "history") throw new Error("fixture missing");
 
@@ -48,5 +48,8 @@ describe("합성 미술품 상세 화면", () => {
     expect(html).toContain('href="/art?tab=analysis"');
     expect(html).toContain("합성 이력 필드");
     expect(html).toContain("시뮬레이션 수익률");
+    for (const label of ["요약", "공모가", "유사 작품", "작가 기록", "회수 분석", "플랫폼 이력", "근거"]) {
+      expect(html).toContain(label);
+    }
   });
 });

@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import searchFieldStyles from "@/components/site/SearchField.module.css";
+import { SEARCH_PLACEHOLDER } from "@/lib/content/home";
 import {
   formatSyntheticKrw,
   formatSyntheticPercent,
@@ -280,8 +282,37 @@ export function SyntheticPlatformDetailView({
           <div className={s.sectionHeading}>
             <div><p className={s.kicker}>SYNTHETIC HISTORY</p><h2>합성 과거 이력</h2><p>검색 결과 {sorted.length}건 · 페이지당 {pageSize}건</p></div>
           </div>
-          <form className={s.searchForm} role="search">
-            <input type="search" name="q" defaultValue={params.q ?? ""} aria-label="상품·작품·가상 작가 검색" placeholder="상품·작품·가상 작가 검색" />
+          <form className={`${s.searchForm} ${s.historySearchForm}`} role="search">
+            <div className={`${searchFieldStyles.field} ${s.searchControl}`}>
+              <label
+                className={searchFieldStyles.label}
+                htmlFor="platform-history-search"
+              >
+                상품·작품·가상 작가 검색
+              </label>
+              <input
+                id="platform-history-search"
+                className={searchFieldStyles.input}
+                type="search"
+                name="q"
+                defaultValue={params.q ?? ""}
+                placeholder={SEARCH_PLACEHOLDER}
+              />
+              <button
+                className={searchFieldStyles.button}
+                type="submit"
+                aria-label="검색"
+              >
+                <svg
+                  className={searchFieldStyles.icon}
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <circle cx="10.5" cy="10.5" r="6.5" />
+                  <path d="m15.5 15.5 5 5" />
+                </svg>
+              </button>
+            </div>
             <select className={s.filterSelect} name="status" defaultValue={status} aria-label="이력 상태">
               <option value="">전체 상태</option>
               {availableStatuses.map((value) => <option key={value} value={value}>{syntheticTrackStatusLabels[value]} ({counts[value] ?? 0}건)</option>)}

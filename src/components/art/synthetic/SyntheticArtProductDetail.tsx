@@ -162,10 +162,6 @@ function CurrentHeader({ product }: { readonly product: SyntheticCurrentProduct 
             {product.platform.name}
           </Link>
         </p>
-        <p className={s.detailLead}>
-          실제 작품·발행사·거래와 연결되지 않은 화면 검증용 합성 상품입니다.
-          독립 원장 대조 결과나 투자 판단을 제공하지 않습니다.
-        </p>
         <dl className={s.headerFacts}>
           <div>
             <dt>제작연도</dt>
@@ -521,18 +517,7 @@ function CurrentProductDetail({
     <>
       <Breadcrumb title={product.offering.title} />
       <CurrentHeader product={product} />
-      <nav className={s.detailTabs} aria-label="상품 상세 분석 탭">
-        {detailTabs.map(([key, label]) => (
-          <Link
-            key={key}
-            className={tab === key ? s.activeTab : undefined}
-            aria-current={tab === key ? "page" : undefined}
-            href={`${productPath}?tab=${key}`}
-          >
-            {label}
-          </Link>
-        ))}
-      </nav>
+      <DetailTabs productPath={productPath} tab={tab} />
       {tab === "summary" ? <CurrentSummary product={product} /> : null}
       {tab === "price" ? <PricePanel product={product} /> : null}
       {tab === "comparables" ? <ComparablesPanel product={product} /> : null}
@@ -544,11 +529,30 @@ function CurrentProductDetail({
   );
 }
 
-function HistoricalProductDetail({
-  product,
+function DetailTabs({
+  productPath,
+  tab,
 }: {
-  readonly product: SyntheticHistoryProduct;
+  readonly productPath: string;
+  readonly tab: SyntheticDetailTab;
 }) {
+  return (
+    <nav className={s.detailTabs} aria-label="상품 상세 분석 탭">
+      {detailTabs.map(([key, label]) => (
+        <Link
+          key={key}
+          className={tab === key ? s.activeTab : undefined}
+          aria-current={tab === key ? "page" : undefined}
+          href={`${productPath}?tab=${key}`}
+        >
+          {label}
+        </Link>
+      ))}
+    </nav>
+  );
+}
+
+function HistoricalSummary({ product }: { readonly product: SyntheticHistoryProduct }) {
   const record = product.trackRecord;
   const fields: ReadonlyArray<readonly [string, string]> = [
     ["상태", syntheticTrackStatusLabels[record.status]],
@@ -560,6 +564,92 @@ function HistoricalProductDetail({
     ["매각 경로", record.soldPlace ?? "미기재"],
     ["시뮬레이션 수익률", formatSyntheticPercent(resolvedSyntheticTrackReturn(record))],
   ];
+
+  return (
+    <div className={s.tabPanel}>
+      <section className={s.section}>
+        <div className={s.sectionHeading}>
+          <div><p className={s.kicker}>SYNTHETIC HISTORY</p><h2>시뮬레이션 공모·보유·회수 값</h2></div>
+        </div>
+        <div className={s.metricGrid}>
+          <MetricCard label="시뮬레이션 금액" value={formatSyntheticKrw(product.offering.totalOfferingAmount)} />
+          <MetricCard label="보유기간" value={record.actualHoldingMonths == null ? "공개되지 않음" : `${record.actualHoldingMonths.toFixed(1)}개월`} />
+          <MetricCard label={record.status === "returned" ? "반환 기재액" : "매각 기재액"} value={formatSyntheticKrw(record.exitAmount)} />
+          <MetricCard label="정산 기재액" value={formatSyntheticKrw(record.totalDistribution)} />
+          <MetricCard label="시뮬레이션 수익률" value={formatSyntheticPercent(resolvedSyntheticTrackReturn(record))} />
+          <MetricCard label="계산 수익률" value={formatSyntheticPercent(record.calculatedSettlementReturnPct)} />
+          <MetricCard label="매각일" value={record.soldAt ?? "미기재"} />
+          <MetricCard label="청산일" value={record.liquidatedAt ?? "미기재"} />
+        </div>
+      </section>
+      <section className={s.section}>
+        <div className={s.sectionHeading}><h2>합성 이력 필드</h2></div>
+        <div className={s.dataTableWrap}>
+          <table className={s.dataTable}>
+            <thead><tr><th>항목</th><th>값</th></tr></thead>
+            <tbody>{fields.map(([label, value]) => <tr key={label}><th>{label}</th><td>{value}</td></tr>)}</tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function HistoricalTabPanel({
+  product,
+  tab,
+}: {
+  readonly product: SyntheticHistoryProduct;
+  readonly tab: SyntheticDetailTab;
+}) {
+  if (tab === "summary") return <HistoricalSummary product={product} />;
+
+  const record = product.trackRecord;
+  const title = detailTabs.find(([key]) => key === tab)?.[1] ?? "상세 분석";
+  const metrics: ReadonlyArray<readonly [string, string]> = tab === "price"
+    ? [
+        ["시뮬레이션 금액", formatSyntheticKrw(product.offering.totalOfferingAmount)],
+        ["매각 기재액", formatSyntheticKrw(record.exitAmount)],
+        ["정산 기재액", formatSyntheticKrw(record.totalDistribution)],
+        ["계산 수익률", formatSyntheticPercent(record.calculatedSettlementReturnPct)],
+      ]
+    : tab === "exit"
+      ? [
+          ["보유기간", record.actualHoldingMonths == null ? "공개되지 않음" : `${record.actualHoldingMonths.toFixed(1)}개월`],
+          ["매각일", record.soldAt ?? "미기재"],
+          ["청산일", record.liquidatedAt ?? "미기재"],
+          ["시뮬레이션 수익률", formatSyntheticPercent(resolvedSyntheticTrackReturn(record))],
+        ]
+      : [];
+
+  return (
+    <div className={s.tabPanel}>
+      {metrics.length > 0 ? (
+        <section className={s.section}>
+          <div className={s.sectionHeading}><h2>{title}</h2></div>
+          <div className={s.metricGrid}>
+            {metrics.map(([label, value]) => <MetricCard key={label} label={label} value={value} />)}
+          </div>
+        </section>
+      ) : (
+        <section className={s.neutralSummary}>
+          <h2>{title}</h2>
+          <p>이 합성 이력에는 {title}과 직접 연결된 데이터가 없습니다.</p>
+        </section>
+      )}
+    </div>
+  );
+}
+
+function HistoricalProductDetail({
+  product,
+  tab,
+}: {
+  readonly product: SyntheticHistoryProduct;
+  readonly tab: SyntheticDetailTab;
+}) {
+  const record = product.trackRecord;
+  const productPath = `/art/products/${encodeURIComponent(product.offering.id)}`;
 
   return (
     <>
@@ -597,32 +687,8 @@ function HistoricalProductDetail({
           </dl>
         </div>
       </header>
-      <div className={s.tabPanel}>
-        <section className={s.section}>
-          <div className={s.sectionHeading}>
-            <div><p className={s.kicker}>SYNTHETIC HISTORY</p><h2>시뮬레이션 공모·보유·회수 값</h2></div>
-          </div>
-          <div className={s.metricGrid}>
-            <MetricCard label="시뮬레이션 금액" value={formatSyntheticKrw(product.offering.totalOfferingAmount)} />
-            <MetricCard label="보유기간" value={record.actualHoldingMonths == null ? "공개되지 않음" : `${record.actualHoldingMonths.toFixed(1)}개월`} />
-            <MetricCard label={record.status === "returned" ? "반환 기재액" : "매각 기재액"} value={formatSyntheticKrw(record.exitAmount)} />
-            <MetricCard label="정산 기재액" value={formatSyntheticKrw(record.totalDistribution)} />
-            <MetricCard label="시뮬레이션 수익률" value={formatSyntheticPercent(resolvedSyntheticTrackReturn(record))} />
-            <MetricCard label="계산 수익률" value={formatSyntheticPercent(record.calculatedSettlementReturnPct)} />
-            <MetricCard label="매각일" value={record.soldAt ?? "미기재"} />
-            <MetricCard label="청산일" value={record.liquidatedAt ?? "미기재"} />
-          </div>
-        </section>
-        <section className={s.section}>
-          <div className={s.sectionHeading}><h2>합성 이력 필드</h2></div>
-          <div className={s.dataTableWrap}>
-            <table className={s.dataTable}>
-              <thead><tr><th>항목</th><th>값</th></tr></thead>
-              <tbody>{fields.map(([label, value]) => <tr key={label}><th>{label}</th><td>{value}</td></tr>)}</tbody>
-            </table>
-          </div>
-        </section>
-      </div>
+      <DetailTabs productPath={productPath} tab={tab} />
+      <HistoricalTabPanel product={product} tab={tab} />
     </>
   );
 }
@@ -639,7 +705,7 @@ export function SyntheticArtProductDetail({
       {product.kind === "current" ? (
         <CurrentProductDetail product={product} tab={tab} />
       ) : (
-        <HistoricalProductDetail product={product} />
+        <HistoricalProductDetail product={product} tab={tab} />
       )}
     </main>
   );
