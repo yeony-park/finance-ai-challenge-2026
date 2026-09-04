@@ -97,14 +97,11 @@ export function CategoryOfferCard({
   const titleId = `category-offer-${id}-title`;
 
   if (appearance === "analysis") {
-    const cardClassName = current
-      ? `${s.analysisOfferCard} ${s.analysisOfferCardCurrent}`
-      : s.analysisOfferCard;
     const cta = ctaLabel ?? ANALYSIS_CARD_COPY.reportCta;
 
     return (
       <article
-        className={cardClassName}
+        className={s.analysisOfferCard}
         aria-labelledby={titleId}
         data-category-offer-card
         data-category-analysis-card
@@ -156,14 +153,25 @@ export function CategoryOfferCard({
                     </>
                   ) : null}
                 </p>
-                {action && !media ? (
+                {action && !media && !compactHeader ? (
                   <span className={s.analysisCardAction}>{action}</span>
                 ) : null}
               </div>
             ) : null}
-            <h3 id={titleId} className={s.analysisCardTitle}>
-              <Link href={href}>{title}</Link>
-            </h3>
+            {compactHeader ? (
+              <div className={s.analysisCardTitleRow}>
+                <h3 id={titleId} className={s.analysisCardTitle}>
+                  <Link href={href}>{title}</Link>
+                </h3>
+                {action && !media ? (
+                  <span className={s.analysisCardAction}>{action}</span>
+                ) : null}
+              </div>
+            ) : (
+              <h3 id={titleId} className={s.analysisCardTitle}>
+                <Link href={href}>{title}</Link>
+              </h3>
+            )}
             {meta ? <div className={s.analysisCardMeta}>{meta}</div> : null}
             {description ? (
               <div className={s.analysisCardDescription}>{description}</div>
@@ -210,7 +218,7 @@ export function CategoryOfferCard({
               className={s.analysisVerification}
               aria-label={`${title} ${metricsLabel}`}
             >
-              <p>{metricsLabel}</p>
+              <h4>{metricsLabel}</h4>
               <dl className={s.analysisVerificationCounts}>
                 {metrics.map((metric) => (
                   <div key={metric.label}>

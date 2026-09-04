@@ -112,11 +112,16 @@ describe("상태별 공모 카드 공통 구조", () => {
     expect(html).toContain(card.lastVerifiedAt);
     expect(html).toContain(">37두</dd>");
     expect(html).toContain(card.schedule.label);
+    expect(html).toContain("<h4>대조 결과</h4>");
     expect(html).toContain(">검증 리포트 보기");
     expect(html).toContain("category-cattle.jpg");
     expect(html).toContain('alt=""');
     expect(html).toContain(`class="${s.analysisOfferCard}"`);
     expect(html).toContain(`class="${s.analysisCardHitArea}"`);
+    expect(html).toContain(`class="${s.analysisCardMediaAction}"`);
+    expect(html.indexOf(s.analysisCardMediaAction)).toBeLessThan(
+      html.indexOf(s.analysisCardBody),
+    );
     expect(html).toContain(
       `aria-label="${card.title} 검증 리포트 보기"`,
     );

@@ -334,8 +334,8 @@
 }
 
 .watchHeartIcon {
-  width: 1.35rem;
-  height: 1.35rem;
+  width: 1rem;
+  height: 1rem;
   fill: transparent;
   stroke: currentColor;
   stroke-linecap: round;
@@ -353,7 +353,7 @@
 }
 
 .watchIconToggle[aria-pressed="true"] .watchHeartIcon {
-  fill: currentColor;
+  fill: var(--ds-accent);
 }
 
 .watchIconToggle:focus-visible {
@@ -434,7 +434,7 @@
   font-weight: var(--ds-weight-medium);
   color: var(--ds-ink);
   text-decoration: none;
-  border-bottom: 2px solid var(--ds-accent);
+  border-bottom: var(--ds-underline-w) solid var(--ds-accent);
   padding-bottom: 2px;
   transition: gap var(--ds-duration-base) var(--ds-ease);
 }
@@ -506,15 +506,10 @@
   height: 100%;
   min-width: 0;
   overflow: hidden;
-  border: 1px solid var(--ds-line);
+  border: 0;
   border-radius: var(--ds-radius-panel);
   background: var(--ds-surface);
-  box-shadow: none;
-  transition: border-color var(--ds-duration-base) var(--ds-ease);
-}
-
-.analysisOfferCard:hover {
-  border-color: var(--ds-line-strong);
+  box-shadow: 4px 4px 12px rgba(20, 22, 26, 0.05);
 }
 
 .analysisCardHitArea {
@@ -527,10 +522,6 @@
 .analysisCardHitArea:focus-visible {
   outline: none;
   box-shadow: inset var(--ds-focus-ring);
-}
-
-.analysisOfferCardCurrent {
-  border-color: var(--ds-ink);
 }
 
 .analysisCardMedia {
@@ -554,8 +545,8 @@
 .analysisCardMediaLabel {
   position: absolute;
   z-index: 1;
-  right: var(--ds-space-5);
-  bottom: var(--ds-space-4);
+  top: var(--ds-space-4);
+  right: calc(var(--ds-space-3) + var(--ds-tap-min) + var(--ds-space-2));
   left: var(--ds-space-5);
   width: fit-content;
   color: var(--ds-ink-invert);
@@ -563,7 +554,10 @@
   background-repeat: no-repeat;
   background-position: 0 92%;
   background-size: 100% 0.18em;
-  max-width: calc(100% - var(--ds-space-10));
+  max-width: calc(
+    100% - var(--ds-space-5) - var(--ds-space-3) - var(--ds-tap-min) -
+      var(--ds-space-2)
+  );
   overflow: hidden;
   font-size: var(--ds-heading-h4);
   font-weight: var(--ds-weight-medium);
@@ -603,6 +597,19 @@
 .analysisCardHeaderCompact {
   gap: var(--ds-space-1);
   padding-bottom: var(--ds-space-2);
+}
+
+.analysisCardTitleRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--ds-space-2);
+}
+
+.analysisCardTitleRow .analysisCardTitle {
+  min-width: 0;
+  flex: 1;
+  font-size: var(--ds-heading-h3);
 }
 
 .analysisCardTop,
@@ -707,7 +714,6 @@
 
 .analysisPrimaryFact dt,
 .analysisFacts dt,
-.analysisVerification > p,
 .analysisVerificationCounts dt {
   margin: 0;
   color: var(--ds-ink-faint);
@@ -775,6 +781,14 @@
   gap: var(--ds-space-2) var(--ds-space-4);
 }
 
+.analysisVerification > h4 {
+  margin: 0;
+  color: var(--ds-ink);
+  font-size: var(--ds-heading-h4);
+  font-weight: var(--ds-weight-medium);
+  line-height: var(--ds-leading-tight);
+}
+
 .analysisVerificationCounts {
   display: flex;
   flex-wrap: wrap;
@@ -818,7 +832,6 @@
 .analysisCardFooter {
   margin-top: auto;
   padding-top: var(--ds-space-4);
-  border-top: 1px solid var(--ds-line);
 }
 
 .analysisCardAction,
@@ -842,7 +855,7 @@
   align-items: center;
   gap: var(--ds-space-2);
   padding-top: var(--ds-space-1);
-  border-bottom: 2px solid var(--ds-accent);
+  border-bottom: var(--ds-underline-w) solid var(--ds-accent);
   color: var(--ds-ink);
   font-size: var(--ds-text-sm);
   font-weight: var(--ds-weight-medium);

@@ -25,5 +25,5 @@ export const ANALYSIS_CARD_COPY = {
   recentDisclosurePrefix: "최근 공시",
   asOfPrefix: "기준일",
   syntheticArtworkImageAltSuffix: "합성 작품 이미지",
-  catalogTitle: "분석 상품",
+  catalogTitle: "공모 상품",
 } as const;

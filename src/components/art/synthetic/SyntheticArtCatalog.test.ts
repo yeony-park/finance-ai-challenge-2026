@@ -2,6 +2,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, test, vi } from "vitest";
 
+import offerStyles from "@/components/landing/landing.module.css";
 import { getSyntheticArtProductById } from "@/lib/synthetic-art/repository";
 
 import {
@@ -40,7 +41,14 @@ describe("합성 미술품 목록 카드", () => {
     expect(html).not.toContain("공모가 차이율");
     expect(html).toContain(`${product.offering.title} 관심 등록`);
     expect(html).toContain(product.offering.title.replace(" · ", " - "));
-    expect(html).toContain("상품 분석 보기");
+    expect(html).toContain("검증 리포트 보기");
+    expect(html).toContain("<h4>대조 결과</h4>");
+    expect(html).not.toContain("analysisCardBodyCompact");
+    expect(html).toContain(offerStyles.analysisCardMediaAction);
+    expect(html.indexOf(offerStyles.analysisCardMediaAction)).toBeLessThan(
+      html.indexOf(offerStyles.analysisCardBody),
+    );
+    expect(html).toContain(offerStyles.analysisCardBody);
   });
 
   test("과거 이력 카드도 목록용 설명과 합성 고지를 숨긴다", () => {
@@ -58,7 +66,7 @@ describe("합성 미술품 목록 카드", () => {
     expect(html).not.toContain("합성 데이터 · 대조 불가");
     expect(html).not.toContain("화면 검증을 위한 합성 이력");
     expect(html).toContain(`${product.offering.title} 관심 등록`);
-    expect(html).toContain("이력 상세 보기");
+    expect(html).toContain("검증 리포트 보기");
   });
 
   test("실제 분석 카탈로그가 공통 분석 카드로 배선된다", () => {
@@ -68,16 +76,35 @@ describe("합성 미술품 목록 카드", () => {
       }),
     );
 
-    expect(html).toContain("분석 상품");
+    expect(html).toContain("공모 상품");
     expect(html).toContain("(327건)");
     expect(html).toContain("data-category-analysis-card");
     expect(html).not.toContain("합성 데이터 · 대조 불가");
-    expect(html).toContain("페이지 1 / 37");
+    expect(html).not.toContain("페이지 1 / 37");
     expect(html).not.toContain("페이지당 10건");
     expect(html).toContain('aria-label="합성 미술품 목록 페이지"');
     expect(html).toContain('aria-label="2페이지"');
     expect(html).toContain('aria-label="다음 페이지"');
     expect(html.match(/data-category-analysis-card="true"/g)).toHaveLength(9);
+  });
+
+  test("선택 조건 칩을 숨기고 빈 결과는 한 문장으로 표시한다", () => {
+    const filteredHtml = renderToStaticMarkup(
+      createElement(SyntheticArtCatalog, {
+        searchParams: { scope: "current", currentStatus: "upcoming" },
+      }),
+    );
+    const emptyHtml = renderToStaticMarkup(
+      createElement(SyntheticArtCatalog, {
+        searchParams: { q: "__no_matching_offering__" },
+      }),
+    );
+
+    expect(filteredHtml).not.toContain('aria-label="적용된 검색 조건"');
+    expect(emptyHtml).toContain("조건에 맞는 공모가 없습니다.");
+    expect(emptyHtml).not.toContain("조건에 맞는 상품·과거 기록이 없습니다.");
+    expect(emptyHtml).not.toContain("검색어 또는 필터를 조정해 보세요.");
+    expect(emptyHtml).not.toContain("모든 조건 초기화");
   });
 
   test("상태 탭 우측에 검색창을 함께 렌더한다", () => {
@@ -108,6 +135,6 @@ describe("합성 미술품 목록 카드", () => {
     expect(html).not.toContain(product.analysis.headline);
     expect(html).not.toContain(product.analysis.keyReasons[0].finding);
     expect(html).not.toContain("공모가 차이율");
-    expect(html).toContain("상품 분석 보기");
+    expect(html).toContain("검증 리포트 보기");
   });
 });

@@ -345,7 +345,6 @@ export function SyntheticPlatformDetailView({
           {pageCount > 1 ? (
             <nav className={s.pagination} aria-label="플랫폼 이력 페이지">
               <span>{page > 1 ? <Link className={s.linkButton} href={platformHref(platform.id, { ...linkParams, page: page - 1 })}>← 이전</Link> : null}</span>
-              <span>{page} / {pageCount}</span>
               <span>{page < pageCount ? <Link className={s.linkButton} href={platformHref(platform.id, { ...linkParams, page: page + 1 })}>다음 →</Link> : null}</span>
             </nav>
           ) : null}

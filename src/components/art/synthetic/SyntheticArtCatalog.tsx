@@ -16,17 +16,11 @@ import type {
   SyntheticArtCatalogItem,
   SyntheticCatalogFilters,
   SyntheticCatalogSearchParams,
-  SyntheticIdentityStatus,
   SyntheticOfferingStatus,
-  SyntheticRecordLifecycle,
   SyntheticTrackRecord,
 } from "@/lib/synthetic-art/types";
 import { VERDICT_LABEL } from "@/lib/verify/report/view-model/labels";
 
-import {
-  SyntheticArtFilters,
-  type SyntheticFilterGroup,
-} from "./SyntheticArtFilters";
 import s from "./synthetic-art.module.css";
 
 interface SyntheticArtCatalogProps {
@@ -47,26 +41,6 @@ const currentStatusLabels: Record<SyntheticOfferingStatus, string> = {
   exit_in_progress: "매각 진행",
   liquidated: "청산 완료",
   unverified: "상태 미확인",
-};
-
-const lifecycleLabels: Record<SyntheticRecordLifecycle, string> = {
-  current: "현재 상품",
-  offering: "청약",
-  operating: "운용 중",
-  exit_in_progress: "매각 진행",
-  sold: "매각 완료",
-  liquidated: "청산 완료",
-  returned: "반환",
-  loss_confirmed: "손실 확인",
-  unknown: "상태 미확인",
-};
-
-const identityLabels: Record<SyntheticIdentityStatus, string> = {
-  exact_match: "식별 일치",
-  partial: "부분 일치",
-  self_reported: "자체 기재",
-  unverified: "식별 미검증",
-  unknown: "상태 미확인",
 };
 
 const trackStatusLabels: Record<SyntheticTrackRecord["status"], string> = {
@@ -109,14 +83,6 @@ const paramsForFilters = (
   sort: filters.sort === "date_desc" ? undefined : filters.sort,
   page: page && page > 1 ? String(page) : undefined,
 });
-
-const queryString = (params: Record<string, string | undefined>): string => {
-  const query = new URLSearchParams();
-  Object.entries(params).forEach(([key, value]) => {
-    if (value) query.set(key, value);
-  });
-  return query.toString();
-};
 
 const recordDate = (record: SyntheticTrackRecord): string =>
   record.subscriptionEnd ??
@@ -293,7 +259,7 @@ export function CurrentProductCard({
           </dl>
           <div className={s.cardActions}>
             <Link className={s.primaryButton} href={detailHref}>
-              {ANALYSIS_CARD_COPY.productAnalysisCta}
+              {ANALYSIS_CARD_COPY.reportCta}
             </Link>
           </div>
         </div>
@@ -338,7 +304,7 @@ export function CurrentProductCard({
       note={null}
       footerMeta={`${ANALYSIS_CARD_COPY.asOfPrefix} ${product.offering.asOfDate}`}
       href={detailHref}
-      ctaLabel={ANALYSIS_CARD_COPY.productAnalysisCta}
+      ctaLabel={ANALYSIS_CARD_COPY.reportCta}
       action={(
         <OfferWatchIconButton
           offerId={`art-${product.offering.id}`}
@@ -409,7 +375,7 @@ export function HistoryProductCard({
       note={null}
       footerMeta={`${ANALYSIS_CARD_COPY.asOfPrefix} ${recordDate(record)}`}
       href={detailHref}
-      ctaLabel={ANALYSIS_CARD_COPY.historyDetailCta}
+      ctaLabel={ANALYSIS_CARD_COPY.reportCta}
       action={(
         <OfferWatchIconButton
           offerId={`art-${product.offering.id}`}
@@ -433,98 +399,10 @@ export function SyntheticArtCatalog({
   searchParams,
 }: SyntheticArtCatalogProps) {
   const result = querySyntheticArtCatalog(searchParams, 9);
-  const { filters, options } = result;
-  const baseParams = paramsForFilters(filters);
-  const resetHref = syntheticArtCatalogHref({
-    tab: "analysis",
-    scope: filters.scope === "all" ? undefined : filters.scope,
-  });
-  const currentQuery = queryString(baseParams);
-
-  const groups: SyntheticFilterGroup[] = [];
-  if (filters.scope !== "history") {
-    groups.push({
-      label: "현재 상품 상태",
-      name: "currentStatus",
-      options: options.currentStatus.map((value) => ({
-        value,
-        label: currentStatusLabels[value],
-      })),
-    });
-  }
-  if (filters.scope !== "current") {
-    groups.push(
-      {
-        label: "과거 진행 상태",
-        name: "lifecycle",
-        options: options.lifecycle
-          .filter((value) => value !== "current")
-          .map((value) => ({ value, label: lifecycleLabels[value] })),
-      },
-      {
-        label: "데이터 범위",
-        name: "source",
-        options: options.sourceDataset.map((value) => ({
-          value,
-          label: value === "synthetic" || value === "gallery-pool"
-            ? "합성 시뮬레이션 이력"
-            : value,
-        })),
-      },
-      {
-        label: "식별 상태",
-        name: "identity",
-        options: options.identityStatus.map((value) => ({
-          value,
-          label: identityLabels[value],
-        })),
-      },
-    );
-  }
-
-  const selectedFilters = {
-    currentStatus: filters.currentStatus,
-    lifecycle: filters.lifecycle,
-    identity: filters.identityStatus,
-    source: filters.sourceDataset,
-  };
-  const conditions = [
-    filters.query ? `검색: ${filters.query}` : null,
-    ...filters.currentStatus.map((value) => currentStatusLabels[value]),
-    ...filters.lifecycle.map((value) => lifecycleLabels[value]),
-    ...filters.identityStatus.map((value) => identityLabels[value]),
-    ...filters.sourceDataset.map((value) =>
-      value === "synthetic" || value === "gallery-pool"
-        ? "합성 시뮬레이션 이력"
-        : value,
-    ),
-  ].filter((entry): entry is string => Boolean(entry));
+  const { filters } = result;
 
   return (
     <section className={s.catalog} id="synthetic-art-catalog">
-      {conditions.length > 0 ? (
-        <div className={s.conditionRow} aria-label="적용된 검색 조건">
-          {conditions.map((condition) => (
-            <span className={s.conditionChip} key={condition}>
-              {condition}
-            </span>
-          ))}
-        </div>
-      ) : null}
-
-      <details className={s.mobileFilters}>
-        <summary>필터 열기 · 체크 즉시 반영</summary>
-        <div className={s.mobileFilterBody}>
-          <SyntheticArtFilters
-            idPrefix="mobile-synthetic-art"
-            groups={groups}
-            initialValues={selectedFilters}
-            queryString={currentQuery}
-            resetHref={resetHref}
-          />
-        </div>
-      </details>
-
       <div className={s.listingLayout}>
         <section
           className={s.results}
@@ -546,9 +424,6 @@ export function SyntheticArtCatalog({
                 pageCount={result.pageCount}
                 label="합성 미술품 목록 상단 페이지"
               />
-              <span className={s.pageIndicator}>
-                페이지 {result.page} / {result.pageCount}
-              </span>
             </div>
           </div>
 
@@ -568,11 +443,7 @@ export function SyntheticArtCatalog({
             </CategoryOfferCardGrid>
           ) : (
             <div className={s.emptyState}>
-              <strong>조건에 맞는 상품·과거 기록이 없습니다.</strong>
-              <p>검색어 또는 필터를 조정해 보세요.</p>
-              <Link className={s.secondaryButton} href={resetHref}>
-                모든 조건 초기화
-              </Link>
+              <strong>조건에 맞는 공모가 없습니다.</strong>
             </div>
           )}
 
