@@ -27,7 +27,6 @@ export function WatchlistView({
     <section className={s.page} aria-labelledby="watchlist-title">
       <div className={s.wrap}>
         <header className={s.hero}>
-          <p className={s.eyebrow}>관심 공모</p>
           <h1 id="watchlist-title" className={s.title}>
             {WATCH_BAND_TITLE}
           </h1>

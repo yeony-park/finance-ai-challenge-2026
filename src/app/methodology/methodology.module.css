@@ -16,7 +16,6 @@
 }
 .title {
   display: grid;
-  margin-top: var(--ds-space-3);
   font-size: var(--ds-heading-h1);
   font-weight: var(--ds-weight-bold);
   letter-spacing: -0.04em;
