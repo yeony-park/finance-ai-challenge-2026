@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { cache } from "react";
 
 import { FilingFactsSection } from "@/components/report/FilingFactsSection";
+import { FILING_HEADING_ID, reportSectionTitleId } from "@/components/report/ids";
 import { AiSummary } from "@/components/ai-summary/AiSummary";
 import { CattleFilingArtifactDetail } from "@/components/cattle/CattleFilingArtifactDetail";
 import { PigFilingArtifactDetail } from "@/components/pig/PigFilingArtifactDetail";
@@ -13,6 +14,7 @@ import { RealEstateProductOverview } from "@/components/report/RealEstateProduct
 import { ReportChapterNav } from "@/components/report/ReportChapterNav";
 import { ReportDocument } from "@/components/report/ReportDocument";
 import { ReportFoot } from "@/components/report/ReportFoot";
+import { reportSectionsFor } from "@/components/report/report-sections";
 import { HistorySection, PriceSection } from "@/components/report/SummaryLayers";
 import { WatchSection } from "@/components/report/WatchSection";
 import { ScenarioDetail } from "@/components/real-estate-scenario/ScenarioDetail";
@@ -29,6 +31,7 @@ import {
   PUBLISHED_OFFER_IDS,
 } from "@/components/site/offers";
 import { loadFilingFacts } from "@/lib/verify/report/filing-facts";
+import { FILING_SECTION_LEAD } from "@/lib/content/filing";
 import {
   findRoutableLegacyScenario,
   loadApprovedScenarios,
@@ -359,6 +362,9 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
             : undefined,
         )
       : null;
+  const sections = reportSectionsFor({
+    hasFilingFacts: filingFacts !== null || cattleFilingArtifact !== null,
+  });
 
   return (
     <div className={s.reportPage}>
@@ -377,7 +383,7 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
         </nav>
       </div>
 
-      <ReportChapterNav hasFilingFacts={filingFacts !== null} />
+      <ReportChapterNav sections={sections} />
 
       <ReportDocument
         view={view}
@@ -399,6 +405,53 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
             </>
           ) : null
         }
+        sections={sections}
+        sectionContent={{
+          filing:
+            filingFacts || cattleFilingArtifact ? (
+              <>
+                {filingFacts ? <FilingFactsSection facts={filingFacts} /> : null}
+                {cattleFilingArtifact && filingFacts ? (
+                  <div className={s.wrap}>
+                    <CattleFilingEvidenceQuery productId={id} />
+                  </div>
+                ) : null}
+                {cattleFilingArtifact && !filingFacts ? (
+                  <section
+                    className={`${s.section} ${s.reportContentSection}`}
+                    aria-labelledby={reportSectionTitleId(FILING_HEADING_ID)}
+                  >
+                    <span
+                      id={FILING_HEADING_ID}
+                      className={s.sectionAnchor}
+                      aria-hidden="true"
+                    />
+                    <div className={s.wrap}>
+                      <header className={`${s.layerHead} ${s.sectionHead}`}>
+                        <h2
+                          id={reportSectionTitleId(FILING_HEADING_ID)}
+                          className={s.layerTitle}
+                        >
+                          신고서 정보
+                        </h2>
+                        <p className={s.sectionLead}>{FILING_SECTION_LEAD}</p>
+                      </header>
+                      <CattleFilingEvidenceQuery productId={id} />
+                    </div>
+                  </section>
+                ) : null}
+              </>
+            ) : null,
+          watch: (
+            <WatchSection
+              watch={watch}
+              replay={replay}
+              showNotificationNotice={realEstateGroup !== "historical-completed"}
+            />
+          ),
+          history: <HistorySection view={view} trackRecord={trackRecord} />,
+          price: <PriceSection view={view} />,
+        }}
         lifecycle={
           offerEntry ? (
             <LifecycleStrip
@@ -409,21 +462,7 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
             />
           ) : null
         }
-      >
-        {filingFacts ? <FilingFactsSection facts={filingFacts} /> : null}
-        {cattleFilingArtifact ? (
-          <div className={s.wrap}>
-            <CattleFilingEvidenceQuery productId={id} />
-          </div>
-        ) : null}
-        <WatchSection
-          watch={watch}
-          replay={replay}
-          showNotificationNotice={realEstateGroup !== "historical-completed"}
-        />
-        <HistorySection view={view} trackRecord={trackRecord} />
-      </ReportDocument>
-      <PriceSection view={view} />
+      />
       <ReportFoot />
     </div>
   );

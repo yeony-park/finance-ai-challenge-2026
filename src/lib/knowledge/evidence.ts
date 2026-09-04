@@ -358,6 +358,100 @@ export const answerFromOfferingKnowledge = async (
       ? "이 상품의 등록된 공개 PDF에서 질문과 관련된 문단을 찾지 못했습니다."
       : null;
 
+  if (
+    offering.categoryId === "pig" &&
+    /(?:개체|실재|축산물\s*이력|이력제)/.test(normalizeKorean(query))
+  ) {
+    return {
+      outcome: "abstain",
+      answer: PIG_HISTORY_GUIDANCE,
+      evidence: [],
+      limitations: [],
+      cached: false,
+      answerSource: "none",
+      responseKind: "scope-guidance",
+    };
+  }
+  if (
+    offering.categoryId === "cattle" &&
+    offering.offerSlug === "livestock-9" &&
+    /(?:축산물\s*이력(?:제)?|개체(?:\s*정보)?|실재(?:\s*확인)?)/.test(
+      query.normalize("NFKC"),
+    )
+  ) {
+    return {
+      outcome: "abstain",
+      answer: CATTLE_HISTORY_GUIDANCE,
+      evidence: [],
+      limitations: [],
+      cached: false,
+      answerSource: "none",
+      responseKind: "scope-guidance",
+    };
+  }
+  if (
+    offering.categoryId === "cattle" &&
+    offering.offerSlug === "livestock-9" &&
+    isPricingBasisQuery(query)
+  ) {
+    const pricingEvidence = searchChunks(
+      exactChunks,
+      "공모가격 산정",
+      options.limit ?? 5,
+    ).map((item) => ({
+      ...item,
+      limitations: item.limitations.filter(
+        (limitation) => !limitation.includes("청약 미달"),
+      ),
+    }));
+    return {
+      outcome: pricingEvidence.length > 0 ? "evidence_only" : "abstain",
+      answer: pricingEvidence.length > 0 ? EVIDENCE_ONLY_TEXT : ABSTAIN_TEXT,
+      evidence: pricingEvidence,
+      limitations: [
+        ...new Set(pricingEvidence.flatMap((item) => item.limitations)),
+      ],
+      cached: false,
+      answerSource: "none",
+    };
+  }
+
+  const cattlePriceHit = exactCattlePriceHit(
+    {
+      categoryId: offering.categoryId,
+      productId: offering.offerSlug,
+      dataNature: "observed",
+    },
+    query,
+    exactChunks,
+  );
+  if (cattlePriceHit) {
+    return {
+      outcome: "answer",
+      answer: CATTLE_PRICE_ANSWER,
+      evidence: [
+        cattlePriceHit,
+        ...evidence.filter((item) => item.chunkId !== cattlePriceHit.chunkId),
+      ].slice(0, options.limit ?? 5),
+      limitations: [
+        ...new Set([
+          ...knowledgeLimitations,
+          ...evidence.flatMap((item) => item.limitations),
+        ]),
+      ],
+      cached: false,
+      answerSource: "structured",
+      citations: [
+        {
+          chunkId: cattlePriceHit.chunkId,
+          page: cattlePriceHit.page,
+          exactQuote: "20,000원",
+        },
+      ],
+      ...evidenceGroups,
+    };
+  }
+
   if (structured.answerSource === "structured") {
     const conflicts = conflictsFor(structured.structuredClaims ?? [], evidence);
     return filtered({

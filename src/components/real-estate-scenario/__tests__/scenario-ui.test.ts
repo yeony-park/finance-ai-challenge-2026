@@ -245,6 +245,9 @@ describe("부동산 시나리오 상세", () => {
     const markup = renderToStaticMarkup(page);
     expect(markup).toContain("한우 9호 · 한우 사육 투자계약증권");
     expect(markup).not.toContain("DART 공시에서 확인한 최소 사실");
+    expect(markup).toContain('href="#report-filing-heading"');
+    expect(markup).toContain('id="report-filing-heading"');
+    expect(markup).toContain('aria-labelledby="report-filing-heading-title"');
   });
 
   test("승인된 한돈 artifact와 1호 exact 공시 Copilot 범위를 사용한다", async () => {
@@ -537,7 +540,7 @@ describe("부동산 시나리오 상세", () => {
     expect(params).toContainEqual({ id: "pig-1" });
     expect(params).toContainEqual({ id: "pig-2" });
     expect(params).toContainEqual({ id: "pig-3" });
-    expect(params).not.toContainEqual({ id: "real-estate-a" });
+    expect(params).toContainEqual({ id: "real-estate-a" });
 
     const metadata = await generateMetadata({ params: Promise.resolve({ id: "re-offer-01" }) });
     expect(metadata.robots).toEqual({ index: false, follow: false });

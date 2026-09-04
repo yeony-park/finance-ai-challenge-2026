@@ -201,6 +201,7 @@ export function GenericEvidencePanel({
 
 export function HomeHero() {
   const [query, setQuery] = useState("");
+  const [submittedQuery, setSubmittedQuery] = useState("");
   const [match, setMatch] = useState<ScaffoldMatch | null>(null);
   const [results, setResults] = useState<readonly SearchResult[] | null>(null);
   const [generatedAnswer, setGeneratedAnswer] = useState<SearchResponse["generatedAnswer"] | null>(null);
@@ -243,6 +244,7 @@ export function HomeHero() {
     const handleHomeReset = () => {
       setMatch(null);
       setQuery("");
+      setSubmittedQuery("");
       setResults(null);
       setGeneratedAnswer(null);
       setGeneratedGeneralAnswer(null);
@@ -262,7 +264,8 @@ export function HomeHero() {
   }, []);
 
   const runSearch = async () => {
-    if (!query.trim()) return;
+    const searchQuery = query.trim();
+    if (!searchQuery) return;
     setMatch(null);
     setResults(null);
     setGeneratedAnswer(null);
@@ -276,7 +279,7 @@ export function HomeHero() {
       const response = await fetch("/api/search", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ q: query, limit: 10 }),
+        body: JSON.stringify({ q: searchQuery, limit: 10 }),
       });
       if (!response.ok) throw new Error("search failed");
       const body = (await response.json()) as SearchResponse;
@@ -299,11 +302,13 @@ export function HomeHero() {
     event.preventDefault();
     setIsSearchRestoring(false);
     setIsSuggestionsOpen(false);
+    setSubmittedQuery(query.trim());
     void runSearch();
   };
 
   const handleChip = (label: string, target: string) => {
-    setQuery(label);
+    setSubmittedQuery(label);
+    setQuery("");
     setResults(null);
     setGeneratedAnswer(null);
     setGeneratedGeneralAnswer(null);
@@ -323,6 +328,7 @@ export function HomeHero() {
       scrollImmediately(HERO_SHRINK_SCROLL_DISTANCE);
       setMatch(null);
       setQuery("");
+      setSubmittedQuery("");
       setResults(null);
       setGeneratedAnswer(null);
       setGeneratedGeneralAnswer(null);
@@ -347,14 +353,49 @@ export function HomeHero() {
         <div ref={visualFrameRef} className={`${visual.visualFrame} ${search.visualFrame} ${isSearchOpen && !isSearchClosing ? search.visualFrameSearch : ""}`}>
           <Image src="/sto-disclosure-hero-v2.png" alt="투자계약증권 공시와 대조를 상징하는 3차원 문서" fill priority sizes="100vw" className={visual.visualImage} />
         </div>
-        <div ref={contentRef} className={`${visual.visualContent} ${isSearchOpen ? search.visualContentSearch : ""} ${isSearchClosing ? search.visualContentSearchClosing : ""} ${isSearchRestoring ? search.visualContentRestoring : ""}`}>
-          <HomeHeroTitle titleRef={titleRef} prefixRef={titlePrefixRef} questionRef={titleQuestionRef} query={query} isSearchOpen={isSearchOpen} hasMatch={isSearchOpen} isTitleSplit={isTitleSplit} onCloseSearch={handleCloseSearch} />
-          <HomeSearchScaffold scaffoldRef={scaffoldRef} query={query} match={match} isSuggestionsOpen={isSuggestionsOpen} onQueryChange={setQuery} onSuggestionsOpenChange={setIsSuggestionsOpen} onSubmit={handleSubmit} onChip={handleChip} />
+        <div
+          ref={contentRef}
+          className={`${visual.visualContent} ${
+            isSearchOpen ? search.visualContentSearch : ""
+          } ${isSearchClosing ? search.visualContentSearchClosing : ""} ${
+            isSearchRestoring ? search.visualContentRestoring : ""
+          }`}
+        >
+          <HomeHeroTitle
+            titleRef={titleRef}
+            prefixRef={titlePrefixRef}
+            questionRef={titleQuestionRef}
+            query={submittedQuery}
+            isSearchOpen={isSearchOpen}
+            hasMatch={isSearchOpen}
+            isTitleSplit={isTitleSplit}
+            onCloseSearch={handleCloseSearch}
+          />
+          <HomeSearchScaffold
+            scaffoldRef={scaffoldRef}
+            query={query}
+            match={match}
+            isSuggestionsOpen={isSuggestionsOpen}
+            onQueryChange={setQuery}
+            onSuggestionsOpenChange={setIsSuggestionsOpen}
+            onSubmit={handleSubmit}
+            onChip={handleChip}
+          />
           {hasApiOutput || isSearching ? (
             <div className={`${search.answer} ${home.apiAnswer}`} aria-live="polite">
-              {isSearching ? <div className={`${search.panel} ${visual.panel}`}><p className={`${search.panelBody} ${visual.panelBody}`}>답변과 근거를 준비하고 있습니다.</p></div> : null}
-              {generatedAnswer ? <AiSearchAnswerPanel generatedAnswer={generatedAnswer} results={results ?? []} /> : null}
-              {generatedGeneralAnswer ? <GeneralAiAnswerPanel generatedAnswer={generatedGeneralAnswer} evidence={genericEvidence ?? []} /> : null}
+              {isSearching ? (
+                <div className={`${search.panel} ${visual.panel}`}>
+                  <p className={`${search.panelBody} ${visual.panelBody}`}>
+                    답변과 근거를 준비하고 있습니다.
+                  </p>
+                </div>
+              ) : null}
+              {generatedAnswer ? (
+                <AiSearchAnswerPanel generatedAnswer={generatedAnswer} results={results ?? []} />
+              ) : null}
+              {generatedGeneralAnswer ? (
+                <GeneralAiAnswerPanel generatedAnswer={generatedGeneralAnswer} evidence={genericEvidence ?? []} />
+              ) : null}
               {results ? <SearchResultsPanel results={results} /> : null}
               {guidance ? <ReviewGuidancePanel guidance={guidance} /> : null}
               {genericEvidence ? <GenericEvidencePanel evidence={genericEvidence} /> : null}
@@ -362,8 +403,16 @@ export function HomeHero() {
               {hasSearchError ? (
                 <div className={`${search.panel} ${visual.panel}`}>
                   <h3 className={`${search.panelTitle} ${visual.panelTitle}`}>검색 연결 오류</h3>
-                  <div className={`${search.panelBody} ${visual.panelBody}`}><p>검색 결과를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.</p></div>
-                  <button type="button" className={`${search.panelLink} ${home.retryButton}`} onClick={() => void runSearch()}>다시 시도</button>
+                  <div className={`${search.panelBody} ${visual.panelBody}`}>
+                    <p>검색 결과를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.</p>
+                  </div>
+                  <button
+                    type="button"
+                    className={`${search.panelLink} ${home.retryButton}`}
+                    onClick={() => void runSearch()}
+                  >
+                    다시 시도
+                  </button>
                 </div>
               ) : null}
             </div>

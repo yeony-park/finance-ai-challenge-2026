@@ -4,7 +4,7 @@ import { filterOutput } from "./guardrail/output-filter";
 import { corpusAsContext, officialChannels } from "./rag/corpus";
 import { ABSTAIN_TEXT, enforceCitations } from "./rag/citations";
 import type { LlmClient, SpineAnswer } from "./types";
-import type { RateLimiter, RateLimitVerdict } from "./ops/rate-limit";
+import type { MemoryRateLimiter, RateLimitVerdict } from "./ops/rate-limit";
 
 const BLOCKED_TEXT = [
   "요청이 서비스 범위 밖이거나 규칙을 우회하려는 패턴이 감지되어 처리하지 않았습니다.",
@@ -34,7 +34,7 @@ export const buildSystemPrompt = (): string =>
 
 export interface PipelineDeps {
   readonly llm: LlmClient;
-  readonly rateLimiter: RateLimiter;
+  readonly rateLimiter: MemoryRateLimiter;
 }
 
 export const runPipeline = async (

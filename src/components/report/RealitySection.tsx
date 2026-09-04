@@ -103,8 +103,11 @@ export function RealitySection({
 
         <div className={s.realityOverview}>
           <div className={s.realityStat}>
-            <strong>{matched.length === 0 ? flagged.length : matched.length}</strong>
-            <span>{matched.length === 0 ? `/ ${total}건` : `/ ${total}두`}</span>
+            <strong>{matched.length}</strong>
+            <span>
+              / {total}
+              {view.reality.countUnit}
+            </span>
             <small>{matched.length === 0 ? "확인 필요" : "전 항목 일치"}</small>
           </div>
           <div className={s.realityPlot}>
@@ -117,8 +120,8 @@ export function RealitySection({
               role="img"
               aria-label={
                 matched.length === 0
-                  ? `전체 ${total}건 중 일치 0건, 확인 필요 ${flagged.length}건`
-                  : `전체 ${total}두 중 전 항목 일치 ${matched.length}두, 확인 필요 ${flagged.length}두`
+                  ? `전체 ${total}${view.reality.countUnit} 중 일치 0${view.reality.countUnit}, 확인 필요 ${flagged.length}${view.reality.countUnit}`
+                  : `전체 ${total}${view.reality.countUnit} 중 전 항목 일치 ${matched.length}${view.reality.countUnit}, 확인 필요 ${flagged.length}${view.reality.countUnit}`
               }
             >
               <span
@@ -130,11 +133,7 @@ export function RealitySection({
                 style={{ width: `${100 - matchedRate}%` }}
               />
             </div>
-            <p>
-              {matched.length === 0
-                ? "연결된 근거가 부족한 항목은 확정하지 않고 대조 보류로 남깁니다."
-                : "개체 단위로 공시값과 국가 원장을 같은 기준으로 대조했습니다."}
-            </p>
+            <p>{view.reality.comparisonDescription}</p>
           </div>
         </div>
 

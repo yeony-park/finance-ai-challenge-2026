@@ -172,7 +172,7 @@ const main = async (): Promise<void> => {
     "data/knowledge/chunks",
   ]);
 
-  const counts = `cattle ${plan.cattleAuction.length} · re_trades ${plan.reTrades.length} · pig ${plan.pigAuction.length} · filing_facts ${plan.filingFacts.length} · knowledge_docs ${knowledgePlan.documents.length} · knowledge_chunks ${knowledgePlan.chunks.length}`;
+  const counts = `cattle ${plan.cattleAuction.length} · real_estate_trades ${plan.reTrades.length} · pig ${plan.pigAuction.length} · filing_facts ${plan.filingFacts.length} · knowledge_docs ${knowledgePlan.documents.length} · knowledge_chunks ${knowledgePlan.chunks.length}`;
 
   if (!directDatabaseUrl()) {
     console.log(

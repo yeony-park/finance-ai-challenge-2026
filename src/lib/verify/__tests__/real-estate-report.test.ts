@@ -709,6 +709,8 @@ describe("화면 뷰모델 — 축산 문구가 부동산에 새지 않는다", 
     expect(text).not.toContain("개체");
     expect(text).not.toContain("두 전수");
     expect(text).not.toContain("경락");
+    expect(view.reality.countUnit).toBe("건");
+    expect(view.reality.comparisonDescription).toContain("자산 단위");
   });
 
   test("판정 집계는 항목 단위로 세고 대조 불가를 숨기지 않는다", async () => {
@@ -745,8 +747,8 @@ describe("화면 뷰모델 — 축산 문구가 부동산에 새지 않는다", 
     expect(card.href).toBe(`/offers/${OFFER_ID}`);
   });
 
-  test("real-estate-a는 공개 registry에서 제외돼도 내부 리포트 fixture로 검증한다", () => {
-    expect(OFFERS.some((entry) => entry.id === OFFER_ID)).toBe(false);
+  test("real-estate-a 공개 registry와 내부 리포트 fixture가 함께 유지된다", () => {
+    expect(OFFERS.some((entry) => entry.id === OFFER_ID)).toBe(true);
     expect(INTERNAL_REPORT_OFFER.isExitVerified).toBe(true);
     expect(INTERNAL_REPORT_OFFER.assetLifecycle).toBe("sold");
   });

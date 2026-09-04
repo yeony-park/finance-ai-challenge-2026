@@ -1,9 +1,4 @@
-import { readFile, readdir } from "node:fs/promises";
-import path from "node:path";
-
-import { z } from "zod";
-
-import { isRegisteredSource } from "@/lib/spine/rag/corpus";
+import { loadGenericCorpusDocuments } from "@/lib/knowledge/local-rag/generic-corpus";
 
 import { storageMode } from "../env";
 import type {
@@ -12,28 +7,7 @@ import type {
   RagSearchResult,
 } from "./types";
 
-const RAG_DIR = "reference/rag";
 const MAX_HITS = 5;
-
-const fixtureSchema = z.object({
-  schemaVersion: z.literal(1),
-  documents: z.array(
-    z.object({
-      sourceId: z.string().min(1),
-      title: z.string().min(1),
-      license: z.enum(["green", "yellow_confirmed"]),
-      retrievedOn: z.string(),
-      scopeKind: z.enum(["generic", "product"]).default("generic"),
-      chunks: z.array(
-        z.object({
-          chunkIndex: z.number().int().min(0),
-          content: z.string().min(1),
-          scopeKind: z.enum(["generic", "product"]).default("generic"),
-        }),
-      ),
-    }),
-  ),
-});
 
 interface LoadedChunk {
   readonly sourceId: string;
@@ -43,44 +17,14 @@ interface LoadedChunk {
 
 const loadFixtureChunks = async (
   dataDir: string,
-): Promise<readonly LoadedChunk[]> => {
-  const dir = path.join(path.resolve(dataDir), RAG_DIR);
-  let files: readonly string[];
-  try {
-    files = await readdir(dir);
-  } catch {
-    return [];
-  }
-  const chunks: LoadedChunk[] = [];
-  for (const file of [...files].sort()) {
-    if (!file.endsWith(".json")) continue;
-    const parsed = fixtureSchema.safeParse(
-      JSON.parse(await readFile(path.join(dir, file), "utf8")),
-    );
-    if (!parsed.success) {
-      console.warn(
-        `[rag-search] ${file} 스키마 불일치 — 건너뜀: ${parsed.error.issues
-          .slice(0, 3)
-          .map((issue) => `${issue.path.join(".") || "(root)"}: ${issue.message}`)
-          .join("; ")}`,
-      );
-      continue;
-    }
-    for (const doc of parsed.data.documents) {
-      if (doc.scopeKind !== "generic") continue;
-      if (!isRegisteredSource(doc.sourceId)) continue;
-      for (const chunk of doc.chunks) {
-        if (chunk.scopeKind !== "generic") continue;
-        chunks.push({
-          sourceId: doc.sourceId,
-          content: chunk.content,
-          asOf: doc.retrievedOn,
-        });
-      }
-    }
-  }
-  return chunks;
-};
+): Promise<readonly LoadedChunk[]> =>
+  (await loadGenericCorpusDocuments(dataDir)).flatMap((document) =>
+    document.chunks.map((chunk) => ({
+      sourceId: document.sourceId,
+      content: chunk.content,
+      asOf: document.asOf,
+    })),
+  );
 
 const queryTokens = (query: string): readonly string[] =>
   query

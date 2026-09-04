@@ -55,6 +55,13 @@ const withoutUndefined = (
     Object.entries(entries).filter(([, value]) => value !== undefined),
   );
 
+const scheduleDetail = (
+  detail: Record<string, unknown>,
+): Record<string, unknown> =>
+  typeof detail.opensAt === "string" && typeof detail.closesAt === "string"
+    ? { opensAt: detail.opensAt, closesAt: detail.closesAt }
+    : {};
+
 const cardDetail = (
   categoryId: PublicOffering["categoryId"],
   detail: Record<string, unknown>,
@@ -91,9 +98,9 @@ export const toPublicOffering = (offering: Offering): PublicOffering => {
     subscription: {
       opensOn: offering.opensOn,
       closesOn: offering.closesOn,
-      precision: "day",
+      precision: typeof detail.opensAt === "string" ? "minute" : "day",
     },
-    detail: cardDetail(offering.categoryId, detail),
+    detail: { ...cardDetail(offering.categoryId, detail), ...scheduleDetail(detail) },
   });
 };
 

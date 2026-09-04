@@ -40,6 +40,11 @@ export const buildRealitySection = (ctx: ReportContext): DemoView["reality"] =>
             ? shortSourceName([ctx.buildingSourceName])
             : ctx.sourceName
         }`,
+        countUnit: "건",
+        comparisonDescription:
+          ctx.hasBuildingEvidence
+            ? "상품 원문의 자산 정보와 국토부 건축물대장을 같은 기준으로 대조했습니다."
+            : "자산 단위로 공시값과 국토부 실거래 원장을 같은 기준으로 대조했습니다.",
         caption: realEstateCaption(ctx),
         subjects: ctx.subjects,
         focuses: ctx.focuses,
@@ -47,6 +52,9 @@ export const buildRealitySection = (ctx: ReportContext): DemoView["reality"] =>
     : {
         heading: `공시된 개체 ${ctx.headCount}두의 국가 원장 대조`,
         source: `출처 · ${ctx.sourceName}`,
+        countUnit: "두",
+        comparisonDescription:
+          "개체 단위로 공시값과 국가 원장을 같은 기준으로 대조했습니다.",
         caption:
           ctx.flaggedLabels.length > 0
             ? [

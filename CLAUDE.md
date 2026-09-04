@@ -63,7 +63,7 @@ npm run db:export    # DB → data/public/offerings/index.json (마스킹 게이
 - `src/app/` — App Router 화면(`/` 입문자 홈, `/offers` 목록, `/offers/[id]` 리포트,
   `/cattle`·`/pig`·`/art`·`/real-estate` 카테고리 착지, `/methodology`) + API
   (`/api/health`, `/api/verify/[id]`, `/api/cron/monitor` — vercel.json cron 주 2회)
-- `src/lib/db/` — Supabase Postgres 저장 계층(schema.ts=스키마 단일 진실, repositories/ file·DB 트윈,
+- `src/lib/db/` — AWS RDS Postgres 저장 계층(ap-northeast-2, 2026-08-31 이전)(schema.ts=스키마 단일 진실, repositories/ file·DB 트윈,
   seed/·ingest/·export/·cli/, ledger/=검증 실행 이력·원장 관측). 렌더 경로 DB 조회 금지 —
   화면 데이터는 `db:export` 산출물만. 계약: `contracts/storage.md`(R-STO-*), 명세: `docs/spec/09`
 - `src/lib/content/` — 홈·체크리스트 문안의 단일 진실. 신규 사용자 대면 문안은 이 모듈에 두고
@@ -104,13 +104,13 @@ npm run db:export    # DB → data/public/offerings/index.json (마스킹 게이
 
 ## 배포
 
-**배포 전 체크** (CI 없는 수동 배포 구조 — 사람이 확인):
-- [ ] `npm run build`·`npm test` 그린 (키·DB 없이 완주 — R-INV-05)
+**배포 전 체크** (PR CI + 수동 배포 구조 — CI는 검증만 수행하고 배포는 사람이 실행):
+- [ ] PR의 `Verify` 체크 그린 (`npm run lint`·`npx tsc --noEmit`·`npm test`·`npm run build`). PR을 거치지 않는 긴급 배포라면 같은 명령을 로컬에서 완주 (키·DB 없이 통과 — R-INV-05)
 - [ ] DB에서 화면 데이터를 새로 뽑았다면, **직전 `npm run db:export` 산출물이 익명화 게이트 테스트를 그린으로 통과**했는가 (R-STO-03 — DB 유래라고 마스킹 게이트 우회 금지). export는 `DATABASE_URL_DIRECT` 전용, 미설정이면 not_configured로 정직 종료하며 화면 데이터를 만들지 않는다.
 
 Vercel CLI 수동 배포 — git 연동 없음(푸시는 배포를 트리거하지 않는다):
-`npx -y vercel@58.9.2 deploy --prod --scope lostarkofzephyr`
-(58.9.4는 "Not authorized" 회귀. `--scope` 생략 시에도 같은 "Not authorized"로 실패한 사례 있음 — 항상 명시).
+`npx -y vercel@58.9.2 deploy --prod --scope viowlet`
+(58.9.4는 "Not authorized" 회귀. `--scope` 생략 시에도 같은 "Not authorized"로 실패한 사례 있음 — 항상 명시. 팀 슬러그는 2026-08-31 lostarkofzephyr → viowlet으로 변경 — 구 슬러그는 실패한다).
 Vercel CLI는 gitignore를 무시하므로 `.vercelignore`가 PII·env 차단을 담당한다 — 수정 시 dry-run 검증.
 프로덕션: https://jeom-jeom.vercel.app 단일 (구 도메인 finance-hackathon-black.vercel.app은
 2026-08-23 오너 지시로 alias 제거. `jeomjeom.vercel.app`은 제3자 선점으로 사용 불가.

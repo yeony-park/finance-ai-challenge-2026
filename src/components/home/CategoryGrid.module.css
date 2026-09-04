@@ -71,8 +71,8 @@
   min-height: 2rem;
   padding-inline: var(--ds-space-3);
   border-radius: 0.5rem;
-  background: rgb(14 14 13 / 0.58);
-  color: var(--ds-ink-invert);
+  background: var(--ds-surface-glass);
+  color: var(--ds-ink);
   font-size: var(--ds-text-2xs);
   letter-spacing: 0.04em;
 }

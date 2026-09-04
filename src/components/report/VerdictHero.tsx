@@ -182,7 +182,7 @@ export function VerdictHero({
             <span className={s.levelHint}>판정은 동일하며, 설명 깊이만 달라집니다</span>
           </div>
 
-          <details className={s.supportingDetails}>
+          <details className={`${s.supportingDetails} ${s.questionDetails}`}>
             <summary className={s.supportingSummary}>집계 기준과 실행 정보 보기</summary>
             <div className={s.supportingTextBody}>
               <p className={s.itemLine}>{view.verdict.itemLine}</p>

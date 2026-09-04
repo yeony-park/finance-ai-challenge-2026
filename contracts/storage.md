@@ -13,14 +13,14 @@ rationale: docs/spec/09-stack-and-storage.md
 |---|---|---|
 | ① 파일 캐시 (`data/public/`·`data/reference/`·`data/offers/`·승인 scenario/common knowledge index) | 커밋 또는 prebuild 생성 | 서버 컴포넌트·file repository가 읽는 기본 원천 |
 | ② Vercel Blob | 정정 감시 이벤트 스토어 | 불가 |
-| ③ Postgres (**Supabase** + pgvector — 구성 대상) | 더미·참조 원장 + RAG 코퍼스 | 서버 컴포넌트 직독 불가; repository를 통한 search/evidence API만 |
+| ③ Postgres (**AWS RDS** + pgvector, ap-northeast-2 — 2026-08-31 오너 결정으로 이전) | 더미·참조 원장 + RAG 코퍼스 | **불가** |
 
-- **R-STO-01 (MUST)** DB 접근 경로는 둘뿐: ①`DATABASE_URL_DIRECT`를 쓰는 수집·생성·migration/seed/ingest/export CLI ②`DATABASE_URL`을 쓰는 `/api/search`와 published-offer `/api/evidence/query` repository 조회. 렌더 경로·서버 컴포넌트 직조회는 금지한다.
+- **R-STO-01 (MUST)** DB 접근 경로는 둘뿐: ①`DATABASE_URL_DIRECT`를 쓰는 수집·생성·migration/seed/ingest/export CLI ②`DATABASE_URL`을 쓰는 `/api/search`와 published-offer `/api/evidence/query` repository 조회. 렌더 경로·서버 컴포넌트 직조회는 금지한다. `GET /api/products`는 파일 리포지토리 전용이며 DB 유래 상품은 `db:export`를 거쳐 공개 파일 캐시로 제공한다.
 - **R-STO-02 (MUST)** `DATABASE_URL` 미설정 = file 모드. DB 리포지토리마다 `data/` JSON을 읽는 fake 트윈이 같은 인터페이스로 응답해야 하며, DB 없이 빌드·테스트·verify 완주(R-INV-05).
 - **R-STO-02a (MUST)** `DATABASE_URL`이 설정됐는데 런타임 DB 조회가 실패하면 file로 조용히 폴백하지 않는다. `DATABASE_URL_DIRECT`는 런타임 repository에서 읽지 않는다.
 - **R-STO-03 (MUST)** DB 유래 화면 데이터는 `db:export`, PDF knowledge 화면 데이터는 승인 manifest를 검증하는 `knowledge:index`만 만든다. 두 산출 경로 모두 공개 승인·마스킹/익명화·scope 검증을 통과해야 하며 원천 manifest/PDF와 review candidate는 API·화면에 직접 노출하지 않는다.
 - **R-STO-03a (MUST)** `db:seed`는 원천 경로가 `data/raw/`·`data/snapshots/`·`data/reports/`(로컬 전용)이면 즉시 실패 — CLI 진입점 하드코딩. R-STO-04의 유일한 기계 강제 지점.
-- **R-STO-04 (MUST)** 마스킹 전·개인정보 포함 데이터는 DB에도 적재 금지 — Supabase는 팀 공유 저장소다. `data/raw/` 로컬 전용 원칙이 DB에 그대로 적용된다.
+- **R-STO-04 (MUST)** 마스킹 전·개인정보 포함 데이터는 DB에도 적재 금지 — 관리형 DB(AWS RDS)는 팀 공유 저장소다. `data/raw/` 로컬 전용 원칙이 DB에 그대로 적용된다.
 
 ## 더미(합성) 데이터
 
@@ -35,15 +35,15 @@ rationale: docs/spec/09-stack-and-storage.md
 - **R-STO-09 (기본값, 2026-08-30 실물 정정)** 접근 계층: postgres-js(`postgres`) + drizzle-orm. 스키마 정본 = `src/lib/db/schema.ts`. **마이그레이션은 수기 SQL(`db/migrations/`) + 자체 러너**(`db:migrate` = `src/lib/db/cli/migrate.ts`, `_migrations` 테이블로 적용 추적), append-only(배포된 파일 수정 금지 — 정정은 새 마이그레이션). `DATABASE_URL_DIRECT`(직결) 사용. **drizzle-kit generate는 스키마↔마이그레이션 드리프트 대조(spike) 전용** — `drizzle.config.ts`의 out은 정본을 덮지 않도록 `db/generated/`(스크래치)로 분리했다. 실 적용은 자체 러너만.
 - **R-STO-09a (MUST, 접근 계층 선택 무관)** 사용자 입력이 개입하는 모든 쿼리는 파라미터 바인딩 강제 — drizzle은 쿼리 빌더 API만(원시 `sql` 템플릿에 문자열 보간 금지), 직 SQL은 postgres-js 태그드 템플릿만. 문자열 결합·보간으로 사용자 값을 SQL에 삽입하는 패턴은 계약 위반.
 - **R-STO-10 (MUST)** 타입 규약: 금액 = 원화 정수 `bigint`, 시각 = `timestamptz`, 문자열 = `text`(varchar(n) 금지), id = `bigint identity` + 공개 슬러그 별도 열. 외래키에 인덱스 필수.
-- **R-STO-11 (MUST, 2026-08-29 개정)** 판정·리포트 **본문**(판정 문장·근거 서술·화면이 읽는 것)을 DB에 넣지 않는다 — 리포트의 진실은 파이프라인 산출 JSON(①층). 단 **실행 이력 메타·판정 건수 집계·구조화 원장 관측치는 DB 기록 대상**(09 §5 — verification_runs·monitor_runs/events·ledger_observations). 테이블 구성은 `docs/spec/09` §3.2·§3.5·§4·§5 기준(offerings·art_auction_records·re_trades[확장]·cattle_auction_prices·pig_auction_prices·offering_filing_facts·rag_documents·rag_chunks·verification_runs·monitor_runs·monitor_events·ledger_observations).
+- **R-STO-11 (MUST, 2026-08-29 개정)** 판정·리포트 **본문**(판정 문장·근거 서술·화면이 읽는 것)을 DB에 넣지 않는다 — 리포트의 진실은 파이프라인 산출 JSON(①층). 단 **실행 이력 메타·판정 건수 집계·구조화 원장 관측치는 DB 기록 대상**(09 §5 — verification_runs·monitor_runs/events·ledger_observations). 테이블 구성은 `docs/spec/09` §3.2·§3.5·§4·§5 기준(offerings·art_auction_records·real_estate_trades[확장·0004 rename]·cattle_auction_prices·pig_auction_prices·offering_filing_facts·rag_documents·rag_chunks·verification_runs·monitor_runs·monitor_events·ledger_observations).
 
 ## RAG
 
 - **R-STO-12 (MUST)** generic `rag_documents.source_id`는 스파인 코퍼스(`spine/rag/corpus.ts`) 등록 id만 허용한다. product 문서는 대신 exact scope, manifest/public 승인, 출처 URL, 기준일, hash와 상태를 필수 provenance로 가진다. RAG 적재 자체가 generic 출처 등록을 뜻하지 않는다.
 - **R-STO-13 (MUST)** `license`는 `green | yellow_confirmed`만 적재 가능. red·yellow 미확인 금지.
 - **R-STO-14 (MUST)** generic RAG는 일반 개념 질문에만 사용하고 `scope_kind='generic'`으로 제한한다. 상품 근거는 exact `category_id+product_id+data_nature+scenario_id`와 `scope_kind='product'`, public/ready 문서·청크만 조회하며 다른 상품·generic corpus로 보충하지 않는다. 대화 입력 로그를 RAG 테이블에 혼입 금지.
-- **R-STO-15 (현재 구현)** 통합 RAG 아키텍처 MVP의 기본 경로는 file lexical 검색과 DB `websearch_to_tsquery('simple', ...)` FTS다. 추가로 승인된 canonical chunk만 `text-embedding-3-small` 1536차원 로컬 SQLite overlay에 명시적으로 색인할 수 있다. 런타임 semantic은 운영 opt-in·feature flag·exact scope·content/hash 검증을 모두 통과할 때만 `semantic:true`이고, store 부재·불일치·저점수·provider 실패는 사유와 함께 keyword로 강등한다. 실제 Supabase pgvector 연결·검색은 구현 완료로 간주하지 않는다.
-- **R-STO-16 (MUST, 2026-08-30 재개정)** 자격증명 역할 분리: 런타임 `DATABASE_URL` 역할은 ①`rag_documents`·`rag_chunks` SELECT ②`offerings`의 공개 9열(`offer_slug,category_id,provenance,title_public,amount_won,opens_on,closes_on,detail,source_meta`) SELECT ③`verification_runs`·`monitor_runs`·`monitor_events` INSERT를 갖는다. 실행 이력 상세 열은 읽지 못하되 멱등 INSERT의 `ON CONFLICT` 타깃인 `verification_runs.run_key`·`monitor_runs.checked_at`, `monitor_events` FK 연결용 `RETURNING` 열인 `monitor_runs.id`만 column-level SELECT하며, 세 테이블의 identity INSERT에 필요한 각 sequence USAGE만 허용한다. 다른 이력 열·원장·sequence 읽기·쓰기와 마이그레이션은 CLI 전용 `DATABASE_URL_DIRECT`에만 둔다. Supabase `service_role`·`anon` 키는 코드에 들여오지 않는다(PostgREST 미사용).
+- **R-STO-15 (현재 구현)** 기본 경로는 file lexical 검색과 DB `websearch_to_tsquery('simple', ...)` FTS다. 승인된 canonical chunk는 `text-embedding-3-small` 1536차원 로컬 SQLite overlay에 명시적으로 색인한다. 운영 opt-in·feature flag·exact scope·content/hash 검증을 모두 통과한 경우만 `semantic:true`이며, 실패하면 사유와 함께 keyword로 강등한다. 운영 목표는 AWS RDS pgvector의 tsvector + vector cosine(HNSW) 하이브리드 검색이고, 현재 로컬 SQLite 색인은 재적재 가능한 개발용 저장소다.
+- **R-STO-16 (MUST, 2026-09-04 재개정)** 자격증명 역할 분리: 런타임 `DATABASE_URL` 역할은 ①RLS가 공개 승인·PII 통과 상품 범위를 강제하는 `rag_documents`·`rag_chunks` SELECT ②원본 `offerings.detail/source_meta`를 화이트리스트로 투영한 `runtime_public_offerings` SELECT ③`verification_runs`·`monitor_runs`·`monitor_events` INSERT를 갖는다. 실행 이력 상세 열은 읽지 못하되 멱등 INSERT의 `ON CONFLICT` 타깃인 `verification_runs.run_key`·`monitor_runs.checked_at`, `monitor_events` FK 연결용 `RETURNING` 열인 `monitor_runs.id`만 column-level SELECT하며, 세 테이블의 identity INSERT에 필요한 각 sequence USAGE만 허용한다. 다른 이력 열·원장·sequence 읽기·쓰기와 마이그레이션은 CLI 전용 `DATABASE_URL_DIRECT`에만 둔다. 외부 관리형 서비스의 전권 키는 코드에 들여오지 않는다.
 - **R-STO-17 (MUST)** RAG 청크는 프롬프트 조립 시 고정 구분자 데이터 블록으로만 삽입 — 사용자 지시 채널에 원문 이어붙이기 금지(06 §6의 RAG 집행 조항).
 - **R-STO-18 (MUST)** RAG 적재 CLI는 인젝션 휴리스틱 스캔 통과분만 등록 — 실패분은 license 등급 무관 보류. 챗 게이트 다턴 레드팀에 "RAG 소스 내 인젝션" 시나리오 포함.
 - **R-STO-18a (MUST)** `0004_rag_product_scope.sql`은 generic/product scope, `ingest_owner`, product provenance, public/ready 상태, external-AI 승인과 PII 검토 상태, document/chunk scope FK를 추가한다. file knowledge ETL은 고정 owner 범위만 upsert하고 같은 owner의 사라진 문서·청크를 transaction 안에서 `revoked` 처리하며 다른 owner와 generic 행은 보존한다. 외부 AI 승인은 PII 검토 `passed` 없이는 활성화할 수 없다.

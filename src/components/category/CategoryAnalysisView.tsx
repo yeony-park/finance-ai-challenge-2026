@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 
 import { Reveal } from "@/components/motion/Reveal";
 import { TrackRecordCard } from "@/components/report/TrackRecordCard";
@@ -9,6 +9,7 @@ import type { Verdict } from "@/lib/verify/types";
 
 import home from "@/components/home/home.module.css";
 import type { CategoryLandingModel } from "./category-landing-model";
+import type { CategoryAnalysisSlot } from "./category-analysis-layout";
 import { CategoryAnalysisWorkspace } from "./CategoryAnalysisWorkspace";
 import { CategoryEvidenceSection } from "./CategoryEvidenceSection";
 import { CategoryQuestions } from "./CategoryQuestions";
@@ -41,6 +42,67 @@ export function CategoryAnalysisView({
   customTitle,
   market,
 }: CategoryAnalysisViewProps) {
+  const renderSlot = (slot: CategoryAnalysisSlot): ReactNode => {
+    switch (slot) {
+      case "evidence":
+        return (
+          <CategoryEvidenceSection
+            className={shell.slot}
+            title={title}
+            evidence={model.evidence}
+            visibleEvidence={model.visibleEvidence}
+            analysisStatus={analysisStatus}
+            analysisVerdict={analysisVerdict}
+            preview={preview}
+          />
+        );
+      case "custom":
+        if (!custom) return null;
+        if (model.analysisLayout.customPresentation === "inline") return custom;
+        return (
+          <section className={base.slot} aria-labelledby={`${title}-custom`}>
+            <div className={base.slotGrid}>
+              <h2 id={`${title}-custom`} className={base.slotTitle}>
+                {customTitle}
+              </h2>
+              {custom}
+            </div>
+          </section>
+        );
+      case "verdict":
+        return (
+          <CategoryVerdictSection
+            title={title}
+            evidenceCount={model.evidence.length}
+            totalItems={model.totalItems}
+            totals={model.totals}
+            latestGeneratedAt={model.latestGeneratedAt}
+          />
+        );
+      case "track-record":
+        return model.trackRecord ? (
+          <section className={base.slot} aria-label={ISSUER_SLOT_TITLE}>
+            <Reveal>
+              <TrackRecordCard card={model.trackRecord} sectionTitle />
+            </Reveal>
+          </section>
+        ) : null;
+      case "market":
+        return market;
+      case "questions":
+        return (
+          <section className={base.slot} aria-labelledby={`${title}-questions`}>
+            <Reveal className={base.slotGrid}>
+              <h2 id={`${title}-questions`} className={base.slotTitle}>
+                확인 질문
+              </h2>
+              <CategoryQuestions bridgeOffer={model.bridgeOffer} />
+            </Reveal>
+          </section>
+        );
+    }
+  };
+
   return (
     <div className={`${home.section} ${shell.analysisSection}`}>
       <CategoryAnalysisWorkspace
@@ -55,59 +117,9 @@ export function CategoryAnalysisView({
         sections={model.analysisSections}
       >
         <div className={shell.analysisArea}>
-          {categoryId !== "pig" ? (
-            <CategoryEvidenceSection
-              className={shell.slot}
-              title={title}
-              evidence={model.evidence}
-              visibleEvidence={model.visibleEvidence}
-              analysisStatus={analysisStatus}
-              analysisVerdict={analysisVerdict}
-              preview={preview}
-            />
-          ) : null}
-
-          {custom && categoryId === "pig" ? custom : null}
-
-          {custom && categoryId !== "pig" ? (
-            <section className={base.slot} aria-labelledby={`${title}-custom`}>
-              <div className={base.slotGrid}>
-                <h2 id={`${title}-custom`} className={base.slotTitle}>
-                  {customTitle}
-                </h2>
-                {custom}
-              </div>
-            </section>
-          ) : null}
-
-          {categoryId !== "pig" ? (
-            <CategoryVerdictSection
-              title={title}
-              evidenceCount={model.evidence.length}
-              totalItems={model.totalItems}
-              totals={model.totals}
-              latestGeneratedAt={model.latestGeneratedAt}
-            />
-          ) : null}
-
-          {model.trackRecord ? (
-            <section className={base.slot} aria-label={ISSUER_SLOT_TITLE}>
-              <Reveal>
-                <TrackRecordCard card={model.trackRecord} sectionTitle />
-              </Reveal>
-            </section>
-          ) : null}
-
-          {market}
-
-          <section className={base.slot} aria-labelledby={`${title}-questions`}>
-            <Reveal className={base.slotGrid}>
-              <h2 id={`${title}-questions`} className={base.slotTitle}>
-                확인 질문
-              </h2>
-              <CategoryQuestions bridgeOffer={model.bridgeOffer} />
-            </Reveal>
-          </section>
+          {model.analysisLayout.slots.map((slot) => (
+            <Fragment key={slot}>{renderSlot(slot)}</Fragment>
+          ))}
         </div>
       </CategoryAnalysisWorkspace>
     </div>

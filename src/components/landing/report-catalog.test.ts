@@ -21,10 +21,10 @@ describe("검증 리포트 전체 카탈로그", () => {
       REPORT_CATALOG_CARDS.filter((card) => card.assetLabel === "미술품"),
     ).toHaveLength(5);
     expect(OFFERS.filter((offer) => offer.assetLabel === "부동산"))
-      .toHaveLength(0);
-    expect(REPORT_TOTAL_COUNT).toBe(17);
+      .toHaveLength(1);
+    expect(REPORT_TOTAL_COUNT).toBe(18);
     expect(coverage).toBe(
-      "한우 9건·한돈 3건·미술품 5건·부동산 0건, 총 17건의 공모가 검증 리포트에 포함돼 있습니다. 각 공모는 공공 원장 대조 범위와 대조 불가 항목을 구분해 보여줍니다.",
+      "한우 9건·한돈 3건·미술품 5건·부동산 1건, 총 18건의 공모가 검증 리포트에 포함돼 있습니다. 각 공모는 공공 원장 대조 범위와 대조 불가 항목을 구분해 보여줍니다.",
     );
   });
 

@@ -211,15 +211,22 @@ describe("0004 migration artifact", () => {
 });
 
 describe("runtime DB role contract", () => {
-  test("offerings 공개 열만 column-level SELECT하고 DIRECT를 런타임에서 금지한다", async () => {
-    const roles = await readFile("db/roles.sql", "utf8");
+  test("offerings 원본 JSON 대신 공개 투영 뷰만 SELECT하고 DIRECT를 런타임에서 금지한다", async () => {
+    const [roles, boundaryDdl] = await Promise.all([
+      readFile("db/roles.sql", "utf8"),
+      readFile("db/migrations/0005_runtime_read_boundary.sql", "utf8"),
+    ]);
 
-    expect(roles).toMatch(
-      /GRANT SELECT \(\s*offer_slug,\s*category_id,\s*provenance,\s*title_public,\s*amount_won,\s*opens_on,\s*closes_on,\s*detail,\s*source_meta\s*\) ON offerings TO jeomjeom_rag_ro;/,
+    expect(roles).toContain(
+      "GRANT SELECT ON runtime_public_offerings TO jeomjeom_rag_ro;",
     );
     expect(roles).not.toMatch(/GRANT SELECT ON offerings/i);
     expect(roles).toMatch(/REVOKE ALL PRIVILEGES ON offerings/);
-    expect(roles).toMatch(/REVOKE SELECT \([\s\S]*?id,[\s\S]*?created_at[\s\S]*?\) ON offerings/);
+    expect(boundaryDdl).toContain("CREATE VIEW runtime_public_offerings");
+    expect(boundaryDdl).toContain("WITH (security_barrier = true)");
+    expect(boundaryDdl).not.toContain("detail AS detail");
+    expect(boundaryDdl).toContain("'unitPriceWon', detail -> 'unitPriceWon'");
+    expect(boundaryDdl).toContain("'art', CASE WHEN category_id = 'art'");
     expect(roles).toContain(
       "DATABASE_URL_DIRECT는 CLI ingest/migration 전용이며 런타임 repository에서 사용하지 않는다.",
     );
@@ -227,6 +234,21 @@ describe("runtime DB role contract", () => {
       "offerSlug", "categoryId", "provenance", "titlePublic", "amountWon",
       "opensOn", "closesOn", "detail", "sourceMeta",
     ]);
+  });
+
+  test("product RAG는 공개 승인·PII 통과 행만 런타임 SELECT한다", async () => {
+    const ddl = await readFile(
+      "db/migrations/0005_runtime_read_boundary.sql",
+      "utf8",
+    );
+
+    expect(ddl).toContain("ALTER TABLE rag_documents ENABLE ROW LEVEL SECURITY;");
+    expect(ddl).toContain("ALTER TABLE rag_chunks ENABLE ROW LEVEL SECURITY;");
+    expect(ddl).toMatch(/approved_for_public IS TRUE/g);
+    expect(ddl).toMatch(/pii_review_status = 'passed'/g);
+    expect(ddl).toMatch(/approved_for_external_ai IS TRUE/g);
+    expect(ddl).toContain("status IN ('ready', 'partial')");
+    expect(ddl).toContain("status = 'ready'");
   });
 
   test("실행 이력 INSERT에 필요한 열과 identity sequence만 최소 허용한다", async () => {

@@ -64,12 +64,14 @@ describe("latestOfferEntry — 대표 공모 기계 선정", () => {
 });
 
 describe("부동산 상품 레지스트리", () => {
-  test("실제 부동산 3건은 공개 화면 레지스트리에서 제외한다", () => {
-    expect(OFFERS.filter((entry) => entry.assetKind === "real-estate")).toEqual([]);
+  test("real-estate-a만 공개하고 나머지 실제 부동산 2건은 제외한다", () => {
+    expect(OFFERS.filter((entry) => entry.assetKind === "real-estate")).toEqual([
+      expect.objectContaining({ id: "real-estate-a" }),
+    ]);
     expect(PUBLISHED_OFFER_IDS).not.toContain("real-estate-bbric-hiwon");
     expect(PUBLISHED_OFFER_IDS).not.toContain("real-estate-sou-daejeon-startup");
-    expect(PUBLISHED_OFFER_IDS).not.toContain("real-estate-a");
-    expect(isPublishedOfferId("real-estate-a")).toBe(false);
+    expect(PUBLISHED_OFFER_IDS).toContain("real-estate-a");
+    expect(isPublishedOfferId("real-estate-a")).toBe(true);
     expect(OFFERS.filter((entry) => entry.assetKind === "livestock")).toHaveLength(9);
     expect(
       OFFERS.filter((entry) => entry.assetKind === "livestock").every(

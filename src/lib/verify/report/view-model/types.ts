@@ -98,6 +98,8 @@ export interface DemoView {
   readonly reality: {
     readonly heading: string;
     readonly source: string;
+    readonly countUnit: string;
+    readonly comparisonDescription: string;
     readonly caption: RichText;
     readonly subjects: readonly SubjectCardView[];
     readonly focuses: readonly FocusView[];

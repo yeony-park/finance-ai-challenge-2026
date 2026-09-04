@@ -204,6 +204,7 @@ describe("③ rag_documents.source_id 미등록 id 거부 (R-STO-12)", () => {
               sourceId: "verification-methodology",
               title: "등록 문서",
               license: "green",
+              approvedForExternalAi: true,
               retrievedOn: "2026-08-29",
               chunks: [{ chunkIndex: 0, content: "검증 판정 안내" }],
             },
@@ -211,6 +212,7 @@ describe("③ rag_documents.source_id 미등록 id 거부 (R-STO-12)", () => {
               sourceId: "bogus-unregistered-source",
               title: "미등록 문서",
               license: "green",
+              approvedForExternalAi: false,
               retrievedOn: "2026-08-29",
               chunks: [{ chunkIndex: 0, content: "검증 판정 침투 시도" }],
             },
@@ -218,6 +220,7 @@ describe("③ rag_documents.source_id 미등록 id 거부 (R-STO-12)", () => {
               sourceId: "verification-methodology",
               title: "상품 전용 문서",
               license: "green",
+              approvedForExternalAi: true,
               retrievedOn: "2026-08-29",
               scopeKind: "product",
               chunks: [{ chunkIndex: 0, content: "검증 판정 상품 전용", scopeKind: "product" }],
@@ -243,6 +246,22 @@ describe("③ rag_documents.source_id 미등록 id 거부 (R-STO-12)", () => {
       expect(
         plan.ragDocuments.some(
           (seed) => seed.document.sourceId === "verification-methodology",
+        ),
+      ).toBe(true);
+      expect(
+        plan.ragDocuments.every(
+          (seed) =>
+            seed.document.approvedForPublic === true &&
+            seed.document.approvedForExternalAi === true &&
+            seed.document.piiReviewStatus === "passed" &&
+            seed.document.status === "ready" &&
+            seed.chunks.every(
+              (chunk) =>
+                chunk.approvedForPublic === true &&
+                chunk.approvedForExternalAi === true &&
+                chunk.piiReviewStatus === "passed" &&
+                chunk.status === "ready",
+            ),
         ),
       ).toBe(true);
     } finally {

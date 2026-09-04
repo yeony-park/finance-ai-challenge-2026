@@ -14,7 +14,7 @@ import { loadApprovedScenarios } from "@/lib/knowledge/loader";
 import { loadLatestWatchState } from "@/lib/verify/amend/watch-state";
 import { isPublicVerificationScopeAllowed } from "@/lib/verify/dart/onboarding-catalog";
 import { loadFilingFacts } from "@/lib/verify/report/filing-facts";
-import { loadLatestReport } from "@/lib/verify/report/load";
+import { loadLatestReportOrNull } from "@/lib/verify/report/load";
 import { buildOfferCard, type OfferCardView } from "@/lib/verify/report/view-model";
 
 export const metadata: Metadata = {
@@ -38,13 +38,37 @@ export default async function OffersPage() {
   const artifactByProduct = new Map(
     cattleArtifacts.map((artifact) => [artifact.registry.offerId, artifact]),
   );
-  const entries = await Promise.all(publicOffers.map(async (offer) => {
-    try {
+  const entries = await Promise.all(
+    publicOffers.map(async (offer) => {
       const [loaded, watch, filingFacts] = await Promise.all([
-        loadLatestReport(offer.id),
+        loadLatestReportOrNull(offer.id),
         loadLatestWatchState(offer.id),
         loadFilingFacts(offer.id),
       ]);
+      if (loaded === null) {
+        const artifact = artifactByProduct.get(offer.id);
+        if (!artifact || offer.assetKind !== "livestock") return null;
+        const schedule = buildOfferSchedule(offer, now);
+        return {
+          card: null,
+          artifactCard: {
+            id: offer.id,
+            href: `/offers/${offer.id}`,
+            title: offer.title,
+            assetLabel: "한우" as const,
+            badge: "공시 근거 확인",
+            meta: `${artifact.document.title} · ${artifact.document.asOf} 기준`,
+            summary:
+              "원금 미보장 문단 확인 · 정정 관계·최신 조건·개체 실재성 미확인",
+            tallies: [
+              { label: "일치", value: 0, tone: "good" as const },
+              { label: "원장 불일치", value: 0, tone: "warn" as const },
+              { label: "대조 불가", value: 1, tone: "unk" as const },
+            ],
+            phase: schedule.phase,
+          },
+        };
+      }
       return {
         card: buildOfferCard({
           offer,
@@ -55,25 +79,8 @@ export default async function OffersPage() {
         }),
         artifactCard: null,
       };
-    } catch {
-      const artifact = artifactByProduct.get(offer.id);
-      if (!artifact || offer.assetKind !== "livestock") return null;
-      const schedule = buildOfferSchedule(offer, now);
-      return {
-        card: null,
-        artifactCard: {
-          id: offer.id,
-          href: `/offers/${offer.id}`,
-          title: offer.title,
-          assetLabel: "한우" as const,
-          badge: "공시 근거 확인",
-          meta: `${artifact.document.title} · ${artifact.document.asOf} 기준`,
-          summary: "원금 미보장 문단 확인 · 정정 관계·최신 조건·개체 실재성 미확인",
-          phase: schedule.phase,
-        },
-      };
-    }
-  }));
+    }),
+  );
   const cards = entries.flatMap((entry) => entry?.card ? [entry.card] : []);
   const artifactCards = entries.flatMap((entry) => entry?.artifactCard ? [entry.artifactCard] : []);
 

@@ -101,7 +101,7 @@ describe("db:ingest 빌더 — 커밋 참조 파일 → 원장 행 (R-STO-22)", 
     expect(meta.retrievedAt.length).toBeGreaterThan(0);
   });
 
-  test("re_trades 행은 확장 컬럼(building_type·면적·build_year·cancelled)을 담는다", async () => {
+  test("real_estate_trades 행은 확장 컬럼(building_type·면적·build_year·cancelled)을 담는다", async () => {
     const index = await loadManifestIndex();
     const rows = await buildReTradeRows("data", index);
     expect(rows.length).toBeGreaterThan(100);
