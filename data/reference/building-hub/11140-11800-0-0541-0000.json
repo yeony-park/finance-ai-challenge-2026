@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "request": {
+    "sigunguCd": "11140",
+    "bjdongCd": "11800",
+    "platGbCd": "0",
+    "bun": "0541",
+    "ji": "0000"
+  },
+  "collectedAt": "2026-08-24T16:39:46.568Z",
+  "sourceId": "molit-building-register-hub",
+  "sourceName": "국토교통부 건축물대장 표제부 조회 서비스 (국토교통부 · data.go.kr)",
+  "sourceUrl": "https://apis.data.go.kr/1613000/BldRgstHubService/getBrTitleInfo?sigunguCd=11140&bjdongCd=11800&platGbCd=0&bun=0541&ji=0000&numOfRows=100&pageNo=1&_type=json",
+  "status": "ok",
+  "totalCount": 2,
+  "records": [
+    {
+      "managementKey": "100313605",
+      "parcelAddress": "서울특별시 중구 남대문로5가 541번지",
+      "roadAddress": "서울특별시 중구 한강대로 416 (남대문로5가)",
+      "buildingName": "서울스퀘어",
+      "mainPurpose": "업무시설",
+      "otherPurpose": "업무시설, 근린생활시설, 판매시설, 노유자시설",
+      "parcelAreaSqm": 10583.4,
+      "buildingAreaSqm": 8013.45,
+      "totalAreaSqm": 132792.56,
+      "floorAreaRatioEstimatedTotalSqm": 119889.82,
+      "structure": "철골철근콘크리트구조",
+      "householdCount": 0,
+      "useApprovedOn": "1970-12-23",
+      "recordedOn": "2025-07-01"
+    },
+    {
+      "managementKey": "100313604",
+      "parcelAddress": "서울특별시 중구 남대문로5가 541번지",
+      "roadAddress": "서울특별시 중구 한강대로 416 (남대문로5가)",
+      "mainPurpose": "업무시설",
+      "otherPurpose": "수위실",
+      "parcelAreaSqm": 0,
+      "buildingAreaSqm": 13.49,
+      "totalAreaSqm": 13.49,
+      "floorAreaRatioEstimatedTotalSqm": 13.49,
+      "structure": "철근콘크리트구조",
+      "householdCount": 0,
+      "useApprovedOn": "1977-06-11",
+      "recordedOn": "2022-08-13"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Jangyeolsup Aven | 온기 윤곽 드로잉" data-record-id="synthetic-track-01-144" data-seed="5408" data-index="143">
+<title>온기의 윤곽 — 부드러운 그림자의 결 · Warm Contour / Grain of a Soft Shadow</title>
+<rect x="0" y="0" width="800" height="1000" fill="#4A2C2A"/>
+<path d="M-10 236 C120 211 235 249 345 228 C466 205 611 236 810 208" fill="none" stroke="#4A2C2A" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M-10 281 C122 257 233 289 351 270 C483 249 624 279 810 254" fill="none" stroke="#5E8064" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M0 740 C99 581 191 579 270 740 C355 574 454 571 535 740 C626 565 715 590 800 740" fill="none" stroke="#B86F52" stroke-width="9" stroke-linejoin="round"/>
+<path d="M0 779 C104 632 182 629 256 779 C354 628 450 625 526 779 C620 617 714 636 800 779" fill="none" stroke="#D9A441" stroke-width="4"/>
+<ellipse cx="398" cy="465" rx="85" ry="55" fill="#B86F52" opacity=".8"/>
+<ellipse cx="398" cy="465" rx="49" ry="29" fill="none" stroke="#4A2C2A" stroke-width="5"/>
+<line x1="71" y1="870" x2="730" y2="870" stroke="#5E8064" stroke-width="3" stroke-dasharray="11 19"/>
+<text x="22" y="978" fill="#F0D9B5" font-family="sans-serif" font-size="8" letter-spacing="2">SYNTHETIC</text>
+</svg>

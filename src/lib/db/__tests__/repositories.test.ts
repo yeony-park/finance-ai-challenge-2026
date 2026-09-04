@@ -2,7 +2,8 @@ import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 
-import { afterAll, beforeAll, describe, expect, test } from "vitest";
+import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
+import { PgDialect } from "drizzle-orm/pg-core";
 
 import { isRegisteredSource } from "@/lib/spine/rag/corpus";
 
@@ -11,6 +12,7 @@ import {
   keywordScore,
   resolveRagSearchRepository,
 } from "../repositories/rag-search";
+import { createDbRagSearchRepository } from "../repositories/rag-search-db";
 import { resolveOfferingsRepository } from "../repositories/offerings";
 import {
   buildSeedPlan,
@@ -59,6 +61,32 @@ describe("④ DATABASE_URL 없이 file 모드 완주 (R-STO-02·R-INV-05)", () =
     expect(await repository.findBySlug("does-not-exist")).toBeNull();
   });
 
+  test("v2 출처를 쓰는 실제 공모 2건은 경고 없이 discovery row로 로드한다", async () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    try {
+      const repository = await resolveOfferingsRepository();
+      for (const offerId of [
+        "real-estate-bbric-hiwon",
+        "real-estate-sou-daejeon-startup",
+      ]) {
+        const offering = await repository.findBySlug(offerId);
+        expect(offering?.provenance).toBe("manual_verified");
+        expect(offering?.sourceMeta).toMatchObject({
+          sourceUrl: "",
+          method: "discovery_only",
+          retrievedAt: "",
+        });
+        expect(offering?.sourceMeta.sha256).toMatch(/^[a-f0-9]{64}$/);
+      }
+
+      const warnings = warn.mock.calls.flat().join("\n");
+      expect(warnings).not.toContain("real-estate-bbric-hiwon.json");
+      expect(warnings).not.toContain("real-estate-sou-daejeon-startup.json");
+    } finally {
+      warn.mockRestore();
+    }
+  });
+
   test("실 공모 파싱은 asset 조인 키·sale·limits를 detail 화이트리스트로 수용한다 (09 §3.5)", async () => {
     const repository = await resolveOfferingsRepository();
     const offering = await repository.findBySlug("real-estate-a");
@@ -96,6 +124,25 @@ describe("④ DATABASE_URL 없이 file 모드 완주 (R-STO-02·R-INV-05)", () =
     expect(withHits.degraded).toBe(true);
     expect(noHits.hits).toEqual([]);
     expect(noHits.degraded).toBe(true);
+  });
+});
+
+describe("DATABASE_URL offerings runtime 분기", () => {
+  test("설정 시 DB repository를 선택하고 생성 실패를 file로 숨기지 않는다", async () => {
+    process.env.DATABASE_URL = "postgres://runtime.invalid/test";
+    try {
+      const dbRepository = {
+        mode: "db" as const,
+        async findBySlug() { return null; },
+        async listByCategory() { return []; },
+      };
+      await expect(resolveOfferingsRepository({ createDb: () => dbRepository }))
+        .resolves.toBe(dbRepository);
+      await expect(resolveOfferingsRepository({ createDb: () => { throw new Error("db unavailable"); } }))
+        .rejects.toThrow("db unavailable");
+    } finally {
+      delete process.env.DATABASE_URL;
+    }
   });
 });
 
@@ -157,6 +204,7 @@ describe("③ rag_documents.source_id 미등록 id 거부 (R-STO-12)", () => {
               sourceId: "verification-methodology",
               title: "등록 문서",
               license: "green",
+              approvedForExternalAi: true,
               retrievedOn: "2026-08-29",
               chunks: [{ chunkIndex: 0, content: "검증 판정 안내" }],
             },
@@ -164,8 +212,18 @@ describe("③ rag_documents.source_id 미등록 id 거부 (R-STO-12)", () => {
               sourceId: "bogus-unregistered-source",
               title: "미등록 문서",
               license: "green",
+              approvedForExternalAi: false,
               retrievedOn: "2026-08-29",
               chunks: [{ chunkIndex: 0, content: "검증 판정 침투 시도" }],
+            },
+            {
+              sourceId: "verification-methodology",
+              title: "상품 전용 문서",
+              license: "green",
+              approvedForExternalAi: true,
+              retrievedOn: "2026-08-29",
+              scopeKind: "product",
+              chunks: [{ chunkIndex: 0, content: "검증 판정 상품 전용", scopeKind: "product" }],
             },
           ],
         }),
@@ -177,6 +235,7 @@ describe("③ rag_documents.source_id 미등록 id 거부 (R-STO-12)", () => {
       expect(
         result.hits.some((hit) => hit.sourceId === "bogus-unregistered-source"),
       ).toBe(false);
+      expect(result.hits.some((hit) => hit.content.includes("상품 전용"))).toBe(false);
 
       const plan = await buildSeedPlan(dataDir);
       expect(
@@ -189,9 +248,42 @@ describe("③ rag_documents.source_id 미등록 id 거부 (R-STO-12)", () => {
           (seed) => seed.document.sourceId === "verification-methodology",
         ),
       ).toBe(true);
+      expect(
+        plan.ragDocuments.every(
+          (seed) =>
+            seed.document.approvedForPublic === true &&
+            seed.document.approvedForExternalAi === true &&
+            seed.document.piiReviewStatus === "passed" &&
+            seed.document.status === "ready" &&
+            seed.chunks.every(
+              (chunk) =>
+                chunk.approvedForPublic === true &&
+                chunk.approvedForExternalAi === true &&
+                chunk.piiReviewStatus === "passed" &&
+                chunk.status === "ready",
+            ),
+        ),
+      ).toBe(true);
     } finally {
       rmSync(dataDir, { recursive: true, force: true });
     }
+  });
+});
+
+describe("generic RAG DB scope", () => {
+  test("SQL이 product rows를 제외하는 generic scope를 강제한다", async () => {
+    let sqlText = "";
+    let params: readonly unknown[] = [];
+    const repository = createDbRagSearchRepository(async (statement) => {
+      const rendered = new PgDialect().sqlToQuery(statement);
+      sqlText = rendered.sql;
+      params = rendered.params;
+      return [];
+    });
+    await repository.search("공시 대조");
+    expect(sqlText).toContain("c.scope_kind = 'generic'");
+    expect(sqlText).toContain("d.scope_kind = 'generic'");
+    expect(params).toContain("공시 대조");
   });
 });
 

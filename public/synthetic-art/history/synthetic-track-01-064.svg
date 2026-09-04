@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-01-064" data-record-index="63" data-seed="4608">
+<title>유리결의 반사 — 희미한 스펙트럼 · Glassgrain Reflection / Faint Spectrum</title>
+<rect x="0" y="0" width="800" height="1000" fill="#17324D"/>
+<g transform="rotate(180 400 500)">
+<ellipse cx="434" cy="506" rx="332" ry="214" fill="#2D5873" opacity="0.25"/>
+<ellipse cx="434" cy="506" rx="213" ry="201" fill="#5C8EA3" opacity="0.32"/>
+<polygon points="434,506 308.12,627.57 160.04,584.56 201.14,497.87" fill="#A9CDD0" opacity="0.25"/>
+<polygon points="434,506 217.62,532.57 168.64,313.21 271.77,282.71" fill="#E2F0EA" opacity="0.31"/>
+<polygon points="434,506 207.97,375.5 421.05,135.23 521.93,199.36" fill="#D6A85F" opacity="0.37"/>
+<polygon points="434,506 315.22,226.17 470.08,93.58 575.44,172.78" fill="#A9CDD0" opacity="0.43"/>
+<ellipse cx="434" cy="506" rx="72" ry="48" fill="none" stroke="#D6A85F" stroke-width="3" stroke-opacity="0.54"/>
+<ellipse cx="434" cy="506" rx="111" ry="82" fill="none" stroke="#E2F0EA" stroke-width="4" stroke-opacity="0.6"/>
+<ellipse cx="434" cy="506" rx="150" ry="116" fill="none" stroke="#D6A85F" stroke-width="3" stroke-opacity="0.66"/>
+<ellipse cx="434" cy="506" rx="189" ry="150" fill="none" stroke="#E2F0EA" stroke-width="4" stroke-opacity="0.54"/>
+<circle cx="434" cy="506" r="49" fill="#E2F0EA" opacity="0.72"/>
+<circle cx="442" cy="500" r="17" fill="#D6A85F" opacity="0.9"/>
+<text x="728" y="953" fill="#A9CDD0" font-family="sans-serif" font-size="9" letter-spacing="3" text-anchor="end" opacity="0.34">SYNTHETIC</text>
+</g>
+</svg>

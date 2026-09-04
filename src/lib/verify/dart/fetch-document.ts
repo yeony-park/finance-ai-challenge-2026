@@ -6,6 +6,10 @@ import { assertRcpNo, rawDataDir } from "../paths";
 const DART_DOCUMENT_ENDPOINT = "https://opendart.fss.or.kr/api/document.xml";
 
 const ZIP_MAGIC = [0x50, 0x4b];
+export const MAX_DART_RESPONSE_BYTES = 8 * 1024 * 1024;
+export const MAX_DART_ZIP_ENTRIES = 16;
+export const MAX_DART_XML_BYTES = 8 * 1024 * 1024;
+export const MAX_DART_UNZIPPED_BYTES = 16 * 1024 * 1024;
 
 export interface FetchedDocument {
   readonly rcpNo: string;
@@ -36,6 +40,67 @@ const decodeDartError = (bytes: Uint8Array): string => {
   return `DART 응답 오류 (status=${status}): ${message}`;
 };
 
+const readResponseBodyCapped = async (response: Response): Promise<Uint8Array> => {
+  const declared = Number(response.headers.get("content-length"));
+  if (Number.isFinite(declared) && declared > MAX_DART_RESPONSE_BYTES) {
+    throw new Error("DART 응답 크기 상한을 초과했습니다.");
+  }
+  if (!response.body) return new Uint8Array();
+  const reader = response.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let total = 0;
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      total += value.byteLength;
+      if (total > MAX_DART_RESPONSE_BYTES) {
+        await reader.cancel();
+        throw new Error("DART 응답 크기 상한을 초과했습니다.");
+      }
+      chunks.push(value);
+    }
+  } finally {
+    reader.releaseLock();
+  }
+  const bytes = new Uint8Array(total);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  return bytes;
+};
+
+const unzipExactXml = (
+  bytes: Uint8Array,
+  rcpNo: string,
+): Readonly<Record<string, Uint8Array>> => {
+  const expectedName = `${rcpNo}.xml`;
+  let entryCount = 0;
+  let totalUnzipped = 0;
+  const unzipped = unzipSync(bytes, {
+    filter(entry) {
+      entryCount += 1;
+      totalUnzipped += entry.originalSize;
+      if (entryCount > MAX_DART_ZIP_ENTRIES) throw new Error("DART ZIP entry 수 상한을 초과했습니다.");
+      if (entry.name !== expectedName) throw new Error("DART ZIP은 exact rcpNo XML entry 하나만 허용합니다.");
+      if (entry.originalSize > MAX_DART_XML_BYTES || totalUnzipped > MAX_DART_UNZIPPED_BYTES) {
+        throw new Error("DART ZIP 해제 크기 상한을 초과했습니다.");
+      }
+      return true;
+    },
+  });
+  const entries = Object.entries(unzipped);
+  if (entries.length !== 1 || entries[0]?.[0] !== expectedName) {
+    throw new Error("DART ZIP은 exact rcpNo XML entry 하나만 허용합니다.");
+  }
+  if (entries[0][1].byteLength > MAX_DART_XML_BYTES) {
+    throw new Error("DART XML 크기 상한을 초과했습니다.");
+  }
+  return unzipped;
+};
+
 export const fetchDocumentZip = async (
   rcpNo: string,
   apiKey: string,
@@ -47,11 +112,11 @@ export const fetchDocumentZip = async (
     throw new Error(`DART HTTP ${response.status} ${response.statusText}`);
   }
 
-  const bytes = new Uint8Array(await response.arrayBuffer());
+  const bytes = await readResponseBodyCapped(response);
   const isZip = bytes[0] === ZIP_MAGIC[0] && bytes[1] === ZIP_MAGIC[1];
   if (!isZip) throw new Error(decodeDartError(bytes));
 
-  return unzipSync(bytes);
+  return unzipExactXml(bytes, rcpNo);
 };
 
 export const fetchDocumentXmlInMemory = async (

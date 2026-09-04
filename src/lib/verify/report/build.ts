@@ -7,6 +7,7 @@ import type {
   Judgement,
   PricePlacement,
   RealEstatePlacement,
+  RealEstateReportMetadata,
   UnjudgedClaim,
   VerifyReport,
 } from "../types";
@@ -22,6 +23,7 @@ export interface BuildReportInput {
   readonly unjudged: readonly UnjudgedClaim[];
   readonly pricePlacements?: readonly PricePlacement[];
   readonly realEstatePlacements?: readonly RealEstatePlacement[];
+  readonly realEstate?: RealEstateReportMetadata;
   readonly notes: readonly string[];
 }
 
@@ -38,6 +40,7 @@ export const buildReport = (input: BuildReportInput): VerifyReport => ({
   unjudged: input.unjudged,
   pricePlacements: input.pricePlacements ?? [],
   realEstatePlacements: input.realEstatePlacements ?? [],
+  ...(input.realEstate === undefined ? {} : { realEstate: input.realEstate }),
   notes: input.notes,
 });
 

@@ -147,6 +147,7 @@ describe("리포트 조립", () => {
       mismatch: 0,
       unverifiable: 0,
     });
+    expect(report.realEstate).toBeUndefined();
   });
 
   test("리포트 파일명은 ISO 시각을 파일시스템 안전 문자로 바꾼다", () => {

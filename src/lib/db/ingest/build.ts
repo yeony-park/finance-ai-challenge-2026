@@ -1,4 +1,4 @@
-import { readFile, readdir } from "node:fs/promises";
+import { readdir } from "node:fs/promises";
 import path from "node:path";
 
 import {
@@ -24,7 +24,7 @@ import {
   filingFactRowSchema,
   pigAuctionRowSchema,
 } from "./records";
-import { type ManifestIndex, manifestSha256 } from "./manifest";
+import { type ManifestIndex, readVerifiedManifestFile } from "./manifest";
 import type { ReTradeRow } from "../records";
 import { reTradeRowSchema } from "../records";
 
@@ -39,15 +39,14 @@ const listJson = async (dir: string): Promise<readonly string[]> => {
 };
 
 const referenceMeta = (
-  index: ManifestIndex,
-  relPath: string,
+  sha256: string,
   overrides: { readonly sourceUrl: string; readonly method: string; readonly retrievedAt: string },
 ): SourceMeta => ({
   sourceUrl: overrides.sourceUrl,
   license: "green",
   method: overrides.method,
   retrievedAt: overrides.retrievedAt,
-  sha256: manifestSha256(index, relPath),
+  sha256,
 });
 
 export const buildCattleAuctionRows = async (
@@ -58,11 +57,17 @@ export const buildCattleAuctionRows = async (
   const dir = path.join(path.resolve(dataDir), subdir);
   const rows: CattleAuctionRow[] = [];
   for (const file of await listJson(dir)) {
+    const relPath = `data/${subdir}/${file}`;
+    const verified = await readVerifiedManifestFile(
+      index,
+      relPath,
+      path.join(dir, file),
+    );
     const cache = parseAuctionMonthCache(
-      JSON.parse(await readFile(path.join(dir, file), "utf8")),
+      JSON.parse(verified.raw.toString("utf8")),
       file,
     );
-    const meta = referenceMeta(index, `data/${subdir}/${file}`, {
+    const meta = referenceMeta(verified.sha256, {
       sourceUrl: AUCTION_ENDPOINT,
       method: "collected",
       retrievedAt: cache.collectedAt,
@@ -97,11 +102,17 @@ export const buildReTradeRows = async (
   const dir = path.join(path.resolve(dataDir), subdir);
   const rows: ReTradeRow[] = [];
   for (const file of await listJson(dir)) {
+    const relPath = `data/${subdir}/${file}`;
+    const verified = await readVerifiedManifestFile(
+      index,
+      relPath,
+      path.join(dir, file),
+    );
     const cache = parseRtmsMonthCache(
-      JSON.parse(await readFile(path.join(dir, file), "utf8")),
+      JSON.parse(verified.raw.toString("utf8")),
       file,
     );
-    const meta = referenceMeta(index, `data/${subdir}/${file}`, {
+    const meta = referenceMeta(verified.sha256, {
       sourceUrl: RTMS_ENDPOINT,
       method: "collected",
       retrievedAt: cache.collectedAt,
@@ -132,23 +143,38 @@ export const buildReTradeRows = async (
 
 export const buildPigAuctionRows = async (
   dataDir: string,
+  index: ManifestIndex,
 ): Promise<readonly PigAuctionRow[]> => {
   const subdir = "reference/pig-auction-price";
   const dir = path.join(path.resolve(dataDir), subdir);
   const csvFile = [...(await listCsv(dir))].at(-1);
   if (!csvFile) return [];
-  const csv = await readFile(path.join(dir, csvFile), "utf8");
-  const metaRaw = await readFile(
-    path.join(dir, csvFile.replace(/\.csv$/, ".meta.json")),
-    "utf8",
+  const metaFile = csvFile.replace(/\.csv$/, ".meta.json");
+  const [csvVerified, metaVerified] = await Promise.all([
+    readVerifiedManifestFile(
+      index,
+      `data/${subdir}/${csvFile}`,
+      path.join(dir, csvFile),
+    ),
+    readVerifiedManifestFile(
+      index,
+      `data/${subdir}/${metaFile}`,
+      path.join(dir, metaFile),
+    ),
+  ]);
+  const csv = csvVerified.raw.toString("utf8");
+  const meta = pigAuctionMetaSchema.parse(
+    JSON.parse(metaVerified.raw.toString("utf8")),
   );
-  const meta = pigAuctionMetaSchema.parse(JSON.parse(metaRaw));
+  if (meta.sha256 !== csvVerified.sha256) {
+    throw new Error(`돼지 경락가 메타 sha256이 ${csvFile} 검증값과 다릅니다.`);
+  }
   const source: SourceMeta = {
     sourceUrl: meta.sourceUrl,
     license: "green",
     method: meta.method,
     retrievedAt: meta.retrievedAt,
-    sha256: meta.sha256,
+    sha256: csvVerified.sha256,
   };
   return parsePigAuctionRows(csv, meta.filters.region).map((row) =>
     pigAuctionRowSchema.parse({
@@ -182,10 +208,16 @@ export const buildFilingFactRows = async (
   const dir = path.join(path.resolve(dataDir), subdir);
   const rows: FilingFactRow[] = [];
   for (const file of await listJson(dir)) {
-    const facts = parseFilingFacts(
-      JSON.parse(await readFile(path.join(dir, file), "utf8")),
+    const relPath = `data/${subdir}/${file}`;
+    const verified = await readVerifiedManifestFile(
+      index,
+      relPath,
+      path.join(dir, file),
     );
-    const meta = referenceMeta(index, `data/${subdir}/${file}`, {
+    const facts = parseFilingFacts(
+      JSON.parse(verified.raw.toString("utf8")),
+    );
+    const meta = referenceMeta(verified.sha256, {
       sourceUrl: `${DART_VIEWER}${facts.rcpNo}`,
       method: "manual_curated",
       retrievedAt: facts.submittedOn,
@@ -223,7 +255,7 @@ export const buildIngestPlan = async (
 ): Promise<IngestPlan> => ({
   cattleAuction: await buildCattleAuctionRows(dataDir, index),
   reTrades: await buildReTradeRows(dataDir, index),
-  pigAuction: await buildPigAuctionRows(dataDir),
+  pigAuction: await buildPigAuctionRows(dataDir, index),
   filingFacts: await buildFilingFactRows(dataDir, index),
   sourcePaths: [
     path.join(dataDir, "reference/auction-price"),

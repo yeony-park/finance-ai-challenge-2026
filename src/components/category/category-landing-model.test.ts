@@ -25,9 +25,24 @@ describe("카테고리 분석 공모 필터", () => {
   test("필터가 없으면 모든 공모 카드를 표시한다", async () => {
     const model = await loadModel(null, null);
 
+    expect(model.evidence.map((entry) => entry.offer.id)).toEqual(
+      Array.from({ length: 9 }, (_, index) => `livestock-${index + 1}`),
+    );
     expect(model.visibleEvidence.map((entry) => entry.offer.id)).toEqual(
       model.evidence.map((entry) => entry.offer.id),
     );
+    expect(model.evidence.find((entry) => entry.offer.id === "livestock-1"))
+      .toMatchObject({
+        loaded: null,
+        card: {
+          href: "/offers/livestock-1",
+          amendment:
+            "원금 미보장 문단 확인 · 정정 관계·최신 조건·개체 실재성 미확인",
+        },
+      });
+    expect(
+      model.evidence.find((entry) => entry.offer.id === "livestock-9")?.loaded,
+    ).not.toBeNull();
   });
 
   test("한돈 분석 항목에서는 빈 공모 현황과 누적 판정을 제외한다", async () => {
@@ -98,7 +113,11 @@ describe("카테고리 분석 공모 필터", () => {
 
       expect(model.visibleEvidence.map((entry) => entry.offer.id)).toEqual(
         model.evidence
-          .filter((entry) => entry.loaded.report.summary[verdict] > 0)
+          .filter(
+            (entry) =>
+              entry.loaded !== null &&
+              entry.loaded.report.summary[verdict] > 0,
+          )
           .map((entry) => entry.offer.id),
       );
     },
@@ -112,6 +131,7 @@ describe("카테고리 분석 공모 필터", () => {
         .filter(
           (entry) =>
             entry.schedule.phase === "closed" &&
+            entry.loaded !== null &&
             entry.loaded.report.summary.unverifiable > 0,
         )
         .map((entry) => entry.offer.id),

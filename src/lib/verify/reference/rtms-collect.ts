@@ -6,14 +6,17 @@ import {
   RTMS_ENDPOINT,
   RTMS_SOURCE_ID,
   RTMS_SOURCE_NAME,
+  RtmsNormalizationError,
   normalizeRtmsResponse,
   rtmsQueryUrl,
+  sanitizeRtmsExternalMessage,
   type RtmsMonthCache,
 } from "../adapters/rtms-trade";
 
 const MONTH_PATTERN = /^\d{4}-(0[1-9]|1[0-2])$/;
 
 export const ROWS_PER_CALL = 1000;
+export const MAX_RTMS_MONTHS = 12;
 
 export const assertRtmsMonth = (month: string): string => {
   if (!MONTH_PATTERN.test(month)) {
@@ -46,6 +49,9 @@ export const rtmsMonthsBetween = (
   let month = startMonth;
   while (year < endYear || (year === endYear && month <= endMonth)) {
     months.push(`${year}-${String(month).padStart(2, "0")}`);
+    if (months.length > MAX_RTMS_MONTHS) {
+      throw new Error(`수집 구간은 최대 ${MAX_RTMS_MONTHS}개월까지 허용됩니다.`);
+    }
     month += 1;
     if (month > 12) {
       month = 1;
@@ -80,15 +86,15 @@ export const collectRtmsMonth = async (
   const lawdCd = assertLawdCd(options.lawdCd);
   assertRtmsMonth(month);
 
-  const url = `${rtmsQueryUrl({
+  const sourceUrl = rtmsQueryUrl({
     lawdCd,
     dealYmd: dealYmdOf(month),
     numOfRows: ROWS_PER_CALL,
     pageNo: 1,
-  })}&serviceKey=${options.serviceKey}`;
+  });
 
   const base = {
-    schemaVersion: 1,
+    schemaVersion: 2,
     month,
     lawdCd,
     sigunguName: options.sigunguName,
@@ -97,58 +103,74 @@ export const collectRtmsMonth = async (
     sourceName: RTMS_SOURCE_NAME,
     endpoint: RTMS_ENDPOINT,
   } as const;
+  const failed = (
+    reason: string,
+    totalCount = 0,
+    collectedCount = 0,
+    cancelledCount = 0,
+  ): RtmsMonthCollection => ({
+    calls: 1,
+    cache: {
+      ...base,
+      status: "failed",
+      reason: sanitizeRtmsExternalMessage(reason) ?? "사유 미상",
+      totalCount,
+      collectedCount,
+      cancelledCount,
+      trades: [],
+    },
+  });
 
+  let response: Response;
   try {
-    const response = await fetchImpl(url);
-    const body = await response.text();
-    const httpPrefix = response.ok ? "" : `HTTP ${response.status} · `;
-    let normalized;
+    const requestUrl = new URL(sourceUrl);
+    let serviceKey = options.serviceKey;
     try {
-      normalized = normalizeRtmsResponse(body);
-    } catch (error) {
-      throw new Error(
-        `${httpPrefix}${error instanceof Error ? error.message : String(error)}`,
-      );
+      serviceKey = decodeURIComponent(serviceKey);
+    } catch {
+      // Keep an already-decoded or malformed key unchanged; URLSearchParams serializes it safely.
     }
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
-    }
-    if (normalized.parseFailedCount > 0) {
-      return {
-        calls: 1,
-        cache: {
-          ...base,
-          status: "failed",
-          cancelledCount: normalized.cancelledCount,
-          trades: [],
-          reason: `실거래 행 ${normalized.parseFailedCount}건의 필드를 인식하지 못했습니다 — API 필드명 변경 가능성, 정규화기 확인 필요`,
-        },
-      };
-    }
-    return {
-      calls: 1,
-      cache: {
-        ...base,
-        status: normalized.trades.length > 0 ? "ok" : "empty",
-        cancelledCount: normalized.cancelledCount,
-        trades: normalized.trades,
-        ...(normalized.trades.length > 0
-          ? {}
-          : { reason: "해당 월·시군구의 상업업무용 매매 신고 건이 없습니다." }),
-      },
-    };
-  } catch (error) {
-    return {
-      calls: 1,
-      cache: {
-        ...base,
-        status: "failed",
-        reason: error instanceof Error ? error.message : String(error),
-        cancelledCount: 0,
-        trades: [],
-      },
-    };
+    requestUrl.searchParams.set("serviceKey", serviceKey);
+    response = await fetchImpl(requestUrl);
+  } catch {
+    return failed("실거래 API 요청에 실패했습니다.");
   }
+  if (!response.ok) return failed(`실거래 API HTTP ${response.status} 응답입니다.`);
+
+  let body: string;
+  try {
+    body = await response.text();
+  } catch {
+    return failed("실거래 API 응답을 읽지 못했습니다.");
+  }
+  let normalized;
+  try {
+    normalized = normalizeRtmsResponse(body);
+  } catch (error) {
+    if (error instanceof RtmsNormalizationError) {
+      return failed(error.message, error.totalCount, error.collectedCount);
+    }
+    return failed("실거래 API 응답을 정규화하지 못했습니다.");
+  }
+  if (normalized.parseFailedCount > 0) {
+    return failed(
+      `실거래 행 ${normalized.parseFailedCount}건의 필드를 인식하지 못했습니다 — API 필드명 변경 가능성, 정규화기 확인 필요`,
+      normalized.totalCount,
+      normalized.collectedCount,
+      normalized.cancelledCount,
+    );
+  }
+  return {
+    calls: 1,
+    cache: {
+      ...base,
+      status: normalized.totalCount === 0 ? "empty" : "ok",
+      totalCount: normalized.totalCount,
+      collectedCount: normalized.collectedCount,
+      cancelledCount: normalized.cancelledCount,
+      trades: normalized.trades,
+    },
+  };
 };
 
 export const rtmsCacheFile = (

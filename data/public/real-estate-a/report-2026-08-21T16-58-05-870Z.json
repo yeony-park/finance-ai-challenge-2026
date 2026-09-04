@@ -12,21 +12,41 @@
     "국토교통부 상업업무용 부동산 매매 신고 자료 (국토교통부 · data.go.kr 실거래가 오픈API) — 월 신고 사전 수집본"
   ],
   "summary": {
-    "total": 2,
+    "total": 0,
     "match": 0,
-    "mismatch": 2,
+    "mismatch": 0,
     "unverifiable": 0
   },
-  "bySubject": [
+  "bySubject": [],
+  "judgements": [],
+  "unjudged": [
     {
-      "subject": "부동산 A",
-      "verdict": "mismatch",
-      "judgementCount": 2
-    }
-  ],
-  "judgements": [
+      "claim": {
+        "id": "real_estate_address:부동산 A",
+        "kind": "real_estate_address",
+        "subject": "부동산 A",
+        "field": "소재지",
+        "value": "서울 서초구 ○○동",
+        "document": {
+          "offerId": "real-estate-a",
+          "rcpNo": "",
+          "submittedOn": "2026-03-11"
+        },
+        "location": {
+          "section": "공모 공고 (2021-07)",
+          "table": "상품 상세",
+          "row": 1,
+          "sectionPath": [
+            "공모 공고 (2021-07)",
+            "상품 상세"
+          ]
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "reason": "건축물대장 표제부 수집본이 없어 지번 단위 실재 대조를 하지 못했습니다(대조 불가)."
+    },
     {
-      "verdict": "mismatch",
       "claim": {
         "id": "sale_amount:부동산 A",
         "kind": "sale_amount",
@@ -52,23 +72,9 @@
         "verifiability": "verifiable",
         "extractedBy": "rules"
       },
-      "evidence": [
-        {
-          "sourceId": "molit-rtms-nrg-trade",
-          "sourceName": "국토교통부 상업업무용 부동산 매매 신고 자료 (국토교통부 · data.go.kr 실거래가 오픈API) — 월 신고 사전 수집본",
-          "url": "https://apis.data.go.kr/1613000/RTMSDataSvcNrgTrade/getRTMSDataSvcNrgTrade?LAWD_CD=11650&DEAL_YMD=202603&numOfRows=1000&pageNo=1",
-          "observedAt": "2026-08-14T04:34:45.162Z",
-          "field": "매각금액",
-          "claimed": "4,550,000,000원",
-          "observed": "2026-03 같은 법정동 상업업무용 신고 24건 가운데 같은 금액의 거래가 없습니다",
-          "stance": "contradicts",
-          "note": "서울 ○○구 ○○동 · 2026-03 신고 24건 대조"
-        }
-      ],
-      "rationale": "공시된 매각금액과 같은 금액의 매매 신고가 해당 월 실거래 원장에서 확인되지 않았습니다"
+      "reason": "RTMS 법정동 비교군에는 지번이 없어 동일 물건을 연결할 수 없습니다. 동일 물건 식별 근거가 없어 판정을 보류합니다(대조 불가)."
     },
     {
-      "verdict": "mismatch",
       "claim": {
         "id": "sale_date:부동산 A",
         "kind": "sale_date",
@@ -92,48 +98,7 @@
         "verifiability": "verifiable",
         "extractedBy": "rules"
       },
-      "evidence": [
-        {
-          "sourceId": "molit-rtms-nrg-trade",
-          "sourceName": "국토교통부 상업업무용 부동산 매매 신고 자료 (국토교통부 · data.go.kr 실거래가 오픈API) — 월 신고 사전 수집본",
-          "url": "https://apis.data.go.kr/1613000/RTMSDataSvcNrgTrade/getRTMSDataSvcNrgTrade?LAWD_CD=11650&DEAL_YMD=202603&numOfRows=1000&pageNo=1",
-          "observedAt": "2026-08-14T04:34:45.162Z",
-          "field": "매각일",
-          "claimed": "2026-03-11",
-          "observed": "2026-03 같은 법정동 상업업무용 신고 24건 가운데 대응하는 거래가 없습니다",
-          "stance": "contradicts",
-          "note": "서울 ○○구 ○○동 · 2026-03 신고 24건 대조"
-        }
-      ],
-      "rationale": "공시된 매각일의 매매 신고가 실거래 원장에서 확인되지 않았습니다"
-    }
-  ],
-  "unjudged": [
-    {
-      "claim": {
-        "id": "real_estate_address:부동산 A",
-        "kind": "real_estate_address",
-        "subject": "부동산 A",
-        "field": "소재지",
-        "value": "서울 서초구 ○○동",
-        "document": {
-          "offerId": "real-estate-a",
-          "rcpNo": "",
-          "submittedOn": "2026-03-11"
-        },
-        "location": {
-          "section": "공모 공고 (2021-07)",
-          "table": "공모 개요",
-          "row": 1,
-          "sectionPath": [
-            "공모 공고 (2021-07)",
-            "공모 개요"
-          ]
-        },
-        "verifiability": "verifiable",
-        "extractedBy": "rules"
-      },
-      "reason": "건축물대장 표제부 수집본이 없어 지번 단위 실재 대조를 하지 못했습니다(대조 불가)."
+      "reason": "RTMS 법정동 비교군에는 지번이 없어 동일 물건을 연결할 수 없습니다. 동일 물건 식별 근거가 없어 판정을 보류합니다(대조 불가)."
     }
   ],
   "pricePlacements": [],
@@ -1086,7 +1051,7 @@
         {
           "sourceId": "molit-rtms-nrg-trade",
           "sourceName": "국토교통부 상업업무용 부동산 매매 신고 자료 (국토교통부 · data.go.kr 실거래가 오픈API) — 월 신고 사전 수집본",
-          "url": "https://apis.data.go.kr/1613000/RTMSDataSvcNrgTrade/getRTMSDataSvcNrgTrade?LAWD_CD=11650&DEAL_YMD=202107&numOfRows=1000&pageNo=1",
+          "url": "https://www.data.go.kr/data/15126463/openapi.do",
           "observedAt": "2026-08-14T04:34:44.339Z",
           "field": "공모금액",
           "claimed": "4,000,000,000원",
@@ -1125,18 +1090,18 @@
       },
       "label": "매각금액",
       "origin": "market",
-      "originLabel": "실거래 확정(실제값)",
+      "originLabel": "매각 자료 기재값",
       "amountWon": 4550000000,
       "regionLabel": "서울 서초구 ○○동",
       "windowMonths": [
-        "2026-01",
         "2026-02",
-        "2026-03"
+        "2026-03",
+        "2026-04"
       ],
-      "comparableCount": 75,
+      "comparableCount": 72,
       "thinSample": false,
-      "medianAmountWon": 130000000,
-      "minAmountWon": 47000000,
+      "medianAmountWon": 498500000,
+      "minAmountWon": 30000000,
       "maxAmountWon": 24800000000,
       "rankFromTop": 8,
       "topPercent": 11,
@@ -1156,13 +1121,6 @@
           "amountWon": 17990000000
         },
         {
-          "dealOn": "2026-01-30",
-          "dong": "○○동",
-          "buildingUse": "교육연구",
-          "buildingAreaSqm": 1732.34,
-          "amountWon": 17500000000
-        },
-        {
           "dealOn": "2026-02-27",
           "dong": "○○동",
           "buildingUse": "제1종근린생활",
@@ -1178,11 +1136,19 @@
           "amountWon": 13170000000
         },
         {
-          "dealOn": "2026-01-20",
+          "dealOn": "2026-04-06",
           "dong": "○○동",
           "buildingUse": "제2종근린생활",
-          "buildingAreaSqm": 522.64,
-          "amountWon": 8652000000
+          "buildingAreaSqm": 869.49,
+          "amountWon": 11300000000
+        },
+        {
+          "dealOn": "2026-04-10",
+          "dong": "○○동",
+          "buildingUse": "업무",
+          "floor": 1,
+          "buildingAreaSqm": 692.53,
+          "amountWon": 10700000000
         },
         {
           "dealOn": "2026-03-20",
@@ -1197,6 +1163,13 @@
           "buildingUse": "제2종근린생활",
           "buildingAreaSqm": 358.53,
           "amountWon": 5700000000
+        },
+        {
+          "dealOn": "2026-04-30",
+          "dong": "○○동",
+          "buildingUse": "제2종근린생활",
+          "buildingAreaSqm": 239.82,
+          "amountWon": 3200000000
         },
         {
           "dealOn": "2026-03-10",
@@ -1223,11 +1196,34 @@
           "amountWon": 2167300000
         },
         {
+          "dealOn": "2026-04-01",
+          "dong": "○○동",
+          "buildingUse": "업무",
+          "floor": 3,
+          "buildingAreaSqm": 96.28,
+          "amountWon": 1800000000
+        },
+        {
           "dealOn": "2026-03-11",
           "dong": "○○동",
           "buildingUse": "업무",
           "buildingAreaSqm": 87.75,
           "amountWon": 1730000000
+        },
+        {
+          "dealOn": "2026-04-16",
+          "dong": "○○동",
+          "buildingUse": "제2종근린생활",
+          "buildingAreaSqm": 82.92,
+          "amountWon": 1725000000
+        },
+        {
+          "dealOn": "2026-04-29",
+          "dong": "○○동",
+          "buildingUse": "제1종근린생활",
+          "floor": 3,
+          "buildingAreaSqm": 88.4,
+          "amountWon": 1471950000
         },
         {
           "dealOn": "2026-03-10",
@@ -1246,12 +1242,59 @@
           "amountWon": 1232700000
         },
         {
+          "dealOn": "2026-04-03",
+          "dong": "○○동",
+          "buildingUse": "제1종근린생활",
+          "floor": 1,
+          "buildingAreaSqm": 26.3,
+          "amountWon": 1191400000
+        },
+        {
+          "dealOn": "2026-04-02",
+          "dong": "○○동",
+          "buildingUse": "제1종근린생활",
+          "floor": 1,
+          "buildingAreaSqm": 29.71,
+          "amountWon": 1073790000
+        },
+        {
+          "dealOn": "2026-04-29",
+          "dong": "○○동",
+          "buildingUse": "제1종근린생활",
+          "floor": 3,
+          "buildingAreaSqm": 63.54,
+          "amountWon": 1058050000
+        },
+        {
+          "dealOn": "2026-04-21",
+          "dong": "○○동",
+          "buildingUse": "제2종근린생활",
+          "buildingAreaSqm": 42.12,
+          "amountWon": 1000000000
+        },
+        {
+          "dealOn": "2026-04-21",
+          "dong": "○○동",
+          "buildingUse": "제2종근린생활",
+          "floor": 1,
+          "buildingAreaSqm": 42.15,
+          "amountWon": 1000000000
+        },
+        {
           "dealOn": "2026-03-13",
           "dong": "○○동",
           "buildingUse": "제1종근린생활",
           "floor": 1,
           "buildingAreaSqm": 26.3,
           "amountWon": 951070000
+        },
+        {
+          "dealOn": "2026-04-03",
+          "dong": "○○동",
+          "buildingUse": "제1종근린생활",
+          "floor": 2,
+          "buildingAreaSqm": 50.06,
+          "amountWon": 901990000
         },
         {
           "dealOn": "2026-03-13",
@@ -1262,12 +1305,35 @@
           "amountWon": 848810000
         },
         {
-          "dealOn": "2026-01-07",
+          "dealOn": "2026-04-23",
+          "dong": "○○동",
+          "buildingUse": "업무",
+          "buildingAreaSqm": 90.42,
+          "amountWon": 826100000
+        },
+        {
+          "dealOn": "2026-04-03",
           "dong": "○○동",
           "buildingUse": "제1종근린생활",
-          "floor": 1,
-          "buildingAreaSqm": 23.01,
-          "amountWon": 842800000
+          "floor": 2,
+          "buildingAreaSqm": 40.6,
+          "amountWon": 814040000
+        },
+        {
+          "dealOn": "2026-04-03",
+          "dong": "○○동",
+          "buildingUse": "제1종근린생활",
+          "floor": 2,
+          "buildingAreaSqm": 40.6,
+          "amountWon": 814040000
+        },
+        {
+          "dealOn": "2026-04-03",
+          "dong": "○○동",
+          "buildingUse": "제1종근린생활",
+          "floor": 2,
+          "buildingAreaSqm": 45.92,
+          "amountWon": 814040000
         },
         {
           "dealOn": "2026-03-13",
@@ -1286,12 +1352,12 @@
           "amountWon": 749610000
         },
         {
-          "dealOn": "2026-01-08",
+          "dealOn": "2026-04-21",
           "dong": "○○동",
-          "buildingUse": "제2종근린생활",
-          "floor": 2,
-          "buildingAreaSqm": 45.92,
-          "amountWon": 689400000
+          "buildingUse": "제1종근린생활",
+          "floor": 1,
+          "buildingAreaSqm": 24.3,
+          "amountWon": 674960000
         },
         {
           "dealOn": "2026-03-13",
@@ -1302,19 +1368,20 @@
           "amountWon": 613600000
         },
         {
-          "dealOn": "2026-01-27",
+          "dealOn": "2026-04-06",
           "dong": "○○동",
           "buildingUse": "제1종근린생활",
-          "buildingAreaSqm": 85.35,
-          "amountWon": 590000000
+          "floor": 1,
+          "buildingAreaSqm": 27.81,
+          "amountWon": 511330000
         },
         {
-          "dealOn": "2026-01-08",
+          "dealOn": "2026-04-01",
           "dong": "○○동",
-          "buildingUse": "제2종근린생활",
-          "floor": 3,
-          "buildingAreaSqm": 41.82,
-          "amountWon": 543050000
+          "buildingUse": "업무",
+          "floor": 2,
+          "buildingAreaSqm": 48.93,
+          "amountWon": 500000000
         },
         {
           "dealOn": "2026-02-23",
@@ -1340,19 +1407,19 @@
           "amountWon": 475000000
         },
         {
+          "dealOn": "2026-04-16",
+          "dong": "○○동",
+          "buildingUse": "제2종근린생활",
+          "buildingAreaSqm": 29.8,
+          "amountWon": 410000000
+        },
+        {
           "dealOn": "2026-02-20",
           "dong": "○○동",
           "buildingUse": "업무",
           "floor": 17,
           "buildingAreaSqm": 42,
           "amountWon": 390000000
-        },
-        {
-          "dealOn": "2026-01-24",
-          "dong": "○○동",
-          "buildingUse": "교육연구",
-          "buildingAreaSqm": 45.46,
-          "amountWon": 385000000
         },
         {
           "dealOn": "2026-03-31",
@@ -1363,7 +1430,7 @@
           "amountWon": 384000000
         },
         {
-          "dealOn": "2026-01-12",
+          "dealOn": "2026-04-07",
           "dong": "○○동",
           "buildingUse": "제1종근린생활",
           "buildingAreaSqm": 42.86,
@@ -1377,27 +1444,12 @@
           "amountWon": 370000000
         },
         {
-          "dealOn": "2026-01-15",
-          "dong": "○○동",
-          "buildingUse": "제2종근린생활",
-          "floor": 9,
-          "buildingAreaSqm": 32.64,
-          "amountWon": 345000000
-        },
-        {
           "dealOn": "2026-03-13",
           "dong": "○○동",
           "buildingUse": "업무",
           "floor": 15,
           "buildingAreaSqm": 63.57,
           "amountWon": 330000000
-        },
-        {
-          "dealOn": "2026-01-20",
-          "dong": "○○동",
-          "buildingUse": "업무",
-          "buildingAreaSqm": 33.12,
-          "amountWon": 279000000
         },
         {
           "dealOn": "2026-02-10",
@@ -1408,11 +1460,34 @@
           "amountWon": 260000000
         },
         {
+          "dealOn": "2026-04-23",
+          "dong": "○○동",
+          "buildingUse": "판매",
+          "buildingAreaSqm": 33.25,
+          "amountWon": 225000000
+        },
+        {
+          "dealOn": "2026-04-23",
+          "dong": "○○동",
+          "buildingUse": "제1종근린생활",
+          "floor": 1,
+          "buildingAreaSqm": 10.82,
+          "amountWon": 158000000
+        },
+        {
           "dealOn": "2026-03-21",
           "dong": "○○동",
           "buildingUse": "판매",
           "buildingAreaSqm": 6.39,
           "amountWon": 150400000
+        },
+        {
+          "dealOn": "2026-04-23",
+          "dong": "○○동",
+          "buildingUse": "업무",
+          "floor": 11,
+          "buildingAreaSqm": 24.15,
+          "amountWon": 144000000
         },
         {
           "dealOn": "2026-02-03",
@@ -1436,18 +1511,18 @@
           "amountWon": 125000000
         },
         {
-          "dealOn": "2026-01-08",
-          "dong": "○○동",
-          "buildingUse": "제1종근린생활",
-          "buildingAreaSqm": 15.95,
-          "amountWon": 100000000
-        },
-        {
-          "dealOn": "2026-01-28",
+          "dealOn": "2026-04-16",
           "dong": "○○동",
           "buildingUse": "판매",
-          "buildingAreaSqm": 11.49,
-          "amountWon": 95000000
+          "buildingAreaSqm": 11.9,
+          "amountWon": 104000000
+        },
+        {
+          "dealOn": "2026-04-17",
+          "dong": "○○동",
+          "buildingUse": "판매",
+          "buildingAreaSqm": 17.32,
+          "amountWon": 100000000
         },
         {
           "dealOn": "2026-02-10",
@@ -1462,34 +1537,6 @@
           "buildingUse": "판매",
           "buildingAreaSqm": 12.1,
           "amountWon": 88000000
-        },
-        {
-          "dealOn": "2026-01-26",
-          "dong": "○○동",
-          "buildingUse": "판매",
-          "buildingAreaSqm": 11.27,
-          "amountWon": 80000000
-        },
-        {
-          "dealOn": "2026-01-26",
-          "dong": "○○동",
-          "buildingUse": "판매",
-          "buildingAreaSqm": 11.27,
-          "amountWon": 80000000
-        },
-        {
-          "dealOn": "2026-01-13",
-          "dong": "○○동",
-          "buildingUse": "판매",
-          "buildingAreaSqm": 11.37,
-          "amountWon": 80000000
-        },
-        {
-          "dealOn": "2026-01-13",
-          "dong": "○○동",
-          "buildingUse": "판매",
-          "buildingAreaSqm": 11.37,
-          "amountWon": 80000000
         },
         {
           "dealOn": "2026-02-10",
@@ -1520,34 +1567,6 @@
           "amountWon": 80000000
         },
         {
-          "dealOn": "2026-01-27",
-          "dong": "○○동",
-          "buildingUse": "판매",
-          "buildingAreaSqm": 12.21,
-          "amountWon": 75000000
-        },
-        {
-          "dealOn": "2026-01-27",
-          "dong": "○○동",
-          "buildingUse": "판매",
-          "buildingAreaSqm": 12.21,
-          "amountWon": 75000000
-        },
-        {
-          "dealOn": "2026-01-19",
-          "dong": "○○동",
-          "buildingUse": "판매",
-          "buildingAreaSqm": 11.45,
-          "amountWon": 75000000
-        },
-        {
-          "dealOn": "2026-01-19",
-          "dong": "○○동",
-          "buildingUse": "판매",
-          "buildingAreaSqm": 12.21,
-          "amountWon": 75000000
-        },
-        {
           "dealOn": "2026-03-31",
           "dong": "○○동",
           "buildingUse": "판매",
@@ -1563,81 +1582,11 @@
           "amountWon": 74800000
         },
         {
-          "dealOn": "2026-01-06",
-          "dong": "○○동",
-          "buildingUse": "제2종근린생활",
-          "buildingAreaSqm": 25.03,
-          "amountWon": 74500000
-        },
-        {
-          "dealOn": "2026-01-06",
-          "dong": "○○동",
-          "buildingUse": "제2종근린생활",
-          "buildingAreaSqm": 25.8,
-          "amountWon": 74500000
-        },
-        {
-          "dealOn": "2026-01-10",
+          "dealOn": "2026-04-16",
           "dong": "○○동",
           "buildingUse": "판매",
-          "buildingAreaSqm": 11.89,
-          "amountWon": 74000000
-        },
-        {
-          "dealOn": "2026-01-30",
-          "dong": "○○동",
-          "buildingUse": "판매",
-          "buildingAreaSqm": 12.1,
+          "buildingAreaSqm": 12.4,
           "amountWon": 70000000
-        },
-        {
-          "dealOn": "2026-01-27",
-          "dong": "○○동",
-          "buildingUse": "판매",
-          "buildingAreaSqm": 11.88,
-          "amountWon": 70000000
-        },
-        {
-          "dealOn": "2026-01-13",
-          "dong": "○○동",
-          "buildingUse": "판매",
-          "buildingAreaSqm": 11.34,
-          "amountWon": 70000000
-        },
-        {
-          "dealOn": "2026-01-08",
-          "dong": "○○동",
-          "buildingUse": "판매",
-          "buildingAreaSqm": 11.88,
-          "amountWon": 70000000
-        },
-        {
-          "dealOn": "2026-01-08",
-          "dong": "○○동",
-          "buildingUse": "제2종근린생활",
-          "buildingAreaSqm": 12.12,
-          "amountWon": 70000000
-        },
-        {
-          "dealOn": "2026-01-08",
-          "dong": "○○동",
-          "buildingUse": "제2종근린생활",
-          "buildingAreaSqm": 12.04,
-          "amountWon": 70000000
-        },
-        {
-          "dealOn": "2026-01-28",
-          "dong": "○○동",
-          "buildingUse": "판매",
-          "buildingAreaSqm": 11.57,
-          "amountWon": 68000000
-        },
-        {
-          "dealOn": "2026-01-21",
-          "dong": "○○동",
-          "buildingUse": "판매",
-          "buildingAreaSqm": 11.52,
-          "amountWon": 67000000
         },
         {
           "dealOn": "2026-02-19",
@@ -1648,19 +1597,26 @@
           "amountWon": 66000000
         },
         {
-          "dealOn": "2026-01-08",
+          "dealOn": "2026-04-09",
           "dong": "○○동",
           "buildingUse": "판매",
-          "buildingAreaSqm": 12,
-          "amountWon": 65000000
+          "buildingAreaSqm": 11.76,
+          "amountWon": 58000000
         },
         {
-          "dealOn": "2026-01-05",
+          "dealOn": "2026-04-03",
           "dong": "○○동",
           "buildingUse": "업무",
-          "floor": 5,
+          "floor": 7,
           "buildingAreaSqm": 10.15,
-          "amountWon": 50000000
+          "amountWon": 52500000
+        },
+        {
+          "dealOn": "2026-04-07",
+          "dong": "○○동",
+          "buildingUse": "판매",
+          "buildingAreaSqm": 12.8,
+          "amountWon": 52000000
         },
         {
           "dealOn": "2026-02-02",
@@ -1669,14 +1625,6 @@
           "floor": 5,
           "buildingAreaSqm": 10.15,
           "amountWon": 50000000
-        },
-        {
-          "dealOn": "2026-01-06",
-          "dong": "○○동",
-          "buildingUse": "업무",
-          "floor": 9,
-          "buildingAreaSqm": 10.15,
-          "amountWon": 49000000
         },
         {
           "dealOn": "2026-02-06",
@@ -1693,30 +1641,43 @@
           "floor": 8,
           "buildingAreaSqm": 10.15,
           "amountWon": 47000000
+        },
+        {
+          "dealOn": "2026-04-21",
+          "dong": "○○동",
+          "buildingUse": "업무",
+          "buildingAreaSqm": 34.39,
+          "amountWon": 30000000
         }
       ],
       "evidence": [
         {
           "sourceId": "molit-rtms-nrg-trade",
           "sourceName": "국토교통부 상업업무용 부동산 매매 신고 자료 (국토교통부 · data.go.kr 실거래가 오픈API) — 월 신고 사전 수집본",
-          "url": "https://apis.data.go.kr/1613000/RTMSDataSvcNrgTrade/getRTMSDataSvcNrgTrade?LAWD_CD=11650&DEAL_YMD=202603&numOfRows=1000&pageNo=1",
-          "observedAt": "2026-08-14T04:34:45.162Z",
+          "url": "https://www.data.go.kr/data/15126463/openapi.do",
+          "observedAt": "2026-08-14T04:53:02.516Z",
           "field": "매각금액",
           "claimed": "4,550,000,000원",
-          "observed": "2026-01~2026-03 서울 ○○구 ○○동 상업업무용 매매 신고 75건",
+          "observed": "2026-02~2026-04 서울 ○○구 ○○동 상업업무용 매매 신고 72건",
           "stance": "context",
-          "note": "비교군 75건 · 면적 보정 없는 거래 총액 기준"
+          "note": "비교군 72건 · 면적 보정 없는 거래 총액 기준"
         }
       ],
-      "statement": "실거래 확정(실제값) 매각금액 45.5억원 · 같은 법정동·같은 유형(상업업무용) 실거래 신고 비교군 75건(2026-01~2026-03) · 금액 기준 위에서 8번째(상위 11%) · 비교군 중위값 1.3억원 · 범위 0.47억원~248억원 · 면적 보정 없는 거래 총액 기준. 이 표시는 위치이며 적정성 판단이 아닙니다."
+      "statement": "매각 자료 기재값 매각금액 45.5억원 · 같은 법정동·같은 유형(상업업무용) 실거래 신고 비교군 72건(2026-02~2026-04) · 금액 기준 위에서 8번째(상위 11%) · 비교군 중위값 4.99억원 · 범위 0.3억원~248억원 · 면적 보정 없는 거래 총액 기준. 이 표시는 위치이며 적정성 판단이 아닙니다."
     }
   ],
+  "realEstate": {
+    "publicAlias": "부동산 A",
+    "subscriptionStatus": "closed",
+    "assetLifecycle": "sold",
+    "tradabilityStatus": "ended"
+  },
   "notes": [
     "공모 기초자료 4건을 공개 자료에서 옮겨 적었습니다 (출처 3건 · data/offers/real-estate-a.json).",
     "이 공모는 DART 접수번호가 없는 혁신금융서비스 공모입니다. 문서 좌표는 증권신고서가 아니라 공모 공고·매각 공시 기준입니다.",
     "실거래 신고 자료는 법정동 단위까지만 공개됩니다 — 지번 단위 실재 대조는 건축물대장 표제부 수집본과 별도로 수행하며, 수집 전에는 '대조 불가'로 표시합니다.",
     "매각 공시일과 실거래 신고의 계약일이 다를 수 있어 매각 시점 대조는 신고 월 단위로 봅니다.",
     "대상 층의 전유·계약 면적이 공개 자료에서 확인되지 않아 ㎡ 단가 비교는 하지 않았습니다. 이 리포트의 위치는 거래 총액 기준이며 면적 보정이 없습니다.",
-    "매각금액·매각일이 실거래 원장에서 확인되지 않은 원인은 단정할 수 없습니다 — 신탁 구조의 소유권 이전은 매매 신고와 다른 형태로 이뤄질 수 있고, 신고 지연·거래 유형 차이도 가능한 원인입니다."
+    "RTMS 법정동 비교군에는 지번이 없어 매각금액·일자의 동일 물건 연결을 확인하지 않았습니다. 동일 물건 식별 근거가 추가되기 전에는 판정을 보류합니다."
   ]
 }

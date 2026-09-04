@@ -31,12 +31,16 @@ const pendingText = (watch: WatchStatusView | null | undefined): string =>
 interface WatchSectionProps {
   readonly watch?: WatchStatusView | null;
   readonly replay?: AmendmentReplayView | null;
+  readonly showNotificationNotice?: boolean;
 }
 
-export function WatchSection({ watch, replay }: WatchSectionProps) {
+export function WatchSection({
+  watch,
+  replay,
+  showNotificationNotice = true,
+}: WatchSectionProps) {
   const latestAmendment = watch?.amendments.at(-1);
   const titleId = reportSectionTitleId(WATCH_HEADING_ID);
-
   return (
     <section
       className={`${s.section} ${s.sectionMuted} ${s.reportContentSection}`}
@@ -49,7 +53,7 @@ export function WatchSection({ watch, replay }: WatchSectionProps) {
             정정 이력
           </h2>
           <p className={s.sectionLead}>
-            정정신고서가 접수되면 같은 절차로 다시 대조하고 변경 기록을 남깁니다.
+            이 공모의 정정 접수와 재대조 기록을 같은 절차로 확인합니다.
           </p>
         </header>
 
@@ -85,7 +89,7 @@ export function WatchSection({ watch, replay }: WatchSectionProps) {
           <summary className={s.supportingSummary}>조회·알림 운영 정보 보기</summary>
           <div className={s.supportingTextBody}>
             <p>{watch ? watchStatusText(watch) : UNCONNECTED_WATCH_TEXT}</p>
-            <p>{NOTIFY_CHANNEL_TEXT}</p>
+            {showNotificationNotice ? <p>{NOTIFY_CHANNEL_TEXT}</p> : null}
           </div>
         </details>
 

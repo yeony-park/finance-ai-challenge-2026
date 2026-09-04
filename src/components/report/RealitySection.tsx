@@ -108,7 +108,7 @@ export function RealitySection({
               / {total}
               {view.reality.countUnit}
             </span>
-            <small>전 항목 일치</small>
+            <small>{matched.length === 0 ? "확인 필요" : "전 항목 일치"}</small>
           </div>
           <div className={s.realityPlot}>
             <div className={s.realityLegend}>
@@ -118,7 +118,11 @@ export function RealitySection({
             <div
               className={s.realityBar}
               role="img"
-              aria-label={`전체 ${total}${view.reality.countUnit} 중 전 항목 일치 ${matched.length}${view.reality.countUnit}, 확인 필요 ${flagged.length}${view.reality.countUnit}`}
+              aria-label={
+                matched.length === 0
+                  ? `전체 ${total}${view.reality.countUnit} 중 일치 0${view.reality.countUnit}, 확인 필요 ${flagged.length}${view.reality.countUnit}`
+                  : `전체 ${total}${view.reality.countUnit} 중 전 항목 일치 ${matched.length}${view.reality.countUnit}, 확인 필요 ${flagged.length}${view.reality.countUnit}`
+              }
             >
               <span
                 className={s.realityBarMatch}
@@ -154,18 +158,20 @@ export function RealitySection({
           ) : null}
         </AnimatePresence>
 
-        <details className={`${s.supportingDetails} ${s.questionDetails}`}>
-          <summary className={s.supportingSummary}>
-            {flagged.length > 0
-              ? `전 항목 일치 ${matched.length}건 보기`
-              : `전체 ${matched.length}건 판정 보기 — 전 항목 일치`}
-          </summary>
-          <div className={s.supportingBody}>
-            <div className={s.herd} role="group" aria-label="전 항목 일치 판정">
-              {matched.map(renderCell)}
+        {matched.length > 0 ? (
+          <details className={`${s.supportingDetails} ${s.questionDetails}`}>
+            <summary className={s.supportingSummary}>
+              {flagged.length > 0
+                ? `전 항목 일치 ${matched.length}건 펼쳐 보기`
+                : `전체 ${matched.length}건 판정 펼쳐 보기 — 전 항목 일치`}
+            </summary>
+            <div className={s.supportingBody}>
+              <div className={s.herd} role="group" aria-label="전 항목 일치 판정">
+                {matched.map(renderCell)}
+              </div>
             </div>
-          </div>
-        </details>
+          </details>
+        ) : null}
 
         <ReportSectionFooter
           sources={[view.reality.source]}

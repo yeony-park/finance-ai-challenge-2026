@@ -1,0 +1,853 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="data:," />
+    <title>JeomJeom 샘플 부동산 상품</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --blue: #024ad8;
+        --blue-deep: #0e3191;
+        --blue-soft: #eef4ff;
+        --ink: #1a1a1a;
+        --charcoal: #3d3d3d;
+        --muted: #636363;
+        --line: #e8e8e8;
+        --cloud: #f7f7f7;
+        --canvas: #ffffff;
+        --positive: #17643a;
+        --positive-bg: #e8f5ed;
+        --candidate: #7a4d00;
+        --candidate-bg: #fff4d6;
+        --context: #38536f;
+        --context-bg: #edf3f7;
+        --held: #714042;
+        --held-bg: #f7eeee;
+        --radius-card: 16px;
+      }
+
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        color: var(--ink);
+        background: var(--canvas);
+        font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Segoe UI", sans-serif;
+      }
+      a { color: var(--blue); text-underline-offset: 3px; }
+      a:hover { color: var(--blue-deep); }
+      a:focus-visible, button:focus-visible { outline: 3px solid #8bb4ff; outline-offset: 3px; }
+      button { font: inherit; }
+      p { margin: 0; line-height: 1.5; }
+      h1 { margin: 0; font-size: clamp(36px, 4.2vw, 48px); line-height: 1.05; font-weight: 500; letter-spacing: -0.025em; }
+      h2 { margin: 0; font-size: 24px; line-height: 1.17; font-weight: 500; }
+      h3 { margin: 0; font-size: 18px; line-height: 1.35; font-weight: 500; }
+      h4 { margin: 0; font-size: 15px; line-height: 1.4; font-weight: 600; }
+      dl, dd { margin: 0; }
+      ul { margin: 0; }
+      .container { width: min(1180px, calc(100% - 48px)); margin: auto; }
+      .site-header { border-bottom: 1px solid var(--line); background: var(--canvas); }
+      .topline { display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 72px; }
+      .brand { color: var(--blue); font-size: 15px; font-weight: 700; text-decoration: none; }
+      .sample-flag, .chip, .status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        width: fit-content;
+        padding: 6px 9px;
+        border: 1px solid #bed3f7;
+        border-radius: 4px;
+        color: var(--blue-deep);
+        background: var(--blue-soft);
+        font-size: 12px;
+        line-height: 1;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+      .sample-flag::before, .chip.sample::before { content: "S"; }
+      .status.matched { color: var(--positive); background: var(--positive-bg); border-color: #b9ddc8; }
+      .status.matched::before { content: "✓"; }
+      .status.comparison-candidate { color: var(--candidate); background: var(--candidate-bg); border-color: #ead49b; }
+      .status.comparison-candidate::before { content: "↔"; }
+      .status.context { color: var(--context); background: var(--context-bg); border-color: #cad8e2; }
+      .status.context::before { content: "i"; }
+      .status.held { color: var(--held); background: var(--held-bg); border-color: #e3c7c9; }
+      .status.held::before { content: "Ⅱ"; }
+      .status.neutral, .chip.neutral { color: var(--charcoal); background: var(--cloud); border-color: #d6d6d6; }
+      .status.neutral::before { content: "·"; }
+      .status.offering::before { content: "●"; }
+      .status.liquidated { color: var(--charcoal); background: var(--cloud); border-color: #cfcfcf; }
+      .status.liquidated::before { content: "✓"; }
+      .status.sample::before { content: "S"; }
+      .hero { padding: 64px 0 56px; }
+      .eyebrow { margin-bottom: 12px; color: var(--blue); font-size: 14px; font-weight: 700; }
+      .lead { max-width: 760px; margin-top: 18px; color: var(--charcoal); font-size: 17px; }
+      .notice { max-width: 900px; margin-top: 28px; padding: 16px 18px; border-left: 4px solid var(--blue); background: var(--blue-soft); color: var(--charcoal); font-size: 14px; }
+      .page-section { padding: 72px 0; }
+      .page-section.cloud, .detail-hero.cloud { background: var(--cloud); }
+      .section-head { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 28px; }
+      .section-copy, .detail, .meta { color: var(--muted); font-size: 14px; }
+      .section-copy { max-width: 720px; margin-top: 8px; }
+      .product-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+      .product-card {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-card);
+        color: var(--ink);
+        background: var(--canvas);
+        text-decoration: none;
+      }
+      .product-card:hover { border-color: #aac3ef; color: var(--ink); }
+      .product-card:focus-visible { border-radius: var(--radius-card); }
+      .placeholder { min-height: 132px; padding: 22px; background: linear-gradient(145deg, #f1f4f8, #e5e9ef); }
+      .placeholder-region { color: var(--muted); font-size: 13px; }
+      .placeholder-use { max-width: 260px; margin-top: 10px; color: var(--charcoal); font-size: 22px; line-height: 1.2; font-weight: 500; }
+      .product-body { display: flex; flex: 1; flex-direction: column; gap: 18px; padding: 22px; }
+      .card-top { display: flex; justify-content: space-between; align-items: start; gap: 12px; }
+      .card-title { margin-top: 10px; }
+      .card-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: auto; padding-top: 16px; border-top: 1px solid var(--line); }
+      .card-facts > div { min-width: 0; }
+      .card-facts dt { color: var(--muted); font-size: 12px; }
+      .card-facts dd { margin-top: 4px; font-size: 14px; line-height: 1.4; overflow-wrap: anywhere; }
+      .card-action { color: var(--blue); font-size: 14px; font-weight: 700; }
+      .breadcrumb { display: inline-block; margin-bottom: 32px; font-size: 14px; font-weight: 700; }
+      .detail-hero { padding: 40px 0 48px; }
+      .detail-title-row { display: flex; justify-content: space-between; align-items: start; gap: 24px; }
+      .detail-title-row h1 { max-width: 820px; }
+      .detail-subtitle { margin-top: 14px; color: var(--charcoal); font-size: 16px; }
+      .overview { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 32px; }
+      .overview .wide-panel { grid-column: 1 / -1; }
+      .panel, .card {
+        padding: 24px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-card);
+        background: var(--canvas);
+      }
+      .panel-title { margin-bottom: 18px; }
+      .wide-panel .panel-title:not(:first-child) { margin-top: 24px; }
+      .fact-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 20px; }
+      .fact-list > div { min-width: 0; }
+      .fact-list dt { color: var(--muted); font-size: 12px; }
+      .fact-list dd { margin-top: 5px; color: var(--ink); font-size: 15px; line-height: 1.4; overflow-wrap: anywhere; }
+      .tabs-shell { padding-bottom: 72px; }
+      .tabs { display: flex; gap: 4px; overflow-x: auto; border-bottom: 1px solid #cfcfcf; scrollbar-width: thin; }
+      .tab {
+        flex: 0 0 auto;
+        padding: 14px 16px;
+        border: 0;
+        border-bottom: 3px solid transparent;
+        color: var(--muted);
+        background: transparent;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 700;
+      }
+      .tab[aria-selected="true"] { border-bottom-color: var(--blue); color: var(--blue); }
+      .tab-panel { padding-top: 32px; }
+      .tab-panel[hidden] { display: none; }
+      .content-stack { display: grid; gap: 24px; }
+      .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+      .three-column { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+      .list { padding-left: 20px; color: var(--charcoal); line-height: 1.65; }
+      .list li + li { margin-top: 8px; }
+      .structure-list { display: grid; gap: 12px; }
+      .structure-item { padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+      .structure-item:last-child { padding-bottom: 0; border-bottom: 0; }
+      .structure-label { margin-bottom: 4px; color: var(--muted); font-size: 12px; }
+      .review-summary { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 24px; border: 1px solid #c8d8f4; border-left: 4px solid var(--blue); background: var(--blue-soft); }
+      .review-result { font-size: 26px; line-height: 1.2; font-weight: 600; }
+      .review-reason { color: var(--charcoal); font-size: 14px; }
+      .review-reason strong { display: block; margin-bottom: 6px; color: var(--ink); }
+      .review-question-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+      .review-question { display: flex; flex-direction: column; gap: 14px; min-width: 0; padding: 18px; border: 1px solid var(--line); border-radius: var(--radius-card); background: var(--canvas); }
+      .review-question .status { margin-top: auto; }
+      .review-question-summary { color: var(--ink); font-size: 14px; line-height: 1.45; }
+      .review-question-limit { padding-top: 12px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; line-height: 1.45; }
+      .price-review { padding: 24px; border: 1px solid #c8d8f4; border-left: 4px solid var(--blue); background: var(--blue-soft); }
+      .price-review-head { display: flex; justify-content: space-between; align-items: start; gap: 20px; }
+      .price-classification { margin-top: 6px; font-size: 28px; line-height: 1.15; font-weight: 600; }
+      .classification-note { margin-top: 7px; color: var(--held); font-size: 13px; font-weight: 700; }
+      .price-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 20px 0; }
+      .price-metric { padding: 14px; border: 1px solid #d5e0f3; background: var(--canvas); }
+      .price-metric strong { display: block; margin-top: 5px; font-size: 18px; font-weight: 600; overflow-wrap: anywhere; }
+      .method-details, .source-group { border: 1px solid var(--line); border-radius: 4px; background: var(--canvas); }
+      .method-details summary, .source-group summary { padding: 15px 17px; cursor: pointer; font-size: 14px; font-weight: 700; }
+      .method-details summary:focus-visible, .source-group summary:focus-visible { outline: 3px solid #8bb4ff; outline-offset: 2px; }
+      .method-body, .source-group-body { padding: 0 17px 17px; border-top: 1px solid var(--line); }
+      .method-body { padding-top: 16px; }
+      .method-warning { margin-bottom: 14px; color: var(--held); font-size: 13px; font-weight: 700; }
+      .comparison-table-wrap { overflow-x: auto; border: 1px solid var(--line); }
+      .comparison-table { width: 100%; min-width: 760px; border-collapse: collapse; background: var(--canvas); font-size: 13px; }
+      .comparison-table th, .comparison-table td { padding: 13px 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+      .comparison-table th { color: var(--muted); background: var(--cloud); font-weight: 700; }
+      .comparison-table tr:last-child td { border-bottom: 0; }
+      .source-groups { display: grid; gap: 12px; }
+      .source-group-summary { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+      .source-group-summary-text { display: flex; flex-wrap: wrap; gap: 7px; align-items: center; }
+      .source-group-body { padding-top: 17px; }
+      .source-separation, .warning-box { padding: 16px 18px; border-left: 4px solid var(--candidate); background: var(--candidate-bg); color: var(--charcoal); font-size: 14px; }
+      .source-separation strong, .warning-box strong { color: var(--ink); }
+      .evidence-grid, .source-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+      .evidence-card, .source-card { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+      .evidence-card { padding: 20px; border: 1px solid var(--line); border-radius: var(--radius-card); }
+      .evidence-top, .source-top { display: flex; justify-content: space-between; align-items: start; gap: 12px; }
+      .source-card { padding: 22px; border: 1px solid var(--line); border-top: 4px solid #b8b8b8; border-radius: var(--radius-card); background: var(--canvas); }
+      .source-card.matched { border-top-color: var(--positive); }
+      .source-card.comparison-candidate { border-top-color: var(--candidate); }
+      .source-card.context { border-top-color: var(--context); }
+      .source-card.held { border-top-color: var(--held); }
+      .source-role { margin-top: 6px; color: var(--muted); font-size: 13px; }
+      .source-facts { padding: 16px; border: 1px solid var(--line); background: var(--cloud); }
+      .source-facts .fact-list { gap: 12px 16px; }
+      .source-warning { margin-top: 12px; color: var(--held); font-size: 13px; font-weight: 700; }
+      .evidence-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+      .evidence-block { padding-left: 12px; border-left: 3px solid #bfc4ca; }
+      .evidence-block.limit { border-left-color: var(--held); }
+      .evidence-label { margin-bottom: 4px; color: var(--muted); font-size: 12px; font-weight: 700; }
+      .evidence-copy { color: var(--charcoal); font-size: 14px; }
+      .metadata { display: grid; gap: 7px; padding-top: 14px; border-top: 1px solid var(--line); }
+      .metadata > div { display: grid; grid-template-columns: 82px minmax(0, 1fr); gap: 10px; }
+      .metadata dt { color: var(--muted); font-size: 12px; }
+      .metadata dd { color: var(--charcoal); font-size: 13px; overflow-wrap: anywhere; }
+      .source-link { align-self: flex-start; margin-top: auto; font-size: 14px; font-weight: 700; }
+      .offering-formula { margin-top: 18px; padding: 14px; border: 1px solid #c8d8f4; background: var(--blue-soft); color: var(--blue-deep); font-size: 15px; font-weight: 700; }
+      .offering-breakdown { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+      .offering-breakdown > div { padding: 12px; border: 1px solid var(--line); background: var(--cloud); }
+      .offering-breakdown dt { color: var(--muted); font-size: 12px; }
+      .offering-breakdown dd { margin-top: 5px; font-size: 14px; line-height: 1.4; overflow-wrap: anywhere; }
+      .offering-description { margin-top: 12px; color: var(--held); font-size: 13px; font-weight: 700; }
+      .flow { display: grid; gap: 0; border-top: 1px solid var(--line); }
+      .flow-item { display: grid; grid-template-columns: 42px 1fr auto; gap: 16px; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--line); }
+      .flow-number { display: grid; place-items: center; width: 30px; height: 30px; border: 1px solid #bcbcbc; border-radius: 50%; color: var(--muted); font-size: 12px; font-weight: 700; }
+      .flow-label { font-size: 14px; }
+      .flow-value { text-align: right; font-size: 16px; font-weight: 600; }
+      .outcome-box { padding: 22px; border: 1px solid #c8d8f4; background: var(--blue-soft); }
+      .outcome-value { margin: 8px 0; font-size: 28px; line-height: 1.15; font-weight: 600; }
+      .outcome-flags { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
+      .reconcile { margin-top: 14px; color: var(--positive); font-size: 14px; font-weight: 700; }
+      .cause-card { padding: 20px; border: 1px solid var(--line); border-radius: var(--radius-card); }
+      .cause-item { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--line); }
+      .direction { margin: 8px 0; color: var(--muted); font-size: 12px; font-weight: 700; }
+      .operator-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 18px 0; }
+      .operator-stat { padding: 14px; border: 1px solid var(--line); background: var(--cloud); }
+      .operator-stat strong { display: block; margin-top: 5px; font-size: 22px; font-weight: 600; }
+      .linked-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+      .linked-card { display: block; padding: 18px; border: 1px solid var(--line); border-radius: var(--radius-card); color: var(--ink); text-decoration: none; }
+      .linked-card:hover { border-color: #aac3ef; color: var(--ink); }
+      .linked-card .meta { margin-top: 8px; }
+      .error-state { min-height: 60vh; padding: 80px 0; }
+      .error-state p { max-width: 650px; margin: 16px 0 24px; color: var(--charcoal); }
+      .button-link { display: inline-block; padding: 11px 15px; border-radius: 4px; color: #fff; background: var(--blue); font-size: 14px; font-weight: 700; text-decoration: none; }
+      .button-link:hover { color: #fff; background: var(--blue-deep); }
+      .loading { min-height: 55vh; padding: 80px 0; color: var(--muted); }
+      footer { padding: 34px 24px; color: #fff; background: var(--ink); text-align: center; font-size: 13px; }
+
+      @media (max-width: 900px) {
+        .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .three-column { grid-template-columns: 1fr; }
+        .review-question-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .price-metrics, .offering-breakdown { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      }
+
+      @media (max-width: 720px) {
+        .container { width: min(100% - 32px, 1180px); }
+        .hero { padding: 48px 0; }
+        .page-section { padding: 48px 0; }
+        .section-head, .detail-title-row { display: grid; }
+        .product-grid, .overview, .two-column, .review-summary, .evidence-grid, .source-grid, .review-question-grid { grid-template-columns: 1fr; }
+        .detail-hero { padding-top: 28px; }
+        .fact-list, .evidence-pair { grid-template-columns: 1fr; }
+        .operator-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .linked-grid { grid-template-columns: 1fr; }
+      }
+
+      @media (max-width: 420px) {
+        .topline { align-items: flex-start; min-height: 88px; padding: 18px 0; }
+        .sample-flag { white-space: normal; }
+        .card-top, .evidence-top, .source-top { display: grid; }
+        .card-facts { grid-template-columns: 1fr; }
+        .flow-item { grid-template-columns: 34px minmax(0, 1fr); }
+        .flow-value { grid-column: 2; text-align: left; }
+        .metadata > div { grid-template-columns: 72px minmax(0, 1fr); }
+        .price-review-head, .source-group-summary { display: grid; }
+        .price-metrics, .offering-breakdown { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container topline">
+        <a class="brand" href="./">JeomJeom · 부동산 검토</a>
+        <span class="sample-flag">실제 상품 아님 · 전체 샘플</span>
+      </div>
+    </header>
+    <main id="app">
+      <div class="container loading" aria-live="polite">샘플 상품 데이터를 불러오는 중입니다.</div>
+    </main>
+    <footer>JeomJeom test_scripts · 운영 서비스와 분리된 정적 샘플 검증 화면</footer>
+
+    <script>
+      const app = document.querySelector("#app");
+      const won = new Intl.NumberFormat("ko-KR", { style: "currency", currency: "KRW", maximumFractionDigits: 0 });
+      const statusMeta = {
+        offering: { label: "진행 중", className: "offering" },
+        liquidated: { label: "투자 종료", className: "liquidated" },
+        confirmed: { label: "확인", className: "matched" },
+        candidate: { label: "1차 후보", className: "comparison-candidate" },
+        sample: { label: "샘플 검토", className: "sample" },
+        matched: { label: "정확히 일치", className: "matched" },
+        comparison_candidate: { label: "비교 후보", className: "comparison-candidate" },
+        context: { label: "참고 맥락", className: "context" },
+        held: { label: "판정 보류", className: "held" },
+      };
+
+      const el = (tag, className, text) => {
+        const node = document.createElement(tag);
+        if (className) node.className = className;
+        if (text !== undefined) node.textContent = text;
+        return node;
+      };
+      const list = (value) => Array.isArray(value) ? value : [];
+      const known = (value) => value === null || value === undefined || value === "" ? "미확인" : String(value);
+      const money = (value) => typeof value === "number" && Number.isFinite(value) ? won.format(value) : "미확인";
+      const area = (value) => typeof value === "number" && Number.isFinite(value) ? `${value.toLocaleString("ko-KR")}㎡` : "미확인";
+      const pct = (value) => typeof value === "number" && Number.isFinite(value) ? `${value > 0 ? "+" : ""}${value.toLocaleString("ko-KR")}%` : "미확인";
+      const months = (value) => typeof value === "number" && Number.isFinite(value) ? `${value.toLocaleString("ko-KR")}개월` : "미확인";
+      const formatDateTime = (value) => {
+        if (!value) return "미확인";
+        const date = new Date(value);
+        return Number.isNaN(date.getTime()) ? String(value) : date.toLocaleString("ko-KR", { timeZone: "Asia/Seoul", dateStyle: "medium", timeStyle: "short" });
+      };
+      const safeHttps = (value) => {
+        try {
+          const url = new URL(value);
+          return url.protocol === "https:" ? url.href : null;
+        } catch { return null; }
+      };
+      const triState = (value, whenTrue, whenFalse, whenUnknown) => value === true ? whenTrue : value === false ? whenFalse : whenUnknown;
+      const dataState = (value) => triState(value, "샘플 입력", "실제 API 수신", "수신 확인 불가");
+      const linkageState = (value) => triState(value, "가상 연결", "미연결", "연결 미확인");
+      const productHref = (id) => `?product=${encodeURIComponent(known(id))}`;
+      const statusChip = (status, label) => {
+        const meta = statusMeta[status];
+        return el("span", `status ${meta?.className || "neutral"}`, label || meta?.label || "미확인");
+      };
+      const sampleChip = (text = "샘플 상품") => el("span", "chip sample", text);
+      const addFact = (root, label, value) => {
+        const group = el("div", "");
+        group.append(el("dt", "", label), el("dd", "", known(value)));
+        root.append(group);
+      };
+      const makeFactList = (facts, className = "fact-list") => {
+        const root = document.createElement("dl");
+        root.className = className;
+        facts.forEach(([label, value]) => addFact(root, label, value));
+        return root;
+      };
+      const sectionHeading = (title, copy) => {
+        const head = el("div", "section-head");
+        const text = el("div", "");
+        text.append(el("h2", "", title));
+        if (copy) text.append(el("p", "section-copy", copy));
+        head.append(text);
+        return head;
+      };
+      const statusLabel = (product) => product.status === "liquidated" ? "투자 종료" : "진행 중";
+
+      const productCard = (product, compact = false) => {
+        const card = el("a", compact ? "linked-card" : "product-card");
+        card.href = productHref(product.product_id);
+        if (compact) {
+          card.append(sampleChip("샘플"), el("h4", "card-title", known(product.asset_name)), el("p", "meta", `${known(product.basic_info?.region)} · ${known(product.operator)}`));
+          if (product.outcome) card.append(el("p", "meta", `${known(product.outcome.metric_name)} ${pct(product.outcome.realized_profit_loss_pct)}`));
+          return card;
+        }
+        const placeholder = el("div", "placeholder");
+        placeholder.append(el("p", "placeholder-region", known(product.basic_info?.region)), el("p", "placeholder-use", known(product.basic_info?.building_use)));
+        const body = el("div", "product-body");
+        const top = el("div", "card-top");
+        const title = el("div", "");
+        title.append(statusChip(product.status, statusLabel(product)), el("h3", "card-title", known(product.asset_name)));
+        top.append(title, sampleChip("샘플"));
+        body.append(top, el("p", "meta", known(product.operator)));
+        const facts = document.createElement("dl");
+        facts.className = "card-facts";
+        if (product.status === "liquidated") {
+          [["지역", product.basic_info?.region], ["공모총액", money(product.offering?.offering_amount_krw)], ["총회수금", money(product.outcome?.total_recovery_krw)], ["단순 누적 회수손익률", pct(product.outcome?.realized_profit_loss_pct)]].forEach(([label, value]) => addFact(facts, label, value));
+        } else {
+          [["연면적", area(product.basic_info?.gross_floor_area_m2)], ["공모총액", money(product.offering?.offering_amount_krw)], ["지역", product.basic_info?.region], ["운영사", product.operator]].forEach(([label, value]) => addFact(facts, label, value));
+        }
+        body.append(facts, el("span", "card-action", "샘플 상세 보기 →"));
+        card.append(placeholder, body);
+        return card;
+      };
+
+      const renderList = (data) => {
+        document.title = "JeomJeom 샘플 부동산 상품";
+        app.replaceChildren();
+        const hero = el("section", "hero");
+        const heroInner = el("div", "container");
+        heroInner.append(el("p", "eyebrow", "격리된 정적 검토 데모"), el("h1", "", "부동산 샘플 상품 목록"), el("p", "lead", "진행 중인 가상 상품과 투자 종료 가상 시나리오를 열어 상품 정보, 공식 근거 연결 수준, 회수금 흐름을 구분해 확인합니다."), el("p", "notice", known(data.notice)));
+        hero.append(heroInner);
+        app.append(hero);
+
+        [["진행 중", list(data.products?.offering), "공모·운용 조건과 외부 근거 연결 상태를 확인하는 샘플입니다.", false], ["투자 종료", list(data.products?.liquidated), "가상 매각·분배·원인 후보 구조를 확인하는 시나리오입니다.", true]].forEach(([title, products, copy, cloud]) => {
+          const section = el("section", `page-section${cloud ? " cloud" : ""}`);
+          const inner = el("div", "container");
+          inner.append(sectionHeading(`${title} ${products.length}개`, copy));
+          const grid = el("div", "product-grid");
+          products.forEach((product) => grid.append(productCard(product)));
+          inner.append(grid);
+          section.append(inner);
+          app.append(section);
+        });
+      };
+
+      const overviewPanel = (title, facts) => {
+        const panel = el("section", "panel");
+        panel.append(el("h2", "panel-title", title), makeFactList(facts));
+        return panel;
+      };
+
+      const offeringOverviewPanel = (product) => {
+        const offering = product.offering || {};
+        const breakdown = product.offering_breakdown;
+        const panel = overviewPanel("공모 기본 정보", [["건물 매입가", money(offering.building_purchase_price_krw)], ["공모총액", money(offering.offering_amount_krw)], ["증권 가격", money(offering.security_price_krw)], ["증권 수량", typeof offering.security_quantity === "number" ? `${offering.security_quantity.toLocaleString("ko-KR")}주` : "미확인"], ["공모기간", offering.subscription_period], ["예상 운용기간", months(offering.expected_operation_months)], ["배당주기", offering.distribution_cycle]]);
+        const formula = typeof offering.security_price_krw === "number" && typeof offering.security_quantity === "number" ? `${money(offering.security_price_krw)} × ${offering.security_quantity.toLocaleString("ko-KR")}주 = ${money(offering.security_price_krw * offering.security_quantity)}` : "미확인";
+        panel.append(el("p", "offering-formula", `증권가격 × 발행수량 = 공모총액 · ${formula}`));
+        if (breakdown) panel.append(makeFactList([["공모총액", money(breakdown.offering_amount_krw)], ["건물 매입가", money(breakdown.building_purchase_price_krw)], ["차액", money(breakdown.difference_krw)], ["건물 매입가 대비 차액률", pct(breakdown.difference_rate_pct)]], "offering-breakdown"), el("p", "offering-description", `가상 공모 구조 · ${known(breakdown.description)}`));
+        return panel;
+      };
+
+      const renderProductInfo = (product) => {
+        const stack = el("div", "content-stack");
+        const columns = el("div", "two-column");
+        columns.append(
+          overviewPanel("임대 정보", [["임차인 유형", product.lease?.main_tenant_type], ["임대율", product.lease?.occupancy_rate_text], ["임대차 만기", product.lease?.lease_expiry]]),
+          overviewPanel("분배 전제", [["배당 주기", product.offering?.distribution_cycle], ["예상 배당 표현", product.offering?.expected_distribution_text], ["청산 흐름", product.structure?.liquidation_flow]])
+        );
+        const structure = el("section", "panel");
+        structure.append(el("h2", "panel-title", "상품 구조"));
+        const structureList = el("div", "structure-list");
+        [["신탁", product.structure?.trustee], ["계좌 관리", product.structure?.account_manager], ["운영", product.structure?.operator_role], ["분배", product.structure?.distribution_basis]].forEach(([label, value]) => {
+          const item = el("div", "structure-item");
+          item.append(el("p", "structure-label", label), el("p", "", known(value)));
+          structureList.append(item);
+        });
+        structure.append(structureList);
+        const risks = el("section", "panel");
+        risks.append(el("h2", "panel-title", "주요 위험"));
+        const riskList = el("ul", "list");
+        (list(product.risks).length ? list(product.risks) : ["미확인"]).forEach((risk) => riskList.append(el("li", "", known(risk))));
+        risks.append(riskList);
+        stack.append(columns, structure, risks);
+        return stack;
+      };
+
+      const evidenceItemCard = (item, reviewStatus = "sample") => {
+        const card = el("article", "evidence-card");
+        const top = el("div", "evidence-top");
+        const title = el("div", "");
+        title.append(el("h3", "", known(item.title)), el("p", "source-role", item.source_type === "normalized_public_api" ? "정규화 공개 API 레코드" : item.source_type === "demo_scenario" ? "가상 시나리오 입력" : item.source_type === "dummy" ? "더미 입력" : known(item.source_type)));
+        top.append(title, sampleChip(linkageState(item.linkage_is_sample)));
+        card.append(top, makeFactList([["데이터 상태", dataState(item.record_is_sample)], ["상품 연결", linkageState(item.linkage_is_sample)], ["검토 결과", statusMeta[reviewStatus]?.label], ["상세 상태", item.status], ["적용 문맥", item.applicability_status], ["기준일", item.as_of]], "metadata"));
+        const limit = el("div", "evidence-block limit");
+        limit.append(el("p", "evidence-label", "판단 한계"), el("p", "evidence-copy", known(item.limitations)));
+        card.append(limit);
+        return card;
+      };
+
+      const sourceFacts = (source) => {
+        const data = source.record?.data;
+        if (!data) return null;
+        const panel = el("div", "source-facts");
+        const facts = [];
+        if (source.id === "legal_dong") facts.push(["일치 방식", "법정동코드 + 법정동명 exact match"], ["법정동코드", data.region_code], ["주소", data.address_name]);
+        if (source.id === "rtms") facts.push(["거래일", source.record?.as_of], ["법정동", data.legal_dong_name], ["용도", data.building_use], ["건물면적", data.building_area_m2 ? `${data.building_area_m2}㎡` : null], ["원문 금액", data.deal_amount_source_value]);
+        if (source.id === "ecos") facts.push(["통계 항목", data.item_name], ["기준일", source.record?.as_of], ["값", data.value && data.unit ? `${data.value} ${data.unit}` : data.value]);
+        if (!facts.length) return null;
+        panel.append(makeFactList(facts));
+        if (source.id === "rtms") panel.append(el("p", "source-warning", `금액 단위 미확정 · 같은 건물 판정 아님 · 취소 거래 ${list(source.excluded_records).length}건 제외`));
+        return panel;
+      };
+
+      const sourceCard = (source) => {
+        const meta = statusMeta[source.status] || { label: "미확인", className: "neutral" };
+        const card = el("article", `source-card ${meta.className}`);
+        const top = el("div", "source-top");
+        const title = el("div", "");
+        title.append(el("h3", "", known(source.label)), el("p", "source-role", known(source.role)));
+        top.append(title, statusChip(source.status, meta.label));
+        card.append(top);
+        const facts = sourceFacts(source);
+        if (facts) card.append(facts);
+        const pair = el("div", "evidence-pair");
+        [["판정 근거", source.basis, "evidence-block"], ["판단 한계", source.limitations, "evidence-block limit"]].forEach(([label, value, className]) => {
+          const block = el("div", className);
+          block.append(el("p", "evidence-label", label), el("p", "evidence-copy", known(value)));
+          pair.append(block);
+        });
+        card.append(pair, makeFactList([["데이터 상태", source.fetched_at ? "실제 API 수신" : "수신 확인 불가"], ["상품 연결", source.status === "held" ? "미연결" : "가상 연결"], ["검토 결과", meta.label], ["원문 기준일", source.as_of], ["수집 시각", formatDateTime(source.fetched_at)], ["대상 ID", source.subject_id]], "metadata"));
+        const href = safeHttps(source.source_url);
+        if (href) {
+          const link = el("a", "source-link", "공식 원문 열기 ↗");
+          link.href = href;
+          link.target = "_blank";
+          link.rel = "noreferrer";
+          link.setAttribute("aria-label", `${known(source.label)} 공식 원문 새 창에서 열기`);
+          card.append(link);
+        }
+        return card;
+      };
+
+      const reviewSummarySection = (product) => {
+        const section = el("section", "");
+        section.append(sectionHeading("이 상품에서 지금 확인된 것", "주소 확인, 건물 동일성, 가격, 시장환경, 공시 근거의 검토 강도를 나눠 봅니다."));
+        const grid = el("div", "review-question-grid");
+        const review = product.review_summary || {};
+        ["location", "building_identity", "price_comparison", "market_context", "disclosure_operator"].forEach((key) => {
+          const item = review[key] || {};
+          const card = el("article", "review-question");
+          card.append(el("h3", "", known(item.label)), el("p", "review-question-summary", known(item.summary)), el("p", "review-question-limit", `한계: ${known(item.limitations)}`), statusChip(item.status));
+          grid.append(card);
+        });
+        section.append(grid);
+        return section;
+      };
+
+      const comparisonMethodDetails = (method) => {
+        const details = el("details", "method-details");
+        const summary = el("summary", "", "샘플 비교 기준 보기");
+        const body = el("div", "method-body");
+        const rules = method?.rules || {};
+        body.append(el("p", "method-warning", "검증 전 샘플 규칙 · 투자 적정성 기준 아님"), makeFactList([["지역·용도", rules.same_region_and_use], ["면적 범위", rules.area_tolerance], ["거래 시점", rules.recency], ["취소 거래", rules.exclude_cancelled_transactions], ["최소 후보", typeof rules.minimum_candidate_count === "number" ? `${rules.minimum_candidate_count}건` : null], ["분류 규칙", rules.classification]]), el("p", "review-question-limit", known(method?.limitations)));
+        details.append(summary, body);
+        return details;
+      };
+
+      const comparisonTransactions = (transactions) => {
+        const section = el("section", "");
+        section.append(sectionHeading("가상 비교 시나리오", "매각가를 연면적으로 나눈 가상 ㎡당 가격을 함께 표시합니다."));
+        const wrap = el("div", "comparison-table-wrap");
+        const table = el("table", "comparison-table");
+        const thead = document.createElement("thead");
+        const headRow = document.createElement("tr");
+        ["구분", "지역·용도", "연면적", "가상 매각가", "가상 ㎡당 가격"].forEach((label) => headRow.append(el("th", "", label)));
+        thead.append(headRow);
+        const tbody = document.createElement("tbody");
+        transactions.forEach((transaction) => {
+          const row = document.createElement("tr");
+          const badgeCell = document.createElement("td");
+          badgeCell.append(sampleChip("가상 비교거래"));
+          const perM2 = typeof transaction.sale_amount_krw === "number" && typeof transaction.gross_floor_area_m2 === "number" && transaction.gross_floor_area_m2 > 0 ? transaction.sale_amount_krw / transaction.gross_floor_area_m2 : null;
+          row.append(badgeCell, el("td", "", `${known(transaction.region)} · ${known(transaction.building_use)}`), el("td", "", area(transaction.gross_floor_area_m2)), el("td", "", money(transaction.sale_amount_krw)), el("td", "", typeof perM2 === "number" ? `${money(perM2)}/㎡` : "미확인"));
+          tbody.append(row);
+        });
+        table.append(thead, tbody);
+        wrap.append(table);
+        section.append(wrap);
+        return section;
+      };
+
+      const priceReviewSection = (product) => {
+        const result = product.comparison_result || {};
+        const section = el("section", "content-stack");
+        const block = el("div", "price-review");
+        const head = el("div", "price-review-head");
+        const title = el("div", "");
+        title.append(el("p", "meta", "가격 비교 분류"), el("p", "price-classification", known(result.classification)), el("p", "classification-note", "샘플 비교 분류 · 투자 추천이나 적정성 판단 아님"));
+        head.append(title, statusChip(result.status));
+        const metrics = el("div", "price-metrics");
+        [["대상 ㎡당 가상 매입가", typeof result.target_price_per_m2_krw === "number" ? `${money(result.target_price_per_m2_krw)}/㎡` : "미확인"], ["비교 중앙값", typeof result.median_price_per_m2_krw === "number" ? `${money(result.median_price_per_m2_krw)}/㎡` : "미확인"], ["중앙값 대비 편차", pct(result.deviation_pct)], ["1차 후보", typeof result.candidate_count === "number" ? `${result.candidate_count}건` : "미확인"]].forEach(([label, value]) => {
+          const metric = el("div", "price-metric");
+          metric.append(el("p", "meta", label), el("strong", "", value));
+          metrics.append(metric);
+        });
+        block.append(head, metrics, el("p", "review-reason", known(result.reason)), comparisonMethodDetails(product.comparison_method));
+        section.append(block);
+        const transactions = list(result.transactions);
+        if (transactions.length) section.append(comparisonTransactions(transactions));
+        return section;
+      };
+
+      const evidenceItemsSection = (product) => {
+        const section = el("section", "");
+        section.append(sectionHeading("근거 항목의 상태", "데이터 수신, 상품 연결, 검토 결과를 서로 다른 상태로 표시합니다."));
+        const grid = el("div", "evidence-grid");
+        const reviewStatus = product.review_summary?.price_comparison?.status || "sample";
+        const items = list(product.evidence_review?.items);
+        (items.length ? items : [{}]).forEach((item) => grid.append(evidenceItemCard(item, reviewStatus)));
+        section.append(grid);
+        return section;
+      };
+
+      const primarySourceGroups = (product, data) => {
+        const section = el("section", "");
+        section.append(sectionHeading("첫 샘플 상품의 공개 API 추적", known(data.source_status_note)));
+        const review = product.review_summary || {};
+        const groups = [
+          ["자산·주소 확인", ["legal_dong", "building_hub"], [review.location, review.building_identity]],
+          ["가격 비교", ["rtms"], [review.price_comparison]],
+          ["시장환경", ["rone", "ecos"], [review.market_context]],
+          ["공시·운영사", ["opendart"], [review.disclosure_operator]],
+        ];
+        const root = el("div", "source-groups");
+        groups.forEach(([title, ids, summaries]) => {
+          const details = el("details", "source-group");
+          const summary = el("summary", "source-group-summary");
+          const states = el("span", "source-group-summary-text");
+          summaries.filter(Boolean).forEach((item) => states.append(statusChip(item.status)));
+          summary.append(el("span", "", title), states);
+          const body = el("div", "source-group-body");
+          const grid = el("div", "source-grid");
+          list(data.sources).filter((source) => ids.includes(source.id)).forEach((source) => grid.append(sourceCard(source)));
+          body.append(grid);
+          details.append(summary, body);
+          root.append(details);
+        });
+        section.append(root);
+        return section;
+      };
+
+      const renderEvidence = (product, data, isPrimary) => {
+        const stack = el("div", "content-stack");
+        if (product.status !== "offering" || !product.review_summary) {
+          const review = product.evidence_review || {};
+          const summary = el("section", "review-summary");
+          summary.append(el("div", "", "가상 종료 시나리오의 근거 상태"), el("p", "review-reason", known(review.price_review)));
+          stack.append(summary, evidenceItemsSection(product));
+          return stack;
+        }
+        stack.append(reviewSummarySection(product), priceReviewSection(product), evidenceItemsSection(product));
+        if (isPrimary) stack.append(el("p", "source-separation", "실제 API 수신 데이터와 이 가상 상품의 연결은 별개입니다. 원천 레코드는 실제 수신 여부를, 상품 연결은 가상 연결 여부를, 검토 결과는 현재 판단 강도를 뜻합니다."), primarySourceGroups(product, data));
+        return stack;
+      };
+
+      const operatorSummaryPanel = (product, data) => {
+        const summary = product.operator_history?.summary || list(data.operator_summaries).find((item) => item.operator_id === product.operator_id) || {};
+        const panel = el("section", "panel");
+        panel.append(el("h2", "panel-title", "같은 가상 운영사의 종료 표본"), el("p", "detail", "성과 순위나 성공률이 아닌 가상 종료 시나리오의 방향별 건수입니다."));
+        const stats = el("div", "operator-stats");
+        [["표본 수", summary.sample_size], ["양(+) 표본", summary.positive_outcome_count], ["음(-) 표본", summary.negative_outcome_count], ["중립 표본", summary.neutral_outcome_count]].forEach(([label, value]) => {
+          const stat = el("div", "operator-stat");
+          stat.append(el("p", "meta", label), el("strong", "", known(value)));
+          stats.append(stat);
+        });
+        panel.append(stats, makeFactList([["운영사 귀속", summary.operator_attribution_status], ["비교 가능 모집단", summary.comparable_population_status]]), el("p", "notice", known(summary.limitations)));
+        return panel;
+      };
+
+      const performancePanel = (product) => {
+        const performance = product.performance || {};
+        const reconciliation = performance.sale_reconciliation || {};
+        const outcome = product.outcome || {};
+        const section = el("section", "panel");
+        section.append(el("h2", "panel-title", "가상 회수금 흐름"), el("p", "detail", "모든 금액은 실제 거래·세금·분배가 아닌 시나리오 값입니다."));
+        const flow = el("div", "flow");
+        [["건물 매입가", performance.building_purchase_price_krw], ["공모총액", performance.total_offering_amount_krw], ["매각가", performance.sale_amount_krw], ["매각비용", performance.sale_cost_krw], ["가상 세금", reconciliation.sample_tax_krw], ["가상 기타 정산액", reconciliation.sample_other_settlement_krw], ["순매각분배금", performance.investor_net_sale_distribution_krw], ["누적 임대분배금", performance.cumulative_rental_distribution_krw], ["총회수금", outcome.total_recovery_krw]].forEach(([label, value], index) => {
+          const row = el("div", "flow-item");
+          row.append(el("span", "flow-number", String(index + 1).padStart(2, "0")), el("span", "flow-label", label), el("span", "flow-value", money(value)));
+          flow.append(row);
+        });
+        section.append(flow, makeFactList([["예상 운용기간", months(performance.expected_operation_months)], ["실제 운용기간", months(performance.actual_operation_months)], ["매각일", performance.sale_date], ["청산일", performance.liquidation_date]]));
+        if (outcome.unreconciled_amount_krw === 0) section.append(el("p", "reconcile", "✓ 가상 시나리오 내부 정산식 일치 · 실제 증빙 검증 아님"));
+        else section.append(el("p", "source-warning", `시나리오 미정산 차이: ${money(outcome.unreconciled_amount_krw)}`));
+        return section;
+      };
+
+      const outcomePanel = (product) => {
+        const outcome = product.outcome || {};
+        const box = el("section", "outcome-box");
+        box.append(el("p", "meta", known(outcome.metric_name)), el("p", "outcome-value", pct(outcome.realized_profit_loss_pct)), el("p", "detail", `단순 누적 회수손익 ${money(outcome.realized_profit_loss_krw)}`));
+        const flags = el("div", "outcome-flags");
+        flags.append(el("span", "chip neutral", outcome.annualized ? "연환산" : "비연환산"), el("span", "chip neutral", outcome.irr ? "IRR" : "비IRR"), el("span", "chip neutral", outcome.cashflow_timing_reflected ? "현금흐름 시점 반영" : "현금흐름 시점 미반영"), el("span", "chip neutral", `개인세금 기준 ${known(outcome.tax_basis)}`));
+        box.append(flags, el("p", "review-reason", known(outcome.limitation)), el("p", "meta", known(outcome.note)));
+        return box;
+      };
+
+      const causePanels = (product) => {
+        const causes = product.cause_candidates || {};
+        const section = el("section", "content-stack");
+        section.append(sectionHeading("결과 원인 후보", "방향은 설명을 돕는 보조정보이며 기여도·점수·귀속 판정이 아닙니다."), el("p", "warning-box", "인과 미확정 · 요인끼리 겹칠 수 있음 · 합산 금지"), el("p", "detail", known(causes.notice)));
+        const grid = el("div", "three-column");
+        [["사업자 요인 가설", causes.operator], ["자산 요인 가설", causes.asset], ["외부 요인 가설", causes.external]].forEach(([title, items]) => {
+          const card = el("article", "cause-card");
+          card.append(el("h3", "", title));
+          (list(items).length ? list(items) : [{}]).forEach((item) => {
+            const body = el("div", "cause-item");
+            body.append(el("h4", "", known(item.candidate)), el("p", "direction", `방향 메모: ${known(item.direction)} · 확신도 ${known(item.confidence)}`), el("p", "detail", `관찰: ${known(item.related_observation)}`), el("p", "meta", `한계: ${known(item.limitations)}`));
+            card.append(body);
+          });
+          grid.append(card);
+        });
+        section.append(grid);
+        return section;
+      };
+
+      const renderHistory = (product, data, byId) => {
+        const stack = el("div", "content-stack");
+        if (product.status === "liquidated") stack.append(performancePanel(product), outcomePanel(product), causePanels(product));
+        else {
+          const linked = el("section", "panel");
+          linked.append(el("h2", "panel-title", "같은 가상 운영사의 종료 상품"), el("p", "detail", known(product.operator_history?.note)));
+          const grid = el("div", "linked-grid");
+          const products = list(product.operator_history?.referenced_product_ids).map((id) => byId.get(id)).filter(Boolean);
+          (products.length ? products : []).forEach((item) => grid.append(productCard(item, true)));
+          if (!products.length) grid.append(el("p", "detail", "연결된 가상 종료 상품이 없습니다."));
+          linked.append(grid);
+          stack.append(linked);
+        }
+        stack.append(operatorSummaryPanel(product, data));
+        return stack;
+      };
+
+      const renderSourcesAndLimits = (product, data, isPrimary) => {
+        const stack = el("div", "content-stack");
+        const productSource = el("section", "panel");
+        productSource.append(el("h2", "panel-title", "상품 출처 상태"), makeFactList([["상품 입력 상태", product.source_status], ["상품 문서", safeHttps(product.document_url) ? "HTTPS 원문 연결" : "미확인"], ["상품 ID", product.product_id], ["공개 API 상세", isPrimary ? "첫 진행 샘플의 가상 연결 결과 제공" : "해당 샘플에는 미연결"]]));
+        const documentHref = safeHttps(product.document_url);
+        if (documentHref) {
+          const link = el("a", "source-link", "상품 문서 새 창에서 열기 ↗");
+          link.href = documentHref;
+          link.target = "_blank";
+          link.rel = "noreferrer";
+          productSource.append(link);
+        }
+        const limits = el("section", "panel");
+        limits.append(el("h2", "panel-title", "공통 한계"));
+        const limitations = el("ul", "list");
+        (list(data.limitations).length ? list(data.limitations) : ["미확인"]).forEach((item) => limitations.append(el("li", "", known(item))));
+        limits.append(limitations);
+        stack.append(productSource, limits);
+        return stack;
+      };
+
+      const setupTabs = (tabs, panels) => {
+        const activate = (index, focus = false) => {
+          tabs.forEach((tab, tabIndex) => {
+            const active = tabIndex === index;
+            tab.setAttribute("aria-selected", String(active));
+            tab.tabIndex = active ? 0 : -1;
+            panels[tabIndex].hidden = !active;
+          });
+          if (focus) tabs[index].focus();
+        };
+        tabs.forEach((tab, index) => {
+          tab.addEventListener("click", () => activate(index));
+          tab.addEventListener("keydown", (event) => {
+            let next = index;
+            if (event.key === "ArrowRight") next = (index + 1) % tabs.length;
+            else if (event.key === "ArrowLeft") next = (index - 1 + tabs.length) % tabs.length;
+            else if (event.key === "Home") next = 0;
+            else if (event.key === "End") next = tabs.length - 1;
+            else return;
+            event.preventDefault();
+            activate(next, true);
+          });
+        });
+        activate(0);
+      };
+
+      const renderDetail = (product, data, byId) => {
+        document.title = `${known(product.asset_name)} · JeomJeom 샘플`;
+        app.replaceChildren();
+        const hero = el("section", "detail-hero cloud");
+        const inner = el("div", "container");
+        const back = el("a", "breadcrumb", "← 샘플 상품 목록");
+        back.href = "./";
+        const titleRow = el("div", "detail-title-row");
+        const title = el("div", "");
+        title.append(el("p", "eyebrow", `${statusLabel(product)} · ${known(product.operator)}`), el("h1", "", known(product.asset_name)), el("p", "detail-subtitle", `${known(product.basic_info?.region)} · ${known(product.basic_info?.building_use)}`));
+        titleRow.append(title, sampleChip("실제 상품 아님 · 샘플"));
+        const overview = el("div", "overview");
+        overview.append(
+          overviewPanel("건물 기본 정보", [["지역", product.basic_info?.region], ["건물 용도", product.basic_info?.building_use], ["토지면적", area(product.basic_info?.land_area_m2)], ["연면적", area(product.basic_info?.gross_floor_area_m2)], ["층수", product.basic_info?.floors], ["사용승인일", product.basic_info?.use_approval_date]]),
+          offeringOverviewPanel(product)
+        );
+        const leaseStructure = overviewPanel("임대·상품 구조", [["임차인 유형", product.lease?.main_tenant_type], ["임대율", product.lease?.occupancy_rate_text], ["임대차 만기", product.lease?.lease_expiry], ["신탁", product.structure?.trustee], ["계좌 관리", product.structure?.account_manager], ["운영", product.structure?.operator_role], ["분배 구조", product.structure?.distribution_basis]]);
+        leaseStructure.classList.add("wide-panel");
+        const topRisks = el("ul", "list");
+        (list(product.risks).length ? list(product.risks) : ["미확인"]).forEach((risk) => topRisks.append(el("li", "", known(risk))));
+        leaseStructure.append(el("h3", "panel-title", "주요 위험"), topRisks);
+        overview.append(leaseStructure);
+        inner.append(back, titleRow, overview);
+        hero.append(inner);
+        app.append(hero);
+
+        const shell = el("section", "tabs-shell");
+        const shellInner = el("div", "container");
+        const tabList = el("div", "tabs");
+        tabList.setAttribute("role", "tablist");
+        tabList.setAttribute("aria-label", "상품 상세 영역");
+        const definitions = [
+          ["상품 정보", renderProductInfo(product)],
+          ["JeomJeom 근거 검토", renderEvidence(product, data, product.product_id === list(data.products?.offering)[0]?.product_id)],
+          ["과거 성과·운영사", renderHistory(product, data, byId)],
+          ["출처·한계", renderSourcesAndLimits(product, data, product.product_id === list(data.products?.offering)[0]?.product_id)],
+        ];
+        const tabs = [];
+        const panels = [];
+        definitions.forEach(([label, content], index) => {
+          const tab = el("button", "tab", label);
+          const panel = el("section", "tab-panel");
+          tab.type = "button";
+          tab.id = `tab-${index}`;
+          tab.setAttribute("role", "tab");
+          tab.setAttribute("aria-controls", `panel-${index}`);
+          panel.id = `panel-${index}`;
+          panel.setAttribute("role", "tabpanel");
+          panel.setAttribute("aria-labelledby", tab.id);
+          panel.append(content);
+          tabList.append(tab);
+          shellInner.append(panel);
+          tabs.push(tab);
+          panels.push(panel);
+        });
+        shellInner.prepend(tabList);
+        shell.append(shellInner);
+        app.append(shell);
+        setupTabs(tabs, panels);
+      };
+
+      const renderNotFound = (id) => {
+        document.title = "상품을 찾을 수 없음 · JeomJeom";
+        app.replaceChildren();
+        const section = el("section", "error-state");
+        const inner = el("div", "container");
+        inner.append(sampleChip("샘플 데모"), el("h1", "card-title", "상품을 찾을 수 없습니다"), el("p", "", `요청한 상품 ID “${known(id)}”가 현재 샘플 목록에 없습니다.`));
+        const link = el("a", "button-link", "상품 목록으로 돌아가기");
+        link.href = "./";
+        inner.append(link);
+        section.append(inner);
+        app.append(section);
+      };
+
+      fetch("./demo_payload.json", { cache: "no-store" })
+        .then((response) => {
+          if (!response.ok) throw new Error(`데모 데이터 응답 오류: ${response.status}`);
+          return response.json();
+        })
+        .then((data) => {
+          const products = [...list(data.products?.offering), ...list(data.products?.liquidated)];
+          const byId = new Map(products.map((product) => [product.product_id, product]));
+          const productId = new URLSearchParams(window.location.search).get("product");
+          if (!productId) renderList(data);
+          else if (byId.has(productId)) renderDetail(byId.get(productId), data, byId);
+          else renderNotFound(productId);
+        })
+        .catch((error) => {
+          document.title = "데모 데이터 오류 · JeomJeom";
+          app.replaceChildren();
+          const state = el("section", "error-state");
+          const inner = el("div", "container");
+          inner.append(el("h1", "", "데모 데이터를 불러오지 못했습니다"), el("p", "", `${error.message}. 먼저 build_demo.py를 실행하세요.`));
+          state.append(inner);
+          app.append(state);
+        });
+    </script>
+  </body>
+</html>

@@ -6,6 +6,7 @@
       "title": "전자공시시스템 DART — 증권신고서·정정신고서 원문",
       "url": "https://dart.fss.or.kr",
       "license": "green",
+      "approvedForExternalAi": true,
       "retrievedOn": "2026-08-29",
       "chunks": [
         {
@@ -19,6 +20,7 @@
       "title": "OpenDART 공시검색 API (list.json · document.xml)",
       "url": "https://opendart.fss.or.kr",
       "license": "green",
+      "approvedForExternalAi": true,
       "retrievedOn": "2026-08-29",
       "chunks": [
         {
@@ -32,6 +34,7 @@
       "title": "축산물이력제 개체정보 (이력번호 조회)",
       "url": "https://www.mtrace.go.kr",
       "license": "green",
+      "approvedForExternalAi": true,
       "retrievedOn": "2026-08-29",
       "chunks": [
         {
@@ -45,6 +48,7 @@
       "title": "축산물등급판정정보 — 소도체 등급별 경락가격",
       "url": "https://www.ekapepia.com",
       "license": "green",
+      "approvedForExternalAi": true,
       "retrievedOn": "2026-08-29",
       "chunks": [
         {
@@ -58,6 +62,7 @@
       "title": "축산물등급판정정보 — 돼지 대표가격 (등급별 경락가격)",
       "url": "https://www.data.go.kr/data/15148902/fileData.do",
       "license": "green",
+      "approvedForExternalAi": true,
       "retrievedOn": "2026-08-29",
       "chunks": [
         {
@@ -71,6 +76,7 @@
       "title": "국토교통부 상업업무용 부동산 매매 실거래가",
       "url": "https://rt.molit.go.kr",
       "license": "green",
+      "approvedForExternalAi": true,
       "retrievedOn": "2026-08-29",
       "chunks": [
         {
@@ -84,6 +90,7 @@
       "title": "국토교통부 건축물대장 표제부 (건축HUB)",
       "url": "https://www.hub.go.kr",
       "license": "green",
+      "approvedForExternalAi": true,
       "retrievedOn": "2026-08-29",
       "chunks": [
         {

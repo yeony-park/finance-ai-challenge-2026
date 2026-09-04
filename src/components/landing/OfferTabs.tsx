@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState, type KeyboardEvent } from "react";
 
 import type { OfferCardView } from "@/lib/verify/report/view-model";
 
@@ -25,6 +25,15 @@ const TAB_ITEMS: readonly { readonly id: OfferTab; readonly label: string }[] = 
   { id: "closed", label: "종료" },
 ];
 
+export const nextOfferTab = (current: OfferTab, key: string): OfferTab | null => {
+  const index = TAB_ITEMS.findIndex((tab) => tab.id === current);
+  if (key === "Home") return TAB_ITEMS[0].id;
+  if (key === "End") return TAB_ITEMS.at(-1)?.id ?? null;
+  if (key === "ArrowRight") return TAB_ITEMS[(index + 1) % TAB_ITEMS.length].id;
+  if (key === "ArrowLeft") return TAB_ITEMS[(index - 1 + TAB_ITEMS.length) % TAB_ITEMS.length].id;
+  return null;
+};
+
 const EMPTY_MESSAGE: Record<OfferTab, string> = {
   all: "공개된 검증 리포트가 없습니다.",
   upcoming: "청약 예정인 공모가 없습니다.",
@@ -48,6 +57,14 @@ const catalogCards = (
 
 export function OfferTabs({ upcoming, open, closed, catalog }: OfferTabsProps) {
   const [activeTab, setActiveTab] = useState<OfferTab>("all");
+  const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const handleKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
+    const next = nextOfferTab(activeTab, event.key);
+    if (!next) return;
+    event.preventDefault();
+    setActiveTab(next);
+    tabRefs.current[TAB_ITEMS.findIndex((tab) => tab.id === next)]?.focus();
+  };
   const catalogByPhase = (phase: Exclude<OfferTab, "all">) =>
     catalog.filter((card) => card.phase === phase);
   const cardsByTab: Record<OfferTab, readonly ListedCard[]> = {
@@ -78,13 +95,16 @@ export function OfferTabs({ upcoming, open, closed, catalog }: OfferTabsProps) {
             return (
               <button
                 key={tab.id}
+                ref={(node) => { tabRefs.current[TAB_ITEMS.indexOf(tab)] = node; }}
                 id={`offer-tab-${tab.id}`}
                 type="button"
                 role="tab"
                 className={isActive ? `${s.offerTab} ${s.offerTabActive}` : s.offerTab}
                 aria-selected={isActive}
                 aria-controls="offer-tab-panel"
+                tabIndex={isActive ? 0 : -1}
                 onClick={() => setActiveTab(tab.id)}
+                onKeyDown={handleKeyDown}
               >
                 {tab.label}
               </button>

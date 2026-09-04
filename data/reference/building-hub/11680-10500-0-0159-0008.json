@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "request": {
+    "sigunguCd": "11680",
+    "bjdongCd": "10500",
+    "platGbCd": "0",
+    "bun": "0159",
+    "ji": "0008"
+  },
+  "collectedAt": "2026-08-24T16:46:24.435Z",
+  "sourceId": "molit-building-register-hub",
+  "sourceName": "국토교통부 건축물대장 표제부 조회 서비스 (국토교통부 · data.go.kr)",
+  "sourceUrl": "https://apis.data.go.kr/1613000/BldRgstHubService/getBrTitleInfo?sigunguCd=11680&bjdongCd=10500&platGbCd=0&bun=0159&ji=0008&numOfRows=100&pageNo=1&_type=json",
+  "status": "ok",
+  "totalCount": 2,
+  "records": [
+    {
+      "managementKey": "10241100257772",
+      "parcelAddress": "서울특별시 강남구 삼성동 159-8번지",
+      "roadAddress": "서울특별시 강남구 테헤란로 521 (삼성동)",
+      "buildingName": "파르나스",
+      "mainPurpose": "업무시설",
+      "otherPurpose": "업무시설",
+      "parcelAreaSqm": 0,
+      "buildingAreaSqm": 2807.95,
+      "totalAreaSqm": 77158.75,
+      "floorAreaRatioEstimatedTotalSqm": 76260.03,
+      "structure": "철근콘크리트구조",
+      "householdCount": 0,
+      "useApprovedOn": "2016-07-27",
+      "recordedOn": "2022-08-13"
+    },
+    {
+      "managementKey": "1024112289",
+      "parcelAddress": "서울특별시 강남구 삼성동 159-8번지",
+      "roadAddress": "서울특별시 강남구 테헤란로 521 (삼성동)",
+      "buildingName": "파르나스",
+      "mainPurpose": "숙박시설",
+      "otherPurpose": "숙박시설 운동시설",
+      "parcelAreaSqm": 0,
+      "buildingAreaSqm": 7859.04,
+      "totalAreaSqm": 138776.47,
+      "floorAreaRatioEstimatedTotalSqm": 67317.43,
+      "structure": "철근콘크리트구조",
+      "householdCount": 0,
+      "useApprovedOn": "1989-11-03",
+      "recordedOn": "2025-03-04"
+    }
+  ]
+}

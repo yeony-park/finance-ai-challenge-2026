@@ -1,0 +1,42 @@
+{
+  "opendart": {
+    "bgn_de": "20260101",
+    "end_de": "20260131",
+    "page_count": 10
+  },
+  "rtms": {
+    "LAWD_CD": "11110",
+    "DEAL_YMD": "202601",
+    "numOfRows": 10,
+    "pageNo": 1
+  },
+  "legal_dong": {
+    "pageNo": 1,
+    "numOfRows": 10,
+    "type": "json",
+    "locatadd_nm": "서울특별시 종로구"
+  },
+  "building_hub": {
+    "sigunguCd": "11110",
+    "bjdongCd": "10100",
+    "numOfRows": 10,
+    "pageNo": 1,
+    "_type": "json"
+  },
+  "rone": {
+    "STATBL_ID": "A_2024_00900",
+    "DTACYCLE_CD": "YY",
+    "WRTTIME_IDTFR_ID": "2022",
+    "pIndex": 1,
+    "pSize": 10,
+    "Type": "json"
+  },
+  "ecos": {
+    "stat_code": "722Y001",
+    "cycle": "D",
+    "start_date": "20260101",
+    "end_date": "20260131",
+    "start_row": 1,
+    "end_row": 10
+  }
+}

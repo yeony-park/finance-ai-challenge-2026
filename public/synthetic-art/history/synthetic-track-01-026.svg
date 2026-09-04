@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-01-026" data-record-index="25" data-seed="4303">
+<title>달선의 문장 — 가느다란 궤적의 끝 · Moonline Sentence / End of a Slender Trace</title>
+<rect x="0" y="0" width="800" height="1000" fill="#20252B"/>
+<path d="M0 732 C140 699 240 759 364 720 C502 676 630 770 800 710" fill="none" stroke="#C9B7A5" stroke-width="6" stroke-linecap="round"/>
+<path d="M60 728 C92 632 124 283 92 203" fill="none" stroke="#4A5862" stroke-width="2" stroke-linecap="round"/>
+<circle cx="92" cy="203" r="4" fill="#E7D9C8" opacity="0.78"/>
+<path d="M157 728 C112 632 67 380 112 300" fill="none" stroke="#8797A0" stroke-width="3" stroke-linecap="round"/>
+<path d="M254 728 C312 632 370 477 312 397" fill="none" stroke="#C9B7A5" stroke-width="4" stroke-linecap="round"/>
+<circle cx="312" cy="397" r="6" fill="#E7D9C8" opacity="0.78"/>
+<path d="M351 728 C280 632 209 274 280 194" fill="none" stroke="#E7D9C8" stroke-width="2" stroke-linecap="round"/>
+<path d="M448 728 C480 632 512 371 480 291" fill="none" stroke="#4A5862" stroke-width="3" stroke-linecap="round"/>
+<circle cx="480" cy="291" r="5" fill="#E7D9C8" opacity="0.78"/>
+<path d="M545 728 C500 632 455 468 500 388" fill="none" stroke="#8797A0" stroke-width="4" stroke-linecap="round"/>
+<path d="M642 728 C700 632 758 265 700 185" fill="none" stroke="#C9B7A5" stroke-width="2" stroke-linecap="round"/>
+<circle cx="700" cy="185" r="4" fill="#E7D9C8" opacity="0.78"/>
+<path d="M739 728 C668 632 597 362 668 282" fill="none" stroke="#E7D9C8" stroke-width="3" stroke-linecap="round"/>
+<circle cx="497" cy="235" r="42" fill="#E7D9C8" opacity="0.8"/>
+<circle cx="514" cy="224" r="42" fill="#20252B" opacity="0.96"/>
+<circle cx="283" cy="80" r="2" fill="#8797A0" opacity="0.65"/>
+<circle cx="392" cy="147" r="3" fill="#8797A0" opacity="0.65"/>
+<circle cx="501" cy="214" r="2" fill="#8797A0" opacity="0.65"/>
+<circle cx="610" cy="281" r="3" fill="#8797A0" opacity="0.65"/>
+<circle cx="719" cy="348" r="2" fill="#8797A0" opacity="0.65"/>
+<circle cx="148" cy="415" r="3" fill="#8797A0" opacity="0.65"/>
+<text x="54" y="954" fill="#8797A0" font-family="sans-serif" font-size="9" letter-spacing="3" opacity="0.32">SYNTHETIC</text>
+</svg>

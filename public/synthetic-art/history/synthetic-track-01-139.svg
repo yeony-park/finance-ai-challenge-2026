@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Jangyeolsup Aven | 온기 윤곽 드로잉" data-record-id="synthetic-track-01-139" data-seed="5403" data-index="138">
+<title>온기의 윤곽 — 포근한 곡선의 기록 · Warm Contour / Record of a Gentle Curve</title>
+<rect x="0" y="0" width="800" height="1000" fill="#4A2C2A"/>
+<path d="M379 94 C268 184 245 325 299 425 C334 490 324 560 274 644 C230 718 256 828 366 902" fill="none" stroke="#4A2C2A" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M430 94 C538 196 562 325 511 429 C477 499 491 564 539 647 C581 720 554 825 448 902" fill="none" stroke="#4A2C2A" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M378 143 C328 235 327 336 374 426 C404 484 397 553 351 640 C315 710 332 780 404 854 C474 781 489 706 451 632 C407 546 402 478 436 418 C483 333 472 229 430 143" fill="none" stroke="#5E8064" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M352 431 C376 393 428 391 453 430 C479 469 468 539 423 563 C381 586 341 543 339 491 C338 467 342 447 352 431Z" fill="#B86F52" opacity=".8"/>
+<line x1="404" y1="74" x2="404" y2="936" stroke="#D9A441" stroke-width="3" stroke-dasharray="3 17"/>
+<circle cx="405" cy="490" r="13" fill="#D9A441"/>
+<text x="22" y="978" fill="#F0D9B5" font-family="sans-serif" font-size="8" letter-spacing="2">SYNTHETIC</text>
+</svg>

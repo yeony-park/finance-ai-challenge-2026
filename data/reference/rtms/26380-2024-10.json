@@ -1,0 +1,1948 @@
+{
+  "schemaVersion": 2,
+  "month": "2024-10",
+  "lawdCd": "26380",
+  "sigunguName": "부산 사하구",
+  "collectedAt": "2026-08-22T17:40:36.217Z",
+  "sourceId": "molit-rtms-nrg-trade",
+  "sourceName": "국토교통부 상업업무용 부동산 매매 신고 자료 (국토교통부 · data.go.kr 실거래가 오픈API)",
+  "endpoint": "https://apis.data.go.kr/1613000/RTMSDataSvcNrgTrade/getRTMSDataSvcNrgTrade",
+  "status": "ok",
+  "totalCount": 203,
+  "collectedCount": 203,
+  "cancelledCount": 0,
+  "trades": [
+    {
+      "dong": "구평동",
+      "buildingType": "일반",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-30",
+      "amountWon": 4225000000,
+      "buildingAreaSqm": 132.6,
+      "landAreaSqm": 4780,
+      "buildYear": 2024
+    },
+    {
+      "dong": "괴정동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-28",
+      "amountWon": 15000000,
+      "floor": 1,
+      "buildingAreaSqm": 23.07,
+      "buildYear": 2011
+    },
+    {
+      "dong": "감천동",
+      "buildingType": "일반",
+      "buildingUse": "제1종근린생활",
+      "dealOn": "2024-10-15",
+      "amountWon": 220000000,
+      "buildingAreaSqm": 189.75,
+      "landAreaSqm": 131.91,
+      "buildYear": 1980
+    },
+    {
+      "dong": "괴정동",
+      "buildingType": "일반",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-10",
+      "amountWon": 3800000000,
+      "buildingAreaSqm": 263.36,
+      "landAreaSqm": 326,
+      "buildYear": 1978
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "buildingAreaSqm": 6.94,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 40800000,
+      "buildingAreaSqm": 15.14,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "buildingAreaSqm": 7.64,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20000000,
+      "buildingAreaSqm": 7.27,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 19200000,
+      "buildingAreaSqm": 7.22,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "buildingAreaSqm": 7.64,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20000000,
+      "buildingAreaSqm": 7.42,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 19200000,
+      "buildingAreaSqm": 7.07,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 40800000,
+      "buildingAreaSqm": 15.14,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 22400000,
+      "buildingAreaSqm": 8.29,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 22400000,
+      "buildingAreaSqm": 8.29,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 22400000,
+      "buildingAreaSqm": 8.29,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 22400000,
+      "buildingAreaSqm": 8.29,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 26400000,
+      "buildingAreaSqm": 9.88,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 39200000,
+      "buildingAreaSqm": 13.46,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 22400000,
+      "buildingAreaSqm": 7.64,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 23200000,
+      "buildingAreaSqm": 7.83,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 23200000,
+      "buildingAreaSqm": 7.83,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 23200000,
+      "buildingAreaSqm": 7.83,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 23200000,
+      "buildingAreaSqm": 7.88,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 23200000,
+      "buildingAreaSqm": 7.88,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20000000,
+      "buildingAreaSqm": 6.84,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 23200000,
+      "buildingAreaSqm": 7.88,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 23200000,
+      "buildingAreaSqm": 7.88,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 23200000,
+      "buildingAreaSqm": 7.88,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 23200000,
+      "buildingAreaSqm": 7.83,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 23200000,
+      "buildingAreaSqm": 7.83,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 23200000,
+      "buildingAreaSqm": 7.83,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 22400000,
+      "buildingAreaSqm": 7.64,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 36000000,
+      "buildingAreaSqm": 12.26,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 26400000,
+      "buildingAreaSqm": 9.75,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 28800000,
+      "buildingAreaSqm": 9.75,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 21600000,
+      "buildingAreaSqm": 7.44,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 19200000,
+      "buildingAreaSqm": 7.24,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20000000,
+      "buildingAreaSqm": 7.44,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 19200000,
+      "buildingAreaSqm": 7.14,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 22400000,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 22400000,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20000000,
+      "buildingAreaSqm": 7.44,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20000000,
+      "buildingAreaSqm": 7.4,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20000000,
+      "buildingAreaSqm": 7.28,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 18400000,
+      "buildingAreaSqm": 6.77,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 19200000,
+      "buildingAreaSqm": 7.11,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 29600000,
+      "buildingAreaSqm": 10.96,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 32000000,
+      "buildingAreaSqm": 10.76,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 31200000,
+      "buildingAreaSqm": 10.72,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 28800000,
+      "buildingAreaSqm": 10.7,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20000000,
+      "buildingAreaSqm": 7.25,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 17600000,
+      "buildingAreaSqm": 6.63,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 30400000,
+      "buildingAreaSqm": 11.31,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 28800000,
+      "buildingAreaSqm": 9.81,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 19200000,
+      "buildingAreaSqm": 6.66,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 22400000,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 22400000,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 18400000,
+      "buildingAreaSqm": 6.9,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 19200000,
+      "buildingAreaSqm": 7.18,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 29600000,
+      "buildingAreaSqm": 10.92,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 31200000,
+      "buildingAreaSqm": 10.7,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 32000000,
+      "buildingAreaSqm": 10.82,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 29600000,
+      "buildingAreaSqm": 10.8,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 19200000,
+      "buildingAreaSqm": 7.16,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 16800000,
+      "buildingAreaSqm": 6.32,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 19200000,
+      "buildingAreaSqm": 6.66,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 19200000,
+      "buildingAreaSqm": 6.66,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "floor": 1,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 22400000,
+      "floor": 1,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 22400000,
+      "floor": 1,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "floor": 1,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "floor": 1,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "floor": 1,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "floor": 1,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "floor": 1,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20800000,
+      "floor": 1,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 22400000,
+      "floor": 1,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 22400000,
+      "floor": 1,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 22400000,
+      "floor": 1,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 22400000,
+      "floor": 1,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 22400000,
+      "floor": 1,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 22400000,
+      "floor": 1,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 22400000,
+      "floor": 1,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 22400000,
+      "floor": 1,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 22400000,
+      "floor": 1,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 22400000,
+      "floor": 1,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 22400000,
+      "floor": 1,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 22400000,
+      "floor": 1,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 22400000,
+      "floor": 1,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 22400000,
+      "floor": 1,
+      "buildingAreaSqm": 7.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 19200000,
+      "floor": 1,
+      "buildingAreaSqm": 6.66,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 44800000,
+      "floor": 1,
+      "buildingAreaSqm": 15.14,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 33600000,
+      "floor": 1,
+      "buildingAreaSqm": 11.46,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 35200000,
+      "floor": 1,
+      "buildingAreaSqm": 11.96,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 35200000,
+      "floor": 1,
+      "buildingAreaSqm": 11.96,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 35200000,
+      "floor": 1,
+      "buildingAreaSqm": 11.96,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20000000,
+      "floor": 1,
+      "buildingAreaSqm": 6.75,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20000000,
+      "floor": 1,
+      "buildingAreaSqm": 6.75,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20000000,
+      "floor": 1,
+      "buildingAreaSqm": 6.75,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20000000,
+      "floor": 1,
+      "buildingAreaSqm": 6.75,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20000000,
+      "floor": 1,
+      "buildingAreaSqm": 6.75,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20000000,
+      "floor": 1,
+      "buildingAreaSqm": 6.75,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20000000,
+      "floor": 1,
+      "buildingAreaSqm": 6.75,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "판매",
+      "dealOn": "2024-10-24",
+      "amountWon": 20000000,
+      "floor": 1,
+      "buildingAreaSqm": 6.75,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 223200000,
+      "floor": 2,
+      "buildingAreaSqm": 244.07,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 254400000,
+      "floor": 2,
+      "buildingAreaSqm": 252.46,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 151200000,
+      "floor": 2,
+      "buildingAreaSqm": 133.64,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 151200000,
+      "floor": 2,
+      "buildingAreaSqm": 133.64,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 151200000,
+      "floor": 2,
+      "buildingAreaSqm": 133.64,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 200000000,
+      "floor": 2,
+      "buildingAreaSqm": 186.06,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 42400000,
+      "floor": 2,
+      "buildingAreaSqm": 37.26,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 40000000,
+      "floor": 2,
+      "buildingAreaSqm": 36.4,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 39200000,
+      "floor": 2,
+      "buildingAreaSqm": 36.34,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 39200000,
+      "floor": 2,
+      "buildingAreaSqm": 36.34,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 35200000,
+      "floor": 2,
+      "buildingAreaSqm": 32.08,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 35200000,
+      "floor": 2,
+      "buildingAreaSqm": 32.02,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 35200000,
+      "floor": 2,
+      "buildingAreaSqm": 32.02,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 35200000,
+      "floor": 2,
+      "buildingAreaSqm": 32.02,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 35200000,
+      "floor": 2,
+      "buildingAreaSqm": 32.02,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 35200000,
+      "floor": 2,
+      "buildingAreaSqm": 32.08,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 39200000,
+      "floor": 2,
+      "buildingAreaSqm": 36.34,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 39200000,
+      "floor": 2,
+      "buildingAreaSqm": 36.34,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 40000000,
+      "floor": 2,
+      "buildingAreaSqm": 36.4,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 52800000,
+      "floor": 2,
+      "buildingAreaSqm": 48.54,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 62400000,
+      "floor": 2,
+      "buildingAreaSqm": 56.99,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 36800000,
+      "floor": 2,
+      "buildingAreaSqm": 33.58,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 36000000,
+      "floor": 2,
+      "buildingAreaSqm": 33.4,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 41600000,
+      "floor": 2,
+      "buildingAreaSqm": 38.08,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 64000000,
+      "floor": 2,
+      "buildingAreaSqm": 58.65,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 45600000,
+      "floor": 2,
+      "buildingAreaSqm": 41.55,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 57600000,
+      "floor": 2,
+      "buildingAreaSqm": 52.8,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 94400000,
+      "floor": 2,
+      "buildingAreaSqm": 86.53,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 62400000,
+      "floor": 2,
+      "buildingAreaSqm": 54.21,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 30400000,
+      "floor": 2,
+      "buildingAreaSqm": 26.4,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 12800000,
+      "floor": 2,
+      "buildingAreaSqm": 11.25,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 28800000,
+      "floor": 2,
+      "buildingAreaSqm": 26.69,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 145600000,
+      "floor": 3,
+      "buildingAreaSqm": 227.2,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 154400000,
+      "floor": 3,
+      "buildingAreaSqm": 217.43,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 105600000,
+      "floor": 3,
+      "buildingAreaSqm": 133.64,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 105600000,
+      "floor": 3,
+      "buildingAreaSqm": 133.64,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 105600000,
+      "floor": 3,
+      "buildingAreaSqm": 133.64,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 105600000,
+      "floor": 3,
+      "buildingAreaSqm": 133.64,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 81600000,
+      "floor": 3,
+      "buildingAreaSqm": 103.37,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 28000000,
+      "floor": 3,
+      "buildingAreaSqm": 35.19,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 55200000,
+      "floor": 3,
+      "buildingAreaSqm": 70.79,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 49600000,
+      "floor": 3,
+      "buildingAreaSqm": 63.77,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 38400000,
+      "floor": 3,
+      "buildingAreaSqm": 47.39,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 32000000,
+      "floor": 3,
+      "buildingAreaSqm": 40.37,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 44800000,
+      "floor": 3,
+      "buildingAreaSqm": 55.89,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 52800000,
+      "floor": 3,
+      "buildingAreaSqm": 65.61,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 68000000,
+      "floor": 3,
+      "buildingAreaSqm": 88.29,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 75200000,
+      "floor": 3,
+      "buildingAreaSqm": 98.01,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 52800000,
+      "floor": 3,
+      "buildingAreaSqm": 68.17,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 82400000,
+      "floor": 3,
+      "buildingAreaSqm": 113.48,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 28800000,
+      "floor": 3,
+      "buildingAreaSqm": 35.64,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 24000000,
+      "floor": 3,
+      "buildingAreaSqm": 30.36,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 31200000,
+      "floor": 3,
+      "buildingAreaSqm": 38.76,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 4000000,
+      "floor": 3,
+      "buildingAreaSqm": 5.4,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 21600000,
+      "floor": 3,
+      "buildingAreaSqm": 26.69,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 8800000,
+      "floor": 3,
+      "buildingAreaSqm": 11.25,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "업무",
+      "dealOn": "2024-10-24",
+      "amountWon": 12000000,
+      "floor": 3,
+      "buildingAreaSqm": 15.4,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "업무",
+      "dealOn": "2024-10-24",
+      "amountWon": 12000000,
+      "floor": 3,
+      "buildingAreaSqm": 15.4,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "업무",
+      "dealOn": "2024-10-24",
+      "amountWon": 17600000,
+      "floor": 3,
+      "buildingAreaSqm": 21.67,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "업무",
+      "dealOn": "2024-10-24",
+      "amountWon": 16800000,
+      "floor": 3,
+      "buildingAreaSqm": 21.36,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "업무",
+      "dealOn": "2024-10-24",
+      "amountWon": 74400000,
+      "floor": 3,
+      "buildingAreaSqm": 103.23,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 57600000,
+      "buildingAreaSqm": 131.95,
+      "buildYear": 2005
+    },
+    {
+      "dong": "다대동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-24",
+      "amountWon": 24800000,
+      "buildingAreaSqm": 50.92,
+      "buildYear": 2005
+    },
+    {
+      "dong": "당리동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-29",
+      "amountWon": 20000000,
+      "buildingAreaSqm": 47.39,
+      "buildYear": 2012
+    },
+    {
+      "dong": "감천동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-17",
+      "amountWon": 98000000,
+      "floor": 2,
+      "buildingAreaSqm": 98.1,
+      "buildYear": 1988
+    },
+    {
+      "dong": "하단동",
+      "buildingType": "집합",
+      "buildingUse": "제1종근린생활",
+      "dealOn": "2024-10-08",
+      "amountWon": 100000000,
+      "floor": 1,
+      "buildingAreaSqm": 78.99,
+      "buildYear": 2000
+    },
+    {
+      "dong": "신평동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-10-10",
+      "amountWon": 49000000,
+      "floor": 1,
+      "buildingAreaSqm": 22.95,
+      "buildYear": 1992
+    }
+  ]
+}

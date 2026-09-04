@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="솔여울 — 조류 곡선 회화" data-record-id="synthetic-track-01-098" data-index="97" data-seed="5002">
+<title>조류의 곡선 — 조수 끝의 둥근 길 · Tidal Curve / Rounded Path at the Tide's End</title>
+<rect x="0" y="0" width="800" height="1000" fill="#12343B"/>
+<path d="M -40 184 C 116 146 190 222 332 184 S 574 146 840 204" fill="none" stroke="#A8D5BA" stroke-width="7"/>
+<path d="M -40 321 C 116 261 190 381 332 321 S 574 261 840 341" fill="none" stroke="#58A6A6" stroke-width="11"/>
+<path d="M -40 458 C 116 376 190 540 332 458 S 574 376 840 478" fill="none" stroke="#1F6F78" stroke-width="7"/>
+<path d="M -40 595 C 116 557 190 633 332 595 S 574 557 840 615" fill="none" stroke="#F4E9CD" stroke-width="11"/>
+<path d="M -40 732 C 116 672 190 792 332 732 S 574 672 840 752" fill="none" stroke="#D9826B" stroke-width="7"/>
+<path d="M 0 867 C 170 806 330 939 800 817 L 800 1000 L 0 1000 Z" fill="#1F6F78"/>
+<circle cx="150" cy="120" r="25" fill="#D9826B"/>
+<text x="34" y="968" fill="#F4E9CD" font-family="sans-serif" font-size="11" letter-spacing="3">SYNTHETIC</text>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Byeolmuni Eno | 구름잠 청색 추상" data-record-id="synthetic-track-01-135" data-seed="5309" data-index="134">
+<title>구름잠의 파랑 — 구름 아래의 맑은 틈 · Cloudsleep Blue / Clear Gap Beneath Clouds</title>
+<rect x="0" y="0" width="800" height="1000" fill="#102A43"/>
+<polygon points="0,0 258,0 201,128 215,290 125,403 0,345" fill="#243B53"/>
+<polygon points="800,1000 558,1000 612,866 592,708 677,592 800,657" fill="#486581"/>
+<path d="M205 0 C261 147 239 257 183 371 C125 489 161 602 243 689 C293 742 316 814 289 1000" fill="none" stroke="#829AB1" stroke-width="22"/>
+<path d="M530 0 C484 136 505 274 563 382 C621 491 587 597 519 692 C470 760 454 851 481 1000" fill="none" stroke="#D9E2EC" stroke-width="11"/>
+<path d="M0 532 C102 496 177 514 245 570 C302 616 343 621 399 590 C472 549 544 542 618 583 C699 627 749 617 800 578" fill="none" stroke="#102A43" stroke-width="6"/>
+<ellipse cx="403" cy="494" rx="48" ry="72" fill="#D6B370"/>
+<circle cx="403" cy="494" r="16" fill="#D9E2EC"/>
+<circle cx="98" cy="778" r="14" fill="#D6B370"/>
+<text x="22" y="978" fill="#D9E2EC" font-family="sans-serif" font-size="8" letter-spacing="2">SYNTHETIC</text>
+</svg>

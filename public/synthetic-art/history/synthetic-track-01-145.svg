@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Jangyeolsup Aven | 온기 윤곽 드로잉" data-record-id="synthetic-track-01-145" data-seed="5409" data-index="144">
+<title>온기의 윤곽 — 선이 감싼 빈자리 · Warm Contour / Empty Place Wrapped by a Line</title>
+<rect x="0" y="0" width="800" height="1000" fill="#F0D9B5"/>
+<ellipse cx="400" cy="400" rx="252" ry="286" fill="none" stroke="#4A2C2A" stroke-width="10"/>
+<ellipse cx="400" cy="400" rx="215" ry="249" fill="none" stroke="#5E8064" stroke-width="4"/>
+<path d="M302 315 C340 227 463 210 523 298 C559 352 552 434 501 481 C454 525 364 525 312 475 C264 429 271 365 302 315Z" fill="#B86F52" opacity=".75"/>
+<path d="M339 319 C372 272 438 268 474 311 C508 352 500 417 461 443 C420 471 367 455 343 418 C324 387 324 345 339 319Z" fill="none" stroke="#D9A441" stroke-width="7"/>
+<line x1="112" y1="703" x2="688" y2="703" stroke="#4A2C2A" stroke-width="6"/>
+<line x1="174" y1="735" x2="626" y2="735" stroke="#5E8064" stroke-width="3"/>
+<circle cx="400" cy="374" r="25" fill="#D9A441"/>
+<circle cx="400" cy="374" r="9" fill="#4A2C2A"/>
+<path d="M192 854 C277 813 340 831 400 868 C468 907 544 906 617 865" fill="none" stroke="#B86F52" stroke-width="8"/>
+<text x="22" y="978" fill="#F0D9B5" font-family="sans-serif" font-size="8" letter-spacing="2">SYNTHETIC</text>
+</svg>

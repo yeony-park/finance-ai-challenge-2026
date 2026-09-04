@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-02-048" data-record-index="221" data-seed="6204">
+<title>눈금 없는 지도 — 빈 나침반의 들판 · Unscaled Map / Field of an Empty Compass</title>
+<rect x="0" y="0" width="800" height="1000" fill="#202C39"/>
+<path d="M0 0H800V238C705 280 657 235 575 274C484 318 425 258 348 300C251 351 196 289 104 340C58 365 24 357 0 370Z" fill="#364F6B"/>
+<path d="M0 370C98 352 162 398 242 372C344 338 401 412 486 379C583 341 665 411 800 360V660C719 699 620 635 536 678C441 727 382 649 290 695C175 750 101 674 0 729Z" fill="#5C7C89" stroke="#E6D5B8" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M0 729C102 674 193 781 302 725C394 678 454 788 556 722C644 665 719 771 800 703V1000H0Z" fill="#A6B8A1" stroke="#C66B3D" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M0 120C146 76 241 155 370 112C510 70 649 164 800 115" fill="none" stroke="#E6D5B8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.65"/>
+<path d="M0 475C146 431 241 510 370 467C510 425 649 519 800 470" fill="none" stroke="#E6D5B8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.65"/>
+<path d="M0 825C146 781 241 860 370 817C510 775 649 869 800 820" fill="none" stroke="#E6D5B8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.65"/>
+<text x="748" y="955" text-anchor="end" fill="#E6D5B8" opacity="0.32" font-family="sans-serif" font-size="12" letter-spacing="4">SYNTHETIC</text>
+</svg>

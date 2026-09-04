@@ -2,6 +2,10 @@ import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { z } from "zod";
 
+import {
+  isPublicVerificationDocumentAllowed,
+  isPublicVerificationScopeAllowed,
+} from "../dart/onboarding-catalog";
 import { assertOfferId } from "../paths";
 import type { ReplayDiffArtifact } from "./replay-fixture";
 
@@ -122,6 +126,7 @@ export const loadLatestReplayDiff = async (
   offerId: string,
   dataDir = "data",
 ): Promise<ReplayDiffArtifact | undefined> => {
+  if (!isPublicVerificationScopeAllowed(offerId)) return undefined;
   const dir = path.resolve(
     process.cwd(),
     dataDir,
@@ -143,5 +148,13 @@ export const loadLatestReplayDiff = async (
     .at(-1);
   if (!fileName) return undefined;
 
-  return parseReplayDiff(JSON.parse(await readFile(path.join(dir, fileName), "utf8")));
+  const artifact = parseReplayDiff(
+    JSON.parse(await readFile(path.join(dir, fileName), "utf8")),
+  );
+  if (
+    artifact.offerId !== offerId ||
+    artifact.diff.to.offerId !== offerId ||
+    !isPublicVerificationDocumentAllowed(offerId, artifact.diff.to.rcpNo)
+  ) return undefined;
+  return artifact;
 };

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="솔여울 — 조류 곡선 회화" data-record-id="synthetic-track-01-104" data-index="103" data-seed="5008">
+<title>조류의 곡선 — 바다 쪽으로 휜 선 · Tidal Curve / Line Bending Toward the Sea</title>
+<rect x="0" y="0" width="800" height="1000" fill="#12343B"/>
+<path d="M -30 210 C 142 119 256 266 402 189 S 663 108 840 208" fill="none" stroke="#A8D5BA" stroke-width="14"/>
+<path d="M -30 279 C 156 202 275 331 417 257 S 652 192 840 280" fill="none" stroke="#58A6A6" stroke-width="6"/>
+<path d="M -30 806 C 155 724 302 883 455 795 S 682 735 840 825" fill="none" stroke="#1F6F78" stroke-width="19"/>
+<path d="M -30 886 C 143 789 291 956 469 860 S 690 805 840 906" fill="none" stroke="#D9826B" stroke-width="5"/>
+<circle cx="400" cy="525" r="51" fill="none" stroke="#F4E9CD" stroke-width="4"/>
+<text x="34" y="968" fill="#F4E9CD" font-family="sans-serif" font-size="11" letter-spacing="3">SYNTHETIC</text>
+</svg>

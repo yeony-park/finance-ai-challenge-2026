@@ -2,6 +2,24 @@ import type { Citation, CorpusDoc } from "../types";
 
 export const SAMPLE_CORPUS: readonly CorpusDoc[] = [
   {
+    id: "fsc-fractional-investment-guideline-2022",
+    kind: "regulation",
+    title: "금융위원회 — 조각투자 등 신종증권 사업 관련 가이드라인",
+    url: "https://www.fsc.go.kr/no010101/77728",
+    issuer: "금융위원회",
+    content:
+      "조각투자는 둘 이상의 투자자가 실물자산이나 재산적 가치가 있는 권리를 나눈 청구권에 투자·거래하는 형태다. 조각투자 상품이 증권인지는 표시 기술이나 형식이 아니라 계약과 권리의 실질을 기준으로 사안별 판단한다.",
+  },
+  {
+    id: "fsc-token-securities-2023",
+    kind: "regulation",
+    title: "금융위원회 — 토큰 증권 발행·유통 규율체계 정비방안",
+    url: "https://www.fsc.go.kr/no010101/79386",
+    issuer: "금융위원회",
+    content:
+      "토큰 증권은 분산원장 기술을 활용해 자본시장법상 증권을 디지털화한 발행 형태다. 조각투자는 권리와 투자 구조를 가리키고, 토큰 증권은 증권을 디지털 방식으로 발행·관리하는 형태를 가리키므로 두 용어는 같은 뜻이 아니다.",
+  },
+  {
     id: "dart-viewer",
     kind: "public_record",
     title: "전자공시시스템 DART — 증권신고서·정정신고서 원문",

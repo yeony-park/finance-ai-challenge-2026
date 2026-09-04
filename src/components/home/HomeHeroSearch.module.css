@@ -102,8 +102,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.25rem;
-  height: 2.25rem;
+  width: 2.75rem;
+  height: 2.75rem;
   padding: 0;
   border: 0;
   background: transparent;
@@ -167,6 +167,11 @@
 .scaffold {
   margin-top: var(--ds-space-7);
   max-width: 42rem;
+}
+
+.searchField > button[type="submit"] {
+  width: 2.75rem;
+  height: 2.75rem;
 }
 
 .searchSuggestions {

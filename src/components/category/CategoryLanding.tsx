@@ -6,9 +6,12 @@ import type { CategoryTab } from "@/lib/content/category-tabs";
 import type { CategoryDescriptor } from "@/lib/verify/contract/category";
 import type { Verdict } from "@/lib/verify/types";
 
+import home from "@/components/home/home.module.css";
 import { CategoryAboutView } from "./CategoryAboutView";
 import { CategoryAnalysisView } from "./CategoryAnalysisView";
+import { CategoryPageNav } from "./CategoryPageNav";
 import { loadCategoryLandingModel } from "./category-landing-model";
+import shell from "./category-shell.module.css";
 
 export interface CategoryLandingProps {
   readonly categoryId: CategoryId;
@@ -30,6 +33,7 @@ export interface CategoryLandingProps {
   readonly analysisStatus?: SubscriptionPhase | null;
   readonly analysisVerdict?: Verdict | null;
   readonly filterControlsEnabled?: boolean;
+  readonly scenarioContent?: ReactNode;
 }
 
 export async function CategoryLanding({
@@ -50,6 +54,7 @@ export async function CategoryLanding({
   analysisStatus = null,
   analysisVerdict = null,
   filterControlsEnabled,
+  scenarioContent = null,
   activeTab,
   categoryId,
 }: CategoryLandingProps) {
@@ -70,6 +75,26 @@ export async function CategoryLanding({
         descriptionContent={descriptionContent}
         descriptionContentTitle={descriptionContentTitle}
       />
+    );
+  }
+
+  if (scenarioContent !== null) {
+    return (
+      <div className={`${home.section} ${shell.analysisSection}`}>
+        <div className={`${home.wrap} ${shell.analysisPage}`}>
+          <header className={shell.analysisHeader}>
+            <div className={shell.analysisHeaderIdentity}>
+              <h1>{title}</h1>
+              <CategoryPageNav
+                title={title}
+                href={categoryHref}
+                activeTab="analysis"
+              />
+            </div>
+          </header>
+          <div className={shell.analysisArea}>{scenarioContent}</div>
+        </div>
+      </div>
     );
   }
 

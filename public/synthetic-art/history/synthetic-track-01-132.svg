@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Byeolmuni Eno | 구름잠 청색 추상" data-record-id="synthetic-track-01-132" data-seed="5306" data-index="131">
+<title>구름잠의 파랑 — 비 오기 전의 빛 · Cloudsleep Blue / Light Before Rain</title>
+<rect x="0" y="0" width="800" height="1000" fill="#102A43"/>
+<path d="M0 0H175 C223 170 205 312 159 429 C112 550 122 712 186 1000H0Z" fill="#243B53"/>
+<path d="M800 0H634 C596 174 614 314 657 433 C707 570 683 730 617 1000H800Z" fill="#486581"/>
+<path d="M173 0 C210 113 201 222 230 323 C258 420 257 518 225 610" fill="none" stroke="#D9E2EC" stroke-width="9"/>
+<path d="M627 0 C594 115 602 228 577 323 C550 421 548 519 580 610" fill="none" stroke="#829AB1" stroke-width="9"/>
+<path d="M225 610 C330 565 471 567 580 610 L557 845 C465 813 339 814 244 850Z" fill="#102A43"/>
+<path d="M285 650 C365 625 439 625 517 651 L501 785 C432 766 365 766 300 787Z" fill="none" stroke="#829AB1" stroke-width="8"/>
+<ellipse cx="404" cy="714" rx="33" ry="48" fill="#D6B370"/>
+<circle cx="404" cy="714" r="10" fill="#D9E2EC"/>
+<path d="M79 906 C215 861 293 887 392 929" fill="none" stroke="#D9E2EC" stroke-width="4"/>
+<text x="22" y="978" fill="#D9E2EC" font-family="sans-serif" font-size="8" letter-spacing="2">SYNTHETIC</text>
+</svg>

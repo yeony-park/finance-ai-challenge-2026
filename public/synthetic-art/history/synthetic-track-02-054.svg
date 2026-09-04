@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-02-054" data-record-index="227" data-seed="6301">
+<title>새벽물의 흐름 — 새벽물이 풀어 놓은 빛 · Dawnwater Flow / Light Unbound by Dawnwater</title>
+<rect x="0" y="0" width="800" height="1000" fill="#0B132B"/>
+<path d="M-20 135C120 90 182 180 304 135C435 90 492 180 620 135C694 113 751 157 820 143L820 235C700 180 620 150 510 220C390 259 296 151 180 227C100 275 38 211 -20 257Z" fill="#1C2541"/>
+<path d="M-20 270C120 200 182 340 304 270C435 200 492 340 620 270C694 235 751 305 820 278L820 370C700 340 620 285 510 355C390 394 296 286 180 362C100 410 38 346 -20 392Z" fill="#3A506B" stroke="#CDE8E5" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M-20 430C120 335 182 525 304 430C435 335 492 525 620 430C694 383 751 477 820 438L820 530C700 525 620 445 510 515C390 554 296 446 180 522C100 570 38 506 -20 552Z" fill="#5BC0BE"/>
+<path d="M-20 610C120 565 182 655 304 610C435 565 492 655 620 610C694 588 751 632 820 618L820 710C700 655 620 625 510 695C390 734 296 626 180 702C100 750 38 686 -20 732Z" fill="#CDE8E5" stroke="#CDE8E5" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M-20 805C120 735 182 875 304 805C435 735 492 875 620 805C694 770 751 840 820 813L820 905C700 875 620 820 510 890C390 929 296 821 180 897C100 945 38 881 -20 927Z" fill="#1C2541"/>
+<ellipse cx="400" cy="500" rx="90" ry="38" fill="#F4D35E" opacity="0.78" transform="rotate(-8 400 500)"/>
+<text x="748" y="955" text-anchor="end" fill="#CDE8E5" opacity="0.32" font-family="sans-serif" font-size="12" letter-spacing="4">SYNTHETIC</text>
+</svg>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="솔여울 — 조류 곡선 회화" data-record-id="synthetic-track-01-097" data-index="96" data-seed="5001">
+<title>조류의 곡선 — 밀려온 곡선의 노래 · Tidal Curve / Song of an Arriving Curve</title>
+<rect x="0" y="0" width="800" height="1000" fill="#12343B"/>
+<path d="M 200 1010 C 170 818 432 745 388 604 C 342 458 546 364 478 -10" fill="none" stroke="#58A6A6" stroke-width="24"/>
+<path d="M 278 1010 C 260 837 487 756 450 603 C 418 468 596 372 562 -12" fill="none" stroke="#A8D5BA" stroke-width="7"/>
+<path d="M 133 1010 C 88 841 330 773 319 634 C 308 507 397 423 373 38" fill="none" stroke="#1F6F78" stroke-width="8"/>
+<circle cx="522" cy="180" r="30" fill="#F4E9CD"/>
+<circle cx="522" cy="180" r="12" fill="#12343B"/>
+<text x="34" y="968" fill="#F4E9CD" font-family="sans-serif" font-size="11" letter-spacing="3">SYNTHETIC</text>
+</svg>

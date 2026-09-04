@@ -2,7 +2,7 @@
 
 # data/ 매니페스트
 
-생성 시각: 2026-08-30T06:29:17.788Z
+생성 시각: 2026-08-30T15:48:15.629Z
 
 ## 저장 정책
 
@@ -34,37 +34,7 @@
 - **재확보**: `npm run verify:collect -- <rcpNo>`
 - **비고**: ZIP 해제본 그대로. 농장 상세주소·개체 식별자 포함.
 
-| 경로 | 바이트 | sha256 |
-|---|---:|---|
-| `data/raw/mafra-fmd/322991-241264-170207-가축전염병 발생현황정보-구제역 발생.hwp` | 12,800 | `71e7ea339e1157174c9fd0b938caa187b772a581a5e432ebc1ba2acc3b63466c` |
-| `data/raw/mafra-fmd/322993-241265-170209-가축전염병 발생현황정보-구제역 발생 - 복사본.hwp` | 24,064 | `6f511780fcda39f01b4430a6ec9c7b1caf3e690f1fc877801430017ccf691a0c` |
-| `data/raw/mafra-fmd/322994-241266-170213-가축전염병 발생현황정보-구제역 발생.hwp` | 14,336 | `e1e8cc4a7fd9d4e6e6f9e62f4df63cb33d79a0160ad5caf9f746dfebddf7f534` |
-| `data/raw/mafra-fmd/322995-241267-170214-가축전염병 발생현황정보-구제역 발생1.hwp` | 15,360 | `00df1a8b9726223326fac1d14f4b112c9ded01399bad24c1e73812193487b63b` |
-| `data/raw/mafra-fmd/322996-241268-180327 가축전염병 발생 현황에 대한 정보공개.hwp` | 11,264 | `8b35c7672f9c1747b92181155f1d9f78e9a29d7dc5554c9fcd70f67a6cdf39da` |
-| `data/raw/mafra-fmd/322997-241269-180401 가축전염병 발생 현황에 대한 정보공개.hwp` | 11,776 | `d5ec13b75f3ce4a5dc85a2bffe3eb3588185cdd0021ad15eb81dc700fb5f960d` |
-| `data/raw/mafra-fmd/322998-241270-190128 가축전염병 발생 현황에 대한 정보공개.hwp` | 11,264 | `db904fee338178674bae2bfae2ccff07dae3e36cd8147f4626e8b2ca6a07279a` |
-| `data/raw/mafra-fmd/322999-241271-190129 가축전염병 발생 현황에 대한 정보공개.hwp` | 11,264 | `1abb42d3903e8cb1e96eedf4f8c0ea41de24030b5a9914a8c8f6ed6112fa1344` |
-| `data/raw/mafra-fmd/323000-241272-190131 가축전염병 발생 현황에 대한 정보공개.hwp` | 11,264 | `43ef5808f42052de29c3131ca6024c45aee8d1154b383b4392e286ef4d323e1c` |
-| `data/raw/mafra-fmd/566441-568444-230526 기준 구제역 발생 현황.hwp` | 44,032 | `ee1b6b94570240d3203de3a4793f711cd561639125d82d1a428044843bab7edd` |
-| `data/raw/mafra-fmd/573549-586174-250313 기준 구제역 발생 현황.hwp` | 77,312 | `3d0c0145b28a8e1304d969465d600af32424368b878e44fce9f9cd2417e263dd` |
-| `data/raw/mafra-fmd/573557-586192-250315 기준 구제역 발생 현황.hwp` | 45,568 | `0fecd9bd8c8ca346baa00dc271d5572f8d3ad8a06bf55e79f60755ef5ae15ffa` |
-| `data/raw/mafra-fmd/573558-586193-250316 기준 구제역 발생 현황.hwp` | 92,672 | `1ebec9fb20af9034334fae8a6c86213aca7ecec4e4ce05c9b27b67242c09466a` |
-| `data/raw/mafra-fmd/573584-586275-250317 기준 구제역 발생 현황.hwp` | 104,960 | `b50a6afe090b1fb4e51090e0347be3c90c09c1209a4e7e7eec966b8260ebabaa` |
-| `data/raw/mafra-fmd/573595-586306-250318 기준 구제역 발생 현황.hwp` | 111,104 | `98fbd0286eef071cbbd445cd3d1a872658d5b57fbdb628fb11511ba01baae907` |
-| `data/raw/mafra-fmd/573605-586332-250319 기준 구제역 발생 현황.hwp` | 60,416 | `b930335e9ebb2ac55f76f68828cebc27537bd7642a8aa741333a32aec4c0c74d` |
-| `data/raw/mafra-fmd/573643-586436-250321 기준 구제역 발생 현황.hwp` | 62,976 | `59b0e5de3d988c441a218679eb8a1d52934fc889dd3241dc522307cc177e4912` |
-| `data/raw/mafra-fmd/573645-586438-250322 기준 구제역 발생 현황.hwp` | 124,416 | `b81c008d7773af87f4555c179a34d2099402eb2d331d56af531f2a64f1e13432` |
-| `data/raw/mafra-fmd/573646-586439-250323 기준 구제역 발생 현황.hwp` | 68,096 | `86d528d753e0634da3b2699161ef7ac383587c6bd4aa4dae4f0ae5dad4502017` |
-| `data/raw/mafra-fmd/573678-586527-250324 기준 구제역 발생 현황.hwp` | 65,024 | `8087859f444ed4763e1372dd000a0eb36023be4d818e8650114a2f6325eafc3f` |
-| `data/raw/mafra-fmd/573690-586554-250325 기준 구제역 발생 현황.hwp` | 64,000 | `09cc914c3ff9093a256d6398e05b6f22927c3c3fb4587284d158cf03c46650f6` |
-| `data/raw/mafra-fmd/573704-586582-250326 기준 구제역 발생 현황.hwp` | 64,512 | `eb34957fcd1727942678e6a248de73caf4ce21d464d36fafdace47f69ad69c33` |
-| `data/raw/mafra-fmd/573885-587081-250411 기준 구제역 발생 현황.hwp` | 68,096 | `8810fe7c81e1d6ee11d8afb3b542e9400bc56ca6b5cf32a0a9ffa8bb6617dba9` |
-| `data/raw/mafra-fmd/573895-593129-250414 기준 구제역 발생 현황.hwp` | 68,096 | `b1e5282a4e6fc9d11aa1bf9acedfb2de84594ecd854c55ce383723521e7b83e6` |
-| `data/raw/mafra-fmd/576760-594147-250131 기준 구제역 발생 현황.hwpx` | 42,552 | `bb4bfb981f49bd23975aaeccdc772cb5e43e10b863d23bf7560a71df89174e9d` |
-| `data/raw/mafra-fmd/577041-594976-250220 기준 구제역 발생 현황(1).hwpx` | 44,683 | `0385e718814c653b3d1ff0bef14b50bf163cc4c2c3c8532b90d669db95a321b4` |
-| `data/raw/mafra-fmd/577155-596865-250228 기준 구제역 발생 현황.hwpx` | 46,791 | `005d389af7e28c271e6cd9520ae1c0787ab1f5dccba3c58e51b9f8ce4a0d90ca` |
-| `data/raw/mafra-fmd/578352-598556-260703 기준 구제역 발생 현황(1).hwpx` | 54,807 | `298e124d73a2bb2bfcf398f495b45eee6fb632c922ac3d4d13592445ca71e16e` |
-| `data/raw/mafra-fmd/mafra_fmd_map_data.js` | 4,007 | `d5d2e6c6c72506eb4fc8140e256bdc2fddc81d1292cd14997082ef68f59d1c2a` |
+_현재 로컬에 파일이 없습니다._
 
 ### 2. 실측 스냅샷 (축산물이력제 API 응답)
 
@@ -80,7 +50,12 @@ _현재 로컬에 파일이 없습니다._
 - **재확보**: `npm run verify -- --rcpNo <rcpNo>`
 - **비고**: 농장번호·상세주소 포함. 화면·배포는 이 파일을 읽지 않는다(data/public 사용).
 
-_현재 로컬에 파일이 없습니다._
+| 경로 | 바이트 | sha256 |
+|---|---:|---|
+| `data/reports/real-estate-bbric-hiwon/report-2026-08-23T00-00-00-000Z.json` | 17,585 | `5a68a3a3b5fa2e29d595ddb4806f0496095c74d3ad2328726a418177f9dbb3ea` |
+| `data/reports/real-estate-sou-daejeon-startup/report-2026-08-22T20-07-56-237Z.json` | 9,961 | `a77af71d53e97083c7adba80ffa0d21faa70695b2c7e54a81ace06cd5f975235` |
+| `data/reports/real-estate-sou-daejeon-startup/report-2026-08-22T20-11-20-411Z.json` | 7,416 | `64903a2fc51850adeb8f475935ba05e13073ba2154edeb6402e1411099b36cca` |
+| `data/reports/real-estate-sou-daejeon-startup/report-2026-08-22T20-13-42-535Z.json` | 7,446 | `332d3f866cf25d87eca3324648498b4a3d5858184277377d8a747caef4a81484` |
 
 ## 커밋 대상 산출물
 
@@ -157,11 +132,13 @@ _현재 로컬에 파일이 없습니다._
 | `data/public/livestock-9/report-2026-08-15T15-52-44-480Z.json` | 430,888 | `c989fb5dce8532b849ace669fed17f4b29ae7d5c52db028659a538c312807da3` |
 | `data/public/offerings/index.json` | 7,433 | `c08bf0320380c0e7b5d892f50c09f2ecacfb27d67fc2d4b2b50216be0540f72f` |
 | `data/public/real-estate-a/narrative-latest.json` | 3,840 | `37ca2a55c0afd61e2653e5cf3e05a1bd19f17d808889d219d32662ba87e31732` |
-| `data/public/real-estate-a/report-2026-08-13T17-53-03-085Z.json` | 15,168 | `931ed4b78f166004a50fc90e7b0b9cf9689170baf76f7091e4cb6f6b629e7387` |
-| `data/public/real-estate-a/report-2026-08-14T04-34-57-566Z.json` | 50,960 | `659b739f067591b35ece1f3da4b16e80794c85591b600f01f6e2cb1e301db753` |
-| `data/public/real-estate-a/report-2026-08-14T04-53-03-242Z.json` | 50,960 | `902e90ecea4e77d53e309e350767f985ac8e1d646df1ddf743900e7e0106c25b` |
-| `data/public/real-estate-a/report-2026-08-14T04-54-06-189Z.json` | 51,237 | `fe2b4434b20657a1cb2872bae4622085043c189bf96af2dc01d705a7e338513e` |
-| `data/public/real-estate-a/report-2026-08-21T16-58-05-870Z.json` | 51,125 | `2a2814b666e9a2470f556c8b2a8428600c7614434cd9b39b51b7cf3b8b43d830` |
+| `data/public/real-estate-a/report-2026-08-13T17-53-03-085Z.json` | 14,835 | `669d4076a99a4878ca3b36a610578c878de5b8fce39fc04d3a4343723b512580` |
+| `data/public/real-estate-a/report-2026-08-14T04-34-57-566Z.json` | 50,627 | `2c08c4cf68d2c41d2c93f10ed107df3858e0aa441e18a8e8db9917c5894ec8af` |
+| `data/public/real-estate-a/report-2026-08-14T04-53-03-242Z.json` | 50,627 | `f55a149e54ebc947c8da6ba119afbcb943a5f5679d6acaeb0684d403f55c1936` |
+| `data/public/real-estate-a/report-2026-08-14T04-54-06-189Z.json` | 50,904 | `8ba96cc00aef5bfe8cc5a14e31cfa332a9a2ed88e34f1cb72edce1acdb86f22a` |
+| `data/public/real-estate-a/report-2026-08-21T16-58-05-870Z.json` | 49,205 | `2dc1211d092e2b8e3ed7eec5108e71c95fb3d0e2e44e0aa79d6f6e7ba82f820f` |
+| `data/public/real-estate-bbric-hiwon/report-2026-08-23T00-00-00-000Z.json` | 16,005 | `db94d5a3494c920e15529f3702bd9661fde27d7e12d68a6842a3293404fb03d1` |
+| `data/public/real-estate-sou-daejeon-startup/report-2026-08-22T20-13-42-535Z.json` | 7,431 | `da9427e28b5bdea00b5ef89a95a8f1dbc416da46e28c9f0115ccff5405beddc8` |
 | `data/public/replay/livestock-1/diff-2026-08-14T18-14-36-550Z.json` | 154,949 | `9a10c64b363454d94c9a088f655a0e7757a4fbddd0dd2f4b66c1aaf9a7478e34` |
 | `data/public/replay/livestock-2/diff-2026-08-14T18-17-47-890Z.json` | 51,111 | `7afb5e1a547445e539f32371cc005b7c15668e8e031ca30bc2f3ad8890621543` |
 | `data/public/replay/livestock-3/diff-2026-08-14T18-21-45-354Z.json` | 22,678 | `c3799b15bb0ed0fe4c6b0b5ece1fc5dcb0dd5fa9a935686c2142ddbfbe9a974b` |
@@ -247,7 +224,20 @@ _현재 로컬에 파일이 없습니다._
 | `data/reference/auction-price/024001-2026-06.json` | 2,910 | `38895fdcd3b41353b8f6fe524156e992b6853c8df29a101de639ca3fe315a126` |
 | `data/reference/auction-price/024001-2026-07.json` | 2,910 | `1cf72fbee49bbc0c077683f56c4ecdeaf5a84d1b498636692f74ee7dbf282707` |
 | `data/reference/auction-price/024001-2026-08.json` | 2,902 | `048efb1156ca18cc9ec4582ca0d82bb7f043143fe3723e847486e26b6e1aea5a` |
+| `data/reference/building-hub/11110-12200-0-0070-0000.json` | 1,236 | `0884be002eddc00382adb075fc9ce6f9e4a33104227bfd9e2ce3a0a835101be4` |
+| `data/reference/building-hub/11110-12200-0-0246-0000.json` | 1,207 | `1fb803026e1716eb0082343277bb3786b9a6785735bbf8133499bf8b7bd89ca5` |
+| `data/reference/building-hub/11110-13800-0-0006-0000.json` | 1,227 | `32b8c75033895bcc2a665f4bec01781e002f531160d795f632fc169112f53e2b` |
+| `data/reference/building-hub/11140-10300-0-0084-0000.json` | 1,131 | `98751479871c6984df1f22bda20501e82f7e49a34140381c33f44025b1a04470` |
+| `data/reference/building-hub/11140-10800-0-0066-0000.json` | 1,182 | `c1556af4a2cab44c743f8bb414ea3dc88f5c072581bfc47d144857c022b1c4ba` |
+| `data/reference/building-hub/11140-10800-0-0067-0000.json` | 1,240 | `cbc1c4b9d67d0607dd3c5dbb5a116a06efcfe6801c59f0d28e6a706e59ad4d0e` |
+| `data/reference/building-hub/11140-11000-0-0099-0000.json` | 1,240 | `d34d73f5ceb2fecd40f5513dfedf4a94051690d8b28421dbe1a806a2969a97ad` |
+| `data/reference/building-hub/11140-11800-0-0541-0000.json` | 1,820 | `a576df3799cc9acad08971261624523018b1cded23092440e25a932432db3d65` |
+| `data/reference/building-hub/11680-10100-0-0676-0000.json` | 1,252 | `b339e7085d7fdb658744e3c8c213804102fe64342c3540d39dd68769dbff8a9d` |
+| `data/reference/building-hub/11680-10500-0-0159-0008.json` | 1,809 | `f2247409595787066c6b6de501ce5880b9412647fcda9241722b4f7c662a481f` |
+| `data/reference/building-hub/11680-10600-0-0892-0000.json` | 1,244 | `0e35afb87f8e2cbc30b3964a7163a62190a0b4cec5abc2a1845cd60520a313a7` |
+| `data/reference/building-hub/26380-10800-0-0651-0001.json` | 1,216 | `962ac8a7add39efbe5f80db3d92ccf37a84c144e1f525aea4f1cdd95ee3fb47e` |
 | `data/reference/building-register/11650-10800-1678-0004.json` | 666 | `8e1aaf9a6caeed472ab872af079698529d14106b4448379810f26dfe4f7757ca` |
+| `data/reference/ecos/722Y001-base-rate.json` | 121,047 | `42757c94fa387a0377afa0b7aa212f1d8e94e9673285808e440b4b624d844abe` |
 | `data/reference/livestock-disease/api/mafra_disease_occurrences_auxiliary.json` | 197,159 | `2c6f970a9178cd44a2f1b9ca97bab6717e9a09a935a5a990b5b8ce49721c0dbd` |
 | `data/reference/livestock-disease/api/mafra_farm_disease_stats_auxiliary.json` | 11,064 | `67eac373d5ef682ade9a47f512940a541368ffe90ff391334f8c986c3b26249f` |
 | `data/reference/livestock-disease/fmd/mafra_fmd_documents.json` | 24,572 | `4dbc2dbc98cb4f36ca0a7924ed997c5dfa5fd21bf71ada160df0f9123c476878` |
@@ -270,6 +260,12 @@ _현재 로컬에 파일이 없습니다._
 | `data/reference/rtms/11650-2026-03.json` | 12,111 | `7b59e4c2884a0754bfa5011d6cc9994572392a2972f7e6ce0d4b256fa21f793b` |
 | `data/reference/rtms/11650-2026-04.json` | 13,918 | `81529bea3730bfb2d70ee9a9d8ea5cd03930f1fd2083e431522550dfa949918d` |
 | `data/reference/rtms/11650-2026-05.json` | 12,715 | `5f45ff767a77ef9f30fc45306edf742ed9a86a61f4efbce555ee9ae3a95854a0` |
+| `data/reference/rtms/26380-2024-09.json` | 2,296 | `b617ddf65052f00cd0dd5c35e7ddfd9652ed128a3d2967ff160ae40d0a7211aa` |
+| `data/reference/rtms/26380-2024-10.json` | 47,443 | `b1646f9d1b3d466ec63c71fe023a477f063839ca8d3097e6cc06148932e0be3c` |
+| `data/reference/rtms/26380-2024-11.json` | 4,009 | `83d5c62aec39787db07223bdba8e6331b1cc1cd2b9aa8253f2248722d9548ae7` |
+| `data/reference/rtms/30200-2025-09.json` | 4,678 | `b0cc10f5ae99099bf2532767dc492d8d6a7a6eb83829d658c854bb9e52c2b89a` |
+| `data/reference/rtms/30200-2025-10.json` | 3,921 | `839b1e1ff40a5a58b405576a27891624e9cab06445c9da00fb1932ad5aa47d4f` |
+| `data/reference/rtms/30200-2025-11.json` | 7,486 | `b72ce868a92ca3594046bce459a647878335ac68142691f4c3f4e520ee369c7b` |
 
 ### 공모 기초자료 (공개 자료 정리 · 커밋 대상)
 
@@ -292,3 +288,5 @@ _현재 로컬에 파일이 없습니다._
 | `data/offers/pig-2.json` | 1,116 | `71ed1f1184bb213a35c1572eec2e0f2fcaeb5bd7c540b8848aee87add430eb29` |
 | `data/offers/pig-3.json` | 1,116 | `cb4cf817c92a7d97e384f76bc89a66f2a44a6eb625f02e4e2559218c69e96536` |
 | `data/offers/real-estate-a.json` | 2,399 | `ec380f2f23d763d365db2aca2022c221d9bf89ca3c4e18a4bc6f733580975c08` |
+| `data/offers/real-estate-bbric-hiwon.json` | 23,619 | `397c1f576cb49f6c4b0177338d0f95e4e90d399d847bff2289289146459d7084` |
+| `data/offers/real-estate-sou-daejeon-startup.json` | 11,980 | `7bd788186416cc037ac04a835af5d5d3a0b6753a5d61d74153df9af5d8a6f164` |

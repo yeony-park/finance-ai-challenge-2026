@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-01-022" data-record-index="21" data-seed="4210">
+<title>잔물결의 방 — 맑아지는 굴곡 · Rill Room / A Bend Becoming Clear</title>
+<rect x="0" y="0" width="800" height="1000" fill="#312E4A"/>
+<g transform="rotate(90 400 500)">
+<path d="M330 0 C300 170 360 290 342 452 C300 610 360 780 334 1000 L360 1000 C390 790 330 622 360 454 C390 295 360 164 345 0 Z" fill="#5B4E78" opacity="0.32"/>
+<path d="M365 0 C320 170 410 290 377 452 C320 610 410 780 369 1000 L410 1000 C455 790 365 622 410 454 C455 295 410 164 387 0 Z" fill="#8C79A8" opacity="0.38"/>
+<path d="M400 0 C340 170 460 290 412 452 C340 610 460 780 404 1000 L460 1000 C520 790 400 622 460 454 C520 295 460 164 430 0 Z" fill="#D6B3A6" opacity="0.44"/>
+<path d="M435 0 C360 170 510 290 447 452 C360 610 510 780 439 1000 L510 1000 C585 790 435 622 510 454 C585 295 510 164 472 0 Z" fill="#F0D8B8" opacity="0.5"/>
+<path d="M470 0 C440 170 500 290 482 452 C440 610 500 780 474 1000 L500 1000 C530 790 470 622 500 454 C530 295 500 164 485 0 Z" fill="#8EA6A8" opacity="0.56"/>
+<ellipse cx="410" cy="530" rx="140" ry="219" fill="#F0D8B8" opacity="0.35"/>
+<ellipse cx="410" cy="530" rx="75" ry="165" fill="#8EA6A8" opacity="0.6"/>
+<ellipse cx="262" cy="110" rx="16" ry="5" fill="#D6B3A6" opacity="0.58"/>
+<ellipse cx="346" cy="281" rx="23" ry="8" fill="#D6B3A6" opacity="0.58"/>
+<ellipse cx="430" cy="452" rx="30" ry="5" fill="#D6B3A6" opacity="0.58"/>
+<ellipse cx="262" cy="623" rx="16" ry="8" fill="#D6B3A6" opacity="0.58"/>
+<text x="690" y="952" fill="#D6B3A6" font-family="sans-serif" font-size="9" letter-spacing="3" text-anchor="end" opacity="0.34">SYNTHETIC</text>
+</g>
+</svg>

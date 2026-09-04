@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-01-065" data-record-index="64" data-seed="4609">
+<title>유리결의 반사 — 반짝임 뒤의 공백 · Glassgrain Reflection / Blank Space Behind a Glimmer</title>
+<rect x="0" y="0" width="800" height="1000" fill="#17324D"/>
+<g transform="rotate(90 400 500)">
+<ellipse cx="389" cy="647" rx="310" ry="405" fill="#2D5873" opacity="0.28"/>
+<ellipse cx="389" cy="647" rx="256" ry="292" fill="#5C8EA3" opacity="0.32"/>
+<ellipse cx="389" cy="647" rx="166" ry="229" fill="#A9CDD0" opacity="0.38"/>
+<ellipse cx="377" cy="633" rx="78" ry="104" fill="none" stroke="#D6A85F" stroke-width="3" stroke-opacity="0.48"/>
+<ellipse cx="389" cy="647" rx="111" ry="143" fill="none" stroke="#E2F0EA" stroke-width="4" stroke-opacity="0.54"/>
+<ellipse cx="401" cy="633" rx="144" ry="182" fill="none" stroke="#D6A85F" stroke-width="5" stroke-opacity="0.6"/>
+<ellipse cx="377" cy="647" rx="177" ry="221" fill="none" stroke="#E2F0EA" stroke-width="3" stroke-opacity="0.66"/>
+<ellipse cx="389" cy="633" rx="210" ry="260" fill="none" stroke="#D6A85F" stroke-width="4" stroke-opacity="0.48"/>
+<ellipse cx="389" cy="647" rx="54" ry="82" fill="#E2F0EA" opacity="0.58"/>
+<ellipse cx="398" cy="641" rx="20" ry="35" fill="#D6A85F" opacity="0.86"/>
+<line x1="225" y1="351" x2="267" y2="447" stroke="#A9CDD0" stroke-width="2" stroke-opacity="0.54"/>
+<line x1="352" y1="442" x2="414" y2="560" stroke="#A9CDD0" stroke-width="2" stroke-opacity="0.54"/>
+<line x1="479" y1="533" x2="561" y2="629" stroke="#A9CDD0" stroke-width="2" stroke-opacity="0.54"/>
+<line x1="606" y1="624" x2="648" y2="742" stroke="#A9CDD0" stroke-width="2" stroke-opacity="0.54"/>
+<line x1="733" y1="715" x2="795" y2="811" stroke="#A9CDD0" stroke-width="2" stroke-opacity="0.54"/>
+<line x1="170" y1="806" x2="252" y2="924" stroke="#A9CDD0" stroke-width="2" stroke-opacity="0.54"/>
+<line x1="297" y1="897" x2="339" y2="993" stroke="#A9CDD0" stroke-width="2" stroke-opacity="0.54"/>
+<line x1="424" y1="148" x2="486" y2="266" stroke="#A9CDD0" stroke-width="2" stroke-opacity="0.54"/>
+<line x1="551" y1="239" x2="633" y2="335" stroke="#A9CDD0" stroke-width="2" stroke-opacity="0.54"/>
+<text x="728" y="953" fill="#A9CDD0" font-family="sans-serif" font-size="9" letter-spacing="3" text-anchor="end" opacity="0.34">SYNTHETIC</text>
+</g>
+</svg>

@@ -125,9 +125,9 @@ describe("livestock 공모 원장 파일 정합 (PR-1 · 분 단위 청약 시�
     },
   );
 
-  test("loadFileModeOfferings에 livestock 9건이 cattle·manual_verified로 적재되어 총 24건이 된다", async () => {
+  test("loadFileModeOfferings에 livestock 9건과 부동산 원장 3건이 포함돼 총 26건이 된다", async () => {
     const offerings = await loadFileModeOfferings();
-    expect(offerings).toHaveLength(24);
+    expect(offerings).toHaveLength(26);
     const bySlug = new Map(
       offerings.map((offering) => [offering.offerSlug, offering]),
     );
@@ -136,5 +136,8 @@ describe("livestock 공모 원장 파일 정합 (PR-1 · 분 단위 청약 시�
       expect(row?.categoryId).toBe("cattle");
       expect(row?.provenance).toBe("manual_verified");
     }
+    expect(bySlug.get("real-estate-a")?.categoryId).toBe("real-estate");
+    expect(bySlug.get("real-estate-bbric-hiwon")?.categoryId).toBe("real-estate");
+    expect(bySlug.get("real-estate-sou-daejeon-startup")?.categoryId).toBe("real-estate");
   });
 });

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-01-029" data-record-index="28" data-seed="4306">
+<title>달선의 문장 — 어둠을 가르는 은빛 · Moonline Sentence / Silver Cutting Through Darkness</title>
+<rect x="0" y="0" width="800" height="1000" fill="#20252B"/>
+<g transform="rotate(180 400 500)">
+<circle cx="184" cy="413" r="70" fill="#E7D9C8" opacity="0.84"/>
+<circle cx="201" cy="405" r="70" fill="#20252B" opacity="0.94"/>
+<ellipse cx="184" cy="413" rx="88" ry="44" fill="none" stroke="#4A5862" stroke-width="2" stroke-opacity="0.5"/>
+<ellipse cx="184" cy="413" rx="131" ry="76" fill="none" stroke="#8797A0" stroke-width="3" stroke-opacity="0.56"/>
+<ellipse cx="184" cy="413" rx="174" ry="108" fill="none" stroke="#C9B7A5" stroke-width="4" stroke-opacity="0.62"/>
+<ellipse cx="184" cy="413" rx="217" ry="140" fill="none" stroke="#E7D9C8" stroke-width="2" stroke-opacity="0.5"/>
+<ellipse cx="184" cy="413" rx="260" ry="172" fill="none" stroke="#4A5862" stroke-width="3" stroke-opacity="0.56"/>
+<ellipse cx="184" cy="413" rx="303" ry="204" fill="none" stroke="#8797A0" stroke-width="4" stroke-opacity="0.62"/>
+<ellipse cx="184" cy="413" rx="346" ry="236" fill="none" stroke="#C9B7A5" stroke-width="2" stroke-opacity="0.5"/>
+<ellipse cx="184" cy="413" rx="389" ry="268" fill="none" stroke="#E7D9C8" stroke-width="3" stroke-opacity="0.56"/>
+<ellipse cx="184" cy="413" rx="432" ry="300" fill="none" stroke="#4A5862" stroke-width="4" stroke-opacity="0.62"/>
+<circle cx="219.34" cy="579.29" r="3" fill="#C9B7A5" opacity="0.78"/>
+<circle cx="89.33" cy="616.01" r="5" fill="#E7D9C8" opacity="0.78"/>
+<circle cx="-61.46" cy="543.51" r="3" fill="#C9B7A5" opacity="0.78"/>
+<circle cx="16.09" cy="386.41" r="5" fill="#E7D9C8" opacity="0.78"/>
+<circle cx="28.4" cy="251.87" r="3" fill="#C9B7A5" opacity="0.78"/>
+<circle cx="150.12" cy="137.07" r="5" fill="#E7D9C8" opacity="0.78"/>
+<path d="M0 661 C54 553 74 323 164 259 C274 183 694 281 800 187" fill="none" stroke="#C9B7A5" stroke-width="5" stroke-linecap="round"/>
+<path d="M69 139 C107 114 148 170 181 139" fill="none" stroke="#8797A0" stroke-width="2" stroke-linecap="round"/>
+<path d="M217 280 C255 255 296 311 329 280" fill="none" stroke="#8797A0" stroke-width="2" stroke-linecap="round"/>
+<path d="M365 421 C403 396 444 452 477 421" fill="none" stroke="#8797A0" stroke-width="2" stroke-linecap="round"/>
+<text x="54" y="954" fill="#8797A0" font-family="sans-serif" font-size="9" letter-spacing="3" opacity="0.32">SYNTHETIC</text>
+</g>
+</svg>

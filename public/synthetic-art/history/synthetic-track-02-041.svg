@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-02-041" data-record-index="214" data-seed="6108">
+<title>풀씨의 리듬 — 작은 잎의 불규칙한 노래 · Grassseed Rhythm / Irregular Song of Small Leaves</title>
+<rect x="0" y="0" width="800" height="1000" fill="#253D2C"/>
+<rect x="0" y="0" width="800" height="1000" fill="#31572C"/>
+<line x1="220" y1="660" x2="220" y2="330" stroke="#90A955" stroke-width="12" stroke-linecap="round"/>
+<ellipse cx="220" cy="330" rx="100" ry="210" fill="#4F772D" stroke="#E09F3E" stroke-width="8" opacity="0.92" transform="rotate(-18 220 330)"/>
+<line x1="220" y1="120" x2="228" y2="102" stroke="#E09F3E" stroke-width="4" stroke-linecap="round" opacity="0.68"/>
+<ellipse cx="188" cy="260" rx="33" ry="42" fill="#ECF39E" opacity="0.8" transform="rotate(-20 188 260)"/>
+<line x1="590" y1="930" x2="590" y2="520" stroke="#ECF39E" stroke-width="12" stroke-linecap="round"/>
+<ellipse cx="590" cy="520" rx="150" ry="290" fill="#90A955" stroke="#E09F3E" stroke-width="8" opacity="0.92" transform="rotate(4 590 520)"/>
+<line x1="590" y1="230" x2="598" y2="212" stroke="#E09F3E" stroke-width="4" stroke-linecap="round" opacity="0.68"/>
+<ellipse cx="558" cy="424" rx="50" ry="58" fill="#ECF39E" opacity="0.8" transform="rotate(-20 558 424)"/>
+<line x1="160" y1="1205" x2="160" y2="855" stroke="#E09F3E" stroke-width="12" stroke-linecap="round"/>
+<ellipse cx="160" cy="855" rx="115" ry="230" fill="#ECF39E" stroke="#E09F3E" stroke-width="8" opacity="0.92" transform="rotate(26 160 855)"/>
+<line x1="160" y1="625" x2="168" y2="607" stroke="#E09F3E" stroke-width="4" stroke-linecap="round" opacity="0.68"/>
+<ellipse cx="128" cy="779" rx="38" ry="46" fill="#ECF39E" opacity="0.8" transform="rotate(-20 128 779)"/>
+<text x="748" y="955" text-anchor="end" fill="#ECF39E" opacity="0.32" font-family="sans-serif" font-size="12" letter-spacing="4">SYNTHETIC</text>
+</svg>

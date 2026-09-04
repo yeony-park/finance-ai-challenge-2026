@@ -1,4 +1,4 @@
-import { sql } from "drizzle-orm";
+import { sql, type SQL } from "drizzle-orm";
 import { z } from "zod";
 
 import { isRegisteredSource } from "@/lib/spine/rag/corpus";
@@ -15,19 +15,24 @@ const searchRowSchema = z.object({
   as_of: z.string(),
 });
 
-export const createDbRagSearchRepository = (): RagSearchRepository => {
-  const db = getRuntimeDb();
+export type RagSqlExecutor = (query: SQL) => Promise<unknown>;
+
+export const createDbRagSearchRepository = (
+  execute: RagSqlExecutor = (query) => getRuntimeDb().execute(query),
+): RagSearchRepository => {
   return {
     mode: "db",
     async search(query: string): Promise<RagSearchResult> {
-      const raw = await db.execute(sql`
+      const raw = await execute(sql`
         SELECT d.source_id,
                c.content,
                ts_rank(c.tsv, websearch_to_tsquery('simple', ${query})) AS score,
                d.retrieved_on::text AS as_of
         FROM rag_chunks c
         JOIN rag_documents d ON d.id = c.document_id
-        WHERE c.tsv @@ websearch_to_tsquery('simple', ${query})
+        WHERE c.scope_kind = 'generic'
+          AND d.scope_kind = 'generic'
+          AND c.tsv @@ websearch_to_tsquery('simple', ${query})
         ORDER BY score DESC
         LIMIT ${MAX_HITS}
       `);

@@ -6,6 +6,7 @@ import type {
   OfferSchedule,
   SubscriptionPhase,
 } from "@/components/site/offers";
+import { buildOfferSchedule } from "@/components/site/offers";
 import { categoryById, type CategoryId } from "@/lib/content/categories";
 import {
   ISSUER_SLOT_TITLE,
@@ -16,6 +17,9 @@ import {
   loadLatestWatchState,
   type WatchState,
 } from "@/lib/verify/amend/watch-state";
+import { isPublicVerificationScopeAllowed } from "@/lib/verify/dart/onboarding-catalog";
+import { loadApprovedCattleFilingArtifacts } from "@/lib/knowledge/cattle-filing-artifact";
+import type { CattleFilingDerivedArtifact } from "@/lib/verify/dart/filing-derived";
 import { loadFilingFacts, type FilingFacts } from "@/lib/verify/report/filing-facts";
 import { loadLatestReport, type LoadedReport } from "@/lib/verify/report/load";
 import {
@@ -45,7 +49,7 @@ const CATEGORY_ANALYSIS_KEYWORDS: Record<CategoryId, readonly string[]> = {
 
 export interface OfferEvidence {
   readonly offer: OfferEntry;
-  readonly loaded: LoadedReport;
+  readonly loaded: LoadedReport | null;
   readonly watch: WatchState | null;
   readonly schedule: OfferSchedule;
   readonly filingFacts: FilingFacts | null;
@@ -87,31 +91,65 @@ interface CategoryLandingModelOptions {
 const loadEvidence = async (
   offers: readonly OfferEntry[],
   now: Date,
-): Promise<readonly OfferEvidence[]> =>
-  Promise.all(
+  artifactByProduct: ReadonlyMap<string, CattleFilingDerivedArtifact>,
+): Promise<readonly OfferEvidence[]> => {
+  const entries = await Promise.all(
     offers.map(async (offer) => {
-      const [loaded, watch, filingFacts] = await Promise.all([
-        loadLatestReport(offer.id),
-        loadLatestWatchState(offer.id),
-        loadFilingFacts(offer.id),
-      ]);
-      const card = buildOfferCard({
-        offer,
-        now,
-        ...loaded,
-        watch: watch ?? null,
-        hasFilingFacts: filingFacts !== null,
-      });
-      return {
-        offer,
-        loaded,
-        watch: watch ?? null,
-        schedule: card.schedule,
-        filingFacts,
-        card,
-      };
+      try {
+        const [loaded, watch, filingFacts] = await Promise.all([
+          loadLatestReport(offer.id),
+          loadLatestWatchState(offer.id),
+          loadFilingFacts(offer.id),
+        ]);
+        const card = buildOfferCard({
+          offer,
+          now,
+          ...loaded,
+          watch: watch ?? null,
+          hasFilingFacts: filingFacts !== null,
+        });
+        return {
+          offer,
+          loaded,
+          watch: watch ?? null,
+          schedule: card.schedule,
+          filingFacts,
+          card,
+        } satisfies OfferEvidence;
+      } catch {
+        const artifact = artifactByProduct.get(offer.id);
+        if (!artifact || offer.assetKind !== "livestock") return null;
+
+        const schedule = buildOfferSchedule(offer, now);
+        return {
+          offer,
+          loaded: null,
+          watch: null,
+          schedule,
+          filingFacts: null,
+          card: {
+            id: offer.id,
+            href: `/offers/${offer.id}`,
+            title: offer.title,
+            assetLabel: offer.assetLabel,
+            schedule,
+            verdictLine: "승인된 공시에서 원금 미보장 문단을 확인했습니다.",
+            tallies: [
+              { value: artifact.chunks.length, label: "공시 근거", tone: "unk" },
+            ],
+            lastVerifiedAt: `${artifact.document.asOf} 기준`,
+            amendment:
+              "원금 미보장 문단 확인 · 정정 관계·최신 조건·개체 실재성 미확인",
+            amendmentIsAlert: false,
+            hasFilingFacts: false,
+          },
+        } satisfies OfferEvidence;
+      }
     }),
   );
+
+  return entries.flatMap((entry) => (entry ? [entry] : []));
+};
 
 const loadCategoryTrackRecord = async (
   offers: readonly OfferEntry[],
@@ -208,20 +246,30 @@ export async function loadCategoryLandingModel({
   customTitle,
   hasMarketContent,
 }: CategoryLandingModelOptions): Promise<CategoryLandingModel> {
-  const byOpenAsc = [...offers].sort(
-    (a, b) =>
-      Date.parse(a.subscription.opensAt) - Date.parse(b.subscription.opensAt),
-  );
-  const [evidence, trackRecord] = await Promise.all([
-    loadEvidence(byOpenAsc, new Date()),
+  const byOpenAsc = offers
+    .filter((offer) => isPublicVerificationScopeAllowed(offer.id))
+    .sort(
+      (a, b) =>
+        Date.parse(a.subscription.opensAt) - Date.parse(b.subscription.opensAt),
+    );
+  const [artifacts, trackRecord] = await Promise.all([
+    categoryId === "cattle"
+      ? loadApprovedCattleFilingArtifacts().catch(() => [])
+      : Promise.resolve([]),
     loadCategoryTrackRecord(byOpenAsc),
   ]);
+  const evidence = await loadEvidence(
+    byOpenAsc,
+    new Date(),
+    new Map(artifacts.map((artifact) => [artifact.registry.offerId, artifact])),
+  );
 
   const visibleEvidence = evidence.filter(
     (entry) =>
       (analysisStatus === null || entry.schedule.phase === analysisStatus) &&
       (analysisVerdict === null ||
-        entry.loaded.report.summary[analysisVerdict] > 0),
+        (entry.loaded !== null &&
+          entry.loaded.report.summary[analysisVerdict] > 0)),
   );
   const activeEvidence = visibleEvidence.filter(
     (entry) => entry.schedule.phase !== "closed",
@@ -231,15 +279,17 @@ export async function loadCategoryLandingModel({
   );
   const totals = evidence.reduce<CategoryVerdictTotals>(
     (sum, entry) => ({
-      match: sum.match + entry.loaded.report.summary.match,
-      mismatch: sum.mismatch + entry.loaded.report.summary.mismatch,
+      match: sum.match + (entry.loaded?.report.summary.match ?? 0),
+      mismatch: sum.mismatch + (entry.loaded?.report.summary.mismatch ?? 0),
       unverifiable:
-        sum.unverifiable + entry.loaded.report.summary.unverifiable,
+        sum.unverifiable + (entry.loaded?.report.summary.unverifiable ?? 0),
     }),
     { match: 0, mismatch: 0, unverifiable: 0 },
   );
   const latestGeneratedAt = evidence
-    .map((entry) => entry.loaded.report.generatedAt)
+    .flatMap((entry) =>
+      entry.loaded ? [entry.loaded.report.generatedAt] : [],
+    )
     .sort()
     .at(-1);
   const categoryKeywords = CATEGORY_ANALYSIS_KEYWORDS[categoryId];

@@ -34,7 +34,13 @@ const nextConfig: NextConfig = {
     dangerouslyAllowLocalIP: false,
   },
   outputFileTracingIncludes: {
-    "/**": ["data/public/**/*.json", "data/reference/**/*.json"],
+    "/**": [
+      "data/public/**/*.json",
+      "data/reference/**/*.json",
+      "data/knowledge/derived/**/*.json",
+      "data/knowledge/filing-registry/**/*.json",
+      "data/knowledge/generated/index.json",
+    ],
   },
   outputFileTracingExcludes: {
     "/**": [
@@ -42,11 +48,37 @@ const nextConfig: NextConfig = {
       "data/reports/**/*",
       "data/snapshots/**/*",
       "data/goldset/**/*",
+      "data/public/real-estate-a/**/*",
+      "data/public/real-estate-bbric-hiwon/**/*",
+      "data/public/real-estate-sou-daejeon-startup/**/*",
+      "data/reference/building-hub/**/*",
+      "data/reference/building-register/**/*",
+      "data/reference/rtms/**/*",
+      "data/reference/ecos/**/*",
+      "data/offers/real-estate-a.json",
+      "data/offers/real-estate-bbric-hiwon.json",
+      "data/offers/real-estate-sou-daejeon-startup.json",
+      "data/knowledge/products/**/*",
+      "data/knowledge/sources/**/*",
+      "data/knowledge/inputs/**/*",
+      "db/**/*",
     ],
   },
   allowedDevOrigins: ["192.168.140.132"],
   async headers() {
     return [
+      {
+        source: "/scenario-documents/:path*",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
+      },
+      ...[
+        "/offers/real-estate-a",
+        "/offers/real-estate-bbric-hiwon",
+        "/offers/real-estate-sou-daejeon-startup",
+      ].map((source) => ({
+        source,
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
+      })),
       {
         source: "/:path*",
         headers: [

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "promptVersion": 3,
+  "categoryId": "pig",
+  "productId": "pig-1",
+  "dataNature": "observed",
+  "asOf": "2025-12-15",
+  "inputHash": "b71bebb8a8677f2c217148c072887d5511b0f92053413572679ad4627a002d57",
+  "generatedAt": "2026-09-02T10:13:22.862Z",
+  "generator": "llm",
+  "model": "openai:gpt-5.6-luna",
+  "sentences": [
+    "DART 공시에서 공모 수량·단가·총액과 청약·배정 절차, 운영비 부족 및 원금 미보장 위험 문단이 확인됐습니다.",
+    "개체 식별번호가 없어 축산물이력 원장과 개체 단위 대조는 지원하지 않습니다."
+  ],
+  "sentenceEvidencePaths": [
+    [
+      "/confirmedSections/0/title",
+      "/confirmedSections/0/text",
+      "/confirmedSections/1/title",
+      "/confirmedSections/1/text",
+      "/confirmedSections/2/title",
+      "/confirmedSections/2/text"
+    ],
+    [
+      "/verificationBoundary"
+    ]
+  ],
+  "sourceReferences": [
+    "ca68a62f0b1d896c8c853b4daee7bb64e0aec58ee7f0b660a3cec85d59e26b06",
+    "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20251215000259"
+  ]
+}

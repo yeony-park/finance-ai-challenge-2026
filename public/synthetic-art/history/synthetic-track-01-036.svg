@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-01-036" data-record-index="35" data-seed="4402">
+<title>바람실의 층 — 흩어진 실의 언덕 · Wind Thread Layers / Hill of Scattered Threads</title>
+<rect x="0" y="0" width="800" height="1000" fill="#264653"/>
+<polygon points="0,98 82,42 800,735 800,866 714,802 0,238" fill="#287271" opacity="0.65"/>
+<polygon points="128,0 245,0 800,620 800,740 708,683" fill="#61A59C" opacity="0.6"/>
+<polygon points="800,160 718,98 0,790 0,932 90,872" fill="#E9C46A" opacity="0.55"/>
+<polygon points="800,412 766,382 213,1000 338,1000" fill="#E08E79" opacity="0.62"/>
+<path d="M-38 192 C186 307 394 561 818 834" fill="none" stroke="#E9C46A" stroke-width="3" stroke-opacity="0.44" stroke-linecap="round"/>
+<path d="M-4 226 C220 290 428 578 852 800" fill="none" stroke="#B7D7C4" stroke-width="4" stroke-opacity="0.49" stroke-linecap="round"/>
+<path d="M30 260 C254 273 462 595 886 766" fill="none" stroke="#E9C46A" stroke-width="5" stroke-opacity="0.54" stroke-linecap="round"/>
+<path d="M64 294 C288 256 496 612 920 732" fill="none" stroke="#B7D7C4" stroke-width="3" stroke-opacity="0.59" stroke-linecap="round"/>
+<path d="M98 328 C322 239 530 629 954 698" fill="none" stroke="#E9C46A" stroke-width="4" stroke-opacity="0.44" stroke-linecap="round"/>
+<ellipse cx="146" cy="134" rx="11" ry="28" fill="#E9C46A" opacity="0.72"/>
+<ellipse cx="267" cy="283" rx="16" ry="37" fill="#E9C46A" opacity="0.72"/>
+<ellipse cx="388" cy="432" rx="21" ry="28" fill="#E9C46A" opacity="0.72"/>
+<ellipse cx="509" cy="581" rx="11" ry="37" fill="#E9C46A" opacity="0.72"/>
+<ellipse cx="630" cy="730" rx="16" ry="28" fill="#E9C46A" opacity="0.72"/>
+<ellipse cx="101" cy="879" rx="21" ry="37" fill="#E9C46A" opacity="0.72"/>
+<text x="68" y="950" fill="#E9C46A" font-family="sans-serif" font-size="9" letter-spacing="3" opacity="0.32">SYNTHETIC</text>
+</svg>

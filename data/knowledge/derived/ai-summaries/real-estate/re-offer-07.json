@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "promptVersion": 3,
+  "categoryId": "real-estate",
+  "productId": "re-offer-07",
+  "scenarioId": "re-scenario-07",
+  "dataNature": "scenario",
+  "asOf": "2026-08-24",
+  "inputHash": "763e1792973cb604edf514d361e59d346fd381b3332d63b0c98c58b5f7cb8cb1",
+  "generatedAt": "2026-09-02T10:12:49.310Z",
+  "generator": "llm",
+  "model": "openai:gpt-5.6-luna",
+  "sentences": [
+    "그랑서울은 실제 청약·판매 상품이 아닌 검토용 시나리오이며, 결과는 추가 확인이 필요한 주의 상태입니다.",
+    "건축물대장 공개정보와 5개 항목이 서로 같은 값이고, 분쟁 해결 절차의 계약·운영 근거는 추가 확인이 필요합니다."
+  ],
+  "sentenceEvidencePaths": [
+    [
+      "/dataNotice",
+      "/overallState",
+      "/overallLabel",
+      "/limitations/3"
+    ],
+    [
+      "/findings/0/message",
+      "/findings/0/impact",
+      "/findings/1/area",
+      "/findings/1/message"
+    ]
+  ],
+  "sourceReferences": [
+    "re-scenario-07",
+    "molit-building-hub-title"
+  ]
+}

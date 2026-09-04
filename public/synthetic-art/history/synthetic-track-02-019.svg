@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" data-record-id="synthetic-track-02-019" data-record-index="192" data-seed="5908">
+<title>비늘그림자의 면 — 여러 면의 낮은 파도 · Scaled Shadow Plane / Low Wave of Many Planes</title>
+<rect x="0" y="0" width="800" height="1000" fill="#3A2D32"/>
+<path d="M0 615C156 560 268 594 385 628C533 670 645 574 800 610V1000H0Z" fill="#704C5E"/>
+<polygon points="22,680 220,680 230,715 164,828 120,850 76,828 10,715" fill="#3A2D32"/>
+<polygon points="10,670 220,670 230,715 160,820 120,842 80,820 10,715" fill="#9E6A7A"/>
+<polygon points="152,660 430,660 440,705 350,848 290,870 230,848 140,705" fill="#3A2D32"/>
+<polygon points="140,650 430,650 440,705 346,840 290,862 234,840 140,705" fill="#C8A2A8" stroke="#687A8B" stroke-width="5"/>
+<polygon points="312,630 640,630 650,690 545,878 475,900 405,878 300,690" fill="#3A2D32"/>
+<polygon points="300,620 640,620 650,690 541,870 475,892 409,870 300,690" fill="#EBD8C3"/>
+<polygon points="582,675 800,675 810,713 738,833 690,855 642,833 570,713" fill="#3A2D32"/>
+<polygon points="570,665 800,665 810,713 734,825 690,847 646,825 570,713" fill="#687A8B" stroke="#687A8B" stroke-width="5"/>
+<polygon points="152,730 990,730 1000,785 742,958 570,980 398,958 140,785" fill="#3A2D32"/>
+<polygon points="140,720 990,720 1000,785 738,950 570,972 402,950 140,785" fill="#9E6A7A"/>
+<text x="750" y="955" text-anchor="end" fill="#EBD8C3" opacity="0.32" font-family="sans-serif" font-size="12" letter-spacing="4">SYNTHETIC</text>
+</svg>

@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "promptVersion": 3,
+  "categoryId": "real-estate",
+  "productId": "re-offer-01",
+  "scenarioId": "re-scenario-01",
+  "dataNature": "scenario",
+  "asOf": "2026-08-24",
+  "inputHash": "f9c0423db7cc6a6c5de28536b22774882d0de8bdaa9ac52bc7b228f39cfc8155",
+  "generatedAt": "2026-09-02T10:12:31.567Z",
+  "generator": "llm",
+  "model": "openai:gpt-5.6-luna",
+  "sentences": [
+    "연결된 공개정보 범위에서 핵심적으로 서로 다른 값을 찾지 못했으며, 실제 상품이 아닌 검토용 시나리오입니다."
+  ],
+  "sentenceEvidencePaths": [
+    [
+      "/dataNotice",
+      "/overallState",
+      "/overallLabel",
+      "/findings/0/area",
+      "/findings/0/state",
+      "/findings/0/message"
+    ]
+  ],
+  "sourceReferences": [
+    "re-scenario-01",
+    "molit-building-hub-title"
+  ]
+}

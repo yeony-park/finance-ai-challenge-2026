@@ -1,5 +1,6 @@
 import { resolveBuildingRegisterAdapter } from "./adapters/building-register-fake";
 import { resolveRtmsTradeAdapter } from "./adapters/rtms-trade-fake";
+import { loadBuildingHubCache } from "./adapters/building-register";
 import { loadRealEstateOffer } from "./claims/real-estate";
 import { assertOfferId } from "./paths";
 import { runRealEstateVerification } from "./pipeline";
@@ -71,6 +72,9 @@ const main = async (): Promise<void> => {
     lawdCd: offer.asset.lawdCd,
     sigunguName: offer.asset.sigunguName,
   });
+  const buildingHub = offer.asset.buildingHubRequest
+    ? await loadBuildingHubCache(offer.asset.buildingHubRequest, options.dataDir)
+    : undefined;
   const register =
     offer.asset.bjdongCd === undefined
       ? undefined
@@ -79,12 +83,13 @@ const main = async (): Promise<void> => {
           dataDir: options.dataDir,
           sigunguCd: offer.asset.lawdCd,
           bjdongCd: offer.asset.bjdongCd,
-          regionName: `${offer.asset.sigunguName} ${offer.asset.dong}`,
-        });
+           regionName: `${offer.asset.sigunguName} ${offer.asset.dong}`,
+         });
 
   const report = runRealEstateVerification({
     offer,
     trades,
+    ...(buildingHub === undefined ? {} : { buildingHub }),
     ...(register === undefined ? {} : { register }),
   });
   const internal = await writeReport(report, options.dataDir);

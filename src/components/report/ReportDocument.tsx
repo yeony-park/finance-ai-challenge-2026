@@ -16,12 +16,16 @@ export type ReportSectionContent = Partial<
 export function ReportDocument({
   view,
   narrative = null,
+  aiSummary = null,
+  overview = null,
   lifecycle,
   sections,
   sectionContent,
 }: {
   readonly view: DemoView;
   readonly narrative?: Readonly<Record<ExplainLevel, NarrativeLevel>> | null;
+  readonly aiSummary?: ReactNode;
+  readonly overview?: ReactNode;
   readonly lifecycle?: ReactNode;
   readonly sections: readonly ReportSection[];
   readonly sectionContent: ReportSectionContent;
@@ -35,6 +39,8 @@ export function ReportDocument({
         view={view}
         level={level}
         narrative={narrative}
+        aiSummary={aiSummary}
+        overview={overview}
         lifecycle={lifecycle}
         onLevelChange={setLevelOverride}
       />

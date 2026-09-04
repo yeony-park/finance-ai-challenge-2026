@@ -2,6 +2,10 @@ import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { z } from "zod";
 
+import {
+  isPublicVerificationDocumentAllowed,
+  isPublicVerificationScopeAllowed,
+} from "../dart/onboarding-catalog";
 import { assertOfferId } from "../paths";
 import type { AmendmentEvent } from "./monitor";
 
@@ -74,6 +78,9 @@ export const writeWatchState = async (
   state: WatchState,
   dataDir = "data",
 ): Promise<string> => {
+  if (!isPublicVerificationDocumentAllowed(state.offerId, state.baseRcpNo)) {
+    throw new Error("공개 감시 기록은 승인된 active RCP만 저장할 수 있습니다.");
+  }
   const dir = watchStateDir(state.offerId, dataDir);
   await mkdir(dir, { recursive: true });
   const file = path.join(dir, watchFileName(state.checkedAt));
@@ -85,6 +92,7 @@ export const loadLatestWatchState = async (
   offerId: string,
   dataDir = "data",
 ): Promise<WatchState | undefined> => {
+  if (!isPublicVerificationScopeAllowed(offerId)) return undefined;
   const dir = watchStateDir(offerId, dataDir);
 
   let files: readonly string[];
@@ -101,7 +109,13 @@ export const loadLatestWatchState = async (
   if (!fileName) return undefined;
 
   try {
-    return parseWatchState(JSON.parse(await readFile(path.join(dir, fileName), "utf8")));
+    const state = parseWatchState(
+      JSON.parse(await readFile(path.join(dir, fileName), "utf8")),
+    );
+    return state.offerId === offerId &&
+      isPublicVerificationDocumentAllowed(offerId, state.baseRcpNo)
+      ? state
+      : undefined;
   } catch {
     return undefined;
   }

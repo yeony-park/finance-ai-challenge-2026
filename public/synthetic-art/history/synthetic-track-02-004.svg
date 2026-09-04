@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Ongyeoldam Riva | 저녁편지 층위회화" data-record-id="synthetic-track-02-004" data-seed="5804" data-index="177">
+<title>저녁편지의 층 — 잉크가 번진 가장자리 · Evening Letter Layers / Edge Where Ink Spread</title>
+<rect x="0" y="0" width="800" height="1000" fill="#52796F"/>
+<polygon points="30,117 245,41 754,780 622,844" fill="#354F52"/>
+<polygon points="197,0 350,0 789,653 738,760" fill="#52796F"/>
+<polygon points="0,486 101,439 421,1000 257,1000" fill="#84A98C"/>
+<path d="M102 190 L617 912" fill="none" stroke="#CAD2C5" stroke-width="12"/>
+<path d="M206 163 L670 841" fill="none" stroke="#DDA15E" stroke-width="5"/>
+<line x1="336" y1="300" x2="417" y2="420" stroke="#2F3E46" stroke-width="5"/>
+<line x1="384" y1="369" x2="459" y2="479" stroke="#2F3E46" stroke-width="4"/>
+<line x1="443" y1="454" x2="499" y2="537" stroke="#2F3E46" stroke-width="3"/>
+<circle cx="565" cy="685" r="47" fill="#DDA15E"/>
+<circle cx="565" cy="685" r="18" fill="#CAD2C5"/>
+<text x="22" y="978" fill="#CAD2C5" font-family="sans-serif" font-size="8" letter-spacing="2">SYNTHETIC</text>
+</svg>

@@ -6,7 +6,7 @@ import type { SubscriptionPhase } from "@/components/site/offers";
 import type { OfferCardView } from "@/lib/verify/report/view-model";
 
 import { OfferCard } from "./OfferCard";
-import { OfferTabs } from "./OfferTabs";
+import { nextOfferTab, OfferTabs } from "./OfferTabs";
 import { ReportCatalogCard } from "./ReportCatalogCard";
 import type { ReportCatalogCardView } from "./report-catalog";
 import s from "./landing.module.css";
@@ -52,7 +52,16 @@ describe("상태별 공모 카드 공통 구조", () => {
     );
 
     expect(html).toContain('role="tablist"');
+    expect(html.match(/tabindex="-1"/g)).toHaveLength(3);
     expect(html).not.toContain("ds-reveal-pending");
+  });
+
+  test("방향키와 Home·End는 선택할 다음 탭을 순환한다", () => {
+    expect(nextOfferTab("all", "ArrowLeft")).toBe("closed");
+    expect(nextOfferTab("all", "ArrowRight")).toBe("upcoming");
+    expect(nextOfferTab("open", "Home")).toBe("all");
+    expect(nextOfferTab("open", "End")).toBe("closed");
+    expect(nextOfferTab("open", "Enter")).toBeNull();
   });
 
   test.each<SubscriptionPhase>(["upcoming", "open", "closed"])(

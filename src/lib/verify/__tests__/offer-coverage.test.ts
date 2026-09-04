@@ -47,7 +47,7 @@ describe("가축 8호 — 레지스트리 매핑", () => {
     expect(resolveOfferId(AMENDMENT_RCP_NO)).toBe("livestock-8");
   });
 
-  test("정정 계보 조회의 기준은 정정본이 아니라 원 신고서다", () => {
+  test("복수 후보 중 승인된 active RCP만 대표 공시로 선택한다", () => {
     expect(rcpNoForOffer("livestock-8")).toBe(BASE_RCP_NO);
   });
 
@@ -80,21 +80,17 @@ describe("가축 8호 — 청약 일정과 사후 대조 표기", () => {
   });
 });
 
-describe("리포트 제목 — 공모가 늘어도 서로 구분된다", () => {
+describe("리포트 제목 — 공개 승인된 공모만 읽는다", () => {
   const titleOf = async (offerId: string): Promise<string> =>
     toDemoView(await loadLatestReport(offerId)).verdict.title;
 
-  test("가축 공모 세 건의 제목이 겹치지 않는다", async () => {
-    const titles = await Promise.all(
-      ["livestock-7", "livestock-8", "livestock-9"].map(titleOf),
-    );
-
-    expect(new Set(titles).size).toBe(3);
-    expect(titles[1]).toContain("한우 8호");
+  test("pending 공모는 숨기고 active 공모만 읽는다", async () => {
+    await expect(titleOf("livestock-8")).rejects.toThrow("리포트를 찾을 수 없습니다");
+    await expect(titleOf("livestock-9")).resolves.toContain("한우 9호");
   });
 
   test("제목에 발행사명·브랜드가 들어가지 않는다", async () => {
-    const title = await titleOf("livestock-8");
+    const title = await titleOf("livestock-9");
 
     for (const forbidden of ["스탁키퍼", "뱅카우", "충만", "학산"]) {
       expect(title).not.toContain(forbidden);

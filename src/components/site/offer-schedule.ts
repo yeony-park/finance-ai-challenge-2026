@@ -1,4 +1,8 @@
-import type { AssetKind } from "@/lib/verify/types";
+import type {
+  AssetKind,
+  RealEstateAssetLifecycle,
+  RealEstateTradabilityStatus,
+} from "@/lib/verify/types";
 
 export type { AssetKind };
 
@@ -9,10 +13,33 @@ export interface OfferEntry {
   readonly title: string;
   readonly assetLabel: string;
   readonly assetKind: AssetKind;
+  readonly assetLifecycle?: RealEstateAssetLifecycle;
+  readonly isExitVerified?: boolean;
+  readonly tradabilityStatus?: RealEstateTradabilityStatus;
+  readonly realEstateListingKind?: "development-sample";
   readonly subscription: {
     readonly opensAt: string;
     readonly closesAt: string;
     readonly precision?: SchedulePrecision;
+  };
+}
+
+export type RealEstateUserGroup =
+  | "current-confirmed"
+  | "operating-needs-check"
+  | "historical-completed"
+  | "development-sample";
+
+export interface RealEstateListingStatus {
+  readonly tradabilityStatus?: RealEstateTradabilityStatus;
+  readonly statusEvidence?: {
+    readonly tradabilityStatus?: {
+      readonly sourceKind:
+        | "platform-claim"
+        | "official-document"
+        | "external-observation";
+      readonly asOf: string;
+    };
   };
 }
 
@@ -130,4 +157,41 @@ export const buildOfferSchedule = (entry: OfferEntry, now: Date): OfferSchedule 
     dday,
     badge: dday === 0 ? "마감 D-DAY" : `마감 D-${dday}`,
   };
+};
+
+const REAL_ESTATE_CURRENT_EVIDENCE_MAX_AGE_DAYS = 31;
+
+export const classifyRealEstateOffer = (
+  offer: OfferEntry,
+  now: Date,
+  status?: RealEstateListingStatus,
+): RealEstateUserGroup => {
+  if (offer.assetKind !== "real-estate") {
+    throw new Error("부동산 상품만 사용자 그룹을 분류할 수 있습니다");
+  }
+  if (offer.realEstateListingKind === "development-sample") {
+    return "development-sample";
+  }
+  if (buildOfferSchedule(offer, now).phase === "open") {
+    return "current-confirmed";
+  }
+  if (["sold", "settled"].includes(offer.assetLifecycle ?? "")) {
+    return "historical-completed";
+  }
+
+  const evidence = status?.statusEvidence?.tradabilityStatus;
+  const ageDays = evidence
+    ? (Date.parse(now.toISOString().slice(0, 10)) - Date.parse(evidence.asOf)) /
+      DAY_MS
+    : Number.POSITIVE_INFINITY;
+  if (
+    (status?.tradabilityStatus ?? offer.tradabilityStatus) === "available" &&
+    evidence !== undefined &&
+    evidence.sourceKind !== "external-observation" &&
+    ageDays >= 0 &&
+    ageDays <= REAL_ESTATE_CURRENT_EVIDENCE_MAX_AGE_DAYS
+  ) {
+    return "current-confirmed";
+  }
+  return "operating-needs-check";
 };

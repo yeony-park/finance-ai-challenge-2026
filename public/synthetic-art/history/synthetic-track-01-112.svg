@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="바람결 — 빛씨앗 혼합표면" data-record-id="synthetic-track-01-112" data-index="111" data-seed="5106">
+<title>빛씨앗 표면 — 씨앗과 먼지의 만남 · Lightseed Surface / Meeting of Seed and Dust</title>
+<rect x="0" y="0" width="800" height="1000" fill="#1B2845"/>
+<rect x="64" y="124" width="672" height="188" fill="#F2E9E4"/>
+<rect x="64" y="312" width="672" height="15" fill="#D4A373"/>
+<path d="M 114 327 L 114 829" fill="none" stroke="#6096BA" stroke-width="3"/>
+<circle cx="108" cy="217" r="14" fill="#6096BA"/>
+<circle cx="104" cy="212" r="3" fill="#F2E9E4"/>
+<circle cx="180" cy="239" r="20" fill="#274C77"/>
+<circle cx="176" cy="234" r="5" fill="#F2E9E4"/>
+<circle cx="252" cy="261" r="14" fill="#6096BA"/>
+<circle cx="248" cy="256" r="3" fill="#F2E9E4"/>
+<circle cx="324" cy="217" r="20" fill="#274C77"/>
+<circle cx="320" cy="212" r="5" fill="#F2E9E4"/>
+<circle cx="396" cy="239" r="14" fill="#6096BA"/>
+<circle cx="392" cy="234" r="3" fill="#F2E9E4"/>
+<circle cx="468" cy="261" r="20" fill="#274C77"/>
+<circle cx="464" cy="256" r="5" fill="#F2E9E4"/>
+<circle cx="540" cy="217" r="14" fill="#6096BA"/>
+<circle cx="536" cy="212" r="3" fill="#F2E9E4"/>
+<circle cx="612" cy="239" r="20" fill="#274C77"/>
+<circle cx="608" cy="234" r="5" fill="#F2E9E4"/>
+<circle cx="684" cy="261" r="14" fill="#6096BA"/>
+<circle cx="680" cy="256" r="3" fill="#F2E9E4"/>
+<circle cx="194" cy="430" r="9" fill="#A3CEF1"/>
+<circle cx="296" cy="501" r="12" fill="#A3CEF1"/>
+<circle cx="398" cy="572" r="9" fill="#A3CEF1"/>
+<circle cx="500" cy="643" r="12" fill="#A3CEF1"/>
+<circle cx="602" cy="714" r="9" fill="#A3CEF1"/>
+<polygon points="610,432 672,386 710,432 654,493" fill="#D4A373"/>
+<line x1="87" y1="872" x2="710" y2="872" stroke="#F2E9E4" stroke-width="2"/>
+<text x="34" y="968" fill="#D4A373" font-family="sans-serif" font-size="11" letter-spacing="3">SYNTHETIC</text>
+</svg>

@@ -7,6 +7,7 @@ import { z } from "zod";
 import type { CategoryId } from "@/lib/verify/contract/category";
 
 import { type OfferingRow, offeringRowSchema } from "../records";
+import { storageMode } from "../env";
 import { assertSeedSourcePathAllowed } from "../seed/guards";
 import { syntheticOfferings } from "../seed/synthetic";
 import type { Offering, OfferingsRepository } from "./types";
@@ -22,7 +23,7 @@ const assetSchema = z
   })
   .optional();
 
-const rawSourceSchema = z
+const legacyRawSourceSchema = z
   .object({
     label: z.string().min(1),
     url: z.string().min(1),
@@ -31,6 +32,28 @@ const rawSourceSchema = z
       .regex(/^\d{4}-\d{2}-\d{2}$/, "날짜는 YYYY-MM-DD 형식이어야 합니다"),
   })
   .strict();
+
+const provenanceRawSourceSchema = z
+  .object({
+    sourceKind: z.enum([
+      "platform-claim",
+      "official-document",
+      "external-observation",
+    ]),
+    label: z.string().min(1),
+    url: z.string().min(1),
+    asOf: z.iso.date(),
+    collectedAt: z.union([z.iso.date(), z.iso.datetime({ offset: true })]),
+    method: z.literal("manual"),
+    status: z.string().min(1),
+    limitations: z.array(z.string().min(1)),
+  })
+  .strict();
+
+const rawSourceSchema = z.union([
+  legacyRawSourceSchema,
+  provenanceRawSourceSchema,
+]);
 
 const ISO_OFFSET_PATTERN =
   /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}$/;
@@ -95,6 +118,8 @@ const mapRawOffer = (
   rawText: string,
 ): OfferingRow => {
   const source = raw.sources?.[0];
+  const legacySource = source && "retrievedOn" in source ? source : undefined;
+  const hasUnboundProvenance = source !== undefined && legacySource === undefined;
   return offeringRowSchema.parse({
     offerSlug: raw.offerId,
     categoryId: raw.assetKind,
@@ -125,10 +150,10 @@ const mapRawOffer = (
       ...(raw.sources === undefined ? {} : { sources: raw.sources }),
     },
     sourceMeta: {
-      sourceUrl: source?.url ?? "",
+      sourceUrl: hasUnboundProvenance ? "" : legacySource?.url ?? "",
       license: raw.license ?? "green",
-      method: "manual_verified",
-      retrievedAt: source?.retrievedOn ?? "",
+      method: hasUnboundProvenance ? "discovery_only" : "manual_verified",
+      retrievedAt: legacySource?.retrievedOn ?? "",
       sha256: sha256Hex(rawText),
     },
   });
@@ -185,8 +210,15 @@ export const createFileOfferingsRepository = (
 
 export const resolveOfferingsRepository = async (options: {
   readonly dataDir?: string;
-} = {}): Promise<OfferingsRepository> =>
-  createFileOfferingsRepository(await loadFileModeOfferings(options.dataDir));
+  readonly createDb?: () => Promise<OfferingsRepository> | OfferingsRepository;
+} = {}): Promise<OfferingsRepository> => {
+  if (storageMode() === "db") {
+    if (options.createDb) return options.createDb();
+    const { createDbOfferingsRepository } = await import("./offerings-db");
+    return createDbOfferingsRepository();
+  }
+  return createFileOfferingsRepository(await loadFileModeOfferings(options.dataDir));
+};
 
 export type { Offering, OfferingsRepository };
 export type { CategoryId };

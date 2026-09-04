@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "request": {
+    "sigunguCd": "26380",
+    "bjdongCd": "10800",
+    "platGbCd": "0",
+    "bun": "0651",
+    "ji": "0001"
+  },
+  "collectedAt": "2026-08-22T15:59:17.921Z",
+  "sourceId": "molit-building-register-hub",
+  "sourceName": "국토교통부 건축물대장 표제부 조회 서비스 (국토교통부 · data.go.kr)",
+  "sourceUrl": "https://apis.data.go.kr/1613000/BldRgstHubService/getBrTitleInfo?sigunguCd=26380&bjdongCd=10800&platGbCd=0&bun=0651&ji=0001&numOfRows=100&pageNo=1&_type=json",
+  "status": "ok",
+  "totalCount": 1,
+  "records": [
+    {
+      "managementKey": "1037134523",
+      "parcelAddress": "부산광역시 사하구 감천동 651-1번지",
+      "roadAddress": "부산광역시 사하구 감천로 49 (감천동)",
+      "mainPurpose": "교육연구및복지시설",
+      "otherPurpose": "교육연구및복지시설, 제1종근린생활시설, 창고시설",
+      "parcelAreaSqm": 384,
+      "buildingAreaSqm": 221.87,
+      "totalAreaSqm": 1723.48,
+      "floorAreaRatioEstimatedTotalSqm": 1443.34,
+      "structure": "철근콘크리트구조",
+      "householdCount": 0,
+      "useApprovedOn": "2000-10-17",
+      "recordedOn": "2024-08-19"
+    }
+  ]
+}

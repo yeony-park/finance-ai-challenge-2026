@@ -45,7 +45,7 @@ const kst = (value: string): Date => new Date(`${value}+09:00`);
 
 describe("buildOfferSchedule — D-day는 기준 시각의 함수다", () => {
   test("청약 개시 전에는 개시까지 남은 날수를 센다", () => {
-    
+
     const now = kst("2026-08-13T09:00:00");
 
     const schedule = buildOfferSchedule(ENTRY, now);

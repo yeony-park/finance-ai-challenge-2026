@@ -1,5 +1,6 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 import { resolveLivestockTraceAdapter } from "./adapters/livestock-trace-fake";
 import { resolveAuctionPriceAdapter } from "./adapters/auction-price-fake";
 import {
@@ -8,9 +9,10 @@ import {
 } from "./claims/llm-client";
 import { DEFAULT_EXTRACTION_MODE, type ExtractionMode } from "./claims/extract";
 import { listRawDocuments, rawDocumentDir } from "./dart/fetch-document";
+import { activeRcpNoForProduct } from "./dart/onboarding-catalog";
 import { scheduleNotes } from "./offer-notes";
 import { assertRcpNo } from "./paths";
-import { runVerification } from "./pipeline";
+import { offerIdForRcpNo, runVerification } from "./pipeline";
 import { writeReport } from "./report/build";
 import { writePublicReport } from "./report/public-report";
 import type { VerifyReport } from "./types";
@@ -19,14 +21,12 @@ import { buildVerificationRunRecord } from "@/lib/db/ledger/build";
 import { withLedgerObservationRecording } from "@/lib/db/ledger/observe-trace";
 import { recordVerificationRun } from "@/lib/db/ledger/record";
 
-const DEFAULT_RCP_NO = "20260806000159";
-
 const EXTRACTION_MODES: readonly ExtractionMode[] = [
   "cross-check",
   "rules-only",
 ];
 
-interface CliOptions {
+export interface CliOptions {
   readonly rcpNo: string;
   readonly forceFake: boolean;
   readonly dataDir: string;
@@ -43,13 +43,23 @@ const assertExtractionMode = (raw: string): ExtractionMode => {
   return mode;
 };
 
-const parseArgs = (argv: readonly string[]): CliOptions => {
+export const requireActivePublicReportRcpNo = (raw: string | undefined): string => {
+  if (!raw) throw new Error("--rcpNo <14자리 접수번호>를 명시해야 합니다.");
+  const rcpNo = assertRcpNo(raw);
+  const offerId = offerIdForRcpNo(rcpNo);
+  if (!offerId || activeRcpNoForProduct("cattle", offerId) !== rcpNo) {
+    throw new Error(`공개 리포트는 catalog active RCP만 허용합니다: ${rcpNo}`);
+  }
+  return rcpNo;
+};
+
+export const parseArgs = (argv: readonly string[]): CliOptions => {
   const valueOf = (flag: string): string | undefined => {
     const index = argv.indexOf(flag);
     return index >= 0 ? argv[index + 1] : undefined;
   };
   return {
-    rcpNo: assertRcpNo(valueOf("--rcpNo") ?? DEFAULT_RCP_NO),
+    rcpNo: requireActivePublicReportRcpNo(valueOf("--rcpNo")),
     forceFake: argv.includes("--fake"),
     dataDir: valueOf("--dataDir") ?? "data",
     extractionMode: assertExtractionMode(
@@ -166,7 +176,9 @@ const main = async (): Promise<void> => {
   printSummary(report, { internal, published });
 };
 
-main().catch((error: unknown) => {
-  console.error("검증 실패:", error instanceof Error ? error.message : error);
-  process.exitCode = 1;
-});
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  void main().catch((error: unknown) => {
+    console.error("검증 실패:", error instanceof Error ? error.message : error);
+    process.exitCode = 1;
+  });
+}
