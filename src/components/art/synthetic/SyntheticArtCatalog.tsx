@@ -359,15 +359,6 @@ export function SyntheticArtCatalog({
 
   return (
     <section className={s.catalog} id="synthetic-art-catalog">
-      <header className={s.catalogHeader}>
-        <p className={s.kicker}>SYNTHETIC ART CATALOG</p>
-        <h2>합성 미술품 상품·과거 이력</h2>
-        <p>
-          현재 합성 상품 {result.counts.current}건과 합성 과거 이력 {result.counts.history}건을
-          한곳에서 탐색합니다. 모든 값은 화면과 분석 흐름 검증용 시뮬레이션입니다.
-        </p>
-      </header>
-
       <nav className={s.scopeTabs} aria-label="합성 미술품 표시 범위">
         <Link
           className={filters.scope === "all" ? s.activeTab : undefined}
@@ -452,12 +443,6 @@ export function SyntheticArtCatalog({
               페이지 {result.page} / {result.pageCount} · 페이지당 {result.pageSize}건
             </span>
           </div>
-
-          {filters.scope !== "current" ? (
-            <p className={s.tableNote}>
-              합성 이력 필터 집계: {result.historicalAggregate.total}건 · 매각 완료 {result.historicalAggregate.byLifecycle.sold}건 · 청산 완료 {result.historicalAggregate.byLifecycle.liquidated}건 · 반환 {result.historicalAggregate.byLifecycle.returned}건 · 매각 진행 {result.historicalAggregate.byLifecycle.exit_in_progress}건
-            </p>
-          ) : null}
 
           {result.items.length > 0 ? (
             <div className={s.productGrid}>

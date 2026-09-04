@@ -1,23 +1,16 @@
 .catalog {
-  --art-blue: #2f6596;
-  --art-blue-strong: #1d4f7b;
-  --art-blue-soft: #eef5fb;
+  --art-accent: var(--ds-accent);
+  --art-accent-strong: var(--ds-accent-ink);
+  --art-accent-soft: var(--ds-accent-soft);
   display: grid;
   gap: var(--ds-space-5);
   min-width: 0;
   padding-bottom: var(--ds-section-y-tight);
 }
 
-.catalogHeader {
-  display: grid;
-  gap: var(--ds-space-2);
-  max-width: 54rem;
-  padding-top: var(--ds-space-4);
-}
-
 .kicker {
   margin: 0;
-  color: var(--art-blue);
+  color: var(--art-accent-strong);
   font-family: var(--ds-font-mono);
   font-size: var(--ds-text-2xs);
   font-weight: var(--ds-weight-bold);
@@ -25,7 +18,6 @@
   text-transform: uppercase;
 }
 
-.catalogHeader h2,
 .entityHeader h1,
 .detailCopy h1 {
   margin: 0;
@@ -34,11 +26,6 @@
   letter-spacing: var(--ds-tracking-tight);
 }
 
-.catalogHeader h2 {
-  font-size: clamp(2rem, 1.65rem + 1.7vw, 3rem);
-}
-
-.catalogHeader p:last-child,
 .entityHeader p,
 .detailLead {
   margin: 0;
@@ -78,7 +65,7 @@
 .detailTabs a:hover,
 .scopeTabs .activeTab,
 .detailTabs .activeTab {
-  color: var(--art-blue-strong);
+  color: var(--art-accent-strong);
 }
 
 .scopeTabs .activeTab::after,
@@ -88,7 +75,7 @@
   bottom: -1px;
   left: 0.5rem;
   height: 3px;
-  background: var(--art-blue);
+  background: var(--art-accent);
   content: "";
 }
 
@@ -113,9 +100,9 @@
 .searchForm input:focus,
 .filterSelect:focus,
 .filterTextInput:focus {
-  border-color: var(--art-blue);
+  border-color: var(--art-accent-strong);
   outline: none;
-  box-shadow: 0 0 0 3px rgb(47 101 150 / 0.13);
+  box-shadow: 0 0 0 3px var(--ds-accent-line-soft);
 }
 
 .primaryButton,
@@ -138,12 +125,12 @@
 }
 
 .primaryButton {
-  color: #fff;
-  background: var(--art-blue-strong);
+  color: var(--ds-ink);
+  background: var(--art-accent);
 }
 
 .primaryButton:hover {
-  background: #123d64;
+  background: var(--ds-accent-line);
 }
 
 .secondaryButton,
@@ -155,8 +142,8 @@
 
 .secondaryButton:hover,
 .linkButton:hover {
-  border-color: var(--art-blue);
-  color: var(--art-blue-strong);
+  border-color: var(--art-accent);
+  color: var(--art-accent-strong);
 }
 
 .conditionRow {
@@ -185,9 +172,9 @@
 
 .conditionChip,
 .statusBadge {
-  border: 1px solid #bdd0e0;
-  color: var(--art-blue-strong);
-  background: var(--art-blue-soft);
+  border: 1px solid var(--ds-accent-line);
+  color: var(--art-accent-strong);
+  background: var(--art-accent-soft);
 }
 
 .syntheticBadge {
@@ -290,8 +277,8 @@
 
 .filterCheckbox:hover,
 .filterCheckbox:has(input:checked) {
-  color: var(--art-blue-strong);
-  background: var(--art-blue-soft);
+  color: var(--art-accent-strong);
+  background: var(--art-accent-soft);
 }
 
 .filterCheckbox:has(input:checked) {
@@ -302,7 +289,7 @@
   width: 1.05rem;
   height: 1.05rem;
   margin: 0;
-  accent-color: var(--art-blue);
+  accent-color: var(--art-accent);
 }
 
 .filterActions {
@@ -345,8 +332,8 @@
 .tableNote {
   margin: 0;
   padding: var(--ds-space-3) var(--ds-space-4);
-  border-left: 3px solid #9bb5cb;
-  background: var(--art-blue-soft);
+  border-left: 3px solid var(--ds-accent-line);
+  background: var(--art-accent-soft);
   line-height: var(--ds-leading-relaxed);
 }
 
@@ -371,7 +358,7 @@
 }
 
 .productCard:hover {
-  border-color: #b7cadb;
+  border-color: var(--ds-accent-line);
   box-shadow: var(--ds-shadow-md);
   transform: translateY(-2px);
 }
@@ -431,7 +418,7 @@
 .breadcrumb a:hover,
 .dataTable a:hover,
 .axisCard a:hover {
-  color: var(--art-blue-strong);
+  color: var(--art-accent-strong);
   text-decoration: underline;
   text-underline-offset: 0.2em;
 }
@@ -524,9 +511,9 @@
 
 /* Detail and entity screens */
 .detailPage {
-  --art-blue: #2f6596;
-  --art-blue-strong: #1d4f7b;
-  --art-blue-soft: #eef5fb;
+  --art-accent: var(--ds-accent);
+  --art-accent-strong: var(--ds-accent-ink);
+  --art-accent-soft: var(--ds-accent-soft);
   width: min(100% - (2 * var(--ds-gutter)), var(--ds-maxw));
   margin-inline: auto;
   padding-block: var(--ds-space-6) var(--ds-section-y-tight);
@@ -683,7 +670,7 @@
 
 .axisCard a {
   align-self: end;
-  color: var(--art-blue-strong);
+  color: var(--art-accent-strong);
   font-size: var(--ds-text-xs);
   font-weight: var(--ds-weight-bold);
 }
