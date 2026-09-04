@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState, type ReactNode } from "react";
 import { useProfile } from "@/components/site/profile";
 import type { NarrativeLevel } from "@/lib/verify/narrative/types";
@@ -9,6 +10,7 @@ import { RealitySection } from "./RealitySection";
 import { ReportChapterNav } from "./ReportChapterNav";
 import type { ReportSection, ReportSectionKey } from "./report-sections";
 import { VerdictHero } from "./VerdictHero";
+import s from "./report.module.css";
 
 const REPORT_SECTION_PANEL_ID = "report-section-panel";
 
@@ -24,18 +26,32 @@ export type ReportSectionContent = Partial<
   Record<ReportSectionKey, ReactNode>
 >;
 
+export interface ReportProductHeader {
+  readonly imageSrc: string;
+  readonly imageAlt: string;
+  readonly status: string;
+  readonly title: string;
+  readonly meta: string;
+  readonly facts: readonly {
+    readonly label: string;
+    readonly value: string;
+  }[];
+}
+
 export function ReportDocument({
   view,
   narrative = null,
   lifecycle,
   sections,
   sectionContent,
+  productHeader,
 }: {
-  readonly view: DemoView;
+  readonly view?: DemoView;
   readonly narrative?: Readonly<Record<ExplainLevel, NarrativeLevel>> | null;
   readonly lifecycle?: ReactNode;
   readonly sections: readonly ReportSection[];
   readonly sectionContent: ReportSectionContent;
+  readonly productHeader?: ReportProductHeader;
 }) {
   const profile = useProfile();
   const [levelOverride, setLevelOverride] = useState<ExplainLevel | null>(null);
@@ -43,17 +59,22 @@ export function ReportDocument({
   const [activeId, setActiveId] = useState(defaultSectionId);
   const level: ExplainLevel = levelOverride ?? profile.level ?? "easy";
   const content: ReportSectionContent = {
+    ...(view
+      ? {
+          verdict: (
+            <VerdictHero
+              view={view}
+              level={level}
+              narrative={narrative}
+              lifecycle={lifecycle}
+              onLevelChange={setLevelOverride}
+              showOfferTitle={productHeader === undefined}
+            />
+          ),
+          reality: <RealitySection view={view} level={level} />,
+        }
+      : {}),
     ...sectionContent,
-    verdict: (
-      <VerdictHero
-        view={view}
-        level={level}
-        narrative={narrative}
-        lifecycle={lifecycle}
-        onLevelChange={setLevelOverride}
-      />
-    ),
-    reality: <RealitySection view={view} level={level} />,
   };
   const activeSection =
     sections.find((section) => section.id === activeId) ?? sections[0];
@@ -91,6 +112,32 @@ export function ReportDocument({
 
   return (
     <>
+      {productHeader ? (
+        <header className={`${s.wrap} ${s.productHeader}`}>
+          <div className={s.productHeaderImage}>
+            <Image
+              src={productHeader.imageSrc}
+              alt={productHeader.imageAlt}
+              fill
+              priority
+              sizes="(max-width: 820px) 100vw, 42vw"
+            />
+          </div>
+          <div className={s.productHeaderCopy}>
+            <span className={s.productHeaderStatus}>{productHeader.status}</span>
+            <h1 className={s.productHeaderTitle}>{productHeader.title}</h1>
+            <p className={s.productHeaderMeta}>{productHeader.meta}</p>
+            <dl className={s.productHeaderFacts}>
+              {productHeader.facts.map((fact) => (
+                <div key={fact.label}>
+                  <dt>{fact.label}</dt>
+                  <dd>{fact.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </header>
+      ) : null}
       <ReportChapterNav
         sections={sections}
         activeId={activeSection.id}

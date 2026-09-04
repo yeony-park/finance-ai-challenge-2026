@@ -91,6 +91,32 @@ describe("리포트 문서 템플릿", () => {
     expect(html).not.toContain('id="report-price-heading"');
   });
 
+  test("상품 요약 헤더에 대표 이미지와 공시 요약 표를 렌더한다", () => {
+    const html = renderToStaticMarkup(
+      createElement(ReportDocument, {
+        view: realEstateView,
+        sections: reportSectionsFor({ hasFilingFacts: false }),
+        sectionContent,
+        productHeader: {
+          imageSrc: "/category-real-estate.jpg",
+          imageAlt: "부동산 분석 대표 이미지",
+          status: "청약 종료",
+          title: "부동산 A",
+          meta: "매각 공시",
+          facts: [
+            { label: "청약 기간", value: "2026. 1. 1. ~ 2026. 1. 10." },
+            { label: "대조 기준", value: "국토부 실거래 원장" },
+          ],
+        },
+      }),
+    );
+
+    expect(html).toContain('alt="부동산 분석 대표 이미지"');
+    expect(html).toContain("청약 종료");
+    expect(html).toContain("청약 기간");
+    expect(html).toContain("국토부 실거래 원장");
+  });
+
   test("해시가 현재 리포트에 있는 섹션일 때만 탭을 선택한다", () => {
     const sections = reportSectionsFor({
       hasFilingFacts: true,
@@ -164,5 +190,28 @@ describe("리포트 문서 템플릿", () => {
     expect(html).toContain("한우 추가 정보");
     expect(html).toContain("카테고리 전용 내용");
     expect(html).toContain('aria-labelledby="report-tab-report-cattle-extra-heading"');
+  });
+
+  test("공통 판정 모델 없이 카테고리 전용 리포트를 렌더할 수 있다", () => {
+    const sections = reportSectionsFor({
+      hasFilingFacts: true,
+      hasDiseaseContext: true,
+    });
+    const html = renderToStaticMarkup(
+      createElement(ReportDocument, {
+        sections,
+        sectionContent: {
+          verdict: createElement(
+            "section",
+            { id: "report-verdict-heading" },
+            "한돈 요약",
+          ),
+        },
+      }),
+    );
+
+    expect(html).toContain("한돈 요약");
+    expect(html).toContain(">요약<");
+    expect(html).toContain(">질병 맥락<");
   });
 });

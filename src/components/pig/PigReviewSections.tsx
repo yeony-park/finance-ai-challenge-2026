@@ -17,6 +17,7 @@ import s from "./PigReviewSections.module.css";
 
 export interface PigReviewSectionsProps {
   readonly product: PigDisclosureProduct;
+  readonly summaryOnly?: boolean;
 }
 
 interface SectionHeadingProps {
@@ -126,7 +127,10 @@ export function PigReviewGuide() {
   );
 }
 
-export function PigReviewSections({ product }: PigReviewSectionsProps) {
+export function PigReviewSections({
+  product,
+  summaryOnly = false,
+}: PigReviewSectionsProps) {
   const layerRows = buildPigReviewLayerRows(product);
   const insights = buildPigReviewInsights(product);
   const sourceState = buildPigReviewSourceState(product, PIG_MARKET);
@@ -197,6 +201,8 @@ export function PigReviewSections({ product }: PigReviewSectionsProps) {
         </div>
       </section>
 
+      {!summaryOnly ? (
+        <>
       <section
         className={`${s.card} ${s.compactCard}`}
         aria-labelledby="pig-review-extra-filing-title"
@@ -314,6 +320,8 @@ export function PigReviewSections({ product }: PigReviewSectionsProps) {
 
         <p className={s.disclaimer}>{PIG_REVIEW_COPY.sources.disclaimer}</p>
       </section>
+        </>
+      ) : null}
     </div>
   );
 }

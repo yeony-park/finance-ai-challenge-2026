@@ -168,6 +168,9 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
     hasDiseaseContext: diseaseContext !== null,
   });
   const analysisHref = reportAnalysisHref(offerEntry?.assetKind ?? "livestock");
+  const schedule = offerEntry ? buildOfferSchedule(offerEntry, new Date()) : null;
+  const assetKind = offerEntry?.assetKind ?? loaded.report.assetKind;
+  const categoryLabel = assetKind === "livestock" ? "한우" : "부동산";
 
   return (
     <div className={s.reportPage}>
@@ -188,6 +191,22 @@ export default async function OfferReportPage({ params }: OfferPageProps) {
 
       <ReportDocument
         view={view}
+        productHeader={{
+          imageSrc:
+            assetKind === "livestock"
+              ? "/category-cattle.jpg"
+              : "/category-real-estate.jpg",
+          imageAlt: `${categoryLabel} 분석 대표 이미지`,
+          status: schedule?.badge ?? "분석 리포트",
+          title: view.offer.title,
+          meta: view.offer.tag,
+          facts: [
+            { label: "청약 기간", value: schedule?.label ?? "공개되지 않음" },
+            { label: "대조 기준", value: view.verdict.eyebrow },
+            { label: "리포트 기준", value: view.verdict.when },
+            { label: "판정 집계", value: view.verdict.itemLine },
+          ],
+        }}
         narrative={narrative?.levels ?? null}
         sections={sections}
         sectionContent={{
