@@ -123,6 +123,12 @@
   --ds-ease: cubic-bezier(0.2, 0.7, 0.3, 1);
 
   --ds-header-h: 64px;
+  /* 헤더에 가리지 않도록 앵커가 멈추는 위치 */
+  --ds-scroll-offset: calc(var(--ds-header-h) + var(--ds-space-5));
+
+  /* 강조 밑줄 링크 공통값 */
+  --ds-underline-w: 2px;
+  --ds-link-gap-hover: 0.65rem;
 
   --ds-tap-min: 2.75rem;
   --ds-control-h-sm: 2.5rem;

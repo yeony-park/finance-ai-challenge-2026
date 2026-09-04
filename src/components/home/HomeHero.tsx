@@ -8,6 +8,7 @@ import { matchScaffold, type ScaffoldMatch } from "@/lib/content/scaffold-match"
 
 import {
   HERO_SHRINK_SCROLL_DISTANCE,
+  heroOverscrollStyle,
   SEARCH_TRANSITION_MS,
   scrollImmediately,
 } from "./home-hero-config";
@@ -18,10 +19,7 @@ import search from "./HomeHeroSearch.module.css";
 import visual from "./HomeHeroVisual.module.css";
 import motion from "./home-motion.module.css";
 import { useHomeHeroVisual } from "./useHomeHeroVisual";
-import {
-  useHomeSectionDial,
-  useHomeStageSnap,
-} from "./useHomeStageNavigation";
+import { useHomeSectionDial } from "./useHomeStageNavigation";
 
 export function HomeHero() {
   const [query, setQuery] = useState("");
@@ -30,7 +28,6 @@ export function HomeHero() {
   const [isSearchClosing, setIsSearchClosing] = useState(false);
   const [isSearchRestoring, setIsSearchRestoring] = useState(false);
   const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false);
-  const [isTitleSplit, setIsTitleSplit] = useState(false);
 
   const visualRef = useRef<HTMLElement>(null);
   const visualFrameRef = useRef<HTMLDivElement>(null);
@@ -52,9 +49,7 @@ export function HomeHero() {
       scaffold: scaffoldRef,
     },
     match,
-    setIsTitleSplit,
   );
-  useHomeStageSnap(match);
   const { activeSection, scrollToSection } = useHomeSectionDial(isSearchOpen);
 
   useEffect(() => {
@@ -69,7 +64,6 @@ export function HomeHero() {
       setIsSearchClosing(false);
       setIsSearchRestoring(false);
       setIsSuggestionsOpen(false);
-      setIsTitleSplit(false);
       window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
@@ -126,6 +120,7 @@ export function HomeHero() {
       className={`${visual.visualIntro} ${
         isSearchOpen ? search.visualIntroSearch : ""
       }`}
+      style={heroOverscrollStyle()}
       aria-labelledby="home-hero-title"
     >
       <div
@@ -164,7 +159,6 @@ export function HomeHero() {
             query={submittedQuery}
             isSearchOpen={isSearchOpen}
             hasMatch={match !== null}
-            isTitleSplit={isTitleSplit}
             onCloseSearch={handleCloseSearch}
           />
           <HomeSearchScaffold

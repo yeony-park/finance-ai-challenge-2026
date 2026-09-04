@@ -48,10 +48,10 @@
   font-weight: var(--ds-weight-bold);
   color: var(--ds-ink);
   text-decoration: none;
-  border-bottom: 2px solid var(--ds-accent);
+  border-bottom: var(--ds-underline-w) solid var(--ds-accent);
   padding-bottom: 2px;
   transition: gap var(--ds-duration-base) var(--ds-ease);
 }
 .bandLink:hover {
-  gap: 0.65rem;
+  gap: var(--ds-link-gap-hover);
 }

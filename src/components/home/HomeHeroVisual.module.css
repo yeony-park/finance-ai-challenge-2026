@@ -31,8 +31,13 @@
   word-break: keep-all;
 }
 
+/*
+ * --home-hero-overscroll 은 HomeHero 가 HERO_SHRINK_SCROLL_DISTANCE 로 넣어 준다.
+ * 히어로가 줄어드는 거리와 여기서 확보하는 여분 높이가 같아야 하므로
+ * 값을 CSS 에 다시 적지 않는다.
+ */
 .visualIntro {
-  height: calc(100svh + 120px);
+  height: calc(100svh + var(--home-hero-overscroll, 120px));
   margin-top: calc(-1 * var(--ds-header-h));
   background: color-mix(in srgb, var(--ds-bg) 72%, var(--ds-bg-muted));
 }
@@ -188,33 +193,13 @@
   transform: translateX(calc(-1 * var(--home-title-balance, 0%)));
 }
 
-.visualContent .heroTitleUnified {
-  display: flex;
-  justify-content: center;
-  gap: 0;
-}
-
-.heroTitleUnified .heroTitlePrefix,
-.heroTitleUnified .heroTitleQuestion {
-  width: auto;
-  min-height: 0;
-}
-
-.heroTitleUnified .heroTitleText,
-.heroTitleUnified .heroTitlePrefix .heroTitleText,
-.heroTitleUnified .heroTitleQuestion .heroTitleText {
-  position: static;
-  display: inline;
-  transform: none;
-}
-
 .visualContent .chipRow {
   justify-content: center;
 }
 
 .visualScroll {
   position: absolute;
-  z-index: 1;
+  z-index: 3;
   left: 50%;
   bottom: var(--ds-space-5);
   display: flex;
@@ -282,7 +267,7 @@
   }
 
   .visualIntro {
-    height: calc(100svh + 120px);
+    height: calc(100svh + var(--home-hero-overscroll, 120px));
   }
 
   .visualFrame::after {

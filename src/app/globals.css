@@ -19,7 +19,7 @@
 }
 
 html {
-  scroll-padding-top: calc(var(--ds-header-h) + var(--ds-space-5));
+  scroll-padding-top: var(--ds-scroll-offset);
 }
 
 body {
