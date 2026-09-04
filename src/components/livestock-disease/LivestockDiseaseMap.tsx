@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-import outline from "../../../data/reference/pig-asf/korea_outline.json";
 import type {
   LivestockDiseaseMapDataset,
   LivestockDiseaseMapSpecies,
@@ -20,39 +19,6 @@ import {
 } from "./map-view";
 import s from "./livestock-disease.module.css";
 
-const WIDTH = 520;
-const HEIGHT = 620;
-const BOUNDS = {
-  minLongitude: 124.5,
-  maxLongitude: 130.1,
-  minLatitude: 33,
-  maxLatitude: 38.8,
-} as const;
-
-const project = (
-  longitude: number,
-  latitude: number,
-): readonly [number, number] => [
-  ((longitude - BOUNDS.minLongitude) /
-    (BOUNDS.maxLongitude - BOUNDS.minLongitude)) *
-    WIDTH,
-  ((BOUNDS.maxLatitude - latitude) /
-    (BOUNDS.maxLatitude - BOUNDS.minLatitude)) *
-    HEIGHT,
-];
-
-const ringPath = (ring: readonly (readonly number[])[]): string =>
-  `${ring
-    .map((point, index) => {
-      const [x, y] = project(point[0], point[1]);
-      return `${index === 0 ? "M" : "L"}${x.toFixed(2)} ${y.toFixed(2)}`;
-    })
-    .join(" ")} Z`;
-
-const outlinePath = outline.geometry.coordinates
-  .flatMap((polygon) => polygon.map((ring) => ringPath(ring)))
-  .join(" ");
-
 interface LivestockDiseaseMapProps {
   readonly species: LivestockDiseaseMapSpecies;
   readonly focusProvinces: readonly string[];
@@ -66,73 +32,6 @@ type LoadState =
   | { readonly status: "loading" }
   | { readonly status: "ready"; readonly dataset: LivestockDiseaseMapDataset }
   | { readonly status: "error" };
-
-function FallbackMap({
-  species,
-  events,
-}: {
-  readonly species: LivestockDiseaseMapSpecies;
-  readonly events: readonly LivestockDiseaseMapViewEvent[];
-}) {
-  const titleId = `${species}-disease-fallback-title`;
-  const descriptionId = `${species}-disease-fallback-description`;
-
-  return (
-    <svg
-      viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
-      role="img"
-      aria-labelledby={`${titleId} ${descriptionId}`}
-    >
-      <title id={titleId}>
-        {species === "cattle" ? "소" : "돼지"} 질병 공개 발생 분포
-      </title>
-      <desc id={descriptionId}>
-        공개 발생 {events.length}건을 행정구역 대표 좌표로 표시합니다.
-      </desc>
-      <path className={s.land} d={outlinePath} fillRule="evenodd" />
-      {events.map((event) => {
-        const [x, y] = project(event.longitude, event.latitude);
-        const tooltip = `${event.diseaseLabel} · ${event.occurredAt} · ${event.region}`;
-
-        if (event.disease === "ASF") {
-          return (
-            <circle
-              key={event.viewKey}
-              cx={x}
-              cy={y}
-              r={event.isFocus ? 7 : event.isCurrent ? 5 : 3.25}
-              className={
-                event.isFocus
-                  ? s.pointFocus
-                  : event.isCurrent
-                    ? s.pointCurrent
-                    : s.pointPast
-              }
-            >
-              <title>{tooltip}</title>
-            </circle>
-          );
-        }
-
-        const isFmd = event.disease === "FMD";
-        return (
-          <rect
-            key={event.viewKey}
-            x={x - (isFmd ? 5 : 4)}
-            y={y - (isFmd ? 5 : 4)}
-            width={isFmd ? 10 : 8}
-            height={isFmd ? 10 : 8}
-            rx={isFmd ? 1 : 2}
-            className={isFmd ? s.pointFmd : s.pointLsd}
-            transform={isFmd ? `rotate(45 ${x} ${y})` : undefined}
-          >
-            <title>{tooltip}</title>
-          </rect>
-        );
-      })}
-    </svg>
-  );
-}
 
 function MapState({
   state,
@@ -261,7 +160,6 @@ export function LivestockDiseaseMap({
           appKey={kakaoAppKey}
           events={kakaoEvents}
           ariaLabel={ariaLabel}
-          fallback={<FallbackMap species={species} events={events} />}
         />
         <div className={s.mapLegend} aria-label="지도 범례">
           {species === "pig" ? (

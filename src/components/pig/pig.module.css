@@ -666,29 +666,23 @@
   box-shadow: var(--ds-focus-ring);
 }
 
-.asfKakaoFallback {
+.asfKakaoUnavailable {
   position: absolute;
   inset: 0;
   display: grid;
   place-items: center;
+  padding: var(--ds-space-5);
 }
 
-.asfKakaoFallback svg {
-  width: 100%;
-  height: 100%;
-}
-
-.asfKakaoStatus {
-  position: absolute;
-  top: var(--ds-space-3);
-  right: var(--ds-space-3);
-  max-width: calc(100% - var(--ds-space-6));
+.asfKakaoUnavailable p {
+  margin: 0;
   padding: var(--ds-space-2) var(--ds-space-3);
   border: 1px solid rgb(255 255 255 / 80%);
   border-radius: var(--ds-radius-sm);
   background: rgb(255 255 255 / 90%);
   color: var(--ds-ink-muted);
   font-size: var(--ds-text-2xs);
+  text-align: center;
   backdrop-filter: blur(6px);
 }
 

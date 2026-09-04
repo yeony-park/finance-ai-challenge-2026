@@ -129,20 +129,6 @@ export function PigDiseaseContext({
         <a href={FMD_API_DOC_URL} target="_blank" rel="noopener noreferrer">
           보조 API 대조: FMD {FMD_API_COMPARISON.matchedCanonicalCount}/{FMD_API_COMPARISON.canonicalCount} · ASF {ASF_API_COMPARISON.matchedCanonicalCount}/{ASF_API_COMPARISON.canonicalCount}
         </a>
-        <a
-          href="https://apis.map.kakao.com/web/guide/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          베이스맵: Kakao Maps
-        </a>
-        <a
-          href="https://www.naturalearthdata.com/about/terms-of-use/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          대체 지도 경계: Natural Earth
-        </a>
       </div>
     </section>
   );

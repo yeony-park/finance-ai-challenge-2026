@@ -1,7 +1,7 @@
 "use client";
 
 import Script from "next/script";
-import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import s from "./pig.module.css";
 
@@ -103,12 +103,10 @@ const formatHeadCount = (event: KakaoDiseaseEvent): string | null => {
 export function PigAsfKakaoMap({
   appKey,
   events,
-  fallback,
-  ariaLabel = "Kakao Maps 기반 국내 양돈농장 ASF 및 구제역 발생 분포",
+  ariaLabel = "국내 양돈농장 ASF 및 구제역 발생 분포 지도",
 }: {
   readonly appKey: string;
   readonly events: readonly KakaoDiseaseEvent[];
-  readonly fallback: ReactNode;
   readonly ariaLabel?: string;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -254,7 +252,7 @@ export function PigAsfKakaoMap({
         aria-label={ariaLabel}
       />
 
-      {availableDiseases.length > 1 ? (
+      {status === "ready" && availableDiseases.length > 1 ? (
         <div className={s.diseaseMapFilters} role="group" aria-label="지도 질병 필터">
           {([
             ["all", "전체"] as const,
@@ -284,13 +282,12 @@ export function PigAsfKakaoMap({
       ) : null}
 
       {status !== "ready" ? (
-        <div className={s.asfKakaoFallback}>
-          {fallback}
-          <span className={s.asfKakaoStatus}>
+        <div className={s.asfKakaoUnavailable}>
+          <p role={status === "error" ? "alert" : "status"}>
             {appKey && status === "loading"
-              ? "Kakao Maps를 불러오는 중입니다."
-              : "Kakao Maps를 불러오지 못해 기본 지도를 표시합니다."}
-          </span>
+              ? "지도를 불러오는 중입니다."
+              : "지도를 불러오지 못했습니다."}
+          </p>
         </div>
       ) : null}
 

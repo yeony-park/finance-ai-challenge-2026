@@ -13,7 +13,7 @@ export function PigAsfMap({
       species="pig"
       focusProvinces={[focusProvince]}
       currentYear={PIG_ASF_CURRENT_YEAR}
-      ariaLabel="Kakao Maps 기반 국내 양돈농장 ASF 및 구제역 발생 분포"
+      ariaLabel="국내 양돈농장 ASF 및 구제역 발생 분포 지도"
       kakaoAppKey={kakaoAppKey}
     />
   );

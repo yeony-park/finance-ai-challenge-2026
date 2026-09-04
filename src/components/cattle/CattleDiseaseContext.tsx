@@ -180,7 +180,7 @@ export function CattleDiseaseContext({
           focusProvinces={context.provinces}
           throughDate={context.submittedOn}
           currentYear={context.submittedOn.slice(0, 4)}
-          ariaLabel={`Kakao Maps 기반 ${provinceLabel} 소 구제역 및 럼피스킨 발생 분포`}
+          ariaLabel={`${provinceLabel} 소 구제역 및 럼피스킨 발생 분포 지도`}
           kakaoAppKey={kakaoAppKey}
         />
       </DiseaseMapFrame>

@@ -1,9 +1,9 @@
 # ADR-0004: 축산 리포트 공통 지도 템플릿과 지연 로딩
 
-- **Status:** Accepted
+- **Status:** Superseded
 - **Decision date:** 2026-09-01
 - **Supersedes:** None
-- **Superseded by:** None
+- **Superseded by:** [ADR-0005](./ADR-0005-kakao-only-livestock-map-rendering.md)
 
 ## Context
 

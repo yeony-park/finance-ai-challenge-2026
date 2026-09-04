@@ -256,7 +256,6 @@ _현재 로컬에 파일이 없습니다._
 | `data/reference/livestock-disease/lsd/mafra_lsd_events.json` | 92,031 | `003a25bb1391f0f0ead1a5d79f63b10b2724bdd7bc9d23f2a13e9e0940602abe` |
 | `data/reference/pig-asf/asf_events_20260320.json` | 470 | `210354ec16bd52fc3886b89fdacd9269e0bd9b0c6ace22be39df7e2570d824e8` |
 | `data/reference/pig-asf/asf_events_20260320.meta.json` | 866 | `5582efcdfd1c4d811c57ac5fc550282a7b2b3accaab0a6a369697cb380399dea` |
-| `data/reference/pig-asf/korea_outline.json` | 81,312 | `b8f328af41cba57f83f5f4b2d107efd8848942cd1973c38c50a11f1493f83382` |
 | `data/reference/pig-asf/mafra_asf_documents.json` | 83,560 | `10674d3063b07d8dec5dade9d9925a7ebfba7eb217af4889fab7032d52a3eb5b` |
 | `data/reference/pig-asf/mafra_asf_events.json` | 76,617 | `bbbb425b64fcd20d22ff8e488d4f1da74500e39e88252986e62b556291532adb` |
 | `data/reference/pig-auction-price/pig_price_20260815021618.csv` | 40,445 | `673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d` |

@@ -67,13 +67,6 @@
   background: #edf5f7;
 }
 
-.mapCanvas > svg,
-.mapCanvas [data-map-placeholder] > svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
 .mapPlaceholder {
   display: grid;
   min-height: clamp(27rem, 56vw, 39rem);
@@ -260,47 +253,6 @@
   padding: var(--ds-space-3) var(--ds-space-5);
   border-top: 1px solid var(--ds-line);
   background: var(--ds-surface);
-}
-
-.land {
-  fill: #f8f7f2;
-  stroke: #9faeaf;
-  stroke-width: 1.2;
-  vector-effect: non-scaling-stroke;
-}
-
-.pointPast,
-.pointCurrent,
-.pointFocus,
-.pointFmd,
-.pointLsd {
-  stroke: var(--ds-surface);
-  stroke-width: 1.5;
-  vector-effect: non-scaling-stroke;
-}
-
-.pointPast {
-  fill: #829294;
-  opacity: 0.72;
-}
-
-.pointCurrent {
-  fill: #326fa8;
-}
-
-.pointFocus {
-  fill: #b42318;
-  stroke-width: 2.5;
-}
-
-.pointFmd {
-  fill: #d96c1f;
-  stroke-width: 2;
-}
-
-.pointLsd {
-  fill: #7048a8;
-  stroke-width: 2;
 }
 
 @media (min-width: 60rem) {
