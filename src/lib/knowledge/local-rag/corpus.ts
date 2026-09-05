@@ -12,7 +12,10 @@ import type { CommonChunkRecord, CommonDocumentRecord } from "../schema";
 import { loadFilingCorpusIfPresent } from "../filing-corpus";
 import type { LiveAnswerGenerator } from "../live-answer";
 import { listSyntheticArtKnowledgeIfPresent } from "@/lib/art/synthetic-catalog";
-import { loadGenericCorpusDocuments } from "./generic-corpus";
+import {
+  genericCorpusChunkIdentity,
+  loadGenericCorpusDocuments,
+} from "./generic-corpus";
 import {
   LOCAL_RAG_CHUNKING_VERSION,
   LOCAL_RAG_MODEL_ID,
@@ -233,21 +236,10 @@ const genericSemanticChunks = async (
   const documents = await loadGenericCorpusDocuments(dataRoot);
   const approvalReferenceKey = `canonical:${hashJson(documents)}`;
   return documents.flatMap((document) => {
-    const sourceHash = hashJson({
-      sourceId: document.sourceId,
-      title: document.title,
-      sourceUrl: document.sourceUrl,
-      asOf: document.asOf,
-      chunks: document.chunks,
-    });
     return document.chunks.flatMap((chunk): CanonicalSemanticChunk[] => {
-      const canonicalText = chunk.content.replace(/\s+/g, " ").trim();
+      const { canonicalText, sourceHash, chunkHash } =
+        genericCorpusChunkIdentity(document, chunk);
       if (containsObviousPii(canonicalText)) return [];
-      const chunkHash = hashJson({
-        sourceHash,
-        chunkIndex: chunk.chunkIndex,
-        canonicalText,
-      });
       return [{
         namespace: "general",
         scope: GENERAL_KNOWLEDGE_SCOPE,

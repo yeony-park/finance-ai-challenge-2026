@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import { describe, expect, test } from "vitest";
 
 import { ragChunkRowSchema, ragDocumentRowSchema } from "../records";
+import { isSafeScenarioDocumentPath } from "@/lib/knowledge/schema";
 import { PUBLIC_OFFERING_SELECTION } from "../repositories/offerings-db";
 
 const hash = "a".repeat(64);
@@ -33,6 +34,13 @@ const productScope = {
 } as const;
 
 describe("RAG exact product scope row contract", () => {
+  test("합성 PDF와 미술품 상품 경로만 내부 공개 출처로 허용한다", () => {
+    expect(isSafeScenarioDocumentPath("/scenario-documents/sample.pdf")).toBe(true);
+    expect(isSafeScenarioDocumentPath("/art?product=art-1")).toBe(true);
+    expect(isSafeScenarioDocumentPath("/art?product=../admin")).toBe(false);
+    expect(isSafeScenarioDocumentPath("/art?product=art-1&next=admin")).toBe(false);
+  });
+
   test("legacy generic document는 NULL product scope로 보존된다", () => {
     const parsed = ragDocumentRowSchema.parse(genericDocument);
     expect(parsed).toMatchObject({

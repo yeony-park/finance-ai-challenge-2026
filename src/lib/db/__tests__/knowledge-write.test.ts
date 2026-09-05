@@ -191,8 +191,9 @@ describe("product knowledge DB write", () => {
     await writeKnowledgeIngestPlan(plan, executor, KNOWLEDGE_FULL_SNAPSHOT);
     await writeKnowledgeIngestPlan(plan, executor, KNOWLEDGE_FULL_SNAPSHOT);
 
-    expect(documentCount).toBe(86);
+    expect(documentCount).toBe(95);
     expect(scopeTotals).toEqual({
+      art: { documents: 9, chunks: 111 },
       cattle: { documents: 52, chunks: 9166 },
       pig: { documents: 21, chunks: 3687 },
       "real-estate": { documents: 13, chunks: 255 },
@@ -433,6 +434,8 @@ describe("product knowledge DB write", () => {
     expect(chunkSql.params).toContain(chunk.chunkHash);
     expect(chunkSql.params).toContain(chunk.approvedForExternalAi);
     expect(chunkSql.params).toContain(chunk.piiReviewStatus);
+    expect(chunkSql.sql).toContain("CASE");
+    expect(chunkSql.sql).toContain("IS NOT DISTINCT FROM");
     expect(revokeSql.sql).not.toContain(document.sourceId);
     expect(revokeSql.params).toContain(document.sourceId);
     expect(revokeSql.params).toContain(KNOWLEDGE_ETL_OWNER);

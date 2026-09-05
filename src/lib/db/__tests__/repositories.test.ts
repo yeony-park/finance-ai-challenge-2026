@@ -187,6 +187,20 @@ describe("③ rag_documents.source_id 미등록 id 거부 (R-STO-12)", () => {
     expect(plan.ragDocuments.length).toBeGreaterThan(0);
     for (const seed of plan.ragDocuments) {
       expect(isRegisteredSource(seed.document.sourceId)).toBe(true);
+      expect(seed.document).toMatchObject({
+        scopeKind: "generic",
+        approvedForPublic: true,
+        approvedForExternalAi: true,
+        piiReviewStatus: "passed",
+        status: "ready",
+      });
+      expect(seed.document.sourceHash).toMatch(/^[a-f0-9]{64}$/);
+      expect(seed.chunks.every((chunk) =>
+        chunk.sourceHash === seed.document.sourceHash &&
+        chunk.chunkHash?.match(/^[a-f0-9]{64}$/) &&
+        chunk.canonicalText &&
+        chunk.page === chunk.chunkIndex + 1
+      )).toBe(true);
     }
   });
 

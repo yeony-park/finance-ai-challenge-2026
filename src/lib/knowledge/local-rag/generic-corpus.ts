@@ -36,6 +36,40 @@ export interface GenericCorpusDocument {
   }[];
 }
 
+const hashJson = (value: unknown): string =>
+  createHash("sha256").update(JSON.stringify(value)).digest("hex");
+
+export const genericCorpusDocumentHash = (
+  document: GenericCorpusDocument,
+): string => hashJson({
+  sourceId: document.sourceId,
+  title: document.title,
+  sourceUrl: document.sourceUrl,
+  asOf: document.asOf,
+  chunks: document.chunks,
+});
+
+export const genericCorpusChunkIdentity = (
+  document: GenericCorpusDocument,
+  chunk: GenericCorpusDocument["chunks"][number],
+): {
+  readonly canonicalText: string;
+  readonly sourceHash: string;
+  readonly chunkHash: string;
+} => {
+  const canonicalText = chunk.content.replace(/\s+/g, " ").trim();
+  const sourceHash = genericCorpusDocumentHash(document);
+  return {
+    canonicalText,
+    sourceHash,
+    chunkHash: hashJson({
+      sourceHash,
+      chunkIndex: chunk.chunkIndex,
+      canonicalText,
+    }),
+  };
+};
+
 export const loadGenericCorpusDocuments = async (
   dataRoot = "data",
 ): Promise<readonly GenericCorpusDocument[]> => {

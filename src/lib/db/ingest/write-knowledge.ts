@@ -250,7 +250,13 @@ export const knowledgeChunkUpsertQuery = (
         page: values.page,
         chunkHash: values.chunkHash,
         canonicalText: values.canonicalText,
-        embedding: values.embedding,
+        embedding: sql`CASE
+          WHEN ${ragChunks.sourceHash} IS NOT DISTINCT FROM ${values.sourceHash}
+           AND ${ragChunks.chunkHash} IS NOT DISTINCT FROM ${values.chunkHash}
+           AND ${ragChunks.canonicalText} IS NOT DISTINCT FROM ${values.canonicalText}
+          THEN ${ragChunks.embedding}
+          ELSE NULL
+        END`,
       },
       setWhere: and(
         eq(ragChunks.scopeKind, "product"),

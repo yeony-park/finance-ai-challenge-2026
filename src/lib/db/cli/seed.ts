@@ -1,4 +1,4 @@
-import { and, eq, notInArray } from "drizzle-orm";
+import { and, eq, notInArray, sql } from "drizzle-orm";
 
 import { closeConnections, getDirectDb } from "../client";
 import { directDatabaseUrl } from "../env";
@@ -102,10 +102,14 @@ const seedRag = async (
           license: seed.document.license,
           retrievedOn: seed.document.retrievedOn,
           provenance: seed.document.provenance,
+          sourceUrl: seed.document.sourceUrl,
+          asOf: seed.document.asOf,
+          sourceHash: seed.document.sourceHash,
           approvedForPublic: seed.document.approvedForPublic,
           approvedForExternalAi: seed.document.approvedForExternalAi,
           piiReviewStatus: seed.document.piiReviewStatus,
           status: seed.document.status,
+          limitations: seed.document.limitations,
         },
       })
       .returning({ id: ragDocuments.id });
@@ -124,20 +128,41 @@ const seedRag = async (
           chunkIndex: chunk.chunkIndex,
           content: chunk.content,
           embedding: chunk.embedding,
+          scopeKind: chunk.scopeKind,
+          sourceUrl: chunk.sourceUrl,
+          asOf: chunk.asOf,
+          sourceHash: chunk.sourceHash,
           approvedForPublic: chunk.approvedForPublic,
           approvedForExternalAi: chunk.approvedForExternalAi,
           piiReviewStatus: chunk.piiReviewStatus,
           status: chunk.status,
+          limitations: chunk.limitations,
+          page: chunk.page,
+          chunkHash: chunk.chunkHash,
+          canonicalText: chunk.canonicalText,
         })
         .onConflictDoUpdate({
           target: [ragChunks.documentId, ragChunks.chunkIndex],
           set: {
             content: chunk.content,
-            embedding: chunk.embedding,
+            embedding: sql`CASE
+              WHEN ${ragChunks.sourceHash} IS NOT DISTINCT FROM ${chunk.sourceHash}
+               AND ${ragChunks.chunkHash} IS NOT DISTINCT FROM ${chunk.chunkHash}
+               AND ${ragChunks.canonicalText} IS NOT DISTINCT FROM ${chunk.canonicalText}
+              THEN ${ragChunks.embedding}
+              ELSE NULL
+            END`,
+            sourceUrl: chunk.sourceUrl,
+            asOf: chunk.asOf,
+            sourceHash: chunk.sourceHash,
             approvedForPublic: chunk.approvedForPublic,
             approvedForExternalAi: chunk.approvedForExternalAi,
             piiReviewStatus: chunk.piiReviewStatus,
             status: chunk.status,
+            limitations: chunk.limitations,
+            page: chunk.page,
+            chunkHash: chunk.chunkHash,
+            canonicalText: chunk.canonicalText,
           },
         });
     }

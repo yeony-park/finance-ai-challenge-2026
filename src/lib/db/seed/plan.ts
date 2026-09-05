@@ -1,6 +1,10 @@
 import path from "node:path";
 
-import { loadGenericCorpusDocuments } from "@/lib/knowledge/local-rag/generic-corpus";
+import {
+  genericCorpusChunkIdentity,
+  genericCorpusDocumentHash,
+  loadGenericCorpusDocuments,
+} from "@/lib/knowledge/local-rag/generic-corpus";
 
 import {
   type ArtAuctionRecordRow,
@@ -42,22 +46,36 @@ const loadRagFixture = async (
       license: "green",
       retrievedOn: doc.asOf,
       provenance: "public_record",
+      scopeKind: "generic",
+      sourceUrl: doc.sourceUrl,
+      asOf: doc.asOf,
+      sourceHash: genericCorpusDocumentHash(doc),
       approvedForPublic: true,
       approvedForExternalAi: true,
       piiReviewStatus: "passed",
       status: "ready",
+      limitations: [],
     }),
-    chunks: doc.chunks.map((chunk) =>
-      ragChunkRowSchema.parse({
+    chunks: doc.chunks.map((chunk) => {
+      const identity = genericCorpusChunkIdentity(doc, chunk);
+      return ragChunkRowSchema.parse({
         chunkIndex: chunk.chunkIndex,
         content: chunk.content,
         embedding: null,
+        scopeKind: "generic",
+        sourceUrl: doc.sourceUrl,
+        asOf: doc.asOf,
+        sourceHash: identity.sourceHash,
         approvedForPublic: true,
         approvedForExternalAi: true,
         piiReviewStatus: "passed",
         status: "ready",
-      }),
-    ),
+        limitations: [],
+        page: chunk.chunkIndex + 1,
+        chunkHash: identity.chunkHash,
+        canonicalText: identity.canonicalText,
+      });
+    }),
   }));
 };
 
