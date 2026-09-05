@@ -106,6 +106,8 @@
 
   --ds-section-y: clamp(4rem, 3rem + 5vw, 8rem);
   --ds-section-y-tight: clamp(2.75rem, 2rem + 3vw, 5rem);
+  --ds-content-gap: clamp(1.5rem, 2.5vw, 2rem);
+  --ds-page-section-gap: clamp(2rem, 4vw, 3rem);
 
   --ds-gutter: clamp(1.125rem, 0.45rem + 3vw, 3rem);
   --ds-maxw: 1320px;

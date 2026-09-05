@@ -1,7 +1,12 @@
 .slot {
   margin-top: 0;
-  padding-block: var(--ds-section-y-tight);
+  padding-block: var(--ds-page-section-gap);
   border-top: 1px solid var(--ds-line);
+}
+
+.catalogSlot {
+  padding-top: 0;
+  border-top: 0;
 }
 
 .slotGrid {

@@ -1,11 +1,13 @@
 .page {
-  width: min(100% - (2 * var(--ds-gutter)), var(--ds-maxw));
+  width: 100%;
+  max-width: var(--ds-maxw);
+  padding-inline: var(--ds-gutter);
   margin-inline: auto;
-  padding-block: var(--ds-section-y-tight) var(--ds-space-10);
+  padding-block: var(--ds-page-section-gap);
 }
 
 .hero {
-  padding-bottom: var(--ds-space-8);
+  padding-bottom: var(--ds-content-gap);
 }
 
 .eyebrow,
@@ -131,7 +133,7 @@
 }
 
 .panel {
-  padding-block: var(--ds-space-8) var(--ds-section-y-tight);
+  padding-block: var(--ds-content-gap);
 }
 
 .optionHeader,

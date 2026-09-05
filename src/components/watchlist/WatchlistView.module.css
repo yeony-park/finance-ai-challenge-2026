@@ -1,6 +1,6 @@
 .page {
   min-height: calc(100svh - var(--ds-header-h));
-  padding-block: clamp(3.5rem, 8vw, 7rem);
+  padding-block: var(--ds-page-section-gap);
   background: var(--ds-bg);
 }
 
@@ -13,7 +13,7 @@
 
 .hero {
   max-width: var(--ds-maxw-prose);
-  margin-bottom: clamp(2.5rem, 6vw, 4.5rem);
+  margin-bottom: var(--ds-content-gap);
 }
 
 .title {
@@ -93,10 +93,9 @@
   display: grid;
   justify-items: start;
   gap: var(--ds-space-3);
-  padding: clamp(1.5rem, 4vw, 2.5rem);
-  border: 1px solid var(--ds-line);
+  padding: var(--ds-content-gap);
   border-radius: var(--ds-radius-panel);
-  background: var(--ds-surface);
+  background: var(--ds-bg-muted);
 }
 
 .emptyIcon {

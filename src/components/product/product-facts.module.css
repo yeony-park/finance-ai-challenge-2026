@@ -1,0 +1,30 @@
+.facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ds-space-2);
+  margin: 0;
+}
+
+.facts > div {
+  min-width: 0;
+  padding: var(--ds-space-3) var(--ds-space-4);
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-bg-muted);
+}
+
+.facts dt {
+  color: var(--ds-ink);
+  font-size: var(--ds-heading-h4);
+  font-weight: var(--ds-weight-bold);
+  line-height: var(--ds-leading-tight);
+}
+
+.facts dd {
+  margin: var(--ds-space-2) 0 0;
+  color: var(--ds-ink-muted);
+  font-size: var(--ds-text-sm);
+  font-weight: var(--ds-weight-regular);
+  line-height: var(--ds-leading-relaxed);
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}

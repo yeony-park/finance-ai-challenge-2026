@@ -6,7 +6,7 @@
 }
 
 .section {
-  padding-block: var(--ds-section-y-tight);
+  padding-block: var(--ds-page-section-gap);
   background: var(--ds-bg);
 }
 
