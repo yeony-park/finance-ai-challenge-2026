@@ -43,10 +43,19 @@
   --ds-verdict-unknown-soft: #f1f1ee;
   --ds-verdict-unknown-line: #dedcd5;
 
-  --ds-font-sans: var(--font-sans-kr), "Apple SD Gothic Neo", system-ui, sans-serif;
-  --ds-font-serif: var(--font-serif-kr), "Apple SD Gothic Neo", serif;
-  --ds-font-mono: var(--font-plex-mono), ui-monospace, Consolas, monospace;
+  --ds-font-sans: "Pretendard Variable", Pretendard, system-ui, sans-serif;
+  --ds-font-serif: var(--ds-font-sans);
+  --ds-font-mono: var(--ds-font-sans);
 
+  --ds-map-surface: #edf5f7;
+  --ds-map-reference: #829294;
+  --ds-map-asf: #326fa8;
+  --ds-map-fmd: #d96c1f;
+  --ds-map-both: #7048a8;
+  --ds-map-selected: #b42318;
+
+  --ds-text-relative-sm: 0.72em;
+  --ds-text-relative-md: 0.82em;
   --ds-text-2xs: 0.75rem;
   --ds-text-xs: 0.8125rem;
   --ds-text-sm: 0.9375rem;
@@ -97,6 +106,8 @@
 
   --ds-section-y: clamp(4rem, 3rem + 5vw, 8rem);
   --ds-section-y-tight: clamp(2.75rem, 2rem + 3vw, 5rem);
+  --ds-content-gap: clamp(1.5rem, 2.5vw, 2rem);
+  --ds-page-section-gap: clamp(2rem, 4vw, 3rem);
 
   --ds-gutter: clamp(1.125rem, 0.45rem + 3vw, 3rem);
   --ds-maxw: 1320px;
@@ -123,6 +134,12 @@
   --ds-ease: cubic-bezier(0.2, 0.7, 0.3, 1);
 
   --ds-header-h: 64px;
+  /* 헤더에 가리지 않도록 앵커가 멈추는 위치 */
+  --ds-scroll-offset: calc(var(--ds-header-h) + var(--ds-space-5));
+
+  /* 강조 밑줄 링크 공통값 */
+  --ds-underline-w: 2px;
+  --ds-link-gap-hover: 0.65rem;
 
   --ds-tap-min: 2.75rem;
   --ds-control-h-sm: 2.5rem;

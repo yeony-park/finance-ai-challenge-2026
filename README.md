@@ -76,7 +76,7 @@ npm run track-record   # 실키 전용 · DART 공시검색 2회 + 증권발행�
 
 실모델 연결은 `.env.example` 참조. 키가 없으면 전 구간 fake 모드로 완주하며, claim 추출은 `AI_GATEWAY_API_KEY` 또는 `OPENAI_API_KEY` 직결을 지원한다(현재 프로덕션은 OpenAI 직결).
 
-> `npm run dev`는 서비스 화면을 띄운다 — 랜딩(`/`), 검증 방법(`/methodology`), 검증 리포트 상세(`/offers/[id]`).
+> `npm run dev`는 서비스 화면을 띄운다 — 랜딩(`/`), 검증 방법(`/methodology`), 카테고리별 검증 리포트 상세(`/{category}/products/[id]`).
 > 화면에 찍히는 수치·문구는 전부 검증 엔진 산출 리포트(`data/public/{offerId}/report-*.json`)에서 파생되며 익명화가 적용된 상태다.
 
 ## 구조
@@ -90,3 +90,11 @@ npm run track-record   # 실키 전용 · DART 공시검색 2회 + 증권발행�
 | `docs/research/` | 리서치 스트림 1~4 + 종합 보고서 (주제 무관) |
 | `docs/planning/` | 주제 정의, 페이즈 계획, IDI 로그, council 평결, 팀 회의 패키지 |
 | `docs/archive/` | 이전 주제 산출물 백업 (복구 절차 포함) |
+
+
+### 프론트 통합 (2026-09-05)
+
+현재 화면은 카테고리 목록과 상품 상세 경로를 기준으로 동작한다. 부동산은 승인된 13개 검토용 시나리오를
+공모 조건과 건축물대장 공개정보로 나눠 보여준다. API ID와 화면 경로의 대응, 홈 검색과 상품 근거 질문은
+[서비스 API 명세](docs/spec/10-service-api.md)에 정리했다. 스타일·스크롤 기준은
+[디자인 시스템](docs/design/design-system.md)을 따른다.

@@ -34,14 +34,6 @@ export function CategoryGrid() {
           title="카테고리별 확인 현황"
           className={layout.categorySectionHead}
           titleRowClassName={s.sectionTitleRow}
-          aside={
-            <Link
-              href="/offers"
-              className={`${layout.sectionAllReports} ${s.sectionAllReports}`}
-            >
-              전체 검증 리포트 보기 <span aria-hidden="true">→</span>
-            </Link>
-          }
           lead={
             <>
               미술품·한우·한돈·부동산의 공시 내용을 공공 원장과 공식 자료로

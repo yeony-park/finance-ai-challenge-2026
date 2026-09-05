@@ -77,9 +77,13 @@ export function HomeScaffoldPanel({
             정정 전후 재대조 기록을 확인할 수 있습니다.
           </p>
         </div>
-        <Link href="/offers" className={s.panelLink}>
-          검증 리포트 보기 <span aria-hidden="true">→</span>
-        </Link>
+        <div className={s.panelLinkList}>
+          {CATEGORY_REGISTRY.map((entry) => (
+            <Link key={entry.id} href={entry.href} className={controls.chip}>
+              {entry.label}
+            </Link>
+          ))}
+        </div>
       </div>
     );
   }
@@ -101,9 +105,6 @@ export function HomeScaffoldPanel({
             {entry.label}
           </Link>
         ))}
-        <Link href="/offers" className={controls.chip}>
-          검증 리포트
-        </Link>
         <Link href="/methodology" className={controls.chip}>
           검증 방법
         </Link>

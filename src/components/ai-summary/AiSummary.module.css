@@ -1,17 +1,3 @@
-.summary {
-  margin: var(--ds-space-5) 0;
-  padding: var(--ds-space-4) var(--ds-space-5);
-  border-left: 3px solid var(--ds-accent-line);
-  background: var(--ds-accent-soft);
-}
-
-.label {
-  margin: 0 0 6px;
-  color: var(--ds-accent-ink);
-  font-size: var(--ds-text-xs);
-  font-weight: var(--ds-weight-bold);
-}
-
 .text {
   margin: 0;
   color: var(--ds-ink);
@@ -52,12 +38,6 @@
 .claimLabel {
   color: var(--ds-ink);
   font-weight: var(--ds-weight-bold);
-}
-
-.paths code,
-.sources code {
-  overflow-wrap: anywhere;
-  font-size: inherit;
 }
 
 .excerpt {

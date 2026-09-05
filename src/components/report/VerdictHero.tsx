@@ -44,18 +44,18 @@ export function VerdictHero({
   view,
   level,
   narrative,
-  aiSummary,
   overview,
   lifecycle,
   onLevelChange,
+  showOfferTitle = true,
 }: {
   readonly view: DemoView;
   readonly level: ExplainLevel;
   readonly narrative: Readonly<Record<ExplainLevel, NarrativeLevel>> | null;
-  readonly aiSummary?: ReactNode;
   readonly overview?: ReactNode;
   readonly lifecycle?: ReactNode;
   readonly onLevelChange: (level: ExplainLevel) => void;
+  readonly showOfferTitle?: boolean;
 }) {
   const isReduced = useReducedMotionSafe();
   const narrativeLevel = narrative?.[level];
@@ -81,9 +81,15 @@ export function VerdictHero({
         <div className={s.heroPrimary}>
           <p className={s.offerTag}>{view.offer.tag}</p>
 
-          <h1 id={VERDICT_TITLE_ID} className={s.title}>
-            {view.offer.title}
-          </h1>
+          {showOfferTitle ? (
+            <h1 id={VERDICT_TITLE_ID} className={s.title}>
+              {view.offer.title}
+            </h1>
+          ) : (
+            <h2 id={VERDICT_TITLE_ID} className={s.summaryTitle}>
+              대조 결과
+            </h2>
+          )}
 
           {lifecycle}
 
@@ -137,7 +143,6 @@ export function VerdictHero({
             </dl>
           </div>
 
-          {aiSummary}
 
           <AnimatePresence mode="wait" initial={false}>
             <m.div

@@ -95,7 +95,7 @@ describe("integration repository API wiring", () => {
     expect(await search.json()).toMatchObject({
       results: [expect.objectContaining({
         id: "livestock-1",
-        href: "/offers/livestock-1",
+        href: "/cattle/products/livestock-1",
         namespace: "published-offer",
       })],
       retrieval: {

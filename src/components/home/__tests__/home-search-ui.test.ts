@@ -13,14 +13,14 @@ describe("홈 검색 응답 UI", () => {
         title: "서울스퀘어",
         isScenario: true,
         phase: "subscription-open" as const,
-        href: "/offers/re-offer-01",
+        href: "/real-estate/products/re-offer-01",
       }],
     }));
 
     expect(markup).toContain("검색 결과");
     expect(markup).toContain("서울스퀘어");
-    expect(markup).toContain("가상 시나리오 · 가상 청약 시나리오");
-    expect(markup).toContain('href="/offers/re-offer-01"');
+    expect(markup).toContain("가상 청약 시나리오");
+    expect(markup).toContain('href="/real-estate/products/re-offer-01"');
   });
 
   test("AI 검색 안내는 현재 결과와 교집합인 상품 링크만 사용한다", () => {
@@ -35,13 +35,13 @@ describe("홈 검색 응답 UI", () => {
         title: "서울스퀘어",
         isScenario: true,
         phase: "subscription-open" as const,
-        href: "/offers/re-offer-01",
+        href: "/real-estate/products/re-offer-01",
       }],
     }));
 
     expect(markup).toContain("AI 검색 안내");
     expect(markup).toContain("조건과 근거를 함께 확인해 주세요.");
-    expect(markup).toContain('href="/offers/re-offer-01"');
+    expect(markup).toContain('href="/real-estate/products/re-offer-01"');
     expect(markup).not.toContain("not-in-results");
   });
 
@@ -53,7 +53,7 @@ describe("홈 검색 응답 UI", () => {
         title: "가축 1호",
         isScenario: false,
         phase: "closed" as const,
-        href: "/offers/livestock-1",
+        href: "/cattle/products/livestock-1",
       }],
     }));
 
@@ -69,13 +69,13 @@ describe("홈 검색 응답 UI", () => {
         title: "한돈 투자계약증권 · pig-1",
         isScenario: false,
         phase: "evidence-only" as const,
-        href: "/offers/pig-1",
+        href: "/pig/products/round-1",
       }],
     }));
 
     expect(markup).toContain("공시 근거 확인");
     expect(markup).not.toMatch(/청약 예정|청약 중|청약 종료|상장 거래/);
-    expect(markup).toContain('href="/offers/pig-1"');
+    expect(markup).toContain('href="/pig/products/round-1"');
   });
 
   test("추천 요청은 순위 대신 다섯 검토 영역을 안내한다", () => {

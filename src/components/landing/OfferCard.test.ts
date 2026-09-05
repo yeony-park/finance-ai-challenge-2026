@@ -6,14 +6,11 @@ import type { SubscriptionPhase } from "@/components/site/offers";
 import type { OfferCardView } from "@/lib/verify/report/view-model";
 
 import { OfferCard } from "./OfferCard";
-import { nextOfferTab, OfferTabs } from "./OfferTabs";
-import { ReportCatalogCard } from "./ReportCatalogCard";
-import type { ReportCatalogCardView } from "./report-catalog";
 import s from "./landing.module.css";
 
 const cardFor = (phase: SubscriptionPhase): OfferCardView => ({
   id: `offer-${phase}`,
-  href: `/offers/offer-${phase}`,
+  href: `/cattle/products/offer-${phase}`,
   title: `${phase} 공모`,
   assetLabel: "한우",
   schedule: {
@@ -41,29 +38,6 @@ const cardFor = (phase: SubscriptionPhase): OfferCardView => ({
 });
 
 describe("상태별 공모 카드 공통 구조", () => {
-  test("상태 탭은 등장 애니메이션을 기다리지 않고 처음부터 노출된다", () => {
-    const html = renderToStaticMarkup(
-      createElement(OfferTabs, {
-        upcoming: [],
-        open: [],
-        closed: [],
-        catalog: [],
-      }),
-    );
-
-    expect(html).toContain('role="tablist"');
-    expect(html.match(/tabindex="-1"/g)).toHaveLength(3);
-    expect(html).not.toContain("ds-reveal-pending");
-  });
-
-  test("방향키와 Home·End는 선택할 다음 탭을 순환한다", () => {
-    expect(nextOfferTab("all", "ArrowLeft")).toBe("closed");
-    expect(nextOfferTab("all", "ArrowRight")).toBe("upcoming");
-    expect(nextOfferTab("open", "Home")).toBe("all");
-    expect(nextOfferTab("open", "End")).toBe("closed");
-    expect(nextOfferTab("open", "Enter")).toBeNull();
-  });
-
   test.each<SubscriptionPhase>(["upcoming", "open", "closed"])(
     "%s 카드가 같은 위치에 관심 등록 하트 버튼을 렌더한다",
     (phase) => {
@@ -110,37 +84,51 @@ describe("상태별 공모 카드 공통 구조", () => {
     },
   );
 
-  test("카탈로그 카드도 별도 CTA 없이 카드 전체 링크를 렌더한다", () => {
-    const card: ReportCatalogCardView = {
-      id: "pig-3",
-      href: "/pig?tab=analysis&product=round-3#pig-review",
-      title: "한돈 3호",
-      assetLabel: "한돈",
-      badge: "대조 불가",
-      meta: "청약 완료 · 2026-06-29 ~ 2026-07-10",
-      summary: "공시 범위를 검토합니다.",
-      tallies: [
-        { label: "일치", value: 0, tone: "good" },
-        { label: "원장 불일치", value: 0, tone: "warn" },
-        { label: "대조 불가", value: 1, tone: "unk" },
-      ],
-      phase: "closed",
-    };
+  test("카테고리 분석 카드는 색면 없이 타이포 위계와 명시적 CTA를 쓴다", () => {
+    const card = cardFor("closed");
     const html = renderToStaticMarkup(
-      createElement(ReportCatalogCard, { card }),
+      createElement(OfferCard, { card, appearance: "analysis" }),
     );
 
-    expect(html).not.toContain(">리포트 열기<");
-    expect(html).not.toContain("검증 리포트 보기");
-    expect(html.match(/<a /g)).toHaveLength(1);
-    expect(html).toContain(
-      `aria-label="${card.title} 검증 리포트 열기"`,
+    expect(html).toContain("data-category-analysis-card");
+    expect(html).toContain(card.verdictLine);
+    expect(html).toContain(card.lastVerifiedAt);
+    expect(html).toContain(">37두</dd>");
+    expect(html).toContain(card.schedule.label);
+    expect(html).toContain("<h4>대조 결과</h4>");
+    expect(html).toContain(">검증 리포트 보기");
+    expect(html).toContain("category-cattle.jpg");
+    expect(html).toContain('alt=""');
+    expect(html).toContain(`class="${s.analysisOfferCard}"`);
+    expect(html).toContain(`class="${s.analysisCardHitArea}"`);
+    expect(html).toContain(`class="${s.analysisCardMediaAction}"`);
+    expect(html.indexOf(s.analysisCardMediaAction)).toBeLessThan(
+      html.indexOf(s.analysisCardBody),
     );
-    expect(html).toContain(`href="${card.href.replaceAll("&", "&amp;")}"`);
-    expect(html).toContain(`>${card.assetLabel}</p>`);
-    expect(html).toContain(`>${card.badge}</span>`);
-    expect(html).toContain(`>${card.meta}</p>`);
-    expect(html).toContain(">원장 불일치</span>");
-    expect(html).toContain(">대조 불가</span>");
+    expect(html).toContain(
+      `aria-label="${card.title} 검증 리포트 보기"`,
+    );
+    expect(html).not.toContain(s.ddayClosed);
+    expect(html).not.toContain(s.toneGood);
+    expect(html).not.toContain(s.toneWarn);
+    expect(html).not.toContain(s.toneUnk);
   });
+
+  test("부동산 분석 카드는 부동산 캔버스와 건 단위를 사용한다", () => {
+    const card = {
+      ...cardFor("closed"),
+      id: "real-estate-a",
+      title: "서초 지웰타워 12층",
+      assetLabel: "부동산",
+    };
+    const html = renderToStaticMarkup(
+      createElement(OfferCard, { card, appearance: "analysis" }),
+    );
+
+    expect(html).toContain(">37건</dd>");
+    expect(html).toContain("category-real-estate-card-v2.png");
+    expect(html).toContain('alt=""');
+    expect(html).not.toContain("category-cattle.jpg");
+  });
+
 });

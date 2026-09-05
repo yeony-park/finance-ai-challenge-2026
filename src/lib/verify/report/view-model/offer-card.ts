@@ -1,4 +1,9 @@
-import { buildOfferSchedule, type OfferEntry, type OfferSchedule } from "@/components/site/offers";
+import {
+  buildOfferSchedule,
+  reportHrefForOffer,
+  type OfferEntry,
+  type OfferSchedule,
+} from "@/components/site/offers";
 import { WATCH_DETECTION_FAILED } from "@/lib/content/watch-band";
 
 import { watchAmendmentSummary } from "../../amend/watch-label";
@@ -62,7 +67,7 @@ export const buildOfferCard = (input: OfferCardInput): OfferCardView => {
 
   return {
     id: offer.id,
-    href: `/offers/${offer.id}`,
+    href: reportHrefForOffer(offer),
     title: offer.title,
     assetLabel: offer.assetLabel,
     schedule: buildOfferSchedule(offer, now),

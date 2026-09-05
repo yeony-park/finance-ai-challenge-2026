@@ -25,6 +25,7 @@ describe("data manifest 공개 파일 Git 승인 경계", () => {
         "data/public",
         "data/reference",
         "data/offers",
+        "data/synthetic",
       ],
       "/repo",
     );
@@ -75,6 +76,7 @@ describe("data manifest 공개 파일 Git 승인 경계", () => {
         "data/public",
         "data/reference",
         "data/offers",
+        "data/synthetic",
       ],
       "/repo",
     );

@@ -536,7 +536,7 @@ describe("pig DART filing artifact", () => {
       status: "evidence-ready",
       phase: "evidence-only",
       namespace: "published-offer",
-      href: "/offers/pig-1",
+      href: "/pig/products/round-1",
     }));
     expect(smoke.results.find((item) => item.id === "pig-1")).not.toHaveProperty("minimumInvestmentWon");
     expect((await searchOffers({ q: "pig-1", phase: "evidence-only", limit: 10 })).results)
@@ -630,7 +630,7 @@ describe("pig DART filing artifact", () => {
         id: "pig-1",
         categoryId: "pig",
         namespace: "published-offer",
-        href: "/offers/pig-1",
+        href: "/pig/products/round-1",
       }));
     }
     expect(pigCalls).toBe(10);

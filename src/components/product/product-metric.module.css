@@ -1,0 +1,39 @@
+.metric {
+  display: grid;
+  align-content: start;
+  gap: var(--ds-space-3);
+  min-width: 0;
+  margin: 0;
+  padding: var(--ds-space-5);
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-bg-muted);
+}
+
+.metric dt {
+  margin: 0;
+  color: var(--ds-ink);
+  font-size: var(--ds-heading-h4);
+  font-weight: var(--ds-weight-bold);
+  line-height: var(--ds-leading-snug);
+  word-break: keep-all;
+}
+
+.metric dd {
+  margin: 0;
+  color: var(--ds-ink);
+  font-size: var(--ds-heading-h3);
+  font-weight: var(--ds-weight-bold);
+  line-height: var(--ds-leading-snug);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.metric .note {
+  color: var(--ds-ink-muted);
+  font-size: var(--ds-text-sm);
+  font-weight: var(--ds-weight-regular);
+}
+
+@media (max-width: 600px) {
+  .metric { padding: var(--ds-space-4); }
+}

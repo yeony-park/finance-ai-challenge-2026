@@ -744,7 +744,7 @@ describe("화면 뷰모델 — 축산 문구가 부동산에 새지 않는다", 
     expect(card.verdictLine.startsWith("이 공모의 ")).toBe(true);
     expect(card.verdictLine).toContain("비교군 13건");
     expect(card.schedule.phase).toBe("closed");
-    expect(card.href).toBe(`/offers/${OFFER_ID}`);
+    expect(card.href).toBe(`/real-estate/products/${OFFER_ID}`);
   });
 
   test("real-estate-a 공개 registry와 내부 리포트 fixture가 함께 유지된다", () => {

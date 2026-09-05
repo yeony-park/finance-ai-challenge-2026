@@ -1,42 +1,19 @@
 import { describe, expect, test } from "vitest";
 
+import { filterOutput } from "@/lib/spine/guardrail/output-filter";
 import {
-  analysisVerdictFromSearchParam,
-  categoryPageStateFromSearchParams,
+  CATEGORY_TAB_COPY,
+  categorySearchQueryFromSearchParam,
 } from "../category-tabs";
 
-describe("카테고리 분석 판정 파라미터", () => {
-  test.each(["match", "mismatch", "unverifiable"] as const)(
-    "%s를 판정 필터로 파싱한다",
-    (verdict) => {
-      expect(analysisVerdictFromSearchParam(verdict)).toBe(verdict);
-    },
-  );
-
-  test("배열 파라미터는 첫 값을 사용한다", () => {
-    expect(
-      analysisVerdictFromSearchParam(["mismatch", "unverifiable"]),
-    ).toBe("mismatch");
+describe("카테고리 탭 문안", () => {
+  test.each(Object.values(CATEGORY_TAB_COPY))("출력 필터 통과: %s", (copy) => {
+    expect(filterOutput(copy).violations, copy).toEqual([]);
   });
 
-  test.each([undefined, "", "all", "unknown"])(
-    "%s는 전체 상태로 정규화한다",
-    (value) => {
-      expect(analysisVerdictFromSearchParam(value)).toBeNull();
-    },
-  );
-
-  test("탭·청약 상태·판정을 함께 파싱한다", () => {
-    expect(
-      categoryPageStateFromSearchParams({
-        tab: "analysis",
-        status: "closed",
-        verdict: "unverifiable",
-      }),
-    ).toEqual({
-      activeTab: "analysis",
-      analysisStatus: "closed",
-      analysisVerdict: "unverifiable",
-    });
+  test("검색어는 첫 값을 공백 없이 사용한다", () => {
+    expect(categorySearchQueryFromSearchParam(["  한우 1호  ", "한우 2호"])).toBe(
+      "한우 1호",
+    );
   });
 });

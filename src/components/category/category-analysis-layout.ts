@@ -33,18 +33,24 @@ const STANDARD_LAYOUT: CategoryAnalysisLayout = {
   marketNavigation: DEFAULT_MARKET_NAVIGATION,
 };
 
+const CARD_ONLY_LAYOUT: CategoryAnalysisLayout = {
+  slots: ["evidence"],
+  customPresentation: "framed",
+  marketNavigation: DEFAULT_MARKET_NAVIGATION,
+};
+
 export const CATEGORY_ANALYSIS_LAYOUTS: Readonly<
   Record<CategoryId, CategoryAnalysisLayout>
 > = {
   art: STANDARD_LAYOUT,
-  cattle: STANDARD_LAYOUT,
+  cattle: CARD_ONLY_LAYOUT,
   pig: {
     slots: ["custom", "track-record", "market", "questions"],
     customPresentation: "inline",
     customNavigation: [
       {
         id: "pig-gallery-title",
-        label: "최근 상품",
+        label: "공모 상품",
         keywords: ["공모", "발행사", "신고서", "판정", "한돈", "회차"],
       },
       {

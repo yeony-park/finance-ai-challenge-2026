@@ -3,11 +3,9 @@ import type { ReactNode } from "react";
 
 import { Reveal } from "@/components/motion/Reveal";
 import { LAYERS_SECTION_TITLE } from "@/lib/content/category-landing";
-import type { CategoryTab } from "@/lib/content/category-tabs";
 import type { CategoryDescriptor } from "@/lib/verify/contract/category";
 
 import home from "@/components/home/home.module.css";
-import { CategoryPageNav } from "./CategoryPageNav";
 import { LayerSupportTable } from "./LayerSupportTable";
 import base from "./category.module.css";
 import s from "./category-shell.module.css";
@@ -16,33 +14,33 @@ interface CategoryAboutViewProps {
   readonly title: string;
   readonly lead: string;
   readonly descriptor: CategoryDescriptor | null;
-  readonly categoryHref: string;
-  readonly activeTab: CategoryTab;
+  readonly categoryHref?: string;
+  readonly activeTab?: "about" | "analysis";
   readonly heroImage: string | null;
   readonly leadVisual?: ReactNode;
   readonly analysisHintVisual?: ReactNode;
   readonly replaceCopyWithVisuals?: boolean;
   readonly descriptionContent: ReactNode;
   readonly descriptionContentTitle: string;
+  readonly embedded?: boolean;
 }
 
 export function CategoryAboutView({
   title,
   lead,
   descriptor,
-  categoryHref,
-  activeTab,
   heroImage,
   leadVisual = null,
   analysisHintVisual = null,
   replaceCopyWithVisuals = false,
   descriptionContent,
   descriptionContentTitle,
+  embedded = false,
 }: CategoryAboutViewProps) {
   const hasInlineVisuals = leadVisual !== null || analysisHintVisual !== null;
 
   return (
-    <div className={`${home.section} ${s.categorySection}`}>
+    <div className={`${s.categorySection} ${embedded ? s.embedded : ""}`}>
       <div
         className={`${home.wrap} ${s.landingHero} ${
           descriptionContent ? s.landingHeroWithDescription : ""
@@ -66,12 +64,11 @@ export function CategoryAboutView({
           </div>
         ) : null}
         <div className={s.landingHeroBody}>
-          <h1 className={home.sectionTitle}>{title}</h1>
-          <CategoryPageNav
-            title={title}
-            href={categoryHref}
-            activeTab={activeTab}
-          />
+          {embedded ? (
+            <h2 className={home.sectionTitle}>{title}</h2>
+          ) : (
+            <h1 className={home.sectionTitle}>{title}</h1>
+          )}
         </div>
 
         <section

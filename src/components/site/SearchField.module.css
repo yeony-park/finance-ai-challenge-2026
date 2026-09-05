@@ -22,8 +22,9 @@
   min-height: var(--ds-control-h-md);
   padding: var(--ds-space-3) 3.75rem var(--ds-space-3)
     calc(var(--ds-space-4) + var(--ds-space-2));
-  border: 1px solid var(--ds-accent-line-soft);
+  border: 1px solid color-mix(in srgb, var(--ds-accent-line) 72%, white);
   border-radius: 999px;
+  appearance: none;
   background: var(--ds-surface);
   box-shadow: none;
   color: var(--ds-ink);
@@ -36,7 +37,16 @@
 
 .input::placeholder {
   color: var(--ds-ink-faint);
-  font-size: 0.875rem;
+  opacity: 1;
+  transition: opacity var(--ds-duration-fast) var(--ds-ease);
+}
+
+.input:focus::placeholder {
+  opacity: 0;
+}
+
+.input::-webkit-search-cancel-button {
+  display: none;
 }
 
 .input:focus-visible {

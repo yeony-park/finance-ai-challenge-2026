@@ -5,9 +5,7 @@ import { TrackRecordCard } from "@/components/report/TrackRecordCard";
 import type { SubscriptionPhase } from "@/components/site/offers";
 import type { CategoryId } from "@/lib/content/categories";
 import { ISSUER_SLOT_TITLE } from "@/lib/content/category-landing";
-import type { Verdict } from "@/lib/verify/types";
 
-import home from "@/components/home/home.module.css";
 import type { CategoryLandingModel } from "./category-landing-model";
 import type { CategoryAnalysisSlot } from "./category-analysis-layout";
 import { CategoryAnalysisWorkspace } from "./CategoryAnalysisWorkspace";
@@ -22,8 +20,9 @@ interface CategoryAnalysisViewProps {
   readonly title: string;
   readonly model: CategoryLandingModel;
   readonly analysisStatus: SubscriptionPhase | null;
-  readonly analysisVerdict: Verdict | null;
-  readonly filterControlsEnabled: boolean | undefined;
+  readonly showStatusTabs: boolean;
+  readonly statusTabsSearchParams?: string;
+  readonly searchQuery?: string;
   readonly preview: readonly string[] | null;
   readonly custom: ReactNode;
   readonly customTitle: string;
@@ -35,8 +34,9 @@ export function CategoryAnalysisView({
   title,
   model,
   analysisStatus,
-  analysisVerdict,
-  filterControlsEnabled,
+  showStatusTabs,
+  statusTabsSearchParams,
+  searchQuery = "",
   preview,
   custom,
   customTitle,
@@ -52,8 +52,8 @@ export function CategoryAnalysisView({
             evidence={model.evidence}
             visibleEvidence={model.visibleEvidence}
             analysisStatus={analysisStatus}
-            analysisVerdict={analysisVerdict}
             preview={preview}
+            searchQuery={searchQuery}
           />
         );
       case "custom":
@@ -104,17 +104,16 @@ export function CategoryAnalysisView({
   };
 
   return (
-    <div className={`${home.section} ${shell.analysisSection}`}>
+    <div className={shell.analysisSection}>
       <CategoryAnalysisWorkspace
         categoryId={categoryId}
         categoryHref={model.categoryHref}
         title={title}
         selectedPhase={analysisStatus}
-        selectedVerdict={analysisVerdict}
-        hasFilterableOffers={
-          filterControlsEnabled ?? (model.evidence.length > 0)
-        }
-        sections={model.analysisSections}
+        showStatusTabs={showStatusTabs}
+        statusTabsSearchParams={statusTabsSearchParams}
+        searchQuery={searchQuery}
+        headerClassName={shell.analysisHeaderSticky}
       >
         <div className={shell.analysisArea}>
           {model.analysisLayout.slots.map((slot) => (

@@ -108,7 +108,7 @@
   border: 0;
   background: transparent;
   color: var(--ds-ink-muted);
-  font-size: 1.75rem;
+  font-size: var(--ds-heading-h2);
   line-height: 1;
   cursor: pointer;
   transition: color var(--ds-duration-base) var(--ds-ease);
@@ -271,7 +271,7 @@
   gap: var(--ds-space-2);
   margin-top: var(--ds-space-4);
   padding-bottom: 0.2rem;
-  border-bottom: 2px solid var(--ds-accent);
+  border-bottom: var(--ds-underline-w) solid var(--ds-accent);
   color: var(--ds-ink);
   font-size: var(--ds-text-base);
   font-weight: var(--ds-weight-bold);
@@ -279,7 +279,7 @@
   transition: gap var(--ds-duration-base) var(--ds-ease);
 }
 .panelLink:hover {
-  gap: 0.65rem;
+  gap: var(--ds-link-gap-hover);
 }
 
 .panelLinkList {

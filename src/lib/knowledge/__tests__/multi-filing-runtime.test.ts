@@ -52,7 +52,7 @@ describe("12상품 다중공시 runtime", () => {
         categoryId: product.categoryId,
         productId: product.productId,
         namespace: "published-offer",
-        href: `/offers/${product.productId}`,
+        href: product.categoryId === "pig" ? `/pig/products/${product.productId.replace("pig-", "round-")}` : `/cattle/products/${product.productId}`,
       }));
     }
 
@@ -64,7 +64,7 @@ describe("12상품 다중공시 runtime", () => {
     expect(response.status).toBe(200);
     await expect(response.json()).resolves.toMatchObject({
       results: expect.arrayContaining([
-        expect.objectContaining({ productId: "livestock-9", href: "/offers/livestock-9" }),
+        expect.objectContaining({ productId: "livestock-9", href: "/cattle/products/livestock-9" }),
       ]),
     });
 
@@ -77,7 +77,7 @@ describe("12상품 다중공시 runtime", () => {
         categoryId: "pig",
         namespace: "published-offer",
         status: "evidence-ready",
-        href: `/offers/${productId}`,
+        href: `/pig/products/${productId.replace("pig-", "round-")}`,
       }));
     }
   }, 15_000);

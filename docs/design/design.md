@@ -198,8 +198,8 @@
 
 1. **홈 히어로가 조각 클러스터가 아니다.** `design-system.md`는 마름모 조각 클러스터를
    홈 히어로 문법으로 규정하지만, 현재 `HomeHero`는 3D 이미지(`/sto-disclosure-hero-v2.png`)
-   축소 연출을 쓴다. `HeroShards.tsx`는 파일만 남고 **어디서도 import되지 않는다** —
-   퇴역시키거나 문서를 갱신해야 한다.
+   축소 연출을 쓴다. 사용하지 않던 `HeroShards.tsx`와 전용 스타일은 2026-09-05에
+   제거했다. 현재 화면 규칙은 `design-system.md`의 프론트 통합 항목을 따른다.
 2. **아이콘 0 규칙의 예외 1건.** 검색 버튼에 인라인 SVG 돋보기가 남아 있다
    (`HomeHero`의 `searchIcon`). 기능 아이콘으로 허용할지 정리 필요.
 3. **한국어 서브셋이 preload되지 않는다.** `layout.tsx`의 세 폰트가 모두

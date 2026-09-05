@@ -5,6 +5,7 @@ import { describe, expect, test, vi } from "vitest";
 import type { CategoryLandingModel } from "./category-landing-model";
 import { categoryAnalysisLayout } from "./category-analysis-layout";
 import { CategoryAnalysisView } from "./CategoryAnalysisView";
+import shell from "./category-shell.module.css";
 
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ replace: vi.fn() }),
@@ -13,17 +14,11 @@ vi.mock("next/navigation", () => ({
 const pigModel: CategoryLandingModel = {
   evidence: [],
   visibleEvidence: [],
-  activeEvidence: [],
-  closedEvidence: [],
   totals: { match: 0, mismatch: 0, unverifiable: 0 },
   totalItems: 0,
   latestGeneratedAt: undefined,
   categoryHref: "/pig",
   analysisLayout: categoryAnalysisLayout("pig"),
-  analysisSections: [
-    ...(categoryAnalysisLayout("pig").customNavigation ?? []),
-    { id: "한돈-questions", label: "확인 질문", keywords: ["질문"] },
-  ],
   trackRecord: null,
   bridgeOffer: null,
 };
@@ -36,15 +31,14 @@ describe("카테고리 분석 템플릿", () => {
         title: "한돈",
         model: pigModel,
         analysisStatus: null,
-        analysisVerdict: null,
-        filterControlsEnabled: true,
+        showStatusTabs: true,
         preview: null,
         custom: createElement(
           "section",
           { "data-template-marker": "pig-custom" },
           "한돈 특화 콘텐츠",
         ),
-        customTitle: "최근 상품",
+        customTitle: "공모 상품",
         market: null,
       }),
     );
@@ -57,5 +51,11 @@ describe("카테고리 분석 템플릿", () => {
     expect(html).not.toContain('id="한돈-evidence"');
     expect(html).not.toContain('id="한돈-verdicts"');
     expect(html).not.toContain('id="한돈-custom"');
+    expect(html).toContain('aria-label="한돈 공모 상태"');
+    expect(html).toContain(shell.analysisHeaderSticky);
+    expect(html).toContain(">전체<");
+    expect(html).not.toContain(">설명<");
+    expect(html).not.toContain(">분석<");
+    expect(html).not.toContain("<details");
   });
 });

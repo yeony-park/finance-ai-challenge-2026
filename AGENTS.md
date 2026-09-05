@@ -66,3 +66,13 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Required GitHub approvals remain `0`, but a mergeable state or the absence of a required approval is not authorization to merge. An agent must not invent or submit a human approval; it may merge only after explicit user or team authorization and must record that authorization in the pull request body or a comment before merging.
 - Until the repository plan or visibility supports enforced status checks, treat the CI rule above as mandatory project policy. When enforcement becomes available, require the `Verify` check for `integration`.
 - See `docs/planning/git-convention.md` and `docs/decisions/ADR-0002-ci-pr-merge-guardrails.md` for the full policy and rationale.
+
+
+## Frontend conventions
+
+- Use `src/styles/tokens.css` for component font sizes and colors; preserve semantic verdict and disease-map colors.
+- Category routes use `CategoryPage`; cattle, pig and real-estate report pages use `ReportDocument`.
+- Keep the root layout's `main#content` as the single main landmark.
+- Use canonical category product links. API `pig-N` IDs map to `/pig/products/round-N`; retain old `/offers/{id}` redirects.
+- Preserve approved source scopes, AI generation gates, and the distinction between observed data and scenarios during frontend refactors.
+- Update `docs/spec/10-service-api.md` when route or search-response contracts change.

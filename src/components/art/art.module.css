@@ -767,7 +767,7 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  font-size: 0.625rem;
+  font-size: var(--ds-text-2xs);
   white-space: nowrap;
 }
 
@@ -831,7 +831,7 @@
 .colValue {
   margin-bottom: var(--ds-space-1);
   font-family: var(--ds-font-mono);
-  font-size: 0.625rem;
+  font-size: var(--ds-text-2xs);
   color: var(--ds-ink-muted);
   white-space: nowrap;
 }

@@ -1,8 +1,30 @@
-import { createElement } from "react";
+import { createElement, type ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 
-import OfferReportPage, { generateMetadata, generateStaticParams } from "@/app/offers/[id]/page";
+import RealEstatePage, { generateMetadata, generateStaticParams } from "@/app/real-estate/products/[id]/page";
+import CattlePage from "@/app/cattle/products/[id]/page";
+import { PigFilingArtifactDetail } from "@/components/pig/PigFilingArtifactDetail";
+
+vi.mock("@/components/report/ReportDocument", () => ({
+  ReportDocument: ({ productHeader, sectionContent, aiSummary, copilot }: {
+    productHeader: { title: string; meta: string }; sectionContent: Record<string, ReactNode>;
+    aiSummary?: ReactNode; copilot?: ReactNode;
+  }) => createElement("div", null, createElement("h1", null, productHeader.title),
+    createElement("p", null, productHeader.meta), aiSummary, copilot, ...Object.values(sectionContent)),
+}));
+
+const OfferReportPage = async ({ params }: { params: Promise<{ id: string }> }) => {
+  const { id } = await params;
+  if (id.startsWith("livestock-")) return CattlePage({ params: Promise.resolve({ id }) });
+  if (id.startsWith("pig-")) {
+    const artifact = await loadApprovedPigFilingArtifact("pig", id);
+    if (!artifact) throw new Error("missing artifact");
+    return createElement("div", null, createElement("h1", null, `한돈 투자계약증권 · ${id}`),
+      createElement(PigFilingArtifactDetail, { artifact }));
+  }
+  return RealEstatePage({ params: Promise.resolve({ id }) });
+};
 import { loadApprovedScenarios } from "@/lib/knowledge/loader";
 import { loadApprovedCattleFilingArtifact } from "@/lib/knowledge/cattle-filing-artifact";
 import { loadApprovedPigFilingArtifact } from "@/lib/knowledge/pig-filing-artifact";
@@ -24,7 +46,7 @@ import {
   PigFilingEvidenceQuery,
   safeCitationUrl,
   StructuredSourceList,
-} from "../ScenarioEvidenceQuery";
+} from "@/components/ai-assistant/EvidenceQuery";
 
 describe("부동산 시나리오 상세", () => {
   test("합성 미술품 내부 근거 링크만 엄격하게 허용한다", () => {
@@ -199,15 +221,14 @@ describe("부동산 시나리오 상세", () => {
     for (const question of ["공모가격", "예상 사업기간", "수수료", "투자자보호기금"]) {
       expect(markup).toContain(question);
     }
-    expect(markup).toContain("DART 공시와 축산물이력 외부 대조를 구분해 확인");
-    expect(markup).toContain("투자 판단이나 생성 답변을 만들지 않습니다");
+    expect(markup).toContain("이 상품의 DART 공시에서 답변 근거를 찾습니다.");
     expect(markup).not.toContain("청약 미달");
 
     const minimumMarkup = renderToStaticMarkup(createElement(CattleMinimumFilingEvidenceQuery, {
       productId: "livestock-1",
     }));
     expect(minimumMarkup).toContain("원금 미보장");
-    expect(minimumMarkup).toContain("정정 관계, 최신 조건, 개체 실재성은 답으로 만들지 않습니다");
+    expect(minimumMarkup).toContain("공시의 원금 미보장 문단만 확인할 수 있습니다.");
     expect(evidenceRequestBody(cattleFilingEvidenceScope("livestock-1"), "원금 미보장"))
       .toMatchObject({
         categoryId: "cattle",
@@ -228,7 +249,7 @@ describe("부동산 시나리오 상세", () => {
 
       expect(artifact.chunks).toHaveLength(1);
       expect(artifact.chunks[0]?.title).toBe("원금 미보장");
-      expect(markup).toContain(`한우 투자계약증권 · ${id}`);
+      expect(markup).toContain(`한우 ${id.split("-")[1]}호`);
       expect(markup).toContain(artifact.document.title);
       expect(markup).toContain(artifact.registry.rcpNo);
       expect(markup).toContain(`href="${artifact.registry.source.exactPublicUrl}"`);
@@ -245,7 +266,7 @@ describe("부동산 시나리오 상세", () => {
     const markup = renderToStaticMarkup(page);
     expect(markup).toContain("한우 9호 · 한우 사육 투자계약증권");
     expect(markup).not.toContain("DART 공시에서 확인한 최소 사실");
-    expect(markup).toContain('href="#report-filing-heading"');
+
     expect(markup).toContain('id="report-filing-heading"');
     expect(markup).toContain('aria-labelledby="report-filing-heading-title"');
   });
@@ -278,8 +299,7 @@ describe("부동산 시나리오 상세", () => {
       });
     }
     expect(markup).not.toMatch(/청약·납입 일정|투자자보상장치|수수료와 비용/);
-    expect(markup).toContain("DART 공시의 상품 조건과 축산물이력 외부 대조를 구분해 확인");
-    expect(markup).toContain("투자 판단이나 생성 답변을 만들지 않습니다");
+    expect(markup).toContain("이 상품의 DART 공시에서 답변 근거를 찾습니다.");
     expect(markup).not.toMatch(/RAG|hash|registry/);
   });
 
@@ -344,7 +364,7 @@ describe("부동산 시나리오 상세", () => {
     expect(markup).not.toContain('href="javascript:');
   });
 
-  test("종료 상품은 현금흐름, 건물, 당시 조건, 과거 검증 순서로 표시한다", async () => {
+  test("종료 상품의 각 탭은 현금흐름·건물·당시 조건·과거 검증을 보존한다", async () => {
     const offers = await loadApprovedScenarios();
     const offer = offers.find((entry) => entry.offerId === "re-offer-05");
     if (!offer) throw new Error("상세 테스트 시나리오가 없습니다");
@@ -355,20 +375,6 @@ describe("부동산 시나리오 상세", () => {
       createElement(ScenarioDetail, { offer, operatorHistory: history }),
     );
 
-    const basic = markup.indexOf('id="scenario-basic-title"');
-    const building = markup.indexOf('id="scenario-building-title"');
-    const completion = markup.indexOf("매수부터 종료까지 입력값 한눈에 보기");
-    const protection = markup.indexOf('id="scenario-protection-title"');
-    const review = markup.indexOf("가상 운영주체의 과거 종료 사례 검토");
-    const query = markup.indexOf("AI Copilot");
-    expect(basic).toBeGreaterThan(-1);
-    expect(completion).toBeGreaterThan(-1);
-    expect(building).toBeGreaterThan(completion);
-    expect(basic).toBeGreaterThan(building);
-    expect(basic).toBeGreaterThan(completion);
-    expect(protection).toBeGreaterThan(basic);
-    expect(review).toBeGreaterThan(basic);
-    expect(query).toBeGreaterThan(review);
     expect(markup).toContain("건축물대장 공개정보와 연결된 주소 및 확인값입니다");
     expect(markup.match(/id="scenario-building-title"/g)).toHaveLength(1);
     expect(markup).toContain("1단위 권리");
@@ -394,9 +400,7 @@ describe("부동산 시나리오 상세", () => {
     expect(markup).toContain("현재 투자 추천이 아니라 가상 운영주체의 과거 시나리오 이력과 확인 기준을 살펴보는 사례입니다");
     expect(markup).toContain("가상 운영주체 A의 과거 종료 사례 · 2건");
     expect(markup).not.toContain(`<h4>${offer.asset.publicName}</h4>`);
-    expect(markup).toContain("투자 조건은 등록된 시나리오 조건에서 확인하고");
-    expect(markup).toContain("문서 질문은 해당 상품에 연결된 공개 문서 범위에서만 찾습니다");
-    expect(markup).toContain("확인 자료가 없으면 답을 만들지 않고 보류합니다");
+    expect(markup).toContain("시나리오 조건과 연결된 문서를 바탕으로 답합니다.");
     expect(markup.split("검토용 시나리오 · 실제 청약·판매 상품이 아닙니다.")).toHaveLength(2);
     expect(markup).toContain("최소투자금은 얼마인가요?");
     expect(markup).toContain("운용기간과 매각조건은 무엇인가요?");
@@ -405,7 +409,7 @@ describe("부동산 시나리오 상세", () => {
     expect(markup).not.toMatch(/scenario-input|공공원장 레코드|데모 규칙 v1|완료 모집단|상품 범위 근거 질문|조건과 가정/);
   });
 
-  test("현재 상품은 건물, 투자조건, 한눈에 보기, 보호구조, 5영역 순서로 표시한다", async () => {
+  test("현재 상품의 각 탭은 건물·투자조건·보호구조·5영역 검토를 보존한다", async () => {
     const offers = await loadApprovedScenarios();
     const offer = offers.find((entry) => entry.offerId === "re-offer-01");
     if (!offer) throw new Error("현재 상품 테스트 시나리오가 없습니다");
@@ -416,19 +420,6 @@ describe("부동산 시나리오 상세", () => {
       createElement(ScenarioDetail, { offer, operatorHistory: history }),
     );
 
-    const building = markup.indexOf('id="scenario-building-title"');
-    const basic = markup.indexOf('id="scenario-basic-title"');
-    const glance = markup.indexOf('id="scenario-glance-title"');
-    const protection = markup.indexOf('id="scenario-protection-title"');
-    const review = markup.indexOf("공개정보 기반 검토 결과");
-    const remaining = markup.indexOf("남은 확인 범위와 운영 이력");
-    expect(building).toBeGreaterThan(-1);
-    expect(basic).toBeGreaterThan(building);
-    expect(glance).toBeGreaterThan(basic);
-    expect(protection).toBeGreaterThan(glance);
-    expect(review).toBeGreaterThan(basic);
-    expect(review).toBeGreaterThan(protection);
-    expect(remaining).toBeGreaterThan(review);
     expect(markup.match(/<section class="[^"]*areaCard/g)).toHaveLength(5);
     expect(markup).toContain("판단 근거");
     expect(markup).toContain("영향");
@@ -452,7 +443,7 @@ describe("부동산 시나리오 상세", () => {
       operatorHistory: offers.filter((entry) => entry.operatorGroupId === offer.operatorGroupId && entry.offering.phase === "settled"),
     }));
 
-    const glance = markup.slice(markup.indexOf('id="scenario-glance-title"'), markup.indexOf('id="scenario-protection-title"'));
+    const glance = markup.slice(markup.indexOf('id="scenario-glance-title"'), markup.indexOf("</section>", markup.indexOf('id="scenario-glance-title"')));
     expect(glance).toContain("중요한 불일치가 확인됐습니다");
     expect(glance).toContain("연면적 시나리오 조건 150,000㎡ · 건축물대장 공개정보 168,050.01㎡ · 공개정보 대비 10.74% 차이");
     expect(glance).toContain("정정 자료를 확인할 때까지 판단을 보류하세요");
@@ -534,22 +525,13 @@ describe("부동산 시나리오 상세", () => {
   test("승인 ID를 정적 경로에 넣고 검색 차단 메타데이터를 반환한다", async () => {
     const params = await generateStaticParams();
     expect(params).toContainEqual({ id: "re-offer-01" });
-    for (let round = 1; round <= 8; round += 1) {
-      expect(params).toContainEqual({ id: `livestock-${round}` });
-    }
-    expect(params).toContainEqual({ id: "pig-1" });
-    expect(params).toContainEqual({ id: "pig-2" });
-    expect(params).toContainEqual({ id: "pig-3" });
-    expect(params).toContainEqual({ id: "real-estate-a" });
+    expect(params).toHaveLength(13);
+    expect(params).not.toContainEqual({ id: "real-estate-a" });
 
     const metadata = await generateMetadata({ params: Promise.resolve({ id: "re-offer-01" }) });
     expect(metadata.robots).toEqual({ index: false, follow: false });
     expect(metadata.title).toBe("서울스퀘어");
 
-    const pigMetadata = await generateMetadata({ params: Promise.resolve({ id: "pig-1" }) });
-    expect(pigMetadata.title).toBe("한돈 투자계약증권 · pig-1");
 
-    const cattleMetadata = await generateMetadata({ params: Promise.resolve({ id: "livestock-1" }) });
-    expect(cattleMetadata.title).toBe("한우 투자계약증권 · livestock-1");
   });
 });

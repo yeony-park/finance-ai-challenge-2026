@@ -1,6 +1,6 @@
 import type { VerificationLayer } from "@/lib/verify/contract/category";
 
-export const OFFERS_SECTION_TITLE = "최근 상품";
+export const OFFERS_SECTION_TITLE = "공모 상품";
 
 export const OFFERS_SECTION_LEAD =
   "검증 가능한 공개 데이터가 있는 공모 전수를 공시 접수일순 그대로 보여줍니다.";

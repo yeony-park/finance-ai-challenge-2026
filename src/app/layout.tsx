@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, Noto_Sans_KR, Noto_Serif_KR } from "next/font/google";
 
 import { MotionProvider } from "@/components/motion/MotionProvider";
 import { OnboardingDialog } from "@/components/home/OnboardingDialog";
@@ -7,26 +6,9 @@ import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SERVICE_DEFINITION, SERVICE_NAME, SERVICE_ROLE } from "@/components/site/service";
 
+import "pretendard/dist/web/variable/pretendardvariable.css";
 import "./globals.css";
 import s from "@/components/site/shell.module.css";
-
-const sansKr = Noto_Sans_KR({
-  variable: "--font-sans-kr",
-  subsets: ["latin"],
-  weight: ["400", "500", "700", "900"],
-});
-
-const serifKr = Noto_Serif_KR({
-  variable: "--font-serif-kr",
-  subsets: ["latin"],
-  weight: ["400", "600", "700"],
-});
-
-const plexMono = IBM_Plex_Mono({
-  variable: "--font-plex-mono",
-  subsets: ["latin"],
-  weight: ["400", "500"],
-});
 
 export const metadata: Metadata = {
   title: {
@@ -54,7 +36,7 @@ export default function RootLayout({
     <html
       lang="ko"
       data-scroll-behavior="smooth"
-      className={`${sansKr.variable} ${serifKr.variable} ${plexMono.variable} antialiased`}
+      className="antialiased"
     >
       <body>
         <noscript>
