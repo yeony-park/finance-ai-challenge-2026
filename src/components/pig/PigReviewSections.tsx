@@ -22,7 +22,6 @@ export interface PigReviewSectionsProps {
 
 interface SectionHeadingProps {
   readonly id: string;
-  readonly label: string;
   readonly title: string;
   readonly description: string;
   readonly badge: string;
@@ -30,7 +29,6 @@ interface SectionHeadingProps {
 
 function SectionHeading({
   id,
-  label,
   title,
   description,
   badge,
@@ -38,7 +36,6 @@ function SectionHeading({
   return (
     <header className={s.sectionHeading}>
       <div>
-        <p className={s.sectionLabel}>{label}</p>
         <h3 className={s.sectionTitle} id={id}>
           {title}
         </h3>
@@ -66,7 +63,6 @@ export function PigReviewGuide() {
       >
         <SectionHeading
           id="pig-review-beginner-title"
-          label={PIG_REVIEW_COPY.beginner.label}
           title={PIG_REVIEW_COPY.beginner.title}
           description={PIG_REVIEW_COPY.beginner.description}
           badge={PIG_REVIEW_COPY.beginner.badge}
@@ -143,7 +139,6 @@ export function PigReviewSections({
       >
         <SectionHeading
           id="pig-review-layer-title"
-          label={PIG_REVIEW_COPY.layerReview.label}
           title={buildPigReviewLayerTitle(product)}
           description={PIG_REVIEW_COPY.layerReview.description}
           badge={PIG_REVIEW_COPY.layerReview.badge}
@@ -209,7 +204,6 @@ export function PigReviewSections({
       >
         <SectionHeading
           id="pig-review-extra-filing-title"
-          label={PIG_REVIEW_COPY.extraFiling.label}
           title={PIG_REVIEW_COPY.extraFiling.title}
           description={PIG_REVIEW_COPY.extraFiling.description}
           badge={PIG_REVIEW_COPY.extraFiling.badge}
@@ -240,7 +234,6 @@ export function PigReviewSections({
       >
         <SectionHeading
           id="pig-review-questions-title"
-          label={PIG_REVIEW_COPY.questions.label}
           title={PIG_REVIEW_COPY.questions.title}
           description={PIG_REVIEW_COPY.questions.description}
           badge={PIG_REVIEW_COPY.questions.badge}
@@ -265,7 +258,6 @@ export function PigReviewSections({
       >
         <SectionHeading
           id="pig-review-sources-title"
-          label={PIG_REVIEW_COPY.sources.label}
           title={PIG_REVIEW_COPY.sources.title}
           description={PIG_REVIEW_COPY.sources.description}
           badge={PIG_REVIEW_COPY.sources.badge}

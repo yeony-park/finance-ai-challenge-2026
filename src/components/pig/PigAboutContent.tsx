@@ -8,7 +8,6 @@ export function PigAboutContent() {
   return (
     <div className={s.landing}>
       <section className={s.axes} aria-labelledby="pig-axes-title">
-        <p className={s.sectionLabel}>{PIG_AXES.eyebrow}</p>
         <h3 className={s.sectionTitle} id="pig-axes-title">
           {PIG_AXES.title}
         </h3>

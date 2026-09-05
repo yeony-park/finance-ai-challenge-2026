@@ -232,7 +232,6 @@ export function ArtEvidenceCopilot({
     >
       <div className={s.heading}>
         <div>
-          <p className={s.eyebrow}>Evidence Copilot</p>
           <h3 id="evidence-copilot-title">공시 근거에 질문하기</h3>
         </div>
         <span className={s.status} aria-live="polite">

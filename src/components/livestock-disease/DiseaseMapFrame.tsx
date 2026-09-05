@@ -4,7 +4,6 @@ import s from "./livestock-disease.module.css";
 
 interface DiseaseMapFrameProps {
   readonly headingId: string;
-  readonly eyebrow: string;
   readonly title: string;
   readonly description: string;
   readonly meta: string;
@@ -14,7 +13,6 @@ interface DiseaseMapFrameProps {
 
 export function DiseaseMapFrame({
   headingId,
-  eyebrow,
   title,
   description,
   meta,
@@ -24,7 +22,6 @@ export function DiseaseMapFrame({
   return (
     <figure className={s.mapFrame} aria-labelledby={headingId}>
       <div className={s.mapHead}>
-        <span className={s.mapEyebrow}>{eyebrow}</span>
         <h3 id={headingId}>{title}</h3>
         <p>{description}</p>
         <small className={s.mapMeta}>{meta}</small>

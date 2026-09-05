@@ -8,7 +8,7 @@
   display: grid;
   gap: var(--ds-space-6);
   min-width: 0;
-  margin-top: var(--ds-space-6);
+  margin-top: 0;
 }
 
 .productAnalysis {
@@ -174,15 +174,6 @@
   gap: var(--ds-space-3);
 }
 
-.sectionLabel {
-  font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
-  letter-spacing: var(--ds-tracking-wide);
-  text-transform: uppercase;
-  color: var(--ds-ink-faint);
-  margin: 0;
-}
-
 .sectionTitle {
   font-size: var(--ds-section-title);
   font-weight: var(--ds-weight-bold);
@@ -208,13 +199,6 @@
   color: var(--ds-ink);
   margin: var(--ds-space-1) 0 0;
   word-break: keep-all;
-}
-
-.eyebrow {
-  font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
-  letter-spacing: var(--ds-tracking-wide);
-  color: var(--ds-ink-faint);
 }
 
 .badge {

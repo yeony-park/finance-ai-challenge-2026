@@ -43,7 +43,6 @@ export function PigDiseaseContext({
     <section className={s.card} aria-labelledby="pig-disease-title">
       <div className={s.sectionHeading}>
         <div>
-          <p className={s.sectionLabel}>{PIG_DISEASE.label}</p>
           <h3 className={s.sectionTitle} id="pig-disease-title">
             {PIG_DISEASE.title}
           </h3>
@@ -86,7 +85,6 @@ export function PigDiseaseContext({
 
       <DiseaseMapFrame
         headingId="pig-disease-map-heading"
-        eyebrow={PIG_DISEASE.mapEyebrow}
         title={PIG_DISEASE.mapTitle}
         description={PIG_DISEASE.mapDescription}
         meta={`ASF ${PIG_ASF_SNAPSHOT_ASOF} · ${PIG_ASF_EVENTS.length}건 / 구제역 ${FMD_SNAPSHOT_ASOF} · 돼지 ${PIG_FMD_EVENTS.length}건`}

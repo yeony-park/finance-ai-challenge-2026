@@ -62,7 +62,7 @@ describe("한돈 분석 정적 렌더링 회귀", () => {
   test("공모 현황과 공시 읽기 안내는 설명 콘텐츠로 렌더한다", () => {
     const html = renderToStaticMarkup(createElement(PigAboutContent));
 
-    expect(html).toContain("공모별 확인 현황");
+    expect(html).not.toContain("공모별 확인 현황");
     expect(html).toContain('id="pig-axes-title"');
     expect(html).toContain('id="pig-snapshot-title"');
     expect(html).toContain('id="pig-review-beginner-title"');

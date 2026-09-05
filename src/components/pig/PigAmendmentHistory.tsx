@@ -20,7 +20,6 @@ export function PigAmendmentHistory({
       <section className={s.card} aria-labelledby="pig-amendment-title">
         <div className={s.sectionHeading}>
           <div>
-            <p className={s.sectionLabel}>{PIG_REVIEW_COPY.extraFiling.label}</p>
             <h3 className={s.sectionTitle} id="pig-amendment-title">
               {PIG_ISSUER.documentsHeading}
             </h3>

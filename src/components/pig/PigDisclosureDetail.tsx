@@ -53,7 +53,6 @@ export function PigDisclosureDetail({
         <section className={s.card} aria-labelledby="pig-overview-title">
         <div className={s.sectionHeading}>
           <div>
-            <p className={s.sectionLabel}>{PIG_OVERVIEW.label}</p>
             <h3 className={s.sectionTitle} id="pig-overview-title">
               {product.productName}
             </h3>
@@ -90,7 +89,6 @@ export function PigDisclosureDetail({
         <section className={s.card} aria-labelledby="pig-farm-title">
         <div className={s.sectionHeading}>
           <div>
-            <p className={s.sectionLabel}>{PIG_FARM.label}</p>
             <h3 className={s.sectionTitle} id="pig-farm-title">
               {PIG_FARM.title}
             </h3>
@@ -156,7 +154,6 @@ export function PigDisclosureDetail({
         <section className={s.card} aria-labelledby="pig-price-title">
         <div className={s.sectionHeading}>
           <div>
-            <p className={s.sectionLabel}>{PIG_PRICE.label}</p>
             <h3 className={s.sectionTitle} id="pig-price-title">
               {PIG_PRICE.title}
             </h3>
@@ -172,7 +169,6 @@ export function PigDisclosureDetail({
         />
 
         <div className={s.gradeBandHeading}>
-          <span className={s.eyebrow}>{PIG_PRICE.gradeBandEyebrow}</span>
           <h4 className={s.cardHeading}>{PIG_PRICE.gradeBandTitle}</h4>
           <p className={s.sectionDescription}>{PIG_PRICE.gradeBandDescription}</p>
         </div>
@@ -207,7 +203,6 @@ export function PigDisclosureDetail({
         <section className={s.card} aria-labelledby="pig-issuer-title">
         <div className={s.sectionHeading}>
           <div>
-            <p className={s.sectionLabel}>{PIG_ISSUER.label}</p>
             <h3 className={s.sectionTitle} id="pig-issuer-title">
               {PIG_ISSUER.title}
             </h3>

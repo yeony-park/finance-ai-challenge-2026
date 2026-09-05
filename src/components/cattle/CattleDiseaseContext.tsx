@@ -169,7 +169,6 @@ export function CattleDiseaseContext({
 
       <DiseaseMapFrame
         headingId="cattle-disease-map-heading"
-        eyebrow="선택 도 · 제출일 이전 발생 지도"
         title={`${provinceLabel} 소 질병 공개 발생`}
         description="구제역은 농식품부 공식 지도 좌표, 럼피스킨은 공식 PDF의 시·군을 행정구역 대표 좌표로 변환했습니다. 두 핀 모두 실제 농장 위치가 아닙니다."
         meta={`신고서 제출일 ${context.submittedOn} · 구제역 ${FMD_SNAPSHOT_ASOF} · 럼피스킨 ${CATTLE_LSD_SNAPSHOT.asOf}`}
