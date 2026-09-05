@@ -84,12 +84,14 @@ describe("local SQLite → PostgreSQL embedding sync plan", () => {
     expect(plan.counts).toEqual({ general: 1, cattle: 1 });
     expect(plan.rows[0]).toMatchObject({
       scopeKind: "generic",
+      chunkIndex: 0,
       sourceId: "general-doc",
       categoryId: null,
       productId: null,
     });
     expect(plan.rows[1]).toMatchObject({
       scopeKind: "product",
+      chunkIndex: 0,
       sourceId: null,
       categoryId: "cattle",
       productId: "livestock-9",
@@ -97,6 +99,21 @@ describe("local SQLite → PostgreSQL embedding sync plan", () => {
       chunkHash: hash("e"),
     });
     expect(plan.rows.every((row) => row.embedding.length === 1_536)).toBe(true);
+  });
+
+  test("본문 해시가 같은 청크도 chunkIndex로 서로 다른 DB 행을 지정한다", async () => {
+    const source = corpus();
+    const duplicate = {
+      ...source.chunks[0]!,
+      chunkId: "general-chunk-duplicate",
+      page: 2,
+    };
+    const duplicated = { ...source, chunks: [source.chunks[0]!, duplicate] };
+
+    const plan = await buildEmbeddingSyncPlan({ corpus: duplicated, cache: cache(duplicated) });
+
+    expect(plan.rows.map((row) => row.chunkIndex)).toEqual([0, 1]);
+    expect(plan.rows[0]?.chunkHash).toBe(plan.rows[1]?.chunkHash);
   });
 
   test("누락·중복·해시 불일치 로컬 캐시는 전부 거부한다", async () => {

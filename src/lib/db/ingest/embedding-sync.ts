@@ -13,9 +13,11 @@ import {
 } from "@/lib/knowledge/local-rag/types";
 
 import { getDirectSql } from "../client";
+import { buildKnowledgeIngestPlan } from "./knowledge";
 
 export interface EmbeddingSyncRow {
   readonly ordinal: number;
+  readonly chunkIndex: number;
   readonly scopeKind: "generic" | "product";
   readonly sourceId: string | null;
   readonly categoryId: string | null;
@@ -70,23 +72,53 @@ const assertCacheMatchesCorpus = (
   }
 };
 
+const inferProductChunkIndexes = (
+  corpus: CanonicalSemanticCorpus,
+): ReadonlyMap<string, number> => {
+  const byDocument = new Map<string, CanonicalSemanticCorpus["chunks"][number][]>();
+  for (const chunk of corpus.chunks) {
+    if (chunk.namespace === "general") continue;
+    const chunks = byDocument.get(chunk.documentId) ?? [];
+    chunks.push(chunk);
+    byDocument.set(chunk.documentId, chunks);
+  }
+  const indexes = new Map<string, number>();
+  for (const chunks of byDocument.values()) {
+    chunks
+      .sort((left, right) => left.page - right.page || left.chunkId.localeCompare(right.chunkId))
+      .forEach((chunk, index) => indexes.set(chunk.chunkId, index));
+  }
+  return indexes;
+};
+
 export const buildEmbeddingSyncPlan = async (options: {
   readonly dataRoot?: string;
   readonly dbPath?: string;
   readonly corpus?: CanonicalSemanticCorpus;
   readonly cache?: readonly LocalRagCachedChunk[];
 } = {}): Promise<EmbeddingSyncPlan> => {
-  const corpus = options.corpus ?? await collectCanonicalSemanticCorpus(options.dataRoot);
+  const dataRoot = options.dataRoot ?? "data";
+  const corpus = options.corpus ?? await collectCanonicalSemanticCorpus(dataRoot);
   const cache = options.cache ?? readLocalRagCache(options.dbPath ?? LOCAL_RAG_DB_PATH);
   assertCacheMatchesCorpus(corpus, cache);
   const cacheById = new Map(cache.map((chunk) => [chunk.chunkId, chunk]));
+  const productChunkIndexes = options.corpus
+    ? inferProductChunkIndexes(corpus)
+    : new Map(
+        (await buildKnowledgeIngestPlan(dataRoot)).chunks.map((chunk) => [chunk.chunkId, chunk.chunkIndex]),
+      );
   const counts: Record<string, number> = {};
   const rows = corpus.chunks.map((chunk, ordinal): EmbeddingSyncRow => {
     const cached = cacheById.get(chunk.chunkId)!;
     counts[chunk.scope.categoryId] = (counts[chunk.scope.categoryId] ?? 0) + 1;
     const generic = chunk.namespace === "general";
+    const chunkIndex = generic ? chunk.page - 1 : productChunkIndexes.get(chunk.chunkId);
+    if (chunkIndex === undefined || chunkIndex < 0) {
+      throw new EmbeddingSyncError(`DB 적재 계획에 없는 청크입니다: ${chunk.chunkId}`);
+    }
     return {
       ordinal,
+      chunkIndex,
       scopeKind: generic ? "generic" : "product",
       sourceId: generic ? chunk.documentId : null,
       categoryId: generic ? null : chunk.scope.categoryId,
@@ -119,6 +151,7 @@ export const writeEmbeddingSyncPlan = async (
   return await sql.begin(async (tx) => {
     await tx`CREATE TEMP TABLE embedding_sync_stage (
       ordinal integer PRIMARY KEY,
+      chunk_index integer NOT NULL,
       scope_kind text NOT NULL,
       source_id text,
       category_id text,
@@ -134,6 +167,7 @@ export const writeEmbeddingSyncPlan = async (
     for (let offset = 0; offset < plan.rows.length; offset += BATCH_SIZE) {
       const batch = plan.rows.slice(offset, offset + BATCH_SIZE).map((row) => ({
         ordinal: row.ordinal,
+        chunk_index: row.chunkIndex,
         scope_kind: row.scopeKind,
         source_id: row.sourceId,
         category_id: row.categoryId,
@@ -149,6 +183,7 @@ export const writeEmbeddingSyncPlan = async (
       await tx`INSERT INTO embedding_sync_stage ${tx(
         batch,
         "ordinal",
+        "chunk_index",
         "scope_kind",
         "source_id",
         "category_id",
@@ -190,6 +225,7 @@ export const writeEmbeddingSyncPlan = async (
         LEFT JOIN rag_chunks chunk ON
           chunk.document_id = document.id
           AND chunk.scope_kind = stage.scope_kind
+          AND chunk.chunk_index = stage.chunk_index
           AND chunk.source_hash = stage.source_hash
           AND chunk.chunk_hash = stage.chunk_hash
           AND chunk.approved_for_public IS TRUE
@@ -215,6 +251,7 @@ export const writeEmbeddingSyncPlan = async (
       FROM rag_documents document, embedding_sync_stage stage
       WHERE chunk.document_id = document.id
         AND chunk.scope_kind = stage.scope_kind
+        AND chunk.chunk_index = stage.chunk_index
         AND chunk.source_hash = stage.source_hash
         AND chunk.chunk_hash = stage.chunk_hash
         AND chunk.approved_for_public IS TRUE
