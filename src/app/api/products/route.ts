@@ -67,4 +67,3 @@ export async function GET(request: Request): Promise<NextResponse> {
     { headers: NO_STORE },
   );
 }
-

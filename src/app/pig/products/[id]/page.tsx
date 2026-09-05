@@ -1,3 +1,8 @@
+import { AiSummary } from "@/components/ai-summary/AiSummary";
+import { PigFilingArtifactDetail } from "@/components/pig/PigFilingArtifactDetail";
+import { PigFilingEvidenceQuery } from "@/components/real-estate-scenario/ScenarioEvidenceQuery";
+import { loadAiSummary } from "@/lib/ai-summary/cache";
+import { loadApprovedPigFilingArtifact } from "@/lib/knowledge/pig-filing-artifact";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -39,12 +44,36 @@ interface PigReportPageProps {
 }
 
 const PIG_REPORT_SECTIONS: readonly ReportSection[] = [
-  { key: "verdict", id: VERDICT_HEADING_ID, label: PIG_REPORT_COPY.sections.summary },
-  { key: "filing", id: "report-filing-heading", label: PIG_REPORT_COPY.sections.filing },
-  { key: "watch", id: WATCH_HEADING_ID, label: PIG_REPORT_COPY.sections.amendment },
-  { key: "history", id: HISTORY_HEADING_ID, label: PIG_REPORT_COPY.sections.history },
-  { key: "reality", id: REALITY_HEADING_ID, label: PIG_REPORT_COPY.sections.reality },
-  { key: "disease", id: DISEASE_HEADING_ID, label: PIG_REPORT_COPY.sections.disease },
+  {
+    key: "verdict",
+    id: VERDICT_HEADING_ID,
+    label: PIG_REPORT_COPY.sections.summary,
+  },
+  {
+    key: "filing",
+    id: "report-filing-heading",
+    label: PIG_REPORT_COPY.sections.filing,
+  },
+  {
+    key: "watch",
+    id: WATCH_HEADING_ID,
+    label: PIG_REPORT_COPY.sections.amendment,
+  },
+  {
+    key: "history",
+    id: HISTORY_HEADING_ID,
+    label: PIG_REPORT_COPY.sections.history,
+  },
+  {
+    key: "reality",
+    id: REALITY_HEADING_ID,
+    label: PIG_REPORT_COPY.sections.reality,
+  },
+  {
+    key: "disease",
+    id: DISEASE_HEADING_ID,
+    label: PIG_REPORT_COPY.sections.disease,
+  },
   { key: "price", id: PRICE_HEADING_ID, label: PIG_REPORT_COPY.sections.price },
 ];
 
@@ -62,20 +91,31 @@ const dartAsOf = (): string =>
     .sort()
     .at(-1) ?? "";
 
-const productHeaderFor = (product: PigDisclosureProduct): ReportProductHeader => ({
+const productHeaderFor = (
+  product: PigDisclosureProduct,
+): ReportProductHeader => ({
   imageSrc: "/category-pig.jpg",
   imageAlt: PIG_REPORT_COPY.imageAlt,
   status: `${PIG_REPORT_COPY.reportStatus} · ${product.statusLabel}`,
   title: product.productName,
   meta: `${PIG_REPORT_COPY.headerMetaPrefix} · ${product.farm.name} · ${product.farm.region}`,
   facts: [
-    { label: PIG_REPORT_COPY.facts.subscription, value: product.offering.subscriptionPeriod },
-    { label: PIG_REPORT_COPY.facts.offering, value: formatLargeWon(product.offering.issueAmountWon) },
+    {
+      label: PIG_REPORT_COPY.facts.subscription,
+      value: product.offering.subscriptionPeriod,
+    },
+    {
+      label: PIG_REPORT_COPY.facts.offering,
+      value: formatLargeWon(product.offering.issueAmountWon),
+    },
     {
       label: PIG_REPORT_COPY.facts.units,
       value: `${product.offering.units.toLocaleString("ko-KR")}좌 · ${product.offering.unitPriceWon.toLocaleString("ko-KR")}원`,
     },
-    { label: PIG_REPORT_COPY.facts.farm, value: `${product.farm.name} · ${product.farm.region}` },
+    {
+      label: PIG_REPORT_COPY.facts.farm,
+      value: `${product.farm.name} · ${product.farm.region}`,
+    },
   ],
 });
 
@@ -101,10 +141,13 @@ export function generateStaticParams() {
 
 export const dynamicParams = false;
 
-export async function generateMetadata({ params }: PigReportPageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PigReportPageProps): Promise<Metadata> {
   const { id } = await params;
   const product = productForId(id);
-  if (!product) return { title: "리포트를 찾을 수 없습니다", robots: { index: false } };
+  if (!product)
+    return { title: "리포트를 찾을 수 없습니다", robots: { index: false } };
   return {
     title: `${product.productName} 검증 리포트`,
     description: `${product.productName}의 공시, 정정, 이행, 실재 확인, 질병 및 가격 정보를 구분해 보여줍니다.`,
@@ -116,7 +159,12 @@ export default async function PigReportPage({ params }: PigReportPageProps) {
   const product = productForId(id);
   if (!product) notFound();
 
-  const filingFacts = await loadFilingFacts(`pig-${product.round}`);
+  const productId = `pig-${product.round}`;
+  const [filingFacts, artifact, aiSummary] = await Promise.all([
+    loadFilingFacts(productId),
+    loadApprovedPigFilingArtifact("pig", productId),
+    loadAiSummary("pig", productId),
+  ]);
   const commonDetailProps = {
     allProducts: PIG_DISCLOSURE_PRODUCTS,
     dartAsOf: dartAsOf(),
@@ -131,7 +179,9 @@ export default async function PigReportPage({ params }: PigReportPageProps) {
             <span aria-hidden="true">←</span>
             {PIG_REPORT_COPY.breadcrumbBack}
           </Link>
-          <span className={s.breadcrumbDivider} aria-hidden="true">/</span>
+          <span className={s.breadcrumbDivider} aria-hidden="true">
+            /
+          </span>
           <span className={s.breadcrumbCurrent} aria-current="page">
             {product.productName}
           </span>
@@ -144,15 +194,29 @@ export default async function PigReportPage({ params }: PigReportPageProps) {
         sectionContent={{
           verdict: (
             <PigReportPanel id={VERDICT_HEADING_ID}>
+              {aiSummary ? <AiSummary summary={aiSummary} /> : null}
               <PigReviewSections product={product} summaryOnly />
             </PigReportPanel>
           ),
-          filing: filingFacts ? (
-            <FilingFactsSection facts={filingFacts} />
-          ) : (
-            <PigReportPanel id="report-filing-heading">
-              <PigDisclosureDetail {...commonDetailProps} section="filing" />
-            </PigReportPanel>
+          filing: (
+            <>
+              {filingFacts ? (
+                <FilingFactsSection facts={filingFacts} />
+              ) : (
+                <PigReportPanel id="report-filing-heading">
+                  <PigDisclosureDetail
+                    {...commonDetailProps}
+                    section="filing"
+                  />
+                </PigReportPanel>
+              )}
+              {artifact ? (
+                <div className={s.wrap}>
+                  <PigFilingArtifactDetail artifact={artifact} />
+                  <PigFilingEvidenceQuery productId={productId} />
+                </div>
+              ) : null}
+            </>
           ),
           watch: (
             <PigReportPanel id={WATCH_HEADING_ID}>

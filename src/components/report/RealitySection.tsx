@@ -15,10 +15,7 @@ import type {
 import { METHODOLOGY_ANCHOR } from "@/app/methodology/anchors";
 
 import { EvidenceCard } from "./EvidenceCard";
-import {
-  evidenceCardId,
-  REALITY_HEADING_ID,
-} from "./ids";
+import { evidenceCardId, REALITY_HEADING_ID } from "./ids";
 import { ReportSectionFooter } from "./ReportSectionFooter";
 import { ReportSectionFrame } from "./ReportSectionFrame";
 import s from "./report.module.css";
@@ -36,7 +33,9 @@ export function RealitySection({
 
   const handleCardMount = useCallback((node: HTMLDivElement | null) => {
     if (!node) return;
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
     node.scrollIntoView({
       behavior: prefersReduced ? "auto" : "smooth",
       block: "nearest",
@@ -89,12 +88,12 @@ export function RealitySection({
       lead={view.reality.heading}
       compact
       wrapClassName={s.realityWrap}
-      footer={(
+      footer={
         <ReportSectionFooter
           sources={[view.reality.source]}
           anchor={METHODOLOGY_ANCHOR.layers}
         />
-      )}
+      }
     >
       <div className={s.realityOverview}>
         <div className={s.realityStat}>
@@ -103,7 +102,7 @@ export function RealitySection({
             / {total}
             {view.reality.countUnit}
           </span>
-          <small>전 항목 일치</small>
+          <small>{matched.length === 0 ? "확인 필요" : "전 항목 일치"}</small>
         </div>
         <div className={s.realityPlot}>
           <div className={s.realityLegend}>
@@ -113,7 +112,7 @@ export function RealitySection({
           <div
             className={s.realityBar}
             role="img"
-            aria-label={`전체 ${total}${view.reality.countUnit} 중 전 항목 일치 ${matched.length}${view.reality.countUnit}, 확인 필요 ${flagged.length}${view.reality.countUnit}`}
+            aria-label={`전체 ${total}${view.reality.countUnit} 중 ${matched.length === 0 ? "일치" : "전 항목 일치"} ${matched.length}${view.reality.countUnit}, 확인 필요 ${flagged.length}${view.reality.countUnit}`}
           >
             <span
               className={s.realityBarMatch}
@@ -129,7 +128,10 @@ export function RealitySection({
       </div>
 
       <p className={s.caption}>
-        <RichText parts={view.reality.caption} strongClassName={s.captionStrong} />
+        <RichText
+          parts={view.reality.caption}
+          strongClassName={s.captionStrong}
+        />
       </p>
 
       {flagged.length > 0 ? (
@@ -149,18 +151,20 @@ export function RealitySection({
         ) : null}
       </AnimatePresence>
 
-      <details className={`${s.supportingDetails} ${s.questionDetails}`}>
-        <summary className={s.supportingSummary}>
-          {flagged.length > 0
-            ? `전 항목 일치 ${matched.length}건 보기`
-            : `전체 ${matched.length}건 판정 보기 — 전 항목 일치`}
-        </summary>
-        <div className={s.supportingBody}>
-          <div className={s.herd} role="group" aria-label="전 항목 일치 판정">
-            {matched.map(renderCell)}
+      {matched.length > 0 ? (
+        <details className={`${s.supportingDetails} ${s.questionDetails}`}>
+          <summary className={s.supportingSummary}>
+            {flagged.length > 0
+              ? `전 항목 일치 ${matched.length}건 펼쳐 보기`
+              : `전체 ${matched.length}건 판정 펼쳐 보기 — 전 항목 일치`}
+          </summary>
+          <div className={s.supportingBody}>
+            <div className={s.herd} role="group" aria-label="전 항목 일치 판정">
+              {matched.map(renderCell)}
+            </div>
           </div>
-        </div>
-      </details>
+        </details>
+      ) : null}
     </ReportSectionFrame>
   );
 }

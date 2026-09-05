@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "promptVersion": 3,
+  "categoryId": "real-estate",
+  "productId": "re-offer-06",
+  "scenarioId": "re-scenario-06",
+  "dataNature": "scenario",
+  "asOf": "2026-08-24",
+  "inputHash": "f1e585d5e8625b49298f18b2d71142c51c67eea755a2be35fde53f0e7b97cce0",
+  "generatedAt": "2026-09-02T10:12:46.746Z",
+  "generator": "llm",
+  "model": "openai:gpt-5.6-luna",
+  "sentences": [
+    "이 상품은 실제 청약·판매가 아닌 검토용 시나리오이며, 전체 판정은 추가 확인 필요입니다.",
+    "상품 조건과 건축물대장 공개정보를 비교할 자산 조건이 없어 확인이 제한되며, 발행·유통 분리 등은 추가 확인이 필요합니다."
+  ],
+  "sentenceEvidencePaths": [
+    [
+      "/dataNotice",
+      "/overallState",
+      "/overallLabel",
+      "/limitations/4"
+    ],
+    [
+      "/findings/0/message",
+      "/findings/0/impact",
+      "/findings/1/message",
+      "/findings/1/impact"
+    ]
+  ],
+  "sourceReferences": [
+    "re-scenario-06",
+    "seoul-building-title-info"
+  ]
+}

@@ -36,7 +36,7 @@
   display: inline-block;
   width: 1.25em;
   color: var(--ds-ink);
-  font-size: 0.72em;
+  font-size: var(--ds-text-relative-sm);
 }
 .checkItem[open] summary::before {
   content: "▼";

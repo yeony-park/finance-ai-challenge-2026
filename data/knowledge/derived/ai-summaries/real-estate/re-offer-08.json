@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "promptVersion": 3,
+  "categoryId": "real-estate",
+  "productId": "re-offer-08",
+  "scenarioId": "re-scenario-08",
+  "dataNature": "scenario",
+  "asOf": "2026-08-24",
+  "inputHash": "2b12760b3921e98a649b66bd568dd074500792236ce250167c73e7d3ceca6b0f",
+  "generatedAt": "2026-09-02T10:12:51.420Z",
+  "generator": "llm",
+  "model": "openai:gpt-5.6-luna",
+  "sentences": [
+    "종로타워는 실제 청약·판매 상품이 아닌 검토용 시나리오이며, 판정은 근거 부족입니다.",
+    "건축물대장 공개정보와 5개 항목은 일치했지만, 권리 형태 등 일부 조건은 확인 자료가 부족합니다."
+  ],
+  "sentenceEvidencePaths": [
+    [
+      "/dataNotice",
+      "/overallState",
+      "/overallLabel",
+      "/limitations/3"
+    ],
+    [
+      "/findings/0/message",
+      "/findings/1/area",
+      "/findings/1/message"
+    ]
+  ],
+  "sourceReferences": [
+    "re-scenario-08",
+    "molit-building-hub-title"
+  ]
+}

@@ -1,6 +1,7 @@
 import { XMLParser } from "fast-xml-parser";
 import { z } from "zod";
 
+import { isSensitiveCredentialKey } from "../real-estate/source-url";
 import type { RealEstateComparable } from "../types";
 
 export const RTMS_ENDPOINT =
@@ -30,7 +31,7 @@ export interface RtmsTrade {
 
 export type RtmsMonthStatus = "ok" | "empty" | "failed";
 
-export interface RtmsMonthCache {
+export interface LegacyRtmsMonthCache {
   readonly schemaVersion: 1;
   readonly month: string;
   readonly lawdCd: string;
@@ -44,6 +45,25 @@ export interface RtmsMonthCache {
   readonly endpoint: string;
   readonly trades: readonly RtmsTrade[];
 }
+
+export interface RtmsMonthCacheV2 {
+  readonly schemaVersion: 2;
+  readonly month: string;
+  readonly lawdCd: string;
+  readonly sigunguName: string;
+  readonly status: RtmsMonthStatus;
+  readonly reason?: string;
+  readonly totalCount: number;
+  readonly collectedCount: number;
+  readonly cancelledCount: number;
+  readonly collectedAt: string;
+  readonly sourceId: string;
+  readonly sourceName: string;
+  readonly endpoint: string;
+  readonly trades: readonly RtmsTrade[];
+}
+
+export type RtmsMonthCache = LegacyRtmsMonthCache | RtmsMonthCacheV2;
 
 export interface RtmsWindow {
   readonly months: readonly string[];
@@ -90,14 +110,15 @@ const itemSchema = z.record(z.string(), z.unknown());
 
 const responseSchema = z.object({
   response: z.object({
-    header: z
-      .object({ resultCode: z.unknown(), resultMsg: z.unknown() })
-      .nullish(),
+    header: z.object({
+      resultCode: z.unknown().optional(),
+      resultMsg: z.unknown().optional(),
+    }),
     body: z.object({
       items: z
         .union([z.object({ item: z.array(itemSchema) }), z.string()])
         .nullish(),
-      totalCount: z.unknown().nullish(),
+      totalCount: z.unknown(),
     }),
   }),
 });
@@ -106,6 +127,18 @@ export interface RtmsNormalized {
   readonly trades: readonly RtmsTrade[];
   readonly cancelledCount: number;
   readonly parseFailedCount: number;
+  readonly totalCount: number;
+  readonly collectedCount: number;
+}
+
+export class RtmsNormalizationError extends Error {
+  constructor(
+    message: string,
+    readonly totalCount = 0,
+    readonly collectedCount = 0,
+  ) {
+    super(message);
+  }
 }
 
 const faultSchema = z.object({
@@ -118,37 +151,86 @@ const faultSchema = z.object({
   }),
 });
 
+export const RTMS_EXTERNAL_MESSAGE_MAX_LENGTH = 200;
+
+export const sanitizeRtmsExternalMessage = (
+  value: unknown,
+): string | undefined => {
+  const raw = text(value);
+  if (raw === undefined) return undefined;
+  const cleaned = raw
+    .replace(/[\u0000-\u001f\u007f-\u009f]/g, " ")
+    .replace(
+      /([A-Za-z][A-Za-z0-9_-]{0,64})\s*=\s*("[^"]*"|'[^']*'|Bearer\s+[^\s&;,]+|[^\s&;,]+)/gi,
+      (match, key: string) =>
+        isSensitiveCredentialKey(key) ? `${key}=[인증정보 제거]` : match,
+    )
+    .replace(/\s+/g, " ")
+    .trim();
+  return cleaned.length === 0
+    ? undefined
+    : cleaned.slice(0, RTMS_EXTERNAL_MESSAGE_MAX_LENGTH);
+};
+
 export const rtmsFaultOf = (raw: unknown): string | undefined => {
   const fault = faultSchema.safeParse(raw);
   if (!fault.success) return undefined;
   const header = fault.data.OpenAPI_ServiceResponse.cmmMsgHeader;
   const parts = [
-    text(header.errMsg),
-    text(header.returnAuthMsg),
-    text(header.returnReasonCode) === undefined
+    sanitizeRtmsExternalMessage(header.errMsg),
+    sanitizeRtmsExternalMessage(header.returnAuthMsg),
+    sanitizeRtmsExternalMessage(header.returnReasonCode) === undefined
       ? undefined
-      : `returnReasonCode=${text(header.returnReasonCode)}`,
+      : `returnReasonCode=${sanitizeRtmsExternalMessage(header.returnReasonCode)}`,
   ].filter((part): part is string => part !== undefined);
-  return parts.length > 0 ? parts.join(" · ") : "사유 미상";
+  return sanitizeRtmsExternalMessage(parts.join(" · ")) ?? "사유 미상";
 };
 
 export const normalizeRtmsResponse = (xml: string): RtmsNormalized => {
   const document = parser.parse(xml);
   const fault = rtmsFaultOf(document);
   if (fault) {
-    throw new Error(`실거래 API가 요청을 거부했습니다 — ${fault}`);
+    throw new RtmsNormalizationError(`실거래 API가 요청을 거부했습니다 — ${fault}`);
   }
   const parsed = responseSchema.safeParse(document);
   if (!parsed.success) {
-    const reason = parsed.error.issues
-      .slice(0, 2)
-      .map((issue) => `${issue.path.join(".") || "(root)"}: ${issue.message}`)
-      .join("; ");
-    throw new Error(`실거래 응답 형식을 인식할 수 없습니다 — ${reason}`);
+    throw new RtmsNormalizationError("실거래 응답 형식을 인식할 수 없습니다.");
+  }
+
+  const resultCode = text(parsed.data.response.header.resultCode);
+  const resultMsg = text(parsed.data.response.header.resultMsg);
+  if (resultCode === undefined || resultMsg === undefined) {
+    throw new RtmsNormalizationError("실거래 API 응답 헤더를 인식할 수 없습니다.");
+  }
+  if (!/^0+$/.test(resultCode)) {
+    throw new RtmsNormalizationError("실거래 API가 실패 resultCode를 반환했습니다.");
   }
 
   const items = parsed.data.response.body.items;
   const rows = typeof items === "object" && items !== null ? items.item : [];
+  const totalCount = number(parsed.data.response.body.totalCount);
+  const collectedCount = rows.length;
+  if (
+    totalCount === undefined ||
+    !Number.isInteger(totalCount) ||
+    totalCount < 0
+  ) {
+    throw new RtmsNormalizationError("실거래 API totalCount를 인식할 수 없습니다.");
+  }
+  if (rows.length > totalCount) {
+    throw new RtmsNormalizationError(
+      "실거래 API 항목 수가 totalCount를 초과했습니다.",
+      totalCount,
+      collectedCount,
+    );
+  }
+  if (totalCount > rows.length) {
+    throw new RtmsNormalizationError(
+      "실거래 API 첫 페이지 한도 초과로 전체 확인 불가입니다.",
+      totalCount,
+      collectedCount,
+    );
+  }
 
   let cancelledCount = 0;
   let parseFailedCount = 0;
@@ -189,7 +271,7 @@ export const normalizeRtmsResponse = (xml: string): RtmsNormalized => {
     ];
   });
 
-  return { trades, cancelledCount, parseFailedCount };
+  return { trades, cancelledCount, parseFailedCount, totalCount, collectedCount };
 };
 
 const tradeSchema = z.object({
@@ -204,7 +286,7 @@ const tradeSchema = z.object({
   buildYear: z.number().optional(),
 });
 
-const monthCacheSchema = z.object({
+const legacyMonthCacheSchema = z.object({
   schemaVersion: z.literal(1),
   month: z.string().regex(/^\d{4}-\d{2}$/, "month는 YYYY-MM 형식이어야 합니다"),
   lawdCd: z.string().regex(/^\d{5}$/, "lawdCd는 5자리여야 합니다"),
@@ -219,6 +301,56 @@ const monthCacheSchema = z.object({
   trades: z.array(tradeSchema),
 });
 
+const currentMonthCacheSchema = z
+  .object({
+    schemaVersion: z.literal(2),
+    month: z.string().regex(/^\d{4}-\d{2}$/, "month는 YYYY-MM 형식이어야 합니다"),
+    lawdCd: z.string().regex(/^\d{5}$/, "lawdCd는 5자리여야 합니다"),
+    sigunguName: z.string(),
+    status: z.enum(["ok", "empty", "failed"]),
+    reason: z.string().optional(),
+    totalCount: z.number().int().nonnegative(),
+    collectedCount: z.number().int().nonnegative(),
+    cancelledCount: z.number().int().nonnegative(),
+    collectedAt: z.string(),
+    sourceId: z.string(),
+    sourceName: z.string(),
+    endpoint: z.string(),
+    trades: z.array(tradeSchema),
+  })
+  .superRefine((cache, context) => {
+    const invalid = (message: string) =>
+      context.addIssue({ code: "custom", message });
+    if (
+      cache.status === "ok" &&
+      (cache.totalCount === 0 ||
+        cache.totalCount !== cache.collectedCount ||
+        cache.trades.length + cache.cancelledCount !== cache.collectedCount)
+    ) {
+      invalid("ok 캐시는 수집 건수와 전체 건수가 일치해야 합니다.");
+    }
+    if (
+      cache.status === "empty" &&
+      (cache.totalCount !== 0 ||
+        cache.collectedCount !== 0 ||
+        cache.cancelledCount !== 0 ||
+        cache.trades.length !== 0)
+    ) {
+      invalid("empty 캐시는 모든 건수가 0이고 거래가 없어야 합니다.");
+    }
+    if (
+      cache.status === "failed" &&
+      (cache.reason === undefined ||
+        cache.reason.length === 0 ||
+        cache.trades.length !== 0 ||
+        cache.cancelledCount > cache.collectedCount)
+    ) {
+      invalid("failed 캐시는 사유와 빈 거래 목록을 기록해야 합니다.");
+    }
+  });
+
+const monthCacheSchema = z.union([legacyMonthCacheSchema, currentMonthCacheSchema]);
+
 export const parseRtmsMonthCache = (
   raw: unknown,
   source: string,
@@ -231,7 +363,12 @@ export const parseRtmsMonthCache = (
       .join("; ");
     throw new Error(`실거래 캐시 형식이 올바르지 않습니다 (${source}) — ${reason}`);
   }
-  return parsed.data;
+  return parsed.data.reason === undefined
+    ? parsed.data
+    : {
+        ...parsed.data,
+        reason: sanitizeRtmsExternalMessage(parsed.data.reason) ?? "사유 미상",
+      };
 };
 
 export const monthOf = (isoDate: string): string => isoDate.slice(0, 7);

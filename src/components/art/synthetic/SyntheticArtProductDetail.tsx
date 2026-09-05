@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -79,7 +80,7 @@ function MetricCard({
 function Insight({ section }: { readonly section: SyntheticAnalysisSection }) {
   return (
     <section className={s.insightBox}>
-      <p className={s.kicker}>ANALYSIS NOTE</p>
+      <p className={s.kicker}>분석 메모</p>
       <h2>{section.conclusion}</h2>
       <ul className={s.reasonList}>
         {[...section.quantitativeFindings, ...section.qualitativeFindings].map(
@@ -243,7 +244,7 @@ function CurrentSummary({ product }: { readonly product: SyntheticCurrentProduct
       <section className={s.section}>
         <div className={s.sectionHeading}>
           <div>
-            <p className={s.kicker}>ANALYSIS AXES</p>
+            <p className={s.kicker}>분석 항목</p>
             <h2>네 개 분석축의 합성 데이터 메모</h2>
           </div>
         </div>
@@ -470,7 +471,7 @@ function EvidencePanel({ product }: { readonly product: SyntheticCurrentProduct 
   return (
     <div className={s.tabPanel}>
       <section className={s.neutralSummary}>
-        <p className={s.kicker}>SYNTHETIC EVIDENCE</p>
+        <p className={s.kicker}>가상 자료의 근거</p>
         <h2>합성 데이터 근거와 계산식</h2>
         <p>
           외부 원문과 연결하지 않은 합성 fixture입니다. 아래 값은 화면과 계산
@@ -508,7 +509,11 @@ function EvidencePanel({ product }: { readonly product: SyntheticCurrentProduct 
 function CurrentProductDetail({
   product,
   tab,
+  aiSummary,
+  evidenceQuery,
 }: {
+  readonly aiSummary?: ReactNode;
+  readonly evidenceQuery?: ReactNode;
   readonly product: SyntheticCurrentProduct;
   readonly tab: SyntheticDetailTab;
 }) {
@@ -518,13 +523,13 @@ function CurrentProductDetail({
       <Breadcrumb title={product.offering.title} />
       <CurrentHeader product={product} />
       <DetailTabs productPath={productPath} tab={tab} />
-      {tab === "summary" ? <CurrentSummary product={product} /> : null}
+      {tab === "summary" ? <>{aiSummary}<CurrentSummary product={product} /></> : null}
       {tab === "price" ? <PricePanel product={product} /> : null}
       {tab === "comparables" ? <ComparablesPanel product={product} /> : null}
       {tab === "artist" ? <ArtistPanel product={product} /> : null}
       {tab === "exit" ? <ExitPanel product={product} /> : null}
       {tab === "platform" ? <PlatformPanel product={product} /> : null}
-      {tab === "evidence" ? <EvidencePanel product={product} /> : null}
+      {tab === "evidence" ? <><EvidencePanel product={product} />{evidenceQuery}</> : null}
     </>
   );
 }
@@ -569,7 +574,7 @@ function HistoricalSummary({ product }: { readonly product: SyntheticHistoryProd
     <div className={s.tabPanel}>
       <section className={s.section}>
         <div className={s.sectionHeading}>
-          <div><p className={s.kicker}>SYNTHETIC HISTORY</p><h2>시뮬레이션 공모·보유·회수 값</h2></div>
+          <div><p className={s.kicker}>가상 회수 이력</p><h2>시뮬레이션 공모·보유·회수 값</h2></div>
         </div>
         <div className={s.metricGrid}>
           <MetricCard label="시뮬레이션 금액" value={formatSyntheticKrw(product.offering.totalOfferingAmount)} />
@@ -696,17 +701,21 @@ function HistoricalProductDetail({
 export function SyntheticArtProductDetail({
   product,
   tab,
+  aiSummary,
+  evidenceQuery,
 }: {
+  readonly aiSummary?: ReactNode;
+  readonly evidenceQuery?: ReactNode;
   readonly product: SyntheticArtProduct;
   readonly tab: SyntheticDetailTab;
 }) {
   return (
-    <main className={s.detailPage} id="main-content">
+    <div className={s.detailPage}>
       {product.kind === "current" ? (
-        <CurrentProductDetail product={product} tab={tab} />
+        <CurrentProductDetail product={product} tab={tab} aiSummary={aiSummary} evidenceQuery={evidenceQuery} />
       ) : (
         <HistoricalProductDetail product={product} tab={tab} />
       )}
-    </main>
+    </div>
   );
 }

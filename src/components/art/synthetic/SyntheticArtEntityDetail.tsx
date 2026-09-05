@@ -61,7 +61,7 @@ export function SyntheticArtistDetailView({
   ];
 
   return (
-    <main className={s.detailPage} id="main-content">
+    <div className={s.detailPage}>
       <EntityBreadcrumb label={artist.nameKo} />
       <header className={s.entityHeader}>
         <span className={s.syntheticBadge}>합성 데이터 · 대조 불가</span>
@@ -75,7 +75,7 @@ export function SyntheticArtistDetailView({
 
       <div className={s.entityContent}>
         <section className={s.neutralSummary}>
-          <p className={s.kicker}>SYNTHETIC RECORD GROUPS</p>
+          <p className={s.kicker}>가상 이력 분류</p>
           <h2>현재 상품과 과거 합성 이력을 분리해 표시합니다.</h2>
           <p>실제 작가·거래 기록이 아니며 투자 성과나 시장 전망으로 사용할 수 없습니다.</p>
         </section>
@@ -136,7 +136,7 @@ export function SyntheticArtistDetailView({
           </details>
         ) : null}
       </div>
-    </main>
+    </div>
   );
 }
 
@@ -245,7 +245,7 @@ export function SyntheticPlatformDetailView({
   const linkParams = { q: params.q ?? "", status, sort, page };
 
   return (
-    <main className={s.detailPage} id="main-content">
+    <div className={s.detailPage}>
       <EntityBreadcrumb label={platform.name} />
       <header className={s.entityHeader}>
         <span className={s.syntheticBadge}>합성 데이터 · 대조 불가</span>
@@ -256,7 +256,7 @@ export function SyntheticPlatformDetailView({
 
       <div className={s.entityContent}>
         <section className={s.neutralSummary}>
-          <p className={s.kicker}>SYNTHETIC PLATFORM</p>
+          <p className={s.kicker}>가상 플랫폼</p>
           <h2>가상 플랫폼의 현재 상품과 과거 합성 이력을 표시합니다.</h2>
           <p>외부 원문과 연결하지 않으며 모든 값은 화면 검증용입니다.</p>
         </section>
@@ -280,7 +280,7 @@ export function SyntheticPlatformDetailView({
 
         <section className={s.section}>
           <div className={s.sectionHeading}>
-            <div><p className={s.kicker}>SYNTHETIC HISTORY</p><h2>합성 과거 이력</h2><p>검색 결과 {sorted.length}건 · 페이지당 {pageSize}건</p></div>
+            <div><p className={s.kicker}>가상 회수 이력</p><h2>합성 과거 이력</h2><p>검색 결과 {sorted.length}건 · 페이지당 {pageSize}건</p></div>
           </div>
           <form className={`${s.searchForm} ${s.historySearchForm}`} role="search">
             <div className={`${searchFieldStyles.field} ${s.searchControl}`}>
@@ -350,6 +350,6 @@ export function SyntheticPlatformDetailView({
           ) : null}
         </section>
       </div>
-    </main>
+    </div>
   );
 }

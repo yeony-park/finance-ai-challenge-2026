@@ -56,7 +56,7 @@
         {
           "sourceId": "molit-rtms-nrg-trade",
           "sourceName": "국토교통부 상업업무용 부동산 매매 신고 자료 (국토교통부 · data.go.kr 실거래가 오픈API) — 픽스처(활용신청 미승인으로 실호출 불가 · 실측 데이터 아님)",
-          "url": "https://apis.data.go.kr/1613000/RTMSDataSvcNrgTrade/getRTMSDataSvcNrgTrade?LAWD_CD=11650&DEAL_YMD=202603&numOfRows=1000&pageNo=1",
+          "url": "https://www.data.go.kr/data/15126463/openapi.do",
           "observedAt": "2026-08-14T00:00:00.000Z",
           "field": "매각금액",
           "claimed": "4,550,000,000원",
@@ -96,7 +96,7 @@
         {
           "sourceId": "molit-rtms-nrg-trade",
           "sourceName": "국토교통부 상업업무용 부동산 매매 신고 자료 (국토교통부 · data.go.kr 실거래가 오픈API) — 픽스처(활용신청 미승인으로 실호출 불가 · 실측 데이터 아님)",
-          "url": "https://apis.data.go.kr/1613000/RTMSDataSvcNrgTrade/getRTMSDataSvcNrgTrade?LAWD_CD=11650&DEAL_YMD=202603&numOfRows=1000&pageNo=1",
+          "url": "https://www.data.go.kr/data/15126463/openapi.do",
           "observedAt": "2026-08-14T00:00:00.000Z",
           "field": "매각일",
           "claimed": "2026-03-11",
@@ -115,7 +115,7 @@
         "kind": "real_estate_address",
         "subject": "부동산 A",
         "field": "소재지",
-        "value": "서울 서초구 ○○동",
+        "value": "서울 서초구 ○○",
         "document": {
           "offerId": "real-estate-a",
           "rcpNo": "",
@@ -169,7 +169,7 @@
       "origin": "issuer",
       "originLabel": "발행사 제시(예상값)",
       "amountWon": 4000000000,
-      "regionLabel": "서울 서초구 ○○동",
+      "regionLabel": "서울 서초구 ○○",
       "windowMonths": [
         "2021-05",
         "2021-06",
@@ -239,7 +239,7 @@
         {
           "sourceId": "molit-rtms-nrg-trade",
           "sourceName": "국토교통부 상업업무용 부동산 매매 신고 자료 (국토교통부 · data.go.kr 실거래가 오픈API) — 픽스처(활용신청 미승인으로 실호출 불가 · 실측 데이터 아님)",
-          "url": "https://apis.data.go.kr/1613000/RTMSDataSvcNrgTrade/getRTMSDataSvcNrgTrade?LAWD_CD=11650&DEAL_YMD=202107&numOfRows=1000&pageNo=1",
+          "url": "https://www.data.go.kr/data/15126463/openapi.do",
           "observedAt": "2026-08-14T00:00:00.000Z",
           "field": "공모금액",
           "claimed": "4,000,000,000원",
@@ -280,7 +280,7 @@
       "origin": "market",
       "originLabel": "실거래 확정(실제값)",
       "amountWon": 4550000000,
-      "regionLabel": "서울 서초구 ○○동",
+      "regionLabel": "서울 서초구 ○○",
       "windowMonths": [
         "2026-01",
         "2026-02",
@@ -403,7 +403,7 @@
         {
           "sourceId": "molit-rtms-nrg-trade",
           "sourceName": "국토교통부 상업업무용 부동산 매매 신고 자료 (국토교통부 · data.go.kr 실거래가 오픈API) — 픽스처(활용신청 미승인으로 실호출 불가 · 실측 데이터 아님)",
-          "url": "https://apis.data.go.kr/1613000/RTMSDataSvcNrgTrade/getRTMSDataSvcNrgTrade?LAWD_CD=11650&DEAL_YMD=202603&numOfRows=1000&pageNo=1",
+          "url": "https://www.data.go.kr/data/15126463/openapi.do",
           "observedAt": "2026-08-14T00:00:00.000Z",
           "field": "매각금액",
           "claimed": "4,550,000,000원",

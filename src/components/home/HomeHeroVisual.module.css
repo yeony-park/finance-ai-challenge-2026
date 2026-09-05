@@ -65,7 +65,7 @@
   isolation: isolate;
   transform: translate(-50%, -50%);
   transform-origin: center center;
-  will-change: width, height, top, border-radius, opacity, transform;
+  will-change: transform;
   transition:
     opacity 260ms var(--ds-ease),
     transform 260ms var(--ds-ease);
@@ -126,7 +126,6 @@
   font-size: var(--ds-heading-h1);
   line-height: 1.08;
   transform: translateY(-50%);
-  will-change: color, grid-template-columns, column-gap;
 }
 
 .visualContent .scaffold {

@@ -8,20 +8,44 @@ import {
   cattleDiseaseContextForReport,
 } from "@/components/cattle/CattleDiseaseContext";
 import { FilingFactsSection } from "@/components/report/FilingFactsSection";
+import {
+  FILING_HEADING_ID,
+  reportSectionTitleId,
+} from "@/components/report/ids";
+import { AiSummary } from "@/components/ai-summary/AiSummary";
+import { CattleFilingArtifactDetail } from "@/components/cattle/CattleFilingArtifactDetail";
 import { LifecycleStrip } from "@/components/report/LifecycleStrip";
+import { RealEstateInvestmentReviewPanel } from "@/components/report/RealEstateInvestmentReviewPanel";
+import { RealEstateProductOverview } from "@/components/report/RealEstateProductOverview";
 import { ReportDocument } from "@/components/report/ReportDocument";
 import { ReportFoot } from "@/components/report/ReportFoot";
 import { reportSectionsFor } from "@/components/report/report-sections";
-import { HistorySection, PriceSection } from "@/components/report/SummaryLayers";
+import {
+  HistorySection,
+  PriceSection,
+} from "@/components/report/SummaryLayers";
 import { WatchSection } from "@/components/report/WatchSection";
+import { ScenarioDetail } from "@/components/real-estate-scenario/ScenarioDetail";
+import {
+  CattleFilingEvidenceQuery,
+  CattleMinimumFilingEvidenceQuery,
+} from "@/components/real-estate-scenario/ScenarioEvidenceQuery";
 import {
   buildOfferSchedule,
+  classifyRealEstateOffer,
   isPublishedOfferId,
   OFFERS,
+  PUBLISHED_OFFER_IDS,
   type OfferEntry,
 } from "@/components/site/offers";
 import { categoryById } from "@/lib/content/categories";
 import { loadFilingFacts } from "@/lib/verify/report/filing-facts";
+import { FILING_SECTION_LEAD } from "@/lib/content/filing";
+import {
+  findRoutableLegacyScenario,
+  loadApprovedScenarios,
+} from "@/lib/knowledge/loader";
+import { loadApprovedCattleFilingArtifact } from "@/lib/knowledge/cattle-filing-artifact";
 import { loadLatestReplayDiff } from "@/lib/verify/amend/replay-load";
 import {
   toAmendmentReplayView,
@@ -30,14 +54,22 @@ import {
 import { loadLatestWatchState } from "@/lib/verify/amend/watch-state";
 import { loadNarrativeForReport } from "@/lib/verify/narrative/cache";
 import type { NarrativeDocument } from "@/lib/verify/narrative/types";
-import { toWatchStatusView, type WatchStatusView } from "@/lib/verify/amend/watch-view";
 import {
+  toWatchStatusView,
+  type WatchStatusView,
+} from "@/lib/verify/amend/watch-view";
+import {
+  ReportNotFoundError,
   loadLatestReport,
   type LoadedReport,
 } from "@/lib/verify/report/load";
+import { isPublicVerificationScopeAllowed } from "@/lib/verify/dart/onboarding-catalog";
 import { toDemoView, type DemoView } from "@/lib/verify/report/view-model";
+import { loadRealEstateInvestmentReview } from "@/lib/verify/real-estate-investment-review";
+import { loadRealEstateProductSummary } from "@/lib/verify/real-estate-product-summary";
 import { issuerKeyForOffer } from "@/lib/verify/track-record/registry";
 import { loadTrackRecord } from "@/lib/verify/track-record/store";
+import { loadAiSummary } from "@/lib/ai-summary/cache";
 import {
   toTrackRecordView,
   type TrackRecordCardView,
@@ -54,23 +86,63 @@ interface OfferReportPageProps extends OfferPageProps {
   readonly assetKind: AssetKind;
 }
 
-const reportAnalysisHref = (assetKind: AssetKind): string => {
-  const categoryId = assetKind === "livestock" ? "cattle" : "real-estate";
-  return `${categoryById(categoryId).href}?tab=analysis`;
-};
+const reportAnalysisHref = (assetKind: AssetKind): string =>
+  categoryById(assetKind === "livestock" ? "cattle" : "real-estate").href;
+
+const loadScenarios = cache(loadApprovedScenarios);
+const loadCattleFilingArtifact = cache(async (productId: string) =>
+  loadApprovedCattleFilingArtifact("cattle", productId),
+);
+const isCattleArtifactOnlyId = (productId: string) =>
+  /^livestock-[1-8]$/.test(productId);
+
+const loadScenarioOffer = cache(async (offerId: string) =>
+  findRoutableLegacyScenario(
+    await loadScenarios(),
+    offerId,
+    PUBLISHED_OFFER_IDS,
+  ),
+);
+
+const loadProductSummary = cache(async (offerId: string) => {
+  const offer = OFFERS.find((entry) => entry.id === offerId);
+  return offer?.assetKind === "real-estate"
+    ? loadRealEstateProductSummary(offerId)
+    : null;
+});
+
+const loadInvestmentReview = cache(async (offerId: string) => {
+  const offer = OFFERS.find((entry) => entry.id === offerId);
+  return offer?.assetKind === "real-estate"
+    ? loadRealEstateInvestmentReview(
+        offerId,
+        new Date(Date.now() + 9 * 60 * 60 * 1000).toISOString().slice(0, 10),
+      )
+    : null;
+});
 
 const loadPublishedReport = cache(
   async (offerId: string): Promise<LoadedReport | null> => {
-    if (!isPublishedOfferId(offerId)) return null;
-    return loadLatestReport(offerId);
+    if (
+      !isPublishedOfferId(offerId) ||
+      !isPublicVerificationScopeAllowed(offerId)
+    )
+      return null;
+    try {
+      return await loadLatestReport(offerId);
+    } catch (error) {
+      if (error instanceof ReportNotFoundError) return null;
+      throw error;
+    }
   },
 );
-
-const loadOfferView = cache(async (offerId: string): Promise<DemoView | null> => {
-  const loaded = await loadPublishedReport(offerId);
-  if (!loaded) return null;
-  return toDemoView(loaded);
-});
+const loadOfferView = cache(
+  async (offerId: string): Promise<DemoView | null> => {
+    const loaded = await loadPublishedReport(offerId);
+    if (!loaded) return null;
+    return toDemoView(loaded);
+  },
+);
 
 const loadOfferNarrative = cache(
   async (offerId: string): Promise<NarrativeDocument | null> => {
@@ -132,7 +204,26 @@ export async function offerReportMetadata(
   assetKind: AssetKind,
 ): Promise<Metadata> {
   const { id } = await params;
-  if (!offerForRoute(id, assetKind)) {
+  if (assetKind === "real-estate") {
+    const scenario = await loadScenarioOffer(id);
+    if (scenario)
+      return {
+        title: scenario.title,
+        description: "부동산 시나리오의 공모 조건과 공개 근거",
+        robots: { index: false, follow: false },
+      };
+  }
+  if (
+    assetKind === "livestock" &&
+    isCattleArtifactOnlyId(id) &&
+    (await loadCattleFilingArtifact(id))
+  ) {
+    return {
+      title: offerForRoute(id, assetKind)?.title ?? id,
+      description: "승인된 공시 근거 확인",
+    };
+  }
+  if (!offerForRoute(id, assetKind) || !isPublicVerificationScopeAllowed(id)) {
     return {
       title: "리포트를 찾을 수 없습니다",
       robots: { index: false, follow: false },
@@ -166,9 +257,74 @@ export async function OfferReportPage({
   assetKind,
 }: OfferReportPageProps) {
   const { id } = await params;
+  if (assetKind === "real-estate") {
+    const scenario = await loadScenarioOffer(id);
+    if (scenario) {
+      const [population, aiSummary] = await Promise.all([
+        loadScenarios(),
+        loadAiSummary("real-estate", id),
+      ]);
+      return (
+        <ScenarioDetail
+          offer={scenario}
+          operatorHistory={population.filter(
+            (entry) =>
+              entry.operatorGroupId === scenario.operatorGroupId &&
+              entry.offering.phase === "settled",
+          )}
+          aiSummary={aiSummary}
+        />
+      );
+    }
+  }
   const offerEntry = offerForRoute(id, assetKind);
-  if (!offerEntry) notFound();
+  if (!offerEntry || !isPublicVerificationScopeAllowed(id)) notFound();
+  if (assetKind === "livestock" && isCattleArtifactOnlyId(id)) {
+    const artifact = await loadCattleFilingArtifact(id);
+    if (artifact) {
+      const aiSummary = await loadAiSummary("cattle", id);
+      return (
+        <div className={s.reportPage}>
+          <div className={s.breadcrumbBar}>
+            <nav className={`${s.wrap} ${s.breadcrumb}`} aria-label="현재 위치">
+              <Link href="/cattle" className={s.breadcrumbBack}>
+                ← 한우 분석
+              </Link>
+              <span aria-current="page">{offerEntry.title}</span>
+            </nav>
+          </div>
+          <ReportDocument
+            productHeader={{
+              imageSrc: "/category-cattle.jpg",
+              imageAlt: "한우",
+              title: offerEntry.title,
+              status: "공시 근거 확인",
+              meta: "원금 미보장 문단 확인 · 정정 관계·최신 조건·개체 실재성 미확인",
+              facts: [],
+            }}
+            sections={[
+              { key: "filing", id: FILING_HEADING_ID, label: "공시 근거" },
+            ]}
+            sectionContent={{
+              filing: (
+                <div className={s.wrap}>
+                  {aiSummary ? <AiSummary summary={aiSummary} /> : null}
+                  <CattleFilingArtifactDetail artifact={artifact} />
+                  <CattleMinimumFilingEvidenceQuery productId={id} />
+                </div>
+              ),
+            }}
+          />
+          <ReportFoot analysisHref="/cattle" />
+        </div>
+      );
+    }
+  }
 
+  const aiSummary = await loadAiSummary(
+    assetKind === "livestock" ? "cattle" : "real-estate",
+    id,
+  );
   const [view, loaded] = await Promise.all([
     loadOfferView(id),
     loadPublishedReport(id),
@@ -176,20 +332,45 @@ export async function OfferReportPage({
 
   if (!view || !loaded || loaded.report.assetKind !== assetKind) notFound();
 
-  const [watch, replay, narrative, trackRecord, filingFacts] = await Promise.all([
+  const [
+    watch,
+    replay,
+    narrative,
+    trackRecord,
+    filingFacts,
+    productSummary,
+    investmentReview,
+    cattleFilingArtifact,
+  ] = await Promise.all([
     loadWatchStatus(id),
     loadAmendmentReplay(id),
     loadOfferNarrative(id),
     loadTrackRecordCard(id),
     loadFilingFacts(id),
+    loadProductSummary(id),
+    loadInvestmentReview(id),
+    loadCattleFilingArtifact(id),
   ]);
 
+  const realEstateGroup =
+    offerEntry.assetKind === "real-estate"
+      ? classifyRealEstateOffer(
+          offerEntry,
+          new Date(),
+          productSummary
+            ? {
+                tradabilityStatus: productSummary.tradabilityStatus,
+                statusEvidence: productSummary.statusEvidence,
+              }
+            : undefined,
+        )
+      : null;
   const diseaseContext =
     assetKind === "livestock"
       ? cattleDiseaseContextForReport(loaded.report)
       : null;
   const sections = reportSectionsFor({
-    hasFilingFacts: filingFacts !== null,
+    hasFilingFacts: filingFacts !== null || cattleFilingArtifact !== null,
     hasDiseaseContext: diseaseContext !== null,
   });
   const analysisHref = reportAnalysisHref(assetKind);
@@ -232,23 +413,87 @@ export async function OfferReportPage({
           ],
         }}
         narrative={narrative?.levels ?? null}
+        aiSummary={aiSummary ? <AiSummary summary={aiSummary} /> : null}
+        overview={
+          productSummary ? (
+            <>
+              <RealEstateProductOverview
+                summary={productSummary}
+                listingGroup={realEstateGroup ?? "operating-needs-check"}
+              />
+              {investmentReview ? (
+                <RealEstateInvestmentReviewPanel
+                  review={investmentReview}
+                  listingGroup={realEstateGroup ?? "operating-needs-check"}
+                />
+              ) : null}
+            </>
+          ) : null
+        }
         sections={sections}
         sectionContent={{
-          filing: filingFacts ? <FilingFactsSection facts={filingFacts} /> : null,
-          watch: <WatchSection watch={watch} replay={replay} />,
+          filing:
+            filingFacts || cattleFilingArtifact ? (
+              <>
+                {filingFacts ? (
+                  <FilingFactsSection facts={filingFacts} />
+                ) : null}
+                {cattleFilingArtifact && filingFacts ? (
+                  <div className={s.wrap}>
+                    <CattleFilingEvidenceQuery productId={id} />
+                  </div>
+                ) : null}
+                {cattleFilingArtifact && !filingFacts ? (
+                  <section
+                    className={`${s.section} ${s.reportContentSection}`}
+                    aria-labelledby={reportSectionTitleId(FILING_HEADING_ID)}
+                  >
+                    <span
+                      id={FILING_HEADING_ID}
+                      className={s.sectionAnchor}
+                      aria-hidden="true"
+                    />
+                    <div className={s.wrap}>
+                      <header className={`${s.layerHead} ${s.sectionHead}`}>
+                        <h2
+                          id={reportSectionTitleId(FILING_HEADING_ID)}
+                          className={s.layerTitle}
+                        >
+                          신고서 정보
+                        </h2>
+                        <p className={s.sectionLead}>{FILING_SECTION_LEAD}</p>
+                      </header>
+                      <CattleFilingEvidenceQuery productId={id} />
+                    </div>
+                  </section>
+                ) : null}
+              </>
+            ) : null,
+          watch: (
+            <WatchSection
+              watch={watch}
+              replay={replay}
+              showNotificationNotice={
+                realEstateGroup !== "historical-completed"
+              }
+            />
+          ),
           history: <HistorySection view={view} trackRecord={trackRecord} />,
           disease: diseaseContext ? (
             <CattleDiseaseContext context={diseaseContext} />
           ) : null,
           price: <PriceSection view={view} />,
         }}
-        lifecycle={(
-          <LifecycleStrip
-            schedule={schedule}
-            assetKind={offerEntry.assetKind}
-            isExitVerified={offerEntry.assetKind === "real-estate"}
-          />
-        )}
+        lifecycle={
+          offerEntry ? (
+            <LifecycleStrip
+              schedule={buildOfferSchedule(offerEntry, new Date())}
+              assetKind={offerEntry.assetKind}
+              assetLifecycle={offerEntry.assetLifecycle}
+              isExitVerified={offerEntry.isExitVerified}
+            />
+          ) : null
+        }
       />
       <ReportFoot analysisHref={analysisHref} />
     </div>

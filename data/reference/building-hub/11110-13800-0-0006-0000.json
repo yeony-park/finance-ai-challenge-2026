@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "request": {
+    "sigunguCd": "11110",
+    "bjdongCd": "13800",
+    "platGbCd": "0",
+    "bun": "0006",
+    "ji": "0000"
+  },
+  "collectedAt": "2026-08-24T16:46:22.265Z",
+  "sourceId": "molit-building-register-hub",
+  "sourceName": "국토교통부 건축물대장 표제부 조회 서비스 (국토교통부 · data.go.kr)",
+  "sourceUrl": "https://apis.data.go.kr/1613000/BldRgstHubService/getBrTitleInfo?sigunguCd=11110&bjdongCd=13800&platGbCd=0&bun=0006&ji=0000&numOfRows=100&pageNo=1&_type=json",
+  "status": "ok",
+  "totalCount": 1,
+  "records": [
+    {
+      "managementKey": "1002112321",
+      "parcelAddress": "서울특별시 종로구 종로2가 6번지",
+      "roadAddress": "서울특별시 종로구 종로 51 (종로2가)",
+      "buildingName": "종로타워",
+      "mainPurpose": "업무시설",
+      "otherPurpose": "업무시설(판매,전시,1종근생,2종근생)",
+      "parcelAreaSqm": 5007.9,
+      "buildingAreaSqm": 1996.36,
+      "totalAreaSqm": 60600.56,
+      "floorAreaRatioEstimatedTotalSqm": 36116.93,
+      "structure": "철골철근콘크리트구조",
+      "householdCount": 0,
+      "useApprovedOn": "1999-09-02",
+      "recordedOn": "2022-08-13"
+    }
+  ]
+}

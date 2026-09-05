@@ -10,4 +10,3 @@ const handler = createAskProductHandler({
 
 export const POST = async (request: Request): Promise<Response> =>
   handler(request);
-

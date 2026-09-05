@@ -1,0 +1,154 @@
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { describe, expect, test } from "vitest";
+
+import { AiSearchAnswerPanel, GeneralAiAnswerPanel, GenericEvidencePanel, NoSearchResultsPanel, ReviewGuidancePanel, SearchResultsPanel } from "../HomeHero";
+
+describe("홈 검색 응답 UI", () => {
+  test("검색 결과는 상품명, 단계, 상세 링크를 표시한다", () => {
+    const markup = renderToStaticMarkup(createElement(SearchResultsPanel, {
+      results: [{
+        id: "re-offer-01",
+        productId: "re-offer-01",
+        title: "서울스퀘어",
+        isScenario: true,
+        phase: "subscription-open" as const,
+        href: "/real-estate/products/re-offer-01",
+      }],
+    }));
+
+    expect(markup).toContain("검색 결과");
+    expect(markup).toContain("서울스퀘어");
+    expect(markup).toContain("가상 청약 시나리오");
+    expect(markup).toContain('href="/real-estate/products/re-offer-01"');
+  });
+
+  test("AI 검색 안내는 현재 결과와 교집합인 상품 링크만 사용한다", () => {
+    const markup = renderToStaticMarkup(createElement(AiSearchAnswerPanel, {
+      generatedAnswer: {
+        answer: "조건과 근거를 함께 확인해 주세요.",
+        citedProductIds: ["re-offer-01", "not-in-results"],
+      },
+      results: [{
+        id: "re-offer-01",
+        productId: "re-offer-01",
+        title: "서울스퀘어",
+        isScenario: true,
+        phase: "subscription-open" as const,
+        href: "/real-estate/products/re-offer-01",
+      }],
+    }));
+
+    expect(markup).toContain("AI 검색 안내");
+    expect(markup).toContain("조건과 근거를 함께 확인해 주세요.");
+    expect(markup).toContain('href="/real-estate/products/re-offer-01"');
+    expect(markup).not.toContain("not-in-results");
+  });
+
+  test("실제 OFFERS 결과는 기존 단계 라벨을 유지한다", () => {
+    const markup = renderToStaticMarkup(createElement(SearchResultsPanel, {
+      results: [{
+        id: "livestock-1",
+        productId: "livestock-1",
+        title: "가축 1호",
+        isScenario: false,
+        phase: "closed" as const,
+        href: "/cattle/products/livestock-1",
+      }],
+    }));
+
+    expect(markup).toContain("청약 종료");
+    expect(markup).not.toContain("가상 시나리오");
+  });
+
+  test("공시 근거만 있는 한돈 결과를 청약 단계처럼 표시하지 않는다", () => {
+    const markup = renderToStaticMarkup(createElement(SearchResultsPanel, {
+      results: [{
+        id: "pig-1",
+        productId: "pig-1",
+        title: "한돈 투자계약증권 · pig-1",
+        isScenario: false,
+        phase: "evidence-only" as const,
+        href: "/pig/products/round-1",
+      }],
+    }));
+
+    expect(markup).toContain("공시 근거 확인");
+    expect(markup).not.toMatch(/청약 예정|청약 중|청약 종료|상장 거래/);
+    expect(markup).toContain('href="/pig/products/round-1"');
+  });
+
+  test("추천 요청은 순위 대신 다섯 검토 영역을 안내한다", () => {
+    const markup = renderToStaticMarkup(createElement(ReviewGuidancePanel, {
+      guidance: {
+        message: "상품 순위 대신 확인할 투자검토 기준을 안내합니다.",
+        reviewAreas: ["asset", "return-cost", "financing", "exit", "operator-history"] as const,
+      },
+    }));
+
+    expect(markup).toContain("상품 순위 대신 확인할 기준");
+    expect(markup).toContain("건물 기본정보 · 수익·비용 · 금융 · 회수 · 운영그룹 완료 이력");
+    expect(markup).toContain('href="/real-estate"');
+  });
+
+  test("정상 응답의 결과 0건은 검색어 안내만 표시한다", () => {
+    const markup = renderToStaticMarkup(createElement(NoSearchResultsPanel));
+
+    expect(markup).toContain("검색 결과 없음");
+    expect(markup).toContain("상품명이나 청약·상장 거래·종료 같은 단계로 다시 검색해 주세요");
+    expect(markup).not.toContain("한우");
+  });
+
+  test("상품 결과가 없어도 관련 근거와 안전한 출처를 표시한다", () => {
+    const markup = renderToStaticMarkup(createElement(GenericEvidencePanel, {
+      evidence: [{
+        sourceId: "verification-methodology",
+        label: "검증 방법론",
+        url: "https://example.com/methodology",
+        excerpt: "공시와 공공 원장을 같은 기준으로 대조합니다.",
+        asOf: "2026-08-29",
+        hash: "a".repeat(64),
+        status: "approved" as const,
+        dataNature: "observed" as const,
+        categoryId: null,
+        productId: null,
+        score: 1,
+      }],
+    }));
+
+    expect(markup).toContain("관련 근거");
+    expect(markup).toContain("답변과 관련해 검색된 공개 근거입니다");
+    expect(markup).toContain("공시와 공공 원장을 같은 기준으로 대조합니다.");
+    expect(markup).toContain('href="https://example.com/methodology"');
+    expect(markup).toContain('rel="noopener noreferrer"');
+    expect(markup).not.toContain("검색 결과 없음");
+  });
+
+  test("직접 입력 일반 질의의 AI 답변은 인용된 일반 근거 이름만 표시한다", () => {
+    const evidence = [{
+      sourceId: "fsc-guide",
+      label: "금융위원회 조각투자 가이드라인",
+      url: "https://example.com/fsc-guide",
+      excerpt: "권리 구조와 유동성 위험을 확인합니다.",
+      asOf: "2026-09-02",
+      hash: "a".repeat(64),
+      status: "approved" as const,
+      dataNature: "observed" as const,
+      categoryId: null,
+      productId: null,
+      score: 1,
+    }];
+    const markup = renderToStaticMarkup(createElement(GeneralAiAnswerPanel, {
+      generatedAnswer: {
+        answer: "권리 구조와 현금화 조건을 함께 확인해야 합니다.",
+        citedSourceIds: ["fsc-guide", "not-retrieved"],
+      },
+      evidence,
+    }));
+    expect(markup).toContain("AI 답변");
+    expect(markup).toContain("검색된 공개 근거만 사용해 생성한 AI 답변");
+    expect(markup).toContain("권리 구조와 현금화 조건을 함께 확인해야 합니다.");
+    expect(markup).toContain("금융위원회 조각투자 가이드라인");
+    expect(markup).not.toContain("not-retrieved");
+  });
+});

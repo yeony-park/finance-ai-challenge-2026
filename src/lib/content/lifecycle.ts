@@ -1,5 +1,5 @@
 import type { SubscriptionPhase } from "@/components/site/offers";
-import type { AssetKind } from "@/lib/verify/types";
+import type { AssetKind, RealEstateAssetLifecycle } from "@/lib/verify/types";
 
 export const LIFECYCLE_TITLE = "이 공모는 지금 어느 단계인가";
 
@@ -26,10 +26,12 @@ export const STAGE_NOTE_CLOSED = "종료";
 export const STAGE_NOTE_PENDING = "공시 접수 대기";
 export const STAGE_NOTE_PASSED = "경과";
 export const STAGE_NOTE_EXIT_VERIFIED = "매각 공시 대조 완료";
+export const STAGE_NOTE_OPERATING = "플랫폼 공지 기준 운영";
 
 export const buildLifecycleStages = (input: {
   readonly phase: SubscriptionPhase;
   readonly assetKind: AssetKind;
+  readonly assetLifecycle?: RealEstateAssetLifecycle;
   readonly isExitVerified?: boolean;
 }): readonly LifecycleStageView[] => {
   const holdingLabel = HOLDING_STAGE_LABELS[input.assetKind];
@@ -40,6 +42,19 @@ export const buildLifecycleStages = (input: {
       { id: "allotment", label: "배정·납입", state: "done", note: STAGE_NOTE_PASSED },
       { id: "holding", label: holdingLabel, state: "done", note: STAGE_NOTE_PASSED },
       { id: "exit", label: "매각·정산", state: "done", note: STAGE_NOTE_EXIT_VERIFIED },
+    ];
+  }
+
+  if (
+    input.assetKind === "real-estate" &&
+    input.assetLifecycle === "operating" &&
+    input.phase === "closed"
+  ) {
+    return [
+      { id: "subscription", label: "청약", state: "done", note: STAGE_NOTE_CLOSED },
+      { id: "allotment", label: "배정·납입", state: "done", note: STAGE_NOTE_PASSED },
+      { id: "holding", label: holdingLabel, state: "current", note: STAGE_NOTE_OPERATING },
+      { id: "exit", label: "매각·정산", state: "pending", note: STAGE_NOTE_PENDING },
     ];
   }
 

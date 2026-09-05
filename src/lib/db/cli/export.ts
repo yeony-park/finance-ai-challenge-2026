@@ -6,7 +6,7 @@ import type { CategoryId } from "@/lib/verify/contract/category";
 import { closeConnections } from "../client";
 import { directDatabaseUrl } from "../env";
 import { toPublicOfferingsManifest } from "../export/public-offering";
-import { createDbOfferingsRepository } from "../repositories/offerings-db";
+import { createDirectOfferingsRepository } from "../repositories/offerings-db";
 import type { Offering } from "../repositories/types";
 
 const CATEGORIES: readonly CategoryId[] = [
@@ -26,7 +26,7 @@ const main = async (): Promise<void> => {
     return;
   }
 
-  const repository = createDbOfferingsRepository();
+  const repository = createDirectOfferingsRepository();
   const collected: Offering[] = [];
   for (const category of CATEGORIES) {
     collected.push(...(await repository.listByCategory(category)));

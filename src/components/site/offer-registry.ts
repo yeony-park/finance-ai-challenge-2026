@@ -18,13 +18,46 @@ const INDEX_PATH = path.join(
   "data/public/offerings/index.json",
 );
 
+const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+const ISO_OFFSET_PATTERN =
+  /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}$/;
+
+const isRealIsoDate = (value: string): boolean => {
+  if (!ISO_DATE_PATTERN.test(value)) return false;
+  const parsed = new Date(`${value}T00:00:00Z`);
+  return !Number.isNaN(parsed.valueOf()) && parsed.toISOString().slice(0, 10) === value;
+};
+
+const isOrderedMinuteSchedule = (opensAt: string, closesAt: string): boolean => {
+  if (!ISO_OFFSET_PATTERN.test(opensAt) || !ISO_OFFSET_PATTERN.test(closesAt)) {
+    return false;
+  }
+  if (!isRealIsoDate(opensAt.slice(0, 10)) || !isRealIsoDate(closesAt.slice(0, 10))) {
+    return false;
+  }
+  const opens = Date.parse(opensAt);
+  const closes = Date.parse(closesAt);
+  return Number.isFinite(opens) && Number.isFinite(closes) && opens <= closes;
+};
+
 export const toOfferEntry = (offering: PublicOffering): OfferEntry | null => {
   const { opensAt: detailOpensAt, closesAt: detailClosesAt } = offering.detail;
+  const expectsMinuteSchedule =
+    offering.subscription.precision === "minute" ||
+    detailOpensAt !== undefined ||
+    detailClosesAt !== undefined;
 
-  if (
-    typeof detailOpensAt === "string" &&
-    typeof detailClosesAt === "string"
-  ) {
+  if (expectsMinuteSchedule) {
+    if (
+      typeof detailOpensAt !== "string" ||
+      typeof detailClosesAt !== "string" ||
+      !isOrderedMinuteSchedule(detailOpensAt, detailClosesAt)
+    ) {
+      console.error(
+        `[offers] 게시 공모 분 단위 청약일 오류 — 건너뜀: ${offering.offerSlug}`,
+      );
+      return null;
+    }
     return {
       id: offering.offerSlug,
       title: offering.titlePublic,
@@ -39,9 +72,15 @@ export const toOfferEntry = (offering: PublicOffering): OfferEntry | null => {
   }
 
   const { opensOn, closesOn } = offering.subscription;
-  if (opensOn === null || closesOn === null) {
+  if (
+    opensOn === null ||
+    closesOn === null ||
+    !isRealIsoDate(opensOn) ||
+    !isRealIsoDate(closesOn) ||
+    opensOn > closesOn
+  ) {
     console.error(
-      `[offers] 게시 공모 청약일 누락 — 건너뜀: ${offering.offerSlug}`,
+      `[offers] 게시 공모 청약일 누락 또는 오류 — 건너뜀: ${offering.offerSlug}`,
     );
     return null;
   }

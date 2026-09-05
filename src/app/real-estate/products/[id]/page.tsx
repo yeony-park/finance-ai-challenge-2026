@@ -1,14 +1,14 @@
+import { loadApprovedScenarios } from "@/lib/knowledge/loader";
 import type { Metadata } from "next";
 
 import {
   OfferReportPage,
   offerReportMetadata,
-  offerStaticParamsFor,
   type OfferPageProps,
 } from "@/components/report/OfferReportPage";
 
-export function generateStaticParams() {
-  return offerStaticParamsFor("real-estate");
+export async function generateStaticParams() {
+  return (await loadApprovedScenarios()).map((offer) => ({ id: offer.offerId }));
 }
 
 export const dynamicParams = false;

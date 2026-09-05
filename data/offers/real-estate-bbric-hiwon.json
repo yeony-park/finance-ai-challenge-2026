@@ -1,0 +1,468 @@
+{
+  "schemaVersion": 2,
+  "offerId": "real-estate-bbric-hiwon",
+  "subject": "하나대체투자부산특구부동산투자신탁1호(희원감천빌딩)",
+  "publicAlias": "희원감천",
+  "assetKind": "real-estate",
+  "subscriptionStatus": "closed",
+  "assetLifecycle": "operating",
+  "tradabilityStatus": "unknown",
+  "statusSources": {
+    "assetLifecycle": "https://bbric.com/notice.php",
+    "tradabilityStatus": "https://www.bbric.com/building.php"
+  },
+  "asset": {
+    "address": "부산광역시 사하구 감천동 651-1",
+    "lawdCd": "26380",
+    "sigunguName": "부산 사하구",
+    "dong": "감천동",
+    "buildingUse": "1·2종근린생활시설, 교육연구시설 등",
+    "parcelAreaSqm": 384,
+    "buildingAreaSqm": 211.87,
+    "totalAreaSqm": 1723.48,
+    "structure": "철근콘크리트조·조적조",
+    "useApprovedYearMonth": "2000-10",
+    "buildingHubRequest": {
+      "sigunguCd": "26380",
+      "bjdongCd": "10800",
+      "platGbCd": "0",
+      "bun": "0651",
+      "ji": "0001"
+    },
+    "detail": "희원감천 근린생활시설(희원감천빌딩): 대지 384㎡, 건축 211.87㎡, 연면적 1,723.48㎡, 지하 1층·지상 8층, 철근콘크리트조·조적조, 2000년 10월 사용승인, 2020년 리모델링"
+  },
+  "offer": {
+    "amountWon": 4760000000,
+    "opensOn": "2024-11-13",
+    "closesOn": "2024-11-22",
+    "listedOn": "2024-12-17",
+    "unitCount": 4760000,
+    "unitPriceWon": 1000,
+    "section": "플랫폼 거래소 오픈 공지",
+    "table": "거래소 오픈 및 공모 구조"
+  },
+  "productSummary": {
+    "platform": {
+      "label": "BBRIC",
+      "source": {
+        "label": "BBRIC 상품 상세 — 희원감천 근린생활시설",
+        "url": "https://bbric.com/building.php?bidx=23&page=&ptype=view&qr=",
+        "asOf": "2026-08-23"
+      }
+    },
+    "tradingFee": {
+      "ratePercent": 0.22,
+      "source": {
+        "label": "BBRIC 거래소 오픈 공지 — 희원감천",
+        "url": "https://bbric.com/notice.php?lst_category=001&lst_sub_category=&nidx=1235&page=&ptype=view&scolumn=&skeyword=",
+        "asOf": "2024-12-17"
+      }
+    },
+    "latestActualDistribution": {
+      "period": 3,
+      "totalAmountWon": 118021918,
+      "totalUnits": 4760000,
+      "sourceAmountPerUnitWon": 24.5791,
+      "simpleCalculatedAmountPerUnitWon": 24.7945,
+      "consistencyStatus": "inconsistent",
+      "warning": "원문 기재 총 배당금·총 BRIC·1BRIC당 배당금이 단순 검산과 일치하지 않아, 24.5791원을 확정 실제값으로 단독 표시하지 않습니다. 총액÷수량 단순 검산은 약 24.7945원이며 원문 자동 보정값이 아닙니다.",
+      "operatingFrom": "2025-11-25",
+      "operatingTo": "2026-05-24",
+      "operatingDays": 181,
+      "paidOn": "2026-05-26",
+      "source": {
+        "label": "BBRIC 희원감천 3기 배당금 지급 안내",
+        "url": "https://bbric.com/notice.php?lst_category=001&lst_sub_category=&nidx=2358&page=&ptype=view&scolumn=&skeyword=",
+        "asOf": "2026-05-26"
+      }
+    },
+    "expectedDistributionRate": {
+      "status": "unconfirmed",
+      "note": "미확인/투자설명서·규약 PDF 본문 확인 필요"
+    },
+    "contractualDistributionCycle": {
+      "status": "confirmed",
+      "value": "매 6개월",
+      "note": "펀드 공식 상품 페이지의 결산주기입니다. 과거 실제 배당 지급 이력과 구분합니다.",
+      "source": {
+        "label": "하나대체투자자산운용 공모펀드 상품정보",
+        "url": "https://www.hana-aamc.com/m/ko/fund/public-offering/view?fundId=00000368",
+        "asOf": "2026-08-23"
+      }
+    },
+    "trustPeriod": {
+      "status": "confirmed",
+      "value": "5.5년",
+      "note": "펀드 공식 상품 페이지의 신탁기간입니다.",
+      "source": {
+        "label": "하나대체투자자산운용 공모펀드 상품정보",
+        "url": "https://www.hana-aamc.com/m/ko/fund/public-offering/view?fundId=00000368",
+        "asOf": "2026-08-23"
+      }
+    },
+    "saleLiquidationCondition": {
+      "status": "unconfirmed",
+      "note": "미확인/투자설명서·규약 PDF 본문 확인 필요"
+    },
+    "totalExpenseRates": [
+      {
+        "fundClass": "A-e",
+        "ratePercent": 0.8675,
+        "source": {
+          "label": "하나대체투자자산운용 공모펀드 상품정보",
+          "url": "https://www.hana-aamc.com/m/ko/fund/public-offering/view?fundId=00000368",
+          "asOf": "2026-08-23"
+        }
+      },
+      {
+        "fundClass": "A-I",
+        "ratePercent": 0.8232,
+        "source": {
+          "label": "하나대체투자자산운용 공모펀드 상품정보",
+          "url": "https://www.hana-aamc.com/m/ko/fund/public-offering/view?fundId=00000368",
+          "asOf": "2026-08-23"
+        }
+      },
+      {
+        "fundClass": "C-S",
+        "ratePercent": 0.7775,
+        "source": {
+          "label": "하나대체투자자산운용 공모펀드 상품정보",
+          "url": "https://www.hana-aamc.com/m/ko/fund/public-offering/view?fundId=00000368",
+          "asOf": "2026-08-23"
+        }
+      }
+    ],
+    "frontEndSalesFeeRates": [
+      {
+        "fundClass": "A-e",
+        "ratePercent": 0.88,
+        "source": {
+          "label": "하나대체투자자산운용 공모펀드 상품정보",
+          "url": "https://www.hana-aamc.com/m/ko/fund/public-offering/view?fundId=00000368",
+          "asOf": "2026-08-23"
+        }
+      },
+      {
+        "fundClass": "A-I",
+        "ratePercent": 0.88,
+        "source": {
+          "label": "하나대체투자자산운용 공모펀드 상품정보",
+          "url": "https://www.hana-aamc.com/m/ko/fund/public-offering/view?fundId=00000368",
+          "asOf": "2026-08-23"
+        }
+      }
+    ],
+    "fundProfile": {
+      "type": "부동산형, 단위형, 폐쇄형(환매금지형), 종류형",
+      "initialPrincipalWon": 4760000000,
+      "initialSetOn": "2024-11-25",
+      "subscriptionOutcome": "판매완료",
+      "distributor": "세종디엑스",
+      "trustee": "부산은행",
+      "source": {
+          "label": "하나대체투자자산운용 공모펀드 상품정보",
+        "url": "https://www.hana-aamc.com/m/ko/fund/public-offering/view?fundId=00000368",
+        "asOf": "2026-08-23"
+      }
+    }
+  },
+  "investmentReview": {
+    "offerTermsSource": "https://bbric.com/notice.php?lst_category=001&lst_sub_category=&nidx=1195&page=&ptype=view&scolumn=&skeyword=",
+    "importantEvents": [
+      {
+        "eventId": "lease-termination-20260527",
+        "kind": "lease-termination",
+        "exactProduct": true,
+        "directOriginal": true,
+        "eventOn": "2026-05-27",
+        "status": "open",
+        "materialityBasis": "contract-termination",
+        "source": "https://bbric.com/notice.php?lst_category=002&lst_sub_category=018&nidx=2391&page=1&ptype=view&scolumn=&skeyword="
+      }
+    ],
+    "roleHistory": [
+      {
+        "role": "platform",
+        "entityId": "bbric-operator-sejongdx",
+        "legalName": "세종디엑스 주식회사",
+        "relationship": "platform-operator",
+        "events": [
+          {
+            "eventOn": "2025-05-16",
+            "outcome": "unknown",
+            "source": "https://www.bbric.com/notice.php?lst_category=001&lst_sub_category=&scolumn=&skeyword=&ptype=view&page=2&nidx=1535"
+          }
+        ]
+      },
+      {
+        "role": "manager",
+        "entityId": "hana-alternative-asset-management",
+        "legalName": "하나대체투자자산운용 주식회사",
+        "relationship": "fund-party",
+        "events": [
+          {
+            "eventOn": "2026-06-10",
+            "outcome": "fulfilled",
+            "source": "https://www.hana-aamc.com/ko/official/fund-notice/view?seq=387"
+          }
+        ]
+      },
+      {
+        "role": "trustee",
+        "entityId": "busan-bank",
+        "legalName": "부산은행",
+        "relationship": "fund-party",
+        "events": [
+          {
+            "eventOn": "2024-11-25",
+            "outcome": "unknown",
+            "source": "https://www.hana-aamc.com/m/ko/fund/public-offering/view?fundId=00000368"
+          }
+        ]
+      }
+    ],
+    "marketContext": [
+      {
+        "provider": "ECOS",
+        "metric": "base-rate",
+        "observedOn": "2024-11-25",
+        "publishedOn": "2026-08-23",
+        "value": 3.25,
+        "unit": "percent",
+        "source": "https://ecos.bok.or.kr/api/",
+        "validThrough": "2026-08-23"
+      },
+      {
+        "provider": "ECOS",
+        "metric": "base-rate",
+        "observedOn": "2026-08-21",
+        "publishedOn": "2026-08-23",
+        "value": 2.75,
+        "unit": "percent",
+        "source": "https://ecos.bok.or.kr/api/",
+        "validThrough": "2026-08-23"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "sourceKind": "platform-claim",
+      "label": "BBRIC 상품 상세 — 희원감천 근린생활시설",
+      "url": "https://bbric.com/building.php?bidx=23&page=&ptype=view&qr=",
+      "asOf": "2026-08-23",
+      "collectedAt": "2026-08-23",
+      "method": "manual",
+      "status": "공개 상품 페이지를 2026-08-23 KST에 확인; 소재지·용도·구조·면적·층수·사용승인·리모델링 및 운영사 표기 확인",
+      "limitations": [
+        "상품 상세의 100% 임대 및 5년 책임임대차 문구는 2026-05-28 임대차계약 해지 공시와 함께 현재 사실로 확인되지 않아 이 파일의 운영 상태 근거로 사용하지 않았습니다.",
+        "운영사 표기는 페이지 하단의 세종디엑스 주식회사이며, 펀드명·발행 구조는 별도 배정결과 공지에서 확인했습니다."
+      ]
+    },
+    {
+      "sourceKind": "platform-claim",
+      "label": "BBRIC 청약 마감 공지 — 희원감천 47.6억원 모집 성공 완료",
+      "url": "https://bbric.com/notice.php?lst_category=001&lst_sub_category=&nidx=1183&page=2&ptype=view&scolumn=&skeyword=",
+      "asOf": "2024-11-22",
+      "collectedAt": "2026-08-23",
+      "method": "manual",
+      "status": "공개 공지에서 청약기간 2024-11-13~2024-11-22 및 47.6억원 모집 성공 완료 확인",
+      "limitations": [
+        "청약 마감 사실은 확인했으나, 현재 자산 운용·거래 가능 상태를 뜻하지 않습니다."
+      ]
+    },
+    {
+      "sourceKind": "platform-claim",
+      "label": "BBRIC 배정결과 공지 — 하나대체투자부산특구부동산투자신탁1호",
+      "url": "https://bbric.com/notice.php?lst_category=001&lst_sub_category=&nidx=1195&page=&ptype=view&scolumn=&skeyword=",
+      "asOf": "2026-08-23",
+      "collectedAt": "2026-08-23",
+      "method": "manual",
+      "status": "공개 공지에서 희원감천빌딩, 펀드명, 공모 4,760,000,000원, 4,760,000 BRIC, 1BRIC 1,000원 확인",
+      "limitations": [
+        "공지 본문의 청약 종료연도 2042 및 배정일 2022 표기는 2024 청약 마감 공지와 상품 연혁에 모순되는 원문 오기로 판단되어 날짜 근거로 사용하지 않았습니다.",
+        "공지 게시일을 별도로 확인하지 못해 asOf는 원문 열람 스냅샷일입니다."
+      ]
+    },
+    {
+      "sourceKind": "platform-claim",
+      "label": "BBRIC 거래소 오픈 공지 — 희원감천",
+      "url": "https://bbric.com/notice.php?lst_category=001&lst_sub_category=&nidx=1235&page=&ptype=view&scolumn=&skeyword=",
+      "asOf": "2024-12-17",
+      "collectedAt": "2026-08-23",
+      "method": "manual",
+      "status": "공개 공지에서 12월 17일(화) 거래소 오픈, 다자간 상대매매, 수수료 0.22% 확인",
+      "limitations": [
+        "본문에 연도가 없어 2024 상품 연혁 및 12월 17일이 화요일인 점을 근거로 listedOn=2024-12-17로 추론했습니다.",
+        "거래소 오픈 공지는 현재 실시간 거래 가능 상태를 보장하지 않습니다."
+      ]
+    },
+    {
+      "sourceKind": "platform-claim",
+      "label": "BBRIC 희원감천 1기 배당금 지급 안내",
+      "url": "https://www.bbric.com/notice.php?lst_category=001&lst_sub_category=&scolumn=&skeyword=&ptype=view&page=2&nidx=1639",
+      "asOf": "2025-06-09",
+      "collectedAt": "2026-08-23",
+      "method": "manual",
+      "status": "공개 공지에서 1기 배당금 지급 완료, 총 배당금 118,021,918원, 총 4,760,000 BRIC, 원문 기재 1BRIC당 24.5788원, 운용기간 2024-11-25~2025-05-24(181일) 확인",
+      "limitations": [
+        "총 배당금·총 BRIC·1BRIC당 배당금은 단순 검산과 일치하지 않아 원문 정정 또는 산정 기준을 확인하지 못했습니다.",
+        "과거 지급 공지는 현재 임대차, 공실, 임대수익 또는 이후 배당 상태를 확인하지 않습니다."
+      ]
+    },
+    {
+      "sourceKind": "platform-claim",
+      "label": "BBRIC 희원감천 3기 배당금 지급 안내",
+      "url": "https://bbric.com/notice.php?lst_category=001&lst_sub_category=&nidx=2358&page=&ptype=view&scolumn=&skeyword=",
+      "asOf": "2026-05-26",
+      "collectedAt": "2026-08-23",
+      "method": "manual",
+      "status": "공개 공지에서 3기 실제 배당금 지급 완료, 총 배당금 118,021,918원, 총 4,760,000 BRIC, 원문 기재 1BRIC당 24.5791원, 운용기간 2025-11-25~2026-05-24(181일), 지급일 2026-05-26 확인",
+      "limitations": [
+        "이는 과거 실제 지급 이력이며 예상수익률이나 계약상 배당주기를 뜻하지 않습니다.",
+        "원문 기재 총 배당금·총 BRIC·1BRIC당 배당금은 단순 검산과 일치하지 않아 원문 재확인이 필요합니다."
+      ]
+    },
+    {
+      "sourceKind": "official-document",
+      "label": "하나대체투자자산운용 공모펀드 상품정보",
+      "url": "https://www.hana-aamc.com/m/ko/fund/public-offering/view?fundId=00000368",
+      "asOf": "2026-08-23",
+      "collectedAt": "2026-08-23",
+      "method": "manual",
+      "status": "공식 상품 페이지에서 펀드 유형, 최초 설정원본 47.6억원, 결산주기 매 6개월, 최초설정일 2024-11-25, 모집기간 2024-11-13~2024-11-22, 판매완료, 클래스별 총보수·선취판매수수료, 신탁기간 5.5년, 판매회사 세종디엑스, 수탁회사 부산은행 확인",
+      "limitations": [
+        "공식 상품 HTML에서 확인한 값입니다. 예상 배당률과 상품별 매각·청산 조건은 투자설명서·규약 PDF 본문을 직접 확인하지 않아 기록하지 않았습니다.",
+        "플랫폼 거래수수료 0.22%는 펀드 클래스별 총보수·선취판매수수료와 서로 다른 비용 항목입니다."
+      ]
+    },
+    {
+      "sourceKind": "official-document",
+      "label": "하나대체투자자산운용 중요사항 공시 — 임대차 계약해지",
+      "url": "https://www.hana-aamc.com/ko/official/fund-notice/view?seq=385",
+      "asOf": "2026-05-28",
+      "collectedAt": "2026-08-23",
+      "method": "manual",
+      "status": "하나대체투자자산운용이 운용중인 하나대체투자부산특구부동산투자신탁1호의 임대차 계약해지와 사유 발생일 2026-05-27을 공시",
+      "limitations": [
+        "첨부 PDF 본문은 열람하지 않았습니다.",
+        "이 공시는 새 임차인, 공실, 임대수익, 배당 영향, 매각 또는 청산 결과를 확인하지 않습니다."
+      ]
+    },
+    {
+      "sourceKind": "official-document",
+      "label": "하나대체투자자산운용 자산운용보고서 공시 — 하나대체투자부산특구부동산투자신탁1호",
+      "url": "https://www.hana-aamc.com/ko/official/fund-notice/view?seq=387",
+      "asOf": "2026-06-10",
+      "collectedAt": "2026-08-23",
+      "method": "manual",
+      "status": "공식 공시에서 하나대체투자자산운용이 운용중인 펀드의 자산운용보고서를 안내하고, 대상 펀드명과 보고 대상기간 2026-02-25~2026-05-24를 확인",
+      "limitations": [
+        "첨부 자산운용보고서 PDF 본문은 열람하지 않았습니다.",
+        "이 공지는 하나대체투자자산운용의 운용 사실을 보여주지만 임대차 해지의 후속 영향이나 성과를 확인하지 않습니다."
+      ]
+    },
+    {
+      "sourceKind": "platform-claim",
+      "label": "BBRIC 서비스 운영자 변경 안내",
+      "url": "https://www.bbric.com/notice.php?lst_category=001&lst_sub_category=&scolumn=&skeyword=&ptype=view&page=2&nidx=1535",
+      "asOf": "2025-05-16",
+      "collectedAt": "2026-08-23",
+      "method": "manual",
+      "status": "공개 공지에서 비브릭 플랫폼 운영자를 세종텔레콤 주식회사에서 자회사 세종디엑스 주식회사로 변경 예정이라고 안내",
+      "limitations": [
+        "공지에는 고시 이후 2025-05-16 예정 및 2025년 6월 중 적용 예정이라고만 적혀 있어, 이 원문만으로 최종 적용일 또는 모든 계약상 지위 이전을 확정하지 않습니다.",
+        "플랫폼 운영자 변경은 펀드 운용사·수탁사 또는 상품 자산의 법적 지위를 뜻하지 않습니다."
+      ]
+    },
+    {
+      "sourceKind": "platform-claim",
+      "label": "BBRIC 펀드기준가 안내 — 하나대체투자부산특구부동산투자신탁1호",
+      "url": "https://www.bbric.com/notice.php?lst_category=002&lst_sub_category=018&scolumn=&skeyword=&ptype=view&page=&nidx=2580",
+      "asOf": "2026-08-17",
+      "collectedAt": "2026-08-23",
+      "method": "manual",
+      "status": "공개 공지에서 2026-08-17 기준 펀드기준가와 수정 기준가를 확인",
+      "limitations": [
+        "기준가 공지는 실제 주문 접수, 매수·매도 체결, 거래 정지 또는 종료 여부를 확인하지 않습니다.",
+        "기준가는 플랫폼 디지털증서의 실제 체결가나 개인 보유분의 회수금이 아닙니다."
+      ]
+    },
+    {
+      "sourceKind": "platform-claim",
+      "label": "BBRIC 공개 공지 목록 — 하나대체투자부산특구부동산투자신탁1호 배당금 지급 안내",
+      "url": "https://bbric.com/notice.php",
+      "asOf": "2026-05-27",
+      "collectedAt": "2026-08-23",
+      "method": "manual",
+      "status": "공개 목록에서 2025-11-26 2기 및 2026-05-27 3기 배당금 지급 안내 확인; 2026-05-27 기준 공개 운용·배당 이력 있음",
+      "limitations": [
+        "공개 공지 목록은 2026-05-27 이후의 자산 상태나 실시간 거래 가능 여부를 확정하지 않습니다."
+      ]
+    },
+    {
+      "sourceKind": "platform-claim",
+      "label": "BBRIC 중요 공시 — 하나대체투자부산특구부동산투자신탁1호 임대차계약 해지",
+      "url": "https://bbric.com/notice.php?lst_category=002&lst_sub_category=018&nidx=2391&page=1&ptype=view&scolumn=&skeyword=",
+      "asOf": "2026-05-27",
+      "collectedAt": "2026-08-23",
+      "method": "manual",
+      "status": "공개 공지에서 부동산 관련 중요 권리 발생·변경(임대차계약 해지) 및 사유 발생일 2026-05-27 확인",
+      "limitations": [
+        "첨부 투자설명서 또는 PDF 내부는 직접 열람하지 않았습니다.",
+        "임대차계약 해지는 임대차 위험 변화의 공개 근거이며, 이 공지만으로 운영 종료·매각·정산을 뜻하지 않습니다."
+      ]
+    },
+    {
+      "sourceKind": "platform-claim",
+      "label": "BBRIC 공개 빌딩 목록 — 희원감천빌딩 상장 표기",
+      "url": "https://www.bbric.com/building.php",
+      "asOf": "2026-08-23",
+      "collectedAt": "2026-08-23",
+      "method": "manual",
+      "status": "공개 빌딩 목록에서 해당 펀드의 상장 표기 확인",
+      "limitations": [
+        "목록의 상장 표기만으로는 현재 주문 가능, 거래 정지 또는 거래 종료 여부를 확인할 수 없어 tradabilityStatus는 unknown으로 기록했습니다."
+      ]
+    },
+    {
+      "sourceKind": "external-observation",
+      "label": "공공데이터포털 법정동코드 전체자료 — 감천동",
+      "url": "https://www.data.go.kr/data/15092250/fileData.do?recommendDataYn=Y",
+      "asOf": "2026-08-23",
+      "collectedAt": "2026-08-23",
+      "method": "manual",
+      "status": "감천동 법정동 전체코드 2638010800 확인; RTMS 시군구 lawdCd 앞 5자리 26380으로 정규화",
+      "limitations": [
+        "법정동코드는 주소 연결 키이며, 건물의 권리·임대차·현재 운용 상태를 검증하지 않습니다."
+      ]
+    },
+    {
+      "sourceKind": "external-observation",
+      "label": "한국은행 ECOS StatisticSearch — 기준금리(722Y001) 정제 관측",
+      "url": "https://ecos.bok.or.kr/api/",
+      "asOf": "2026-08-23",
+      "collectedAt": "2026-08-22T20:12:24.172Z",
+      "method": "manual",
+      "status": "ECOS StatisticSearch 722Y001의 ITEM_CODE1 0101000(한국은행 기준금리) 일별 관측 659건을 2024-11-01~2026-08-23 범위에서 정제",
+      "limitations": [
+        "최신 관측일은 2026-08-21이며, 2026-08-22~23에 값이 없다는 뜻이 아니라 수집 결과의 마지막 관측일입니다.",
+        "기준금리는 거시 맥락일 뿐 이 상품의 가격, 동일성, 임대차, 매각, 배당 또는 수익을 증명하지 않습니다.",
+        "정제 캐시는 공개 API 설명 URL만 보존하며 인증키와 키가 포함된 요청 경로는 저장하지 않습니다."
+      ]
+    }
+  ],
+  "limits": [
+    "플랫폼 상품 상세의 100% 임대 및 5년 책임임대차 문구는 2026-05-28 임대차계약 해지 공시가 있어 현재 사실로 옮기지 않았습니다.",
+    "청약 마감은 확인됐지만 현재 실시간 거래 가능 여부는 공개 화면만으로 확인할 수 없어 tradabilityStatus는 unknown입니다.",
+    "거래소 오픈 공지 본문에는 연도가 없어 listedOn=2024-12-17은 2024 상품 연혁과 12월 17일 화요일 일치에 근거한 추론입니다.",
+    "배정결과 공지의 청약 종료연도 2042와 배정일 2022 표기는 다른 공식 공지와 상품 연혁에 모순되어 날짜 근거로 사용하지 않았습니다.",
+    "2026-05-27 배당금 지급 안내는 공개 운용·배당 이력을 뒷받침하지만, 이후의 임대차·매각·정산 상태를 확정하지 않습니다.",
+    "1기와 3기 실제 배당 공지의 총액·총 BRIC·1BRIC당 배당금은 각각 단순 검산과 일치하지 않습니다. 24.5788원과 24.5791원을 확정 실제값으로 단독 표시하지 않으며, 총액÷수량 약 24.7945원은 시스템 보정값이 아닌 단순 검산값입니다.",
+    "예상 배당률과 상품별 매각·청산 조건은 투자설명서·규약 PDF 본문 확인 전까지 미확인입니다.",
+    "임대차계약 해지와 자산운용보고서의 공식 공시 HTML은 확인했지만, 첨부 PDF 본문은 직접 열람하지 않았습니다.",
+    "임대차계약 해지는 exact 상품의 직접 원문 사건이지만, 새 임차인, 공실, 임대수익, 배당 영향, 매각·청산 결과는 미확인으로 남깁니다.",
+    "펀드기준가 공시와 상장 표기는 현재 실제 주문·체결 가능 여부를 확인하지 않으므로 tradabilityStatus는 unknown입니다.",
+    "건축물대장 표제부는 exact parcel 조건으로 연결하지만 권리·소유·임대차를 검증하지 않습니다. 실거래 신고 자료는 법정동 단위라 동일 자산 후보가 있어도 지번 단위 동일 물건으로 확정할 수 없습니다."
+  ]
+}

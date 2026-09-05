@@ -199,6 +199,10 @@ export const assess = (
       return assessAcquisitionDate(claim.value, record);
     case "acquisition_price":
     case "real_estate_address":
+    case "real_estate_parcel_area":
+    case "real_estate_building_area":
+    case "real_estate_total_area":
+    case "real_estate_use_approved_month":
     case "offer_amount":
     case "sale_amount":
     case "sale_date":

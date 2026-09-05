@@ -1,4 +1,5 @@
 import syntheticData from "../../../data/synthetic/art-investment.json";
+import { syntheticAnalysisText } from "./analysis-copy";
 import { resolvedSyntheticTrackReturn } from "./calculations";
 import { parseSyntheticCatalogSearchParams } from "./catalog-query";
 import { normalizeSyntheticCatalogKeyword } from "./search";
@@ -73,19 +74,19 @@ function sanitizedAnalysis(analysis: SyntheticAnalysis): SyntheticAnalysis {
   return {
     offeringId: analysis.offeringId,
     methodologyVersion: analysis.methodologyVersion,
-    headline: analysis.headline,
-    summary: analysis.summary,
+    headline: syntheticAnalysisText(analysis.headline),
+    summary: syntheticAnalysisText(analysis.summary),
     keyReasons: analysis.keyReasons.map((reason) => ({
-      title: reason.title,
-      finding: reason.finding,
-      implication: reason.implication,
+      title: syntheticAnalysisText(reason.title),
+      finding: syntheticAnalysisText(reason.finding),
+      implication: syntheticAnalysisText(reason.implication),
       evidenceIds: [...reason.evidenceIds],
     })),
-    priceInsight: { ...analysis.priceInsight, quantitativeFindings: [...analysis.priceInsight.quantitativeFindings], qualitativeFindings: [...analysis.priceInsight.qualitativeFindings], evidenceIds: [...analysis.priceInsight.evidenceIds] },
-    artistInsight: { ...analysis.artistInsight, quantitativeFindings: [...analysis.artistInsight.quantitativeFindings], qualitativeFindings: [...analysis.artistInsight.qualitativeFindings], evidenceIds: [...analysis.artistInsight.evidenceIds] },
-    exitInsight: { ...analysis.exitInsight, quantitativeFindings: [...analysis.exitInsight.quantitativeFindings], qualitativeFindings: [...analysis.exitInsight.qualitativeFindings], evidenceIds: [...analysis.exitInsight.evidenceIds] },
-    platformInsight: { ...analysis.platformInsight, quantitativeFindings: [...analysis.platformInsight.quantitativeFindings], qualitativeFindings: [...analysis.platformInsight.qualitativeFindings], evidenceIds: [...analysis.platformInsight.evidenceIds] },
-    missingInformationRisks: [...analysis.missingInformationRisks],
+    priceInsight: { ...analysis.priceInsight, conclusion: syntheticAnalysisText(analysis.priceInsight.conclusion), quantitativeFindings: analysis.priceInsight.quantitativeFindings.map(syntheticAnalysisText), qualitativeFindings: analysis.priceInsight.qualitativeFindings.map(syntheticAnalysisText), evidenceIds: [...analysis.priceInsight.evidenceIds] },
+    artistInsight: { ...analysis.artistInsight, conclusion: syntheticAnalysisText(analysis.artistInsight.conclusion), quantitativeFindings: analysis.artistInsight.quantitativeFindings.map(syntheticAnalysisText), qualitativeFindings: analysis.artistInsight.qualitativeFindings.map(syntheticAnalysisText), evidenceIds: [...analysis.artistInsight.evidenceIds] },
+    exitInsight: { ...analysis.exitInsight, conclusion: syntheticAnalysisText(analysis.exitInsight.conclusion), quantitativeFindings: analysis.exitInsight.quantitativeFindings.map(syntheticAnalysisText), qualitativeFindings: analysis.exitInsight.qualitativeFindings.map(syntheticAnalysisText), evidenceIds: [...analysis.exitInsight.evidenceIds] },
+    platformInsight: { ...analysis.platformInsight, conclusion: syntheticAnalysisText(analysis.platformInsight.conclusion), quantitativeFindings: analysis.platformInsight.quantitativeFindings.map(syntheticAnalysisText), qualitativeFindings: analysis.platformInsight.qualitativeFindings.map(syntheticAnalysisText), evidenceIds: [...analysis.platformInsight.evidenceIds] },
+    missingInformationRisks: analysis.missingInformationRisks.map(syntheticAnalysisText),
     conflicts: [...analysis.conflicts],
     evidenceIds: [...analysis.evidenceIds],
     updatedAt: analysis.updatedAt,

@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "request": {
+    "sigunguCd": "11110",
+    "bjdongCd": "12200",
+    "platGbCd": "0",
+    "bun": "0070",
+    "ji": "0000"
+  },
+  "collectedAt": "2026-08-24T16:46:21.502Z",
+  "sourceId": "molit-building-register-hub",
+  "sourceName": "국토교통부 건축물대장 표제부 조회 서비스 (국토교통부 · data.go.kr)",
+  "sourceUrl": "https://apis.data.go.kr/1613000/BldRgstHubService/getBrTitleInfo?sigunguCd=11110&bjdongCd=12200&platGbCd=0&bun=0070&ji=0000&numOfRows=100&pageNo=1&_type=json",
+  "status": "ok",
+  "totalCount": 1,
+  "records": [
+    {
+      "managementKey": "10021100197445",
+      "parcelAddress": "서울특별시 종로구 청진동 70번지",
+      "roadAddress": "서울특별시 종로구 종로 33 (청진동)",
+      "buildingName": "그랑서울",
+      "mainPurpose": "업무시설",
+      "otherPurpose": "업무시설,근린생활시설,문화및집회시설",
+      "parcelAreaSqm": 11522.7,
+      "buildingAreaSqm": 7198.61,
+      "totalAreaSqm": 175537.3,
+      "floorAreaRatioEstimatedTotalSqm": 115110.17,
+      "structure": "철골철근콘크리트구조",
+      "householdCount": 0,
+      "useApprovedOn": "2014-02-14",
+      "recordedOn": "2022-08-13"
+    }
+  ]
+}

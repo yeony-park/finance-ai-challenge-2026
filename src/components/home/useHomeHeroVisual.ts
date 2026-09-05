@@ -17,7 +17,6 @@ import {
   subscribeToScrollFrame,
   type ScrollFrameReason,
 } from "@/components/motion/scroll-frame";
-import type { ScaffoldMatch } from "@/lib/content/scaffold-match";
 
 import {
   HERO_FRAME_ASPECT_RATIO,
@@ -118,7 +117,7 @@ const settledFrameTarget = (
 
 export function useHomeHeroVisual(
   refs: HomeHeroVisualRefs,
-  match: ScaffoldMatch | null,
+  isSearchOpen: boolean,
 ): void {
   const {
     visual,
@@ -139,6 +138,10 @@ export function useHomeHeroVisual(
     let frameTarget: { readonly width: number; readonly height: number } | null =
       null;
     let appliedProgress: number | null = null;
+    let visualTop: number | null = null;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const handleMotionChange = () => requestLayoutFrame();
+    reducedMotion.addEventListener("change", handleMotionChange);
     let stickyObserver: ResizeObserver | null = null;
 
     const resolveHeader = (): HTMLElement | null => {
@@ -151,6 +154,7 @@ export function useHomeHeroVisual(
       stickyObserver = new ResizeObserver(() => {
         metrics = null;
         frameTarget = null;
+        visualTop = null;
         requestLayoutFrame();
       });
       stickyObserver.observe(sticky);
@@ -180,7 +184,7 @@ export function useHomeHeroVisual(
       observeSticky(sticky);
       const header = resolveHeader();
 
-      if (match) {
+      if (isSearchOpen) {
         if (header) {
           cssVars.write(header, HOME_CSS_VARS.headerSurface, percent(100));
           cssVars.write(header, HOME_CSS_VARS.headerInk, percent(100));
@@ -193,8 +197,11 @@ export function useHomeHeroVisual(
       if (invalidatesLayout(reason)) {
         metrics = null;
         frameTarget = null;
+        settledFrameRef.current = null;
         appliedProgress = null;
       }
+
+      if (appliedProgress === imageProgress) return;
 
       metrics ??= readLayoutMetrics(sticky, titleElement, scaffoldElement);
       const layout = metrics;
@@ -329,18 +336,21 @@ export function useHomeHeroVisual(
       const visualElement = visual.current;
       if (!visualElement) return;
 
-      const scrollOffset = Math.max(-visualElement.getBoundingClientRect().top, 0);
+      if (invalidatesLayout(reason)) visualTop = null;
+      visualTop ??= visualElement.getBoundingClientRect().top + window.scrollY;
+      const scrollOffset = Math.max(window.scrollY - visualTop, 0);
       const rawProgress = Math.min(
         scrollOffset / HERO_SHRINK_SCROLL_DISTANCE,
         1,
       );
-      applyVisualProgress(reason, easeHomeVisualProgress(rawProgress));
+      applyVisualProgress(reason, reducedMotion.matches ? 1 : easeHomeVisualProgress(rawProgress));
     };
 
     const unsubscribe = subscribeToScrollFrame(updateVisual);
 
     return () => {
       unsubscribe();
+      reducedMotion.removeEventListener("change", handleMotionChange);
       stickyObserver?.disconnect();
       const header = headerElement ?? siteHeaderElement();
       if (stickyElement) {
@@ -356,7 +366,7 @@ export function useHomeHeroVisual(
   }, [
     content,
     frame,
-    match,
+    isSearchOpen,
     scaffold,
     title,
     titlePrefix,

@@ -1,0 +1,391 @@
+{
+  "notice": "API 이용허락 전 데이터 흐름 검증용 가상 데이터입니다. 실제 상품, 플랫폼, 주소 또는 투자성과가 아닙니다.",
+  "products": [
+    {
+      "product_id": "SAMPLE-RE-OFFERING-001",
+      "sample": true,
+      "source_status": "dummy",
+      "status": "offering",
+      "asset_type": "real_estate",
+      "asset_name": "가상 창신 근린생활시설 검토 상품 A",
+      "platform": "가상 플랫폼",
+      "operator_id": "SAMPLE-OP-ALPHA",
+      "operator": "가상 운영사 알파",
+      "document_url": null,
+      "basic_info": {
+        "region": "서울특별시 종로구 창신동",
+        "building_use": "제2종근린생활",
+        "land_area_m2": 218.2,
+        "gross_floor_area_m2": 167.8,
+        "floors": "지상 2층 규모 가상 건물",
+        "use_approval_date": null
+      },
+      "offering": {
+        "offering_amount_krw": 10000000000,
+        "building_purchase_price_krw": 9200000000,
+        "security_price_krw": 5000,
+        "security_quantity": 2000000,
+        "subscription_period": "가상 공모 기간",
+        "expected_operation_months": 36,
+        "distribution_cycle": "분기",
+        "expected_distribution_text": "검증용 예상 배당 표현이며 보장하지 않음"
+      },
+      "lease": {
+        "main_tenant_type": "지역 생활서비스 임차인 유형",
+        "occupancy_rate_text": "가상 임대율 92%",
+        "lease_expiry": "가상 임대차 만기"
+      },
+      "structure": {
+        "trustee": "가상 신탁사",
+        "account_manager": "가상 계좌관리기관",
+        "operator_role": "자산 관리·임대차 운영을 맡는 가상 운영사",
+        "distribution_basis": "가상 보유 지분 비례 분배 구조",
+        "liquidation_flow": "가상 가치 변동을 반영한 매각·청산 흐름"
+      },
+      "risks": [
+        "임대차 만기와 재임대 조건은 실제 계약서 확인 전 판정할 수 없습니다.",
+        "비교 거래는 동일 건물 또는 실제 상품의 거래를 뜻하지 않습니다."
+      ],
+      "connection_criteria": {
+        "legal_dong_code": "1111017400",
+        "sigungu_code": "11110",
+        "legal_dong_name": "창신동",
+        "building_use": "제2종근린생활",
+        "comparison_area_m2": 167.8,
+        "note": "공개 API 레코드 연결 흐름을 검증하기 위한 가상 상품 조건입니다. 실제 STO, 상세주소, 플랫폼 또는 상품 식별자가 아닙니다."
+      },
+      "evidence_review": {
+        "price_review": "판정 보류",
+        "comparison_search_status": "1차 비교 후보 1건",
+        "price_review_reason": "거래금액 단위, 건물 동일성, 비교 가능성이 미확인되어 가격 판단을 보류합니다.",
+        "items": [
+          {
+            "title": "공개 API 연결 흐름 예시",
+            "source_type": "normalized_public_api",
+            "as_of": null,
+            "status": "연결 규칙 검증",
+            "sample": false,
+            "record_is_sample": false,
+            "linkage_is_sample": true,
+            "applicability_status": "미검증",
+            "limitations": "법정동 일치와 비교 후보는 실제 상품·건물 동일성 또는 투자 적정성을 뜻하지 않습니다."
+          }
+        ]
+      },
+      "operator_history": {
+        "referenced_product_ids": ["SAMPLE-RE-LIQUIDATED-001", "SAMPLE-RE-LIQUIDATED-002"],
+        "note": "같은 가상 운영사의 종료 상품 이력은 시나리오 검증용이며 향후 결과를 보장하지 않습니다."
+      }
+    },
+    {
+      "product_id": "SAMPLE-RE-OFFERING-002",
+      "sample": true,
+      "source_status": "demo_scenario",
+      "status": "offering",
+      "asset_type": "real_estate",
+      "asset_name": "가상 서부 생활편의시설 검토 상품 B",
+      "comparison_as_of": "2026-08-01",
+      "platform": "가상 플랫폼",
+      "operator_id": "SAMPLE-OP-BETA",
+      "operator": "가상 운영사 베타",
+      "document_url": null,
+      "basic_info": {
+        "region": "가상시 서부 생활권",
+        "building_use": "제1종근린생활",
+        "land_area_m2": 140.0,
+        "gross_floor_area_m2": 480.0,
+        "floors": "지상 4층 규모 가상 건물",
+        "use_approval_date": "가상 사용승인일"
+      },
+      "offering": {
+        "offering_amount_krw": 7200000000,
+        "building_purchase_price_krw": 6600000000,
+        "security_price_krw": 10000,
+        "security_quantity": 720000,
+        "subscription_period": "가상 공모 기간",
+        "expected_operation_months": 30,
+        "distribution_cycle": "분기",
+        "expected_distribution_text": "검증용 예상 배당 표현이며 보장하지 않음"
+      },
+      "lease": {
+        "main_tenant_type": "생활 편의 업종 임차인 유형",
+        "occupancy_rate_text": "가상 임대율 88%",
+        "lease_expiry": "가상 임대차 만기"
+      },
+      "structure": {
+        "trustee": "가상 신탁사",
+        "account_manager": "가상 계좌관리기관",
+        "operator_role": "자산 관리·임대차 운영을 맡는 가상 운영사",
+        "distribution_basis": "가상 보유 지분 비례 분배 구조",
+        "liquidation_flow": "가상 가치 변동을 반영한 매각·청산 흐름"
+      },
+      "risks": ["가상 임대율은 실제 임대차 증빙이 아닙니다.", "공모가와 매입가 차이는 수수료 등을 포함할 수 있습니다."],
+      "evidence_review": {
+        "price_review": "유사 거래 범위 내",
+        "items": [
+          {
+            "title": "시나리오 입력값",
+            "source_type": "demo_scenario",
+            "as_of": null,
+            "status": "샘플",
+            "sample": true,
+            "record_is_sample": true,
+            "linkage_is_sample": true,
+            "applicability_status": "시나리오",
+            "limitations": "외부 거래·공시와 연결하지 않은 화면 검증용 값입니다."
+          }
+        ]
+      },
+      "comparison_transactions": [
+        {"transaction_id": "SAMPLE-COMP-B-001", "sample": true, "source_status": "demo_scenario", "as_of": "2025-08-01", "region": "가상시 서부 생활권", "building_use": "제1종근린생활", "gross_floor_area_m2": 500, "sale_amount_krw": 6600000000, "cancellation_date": null},
+        {"transaction_id": "SAMPLE-COMP-B-002", "sample": true, "source_status": "demo_scenario", "as_of": "2026-01-15", "region": "가상시 서부 생활권", "building_use": "제1종근린생활", "gross_floor_area_m2": 500, "sale_amount_krw": 6850000000, "cancellation_date": null},
+        {"transaction_id": "SAMPLE-COMP-B-003", "sample": true, "source_status": "demo_scenario", "as_of": "2026-07-20", "region": "가상시 서부 생활권", "building_use": "제1종근린생활", "gross_floor_area_m2": 500, "sale_amount_krw": 7050000000, "cancellation_date": null}
+      ],
+      "operator_history": {
+        "referenced_product_ids": ["SAMPLE-RE-LIQUIDATED-003"],
+        "note": "같은 가상 운영사의 종료 상품 이력은 시나리오 검증용입니다."
+      }
+    },
+    {
+      "product_id": "SAMPLE-RE-OFFERING-003",
+      "sample": true,
+      "source_status": "dummy",
+      "status": "offering",
+      "asset_type": "real_estate",
+      "asset_name": "가상 남부 업무지원시설 검토 상품 C",
+      "comparison_as_of": "2026-08-01",
+      "platform": "가상 플랫폼",
+      "operator_id": "SAMPLE-OP-GAMMA",
+      "operator": "가상 운영사 감마",
+      "document_url": null,
+      "basic_info": {
+        "region": "가상시 남부 업무권",
+        "building_use": "업무시설",
+        "land_area_m2": 310.0,
+        "gross_floor_area_m2": 1250.0,
+        "floors": "지상 6층 규모 가상 건물",
+        "use_approval_date": "가상 사용승인일"
+      },
+      "offering": {
+        "offering_amount_krw": 12800000000,
+        "building_purchase_price_krw": 11900000000,
+        "security_price_krw": 5000,
+        "security_quantity": 2560000,
+        "subscription_period": "가상 공모 기간",
+        "expected_operation_months": 48,
+        "distribution_cycle": "반기",
+        "expected_distribution_text": "검증용 예상 배당 표현이며 보장하지 않음"
+      },
+      "lease": {
+        "main_tenant_type": "업무 지원 서비스 임차인 유형",
+        "occupancy_rate_text": "가상 임대율 95%",
+        "lease_expiry": "가상 임대차 만기"
+      },
+      "structure": {
+        "trustee": "가상 신탁사",
+        "account_manager": "가상 계좌관리기관",
+        "operator_role": "자산 관리·임대차 운영을 맡는 가상 운영사",
+        "distribution_basis": "가상 보유 지분 비례 분배 구조",
+        "liquidation_flow": "가상 가치 변동을 반영한 매각·청산 흐름"
+      },
+      "risks": ["주요 임차인 유형은 실제 임차인 식별 정보가 아닙니다.", "예상 운용기간은 청산 시점의 약속이 아닙니다."],
+      "evidence_review": {
+        "price_review": "높음",
+        "items": [
+          {
+            "title": "시나리오 가격 검토",
+            "source_type": "dummy",
+            "as_of": null,
+            "status": "샘플",
+            "sample": true,
+            "record_is_sample": true,
+            "linkage_is_sample": true,
+            "applicability_status": "시나리오",
+            "limitations": "가상 비교 기준만 사용했으므로 투자 적정성 결론을 낼 수 없습니다."
+          }
+        ]
+      },
+      "comparison_transactions": [
+        {"transaction_id": "SAMPLE-COMP-C-001", "sample": true, "source_status": "demo_scenario", "as_of": "2025-08-01", "region": "가상시 남부 업무권", "building_use": "업무시설", "gross_floor_area_m2": 1000, "sale_amount_krw": 7800000000, "cancellation_date": null},
+        {"transaction_id": "SAMPLE-COMP-C-002", "sample": true, "source_status": "demo_scenario", "as_of": "2026-01-15", "region": "가상시 남부 업무권", "building_use": "업무시설", "gross_floor_area_m2": 1000, "sale_amount_krw": 8200000000, "cancellation_date": null},
+        {"transaction_id": "SAMPLE-COMP-C-003", "sample": true, "source_status": "demo_scenario", "as_of": "2026-07-20", "region": "가상시 남부 업무권", "building_use": "업무시설", "gross_floor_area_m2": 1000, "sale_amount_krw": 8500000000, "cancellation_date": null}
+      ],
+      "operator_history": {
+        "referenced_product_ids": ["SAMPLE-RE-LIQUIDATED-004"],
+        "note": "같은 가상 운영사의 종료 상품 이력은 시나리오 검증용입니다."
+      }
+    },
+    {
+      "product_id": "SAMPLE-RE-LIQUIDATED-001",
+      "sample": true,
+      "source_status": "dummy",
+      "status": "liquidated",
+      "asset_type": "real_estate",
+      "asset_name": "가상 알파 종료 상품 1",
+      "platform": "가상 플랫폼",
+      "operator_id": "SAMPLE-OP-ALPHA",
+      "operator": "가상 운영사 알파",
+      "document_url": null,
+      "basic_info": {"region": "가상시 중심 생활권", "building_use": "근린생활시설", "land_area_m2": 180.0, "gross_floor_area_m2": 620.0, "floors": "지상 4층 규모 가상 건물", "use_approval_date": "가상 사용승인일"},
+      "offering": {"offering_amount_krw": 10000000000, "building_purchase_price_krw": 9200000000, "security_price_krw": 5000, "security_quantity": 2000000, "subscription_period": "종료", "expected_operation_months": 36, "distribution_cycle": "분기", "expected_distribution_text": "실제 배당을 뜻하지 않는 가상 표현"},
+      "lease": {"main_tenant_type": "생활 서비스 임차인 유형", "occupancy_rate_text": "가상 운영 종료 시점 임대율", "lease_expiry": "가상 임대차 만기"},
+      "structure": {"trustee": "가상 신탁사", "account_manager": "가상 계좌관리기관", "operator_role": "자산 관리·매각을 맡는 가상 운영사", "distribution_basis": "가상 보유 지분 비례 분배 구조", "liquidation_flow": "가상 가치 변동을 반영한 매각·청산 흐름"},
+      "risks": ["종료 결과는 시나리오 값입니다."],
+      "evidence_review": {"price_review": "유사 거래 범위 내", "items": [{"title": "종료 시나리오", "source_type": "demo_scenario", "as_of": null, "status": "샘플", "sample": true, "record_is_sample": true, "linkage_is_sample": true, "applicability_status": "시나리오", "limitations": "실제 매각 또는 분배 내역이 아닙니다."}]},
+      "operator_history": {"referenced_product_ids": [], "note": "가상 종료 이력입니다."},
+      "performance": {
+        "building_purchase_price_krw": 9200000000,
+        "total_offering_amount_krw": 10000000000,
+        "sale_amount_krw": 9900000000,
+        "sale_cost_krw": 300000000,
+        "sale_reconciliation": {"sale_amount_krw": 9900000000, "sale_cost_krw": 300000000, "sample_tax_krw": 200000000, "sample_other_settlement_krw": 400000000, "investor_net_sale_distribution_krw": 9000000000, "sample": true, "source_status": "demo_scenario"},
+        "investor_net_sale_distribution_krw": 9000000000,
+        "cumulative_rental_distribution_krw": 1600000000,
+        "expected_operation_months": 36,
+        "actual_operation_months": 38,
+        "sale_date": "가상 매각일",
+        "liquidation_date": "가상 청산일"
+      },
+      "cause_candidates": {
+        "notice": "아래 원인 후보는 추가 확인이 필요한 설명 가설이며 인과관계를 확정하지 않습니다.",
+        "causal_attribution": false,
+        "mutually_exclusive": false,
+        "additive": false,
+        "verification_status": "미검증",
+        "required_evidence": ["운영 의사결정 자료", "임대차·자산 상태 자료", "동일 기간 외부 시장 자료"],
+        "operator": [{"candidate": "가상 매각시점 선택", "direction": "긍정", "related_observation": "가상 시나리오상 순매각분배금", "confidence": "낮음", "limitations": "실제 의사결정 자료가 없습니다."}],
+        "asset": [{"candidate": "가상 임대차 유지", "direction": "긍정", "related_observation": "가상 누적 임대분배금", "confidence": "낮음", "limitations": "실제 임차인·자산품질 자료가 없습니다."}],
+        "external": [{"candidate": "가상 시장 환경", "direction": "혼합", "related_observation": "외부 시계열을 연결하지 않은 시나리오", "confidence": "낮음", "limitations": "금리·시장·규제 영향을 분리할 수 없습니다."}]
+      }
+    },
+    {
+      "product_id": "SAMPLE-RE-LIQUIDATED-002",
+      "sample": true,
+      "source_status": "demo_scenario",
+      "status": "liquidated",
+      "asset_type": "real_estate",
+      "asset_name": "가상 알파 종료 상품 2",
+      "platform": "가상 플랫폼",
+      "operator_id": "SAMPLE-OP-ALPHA",
+      "operator": "가상 운영사 알파",
+      "document_url": null,
+      "basic_info": {"region": "가상시 북부 생활권", "building_use": "근린생활시설", "land_area_m2": 160.0, "gross_floor_area_m2": 540.0, "floors": "지상 3층 규모 가상 건물", "use_approval_date": "가상 사용승인일"},
+      "offering": {"offering_amount_krw": 8000000000, "building_purchase_price_krw": 7300000000, "security_price_krw": 5000, "security_quantity": 1600000, "subscription_period": "종료", "expected_operation_months": 30, "distribution_cycle": "분기", "expected_distribution_text": "실제 배당을 뜻하지 않는 가상 표현"},
+      "lease": {"main_tenant_type": "지역 판매 임차인 유형", "occupancy_rate_text": "가상 운영 종료 시점 임대율", "lease_expiry": "가상 임대차 만기"},
+      "structure": {"trustee": "가상 신탁사", "account_manager": "가상 계좌관리기관", "operator_role": "자산 관리·매각을 맡는 가상 운영사", "distribution_basis": "가상 보유 지분 비례 분배 구조", "liquidation_flow": "가상 가치 변동을 반영한 매각·청산 흐름"},
+      "risks": ["종료 결과는 시나리오 값입니다."],
+      "evidence_review": {"price_review": "낮음", "items": [{"title": "종료 시나리오", "source_type": "dummy", "as_of": null, "status": "샘플", "sample": true, "record_is_sample": true, "linkage_is_sample": true, "applicability_status": "시나리오", "limitations": "실제 매각 또는 분배 내역이 아닙니다."}]},
+      "operator_history": {"referenced_product_ids": [], "note": "가상 종료 이력입니다."},
+      "performance": {
+        "building_purchase_price_krw": 7300000000,
+        "total_offering_amount_krw": 8000000000,
+        "sale_amount_krw": 6900000000,
+        "sale_cost_krw": 300000000,
+        "sale_reconciliation": {"sale_amount_krw": 6900000000, "sale_cost_krw": 300000000, "sample_tax_krw": 100000000, "sample_other_settlement_krw": 300000000, "investor_net_sale_distribution_krw": 6200000000, "sample": true, "source_status": "demo_scenario"},
+        "investor_net_sale_distribution_krw": 6200000000,
+        "cumulative_rental_distribution_krw": 900000000,
+        "expected_operation_months": 30,
+        "actual_operation_months": 34,
+        "sale_date": "가상 매각일",
+        "liquidation_date": "가상 청산일"
+      },
+      "cause_candidates": {
+        "notice": "아래 원인 후보는 추가 확인이 필요한 설명 가설이며 인과관계를 확정하지 않습니다.",
+        "causal_attribution": false,
+        "mutually_exclusive": false,
+        "additive": false,
+        "verification_status": "미검증",
+        "required_evidence": ["운영 의사결정 자료", "임대차·자산 상태 자료", "동일 기간 외부 시장 자료"],
+        "operator": [{"candidate": "가상 매입가격 검토", "direction": "부정", "related_observation": "가상 순매각분배금", "confidence": "낮음", "limitations": "실제 매입 검토 자료가 없습니다."}],
+        "asset": [{"candidate": "가상 자산 수요", "direction": "부정", "related_observation": "가상 임대분배금", "confidence": "낮음", "limitations": "실제 입지·자산품질 자료가 없습니다."}],
+        "external": [{"candidate": "가상 금리 환경", "direction": "혼합", "related_observation": "외부 시계열을 연결하지 않은 시나리오", "confidence": "낮음", "limitations": "시장 요인을 인과로 확정할 수 없습니다."}]
+      }
+    },
+    {
+      "product_id": "SAMPLE-RE-LIQUIDATED-003",
+      "sample": true,
+      "source_status": "dummy",
+      "status": "liquidated",
+      "asset_type": "real_estate",
+      "asset_name": "가상 베타 종료 상품 1",
+      "platform": "가상 플랫폼",
+      "operator_id": "SAMPLE-OP-BETA",
+      "operator": "가상 운영사 베타",
+      "document_url": null,
+      "basic_info": {"region": "가상시 서부 생활권", "building_use": "제1종근린생활", "land_area_m2": 130.0, "gross_floor_area_m2": 450.0, "floors": "지상 4층 규모 가상 건물", "use_approval_date": "가상 사용승인일"},
+      "offering": {"offering_amount_krw": 9000000000, "building_purchase_price_krw": 8300000000, "security_price_krw": 10000, "security_quantity": 900000, "subscription_period": "종료", "expected_operation_months": 36, "distribution_cycle": "분기", "expected_distribution_text": "실제 배당을 뜻하지 않는 가상 표현"},
+      "lease": {"main_tenant_type": "생활 편의 임차인 유형", "occupancy_rate_text": "가상 운영 종료 시점 임대율", "lease_expiry": "가상 임대차 만기"},
+      "structure": {"trustee": "가상 신탁사", "account_manager": "가상 계좌관리기관", "operator_role": "자산 관리·매각을 맡는 가상 운영사", "distribution_basis": "가상 보유 지분 비례 분배 구조", "liquidation_flow": "가상 가치 변동을 반영한 매각·청산 흐름"},
+      "risks": ["종료 결과는 시나리오 값입니다."],
+      "evidence_review": {"price_review": "유사 거래 범위 내", "items": [{"title": "종료 시나리오", "source_type": "demo_scenario", "as_of": null, "status": "샘플", "sample": true, "record_is_sample": true, "linkage_is_sample": true, "applicability_status": "시나리오", "limitations": "실제 매각 또는 분배 내역이 아닙니다."}]},
+      "operator_history": {"referenced_product_ids": [], "note": "가상 종료 이력입니다."},
+      "performance": {
+        "building_purchase_price_krw": 8300000000,
+        "total_offering_amount_krw": 9000000000,
+        "sale_amount_krw": 9000000000,
+        "sale_cost_krw": 250000000,
+        "sale_reconciliation": {"sale_amount_krw": 9000000000, "sale_cost_krw": 250000000, "sample_tax_krw": 200000000, "sample_other_settlement_krw": 250000000, "investor_net_sale_distribution_krw": 8300000000, "sample": true, "source_status": "demo_scenario"},
+        "investor_net_sale_distribution_krw": 8300000000,
+        "cumulative_rental_distribution_krw": 1300000000,
+        "expected_operation_months": 36,
+        "actual_operation_months": 35,
+        "sale_date": "가상 매각일",
+        "liquidation_date": "가상 청산일"
+      },
+      "cause_candidates": {
+        "notice": "아래 원인 후보는 추가 확인이 필요한 설명 가설이며 인과관계를 확정하지 않습니다.",
+        "causal_attribution": false,
+        "mutually_exclusive": false,
+        "additive": false,
+        "verification_status": "미검증",
+        "required_evidence": ["운영 의사결정 자료", "임대차·자산 상태 자료", "동일 기간 외부 시장 자료"],
+        "operator": [{"candidate": "가상 운용비 관리", "direction": "긍정", "related_observation": "가상 순매각분배금", "confidence": "낮음", "limitations": "실제 비용 증빙이 없습니다."}],
+        "asset": [{"candidate": "가상 임차인 유지", "direction": "긍정", "related_observation": "가상 누적 임대분배금", "confidence": "낮음", "limitations": "실제 임대차 계약이 없습니다."}],
+        "external": [{"candidate": "가상 시장 변동", "direction": "혼합", "related_observation": "외부 비교지표 미연결", "confidence": "낮음", "limitations": "시장 영향의 기여도를 산정할 수 없습니다."}]
+      }
+    },
+    {
+      "product_id": "SAMPLE-RE-LIQUIDATED-004",
+      "sample": true,
+      "source_status": "demo_scenario",
+      "status": "liquidated",
+      "asset_type": "real_estate",
+      "asset_name": "가상 감마 종료 상품 1",
+      "platform": "가상 플랫폼",
+      "operator_id": "SAMPLE-OP-GAMMA",
+      "operator": "가상 운영사 감마",
+      "document_url": null,
+      "basic_info": {"region": "가상시 남부 업무권", "building_use": "업무시설", "land_area_m2": 280.0, "gross_floor_area_m2": 1100.0, "floors": "지상 6층 규모 가상 건물", "use_approval_date": "가상 사용승인일"},
+      "offering": {"offering_amount_krw": 11000000000, "building_purchase_price_krw": 10200000000, "security_price_krw": 5000, "security_quantity": 2200000, "subscription_period": "종료", "expected_operation_months": 48, "distribution_cycle": "반기", "expected_distribution_text": "실제 배당을 뜻하지 않는 가상 표현"},
+      "lease": {"main_tenant_type": "업무 지원 임차인 유형", "occupancy_rate_text": "가상 운영 종료 시점 임대율", "lease_expiry": "가상 임대차 만기"},
+      "structure": {"trustee": "가상 신탁사", "account_manager": "가상 계좌관리기관", "operator_role": "자산 관리·매각을 맡는 가상 운영사", "distribution_basis": "가상 보유 지분 비례 분배 구조", "liquidation_flow": "가상 가치 변동을 반영한 매각·청산 흐름"},
+      "risks": ["종료 결과는 시나리오 값입니다."],
+      "evidence_review": {"price_review": "판정 보류", "items": [{"title": "종료 시나리오", "source_type": "dummy", "as_of": null, "status": "샘플", "sample": true, "record_is_sample": true, "linkage_is_sample": true, "applicability_status": "시나리오", "limitations": "실제 매각 또는 분배 내역이 아닙니다."}]},
+      "operator_history": {"referenced_product_ids": [], "note": "가상 종료 이력입니다."},
+      "performance": {
+        "building_purchase_price_krw": 10200000000,
+        "total_offering_amount_krw": 11000000000,
+        "sale_amount_krw": 9700000000,
+        "sale_cost_krw": 350000000,
+        "sale_reconciliation": {"sale_amount_krw": 9700000000, "sale_cost_krw": 350000000, "sample_tax_krw": 200000000, "sample_other_settlement_krw": 550000000, "investor_net_sale_distribution_krw": 8600000000, "sample": true, "source_status": "demo_scenario"},
+        "investor_net_sale_distribution_krw": 8600000000,
+        "cumulative_rental_distribution_krw": 1100000000,
+        "expected_operation_months": 48,
+        "actual_operation_months": 50,
+        "sale_date": "가상 매각일",
+        "liquidation_date": "가상 청산일"
+      },
+      "cause_candidates": {
+        "notice": "아래 원인 후보는 추가 확인이 필요한 설명 가설이며 인과관계를 확정하지 않습니다.",
+        "causal_attribution": false,
+        "mutually_exclusive": false,
+        "additive": false,
+        "verification_status": "미검증",
+        "required_evidence": ["운영 의사결정 자료", "임대차·자산 상태 자료", "동일 기간 외부 시장 자료"],
+        "operator": [{"candidate": "가상 매각시점 선택", "direction": "부정", "related_observation": "가상 순매각분배금", "confidence": "낮음", "limitations": "실제 의사결정 자료가 없습니다."}],
+        "asset": [{"candidate": "가상 업무수요", "direction": "부정", "related_observation": "가상 임대분배금", "confidence": "낮음", "limitations": "실제 공실·임대료 자료가 없습니다."}],
+        "external": [{"candidate": "가상 금리·시장 환경", "direction": "혼합", "related_observation": "외부 시계열 미연결", "confidence": "낮음", "limitations": "외부 요인의 인과를 확정할 수 없습니다."}]
+      }
+    }
+  ]
+}

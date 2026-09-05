@@ -1,6 +1,21 @@
 import type { CategoryPageDefinition } from "@/components/category/category-page";
+import { ScenarioCatalog } from "@/components/real-estate-scenario/ScenarioCatalog";
+import { ScenarioCatalogControls } from "@/components/real-estate-scenario/ScenarioCatalogControls";
+import { loadApprovedScenarios } from "@/lib/knowledge/loader";
 
-/** 공통 분석 목록만 쓰는 카테고리 — 추가 영역이 없다. */
 export const REAL_ESTATE_PAGE: CategoryPageDefinition = {
   id: "real-estate",
+  standalone: {
+    renderControls: ({ params, searchQuery }) => (
+      <ScenarioCatalogControls params={params} query={searchQuery} />
+    ),
+    render: async ({ params, searchQuery }) => (
+      <ScenarioCatalog
+        offers={await loadApprovedScenarios()}
+        isPageHeading={false}
+        query={searchQuery}
+        status={typeof params.status === "string" ? params.status : ""}
+      />
+    ),
+  },
 };

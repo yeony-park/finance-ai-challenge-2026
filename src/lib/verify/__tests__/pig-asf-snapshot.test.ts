@@ -48,7 +48,12 @@ describe("한돈 ASF 정적 맥락 스냅샷", () => {
       readonly postCount: number;
       readonly attachmentCount: number;
       readonly documents: readonly {
-        readonly attachments: readonly { readonly localPath: string }[];
+        readonly attachments: readonly {
+          readonly downloadUrl: string;
+          readonly localPath: string;
+          readonly bytes: number;
+          readonly sha256: string;
+        }[];
       }[];
     };
 
@@ -57,9 +62,17 @@ describe("한돈 ASF 정적 맥락 스냅샷", () => {
 
     expect(documents.postCount).toBe(86);
     expect(documents.attachmentCount).toBe(86);
-    expect(
-      documents.documents.flatMap((document) => document.attachments),
-    ).toHaveLength(86);
+    const attachments = documents.documents.flatMap(
+      (document) => document.attachments,
+    );
+    expect(attachments).toHaveLength(86);
+    expect(new Set(attachments.map((attachment) => attachment.localPath)).size).toBe(86);
+    expect(attachments.every((attachment) =>
+      attachment.localPath.startsWith("data/reference/pig-asf/raw/") &&
+      attachment.downloadUrl.startsWith("https://www.mafra.go.kr/") &&
+      attachment.bytes > 0 &&
+      /^[0-9a-f]{64}$/.test(attachment.sha256)
+    )).toBe(true);
   });
 
   test.skipIf(!existsSync(path.join(SNAPSHOT_DIR, "raw")))(

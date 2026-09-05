@@ -70,7 +70,8 @@ export function OnboardingDialog() {
   const profile = useProfile();
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
-  const closeRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
   const attemptedRef = useRef(false);
 
   const close = useCallback(() => {
@@ -96,7 +97,8 @@ export function OnboardingDialog() {
 
   useEffect(() => {
     if (!isOpen) return;
-    closeRef.current?.focus();
+    titleRef.current?.focus({ preventScroll: true });
+    if (dialogRef.current) dialogRef.current.scrollTop = 0;
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") close();
     };
@@ -109,13 +111,19 @@ export function OnboardingDialog() {
   return (
     <div className={s.obOverlay} onClick={close} role="presentation">
       <div
+        ref={dialogRef}
         className={s.obDialog}
         role="dialog"
         aria-modal="true"
         aria-labelledby="onboarding-dialog-title"
         onClick={(event) => event.stopPropagation()}
       >
-        <h2 id="onboarding-dialog-title" className={s.obDialogTitle}>
+        <h2
+          ref={titleRef}
+          id="onboarding-dialog-title"
+          className={s.obDialogTitle}
+          tabIndex={-1}
+        >
           {ONBOARDING_TITLE}
         </h2>
         <p className={s.obDialogLead}>{ONBOARDING_LEAD}</p>
@@ -174,7 +182,6 @@ export function OnboardingDialog() {
 
         <div className={s.obDialogFoot}>
           <button
-            ref={closeRef}
             type="button"
             className={s.obDone}
             onClick={close}

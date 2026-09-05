@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "promptVersion": 3,
+  "categoryId": "cattle",
+  "productId": "livestock-1",
+  "dataNature": "observed",
+  "asOf": "2024-02-20",
+  "inputHash": "3f0a00bc8a28ce186ca100a5091c08832a8ba1dbfd56102320dfccd58c73dc9a",
+  "generatedAt": "2026-09-02T10:13:06.897Z",
+  "generator": "llm",
+  "model": "openai:gpt-5.6-luna",
+  "sentences": [
+    "DART 공시에서 원금 미보장 관련 문단을 확인했습니다.",
+    "개체 실재성은 확인하지 않으며, 정정 관계와 최신 조건도 대조하지 않습니다."
+  ],
+  "sentenceEvidencePaths": [
+    [
+      "/confirmedSections/0/title",
+      "/confirmedSections/0/text",
+      "/verificationBoundary"
+    ],
+    [
+      "/verificationBoundary"
+    ]
+  ],
+  "sourceReferences": [
+    "59e68d9fb20b9c3284f2c837d76b4a386537f481a959f561eee73489c95576c7",
+    "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20240220002223"
+  ]
+}

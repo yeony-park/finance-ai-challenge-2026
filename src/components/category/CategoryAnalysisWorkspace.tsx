@@ -57,9 +57,9 @@ export function CategoryAnalysisWorkspace({
         </div>
       </header>
 
-      <main className={s.analysisMain} id={`${categoryId}-analysis-results`}>
+      <div className={s.analysisMain} id={`${categoryId}-analysis-results`}>
         {children}
-      </main>
+      </div>
     </div>
   );
 }

@@ -1,6 +1,13 @@
 import { describe, expect, test } from "vitest";
 
-import { latestOfferEntry, OFFERS, type OfferEntry } from "../offers";
+import {
+  classifyRealEstateOffer,
+  isPublishedOfferId,
+  latestOfferEntry,
+  OFFERS,
+  PUBLISHED_OFFER_IDS,
+  type OfferEntry,
+} from "../offers";
 
 const entry = (id: string, opensAt: string): OfferEntry => ({
   id,
@@ -53,5 +60,91 @@ describe("latestOfferEntry — 대표 공모 기계 선정", () => {
     expect(cattle).toHaveLength(9);
     expect(cattle.every((offer) => offer.assetLabel === "한우")).toBe(true);
     expect(cattle.every((offer) => offer.title.startsWith("한우 "))).toBe(true);
+  });
+});
+
+describe("부동산 상품 레지스트리", () => {
+  test("real-estate-a만 공개하고 나머지 실제 부동산 2건은 제외한다", () => {
+    expect(OFFERS.filter((entry) => entry.assetKind === "real-estate")).toEqual([
+      expect.objectContaining({ id: "real-estate-a" }),
+    ]);
+    expect(PUBLISHED_OFFER_IDS).not.toContain("real-estate-bbric-hiwon");
+    expect(PUBLISHED_OFFER_IDS).not.toContain("real-estate-sou-daejeon-startup");
+    expect(PUBLISHED_OFFER_IDS).toContain("real-estate-a");
+    expect(isPublishedOfferId("real-estate-a")).toBe(true);
+    expect(OFFERS.filter((entry) => entry.assetKind === "livestock")).toHaveLength(9);
+    expect(
+      OFFERS.filter((entry) => entry.assetKind === "livestock").every(
+        (entry) => entry.isExitVerified === undefined,
+      ),
+    ).toBe(true);
+  });
+
+  test("청약 중이거나 31일 이내 직접 available 근거가 있을 때만 현재 상품이다", () => {
+    const base: OfferEntry = {
+      id: "classification-fixture",
+      title: "분류 테스트",
+      assetLabel: "부동산",
+      assetKind: "real-estate",
+      assetLifecycle: "operating",
+      tradabilityStatus: "unknown",
+      subscription: {
+        opensAt: "2024-11-13T00:00:00+09:00",
+        closesAt: "2024-11-22T23:59:00+09:00",
+        precision: "day",
+      },
+    };
+    const now = new Date("2026-08-23T12:00:00+09:00");
+    const currentStatus = {
+      tradabilityStatus: "available" as const,
+      statusEvidence: {
+        tradabilityStatus: {
+          sourceKind: "official-document" as const,
+          asOf: "2026-08-01",
+        },
+      },
+    };
+
+    expect(
+      classifyRealEstateOffer(
+        {
+          ...base,
+          subscription: {
+            ...base.subscription,
+            opensAt: "2026-08-01T00:00:00+09:00",
+            closesAt: "2026-09-01T23:59:00+09:00",
+          },
+        },
+        now,
+      ),
+    ).toBe("current-confirmed");
+    expect(classifyRealEstateOffer(base, now, currentStatus)).toBe(
+      "current-confirmed",
+    );
+    expect(
+      classifyRealEstateOffer(base, now, {
+        ...currentStatus,
+        statusEvidence: {
+          tradabilityStatus: {
+            ...currentStatus.statusEvidence.tradabilityStatus,
+            asOf: "2026-07-01",
+          },
+        },
+      }),
+    ).toBe("operating-needs-check");
+    expect(
+      classifyRealEstateOffer(base, now, {
+        ...currentStatus,
+        statusEvidence: {
+          tradabilityStatus: {
+            ...currentStatus.statusEvidence.tradabilityStatus,
+            sourceKind: "external-observation",
+          },
+        },
+      }),
+    ).toBe("operating-needs-check");
+    expect(
+      classifyRealEstateOffer(base, now, { tradabilityStatus: "available" }),
+    ).toBe("operating-needs-check");
   });
 });

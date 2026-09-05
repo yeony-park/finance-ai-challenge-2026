@@ -48,7 +48,7 @@
 .productCopy h2 {
   margin: 0;
   color: var(--ds-ink);
-  font-size: clamp(1.75rem, 1.5rem + 1.2vw, 2.75rem);
+  font-size: var(--ds-heading-h1);
   font-weight: var(--ds-weight-black);
   letter-spacing: var(--ds-tracking-tight);
   line-height: var(--ds-leading-tight);
@@ -616,7 +616,7 @@
 .asfKakaoStage {
   position: relative;
   height: clamp(27rem, 56vw, 39rem);
-  background: #edf5f7;
+  background: var(--ds-map-surface);
 }
 
 .asfKakaoMap {
@@ -694,9 +694,9 @@
   padding: 0;
   border: 2px solid var(--ds-surface);
   border-radius: 50%;
-  color: #fff;
+  color: var(--ds-surface);
   font-family: var(--ds-font-mono);
-  font-size: 0.62rem;
+  font-size: var(--ds-text-2xs);
   font-weight: var(--ds-weight-bold);
   line-height: 1;
   cursor: pointer;
@@ -724,28 +724,28 @@
 }
 
 .asfKakaoMarkerPast {
-  background: #829294;
-  color: #fff;
+  background: var(--ds-map-reference);
+  color: var(--ds-surface);
 }
 
 .asfKakaoMarkerCurrent {
   width: 1.45rem;
   height: 1.45rem;
-  background: #326fa8;
+  background: var(--ds-map-asf);
 }
 
 .asfKakaoMarkerFocus {
   width: 1.75rem;
   height: 1.75rem;
   border-width: 3px;
-  background: #b42318;
+  background: var(--ds-map-selected);
 }
 
 .fmdKakaoMarker {
   width: 1.45rem;
   height: 1.45rem;
   border-radius: 0;
-  background: #d96c1f;
+  background: var(--ds-map-fmd);
   clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
 }
 
@@ -753,11 +753,11 @@
   width: 1.35rem;
   height: 1.35rem;
   border-radius: 0.28rem;
-  background: #7048a8;
+  background: var(--ds-map-both);
 }
 
 .diseaseKakaoMarkerFocus {
-  outline: 3px solid #b42318;
+  outline: 3px solid var(--ds-map-selected);
   outline-offset: 2px;
   box-shadow: 0 2px 9px rgb(180 35 24 / 48%);
 }
@@ -1030,7 +1030,7 @@
 .offerReferenceLabel {
   fill: var(--ds-ink-muted);
   font-family: var(--ds-font-mono);
-  font-size: 10px;
+  font-size: var(--ds-text-2xs);
   font-weight: var(--ds-weight-medium);
 }
 

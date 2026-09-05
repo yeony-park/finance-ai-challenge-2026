@@ -231,6 +231,47 @@ describe("toPublicReport — 순수 변환 계약", () => {
     expect(published.unjudged[0]?.claim.numericValue).toBe(4574865);
   });
 
+  test("snapshot evidence URL은 http와 https만 허용한다", () => {
+    const broken = {
+      ...synthetic,
+      judgements: synthetic.judgements.map((judgement) => ({
+        ...judgement,
+        evidence: judgement.evidence.map((evidence) => ({
+          ...evidence,
+          url: "ftp://example.test/evidence",
+        })),
+      })),
+    };
+
+    expect(() => parseReportSnapshot(broken)).toThrow(/judgements\.0\.evidence\.0\.url/);
+  });
+
+  test("공개 경계는 URL userinfo·인증 query를 제거하고 일반 query는 유지한다", () => {
+    const withUrl = (url: string): ReportSnapshot => ({
+      ...synthetic,
+      judgements: synthetic.judgements.map((judgement) => ({
+        ...judgement,
+        evidence: judgement.evidence.map((evidence) => ({ ...evidence, url })),
+      })),
+    });
+
+    expect(
+      toPublicReport(
+        withUrl(
+          "https://user:password@example.test/trace?page=1&ApiKey=secret",
+        ),
+      ).judgements[0]?.evidence[0]?.url,
+    ).toBe("https://example.test/trace");
+    expect(
+      toPublicReport(withUrl("https://example.test/trace?page=1"))
+        .judgements[0]?.evidence[0]?.url,
+    ).toBe("https://example.test/trace?page=1");
+    expect(
+      toPublicReport(withUrl("javascript:alert(1)"))
+        .judgements[0]?.evidence[0]?.url,
+    ).toBe("https://www.data.go.kr/");
+  });
+
   test("두 번 적용해도 결과가 같다 (멱등)", () => {
     const once = toPublicReport(synthetic);
     expect(toPublicReport(once)).toEqual(once);

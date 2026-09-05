@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "documentId": "re-scenario-05-product-description",
+  "categoryId": "real-estate",
+  "productId": "re-offer-05",
+  "scenarioId": "re-scenario-05",
+  "title": "시그니쳐타워 시나리오 상품설명서",
+  "publisher": "점점 데모 시나리오",
+  "documentType": "product-description",
+  "approvedForExternalAi": true,
+  "piiReviewStatus": "passed",
+  "sourceKind": "scenario-input",
+  "sourceUrl": "/scenario-documents/re-scenario-05-product-description.pdf",
+  "localPath": "real-estate/re-offer-05/re-scenario-05-product-description.pdf",
+  "sourceHash": "2958b84468d48fc30dee0ba0f99109e02be74f5b46dd30b4f57fd01c20155d32",
+  "asOf": "2026-08-24",
+  "collectedAt": "2026-09-01T14:17:24.386Z",
+  "dataNature": "scenario",
+  "rightsStatus": "permission-confirmed",
+  "approvedForPublic": true,
+  "limitations": [
+    "가상상품 PDF만 외부 AI 구조화에 승인했습니다.",
+    "PII 검토는 통과했으며 실제 투자상품 또는 실제 법인 성과를 나타내지 않습니다."
+  ]
+}

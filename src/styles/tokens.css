@@ -47,6 +47,15 @@
   --ds-font-serif: var(--ds-font-sans);
   --ds-font-mono: var(--ds-font-sans);
 
+  --ds-map-surface: #edf5f7;
+  --ds-map-reference: #829294;
+  --ds-map-asf: #326fa8;
+  --ds-map-fmd: #d96c1f;
+  --ds-map-both: #7048a8;
+  --ds-map-selected: #b42318;
+
+  --ds-text-relative-sm: 0.72em;
+  --ds-text-relative-md: 0.82em;
   --ds-text-2xs: 0.75rem;
   --ds-text-xs: 0.8125rem;
   --ds-text-sm: 0.9375rem;

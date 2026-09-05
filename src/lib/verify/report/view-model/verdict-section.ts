@@ -17,7 +17,9 @@ export const buildOfferSection = (ctx: ReportContext): DemoView["offer"] =>
   ctx.assetKind === "real-estate"
     ? {
         title: ctx.offerTitle,
-        tag: `매각 공시 ${ctx.submittedOnShort} 기준`,
+        tag: ctx.isOperatingRealEstate
+          ? `상품 원문 ${ctx.submittedOnShort} 기준`
+          : `매각 공시 ${ctx.submittedOnShort} 기준`,
         meta: `자산 ${ctx.headCount}건 · 항목 판정 ${ctx.report.summary.total}건 · 미판정 ${ctx.unjudgedCount}건 · 가격 위치 ${ctx.realEstatePlacementCount}건`,
       }
     : {
@@ -64,9 +66,13 @@ export const buildVerdictSection = (ctx: ReportContext): DemoView["verdict"] => 
 
   if (ctx.assetKind === "real-estate") {
     return {
-      eyebrow: `자산 ${ctx.headCount}건 사후 대조 · 국토부 실거래 원장`,
+      eyebrow: ctx.isOperatingRealEstate
+        ? `자산 ${ctx.headCount}건 대조 · ${ctx.hasBuildingEvidence ? "국토부 건축물대장" : "공개 근거"}`
+        : `자산 ${ctx.headCount}건 사후 대조 · 국토부 실거래 원장`,
       title: ctx.offerTitle,
-      when: `매각 공시 ${ctx.submittedOn} · 대조 실행 ${ctx.generatedAt}`,
+      when: ctx.isOperatingRealEstate
+        ? `플랫폼 원문 확인일 ${ctx.submittedOn} · 대조 실행 ${ctx.generatedAt}`
+        : `매각 공시 ${ctx.submittedOn} · 대조 실행 ${ctx.generatedAt}`,
       tallies: talliesOf(ctx),
       itemLine: `항목 단위 집계 · 항목 판정 ${summary.total}건 — 일치 ${summary.match} · 원장 불일치 ${summary.mismatch} · 대조 불가 ${summary.unverifiable + ctx.unjudgedCount} · 가격 위치 제시 ${ctx.realEstatePlacementCount}`,
       oneLiner: realEstateOneLiner(ctx),

@@ -51,12 +51,12 @@ export const CATEGORY_REGISTRY: readonly CategoryInfo[] = [
     href: "/art",
     label: "미술품",
     subLabel: null,
-    note: "미술품 공모 5건의 공시 원문과 공모가 구성을 확인한 검증 리포트",
+    note: "합성 미술품 상품의 공모 조건과 작가·플랫폼 이력을 살펴보는 화면",
     metaDescription:
-      "미술품 공모의 공시 원문 대조 확인 현황 — 공모가 구성 사실 정리",
+      "합성 미술품의 공모 조건, 가격 구성과 과거 이력",
     cardNote: [
-      "공모 5건의 공시 원문을 확인합니다",
-      "공모가 구성을 항목별로 대조합니다",
+      "합성 상품의 공모 조건을 살펴봅니다",
+      "가격 구성과 과거 이력을 확인합니다",
     ],
     preview: [
       "대상 공모: 미술품 투자계약증권 5건 — 공모가 구성·공시 문서 좌표를 아래 확인 현황에 정리",
@@ -69,12 +69,12 @@ export const CATEGORY_REGISTRY: readonly CategoryInfo[] = [
     href: "/real-estate",
     label: "부동산",
     subLabel: null,
-    note: "종료 공모의 소재지·가격·이행을 공공 원장과 대조한 사후 검증 리포트",
+    note: "부동산 시나리오의 공모 조건과 건축물대장 공개정보를 확인하는 화면",
     metaDescription:
-      "부동산 공모의 공시-실거래가 대조 확인 현황",
+      "부동산 시나리오의 상품 조건과 건축물대장 공개 근거",
     cardNote: [
-      "종료 공모의 사후 기록을 확인합니다",
-      "소재지·가격·이행을 대조합니다",
+      "시나리오의 상품 조건을 살펴봅니다",
+      "건물 정보와 공개 근거를 확인합니다",
     ],
     preview: null,
   },

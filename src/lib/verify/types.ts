@@ -23,11 +23,58 @@ export type ClaimKind =
   | "acquisition_date"
   | "acquisition_price"
   | "real_estate_address"
+  | "real_estate_parcel_area"
+  | "real_estate_building_area"
+  | "real_estate_total_area"
+  | "real_estate_use_approved_month"
   | "offer_amount"
   | "sale_amount"
   | "sale_date";
 
 export type AssetKind = "livestock" | "real-estate";
+
+export type RealEstateSubscriptionStatus =
+  | "upcoming"
+  | "open"
+  | "closed"
+  | "unknown";
+
+export type RealEstateAssetLifecycle =
+  | "acquisition-pending"
+  | "operating"
+  | "sale-in-progress"
+  | "sold"
+  | "settled"
+  | "unknown";
+
+export type RealEstateTradabilityStatus =
+  | "available"
+  | "suspended"
+  | "ended"
+  | "unknown";
+
+export type RealEstateSourceKind =
+  | "platform-claim"
+  | "official-document"
+  | "external-observation";
+
+export interface RealEstateStatusSource {
+  readonly sourceKind: RealEstateSourceKind;
+  readonly label: string;
+  readonly url: string;
+  readonly asOf: string;
+}
+
+export interface RealEstateReportMetadata {
+  readonly publicAlias: string;
+  readonly subscriptionStatus: RealEstateSubscriptionStatus;
+  readonly assetLifecycle: RealEstateAssetLifecycle;
+  readonly tradabilityStatus: RealEstateTradabilityStatus;
+  readonly statusEvidence?: {
+    readonly assetLifecycle?: RealEstateStatusSource;
+    readonly tradabilityStatus?: RealEstateStatusSource;
+  };
+}
 
 export const DEFAULT_ASSET_KIND: AssetKind = "livestock";
 
@@ -174,6 +221,7 @@ export interface VerifyReport {
   readonly unjudged: readonly UnjudgedClaim[];
   readonly pricePlacements: readonly PricePlacement[];
   readonly realEstatePlacements: readonly RealEstatePlacement[];
+  readonly realEstate?: RealEstateReportMetadata;
   readonly notes: readonly string[];
 }
 

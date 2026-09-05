@@ -1,3 +1,7 @@
+import { AiSummary } from "@/components/ai-summary/AiSummary";
+import { EvidenceQuery } from "@/components/real-estate-scenario/ScenarioEvidenceQuery";
+import { loadAiSummary } from "@/lib/ai-summary/cache";
+import { SYNTHETIC_ART_SCENARIO_ID } from "@/lib/art/synthetic-catalog";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -37,5 +41,34 @@ export default async function SyntheticArtProductPage({
   if (!product) notFound();
 
   const tab = syntheticDetailTab((await searchParams).tab);
-  return <SyntheticArtProductDetail product={product} tab={tab} />;
+  const aiSummary =
+    product.kind === "current"
+      ? await loadAiSummary("art", product.offering.id)
+      : null;
+  return (
+    <SyntheticArtProductDetail
+      product={product}
+      tab={tab}
+      aiSummary={aiSummary ? <AiSummary summary={aiSummary} /> : null}
+      evidenceQuery={
+        product.kind === "current" ? (
+          <EvidenceQuery
+            scope={{
+              categoryId: "art",
+              productId: product.offering.id,
+              dataNature: "scenario",
+              scenarioId: SYNTHETIC_ART_SCENARIO_ID,
+              namespace: "common",
+            }}
+            examples={[
+              "최소투자금과 공모 조건은 무엇인가요?",
+              "비용과 회수 조건을 설명해 주세요.",
+              "가상 플랫폼의 과거 청산·지연 이력은 어떤가요?",
+            ]}
+            lead="선택한 합성 상품의 조건과 같은 가상 플랫폼의 과거 이력에서 근거를 찾습니다. 실제 투자 판단이나 수익 예측에는 사용할 수 없습니다."
+          />
+        ) : null
+      }
+    />
+  );
 }

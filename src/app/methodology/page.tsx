@@ -22,7 +22,7 @@ import s from "./methodology.module.css";
 export const metadata: Metadata = {
   title: "검증 방법",
   description:
-    "증권신고서의 주장을 어떤 공공 데이터와 대조하는지, 판정 3값(일치 / 원장 불일치 / 대조 불가)의 정의는 무엇인지, 무엇을 하지 않는지 정리했습니다.",
+    "증권신고서의 확인 항목을 공공 원장, 시장 데이터, 과거 공모 이력과 대조하고 결과·근거·한계를 기록하는 방법을 설명합니다.",
 };
 
 const TABS: readonly MethodologyTab[] = [
@@ -54,17 +54,24 @@ const TABS: readonly MethodologyTab[] = [
 export default function MethodologyPage() {
   return (
     <>
-      <section className={s.header} aria-labelledby={METHODOLOGY_ANCHOR.methodology}>
+      <section
+        className={s.header}
+        aria-labelledby={METHODOLOGY_ANCHOR.methodology}
+      >
         <div className={s.wrap}>
           <h1 id={METHODOLOGY_ANCHOR.methodology} className={s.title}>
             <span>검증 방법</span>
-            <span className={s.titleLead}>
-              무엇을 어떤 <em className={s.mark}>기록</em>과 대조하는가
-            </span>
+            <span className={s.titleLead}>공시 내용은 어떻게 확인하나요</span>
           </h1>
           <p className={s.lead}>
-            이 서비스는 문서를 평가하지 않습니다. 문서에 적힌 주장을 검증 가능한 단위로 쪼갠 다음,
-            같은 사실을 담고 있는 공공 기록과 나란히 놓고 서로 맞는지만 확인합니다.
+            JeomJeom은 증권신고서의 확인 항목을 공공 원장, 시장 데이터, 과거
+            공모·거래 이력과 대조합니다. 결과와 함께 사용한 자료와 조회 시점도
+            기록합니다.
+          </p>
+          <p className={s.lead}>
+            검증 대상은 공개 자료로 직접 확인할 수 있는 사실입니다. 신고서의 내용과
+            관련 데이터를 대조해 값의 일치 여부, 가격 부담, 과거 계획의 이행 내역을
+            확인합니다.
           </p>
         </div>
       </section>

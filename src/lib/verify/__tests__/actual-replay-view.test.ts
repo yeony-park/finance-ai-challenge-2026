@@ -1,3 +1,5 @@
+import { readdir, readFile } from "node:fs/promises";
+import path from "node:path";
 import { describe, expect, test } from "vitest";
 
 import { loadLatestReplayDiff, parseReplayDiff } from "../amend/replay-load";
@@ -10,15 +12,23 @@ import {
 } from "../amend/replay-view";
 
 const loadArtifact = async (): Promise<ActualReplayDiffArtifact> => {
-  const artifact = await loadLatestReplayDiff("livestock-7");
-  if (!artifact) throw new Error("실제 정정 diff 자료를 찾지 못했습니다");
+  const dir = path.join(process.cwd(), "data", "public", "replay", "livestock-7");
+  const fileName = (await readdir(dir)).filter((file) => file.endsWith(".json")).sort().at(-1);
+  if (!fileName) throw new Error("실제 정정 diff 자료를 찾지 못했습니다");
+  const artifact = parseReplayDiff(
+    JSON.parse(await readFile(path.join(dir, fileName), "utf8")),
+  );
   if (artifact.kind !== "actual-amendment-diff") {
     throw new Error(`실제 정정 자료가 아닙니다: ${artifact.kind}`);
   }
   return artifact;
 };
 
-describe("loadLatestReplayDiff — 실제 정정 자료도 같은 규약으로 읽는다", () => {
+describe("실제 정정 자료도 같은 규약으로 파싱한다", () => {
+  test("pending 상품의 남아 있는 자료는 공개 loader가 숨긴다", async () => {
+    await expect(loadLatestReplayDiff("livestock-7")).resolves.toBeUndefined();
+  });
+
   test("실제 정정 자료는 접수 계보를 함께 담는다", async () => {
     const artifact = await loadArtifact();
 

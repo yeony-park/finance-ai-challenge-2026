@@ -102,13 +102,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.25rem;
-  height: 2.25rem;
+  width: 2.75rem;
+  height: 2.75rem;
   padding: 0;
   border: 0;
   background: transparent;
   color: var(--ds-ink-muted);
-  font-size: 1.75rem;
+  font-size: var(--ds-heading-h2);
   line-height: 1;
   cursor: pointer;
   transition: color var(--ds-duration-base) var(--ds-ease);
@@ -167,6 +167,11 @@
 .scaffold {
   margin-top: var(--ds-space-7);
   max-width: 42rem;
+}
+
+.searchField > button[type="submit"] {
+  width: 2.75rem;
+  height: 2.75rem;
 }
 
 .searchSuggestions {

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "request": {
+    "sigunguCd": "11140",
+    "bjdongCd": "10300",
+    "platGbCd": "0",
+    "bun": "0084",
+    "ji": "0000"
+  },
+  "collectedAt": "2026-08-24T16:46:19.998Z",
+  "sourceId": "molit-building-register-hub",
+  "sourceName": "국토교통부 건축물대장 표제부 조회 서비스 (국토교통부 · data.go.kr)",
+  "sourceUrl": "https://apis.data.go.kr/1613000/BldRgstHubService/getBrTitleInfo?sigunguCd=11140&bjdongCd=10300&platGbCd=0&bun=0084&ji=0000&numOfRows=100&pageNo=1&_type=json",
+  "status": "ok",
+  "totalCount": 1,
+  "records": [
+    {
+      "managementKey": "100311525",
+      "parcelAddress": "서울특별시 중구 태평로1가 84번지",
+      "buildingName": "도로지하주차장",
+      "mainPurpose": "자동차관련시설",
+      "otherPurpose": "주차장, 근린생활시설",
+      "parcelAreaSqm": 570.8,
+      "buildingAreaSqm": 0,
+      "totalAreaSqm": 2900.91,
+      "floorAreaRatioEstimatedTotalSqm": 0,
+      "structure": "철근콘크리트구조",
+      "householdCount": 0,
+      "useApprovedOn": "2001-04-07",
+      "recordedOn": "2022-08-13"
+    }
+  ]
+}

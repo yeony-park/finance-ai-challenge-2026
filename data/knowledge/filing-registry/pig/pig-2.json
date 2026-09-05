@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 2,
+  "registryVersion": "dart-product-registry-v2",
+  "categoryId": "pig",
+  "productId": "pig-2",
+  "activeRcpNo": "20260420000157",
+  "inventory": [
+    {
+      "rcpNo": "20260420000157",
+      "status": "local"
+    },
+    {
+      "rcpNo": "20260506000437",
+      "status": "local"
+    },
+    {
+      "rcpNo": "20260514000004",
+      "status": "local"
+    },
+    {
+      "rcpNo": "20260528001031",
+      "status": "local"
+    }
+  ],
+  "approvedFilings": [
+    {
+      "schemaVersion": 1,
+      "rcpNo": "20260420000157",
+      "contentHash": "d47c868369c30b435851411669c899208eada23a1fdf2882664d1b3b52453dd2",
+      "sanitizerVersion": "pig-filing-sanitizer-v1",
+      "chunkerVersion": "pig-filing-chunker-v1",
+      "documentRole": "securities-registration",
+      "locatorSetHash": "73cb64ad711ada27dc38b92960f07975d620b10f3b88b77e0994649bc1ee97b0",
+      "reviewMethod": "deterministic-local-codex-review-v1",
+      "reviewer": "codex-local-deterministic-check",
+      "reviewedAt": "2026-09-01T00:00:00+09:00",
+      "productMappingEvidence": "pig-2와 후보 RCP 20260420000157의 연결을 승인된 onboarding 입력으로 고정했습니다. 문서 역할은 증권신고서로만 기록하며 상품 매핑 근거와 분리합니다.",
+      "registry": {
+        "schemaVersion": 1,
+        "registryVersion": "dart-pig-filing-registry-v1",
+        "categoryId": "pig",
+        "productId": "pig-2",
+        "rcpNo": "20260420000157",
+        "submittedOn": "2026-04-20",
+        "entry": {
+          "name": "20260420000157.xml",
+          "sha256": "d47c868369c30b435851411669c899208eada23a1fdf2882664d1b3b52453dd2"
+        },
+        "source": {
+          "landingUrl": "https://dart.fss.or.kr/dsaf001/main.do",
+          "exactPublicUrl": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260420000157",
+          "collectedAtSource": "local raw XML file mtime",
+          "method": "OpenDART document.xml exact rcpNo XML entry hash와 승인된 최소 P excerpt를 로컬에서 검증"
+        },
+        "relationship": {
+          "type": "issuer_context",
+          "mappingStatus": "confirmed",
+          "mappingEvidence": "pig-2와 후보 RCP 20260420000157의 연결을 승인된 onboarding 입력으로 고정했습니다. 문서 역할은 증권신고서로만 기록하며 상품 매핑 근거와 분리합니다.",
+          "limitations": [
+            "문서 역할과 onboarding catalog의 exact product mapping을 분리해 기록했으며, 승인된 최소 excerpt 밖의 상품 사실은 사용하지 않습니다.",
+            "후속 정정·투자설명서·발행실적보고서가 이 문서를 대체하는지 자동 판단하지 않습니다."
+          ]
+        },
+        "documentRole": "securities-registration",
+        "approval": {
+          "policyId": "onboarding-product-filing-review-v2",
+          "scope": "pig-2 product-specific PII-free XML excerpt 1개",
+          "externalAiApproved": false,
+          "piiReviewStatus": "passed"
+        },
+        "sectionLocators": [
+          {
+            "factId": "principal-not-guaranteed",
+            "title": "원금 미보장",
+            "anchor": "원금 미보장",
+            "sectionPath": [
+              "요약정보",
+              "1. 핵심투자위험",
+              "1. 핵심투자위험"
+            ],
+            "occurrence": 1,
+            "evidenceTokens": [
+              "원금",
+              "미보장"
+            ],
+            "normalizedExcerptHash": "b908494f43183eec74a424c7b354ef119eeee844859d2d5f82ba4568e28833af"
+          }
+        ]
+      }
+    }
+  ]
+}

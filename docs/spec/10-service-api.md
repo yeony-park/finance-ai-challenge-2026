@@ -1,13 +1,13 @@
-# 서비스 API 명세 — 초안
+# 서비스 API 명세
 
-> **상태: draft** · 2026-08-27 · 구현 기준: `src/app/api/`
+> **상태: 구현 기준 갱신** · 2026-09-05 · 구현 기준: `src/app/api/`
 > 상위 규범은 [`08-api-contract.md`](./08-api-contract.md), 집행 규칙은 [`../../contracts/api.md`](../../contracts/api.md)를 따른다. 본 문서는 현재 구현된 엔드포인트의 요청·응답을 상세히 기술한다.
 > 이 문서는 현재 배포된 서비스의 HTTP 계약을 설명한다. 구현과 충돌하면 구현·테스트를 우선하고 이 문서를 정정한다.
 > E2E 구성 요소와 요청 흐름은 [`../design/design.md`](../design/design.md)에서 설명한다.
 
 ## 1. 범위와 공통 규칙
 
-서비스 API는 여섯 개다(2026-08-31 갱신 — 상품 조회 2종·AI 상품 문답 추가). `health`·라이브 재검증·상품 조회·AI 상품 문답은 공개 표면이며, 정정 감시는 Vercel Cron만 호출하는 운영용 표면이다.
+서비스 API는 아홉 개다(2026-09-05 기준). `health`·라이브 재검증·상품 조회·AI 상품 문답은 공개 표면이며, 정정 감시는 Vercel Cron만 호출하는 운영용 표면이다.
 
 | 구분 | 메서드 · 경로 | 용도 | 공개 여부 |
 |---|---|---|---|
@@ -17,6 +17,9 @@
 | 상품 목록 | `GET /api/products` | 수동 검증 미술품 5건 공개 문맥 (08 예외 4분류) | 공개 |
 | 상품 단건 | `GET /api/products/{id}` | 위와 동일, `art-{양의정수}` id | 공개 |
 | AI 상품 문답 | `POST /api/ai/ask-product` | 미술 상품 문맥 한정 Q&A — 한시 표면, 일몰 조항은 08 예외 5분류 | 공개 |
+| 홈 검색 | `POST /api/search` | 상품 검색·일반 지식·근거 안내 | 검색 공개, 생성은 승인 게이트 적용 |
+| 상품 근거 질문 | `POST /api/evidence/query` | 선택한 상품·자료 범위 안의 질문 | 근거 조회 공개, 생성은 승인 게이트 적용 |
+| 가축 질병 지도 | `GET /api/livestock-disease-map` | 공개 시·군 기준 질병 지도 데이터 | 공개 |
 
 - Base URL은 배포 환경의 origin이다. 예: `https://jeom-jeom.vercel.app`.
 - 이 문서에 명시한 응답은 JSON이다. Live Verify와 Cron Monitor는 응답 헤더 `Cache-Control: no-store`를 명시한다. Health는 현재 헤더를 직접 설정하지 않으며, 캐시 헤더 계약 통일은 E2E 검증 항목으로 남아 있다. 예기치 않은 런타임·플랫폼 오류의 `5xx` 본문 형식은 계약에 포함하지 않는다.
@@ -84,7 +87,7 @@ curl -sS https://jeom-jeom.vercel.app/api/health
 
 요청 본문과 쿼리 파라미터는 사용하지 않는다.
 
-현재 허용되는 공모 ID는 `livestock-1`부터 `livestock-9`, `real-estate-a`다. 허용목록은 서비스의 공개 공모 목록과 함께 바뀔 수 있다.
+공개 공모 목록에 포함되고 온보딩 카탈로그에서 공개 검증이 승인된 ID만 허용한다. 목록에 등록됐더라도 검증 범위가 승인되지 않으면 재검증할 수 없다. 상세 화면에서 시나리오를 열 수 있다는 사실은 라이브 재검증 허용을 뜻하지 않는다.
 
 ```bash
 curl -sS -X POST \
@@ -281,3 +284,72 @@ curl -sS \
 - 라이브 재검증 계약·폴백: `src/lib/verify/live/revalidate.ts`, `src/lib/verify/live/response.ts`
 - 정정 감시·인증·저장: `src/lib/verify/amend/monitor.ts`, `src/lib/verify/amend/cron-auth.ts`, `src/lib/verify/amend/event-store.ts`
 - 배포 Cron: `vercel.json`
+
+
+## 8. 홈 검색 — `POST /api/search`
+
+구현: `src/app/api/search/route.ts`, 요청 스키마: `src/lib/knowledge/schema.ts`.
+`Content-Type: application/json`, 본문 최대 32,768바이트. `q` 또는 `query`는 공백을 제거한
+1~200자이며 둘 다 보내면 값이 같아야 한다. 알 수 없는 필드는 허용하지 않는다.
+
+```json
+{ "q": "부동산", "categoryId": "real-estate", "limit": 10 }
+```
+
+선택 필드: `categoryId`(`cattle|pig|art|real-estate`), `assetKind`(`livestock|art|real-estate`),
+`phase`(`upcoming|subscription-open|closed|listed-trading|settled|evidence-only`), `limit`(1~20, 기본 10).
+
+응답은 `mode: matches|review-guidance`, `results`, `retrieval`을 포함한다. 결과에는
+`id`, `productId`, `categoryId`, `title`, `phase`, `href`, `matchedFields`, `isScenario`,
+`dataNature`, `namespace`가 들어간다. `generatedAnswer`, `generatedGeneralAnswer`,
+`genericEvidence`, `guidance`는 해당 결과가 있을 때만 포함한다. `retrieval`에는
+검색 저장소, 전략(`keyword|semantic|hybrid`), 강등 여부와 사유를 표시한다.
+생성 기능을 사용할 수 없어도 검색 결과는 반환할 수 있다. 검색 실패와 결과 없음은 구분한다.
+
+프론트는 반환된 `href`로 이동하며 API ID로 URL을 임의 조립하지 않는다.
+
+| 상품 | API ID 예 | 화면 경로 예 |
+|---|---|---|
+| 한우 | `livestock-9` | `/cattle/products/livestock-9` |
+| 한돈 | `pig-1` | `/pig/products/round-1` |
+| 부동산 시나리오 | `re-offer-01` | `/real-estate/products/re-offer-01` |
+| 합성 미술품 | `synthetic-offering-01` | `/art/products/synthetic-offering-01` |
+| 공통 지식 상품 | 카테고리별 ID | `/offers/common/{categoryId}/{productId}` |
+
+공통 지식 상품은 동일 ID가 다른 자료 범위에 있을 수 있어 기존 별도 경로를 유지한다.
+이전 `/offers/{id}` 링크는 카테고리 상세로 308 이동하며, 실제 존재·공개 여부는 상세에서 검사한다.
+
+## 9. 상품 근거 질문 — `POST /api/evidence/query`
+
+본문 크기·질의 길이·오류 형식은 홈 검색과 같다. `limit`은 1~20, 기본 5다.
+
+```json
+{ "scenarioId": "요청 대상의 scenarioId", "offerId": "re-offer-01", "q": "최소투자금은 얼마인가요?" }
+```
+
+위 부동산 시나리오 형식 외에 공통 범위를 명시하는 형식을 지원한다.
+
+```json
+{ "categoryId": "pig", "productId": "pig-1", "dataNature": "observed", "namespace": "published-offer", "q": "공모가격" }
+```
+
+- `dataNature`: `observed|scenario`. 시나리오는 `scenarioId`도 지정한다.
+- `namespace`: `common|legacy-scenario|published-offer`. 같은 ID가 여러 범위에 있으면 생략하지 않는다.
+- 합성 미술품: `categoryId=art`, `dataNature=scenario`, `namespace=common`, `scenarioId=synthetic-art-catalog`.
+- 응답: `outcome`(`answer|evidence_only|abstain`), `answer`, `evidence`, `limitations`, `cached`,
+  `answerSource`(`structured|approved_cache|live_llm|none`). 출처·인용·확인 항목·충돌 정보는 해당할 때 추가한다.
+- 원문 승인·개인정보 검토·실행 게이트가 충족되지 않으면 외부 AI 생성을 하지 않는다.
+  근거만 반환하거나 답변을 보류하는 동작을 유지한다.
+- 잘못된 요청은 400 `INVALID_REQUEST`, 내부 처리 오류는 500 `INTERNAL_ERROR`다.
+  결과가 없거나 근거가 부족한 것은 요청 오류가 아니므로 정상 응답 안에서 표현한다.
+
+`/api/ai/ask-product`는 수동 검증 미술품의 기존 화면용으로 유지한다.
+홈 검색과 상품별 근거 질문은 범위·응답 계약이 다르므로 이번 통합에서 이 API를 임의 폐지하지 않았다.
+
+## 10. `GET /api/livestock-disease-map`
+
+`species=cattle` 또는 `species=pig`를 정확히 한 번 전달한다. 다른 쿼리 키, 누락, 중복 값은 `400 validation_error`다.
+
+성공 응답은 `{ species, asOf, events }`다. 각 이벤트는 `disease`(`ASF`, `FMD`, `LSD`), `diseaseLabel`, `occurredAt`, `province`, `region`, `latitude`, `longitude`를 포함한다. 좌표는 공개 시·군 기준이며 농장 위치를 뜻하지 않는다. 한우에는 구제역·럼피스킨, 한돈에는 아프리카돼지열병·구제역 자료가 들어간다.
+
+성공 응답의 캐시 정책은 `public, max-age=300, s-maxage=300, stale-while-revalidate=3600`이며 축종·기준일·이벤트 수로 만든 `ETag`를 보낸다. 오류 응답은 `no-store`다.

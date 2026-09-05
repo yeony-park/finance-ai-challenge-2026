@@ -1,8 +1,12 @@
+import { readFile } from "node:fs/promises";
+import { zipSync } from "fflate";
 import { describe, expect, test, vi } from "vitest";
 import {
   collectRawDocument,
   fetchDocumentZip,
   listRawDocuments,
+  MAX_DART_RESPONSE_BYTES,
+  MAX_DART_XML_BYTES,
 } from "../dart/fetch-document";
 import { hasLocalFile, rawXmlPath, skipReason } from "./local-data";
 
@@ -49,6 +53,33 @@ describe("DART 원문 수집", () => {
     ).rejects.toThrow(/HTTP 500/);
   });
 
+  test("streaming 응답·ZIP 해제 크기와 exact XML entry를 제한한다", async () => {
+    const rcpNo = "20990101000001";
+    const exactName = `${rcpNo}.xml`;
+    const valid = await fetchDocumentZip(
+      rcpNo,
+      "key",
+      okResponse(zipSync({ [exactName]: new TextEncoder().encode("<DOCUMENT />") })),
+    );
+    expect(Object.keys(valid)).toEqual([exactName]);
+
+    await expect(fetchDocumentZip(
+      rcpNo,
+      "key",
+      okResponse(zipSync({ [exactName]: new Uint8Array(), "other.xml": new Uint8Array() })),
+    )).rejects.toThrow("exact rcpNo XML");
+    await expect(fetchDocumentZip(
+      rcpNo,
+      "key",
+      okResponse(zipSync({ [exactName]: new Uint8Array(MAX_DART_XML_BYTES + 1) })),
+    )).rejects.toThrow("해제 크기");
+    await expect(fetchDocumentZip(
+      rcpNo,
+      "key",
+      okResponse(new Uint8Array(MAX_DART_RESPONSE_BYTES + 1)),
+    )).rejects.toThrow("응답 크기");
+  });
+
   test("키가 없으면 수집을 시도하지 않고 명시적으로 실패한다", async () => {
     vi.stubEnv("DART_API_KEY", "");
     try {
@@ -66,6 +97,14 @@ describe("DART 원문 수집", () => {
   test("받아둔 원문이 없는 접수번호는 빈 목록", async () => {
     expect(await listRawDocuments("20990101000001")).toEqual([]);
   });
+});
+
+test("Docker context는 raw/local-only 데이터만 제외한다", async () => {
+  const dockerignore = await readFile(".dockerignore", "utf8");
+  for (const entry of ["data/raw/", "data/**/raw/", "data/snapshots/", "data/reports/", "data/goldset/"]) {
+    expect(dockerignore.split(/\r?\n/)).toContain(entry);
+  }
+  expect(dockerignore).not.toContain("data/knowledge/sources/");
 });
 
 describe("접수번호 가드 — 경로 조립 전 최전방", () => {

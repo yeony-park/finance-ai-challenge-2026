@@ -1,7 +1,7 @@
-export const WATCH_BAND_TITLE = "관심 공모 정정 감시";
+export const WATCH_BAND_TITLE = "관심 공모";
 
 export const WATCH_BAND_LEAD =
-  "관심 등록한 공모의 정정신고서 접수 기록입니다 — 화면은 마지막 감시 확인 시점 기준이며, 감시는 주 2회 주기로 실행됩니다. 관심 목록은 이 브라우저에만 저장됩니다.";
+  "이 브라우저에 저장한 관심 상품을 모았습니다. 실제 공모는 주 2회 감시한 정정신고서 접수 기록을, 검토용 시나리오는 상품 조건과 근거를 확인할 수 있습니다.";
 
 export const WATCH_NO_RECORD = "감시 기록 없음";
 

@@ -7,7 +7,11 @@ import {
   type OfferEntry,
   type SubscriptionPhase,
 } from "@/components/site/offers";
-import { categoryById, type CategoryId, type CategoryInfo } from "@/lib/content/categories";
+import {
+  categoryById,
+  type CategoryId,
+  type CategoryInfo,
+} from "@/lib/content/categories";
 import {
   categoryAnalysisPreservedSearchParams,
   categoryPageStateFromSearchParams,
@@ -133,19 +137,17 @@ export async function CategoryPage({
     definition.renderMarket?.(context) ?? null,
   ]);
 
-  return (
-    <CategoryLanding
-      categoryId={info.id}
-      title={info.label}
-      offers={context.offers}
-      preview={info.preview}
-      analysisStatus={context.analysisStatus}
-      searchQuery={context.searchQuery}
-      showStatusTabs
-      statusTabsSearchParams={context.statusTabsSearchParams}
-      custom={custom}
-      customTitle={definition.customTitle}
-      market={market}
-    />
-  );
+  return CategoryLanding({
+    categoryId: info.id,
+    title: info.label,
+    offers: context.offers,
+    preview: info.preview,
+    analysisStatus: context.analysisStatus,
+    searchQuery: context.searchQuery,
+    showStatusTabs: true,
+    statusTabsSearchParams: context.statusTabsSearchParams,
+    custom,
+    customTitle: definition.customTitle,
+    market,
+  });
 }

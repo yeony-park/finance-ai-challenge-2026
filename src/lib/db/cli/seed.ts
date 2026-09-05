@@ -102,6 +102,10 @@ const seedRag = async (
           license: seed.document.license,
           retrievedOn: seed.document.retrievedOn,
           provenance: seed.document.provenance,
+          approvedForPublic: seed.document.approvedForPublic,
+          approvedForExternalAi: seed.document.approvedForExternalAi,
+          piiReviewStatus: seed.document.piiReviewStatus,
+          status: seed.document.status,
         },
       })
       .returning({ id: ragDocuments.id });
@@ -120,10 +124,21 @@ const seedRag = async (
           chunkIndex: chunk.chunkIndex,
           content: chunk.content,
           embedding: chunk.embedding,
+          approvedForPublic: chunk.approvedForPublic,
+          approvedForExternalAi: chunk.approvedForExternalAi,
+          piiReviewStatus: chunk.piiReviewStatus,
+          status: chunk.status,
         })
         .onConflictDoUpdate({
           target: [ragChunks.documentId, ragChunks.chunkIndex],
-          set: { content: chunk.content, embedding: chunk.embedding },
+          set: {
+            content: chunk.content,
+            embedding: chunk.embedding,
+            approvedForPublic: chunk.approvedForPublic,
+            approvedForExternalAi: chunk.approvedForExternalAi,
+            piiReviewStatus: chunk.piiReviewStatus,
+            status: chunk.status,
+          },
         });
     }
   }

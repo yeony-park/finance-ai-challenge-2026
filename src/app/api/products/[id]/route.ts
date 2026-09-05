@@ -30,4 +30,3 @@ export async function GET(
 
   return NextResponse.json(product, { headers: NO_STORE });
 }
-

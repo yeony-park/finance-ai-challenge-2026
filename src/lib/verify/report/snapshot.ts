@@ -27,6 +27,10 @@ const claimSchema = z.object({
     "acquisition_date",
     "acquisition_price",
     "real_estate_address",
+    "real_estate_parcel_area",
+    "real_estate_building_area",
+    "real_estate_total_area",
+    "real_estate_use_approved_month",
     "offer_amount",
     "sale_amount",
     "sale_date",
@@ -59,7 +63,7 @@ const claimSchema = z.object({
 const evidenceSchema = z.object({
   sourceId: z.string(),
   sourceName: z.string(),
-  url: z.string(),
+  url: z.httpUrl(),
   observedAt: z.string(),
   field: z.string(),
   claimed: z.string(),
@@ -130,6 +134,42 @@ const realEstatePlacementSchema = z.object({
   statement: z.string(),
 });
 
+const realEstateStatusSourceSchema = z.object({
+  sourceKind: z.enum([
+    "platform-claim",
+    "official-document",
+    "external-observation",
+  ]),
+  label: z.string(),
+  url: z.httpUrl(),
+  asOf: z.iso.date(),
+});
+
+const realEstateMetadataSchema = z.object({
+  publicAlias: z.string(),
+  subscriptionStatus: z.enum(["upcoming", "open", "closed", "unknown"]),
+  assetLifecycle: z.enum([
+    "acquisition-pending",
+    "operating",
+    "sale-in-progress",
+    "sold",
+    "settled",
+    "unknown",
+  ]),
+  tradabilityStatus: z.enum([
+    "available",
+    "suspended",
+    "ended",
+    "unknown",
+  ]),
+  statusEvidence: z
+    .object({
+      assetLifecycle: realEstateStatusSourceSchema.optional(),
+      tradabilityStatus: realEstateStatusSourceSchema.optional(),
+    })
+    .optional(),
+});
+
 const reportSchema = z.object({
   offerId: z.string(),
   assetKind: z.enum(["livestock", "real-estate"]).default("livestock"),
@@ -154,6 +194,7 @@ const reportSchema = z.object({
   unjudged: z.array(z.object({ claim: claimSchema, reason: z.string() })),
   pricePlacements: z.array(pricePlacementSchema).default([]),
   realEstatePlacements: z.array(realEstatePlacementSchema).default([]),
+  realEstate: realEstateMetadataSchema.optional(),
   notes: z.array(z.string()),
 });
 

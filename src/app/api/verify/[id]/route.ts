@@ -4,6 +4,7 @@ import { isPublishedOfferId } from "@/components/site/offers";
 import { resolveAuctionPriceAdapter } from "@/lib/verify/adapters/auction-price-fake";
 import { createEkapeTraceAdapter } from "@/lib/verify/adapters/livestock-trace";
 import { fetchDocumentXmlInMemory } from "@/lib/verify/dart/fetch-document";
+import { isPublicVerificationScopeAllowed } from "@/lib/verify/dart/onboarding-catalog";
 import { createLiveVerifyGate } from "@/lib/verify/live/policy";
 import { revalidateOffer } from "@/lib/verify/live/revalidate";
 import { ReportCorruptError, loadLatestReport } from "@/lib/verify/report/load";
@@ -41,7 +42,9 @@ export async function POST(
   const result = await revalidateOffer(
     { offerId: id, clientKey },
     {
-      isPublished: isPublishedOfferId,
+      isPublished: (offerId) =>
+        isPublishedOfferId(offerId) &&
+        isPublicVerificationScopeAllowed(offerId),
       rcpNoForOffer,
       dartApiKey: process.env.DART_API_KEY,
       traceServiceKey: process.env.DATA_GO_KR_API_KEY,

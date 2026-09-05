@@ -109,7 +109,69 @@ describe("buildOffersFrom — 누락·불량 인덱스의 시끄러운 폴백", 
 
     expect(toOfferEntry(broken)).toBeNull();
     expect(errorSpy).toHaveBeenCalledWith(
-      "[offers] 게시 공모 청약일 누락 — 건너뜀: livestock-1",
+      "[offers] 게시 공모 청약일 누락 또는 오류 — 건너뜀: livestock-1",
     );
+  });
+
+  test("분 단위 청약일이 잘못됐거나 역순이면 게시하지 않는다", () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const broken = publicOffering({
+      offerSlug: "livestock-7",
+      subscription: { opensOn: null, closesOn: null, precision: "minute" },
+      detail: {
+        opensAt: "2026-03-30T16:00:00+09:00",
+        closesAt: "2026-02-28T10:00:00+09:00",
+      },
+    });
+
+    expect(toOfferEntry(broken)).toBeNull();
+    expect(errorSpy).toHaveBeenCalledWith(
+      "[offers] 게시 공모 분 단위 청약일 오류 — 건너뜀: livestock-7",
+    );
+  });
+
+  test("분 단위 청약일의 날짜가 실제 달력에 없으면 게시하지 않는다", () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const impossible = publicOffering({
+      offerSlug: "livestock-7",
+      subscription: {
+        opensOn: "2026-02-28",
+        closesOn: "2026-03-30",
+        precision: "minute",
+      },
+      detail: {
+        opensAt: "2026-02-30T10:00:00+09:00",
+        closesAt: "2026-03-30T16:00:00+09:00",
+      },
+    });
+
+    expect(toOfferEntry(impossible)).toBeNull();
+    expect(errorSpy).toHaveBeenCalledWith(
+      "[offers] 게시 공모 분 단위 청약일 오류 — 건너뜀: livestock-7",
+    );
+  });
+
+  test("일 단위 청약일이 실제 달력에 없거나 역순이면 게시하지 않는다", () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const impossible = publicOffering({
+      offerSlug: "livestock-1",
+      subscription: {
+        opensOn: "2026-02-30",
+        closesOn: "2026-03-02",
+        precision: "day",
+      },
+    });
+    const reversed = publicOffering({
+      offerSlug: "livestock-2",
+      subscription: {
+        opensOn: "2026-03-03",
+        closesOn: "2026-03-02",
+        precision: "day",
+      },
+    });
+
+    expect(toOfferEntry(impossible)).toBeNull();
+    expect(toOfferEntry(reversed)).toBeNull();
+    expect(errorSpy).toHaveBeenCalledTimes(2);
   });
 });

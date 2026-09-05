@@ -58,3 +58,18 @@
 - 문서 밀도: `src/components/report/` + `src/components/landing/landing.module.css`
 - 안내 밀도: `src/components/home/home.module.css` + `src/components/category/category.module.css`
 - 사이트 셸: `src/components/site/shell.module.css`
+
+
+## 2026-09-05 프론트 통합 기준
+
+- 카테고리는 `CategoryPage`와 `CategoryAnalysisWorkspace`에서 제목·검색·상태 필터를 공유한다.
+  부동산은 `ScenarioCatalog`를 전용 목록으로 사용하며, 검색과 상태를 함께 적용한다.
+- 한우·한돈·부동산 상세는 `ReportDocument`의 헤더와 탭을 공유한다. 부동산에 정정 감시가 있는 것처럼
+  표시하지 않고 상품 조건·건물 정보·수익·비용·운영 이력·근거를 구분한다.
+- 본문 landmark는 루트 레이아웃의 `main#content` 하나만 둔다.
+- 컴포넌트의 글자 크기와 색은 `src/styles/tokens.css`를 참조한다. 노란 강조와 Pretendard를 공유하며,
+  질병 지도 색상은 `--ds-map-*`, 판정은 `--ds-verdict-*`로 의미를 구분한다.
+- 홈 스크롤은 기본 브라우저 스크롤을 사용한다. 위치 측정은 레이아웃이 바뀔 때만 갱신하고,
+  같은 진행률의 스타일 쓰기는 생략한다. 동작 줄이기 설정에서는 축소 전환을 생략한다.
+- 한국어 문구는 [im-not-ai](https://github.com/epoko77-ai/im-not-ai)의 사실 보존·번역투 완화 원칙을 참고한다.
+  수치·판정·조건은 유지하고, 실제 자료와 합성 시나리오를 명확히 구분한다.

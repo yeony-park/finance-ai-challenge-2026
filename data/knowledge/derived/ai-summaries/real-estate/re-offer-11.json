@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "promptVersion": 3,
+  "categoryId": "real-estate",
+  "productId": "re-offer-11",
+  "scenarioId": "re-scenario-11",
+  "dataNature": "scenario",
+  "asOf": "2026-08-24",
+  "inputHash": "b62ce290fb60428121e01041877bf00f9c44ccab4c925c178f66022eacbc04d2",
+  "generatedAt": "2026-09-02T10:12:58.919Z",
+  "generator": "llm",
+  "model": "openai:gpt-5.6-luna",
+  "sentences": [
+    "이 부동산 상품은 실제 청약·판매가 아닌 검토용 시나리오이며, 일부 항목은 근거 자료가 부족해 확인되지 않았습니다.",
+    "예상 분배 충당배수는 3.45배, 금리상승 가정 부채상환여력은 2배로 확인됐지만 실제 계약·법적 효력·재산 분리는 확인 자료가 아닙니다."
+  ],
+  "sentenceEvidencePaths": [
+    [
+      "/dataNotice",
+      "/overallState",
+      "/overallLabel",
+      "/findings/0/state",
+      "/findings/0/message",
+      "/limitations/4"
+    ],
+    [
+      "/findings/2/message",
+      "/findings/3/message",
+      "/findings/4/impact",
+      "/limitations/2"
+    ]
+  ],
+  "sourceReferences": [
+    "re-scenario-11",
+    "seoul-building-title-info"
+  ]
+}

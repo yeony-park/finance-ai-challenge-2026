@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "promptVersion": 3,
+  "categoryId": "pig",
+  "productId": "pig-2",
+  "dataNature": "observed",
+  "asOf": "2026-04-20",
+  "inputHash": "01f31caeeac4f1e96516669f5c2da73f302471c7e81f607dbcc70348a31719f7",
+  "generatedAt": "2026-09-02T10:13:26.270Z",
+  "generator": "llm",
+  "model": "openai:gpt-5.6-luna",
+  "sentences": [
+    "DART 공시의 주요 조건과 위험 문단은 확인됐지만, 개체 식별번호가 없어 축산물이력 원장과의 개체 단위 대조는 지원하지 않습니다."
+  ],
+  "sentenceEvidencePaths": [
+    [
+      "/confirmedSections/0/title",
+      "/confirmedSections/0/text",
+      "/verificationBoundary"
+    ]
+  ],
+  "sourceReferences": [
+    "d47c868369c30b435851411669c899208eada23a1fdf2882664d1b3b52453dd2",
+    "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260420000157"
+  ]
+}

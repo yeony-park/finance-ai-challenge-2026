@@ -1,0 +1,405 @@
+{
+  "offerId": "real-estate-bbric-hiwon",
+  "assetKind": "real-estate",
+  "document": {
+    "offerId": "real-estate-bbric-hiwon",
+    "rcpNo": "",
+    "submittedOn": "2026-08-23"
+  },
+  "generatedAt": "2026-08-23T00:00:00.000Z",
+  "mode": "live",
+  "sources": [
+    "국토교통부 상업업무용 부동산 매매 신고 자료 (국토교통부 · data.go.kr 실거래가 오픈API) — 월 신고 사전 수집본",
+    "국토교통부 건축물대장 표제부 조회 서비스 (국토교통부 · data.go.kr)"
+  ],
+  "summary": {
+    "total": 5,
+    "match": 4,
+    "mismatch": 1,
+    "unverifiable": 0
+  },
+  "bySubject": [
+    {
+      "subject": "희원감천",
+      "verdict": "mismatch",
+      "judgementCount": 5
+    }
+  ],
+  "judgements": [
+    {
+      "verdict": "match",
+      "claim": {
+        "id": "real_estate_address:희원감천",
+        "kind": "real_estate_address",
+        "subject": "희원감천",
+        "field": "소재지",
+        "value": "부산 사하구 ○○동",
+        "document": {
+          "offerId": "real-estate-bbric-hiwon",
+          "rcpNo": "",
+          "submittedOn": "2026-08-23"
+        },
+        "location": {
+          "section": "플랫폼 상품 상세",
+          "table": "상품 상세",
+          "row": 1,
+          "sectionPath": [
+            "플랫폼 상품 상세",
+            "상품 상세"
+          ]
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "evidence": [
+        {
+          "sourceId": "molit-building-register-hub",
+          "sourceName": "국토교통부 건축물대장 표제부 조회 서비스 (국토교통부 · data.go.kr)",
+          "url": "https://www.data.go.kr/data/15134735/openapi.do",
+          "observedAt": "2026-08-22T15:59:17.921Z",
+          "field": "소재지",
+          "claimed": "부산 사하구 ○○동",
+          "observed": "부산 사하구 ○○동",
+          "stance": "supports",
+          "note": "BuildingHUB exact parcel 표제부 1건 대조"
+        },
+        {
+          "sourceId": "platform-claim:real-estate-bbric-hiwon",
+          "sourceName": "플랫폼 상품 상세 (platform-claim)",
+          "url": "https://bbric.com/building.php?bidx=23&page=&ptype=view&qr=",
+          "observedAt": "2026-08-23",
+          "field": "소재지",
+          "claimed": "부산 사하구 ○○동",
+          "observed": "부산 사하구 ○○동",
+          "stance": "context",
+          "note": "플랫폼 주장 원문 링크이며 독립 원장 판정 근거와 구분합니다."
+        }
+      ],
+      "rationale": "소재지가 건축물대장 exact parcel 표제부와 일치합니다"
+    },
+    {
+      "verdict": "match",
+      "claim": {
+        "id": "real_estate_parcel_area:희원감천",
+        "kind": "real_estate_parcel_area",
+        "subject": "희원감천",
+        "field": "대지면적",
+        "value": "384㎡",
+        "numericValue": 384,
+        "unit": "㎡",
+        "document": {
+          "offerId": "real-estate-bbric-hiwon",
+          "rcpNo": "",
+          "submittedOn": "2026-08-23"
+        },
+        "location": {
+          "section": "플랫폼 상품 상세",
+          "table": "상품 상세",
+          "row": 2,
+          "sectionPath": [
+            "플랫폼 상품 상세",
+            "상품 상세"
+          ]
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "evidence": [
+        {
+          "sourceId": "molit-building-register-hub",
+          "sourceName": "국토교통부 건축물대장 표제부 조회 서비스 (국토교통부 · data.go.kr)",
+          "url": "https://www.data.go.kr/data/15134735/openapi.do",
+          "observedAt": "2026-08-22T15:59:17.921Z",
+          "field": "대지면적",
+          "claimed": "384㎡",
+          "observed": "384㎡",
+          "stance": "supports",
+          "note": "BuildingHUB exact parcel 표제부 1건 대조"
+        },
+        {
+          "sourceId": "platform-claim:real-estate-bbric-hiwon",
+          "sourceName": "플랫폼 상품 상세 (platform-claim)",
+          "url": "https://bbric.com/building.php?bidx=23&page=&ptype=view&qr=",
+          "observedAt": "2026-08-23",
+          "field": "대지면적",
+          "claimed": "384㎡",
+          "observed": "플랫폼 원문 기재 384㎡",
+          "stance": "context",
+          "note": "플랫폼 주장 원문 링크이며 독립 원장 판정 근거와 구분합니다."
+        }
+      ],
+      "rationale": "대지면적이 건축물대장 exact parcel 표제부와 일치합니다"
+    },
+    {
+      "verdict": "mismatch",
+      "claim": {
+        "id": "real_estate_building_area:희원감천",
+        "kind": "real_estate_building_area",
+        "subject": "희원감천",
+        "field": "건축면적",
+        "value": "211.87㎡",
+        "numericValue": 211.87,
+        "unit": "㎡",
+        "document": {
+          "offerId": "real-estate-bbric-hiwon",
+          "rcpNo": "",
+          "submittedOn": "2026-08-23"
+        },
+        "location": {
+          "section": "플랫폼 상품 상세",
+          "table": "상품 상세",
+          "row": 3,
+          "sectionPath": [
+            "플랫폼 상품 상세",
+            "상품 상세"
+          ]
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "evidence": [
+        {
+          "sourceId": "molit-building-register-hub",
+          "sourceName": "국토교통부 건축물대장 표제부 조회 서비스 (국토교통부 · data.go.kr)",
+          "url": "https://www.data.go.kr/data/15134735/openapi.do",
+          "observedAt": "2026-08-22T15:59:17.921Z",
+          "field": "건축면적",
+          "claimed": "211.87㎡",
+          "observed": "221.87㎡",
+          "stance": "contradicts",
+          "note": "BuildingHUB exact parcel 표제부 1건 대조"
+        },
+        {
+          "sourceId": "platform-claim:real-estate-bbric-hiwon",
+          "sourceName": "플랫폼 상품 상세 (platform-claim)",
+          "url": "https://bbric.com/building.php?bidx=23&page=&ptype=view&qr=",
+          "observedAt": "2026-08-23",
+          "field": "건축면적",
+          "claimed": "211.87㎡",
+          "observed": "플랫폼 원문 기재 211.87㎡",
+          "stance": "context",
+          "note": "플랫폼 주장 원문 링크이며 독립 원장 판정 근거와 구분합니다."
+        }
+      ],
+      "rationale": "건축면적이 건축물대장 exact parcel 표제부와 다릅니다"
+    },
+    {
+      "verdict": "match",
+      "claim": {
+        "id": "real_estate_total_area:희원감천",
+        "kind": "real_estate_total_area",
+        "subject": "희원감천",
+        "field": "연면적",
+        "value": "1,723.48㎡",
+        "numericValue": 1723.48,
+        "unit": "㎡",
+        "document": {
+          "offerId": "real-estate-bbric-hiwon",
+          "rcpNo": "",
+          "submittedOn": "2026-08-23"
+        },
+        "location": {
+          "section": "플랫폼 상품 상세",
+          "table": "상품 상세",
+          "row": 4,
+          "sectionPath": [
+            "플랫폼 상품 상세",
+            "상품 상세"
+          ]
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "evidence": [
+        {
+          "sourceId": "molit-building-register-hub",
+          "sourceName": "국토교통부 건축물대장 표제부 조회 서비스 (국토교통부 · data.go.kr)",
+          "url": "https://www.data.go.kr/data/15134735/openapi.do",
+          "observedAt": "2026-08-22T15:59:17.921Z",
+          "field": "연면적",
+          "claimed": "1,723.48㎡",
+          "observed": "1723.48㎡",
+          "stance": "supports",
+          "note": "BuildingHUB exact parcel 표제부 1건 대조"
+        },
+        {
+          "sourceId": "platform-claim:real-estate-bbric-hiwon",
+          "sourceName": "플랫폼 상품 상세 (platform-claim)",
+          "url": "https://bbric.com/building.php?bidx=23&page=&ptype=view&qr=",
+          "observedAt": "2026-08-23",
+          "field": "연면적",
+          "claimed": "1,723.48㎡",
+          "observed": "플랫폼 원문 기재 1,723.48㎡",
+          "stance": "context",
+          "note": "플랫폼 주장 원문 링크이며 독립 원장 판정 근거와 구분합니다."
+        }
+      ],
+      "rationale": "연면적이 건축물대장 exact parcel 표제부와 일치합니다"
+    },
+    {
+      "verdict": "match",
+      "claim": {
+        "id": "real_estate_use_approved_month:희원감천",
+        "kind": "real_estate_use_approved_month",
+        "subject": "희원감천",
+        "field": "사용승인월",
+        "value": "2000-10",
+        "document": {
+          "offerId": "real-estate-bbric-hiwon",
+          "rcpNo": "",
+          "submittedOn": "2026-08-23"
+        },
+        "location": {
+          "section": "플랫폼 상품 상세",
+          "table": "상품 상세",
+          "row": 5,
+          "sectionPath": [
+            "플랫폼 상품 상세",
+            "상품 상세"
+          ]
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "evidence": [
+        {
+          "sourceId": "molit-building-register-hub",
+          "sourceName": "국토교통부 건축물대장 표제부 조회 서비스 (국토교통부 · data.go.kr)",
+          "url": "https://www.data.go.kr/data/15134735/openapi.do",
+          "observedAt": "2026-08-22T15:59:17.921Z",
+          "field": "사용승인월",
+          "claimed": "2000-10",
+          "observed": "2000-10-17",
+          "stance": "supports",
+          "note": "BuildingHUB exact parcel 표제부 1건 대조"
+        },
+        {
+          "sourceId": "platform-claim:real-estate-bbric-hiwon",
+          "sourceName": "플랫폼 상품 상세 (platform-claim)",
+          "url": "https://bbric.com/building.php?bidx=23&page=&ptype=view&qr=",
+          "observedAt": "2026-08-23",
+          "field": "사용승인월",
+          "claimed": "2000-10",
+          "observed": "플랫폼 원문 기재 2000-10",
+          "stance": "context",
+          "note": "플랫폼 주장 원문 링크이며 독립 원장 판정 근거와 구분합니다."
+        }
+      ],
+      "rationale": "사용승인월이 건축물대장 exact parcel 표제부와 일치합니다"
+    }
+  ],
+  "unjudged": [],
+  "pricePlacements": [],
+  "realEstatePlacements": [
+    {
+      "claim": {
+        "id": "offer_amount:희원감천",
+        "kind": "offer_amount",
+        "subject": "희원감천",
+        "field": "공모금액",
+        "value": "4,760,000,000원",
+        "numericValue": 4760000000,
+        "unit": "원",
+        "document": {
+          "offerId": "real-estate-bbric-hiwon",
+          "rcpNo": "",
+          "submittedOn": "2026-08-23"
+        },
+        "location": {
+          "section": "플랫폼 거래소 오픈 공지",
+          "table": "거래소 오픈 및 공모 구조",
+          "row": 2,
+          "sectionPath": [
+            "플랫폼 거래소 오픈 공지",
+            "거래소 오픈 및 공모 구조"
+          ]
+        },
+        "verifiability": "verifiable",
+        "extractedBy": "rules"
+      },
+      "label": "공모금액",
+      "origin": "issuer",
+      "originLabel": "발행사 제시(예상값)",
+      "amountWon": 4760000000,
+      "regionLabel": "부산 사하구 ○○동",
+      "windowMonths": [
+        "2024-09",
+        "2024-10",
+        "2024-11"
+      ],
+      "comparableCount": 3,
+      "thinSample": true,
+      "comparables": [
+        {
+          "dealOn": "2024-11-05",
+          "dong": "○○동",
+          "buildingUse": "제2종근린생활",
+          "buildingAreaSqm": 1723.48,
+          "amountWon": 4500000000
+        },
+        {
+          "dealOn": "2024-10-15",
+          "dong": "○○동",
+          "buildingUse": "제1종근린생활",
+          "buildingAreaSqm": 189.75,
+          "amountWon": 220000000
+        },
+        {
+          "dealOn": "2024-10-17",
+          "dong": "○○동",
+          "buildingUse": "제2종근린생활",
+          "floor": 2,
+          "buildingAreaSqm": 98.1,
+          "amountWon": 98000000
+        }
+      ],
+      "evidence": [
+        {
+          "sourceId": "molit-rtms-nrg-trade",
+          "sourceName": "국토교통부 상업업무용 부동산 매매 신고 자료 (국토교통부 · data.go.kr 실거래가 오픈API) — 월 신고 사전 수집본",
+          "url": "https://www.data.go.kr/data/15126463/openapi.do",
+          "observedAt": "2026-08-22T17:40:36.383Z",
+          "field": "공모금액",
+          "claimed": "4,760,000,000원",
+          "observed": "2024-09~2024-11 부산 ○○구 ○○동 상업업무용 매매 신고 3건",
+          "stance": "context",
+          "note": "비교군 3건 — 10건 미만이라 백분위 미산출 · 동일 자산 후보 거래 1건 · 45억원 · 지번 미공개로 동일 물건 확정 불가"
+        }
+      ],
+      "statement": "발행사 제시(예상값) 공모금액 47.6억원 · 같은 법정동·같은 유형(상업업무용) 실거래 신고 비교군 3건(2024-09~2024-11) · 비교군이 10건 미만이라 백분위를 내지 않고 건수만 적습니다. 이 표시는 위치이며 적정성 판단이 아닙니다."
+    }
+  ],
+  "realEstate": {
+    "publicAlias": "희원감천",
+    "subscriptionStatus": "closed",
+    "assetLifecycle": "operating",
+    "tradabilityStatus": "unknown",
+    "statusEvidence": {
+      "assetLifecycle": {
+        "sourceKind": "platform-claim",
+        "label": "BBRIC 공개 공지 목록 — 희원감천 배당금 지급 안내",
+        "url": "https://bbric.com/notice.php",
+        "asOf": "2026-05-27"
+      },
+      "tradabilityStatus": {
+        "sourceKind": "platform-claim",
+        "label": "BBRIC 공개 빌딩 목록 — 희원감천 상장 표기",
+        "url": "https://www.bbric.com/building.php",
+        "asOf": "2026-08-23"
+      }
+    }
+  },
+  "notes": [
+    "공모 기초자료 6건을 공개 자료에서 옮겨 적었습니다 (출처 10건 · data/offers/real-estate-bbric-hiwon.json).",
+    "용도·구조 자유문은 원장 분류와 단순 문자열로 일치 판정하지 않습니다.",
+    "플랫폼 상품 상세의 100% 임대 및 5년 책임임대차 문구는 2026-05-28 임대차계약 해지 공시가 있어 현재 사실로 옮기지 않았습니다.",
+    "청약 마감은 확인됐지만 현재 실시간 거래 가능 여부는 공개 화면만으로 확인할 수 없어 tradabilityStatus는 unknown입니다.",
+    "거래소 오픈 공지 본문에는 연도가 없어 listedOn=2024-12-17은 2024 상품 연혁과 12월 17일 화요일 일치에 근거한 추론입니다.",
+    "배정결과 공지의 청약 종료연도 2042와 배정일 2022 표기는 다른 공식 공지와 상품 연혁에 모순되어 날짜 근거로 사용하지 않았습니다.",
+    "2026-05-27 배당금 지급 안내는 공개 운용·배당 이력을 뒷받침하지만, 이후의 임대차·매각·정산 상태를 확정하지 않습니다.",
+    "3기 실제 배당 공지의 총액·총 BRIC·1BRIC당 배당금은 단순 검산과 일치하지 않습니다. 24.5791원을 확정 실제값으로 단독 표시하지 않으며, 총액÷수량 약 24.7945원은 시스템 보정값이 아닌 단순 검산값입니다.",
+    "예상 배당률과 상품별 매각·청산 조건은 투자설명서·규약 PDF 본문 확인 전까지 미확인입니다.",
+    "투자설명서 PDF 내부는 직접 열람하지 않았으므로 이 파일에는 official-document 출처를 기록하지 않았습니다.",
+    "건축물대장 표제부는 exact parcel 조건으로 연결하지만 권리·소유·임대차를 검증하지 않습니다. 실거래 신고 자료는 법정동 단위라 동일 자산 후보가 있어도 지번 단위 동일 물건으로 확정할 수 없습니다."
+  ]
+}

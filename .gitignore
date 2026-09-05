@@ -12,6 +12,8 @@
 
 # testing
 /coverage
+/.playwright-mcp/
+/.real-estate-pdf-transaction/
 
 # next.js
 /.next/
@@ -67,10 +69,20 @@ data/**/*.zip
 # 골드셋 라벨 (이력번호·사육지 포함) — 로컬 전용. 가이드(data/goldset/README.md)만 커밋한다
 data/goldset/*/
 
+# python
+__pycache__/
+*.py[cod]
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
 data/scratch-fake/
+/data/scratch-rag/
+/data/knowledge/generated/index.json
+/data/knowledge/review/
+
+HANDOFF.md
+data.md
 
 # drizzle-kit generate 드리프트 대조 스크래치 (정본은 db/migrations/)
-db/generated
+/db/generated/

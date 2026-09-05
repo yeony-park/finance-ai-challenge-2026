@@ -13,7 +13,7 @@ import { PUBLISHED_OFFER_IDS } from "@/components/site/offers";
 const propsFor = (id: string) => ({ params: Promise.resolve({ id }) });
 
 describe("카테고리별 상품 상세 정적 라우트", () => {
-  test("한우와 부동산 공개 ID를 각 products 경로에 나눠 생성한다", () => {
+  test("한우와 승인된 부동산 ID를 각 products 경로에 나눠 생성한다", async () => {
     expect(cattleStaticParams()).toEqual([
       { id: "livestock-1" },
       { id: "livestock-2" },
@@ -25,10 +25,12 @@ describe("카테고리별 상품 상세 정적 라우트", () => {
       { id: "livestock-8" },
       { id: "livestock-9" },
     ]);
-    expect(realEstateStaticParams()).toEqual([{ id: "real-estate-a" }]);
-    expect(
-      [...cattleStaticParams(), ...realEstateStaticParams()].map(({ id }) => id),
-    ).toEqual(PUBLISHED_OFFER_IDS);
+    const estate = await realEstateStaticParams();
+    expect(estate).toHaveLength(13);
+    expect(estate).toContainEqual({ id: "re-offer-01" });
+    expect(estate).not.toContainEqual({ id: "real-estate-a" });
+    expect(cattleStaticParams().map(({ id }) => id)).toEqual(PUBLISHED_OFFER_IDS.filter((id) => id.startsWith("livestock-")));
+
   });
 
   test("두 상세 경로 모두 등록되지 않은 동적 ID 생성을 막는다", () => {

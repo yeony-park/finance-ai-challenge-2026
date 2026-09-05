@@ -250,6 +250,8 @@ const buildDigest = (
   versionCount: number,
 ): NarrativeDigest => {
   const isRealEstate = report.assetKind === "real-estate";
+  const isOperatingRealEstate =
+    isRealEstate && report.realEstate?.assetLifecycle === "operating";
 
   return {
     offerId: report.offerId,
@@ -269,7 +271,9 @@ const buildDigest = (
     price: priceDigestOf(report),
     history: {
       documentBasis: isRealEstate
-        ? `공모 공고·매각 공시(${report.document.submittedOn} 기준)`
+        ? isOperatingRealEstate
+          ? `상품 원문(${report.document.submittedOn} 기준) · 자산 운영 중`
+          : `공모 공고·매각 공시(${report.document.submittedOn} 기준)`
         : `증권신고서 ${report.document.submittedOn} 제출본`,
       storedReportVersions: versionCount,
       storedReportVersionsMeaning: VERSION_MEANING,

@@ -27,9 +27,9 @@ const NOT_CONFIGURED_MESSAGE =
   "정정 감시에 필요한 공시 조회 키(DART_API_KEY)가 설정되지 않아 이번 확인을 실행하지 않았습니다.";
 
 const targets = (): readonly MonitorTarget[] =>
-  OFFERS.map((offer) => {
+  OFFERS.flatMap((offer) => {
     const rcpNo = rcpNoForOffer(offer.id);
-    return { offerId: offer.id, ...(rcpNo === undefined ? {} : { rcpNo }) };
+    return rcpNo === undefined ? [] : [{ offerId: offer.id, rcpNo }];
   });
 
 const loadReport = async (

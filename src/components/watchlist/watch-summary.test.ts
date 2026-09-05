@@ -7,7 +7,7 @@ import {
 } from "@/lib/content/watch-band";
 import type { WatchState } from "@/lib/verify/amend/watch-state";
 
-import { buildWatchSummaryEntry } from "./watch-summary";
+import { buildWatchSummaryEntry, loadWatchSummaries } from "./watch-summary";
 
 const OFFER: OfferEntry = {
   id: "livestock-9",
@@ -44,6 +44,14 @@ const WATCH: WatchState = {
 };
 
 describe("관심 공모 정정 감시 요약", () => {
+  test("승인된 부동산 시나리오는 감시 대상과 구분해 다시 열 수 있다", async () => {
+    const entries = await loadWatchSummaries([]);
+    expect(entries).toHaveLength(13);
+    expect(entries).toContainEqual(expect.objectContaining({
+      id: "re-offer-01", reportHref: "/real-estate/products/re-offer-01", isScenario: true,
+      amendmentLine: "검토용 시나리오 · 실제 공시 감시 대상이 아닙니다.",
+    }));
+  });
   test("감시 기록이 없으면 기록 없음으로 구분한다", () => {
     const summary = buildWatchSummaryEntry(OFFER, null);
 

@@ -15,6 +15,39 @@ function NoteIcon({ tone }: { readonly tone: NoteItemView["tone"] }) {
   return <IconList className={s.ic} />;
 }
 
+const httpUrl = (value: string): string | null => {
+  try {
+    const url = new URL(value);
+    return url.protocol === "http:" || url.protocol === "https:" ? value : null;
+  } catch {
+    return null;
+  }
+};
+
+function NoteSource({ source }: { readonly source: NonNullable<NoteItemView["source"]> }) {
+  const text = `${source.label}${source.asOf ? ` · ${source.asOf} 기준` : ""}`;
+  const url = httpUrl(source.url);
+
+  return (
+    <p className={s.noteMeta}>
+      출처 ·{" "}
+      {url ? (
+        <a
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={s.evSourceLink}
+          aria-label={`${text} (새 창)`}
+        >
+          {text}
+        </a>
+      ) : (
+        <span>{text}</span>
+      )}
+    </p>
+  );
+}
+
 export function NoteList({ items }: { readonly items: readonly NoteItemView[] }) {
   return (
     <div className={s.noteList}>
@@ -26,6 +59,7 @@ export function NoteList({ items }: { readonly items: readonly NoteItemView[] })
           <div className={s.noteBody}>
             <p className={s.noteTitle}>{item.title}</p>
             <p className={s.noteMeta}>{item.meta}</p>
+            {item.source ? <NoteSource source={item.source} /> : null}
           </div>
         </div>
       ))}

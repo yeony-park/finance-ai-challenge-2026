@@ -1,9 +1,6 @@
-import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 
-import { z } from "zod";
-
-import { isRegisteredSource } from "@/lib/spine/rag/corpus";
+import { loadGenericCorpusDocuments } from "@/lib/knowledge/local-rag/generic-corpus";
 
 import {
   type ArtAuctionRecordRow,
@@ -33,64 +30,35 @@ export interface SeedPlan {
 const RAG_DIR = "reference/rag";
 const OFFERS_SUBDIR = "offers";
 
-const ragFixtureSchema = z.object({
-  schemaVersion: z.literal(1),
-  documents: z.array(
-    z.object({
-      sourceId: z.string().min(1),
-      title: z.string().min(1),
-      url: z.string().nullable().optional(),
-      license: z.enum(["green", "yellow_confirmed"]),
-      retrievedOn: z.string(),
-      chunks: z.array(
-        z.object({
-          chunkIndex: z.number().int().min(0),
-          content: z.string().min(1),
-        }),
-      ),
-    }),
-  ),
-});
-
 const loadRagFixture = async (
   dataDir: string,
 ): Promise<readonly RagDocumentSeed[]> => {
-  const dir = path.join(path.resolve(dataDir), RAG_DIR);
-  assertSeedSourcePathAllowed(dir);
-  let files: readonly string[];
-  try {
-    files = await readdir(dir);
-  } catch {
-    return [];
-  }
-  const seeds: RagDocumentSeed[] = [];
-  for (const file of [...files].sort()) {
-    if (!file.endsWith(".json")) continue;
-    const parsed = ragFixtureSchema.parse(
-      JSON.parse(await readFile(path.join(dir, file), "utf8")),
-    );
-    for (const doc of parsed.documents) {
-      if (!isRegisteredSource(doc.sourceId)) continue;
-      seeds.push({
-        document: ragDocumentRowSchema.parse({
-          sourceId: doc.sourceId,
-          title: doc.title,
-          url: doc.url ?? null,
-          license: doc.license,
-          retrievedOn: doc.retrievedOn,
-          provenance: "public_record",
-        }),
-        chunks: doc.chunks.map((chunk) =>
-          ragChunkRowSchema.parse({
-            chunkIndex: chunk.chunkIndex,
-            content: chunk.content,
-            embedding: null,
-          }),
-        ),
-      });
-    }
-  }
-  return seeds;
+  assertSeedSourcePathAllowed(path.join(path.resolve(dataDir), RAG_DIR));
+  return (await loadGenericCorpusDocuments(dataDir)).map((doc) => ({
+    document: ragDocumentRowSchema.parse({
+      sourceId: doc.sourceId,
+      title: doc.title,
+      url: doc.sourceUrl,
+      license: "green",
+      retrievedOn: doc.asOf,
+      provenance: "public_record",
+      approvedForPublic: true,
+      approvedForExternalAi: true,
+      piiReviewStatus: "passed",
+      status: "ready",
+    }),
+    chunks: doc.chunks.map((chunk) =>
+      ragChunkRowSchema.parse({
+        chunkIndex: chunk.chunkIndex,
+        content: chunk.content,
+        embedding: null,
+        approvedForPublic: true,
+        approvedForExternalAi: true,
+        piiReviewStatus: "passed",
+        status: "ready",
+      }),
+    ),
+  }));
 };
 
 const detailStrings = (

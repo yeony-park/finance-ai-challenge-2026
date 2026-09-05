@@ -1,0 +1,12 @@
+.git
+.next
+node_modules
+npm-debug.log*
+.env*
+__pycache__
+*.pyc
+data/raw/
+data/**/raw/
+data/snapshots/
+data/reports/
+data/goldset/

@@ -9,6 +9,7 @@ data/raw
 data/reports
 data/snapshots
 data/scratch-fake
+data/knowledge/review
 # 골드셋 라벨은 이력번호·사육지(PII) — 로컬 전용, 업로드 차단
 data/goldset
 # 빌드에 불필요한 내부 자료 — 업로드 표면 축소

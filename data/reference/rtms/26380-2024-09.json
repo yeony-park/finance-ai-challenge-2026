@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 2,
+  "month": "2024-09",
+  "lawdCd": "26380",
+  "sigunguName": "부산 사하구",
+  "collectedAt": "2026-08-22T17:40:36.074Z",
+  "sourceId": "molit-rtms-nrg-trade",
+  "sourceName": "국토교통부 상업업무용 부동산 매매 신고 자료 (국토교통부 · data.go.kr 실거래가 오픈API)",
+  "endpoint": "https://apis.data.go.kr/1613000/RTMSDataSvcNrgTrade/getRTMSDataSvcNrgTrade",
+  "status": "ok",
+  "totalCount": 8,
+  "collectedCount": 8,
+  "cancelledCount": 1,
+  "trades": [
+    {
+      "dong": "장림동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-09-19",
+      "amountWon": 38500000,
+      "floor": 2,
+      "buildingAreaSqm": 47.12,
+      "buildYear": 1992
+    },
+    {
+      "dong": "구평동",
+      "buildingType": "일반",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-09-03",
+      "amountWon": 2021620000,
+      "buildingAreaSqm": 494.75,
+      "landAreaSqm": 1225,
+      "buildYear": 2011
+    },
+    {
+      "dong": "구평동",
+      "buildingType": "일반",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-09-03",
+      "amountWon": 2489080000,
+      "buildingAreaSqm": 1353.14,
+      "landAreaSqm": 1339,
+      "buildYear": 2013
+    },
+    {
+      "dong": "구평동",
+      "buildingType": "일반",
+      "buildingUse": "제1종근린생활",
+      "dealOn": "2024-09-04",
+      "amountWon": 633900000,
+      "buildingAreaSqm": 115.83,
+      "landAreaSqm": 222,
+      "buildYear": 1981
+    },
+    {
+      "dong": "장림동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-09-04",
+      "amountWon": 20000000,
+      "floor": 3,
+      "buildingAreaSqm": 47.12,
+      "buildYear": 1992
+    },
+    {
+      "dong": "장림동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-09-04",
+      "amountWon": 20000000,
+      "floor": 3,
+      "buildingAreaSqm": 38.66,
+      "buildYear": 1992
+    },
+    {
+      "dong": "장림동",
+      "buildingType": "집합",
+      "buildingUse": "제2종근린생활",
+      "dealOn": "2024-09-04",
+      "amountWon": 20000000,
+      "floor": 3,
+      "buildingAreaSqm": 33.22,
+      "buildYear": 1992
+    }
+  ]
+}

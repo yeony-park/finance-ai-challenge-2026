@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "promptVersion": 3,
+  "categoryId": "real-estate",
+  "productId": "re-offer-02",
+  "scenarioId": "re-scenario-02",
+  "dataNature": "scenario",
+  "asOf": "2026-08-24",
+  "inputHash": "c3b9a118120e3bf78454d1a0581b7b51319edd6df4730bdf802d7df9a97deb2f",
+  "generatedAt": "2026-09-02T10:12:33.732Z",
+  "generator": "llm",
+  "model": "openai:gpt-5.6-luna",
+  "sentences": [
+    "센터원은 실제 청약·판매 상품이 아닌 검토용 시나리오이며, 연면적에서 서로 다른 값이 확인됐습니다.",
+    "예상 분배 충당배수는 2.78배이고 금리상승 가정 부채상환여력은 2배로, 검토 기준상 중대한 부족은 확인되지 않았습니다."
+  ],
+  "sentenceEvidencePaths": [
+    [
+      "/dataNotice",
+      "/findings/0/area",
+      "/findings/0/message",
+      "/limitations/3"
+    ],
+    [
+      "/findings/1/area",
+      "/findings/1/message",
+      "/findings/1/impact",
+      "/findings/2/area",
+      "/findings/2/message",
+      "/findings/2/impact"
+    ]
+  ],
+  "sourceReferences": [
+    "re-scenario-02",
+    "molit-building-hub-title"
+  ]
+}

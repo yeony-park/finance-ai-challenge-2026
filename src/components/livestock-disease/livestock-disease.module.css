@@ -64,7 +64,7 @@
   overflow: hidden;
   border: 1px solid var(--ds-line-soft);
   border-radius: var(--ds-radius-md);
-  background: #edf5f7;
+  background: var(--ds-map-surface);
 }
 
 .mapPlaceholder {
@@ -154,22 +154,22 @@
 }
 
 .legendPast {
-  background: #829294;
+  background: var(--ds-map-reference);
 }
 
 .legendCurrent {
-  background: #326fa8;
+  background: var(--ds-map-asf);
 }
 
 .mapLegend .legendFmd {
   border-radius: 1px;
-  background: #d96c1f;
+  background: var(--ds-map-fmd);
   transform: rotate(45deg) scale(0.78);
 }
 
 .mapLegend .legendLsd {
   border-radius: 2px;
-  background: #7048a8;
+  background: var(--ds-map-both);
 }
 
 .mapStats {
@@ -230,7 +230,7 @@
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: #326fa8;
+  background: var(--ds-map-asf);
 }
 
 .yearRow strong {

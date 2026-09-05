@@ -3,6 +3,7 @@ import type { ClaimExtractionClient } from "./claims/llm-client";
 import {
   buildRealEstateClaims,
   realEstateDocumentRef,
+  realEstateReportMetadataOf,
   type RealEstateOffer,
 } from "./claims/real-estate";
 import { judgeClaims } from "./judge/engine";
@@ -11,42 +12,27 @@ import { buildReport } from "./report/build";
 import { submittedOnFromRcpNo, type DocumentRef, type VerifyReport } from "./types";
 import type { LivestockTraceAdapter } from "./adapters/livestock-trace";
 import type { AuctionPriceAdapter } from "./adapters/auction-price";
-import type { BuildingRegisterAdapter } from "./adapters/building-register";
+import type {
+  BuildingHubCacheLookup,
+  BuildingRegisterAdapter,
+} from "./adapters/building-register";
 import type { RtmsTradeAdapter } from "./adapters/rtms-trade";
+import { activeRcpNoForProduct } from "./dart/onboarding-catalog";
+import { CATTLE_RCP_NO_TO_OFFER } from "./dart/cattle-rcp-candidates";
 
-const OFFER_REGISTRY: Readonly<Record<string, string>> = {
-  "20240220002223": "livestock-1",
-  "20240503000803": "livestock-1",
-  "20240528000156": "livestock-1",
-  "20240618000419": "livestock-1",
-  "20240619000091": "livestock-1",
-  "20240821000374": "livestock-2",
-  "20240911000124": "livestock-2",
-  "20241202000302": "livestock-3",
-  "20241220000182": "livestock-3",
-  "20250113000307": "livestock-3",
-  "20250310000915": "livestock-4",
-  "20250331004328": "livestock-4",
-  "20250421000094": "livestock-4",
-  "20250508000518": "livestock-5",
-  "20250526000153": "livestock-5",
-  "20250617000216": "livestock-5",
-  "20251010000109": "livestock-6",
-  "20251031000477": "livestock-6",
-  "20260203000427": "livestock-7",
-  "20260210000785": "livestock-7",
-  "20260225002022": "livestock-7",
-  "20260326001272": "livestock-8",
-  "20260414002068": "livestock-8",
-  "20260806000159": "livestock-9",
-  "20260814003572": "livestock-9",
+export { CATTLE_RCP_NO_TO_OFFER } from "./dart/cattle-rcp-candidates";
+
+export const offerIdForRcpNo = (rcpNo: string): string | undefined =>
+  CATTLE_RCP_NO_TO_OFFER[rcpNo];
+
+export const resolveOfferId = (rcpNo: string): string => {
+  const offerId = offerIdForRcpNo(rcpNo);
+  if (!offerId) throw new Error(`승인된 상품 매핑이 없는 RCP입니다: ${rcpNo}`);
+  return offerId;
 };
 
-export const resolveOfferId = (rcpNo: string): string =>
-  OFFER_REGISTRY[rcpNo] ?? `offer-${rcpNo}`;
-
 export const rcpNoForOffer = (offerId: string): string | undefined =>
-  Object.keys(OFFER_REGISTRY).find((rcpNo) => OFFER_REGISTRY[rcpNo] === offerId);
+  activeRcpNoForProduct("cattle", offerId);
 
 export const documentRefOf = (rcpNo: string): DocumentRef => ({
   offerId: resolveOfferId(rcpNo),
@@ -108,6 +94,7 @@ export const runVerification = async (
 export interface RealEstateVerifyInput {
   readonly offer: RealEstateOffer;
   readonly trades: RtmsTradeAdapter;
+  readonly buildingHub?: BuildingHubCacheLookup;
   readonly register?: BuildingRegisterAdapter;
   readonly generatedAt?: string;
 }
@@ -127,6 +114,7 @@ export const runRealEstateVerification = (
     offer: input.offer,
     claims: extraction.claims,
     trades: input.trades,
+    buildingHub: input.buildingHub,
     ...(register === undefined ? {} : { register }),
   });
 
@@ -150,11 +138,15 @@ export const runRealEstateVerification = (
     mode: input.trades.name === "fake" ? "fake" : "live",
     sources: [
       input.trades.sourceName,
+      ...(input.buildingHub?.cache
+        ? [input.buildingHub.cache.sourceName]
+        : []),
       ...(register === undefined ? [] : [register.sourceName]),
     ],
     judgements: outcome.judgements,
     unjudged: outcome.unjudged,
     realEstatePlacements: outcome.placements,
+    realEstate: realEstateReportMetadataOf(input.offer),
     notes: [...modeNote, ...registerNote, ...extraction.notes, ...outcome.notes],
   });
 };

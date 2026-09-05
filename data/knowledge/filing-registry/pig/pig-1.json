@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 2,
+  "registryVersion": "dart-product-registry-v2",
+  "categoryId": "pig",
+  "productId": "pig-1",
+  "activeRcpNo": "20251215000259",
+  "inventory": [
+    {
+      "rcpNo": "20251215000259",
+      "status": "local"
+    },
+    {
+      "rcpNo": "20260107000209",
+      "status": "local"
+    },
+    {
+      "rcpNo": "20260129000008",
+      "status": "local"
+    },
+    {
+      "rcpNo": "20260213000150",
+      "status": "local"
+    }
+  ],
+  "approvedFilings": [
+    {
+      "schemaVersion": 1,
+      "rcpNo": "20251215000259",
+      "contentHash": "ca68a62f0b1d896c8c853b4daee7bb64e0aec58ee7f0b660a3cec85d59e26b06",
+      "sanitizerVersion": "pig-filing-sanitizer-v1",
+      "chunkerVersion": "pig-filing-chunker-v1",
+      "documentRole": "primary",
+      "locatorSetHash": "ef1b2ec283971dbaf7dea41693bc126eb65f6b2b613db867afeed364e261c718",
+      "reviewMethod": "deterministic-local-codex-review-v1",
+      "reviewer": "codex-local-deterministic-check",
+      "reviewedAt": "2026-08-31T00:00:00+09:00",
+      "productMappingEvidence": "사용자가 지정한 pig-1 파일럿과 exact primary RCP를 대조하고, 각 공개 locator가 pig-1 원자 excerpt에 속함을 수기 확인했습니다.",
+      "registry": {
+        "schemaVersion": 1,
+        "registryVersion": "dart-pig-filing-registry-v1",
+        "categoryId": "pig",
+        "productId": "pig-1",
+        "rcpNo": "20251215000259",
+        "submittedOn": "2025-12-15",
+        "entry": {
+          "name": "20251215000259.xml",
+          "sha256": "ca68a62f0b1d896c8c853b4daee7bb64e0aec58ee7f0b660a3cec85d59e26b06"
+        },
+        "source": {
+          "landingUrl": "https://dart.fss.or.kr/dsaf001/main.do",
+          "exactPublicUrl": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20251215000259",
+          "collectedAtSource": "local raw XML file mtime",
+          "method": "로컬 exact primary OpenDART document.xml의 승인 locator와 source hash 검증"
+        },
+        "relationship": {
+          "type": "primary",
+          "mappingStatus": "confirmed",
+          "mappingEvidence": "사용자가 지정한 pig-1 파일럿과 exact primary RCP를 대조하고, 각 공개 locator가 pig-1 원자 excerpt에 속함을 수기 확인했습니다.",
+          "limitations": [
+            "승인된 비민감 원자 excerpt 밖의 정보는 상품 근거로 사용하지 않습니다.",
+            "공모개요 표의 사업기간 필드는 동일 excerpt에 식별 가능 정보가 포함돼 공개 artifact에서 제외했습니다.",
+            "실물·개인 식별 가능 항목과 기존 복합 filing-facts는 사용하지 않습니다."
+          ]
+        },
+        "approval": {
+          "policyId": "pig-filing-pilot-v1",
+          "scope": "pig-1 비민감 원자 XML excerpt 5개",
+          "externalAiApproved": false,
+          "piiReviewStatus": "passed"
+        },
+        "sectionLocators": [
+          {
+            "factId": "offering-terms",
+            "title": "공모 좌수·단가·총액",
+            "anchor": "10,812",
+            "sectionPath": [
+              "요약정보",
+              "1. 핵심투자위험",
+              "2. 모집 또는 매출에 관한 일반사항"
+            ],
+            "occurrence": 2,
+            "evidenceTokens": [
+              "10,812",
+              "20,000",
+              "216,240,000"
+            ],
+            "normalizedExcerptHash": "4868d0a945f3e897bc9ebd0123fe4319a50c96681552bfc5927b80cb1a247a43"
+          },
+          {
+            "factId": "subscription-payment-schedule",
+            "title": "청약·배정 및 납입 절차",
+            "anchor": "청약",
+            "sectionPath": [
+              "요약정보",
+              "1. 핵심투자위험",
+              "2. 모집 또는 매출에 관한 일반사항"
+            ],
+            "occurrence": 28,
+            "evidenceTokens": [
+              "청약",
+              "배정",
+              "납입"
+            ],
+            "normalizedExcerptHash": "1ffb9022935a1e3dc858f0daf49770b8cb8deb57b5390297a5a8617a08cb137e"
+          },
+          {
+            "factId": "limited-fee-risk",
+            "title": "한정된 수수료 위험",
+            "anchor": "수수료",
+            "sectionPath": [
+              "제1부 모집 또는 매출에 관한 사항",
+              "III. 투자위험요소",
+              "1. 사업위험",
+              "차. 한정된 수수료로 인한 위험"
+            ],
+            "occurrence": 136,
+            "evidenceTokens": [
+              "수수료",
+              "위험"
+            ],
+            "normalizedExcerptHash": "f8f434feec104a74a70919404fa77193a866d417752f4cbd46acf854c9d7e4a9"
+          },
+          {
+            "factId": "investor-compensation",
+            "title": "투자자 피해 보상 체계",
+            "anchor": "피해 보상",
+            "sectionPath": [
+              "제1부 모집 또는 매출에 관한 사항",
+              "VI. 그 밖에 투자자보호를 위해 필요한 사항",
+              "10. 투자자 보호장치에 관한 사항",
+              "바. 투자자 피해 보상 체계 및 분쟁처리 절차"
+            ],
+            "occurrence": 4,
+            "evidenceTokens": [
+              "피해 보상"
+            ],
+            "normalizedExcerptHash": "ab348e7062f1f7acdfc2ebb40786690cf9f3f868163a181d04a4fef254808491"
+          },
+          {
+            "factId": "principal-not-guaranteed",
+            "title": "원금 미보장 위험",
+            "anchor": "원금 미보장",
+            "sectionPath": [
+              "제1부 모집 또는 매출에 관한 사항",
+              "III. 투자위험요소",
+              "3. 기타위험",
+              "나. 원금 미보장과 관련된 위험"
+            ],
+            "occurrence": 3,
+            "evidenceTokens": [
+              "원금 미보장"
+            ],
+            "normalizedExcerptHash": "b908494f43183eec74a424c7b354ef119eeee844859d2d5f82ba4568e28833af"
+          }
+        ]
+      }
+    }
+  ]
+}

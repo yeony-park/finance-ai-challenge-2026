@@ -13,8 +13,9 @@ const WATCHLIST_PATH = "/watchlist";
 
 export function WatchlistNavLink() {
   const pathname = usePathname();
-  const hasWatchedOffers = hasKnownWatchedOffer(
-    useWatchedIds(),
+  const watchedIds = useWatchedIds();
+  const hasWatchedOffers = watchedIds.some((id) => /^re-offer-\d{2}$/.test(id)) || hasKnownWatchedOffer(
+    watchedIds,
     PUBLISHED_OFFER_IDS,
   );
   const isCurrent =
