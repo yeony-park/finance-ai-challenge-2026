@@ -183,7 +183,11 @@ export function EvidenceResultPanel({ result }: { readonly result: EvidenceResul
               const href = url
                 ? isArtJson ? `${url}#selected-art-product` : `${url.replace(/#.*$/, "")}#page=${item.page}`
                 : null;
-              const locator = isArtJson ? `근거 섹션 ${item.page}` : `${item.page}쪽`;
+              const locator = isArtJson
+                ? `근거 섹션 ${item.page}`
+                : item.chunkId.includes("-dart-full-")
+                  ? `문서 섹션 ${item.page}`
+                  : `${item.page}쪽`;
               const label = `${item.title} · ${locator} · ${item.asOf} 기준`;
               return (
                 <li key={item.chunkId}>

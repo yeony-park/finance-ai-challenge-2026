@@ -2,7 +2,7 @@ import { createElement, Fragment } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, describe, expect, test, vi } from "vitest";
 
-import { EvidenceQuery, requestEvidence, type EvidenceQueryScope } from "./EvidenceQuery";
+import { EvidenceQuery, EvidenceResultPanel, requestEvidence, type EvidenceQueryScope } from "./EvidenceQuery";
 import { ProductAiSummary } from "./ProductAiSummary";
 import { ProductCopilot } from "./ProductCopilot";
 
@@ -53,5 +53,24 @@ describe("공통 AI 연동", () => {
     expect(html.match(new RegExp(`popoverTarget="${id}"`, "g"))).toHaveLength(2);
     expect(html).toContain('popoverTargetAction="hide"');
     expect(html).toContain('role="dialog"');
+  });
+
+  test("DART 전체 공시의 논리 위치를 실제 PDF 쪽수처럼 표시하지 않는다", () => {
+    const html = renderToStaticMarkup(createElement(EvidenceResultPanel, { result: {
+      outcome: "evidence_only",
+      answer: "관련 근거를 확인했습니다.",
+      answerSource: "none",
+      limitations: [],
+      evidence: [{
+        chunkId: "cattle-livestock-9-dart-full-20260902000022-chunk-0001",
+        title: "증권신고서(투자계약증권)",
+        page: 1,
+        sourceUrl: "https://dart.fss.or.kr/example",
+        asOf: "2026-09-02",
+        excerpt: "정정된 투자위험요소입니다.",
+      }],
+    }}));
+    expect(html).toContain("문서 섹션 1");
+    expect(html).not.toContain("1쪽");
   });
 });

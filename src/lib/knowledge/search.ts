@@ -34,7 +34,9 @@ const STANDARD_QUERY_TERMS: Readonly<Record<string, readonly string[]>> = {
   "운영그룹 과거이력": ["운영그룹", "완료", "이력"],
 };
 
-const HISTORY_CONTROL_WORDS = new Set(["정정", "전후", "원본", "차이", "비교", "변경", "이전", "과거", "이력"]);
+const HISTORY_CONTROL_WORDS = new Set(["전후", "원본", "차이", "비교", "이전", "과거", "이력"]);
+const SEARCH_CONTROL_WORDS = new Set([...HISTORY_CONTROL_WORDS, "정정"]);
+const MAX_EVIDENCE_CHARS = 1_800;
 
 export const normalizeKorean = (value: string): string =>
   value
@@ -80,6 +82,15 @@ export const normalizeSearchQuery = (value: string): string =>
     .filter(Boolean)
     .join(" ");
 
+const isFilingHistoryQuery = (query: string): boolean => {
+  const terms = normalizeSearchQuery(query).split(" ");
+  if (terms.includes("최신")) return false;
+  return terms.some((term) => HISTORY_CONTROL_WORDS.has(term));
+};
+
+const isAmendmentSummaryQuery = (query: string): boolean =>
+  /정정/.test(normalizeKorean(query)) && !isFilingHistoryQuery(query);
+
 export const isRankingRequest = (value: string): boolean =>
   normalizeKorean(value)
     .split(" ")
@@ -92,10 +103,11 @@ export const isPricingBasisQuery = (value: string): boolean => {
 };
 
 const termGroupsOf = (query: string): readonly (readonly string[])[] => {
+  if (isAmendmentSummaryQuery(query)) return [["기재정정"]];
   const normalized = normalizeSearchQuery(query);
   const terms = STANDARD_QUERY_TERMS[normalized] ?? normalized
     .split(" ")
-    .filter((term) => term && !HISTORY_CONTROL_WORDS.has(term));
+    .filter((term) => term && !SEARCH_CONTROL_WORDS.has(term));
   return terms.map((term) => [...new Set([term, ...(SYNONYMS[term] ?? [])])]);
 };
 
@@ -111,13 +123,14 @@ const occurrences = (haystack: string, needle: string): number => {
 
 export const excerptOf = (text: string, terms: readonly string[] = []): string => {
   const compact = text.replace(/\s+/g, " ").trim();
+  if (compact.length <= MAX_EVIDENCE_CHARS) return compact;
   const comparable = compact.normalize("NFKC").toLocaleLowerCase("ko-KR");
   const first = terms
     .map((term) => comparable.indexOf(term))
     .filter((index) => index >= 0)
     .sort((a, b) => a - b)[0];
-  const start = Math.max(0, (first ?? 0) - 80);
-  const end = Math.min(compact.length, start + 320);
+  const start = Math.max(0, Math.min((first ?? 0) - 80, compact.length - MAX_EVIDENCE_CHARS));
+  const end = Math.min(compact.length, start + MAX_EVIDENCE_CHARS);
   const excerpt = compact.slice(start, end);
   if (end === compact.length) return excerpt;
 
@@ -132,10 +145,36 @@ export const excerptOf = (text: string, terms: readonly string[] = []): string =
   return excerpt.slice(0, boundary > 0 ? boundary : excerpt.length).trimEnd();
 };
 
-const isFilingHistoryQuery = (query: string): boolean => {
-  const terms = normalizeSearchQuery(query).split(" ");
-  if (terms.includes("최신")) return false;
-  return terms.some((term) => HISTORY_CONTROL_WORDS.has(term));
+const AMENDMENT_DETAILS_MARKER = "기재정정사항은 하기의 정정사항을 확인하여 주시기 바랍니다";
+
+const skipRepeatedTableHeading = (value: string): string => {
+  let result = value;
+  while (true) {
+    const separator = result.indexOf(" | ");
+    if (separator < 0) return result;
+    const heading = result.slice(0, separator).trim();
+    const rest = result.slice(separator + 3).trimStart();
+    if (!heading || !rest.startsWith(heading)) return result;
+    result = rest;
+    const suffix = result.slice(heading.length);
+    if (/^\s+\d+\./.test(suffix)) return suffix.trimStart();
+  }
+};
+
+export const evidenceExcerptOf = (
+  text: string,
+  query: string,
+  terms: readonly string[] = [],
+): string => {
+  if (/정정/.test(normalizeKorean(query)) && !isFilingHistoryQuery(query)) {
+    const compact = text.replace(/\s+/g, " ").trim();
+    const marker = compact.lastIndexOf(AMENDMENT_DETAILS_MARKER);
+    const details = marker < 0
+      ? ""
+      : compact.slice(marker + AMENDMENT_DETAILS_MARKER.length).replace(/^\s*\|\s*/, "").trim();
+    if (details) return excerptOf(skipRepeatedTableHeading(details), terms);
+  }
+  return excerptOf(text, terms);
 };
 
 export const preferCurrentFilingChunks = <T extends {
@@ -260,7 +299,7 @@ export const searchChunks = (
       ...(chunk.scenarioId ? { scenarioId: chunk.scenarioId } : {}),
       title: chunk.title,
       page: chunk.page,
-      excerpt: excerptOf(chunk.text, terms),
+      excerpt: evidenceExcerptOf(chunk.text, query, terms),
       sourceUrl: chunk.sourceUrl,
       asOf: chunk.asOf,
       dataNature: chunk.dataNature,

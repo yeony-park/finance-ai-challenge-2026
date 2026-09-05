@@ -7,7 +7,7 @@ import type {
 import type { GenericKnowledgeEvidence } from "../retrieval";
 import type { ChunkRecord, CommonChunkRecord } from "../schema";
 
-import { excerptOf, preferCurrentFilingChunks, searchChunks, type SearchHit } from "../search";
+import { evidenceExcerptOf, preferCurrentFilingChunks, searchChunks, type SearchHit } from "../search";
 import {
   collectCanonicalSemanticCorpus,
   exactCorpusScope,
@@ -102,6 +102,7 @@ const localScopeKey = (scope: Parameters<typeof searchLocalRagStore>[0]["scope"]
 const hitFromCanonical = (
   chunk: CanonicalSemanticChunk,
   score: number,
+  query: string,
 ): SearchHit => {
   if (chunk.scope.categoryId === "general") {
     throw new Error("general knowledge chunk cannot be converted to a product search hit");
@@ -115,7 +116,7 @@ const hitFromCanonical = (
   ...(chunk.scope.scenarioId ? { scenarioId: chunk.scope.scenarioId } : {}),
   title: chunk.title,
   page: chunk.page,
-  excerpt: excerptOf(chunk.text),
+  excerpt: evidenceExcerptOf(chunk.text, query),
   sourceUrl: chunk.sourceUrl,
   asOf: chunk.asOf,
   dataNature: chunk.scope.dataNature,
@@ -201,7 +202,7 @@ export const searchSemanticKnowledge = async (
       canonical.sourceHash !== hit.sourceHash ||
       canonical.chunkHash !== hit.chunkHash
     ) return [];
-    return [hitFromCanonical(canonical, hit.score)];
+    return [hitFromCanonical(canonical, hit.score, options.query)];
   }).slice(0, limit);
   if (hits.length === 0) return keyword("score-below-threshold", lexical);
   return { hits, strategy: "semantic", semantic: true, degraded: false };
