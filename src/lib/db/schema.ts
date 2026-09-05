@@ -202,7 +202,7 @@ export const ragDocuments = pgTable(
     ),
     check(
       "rag_documents_product_canonical_id_required_check",
-      sql`${t.scopeKind} <> 'product' or ${t.canonicalDocumentId} is not null`,
+      sql`${t.scopeKind} <> 'product' or ${t.status} = 'revoked' or ${t.canonicalDocumentId} is not null`,
     ),
     check(
       "rag_documents_data_nature_check",
@@ -333,7 +333,7 @@ export const ragChunks = pgTable(
     ),
     check(
       "rag_chunks_product_canonical_id_required_check",
-      sql`${t.scopeKind} <> 'product' or ${t.canonicalChunkId} is not null`,
+      sql`${t.scopeKind} <> 'product' or ${t.status} = 'revoked' or ${t.canonicalChunkId} is not null`,
     ),
     check(
       "rag_chunks_data_nature_check",

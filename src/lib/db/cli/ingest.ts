@@ -1,4 +1,4 @@
-import { closeConnections, getDirectDb } from "../client";
+import { closeConnections, getDirectDb, getDirectSql } from "../client";
 import { directDatabaseUrl } from "../env";
 import { buildIngestPlan, type IngestPlan } from "../ingest/build";
 import { buildKnowledgeIngestPlan } from "../ingest/knowledge";
@@ -188,6 +188,15 @@ const main = async (): Promise<void> => {
     createDrizzleKnowledgeWriteExecutor(db),
     KNOWLEDGE_FULL_SNAPSHOT,
   );
+  const directSql = getDirectSql();
+  await directSql`
+    ALTER TABLE rag_documents
+    VALIDATE CONSTRAINT rag_documents_product_canonical_id_required_check
+  `;
+  await directSql`
+    ALTER TABLE rag_chunks
+    VALIDATE CONSTRAINT rag_chunks_product_canonical_id_required_check
+  `;
   await db.transaction((tx) => ingestCattle(tx, plan));
   await db.transaction((tx) => ingestReTrades(tx, plan));
   await db.transaction((tx) => ingestPig(tx, plan));

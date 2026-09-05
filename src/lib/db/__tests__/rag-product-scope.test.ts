@@ -245,24 +245,28 @@ describe("0004 migration artifact", () => {
 
 describe("0006/0007 canonical ID migration artifacts", () => {
   test("ID 형식·고유성·product 필수 제약을 포함한다", async () => {
-    const [ids, required] = await Promise.all([
+    const [ids, required, ingest] = await Promise.all([
       readFile("db/migrations/0006_rag_canonical_ids.sql", "utf8"),
       readFile(
         "db/migrations/0007_rag_product_canonical_ids_required.sql",
         "utf8",
       ),
+      readFile("src/lib/db/cli/ingest.ts", "utf8"),
     ]);
 
     expect(ids).toContain("canonical_document_id");
     expect(ids).toContain("canonical_chunk_id");
     expect(ids).toContain("CREATE UNIQUE INDEX");
     expect(required).toContain(
-      "scope_kind <> 'product' OR canonical_document_id IS NOT NULL",
+      "scope_kind <> 'product' OR status = 'revoked' OR",
     );
-    expect(required).toContain(
-      "scope_kind <> 'product' OR canonical_chunk_id IS NOT NULL",
+    expect(required).not.toContain("VALIDATE CONSTRAINT");
+    expect(ingest).toContain(
+      "VALIDATE CONSTRAINT rag_documents_product_canonical_id_required_check",
     );
-    expect(required).toContain("VALIDATE CONSTRAINT");
+    expect(ingest).toContain(
+      "VALIDATE CONSTRAINT rag_chunks_product_canonical_id_required_check",
+    );
     expect(`${ids}\n${required}`).not.toMatch(/\bDROP\s/i);
   });
 });
