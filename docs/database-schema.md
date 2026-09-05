@@ -6,7 +6,8 @@
 ## 현재 적용 상태
 
 - 코드에는 AWS RDS PostgreSQL 18과 pgvector용 스키마·마이그레이션·repository가 준비돼 있다.
-- 상품 원장과 RAG 전체본문의 최종 RDS 적재, `embedding` 저장, pgvector 검색 전환은 아직 완료되지 않았다.
+- 상품 원장과 RAG 전체본문의 최종 RDS 적재는 아직 실행하지 않았다.
+- 로컬 SQLite 임베딩을 해시 검증 후 RDS로 이전하는 `db:embedding:sync`와 DB 모드 pgvector 검색 경로는 구현돼 있다.
 - `DATABASE_URL`이 없으면 애플리케이션은 파일 및 로컬 SQLite 벡터 색인을 사용한다.
 - 실제 RDS의 현재 행 수와 적용된 마이그레이션은 운영 접속 전까지 미확인이다.
 
@@ -100,9 +101,10 @@ offerings (상품 1건당 1행)
 2. `db/roles.sql`로 제한 런타임 역할을 만든다.
 3. 상품·외부 관측 데이터를 seed/ingest한다.
 4. 문서와 청크를 `rag_documents`, `rag_chunks`에 적재한다.
-5. 청크 임베딩을 `rag_chunks.embedding`에 저장한다.
-6. DB repository의 pgvector 검색을 활성화하고 로컬 SQLite 결과와 비교한다.
-7. `DATABASE_URL`에는 제한 역할 접속 문자열만 배포한다.
+5. `npm run db:embedding:sync -- --check`로 로컬 임베딩과 canonical corpus가 일치하는지 검사한다.
+6. `npm run db:embedding:sync`로 청크 임베딩을 `rag_chunks.embedding`에 저장한다.
+7. DB repository의 pgvector 검색과 로컬 SQLite 결과를 비교한다.
+8. `DATABASE_URL`에는 제한 역할 접속 문자열만 배포한다.
 
 접속 문자열 형식:
 

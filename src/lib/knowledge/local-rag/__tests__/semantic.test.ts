@@ -4,6 +4,7 @@ import path from "node:path";
 import { afterEach, describe, expect, test } from "vitest";
 
 import type { ProductKnowledgeRepository } from "@/lib/db/repositories/types";
+import type { DbSemanticSearchRepository } from "@/lib/db/repositories/semantic-search-db";
 
 import type { CanonicalSemanticCorpus } from "../corpus";
 import type { LocalRagEmbedder } from "../embedding";
@@ -127,6 +128,70 @@ const repository: ProductKnowledgeRepository = {
 };
 
 describe("exact-scope semantic knowledge adapter", () => {
+  test("DB 모드는 SQLite 대신 pgvector hit을 canonical hash로 재검증한다", async () => {
+    let calls = 0;
+    const dbRepository: DbSemanticSearchRepository = {
+      async searchGeneral() { return []; },
+      async searchProducts() { return []; },
+      async searchProduct() {
+        calls += 1;
+        return [{
+          sourceId: semanticChunk.documentId,
+          categoryId: semanticChunk.scope.categoryId,
+          productId: semanticChunk.scope.productId,
+          scenarioId: semanticChunk.scope.scenarioId,
+          dataNature: semanticChunk.scope.dataNature,
+          sourceHash: semanticChunk.sourceHash,
+          chunkHash: semanticChunk.chunkHash,
+          score: 0.9,
+        }];
+      },
+    };
+    const result = await searchSemanticKnowledge({
+      scope: productScope,
+      query: "작품 유지 대가는 어느 정도인가요",
+      enabled: true,
+      corpus,
+      repository,
+      embedder: { async embedDocuments() { return []; }, async embedQuery() { return vector(); } },
+      dbRepository,
+    });
+
+    expect(calls).toBe(1);
+    expect(result).toMatchObject({ strategy: "semantic", semantic: true, degraded: false });
+    expect(result.hits[0]).toMatchObject({ chunkId: semanticChunk.chunkId, score: 0.9 });
+  });
+
+  test("일반지식 DB hit도 등록 corpus 해시가 일치할 때만 반환한다", async () => {
+    const general = generalCorpus.chunks[0]!;
+    const dbRepository: DbSemanticSearchRepository = {
+      async searchProduct() { return []; },
+      async searchProducts() { return []; },
+      async searchGeneral() {
+        return [{
+          sourceId: general.documentId,
+          categoryId: null,
+          productId: null,
+          scenarioId: null,
+          dataNature: null,
+          sourceHash: general.sourceHash,
+          chunkHash: general.chunkHash,
+          score: 0.88,
+        }];
+      },
+    };
+    const result = await searchSemanticGeneralKnowledge({
+      query: "권리와 위험 확인",
+      enabled: true,
+      corpus: generalCorpus,
+      embedder: { async embedDocuments() { return []; }, async embedQuery() { return vector(); } },
+      dbRepository,
+    });
+
+    expect(result).toMatchObject({ semantic: true, degraded: false });
+    expect(result.evidence[0]).toMatchObject({ sourceId: general.documentId, score: 0.88 });
+  });
+
   test("일반 지식은 상품 scope와 분리된 SQLite 범위에서 출처 근거로 검색한다", async () => {
     const root = mkdtempSync(path.join(os.tmpdir(), "semantic-general-"));
     roots.push(root);

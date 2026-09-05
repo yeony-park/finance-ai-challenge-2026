@@ -8,6 +8,7 @@ import { filterOutput } from "@/lib/spine/guardrail/output-filter";
 
 import {
   isGenericKnowledgeQuery,
+  retrieveGenericKnowledge,
   resolveRetrievalRepositories,
   type GenericKnowledgeEvidence,
   type RetrievalRepositories,
@@ -30,7 +31,6 @@ import {
 } from "./local-rag/semantic";
 import type { CanonicalSemanticCorpus } from "./local-rag/corpus";
 import type { LocalRagEmbedder } from "./local-rag/embedding";
-import { searchApprovedGenericCorpus } from "./local-rag/generic-corpus";
 import type { ChunkRecord, CommonChunkRecord } from "./schema";
 import type { SearchHit } from "./search";
 
@@ -656,7 +656,10 @@ export const orchestrateGlobalSearch = async (
     const repositories = options.repositories ?? await resolveRetrievalRepositories({ dataDir: options.dataRoot });
     const keywordEvidence = semantic.evidence.length > 0
       ? []
-      : await searchApprovedGenericCorpus(plan.semanticQuery, options.dataRoot, request.limit);
+      : (await retrieveGenericKnowledge(
+          repositories.rag,
+          plan.semanticQuery,
+        )).evidence.slice(0, request.limit);
     const evidence = semantic.evidence.length > 0
       ? semantic.evidence
       : keywordEvidence;

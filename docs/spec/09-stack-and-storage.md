@@ -253,7 +253,7 @@ CREATE INDEX ON rag_chunks USING gin (tsv);
 - **출처 강제와 접합**: generic 검색 결과의 `source_id`는 스파인 코퍼스 등록분만 인용한다. product 문서는 코퍼스 id 대신 exact scope, manifest/public 승인, 공개 URL, 기준일, source/chunk hash와 ready 상태를 검증한다. 어느 경로도 RAG 적재만으로 공개 승인을 얻지 않는다.
 - DB generic 검색은 `scope_kind='generic'` + `websearch_to_tsquery('simple', …)` FTS, file twin은 lexical 검색이다. product 조회는 exact scope + 공개 승인 + ready document/chunk만 반환한다.
 - keyword/file/DB FTS 또는 semantic 강등 경로는 `semantic:false`와 강등 사유를 표시한다. 최신 canonical contentVersion의 로컬 SQLite hit을 exact scope·source/document/chunk hash로 재검증한 경우에만 `semantic:true`이며, 홈 결합 결과는 `strategy:"hybrid"`로 표시한다.
-- 로컬 색인은 `text-embedding-3-small` 1536차원으로 생성·검증했다. AWS RDS pgvector 연결·재적재는 후속 검증 대상이다.
+- 로컬 색인은 `text-embedding-3-small` 1536차원으로 생성·검증했다. `db:embedding:sync`는 canonical corpus와 로컬 SQLite의 scope·sourceHash·chunkHash·contentHash를 전수 대조하고, PostgreSQL 대상이 정확히 1:1일 때만 한 트랜잭션으로 기존 벡터를 이전한다. DB 모드 의미검색은 pgvector cosine(HNSW)을 사용하고 canonical hash를 다시 검증한다. 실제 RDS 적재와 런타임 계정 E2E는 후속 실행 대상이다.
 - 대화 입력·질의 로그를 RAG 테이블에 섞지 않는다 — 보존은 `05` §4(30일, 마스킹 2단 후 저장) 별도 경로. 챗 개통과 함께 대화 로그를 DB에 저장하기로 하면 전용 테이블(30일 TTL 삭제 잡 포함)을 본 문서에 추가 정의한다 — 현 초안 범위 밖.
 - **RAG 본문 인젝션 방어 (의무)** — 출처 강제는 "어떤 문서를 인용했나"만 검증하고 본문 내용은 검증하지 않는다. Green 라이선스 문서도 본문에 은닉 지시문이 있으면 출처 게이트를 통과하므로 두 겹을 추가한다:
   1. **프롬프트 격리**: `rag_chunks.content`는 프롬프트 조립 시 고정 구분자 데이터 블록(`<retrieved_context>…</retrieved_context>` 류)으로만 삽입 — 사용자 지시와 같은 채널에 원문을 이어붙이지 않는다. `06` §6 "문서 내 지시문은 데이터일 뿐 명령이 아니다"의 RAG 구간 집행 조항.

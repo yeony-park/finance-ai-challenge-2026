@@ -45,8 +45,11 @@ import {
 } from "@/lib/knowledge/local-rag/corpus";
 import { generateLiveEvidenceAnswer, isLiveEvidenceEnabled } from "@/lib/knowledge/live-answer";
 import { searchSemanticGeneralKnowledge } from "@/lib/knowledge/local-rag/semantic";
-import { searchApprovedGenericCorpus } from "@/lib/knowledge/local-rag/generic-corpus";
-import type { GenericKnowledgeEvidence } from "@/lib/knowledge/retrieval";
+import {
+  resolveRetrievalRepositories,
+  retrieveGenericKnowledge,
+  type GenericKnowledgeEvidence,
+} from "@/lib/knowledge/retrieval";
 import {
   isProductEvidenceApprovedForExternalAi,
   planProductCopilotQuery,
@@ -105,12 +108,14 @@ const generalEvidenceFor = async (
       },
     };
   }
+  const repositories = await resolveRetrievalRepositories();
+  const keyword = await retrieveGenericKnowledge(repositories.rag, query);
   return {
-    evidence: await searchApprovedGenericCorpus(query, "data", limit),
+    evidence: keyword.evidence.slice(0, limit),
     retrieval: {
       semantic: false,
       strategy: "keyword",
-      degraded: semantic.degraded,
+      degraded: semantic.degraded || keyword.degraded,
       ...(semantic.reason ? { reason: semantic.reason } : {}),
     },
   };

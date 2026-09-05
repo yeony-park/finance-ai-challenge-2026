@@ -285,7 +285,7 @@ describe("③ rag_documents.source_id 미등록 id 거부 (R-STO-12)", () => {
 });
 
 describe("generic RAG DB scope", () => {
-  test("SQL이 product rows를 제외하는 generic scope를 강제한다", async () => {
+  test("SQL이 generic 공개·외부AI·PII 승인 범위를 강제한다", async () => {
     let sqlText = "";
     let params: readonly unknown[] = [];
     const repository = createDbRagSearchRepository(async (statement) => {
@@ -297,6 +297,10 @@ describe("generic RAG DB scope", () => {
     await repository.search("공시 대조");
     expect(sqlText).toContain("c.scope_kind = 'generic'");
     expect(sqlText).toContain("d.scope_kind = 'generic'");
+    expect(sqlText).toContain("d.approved_for_public IS TRUE");
+    expect(sqlText).toContain("c.approved_for_external_ai IS TRUE");
+    expect(sqlText).toContain("d.pii_review_status = 'passed'");
+    expect(sqlText).toContain("d.source_hash = c.source_hash");
     expect(params).toContain("공시 대조");
   });
 });
