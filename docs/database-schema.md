@@ -5,11 +5,12 @@
 
 ## 현재 적용 상태
 
-- 코드에는 AWS RDS PostgreSQL 18과 pgvector용 스키마·마이그레이션·repository가 준비돼 있다.
-- 상품 원장과 RAG 전체본문의 최종 RDS 적재는 아직 실행하지 않았다.
-- 로컬 SQLite 임베딩을 해시 검증 후 RDS로 이전하는 `db:embedding:sync`와 DB 모드 pgvector 검색 경로는 구현돼 있다.
+- AWS RDS PostgreSQL 18에 `0006_rag_canonical_ids.sql`까지 적용돼 있다.
+- 상품 원장 26건, 일반지식 문서 11건, 상품 RAG 문서 95건·청크 13,219건을 적재했다.
+- RAG 전체 13,240청크 중 canonical corpus 대상 13,219청크에 `text-embedding-3-small` 벡터가 저장돼 있다.
+- 로컬 SQLite 임베딩을 해시 검증 후 RDS로 이전하는 `db:embedding:sync`와 DB 모드 pgvector 검색 경로가 실제 E2E를 통과했다.
+- 제한 런타임 역할을 상속한 임시 `jj` 계정으로 공개 상품 뷰·RAG 조회, Home 검색, 상품 Copilot을 확인했다. `jj`는 원본 `offerings` 조회와 schema 객체 생성을 할 수 없다.
 - `DATABASE_URL`이 없으면 애플리케이션은 파일 및 로컬 SQLite 벡터 색인을 사용한다.
-- 실제 RDS의 현재 행 수와 적용된 마이그레이션은 운영 접속 전까지 미확인이다.
 
 ## 관계 요약
 
