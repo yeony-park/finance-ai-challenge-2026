@@ -1,6 +1,6 @@
 .categoryStage {
   min-height: calc(
-    100dvh - var(--ds-header-h) - var(--ds-section-y-tight)
+    100dvh - var(--ds-header-h) - var(--ds-section-y-tight) + 1px
   );
   padding-top: 0;
 }
@@ -105,7 +105,7 @@
   gap: var(--ds-space-2);
   margin-top: var(--ds-space-4);
   padding-bottom: 2px;
-  border-bottom: 2px solid var(--ds-accent);
+  border-bottom: var(--ds-underline-w) solid var(--ds-accent);
   color: var(--ds-ink);
   font-size: var(--ds-text-sm);
   font-weight: var(--ds-weight-bold);
@@ -114,7 +114,7 @@
 }
 
 .categoryReportLink:hover {
-  gap: 0.65rem;
+  gap: var(--ds-link-gap-hover);
 }
 
 .categoryReportLink:focus-visible {
@@ -135,10 +135,6 @@
 @media (max-width: 640px) {
   .sectionTitleRow {
     gap: var(--ds-space-3);
-  }
-
-  .sectionAllReports {
-    font-size: var(--ds-text-xs);
   }
 
   .categoryGrid {

@@ -63,15 +63,34 @@ export const isPublishedOfferId = (offerId: string): boolean =>
 
 export const TOTAL_2026_OFFER_COUNT = 8;
 
-export const categoryIdToAssetKind = (categoryId: string): AssetKind => {
+/** 공모 목록을 가진 카테고리만 자산 종류를 갖는다(한돈·미술품은 없음). */
+export const optionalCategoryAssetKind = (
+  categoryId: string,
+): AssetKind | null => {
   switch (categoryId) {
     case "cattle":
       return "livestock";
     case "real-estate":
       return "real-estate";
     default:
-      throw new Error(`[offers] 매핑 불가 categoryId: ${categoryId}`);
+      return null;
   }
+};
+
+export const categoryIdToAssetKind = (categoryId: string): AssetKind => {
+  const assetKind = optionalCategoryAssetKind(categoryId);
+  if (assetKind === null) {
+    throw new Error(`[offers] 매핑 불가 categoryId: ${categoryId}`);
+  }
+  return assetKind;
+};
+
+export const reportHrefForOffer = (
+  offer: Pick<OfferEntry, "id" | "assetKind">,
+): string => {
+  const categoryId =
+    offer.assetKind === "livestock" ? "cattle" : "real-estate";
+  return `/${categoryId}/products/${encodeURIComponent(offer.id)}`;
 };
 
 export const latestOfferEntry = (
@@ -194,4 +213,13 @@ export const classifyRealEstateOffer = (
     return "current-confirmed";
   }
   return "operating-needs-check";
+};
+
+/** 이전 공모 링크를 카테고리 상세로 연결한다. 존재·공개 여부는 상세 라우트에서 확인한다. */
+export const productHref = (id: string): string | null => {
+  const category = id.startsWith("livestock-") ? "cattle"
+    : id.startsWith("pig-") ? "pig"
+    : id.startsWith("re-offer-") || id.startsWith("real-estate-") ? "real-estate"
+    : null;
+  return category ? `/${category}/products/${encodeURIComponent(category === "pig" ? id.replace(/^pig-/, "round-") : id)}` : null;
 };

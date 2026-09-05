@@ -14,7 +14,6 @@ interface HomeHeroTitleProps {
   readonly query: string;
   readonly isSearchOpen: boolean;
   readonly hasMatch: boolean;
-  readonly isTitleSplit: boolean;
   readonly onCloseSearch: () => void;
 }
 
@@ -25,16 +24,13 @@ export function HomeHeroTitle({
   query,
   isSearchOpen,
   hasMatch,
-  isTitleSplit,
   onCloseSearch,
 }: HomeHeroTitleProps) {
   return (
     <h1
       ref={titleRef}
       id="home-hero-title"
-      className={`${visual.heroTitle} ${search.heroTitle} ${
-        !isTitleSplit && !isSearchOpen ? visual.heroTitleUnified : ""
-      }`}
+      className={`${visual.heroTitle} ${search.heroTitle}`}
       aria-label={isSearchOpen ? query : HOME_HERO_TITLE}
     >
       {isSearchOpen ? (
@@ -61,7 +57,6 @@ export function HomeHeroTitle({
               {HOME_HERO_TITLE_PARTS[0]?.text}
               <em className={visual.mark}>
                 {HOME_HERO_TITLE_PARTS[1]?.text}
-                {!isTitleSplit ? HOME_HERO_TITLE_PARTS[2]?.text : null}
               </em>
             </span>
           </span>
@@ -72,17 +67,11 @@ export function HomeHeroTitle({
               ref={questionRef}
               className={`${visual.heroTitleText} ${search.heroTitleText}`}
             >
-              {!isTitleSplit ? (
-                HOME_HERO_TITLE_PARTS[3]?.text
-              ) : (
-                <>
-                  <span aria-hidden="true">{"\u00a0"}</span>
-                  <em className={visual.mark}>
-                    {HOME_HERO_TITLE_PARTS[2]?.text.trimStart()}
-                  </em>
-                  {HOME_HERO_TITLE_PARTS[3]?.text}
-                </>
-              )}
+              <span aria-hidden="true">{"\u00a0"}</span>
+              <em className={visual.mark}>
+                {HOME_HERO_TITLE_PARTS[2]?.text.trimStart()}
+              </em>
+              {HOME_HERO_TITLE_PARTS[3]?.text}
             </span>
           </span>
         </>

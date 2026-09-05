@@ -37,7 +37,6 @@
     "reference:mafra-asf": "node scripts/collect-mafra-asf.mjs",
     "reference:mafra-fmd": "node scripts/collect-mafra-fmd.mjs",
     "reference:mafra-disease-api": "node --env-file=.env scripts/collect-mafra-disease-api.mjs",
-    "reference:korea-outline": "node scripts/collect-korea-outline.mjs",
     "track-record": "tsx --env-file-if-exists=.env src/lib/verify/track-record/cli.ts",
     "watch:refresh": "tsx --env-file-if-exists=.env src/lib/verify/amend/monitor-cli.ts",
     "goldset:prelabel": "tsx src/lib/verify/goldset/cli.ts prelabel",
@@ -61,6 +60,7 @@
     "next": "^16.3.1",
     "pdfjs-dist": "6.2.108",
     "postgres": "^3.4.9",
+    "pretendard": "^1.3.9",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "zod": "^4.4.3"

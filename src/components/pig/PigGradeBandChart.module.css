@@ -107,7 +107,7 @@
 .axisText,
 .strongLabel {
   font-family: var(--ds-font-mono);
-  font-size: 11px;
+  font-size: var(--ds-text-2xs);
 }
 
 .axisText {

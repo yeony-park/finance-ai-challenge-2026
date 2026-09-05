@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState, type CSSProperties, type UIEvent } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 
 import { AI_ROLE_SENTENCE, INTRO_CARDS, METHOD_STEP_TITLE } from "@/lib/content/home";
 
@@ -12,10 +12,13 @@ import { HomeSectionFrame, HomeSectionHeader } from "./HomeSection";
 import s from "./IntroBand.module.css";
 
 const AUTO_ADVANCE_MS = 30_000;
+/** IntroBand.module.css 의 카드 가로 스크롤 분기와 같은 폭. */
+const ROADMAP_SWIPE_QUERY = "(max-width: 980px)";
 
 export function IntroBand() {
   const sectionRef = useRef<HTMLElement>(null);
   const roadmapRef = useRef<HTMLOListElement>(null);
+  const swipeFrameRef = useRef(0);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isSectionInView, setIsSectionInView] = useState(false);
   const [sectionVisit, setSectionVisit] = useState(0);
@@ -25,6 +28,15 @@ export function IntroBand() {
     const nextIndex = Math.min(Math.max(index, 0), cardCount - 1);
     setActiveIndex(nextIndex);
   };
+
+  useEffect(
+    () => () => {
+      if (swipeFrameRef.current !== 0) {
+        window.cancelAnimationFrame(swipeFrameRef.current);
+      }
+    },
+    [],
+  );
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -80,18 +92,26 @@ export function IntroBand() {
     return () => window.clearTimeout(timerId);
   }, [activeIndex, cardCount, isSectionInView]);
 
-  const handleScroll = (event: UIEvent<HTMLOListElement>) => {
-    if (!window.matchMedia("(max-width: 980px)").matches) return;
-    const roadmap = event.currentTarget;
-    const cards = Array.from(roadmap.children) as HTMLElement[];
-    if (cards.length === 0) return;
-    const nearest = cards.reduce((best, card, index) =>
-      Math.abs(card.offsetLeft - roadmap.scrollLeft) <
-      Math.abs(cards[best]!.offsetLeft - roadmap.scrollLeft)
-        ? index
-        : best,
-    0);
-    setActiveIndex(nearest);
+  // 가로 스와이프는 이벤트가 촘촘히 들어오므로 프레임당 한 번만 측정한다.
+  const handleScroll = () => {
+    if (swipeFrameRef.current !== 0) return;
+    swipeFrameRef.current = window.requestAnimationFrame(() => {
+      swipeFrameRef.current = 0;
+      const roadmap = roadmapRef.current;
+      if (!roadmap || !window.matchMedia(ROADMAP_SWIPE_QUERY).matches) return;
+
+      const cards = Array.from(roadmap.children) as HTMLElement[];
+      if (cards.length === 0) return;
+      const nearest = cards.reduce(
+        (best, card, index) =>
+          Math.abs(card.offsetLeft - roadmap.scrollLeft) <
+          Math.abs(cards[best]!.offsetLeft - roadmap.scrollLeft)
+            ? index
+            : best,
+        0,
+      );
+      setActiveIndex(nearest);
+    });
   };
 
   return (

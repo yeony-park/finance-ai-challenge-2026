@@ -27,7 +27,6 @@ export function WatchlistView({
     <section className={s.page} aria-labelledby="watchlist-title">
       <div className={s.wrap}>
         <header className={s.hero}>
-          <p className={s.eyebrow}>관심 공모</p>
           <h1 id="watchlist-title" className={s.title}>
             {WATCH_BAND_TITLE}
           </h1>
@@ -51,11 +50,11 @@ export function WatchlistView({
                   ) : null}
                 </div>
                 <Link
-                  href={`/offers/${entry.id}#${WATCH_HEADING_ID}`}
+                  href={entry.isScenario ? entry.reportHref : `${entry.reportHref}#${WATCH_HEADING_ID}`}
                   className={s.watchLink}
-                  aria-label={`${entry.title} ${WATCH_REPORT_LINK_LABEL.replace(" →", "")}`}
+                  aria-label={`${entry.title} ${entry.isScenario ? "상품 검토 보기" : WATCH_REPORT_LINK_LABEL.replace(" →", "")}`}
                 >
-                  {WATCH_REPORT_LINK_LABEL}
+                  {entry.isScenario ? "상품 검토 보기 →" : WATCH_REPORT_LINK_LABEL}
                 </Link>
               </li>
             ))}
@@ -67,12 +66,8 @@ export function WatchlistView({
             </svg>
             <h2 className={s.emptyTitle}>관심 공모가 없습니다.</h2>
             <p className={s.emptyCopy}>
-              검증 리포트 카드의 하트를 누르면 이곳에서 정정 감시 상태를
-              모아볼 수 있습니다.
+              상품 카드에서 관심 등록을 누르면 이곳에서 다시 볼 수 있습니다.
             </p>
-            <Link href="/offers" className={s.emptyLink}>
-              검증 리포트 둘러보기 →
-            </Link>
           </div>
         )}
       </div>

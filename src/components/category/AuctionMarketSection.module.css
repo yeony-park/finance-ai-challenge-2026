@@ -107,12 +107,12 @@
 }
 
 .chartAxisText {
-  font-size: 11px;
+  font-size: var(--ds-text-2xs);
   fill: var(--ds-ink-faint);
 }
 
 .chartLabelStrong {
-  font-size: 11px;
+  font-size: var(--ds-text-2xs);
   font-weight: var(--ds-weight-bold);
   fill: var(--ds-ink);
 }
@@ -247,6 +247,6 @@
   stroke-dasharray: 3 4;
 }
 .chartMarkerText {
-  font-size: 10.5px;
+  font-size: var(--ds-text-2xs);
   fill: var(--ds-ink-faint);
 }

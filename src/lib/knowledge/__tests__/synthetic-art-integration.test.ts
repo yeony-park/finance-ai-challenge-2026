@@ -71,7 +71,7 @@ describe("synthetic art search and RAG integration", () => {
       item.assetKind === "art" &&
       item.dataNature === "scenario" &&
       item.namespace === "common" &&
-      item.href.startsWith("/art?scope=current&product=synthetic-offering-")
+      item.href.startsWith("/art/products/synthetic-offering-")
     )).toBe(true);
     expect(response.results.some((item) => item.productId.startsWith("ex-art-"))).toBe(false);
   });

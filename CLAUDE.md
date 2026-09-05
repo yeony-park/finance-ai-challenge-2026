@@ -60,8 +60,8 @@ npm run db:export    # DB → data/public/offerings/index.json (마스킹 게이
   `claims/`(LLM 추출 + 규칙 교차검증) → `adapters/`(축산물이력제·RTMS·경락가) → `judge/`(3값 판정)
   → `report/`(build → mask → public) → `narrative/`(눈높이 서술). `amend/`(정정 감시·리플레이),
   `track-record/`, `goldset/`은 부속 축. 각 CLI가 npm 스크립트의 진입점
-- `src/app/` — App Router 화면(`/` 입문자 홈, `/offers` 목록, `/offers/[id]` 리포트,
-  `/cattle`·`/pig`·`/art`·`/real-estate` 카테고리 착지, `/methodology`) + API
+- `src/app/` — App Router 화면(`/` 입문자 홈, `/cattle`·`/pig`·`/art`·`/real-estate`
+  카테고리 착지와 각 `/products/[id]` 리포트, `/methodology`) + API
   (`/api/health`, `/api/verify/[id]`, `/api/cron/monitor` — vercel.json cron 주 2회)
 - `src/lib/db/` — AWS RDS Postgres 저장 계층(ap-northeast-2, 2026-08-31 이전)(schema.ts=스키마 단일 진실, repositories/ file·DB 트윈,
   seed/·ingest/·export/·cli/, ledger/=검증 실행 이력·원장 관측). 렌더 경로 DB 조회 금지 —

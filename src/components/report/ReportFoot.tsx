@@ -9,7 +9,7 @@ import s from "./report.module.css";
 
 const FOOT_HEADING_ID = "report-foot-heading";
 
-export function ReportFoot() {
+export function ReportFoot({ analysisHref }: { readonly analysisHref: string }) {
   return (
     <section
       className={`${s.section} ${s.reportContentSection}`}
@@ -21,8 +21,8 @@ export function ReportFoot() {
             고지
           </h2>
           <p className={s.sectionLead}>
-            이 리포트는 공시와 공공 데이터의 일치 여부만 표시하며 투자 권유나 가치 평가가 아닙니다.
-            화면에 표시되는 발행사명·이력번호·소재지는 익명화 처리된 상태입니다.
+            공시·공개 자료에서 확인한 내용과 확인하지 못한 범위를 함께 표시합니다.
+            시나리오의 가정과 실제 관측 자료는 구분하며, 투자 권유나 수익 예측을 제공하지 않습니다.
           </p>
         </header>
 
@@ -48,11 +48,11 @@ export function ReportFoot() {
         />
 
         <div className={s.footLinks}>
-          <Link href="/offers" className={s.buttonGhost}>
+          <Link href={analysisHref} className={s.buttonGhost}>
             <span aria-hidden="true">←</span>
-            공모 목록으로 돌아가기
+            분석으로 돌아가기
           </Link>
-          <Link href="/#checklist" className={s.buttonGhost}>
+          <Link href="/#checklist-title" className={s.buttonGhost}>
             확인 질문 8가지 보기
           </Link>
         </div>

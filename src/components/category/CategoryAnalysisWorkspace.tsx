@@ -2,14 +2,10 @@ import type { ReactNode } from "react";
 
 import type { SubscriptionPhase } from "@/components/site/offers";
 import type { CategoryId } from "@/lib/content/categories";
-import type { Verdict } from "@/lib/verify/types";
 
 import home from "@/components/home/home.module.css";
-import {
-  CategoryAnalysisSidebar,
-  type AnalysisSectionLink,
-} from "./CategoryAnalysisSidebar";
 import { CategoryPageNav } from "./CategoryPageNav";
+import { CategoryAnalysisStatusTabs } from "./CategoryAnalysisStatusTabs";
 import s from "./category-shell.module.css";
 
 interface CategoryAnalysisWorkspaceProps {
@@ -17,9 +13,11 @@ interface CategoryAnalysisWorkspaceProps {
   readonly categoryHref: string;
   readonly title: string;
   readonly selectedPhase: SubscriptionPhase | null;
-  readonly selectedVerdict: Verdict | null;
-  readonly hasFilterableOffers: boolean;
-  readonly sections: readonly AnalysisSectionLink[];
+  readonly showStatusTabs: boolean;
+  readonly statusTabsSearchParams?: string;
+  readonly searchQuery?: string;
+  readonly analysisControls?: ReactNode;
+  readonly headerClassName?: string;
   readonly children: ReactNode;
 }
 
@@ -28,36 +26,39 @@ export function CategoryAnalysisWorkspace({
   categoryHref,
   title,
   selectedPhase,
-  selectedVerdict,
-  hasFilterableOffers,
-  sections,
+  showStatusTabs,
+  statusTabsSearchParams,
+  searchQuery = "",
+  analysisControls,
+  headerClassName,
   children,
 }: CategoryAnalysisWorkspaceProps) {
+  const statusControls = analysisControls ?? (
+    showStatusTabs ? (
+      <CategoryAnalysisStatusTabs
+        categoryHref={categoryHref}
+        selectedPhase={selectedPhase}
+        preservedSearchParams={statusTabsSearchParams}
+        searchQuery={searchQuery}
+        title={title}
+      />
+    ) : undefined
+  );
+
   return (
     <div className={`${home.wrap} ${s.analysisPage}`}>
-      <header className={s.analysisHeader}>
+      <header className={`${s.analysisHeader} ${headerClassName ?? ""}`}>
         <div className={s.analysisHeaderIdentity}>
           <h1>{title}</h1>
           <CategoryPageNav
             title={title}
-            href={categoryHref}
-            activeTab="analysis"
+            analysisControls={statusControls}
           />
         </div>
       </header>
 
-      <div className={s.analysisWorkspace}>
-        <CategoryAnalysisSidebar
-          categoryId={categoryId}
-          categoryHref={categoryHref}
-          selectedPhase={selectedPhase}
-          selectedVerdict={selectedVerdict}
-          hasFilterableOffers={hasFilterableOffers}
-          sections={sections}
-        />
-        <main className={s.analysisMain} id={`${categoryId}-analysis-results`}>
-          {children}
-        </main>
+      <div className={s.analysisMain} id={`${categoryId}-analysis-results`}>
+        {children}
       </div>
     </div>
   );

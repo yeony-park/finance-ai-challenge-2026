@@ -1,6 +1,6 @@
 .page {
   min-height: calc(100svh - var(--ds-header-h));
-  padding-block: clamp(3.5rem, 8vw, 7rem);
+  padding-block: var(--ds-page-section-gap);
   background: var(--ds-bg);
 }
 
@@ -13,15 +13,7 @@
 
 .hero {
   max-width: var(--ds-maxw-prose);
-  margin-bottom: clamp(2.5rem, 6vw, 4.5rem);
-}
-
-.eyebrow {
-  margin: 0 0 var(--ds-space-3);
-  color: var(--ds-ink-faint);
-  font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
-  letter-spacing: var(--ds-tracking-wide);
+  margin-bottom: var(--ds-content-gap);
 }
 
 .title {
@@ -82,20 +74,18 @@
   color: var(--ds-verdict-miss);
 }
 
-.watchLink,
-.emptyLink {
+.watchLink {
   color: var(--ds-ink);
   font-size: var(--ds-text-sm);
   font-weight: var(--ds-weight-bold);
   text-decoration: none;
-  border-bottom: 2px solid var(--ds-accent);
+  border-bottom: var(--ds-underline-w) solid var(--ds-accent);
   padding-bottom: 1px;
   white-space: nowrap;
   transition: border-color var(--ds-duration-base) var(--ds-ease);
 }
 
-.watchLink:hover,
-.emptyLink:hover {
+.watchLink:hover {
   border-color: var(--ds-ink);
 }
 
@@ -103,10 +93,9 @@
   display: grid;
   justify-items: start;
   gap: var(--ds-space-3);
-  padding: clamp(1.5rem, 4vw, 2.5rem);
-  border: 1px solid var(--ds-line);
+  padding: var(--ds-content-gap);
   border-radius: var(--ds-radius-panel);
-  background: var(--ds-surface);
+  background: var(--ds-bg-muted);
 }
 
 .emptyIcon {
@@ -133,10 +122,6 @@
   font-size: var(--ds-text-sm);
   line-height: var(--ds-leading-relaxed);
   word-break: keep-all;
-}
-
-.emptyLink {
-  margin-top: var(--ds-space-2);
 }
 
 @media (max-width: 640px) {

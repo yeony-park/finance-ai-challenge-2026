@@ -114,7 +114,6 @@ export function PigMarketInfographic({
       <article className={s.marketCard}>
         <header className={s.marketCardHeader}>
           <div>
-            <span className={s.eyebrow}>{PIG_PRICE.chartEyebrow}</span>
             <h4 className={s.cardHeading}>{PIG_PRICE.chartTitle}</h4>
             <p className={s.metaLine}>
               {market.filters.skinType} · {market.filters.grade} · {market.filters.region}

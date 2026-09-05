@@ -18,6 +18,7 @@ interface PigDisclosureDetailProps {
   readonly product: PigDisclosureProduct;
   readonly allProducts: readonly PigDisclosureProduct[];
   readonly dartAsOf: string;
+  readonly section?: "all" | "filing" | "history" | "reality" | "price";
 }
 
 const formatWon = (value: number): string => `${value.toLocaleString("ko-KR")}원`;
@@ -40,6 +41,7 @@ export function PigDisclosureDetail({
   product,
   allProducts,
   dartAsOf,
+  section = "all",
 }: PigDisclosureDetailProps) {
   const correctedDocument = product.documents.find(
     (document) => document.label === "기재정정 신고서",
@@ -47,10 +49,10 @@ export function PigDisclosureDetail({
 
   return (
     <div className={s.detail} id="pig-detail">
-      <section className={s.card} aria-labelledby="pig-overview-title">
+      {section === "all" || section === "filing" ? (
+        <section className={s.card} aria-labelledby="pig-overview-title">
         <div className={s.sectionHeading}>
           <div>
-            <p className={s.sectionLabel}>{PIG_OVERVIEW.label}</p>
             <h3 className={s.sectionTitle} id="pig-overview-title">
               {product.productName}
             </h3>
@@ -80,12 +82,13 @@ export function PigDisclosureDetail({
             <dd>{product.offering.heads.toLocaleString("ko-KR")}두</dd>
           </div>
         </dl>
-      </section>
+        </section>
+      ) : null}
 
-      <section className={s.card} aria-labelledby="pig-farm-title">
+      {section === "all" || section === "reality" ? (
+        <section className={s.card} aria-labelledby="pig-farm-title">
         <div className={s.sectionHeading}>
           <div>
-            <p className={s.sectionLabel}>{PIG_FARM.label}</p>
             <h3 className={s.sectionTitle} id="pig-farm-title">
               {PIG_FARM.title}
             </h3>
@@ -142,14 +145,15 @@ export function PigDisclosureDetail({
             {PIG_FARM.sourceLink}
           </a>
         </div>
-      </section>
+        </section>
+      ) : null}
 
-      <PigDiseaseContext product={product} />
+      {section === "all" ? <PigDiseaseContext product={product} /> : null}
 
-      <section className={s.card} aria-labelledby="pig-price-title">
+      {section === "all" || section === "price" ? (
+        <section className={s.card} aria-labelledby="pig-price-title">
         <div className={s.sectionHeading}>
           <div>
-            <p className={s.sectionLabel}>{PIG_PRICE.label}</p>
             <h3 className={s.sectionTitle} id="pig-price-title">
               {PIG_PRICE.title}
             </h3>
@@ -165,7 +169,6 @@ export function PigDisclosureDetail({
         />
 
         <div className={s.gradeBandHeading}>
-          <span className={s.eyebrow}>{PIG_PRICE.gradeBandEyebrow}</span>
           <h4 className={s.cardHeading}>{PIG_PRICE.gradeBandTitle}</h4>
           <p className={s.sectionDescription}>{PIG_PRICE.gradeBandDescription}</p>
         </div>
@@ -193,12 +196,13 @@ export function PigDisclosureDetail({
             </a>
           ) : null}
         </div>
-      </section>
+        </section>
+      ) : null}
 
-      <section className={s.card} aria-labelledby="pig-issuer-title">
+      {section === "all" || section === "history" ? (
+        <section className={s.card} aria-labelledby="pig-issuer-title">
         <div className={s.sectionHeading}>
           <div>
-            <p className={s.sectionLabel}>{PIG_ISSUER.label}</p>
             <h3 className={s.sectionTitle} id="pig-issuer-title">
               {PIG_ISSUER.title}
             </h3>
@@ -258,7 +262,7 @@ export function PigDisclosureDetail({
           </div>
         </div>
 
-        <div className={s.documentList}>
+        {section === "all" ? <div className={s.documentList}>
           <h4>{PIG_ISSUER.documentsHeading}</h4>
           <ul>
             {product.documents.map((document) => (
@@ -279,8 +283,9 @@ export function PigDisclosureDetail({
               </li>
             ))}
           </ul>
-        </div>
-      </section>
+        </div> : null}
+        </section>
+      ) : null}
     </div>
   );
 }

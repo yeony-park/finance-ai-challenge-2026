@@ -4,14 +4,14 @@ import { renderToStaticMarkup } from "react-dom/server";
 import CattlePage from "@/app/cattle/page";
 import OfferReportPage, {
   generateStaticParams,
-} from "@/app/offers/[id]/page";
-import OffersPage from "@/app/offers/page";
+} from "@/app/cattle/products/[id]/page";
+import LegacyPage from "@/app/offers/[id]/page";
 
 describe("공개 verification route availability", () => {
   test("목록은 개별 legacy report 실패를 artifact 카드로 대체하고 전체 렌더를 유지한다", async () => {
-    const markup = renderToStaticMarkup(await OffersPage());
+    const markup = renderToStaticMarkup(await CattlePage({ searchParams: Promise.resolve({}) }));
     for (let round = 1; round <= 8; round += 1) {
-      expect(markup).toContain(`href="/offers/livestock-${round}"`);
+      expect(markup).toContain(`href="/cattle/products/livestock-${round}"`);
     }
     expect(markup).toContain("원금 미보장 문단 확인");
     await expect(
@@ -30,13 +30,13 @@ describe("공개 verification route availability", () => {
     ).resolves.toBeTruthy();
   });
 
-  test("정적 경로에는 승인된 cattle과 pig 상세을 포함한다", async () => {
+  test("한우 정적 경로와 한돈 이전 링크를 보존한다", async () => {
     const params = await generateStaticParams();
     for (let round = 1; round <= 9; round += 1) {
       expect(params).toContainEqual({ id: `livestock-${round}` });
     }
-    for (let round = 1; round <= 3; round += 1) {
-      expect(params).toContainEqual({ id: `pig-${round}` });
-    }
+    await expect(LegacyPage({ params: Promise.resolve({ id: "pig-1" }) })).rejects.toMatchObject({
+      digest: expect.stringContaining("/pig/products/round-1"),
+    });
   });
 });

@@ -2,23 +2,40 @@
 
 import { useEffect, useState } from "react";
 
-import type { ScaffoldMatch } from "@/lib/content/scaffold-match";
+import {
+  invalidatesLayout,
+  requestLayoutFrame,
+  subscribeToScrollFrame,
+} from "@/components/motion/scroll-frame";
 
 import {
-  easeHeroShrink,
-  easeOutCubic,
-  HERO_SHRINK_SCROLL_DISTANCE,
   HOME_DIAL_SECTIONS,
-  HOME_STAGE_SECTION_IDS,
-  scrollImmediately,
   sectionScrollTarget,
-  STAGE_SNAP_DURATION_MS,
+  siteHeaderHeight,
 } from "./home-hero-config";
 
-type WheelInputMode = "wheel" | "trackpad";
+/**
+ * 각 섹션의 문서 기준 좌표. 스크롤로는 변하지 않으므로 한 번 재고 재사용한다.
+ * 매 프레임 다시 재면 섹션 수만큼 강제 리플로우가 발생한다.
+ */
+const readSectionTargets = (): readonly (number | null)[] => {
+  const headerHeight = siteHeaderHeight();
+  return HOME_DIAL_SECTIONS.map((section) =>
+    section.targetId ? sectionScrollTarget(section.targetId, headerHeight) : 0,
+  );
+};
 
-const TRACKPAD_GESTURE_GAP_MS = 120;
-const TRACKPAD_DELTA_THRESHOLD = 12;
+const closestSectionIndex = (
+  targets: readonly (number | null)[],
+  scrollY: number,
+): number =>
+  targets.reduce<number>((closestIndex, target, index) => {
+    if (target === null) return closestIndex;
+    const closestTarget = targets[closestIndex] ?? 0;
+    return Math.abs(target - scrollY) < Math.abs(closestTarget - scrollY)
+      ? index
+      : closestIndex;
+  }, 0);
 
 export function useHomeSectionDial(isSearchOpen: boolean): {
   readonly activeSection: number;
@@ -28,38 +45,26 @@ export function useHomeSectionDial(isSearchOpen: boolean): {
 
   useEffect(() => {
     if (isSearchOpen) return;
-    let frameId = 0;
 
-    const updateActiveSection = () => {
-      frameId = 0;
-      const targets = HOME_DIAL_SECTIONS.map((section) =>
-        section.targetId ? sectionScrollTarget(section.targetId) : 0,
-      );
-      const nextSection = targets.reduce<number>((closestIndex, target, index) => {
-        if (target === null) return closestIndex;
-        const closestTarget = targets[closestIndex] ?? 0;
-        return Math.abs(target - window.scrollY) <
-          Math.abs(closestTarget - window.scrollY)
-          ? index
-          : closestIndex;
-      }, 0);
+    let targets: readonly (number | null)[] | null = null;
+    const documentObserver =
+      typeof ResizeObserver === "undefined"
+        ? null
+        : new ResizeObserver(() => {
+            targets = null;
+            requestLayoutFrame();
+          });
+    documentObserver?.observe(document.documentElement);
 
-      setActiveSection(nextSection);
-    };
+    const unsubscribe = subscribeToScrollFrame((reason) => {
+      if (invalidatesLayout(reason)) targets = null;
+      targets ??= readSectionTargets();
+      setActiveSection(closestSectionIndex(targets, window.scrollY));
+    });
 
-    const requestUpdate = () => {
-      if (frameId === 0) {
-        frameId = window.requestAnimationFrame(updateActiveSection);
-      }
-    };
-
-    updateActiveSection();
-    window.addEventListener("scroll", requestUpdate, { passive: true });
-    window.addEventListener("resize", requestUpdate);
     return () => {
-      window.removeEventListener("scroll", requestUpdate);
-      window.removeEventListener("resize", requestUpdate);
-      if (frameId !== 0) window.cancelAnimationFrame(frameId);
+      unsubscribe();
+      documentObserver?.disconnect();
     };
   }, [isSearchOpen]);
 
@@ -67,110 +72,15 @@ export function useHomeSectionDial(isSearchOpen: boolean): {
     const section = HOME_DIAL_SECTIONS[index];
     if (!section) return;
     const target = section.targetId ? sectionScrollTarget(section.targetId) : 0;
-    if (target !== null) scrollImmediately(target);
+    if (target !== null) {
+      window.scrollTo({
+        top: target,
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? "instant"
+          : "smooth",
+      });
+    }
   };
 
   return { activeSection, scrollToSection };
-}
-
-export function useHomeStageSnap(match: ScaffoldMatch | null): void {
-  useEffect(() => {
-    if (match || window.matchMedia("(prefers-reduced-motion: reduce)").matches)
-      return;
-
-    let animationFrame = 0;
-    let animationTarget: number | null = null;
-    let inputMode: WheelInputMode | null = null;
-    let gestureHasMovedStage = false;
-    let previousWheelEventAt = Number.NEGATIVE_INFINITY;
-
-    const stageTargets = () => {
-      const sectionTargets = HOME_STAGE_SECTION_IDS.flatMap((id) => {
-        const target = sectionScrollTarget(id);
-        return target === null ? [] : [target];
-      });
-      return [0, HERO_SHRINK_SCROLL_DISTANCE, ...sectionTargets];
-    };
-
-    const animateToStage = (target: number) => {
-      window.cancelAnimationFrame(animationFrame);
-      const start = window.scrollY;
-      const distance = target - start;
-      const startTime = window.performance.now();
-      animationTarget = target;
-
-      const tick = (now: number) => {
-        const progress = Math.min((now - startTime) / STAGE_SNAP_DURATION_MS, 1);
-        const eased =
-          target === HERO_SHRINK_SCROLL_DISTANCE && start < target
-            ? easeHeroShrink(progress)
-            : easeOutCubic(progress);
-        scrollImmediately(start + distance * eased);
-
-        if (progress < 1) {
-          animationFrame = window.requestAnimationFrame(tick);
-          return;
-        }
-
-        scrollImmediately(target);
-        animationTarget = null;
-        animationFrame = 0;
-      };
-
-      animationFrame = window.requestAnimationFrame(tick);
-    };
-
-    const moveToAdjacentStage = (direction: number): boolean => {
-      const targets = stageTargets();
-      const reference = animationTarget ?? window.scrollY;
-      const currentIndex = targets.findIndex(
-        (target) => Math.abs(reference - target) < 8,
-      );
-      if (currentIndex === -1) return false;
-
-      const nextTarget = targets[currentIndex + direction];
-      if (nextTarget === undefined) return false;
-
-      animateToStage(nextTarget);
-      return true;
-    };
-
-    const handleWheel = (event: WheelEvent) => {
-      if (event.deltaY === 0 || event.ctrlKey || event.metaKey) return;
-
-      const now = window.performance.now();
-      const eventInterval = now - previousWheelEventAt;
-      if (eventInterval > TRACKPAD_GESTURE_GAP_MS) {
-        inputMode = null;
-        gestureHasMovedStage = false;
-      }
-
-      const delta = Math.abs(event.deltaY);
-      if (inputMode === null) {
-        const isLikelyTrackpad =
-          event.deltaMode === WheelEvent.DOM_DELTA_PIXEL &&
-          (delta < TRACKPAD_DELTA_THRESHOLD ||
-            !Number.isInteger(event.deltaY));
-        inputMode = isLikelyTrackpad ? "trackpad" : "wheel";
-      }
-      previousWheelEventAt = now;
-
-      if (inputMode === "trackpad" && gestureHasMovedStage) {
-        event.preventDefault();
-        return;
-      }
-
-      const direction = event.deltaY > 0 ? 1 : -1;
-      if (!moveToAdjacentStage(direction)) return;
-
-      event.preventDefault();
-      gestureHasMovedStage = true;
-    };
-
-    window.addEventListener("wheel", handleWheel, { passive: false });
-    return () => {
-      window.removeEventListener("wheel", handleWheel);
-      window.cancelAnimationFrame(animationFrame);
-    };
-  }, [match]);
 }

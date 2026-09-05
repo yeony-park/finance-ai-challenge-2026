@@ -126,7 +126,7 @@ describe("buildOfferCard — 카드 값은 레지스트리와 리포트에서만
     const card = await buildCard();
 
     expect(card.title).toBe("한우 9호");
-    expect(card.href).toBe("/offers/livestock-9");
+    expect(card.href).toBe("/cattle/products/livestock-9");
     expect(card.schedule.label).toContain("~");
     expect(card.schedule.badge).toContain("D-");
     expect(card.verdictLine.length).toBeGreaterThan(0);

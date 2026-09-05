@@ -1,3 +1,4 @@
+import { categoryById } from "@/lib/content/categories";
 import type { Verdict } from "@/lib/verify/types";
 
 export interface ArtSourceLink {
@@ -27,8 +28,7 @@ export interface ArtProductFact {
 export const ART_PAGE_LEAD =
   "발행사가 전자공시(DART)에 낸 미술품 투자계약증권의 공모가 구성을 원문과 대조해 정리했습니다. 층별 지원 선언과 독립 원장 연결은 이어지는 단계에서 확정됩니다.";
 
-export const ART_PAGE_DESCRIPTION =
-  "미술품 공모의 공시 원문 대조 확인 현황 — 공모가 구성 사실 정리";
+export const ART_PAGE_DESCRIPTION = categoryById("art").metaDescription;
 
 export const ART_CUSTOM_TITLE = "미술품 공모 확인 현황 (공시 원문 대조)";
 

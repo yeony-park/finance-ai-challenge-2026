@@ -607,7 +607,7 @@ describe("common knowledge index", () => {
       expect.objectContaining({
         dataNature: "scenario",
         namespace: "legacy-scenario",
-        href: "/offers/re-offer-01",
+        href: "/real-estate/products/re-offer-01",
       }),
     ]));
     expect(matches).toHaveLength(2);

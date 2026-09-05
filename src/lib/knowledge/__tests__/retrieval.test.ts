@@ -53,7 +53,7 @@ describe("공통 retrieval orchestration", () => {
     );
     expect(result.results[0]).toMatchObject({
       id: "livestock-1",
-      href: "/offers/livestock-1",
+      href: "/cattle/products/livestock-1",
       namespace: "published-offer",
       dataNature: "observed",
       isScenario: false,

@@ -44,7 +44,7 @@ describe("knowledge API routes", () => {
       categoryId: "cattle",
       title: "한우 1호",
       assetKind: "livestock",
-      href: "/offers/livestock-1",
+      href: "/cattle/products/livestock-1",
       isScenario: false,
     });
     expect(body.results[0].matchedFields).toContain("title");

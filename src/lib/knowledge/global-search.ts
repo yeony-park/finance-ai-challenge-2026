@@ -1,3 +1,4 @@
+import { productHref } from "@/components/site/offer-schedule";
 import { OFFERS, buildOfferSchedule } from "@/components/site/offers";
 import { commonProductHref } from "@/lib/knowledge/common-route";
 import {
@@ -337,7 +338,7 @@ export const searchOffers = async (
       title: offer.title,
       assetKind: offer.assetKind,
       phase,
-      href: `/offers/${offer.id}`,
+      href: productHref(offer.id)!,
       matchedFields: semantic > 0 ? [...match.matchedFields, "semantic"] : match.matchedFields,
       isScenario: false,
       dataNature: "observed" as const,
@@ -382,7 +383,7 @@ export const searchOffers = async (
       assetKind: "real-estate" as const,
       phase,
       minimumInvestmentWon: offer.offering.minimumInvestmentWon,
-      href: `/offers/${offer.offerId}`,
+      href: productHref(offer.offerId)!,
       matchedFields: semantic > 0 ? [...match.matchedFields, "semantic"] : match.matchedFields,
       isScenario: true,
       dataNature: "scenario" as const,
@@ -447,7 +448,7 @@ export const searchOffers = async (
       assetKind: "art" as const,
       phase,
       ...(offering.minimumInvestment === null ? {} : { minimumInvestmentWon: offering.minimumInvestment }),
-      href: `/art?scope=current&product=${encodeURIComponent(offering.id)}#selected-art-product`,
+      href: `/art/products/${encodeURIComponent(offering.id)}`,
       matchedFields: semantic > 0 ? [...match.matchedFields, "semantic"] : match.matchedFields,
       isScenario: true,
       dataNature: "scenario" as const,
@@ -476,7 +477,7 @@ export const searchOffers = async (
       assetKind: "livestock" as const,
       phase: "evidence-only" as const,
       status: "evidence-ready" as const,
-      href: `/offers/${productId}`,
+      href: productHref(productId)!,
       matchedFields: semantic > 0 ? [...match.matchedFields, "semantic"] : match.matchedFields,
       isScenario: false,
       dataNature: "observed" as const,

@@ -2,13 +2,15 @@ import type { Metadata } from "next";
 
 import type { CommonKnowledgeScope } from "@/lib/knowledge/loader";
 import type { CommonProductRecord } from "@/lib/knowledge/schema";
+import { ProductAiSummary } from "@/components/ai-assistant/ProductAiSummary";
+import { ProductCopilot } from "@/components/ai-assistant/ProductCopilot";
 
 import {
   COMMON_EVIDENCE_EXAMPLES,
   EvidenceQuery,
   type EvidenceQueryScope,
   safeCitationUrl,
-} from "../real-estate-scenario/ScenarioEvidenceQuery";
+} from "@/components/ai-assistant/EvidenceQuery";
 import s from "../real-estate-scenario/scenario.module.css";
 
 export const COMMON_CATEGORY_LABEL: Readonly<Record<CommonProductRecord["categoryId"], string>> = {
@@ -75,17 +77,23 @@ export function CommonProductDetail({ scope }: { readonly scope: CommonKnowledge
     <div>
       <header className={s.detailHero}>
         <div className={s.detailWrap}>
-          <p className={s.eyebrow}>{category} · 상품 문서 검토</p>
           <h1 className={s.detailTitle}>{product.title}</h1>
           <span className={s.phase}>{phase}</span>
-          <p className={s.detailLead}>상품에 연결된 공개 문서와 그 문서 안에서 확인할 수 있는 근거를 보여줍니다.</p>
         </div>
       </header>
 
+      <div className={s.detailWrap}><ProductAiSummary /></div>
+      <ProductCopilot>
+        <EvidenceQuery
+          scope={commonEvidenceScope(product)}
+          examples={COMMON_EVIDENCE_EXAMPLES}
+          lead="이 상품에 연결된 공개 문서에서 답변 근거를 찾습니다."
+        />
+      </ProductCopilot>
+
       <section className={`${s.detailSection} ${s.detailMuted}`} aria-labelledby="common-product-overview-title">
         <div className={s.detailWrap}>
-          <p className={s.eyebrow}>상품 개요</p>
-          <h2 id="common-product-overview-title" className={s.sectionTitle}>등록 범위</h2>
+          <h2 id="common-product-overview-title" className={s.sectionTitle}>상품 정보</h2>
           <dl className={`${s.reviewSummary} ${s.detailFacts}`}>
             <div><dt>카테고리</dt><dd>{category}</dd></div>
             <div><dt>현재 단계</dt><dd>{phase}</dd></div>
@@ -97,7 +105,6 @@ export function CommonProductDetail({ scope }: { readonly scope: CommonKnowledge
 
       <section className={s.detailSection} aria-labelledby="common-product-documents-title">
         <div className={s.detailWrap}>
-          <p className={s.eyebrow}>연결 문서</p>
           <h2 id="common-product-documents-title" className={s.sectionTitle}>
             공개·검색 가능 문서 {scope.documents.length}건
           </h2>
@@ -156,13 +163,6 @@ export function CommonProductDetail({ scope }: { readonly scope: CommonKnowledge
         </div>
       </section>
 
-      <div className={s.detailWrap}>
-        <EvidenceQuery
-          scope={commonEvidenceScope(product)}
-          examples={COMMON_EVIDENCE_EXAMPLES}
-          lead="해당 상품에 정확히 연결된 공개 문서 범위에서만 찾습니다. 확인 자료가 없으면 답을 만들지 않고 보류합니다."
-        />
-      </div>
     </div>
   );
 }

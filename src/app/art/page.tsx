@@ -1,23 +1,15 @@
-import type { Metadata } from "next";
-
+import { redirect } from "next/navigation";
 import {
-  SyntheticArtCatalog,
-  type ArtCatalogSearchParams,
-} from "@/components/art/SyntheticArtCatalog";
-import { categoryById } from "@/lib/content/categories";
-import { ART_PAGE_DESCRIPTION } from "@/lib/content/art";
+  CategoryPage,
+  categoryPageMetadata,
+  type CategoryRoutePageProps,
+} from "@/components/category/category-page";
+import { ART_PAGE } from "@/components/category/pages/art";
 
-const INFO = categoryById("art");
+export const metadata = categoryPageMetadata(ART_PAGE);
 
-export const metadata: Metadata = {
-  title: INFO.label,
-  description: ART_PAGE_DESCRIPTION,
-};
-
-interface ArtPageProps {
-  readonly searchParams: Promise<ArtCatalogSearchParams>;
-}
-
-export default async function ArtPage({ searchParams }: ArtPageProps) {
-  return <SyntheticArtCatalog searchParams={await searchParams} />;
+export default async function ArtPage({ searchParams }: CategoryRoutePageProps) {
+  const params = await searchParams;
+  if (typeof params.product === "string" && params.product) redirect(`/art/products/${encodeURIComponent(params.product)}`);
+  return CategoryPage({ definition: ART_PAGE, searchParams });
 }

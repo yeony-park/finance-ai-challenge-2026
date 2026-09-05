@@ -364,7 +364,7 @@ export const PIG_DISEASE = {
   mapEyebrow: "ASF·구제역 발생 지도",
   mapTitle: "농식품부 공개 파일로 재구성한 돼지 질병 지도",
   mapDescription:
-    "농림축산식품부 발생현황 첨부파일을 JSON으로 정규화하고, ASF와 돼지 구제역을 서로 다른 핀으로 Kakao Maps 위에 표시했습니다.",
+    "농림축산식품부 발생현황 첨부파일을 JSON으로 정규화하고, ASF와 돼지 구제역을 서로 다른 핀으로 지도에 표시했습니다.",
   mapCaption:
     "선택 공시의 익명 농장과 발생 지점을 자동 연결하지 않습니다. 현재 선택:",
   officialLabel: "농림축산식품부 공식 자료",

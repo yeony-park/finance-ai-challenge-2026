@@ -22,6 +22,7 @@ import {
   type PigDisclosureProduct,
 } from "@/lib/content/pig";
 
+import { DiseaseMapFrame } from "@/components/livestock-disease/DiseaseMapFrame";
 import { PigAsfMap } from "./PigAsfMap";
 import s from "./pig.module.css";
 
@@ -30,6 +31,10 @@ export function PigDiseaseContext({
 }: {
   readonly product: PigDisclosureProduct;
 }) {
+  const kakaoAppKey =
+    process.env.KAKAO_JAVASCRIPT_KEY ??
+    process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY ??
+    "";
   const selectedRoundLabel = `${PIG_DISEASE.roundLabelPrefix}${product.round}${PIG_DISEASE.roundLabelSuffix}`;
   const focusProvince = product.farm.region.split(" ")[0];
   const focusEvents = pigAsfEventsForProvince(focusProvince);
@@ -38,7 +43,6 @@ export function PigDiseaseContext({
     <section className={s.card} aria-labelledby="pig-disease-title">
       <div className={s.sectionHeading}>
         <div>
-          <p className={s.sectionLabel}>{PIG_DISEASE.label}</p>
           <h3 className={s.sectionTitle} id="pig-disease-title">
             {PIG_DISEASE.title}
           </h3>
@@ -79,21 +83,20 @@ export function PigDiseaseContext({
         </aside>
       </div>
 
-      <figure className={s.diseaseMap}>
-        <div className={s.diseaseMapHead}>
-          <span className={s.eyebrow}>{PIG_DISEASE.mapEyebrow}</span>
-          <strong>{PIG_DISEASE.mapTitle}</strong>
-          <p>{PIG_DISEASE.mapDescription}</p>
-          <small className={s.metaLine}>
-            ASF {PIG_ASF_SNAPSHOT_ASOF} · {PIG_ASF_EVENTS.length}건 / 구제역 {FMD_SNAPSHOT_ASOF} · 돼지 {PIG_FMD_EVENTS.length}건
-          </small>
-        </div>
-        <PigAsfMap focusProvince={focusProvince} />
-        <figcaption className={s.diseaseMapCaption}>
-          {PIG_DISEASE.mapCaption} {selectedRoundLabel} · {product.farm.name} ·{" "}
-          {product.farm.region}
-        </figcaption>
-      </figure>
+      <DiseaseMapFrame
+        headingId="pig-disease-map-heading"
+        title={PIG_DISEASE.mapTitle}
+        description={PIG_DISEASE.mapDescription}
+        meta={`ASF ${PIG_ASF_SNAPSHOT_ASOF} · ${PIG_ASF_EVENTS.length}건 / 구제역 ${FMD_SNAPSHOT_ASOF} · 돼지 ${PIG_FMD_EVENTS.length}건`}
+        caption={(
+          <>
+            {PIG_DISEASE.mapCaption} {selectedRoundLabel} · {product.farm.name} ·{" "}
+            {product.farm.region}
+          </>
+        )}
+      >
+        <PigAsfMap focusProvince={focusProvince} kakaoAppKey={kakaoAppKey} />
+      </DiseaseMapFrame>
 
       <div className={s.notice}>
         <strong>{PIG_DISEASE.noticeHeading}</strong>
@@ -123,20 +126,6 @@ export function PigDiseaseContext({
         </a>
         <a href={FMD_API_DOC_URL} target="_blank" rel="noopener noreferrer">
           보조 API 대조: FMD {FMD_API_COMPARISON.matchedCanonicalCount}/{FMD_API_COMPARISON.canonicalCount} · ASF {ASF_API_COMPARISON.matchedCanonicalCount}/{ASF_API_COMPARISON.canonicalCount}
-        </a>
-        <a
-          href="https://apis.map.kakao.com/web/guide/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          베이스맵: Kakao Maps
-        </a>
-        <a
-          href="https://www.naturalearthdata.com/about/terms-of-use/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          대체 지도 경계: Natural Earth
         </a>
       </div>
     </section>

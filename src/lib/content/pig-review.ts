@@ -14,6 +14,28 @@ export const PIG_EXTRA_DISTRIBUTION_FILING = {
   reportName: "호가중개시스템을 통한 소액매출 공시서류",
 } as const;
 
+export const PIG_REPORT_COPY = {
+  breadcrumbBack: "한돈 분석",
+  imageAlt: "한돈 분석 대표 이미지",
+  reportStatus: "검증 리포트",
+  headerMetaPrefix: "DART 공시 기준",
+  facts: {
+    subscription: "청약 기간",
+    offering: "총 공모금액",
+    units: "발행 단위",
+    farm: "사육 농장",
+  },
+  sections: {
+    summary: "요약",
+    filing: "신고서 정보",
+    amendment: "정정 이력",
+    history: "이행 이력",
+    reality: "실재 확인",
+    disease: "질병",
+    price: "가격 위치",
+  },
+} as const;
+
 export const PIG_REVIEW_COPY = {
   beginner: {
     label: "처음 읽는 공시",
@@ -273,6 +295,7 @@ const collectStrings = (value: unknown): string[] => {
 export const pigReviewCopyStrings = (): readonly string[] => [
   ...new Set([
     ...collectStrings(PIG_REVIEW_COPY),
+    ...collectStrings(PIG_REPORT_COPY),
     ...collectStrings(PIG_EXTRA_DISTRIBUTION_FILING),
     LIVESTOCK_TRACE_URL,
     ...PIG_DISCLOSURE_PRODUCTS.flatMap((product) => {

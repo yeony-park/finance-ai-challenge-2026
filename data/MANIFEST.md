@@ -2,7 +2,7 @@
 
 # data/ 매니페스트
 
-생성 시각: 2026-08-30T15:48:15.629Z
+생성 시각: 2026-09-05T07:40:59.874Z
 
 ## 저장 정책
 
@@ -21,6 +21,7 @@
 | 실거래 월 신고 | `data/reference/rtms/` | **커밋**(시장 통계 — 개인정보 없음) |
 | 정제 참조 JSON | `data/reference/**/*.json` (`raw/` 제외) | **커밋**(비식별·출처 메타데이터 포함) |
 | 공모 기초자료 | `data/offers/{offerId}.json` | **커밋**(공개 자료 정리 — 개인정보 없음) |
+| 합성 미술품 fixture | `data/synthetic/art-investment.json` | **커밋**(화면 검증용 — 실제 투자 데이터 아님) |
 | 매니페스트 | `data/MANIFEST.md` | **커밋** |
 
 신규 클론에서 로컬 전용 파일이 없어도 `npm test`·`npm run build`는 통과한다
@@ -34,7 +35,37 @@
 - **재확보**: `npm run verify:collect -- <rcpNo>`
 - **비고**: ZIP 해제본 그대로. 농장 상세주소·개체 식별자 포함.
 
-_현재 로컬에 파일이 없습니다._
+| 경로 | 바이트 | sha256 |
+|---|---:|---|
+| `data/raw/mafra-fmd/322991-241264-170207-가축전염병 발생현황정보-구제역 발생.hwp` | 12,800 | `71e7ea339e1157174c9fd0b938caa187b772a581a5e432ebc1ba2acc3b63466c` |
+| `data/raw/mafra-fmd/322993-241265-170209-가축전염병 발생현황정보-구제역 발생 - 복사본.hwp` | 24,064 | `6f511780fcda39f01b4430a6ec9c7b1caf3e690f1fc877801430017ccf691a0c` |
+| `data/raw/mafra-fmd/322994-241266-170213-가축전염병 발생현황정보-구제역 발생.hwp` | 14,336 | `e1e8cc4a7fd9d4e6e6f9e62f4df63cb33d79a0160ad5caf9f746dfebddf7f534` |
+| `data/raw/mafra-fmd/322995-241267-170214-가축전염병 발생현황정보-구제역 발생1.hwp` | 15,360 | `00df1a8b9726223326fac1d14f4b112c9ded01399bad24c1e73812193487b63b` |
+| `data/raw/mafra-fmd/322996-241268-180327 가축전염병 발생 현황에 대한 정보공개.hwp` | 11,264 | `8b35c7672f9c1747b92181155f1d9f78e9a29d7dc5554c9fcd70f67a6cdf39da` |
+| `data/raw/mafra-fmd/322997-241269-180401 가축전염병 발생 현황에 대한 정보공개.hwp` | 11,776 | `d5ec13b75f3ce4a5dc85a2bffe3eb3588185cdd0021ad15eb81dc700fb5f960d` |
+| `data/raw/mafra-fmd/322998-241270-190128 가축전염병 발생 현황에 대한 정보공개.hwp` | 11,264 | `db904fee338178674bae2bfae2ccff07dae3e36cd8147f4626e8b2ca6a07279a` |
+| `data/raw/mafra-fmd/322999-241271-190129 가축전염병 발생 현황에 대한 정보공개.hwp` | 11,264 | `1abb42d3903e8cb1e96eedf4f8c0ea41de24030b5a9914a8c8f6ed6112fa1344` |
+| `data/raw/mafra-fmd/323000-241272-190131 가축전염병 발생 현황에 대한 정보공개.hwp` | 11,264 | `43ef5808f42052de29c3131ca6024c45aee8d1154b383b4392e286ef4d323e1c` |
+| `data/raw/mafra-fmd/566441-568444-230526 기준 구제역 발생 현황.hwp` | 44,032 | `ee1b6b94570240d3203de3a4793f711cd561639125d82d1a428044843bab7edd` |
+| `data/raw/mafra-fmd/573549-586174-250313 기준 구제역 발생 현황.hwp` | 77,312 | `3d0c0145b28a8e1304d969465d600af32424368b878e44fce9f9cd2417e263dd` |
+| `data/raw/mafra-fmd/573557-586192-250315 기준 구제역 발생 현황.hwp` | 45,568 | `0fecd9bd8c8ca346baa00dc271d5572f8d3ad8a06bf55e79f60755ef5ae15ffa` |
+| `data/raw/mafra-fmd/573558-586193-250316 기준 구제역 발생 현황.hwp` | 92,672 | `1ebec9fb20af9034334fae8a6c86213aca7ecec4e4ce05c9b27b67242c09466a` |
+| `data/raw/mafra-fmd/573584-586275-250317 기준 구제역 발생 현황.hwp` | 104,960 | `b50a6afe090b1fb4e51090e0347be3c90c09c1209a4e7e7eec966b8260ebabaa` |
+| `data/raw/mafra-fmd/573595-586306-250318 기준 구제역 발생 현황.hwp` | 111,104 | `98fbd0286eef071cbbd445cd3d1a872658d5b57fbdb628fb11511ba01baae907` |
+| `data/raw/mafra-fmd/573605-586332-250319 기준 구제역 발생 현황.hwp` | 60,416 | `b930335e9ebb2ac55f76f68828cebc27537bd7642a8aa741333a32aec4c0c74d` |
+| `data/raw/mafra-fmd/573643-586436-250321 기준 구제역 발생 현황.hwp` | 62,976 | `59b0e5de3d988c441a218679eb8a1d52934fc889dd3241dc522307cc177e4912` |
+| `data/raw/mafra-fmd/573645-586438-250322 기준 구제역 발생 현황.hwp` | 124,416 | `b81c008d7773af87f4555c179a34d2099402eb2d331d56af531f2a64f1e13432` |
+| `data/raw/mafra-fmd/573646-586439-250323 기준 구제역 발생 현황.hwp` | 68,096 | `86d528d753e0634da3b2699161ef7ac383587c6bd4aa4dae4f0ae5dad4502017` |
+| `data/raw/mafra-fmd/573678-586527-250324 기준 구제역 발생 현황.hwp` | 65,024 | `8087859f444ed4763e1372dd000a0eb36023be4d818e8650114a2f6325eafc3f` |
+| `data/raw/mafra-fmd/573690-586554-250325 기준 구제역 발생 현황.hwp` | 64,000 | `09cc914c3ff9093a256d6398e05b6f22927c3c3fb4587284d158cf03c46650f6` |
+| `data/raw/mafra-fmd/573704-586582-250326 기준 구제역 발생 현황.hwp` | 64,512 | `eb34957fcd1727942678e6a248de73caf4ce21d464d36fafdace47f69ad69c33` |
+| `data/raw/mafra-fmd/573885-587081-250411 기준 구제역 발생 현황.hwp` | 68,096 | `8810fe7c81e1d6ee11d8afb3b542e9400bc56ca6b5cf32a0a9ffa8bb6617dba9` |
+| `data/raw/mafra-fmd/573895-593129-250414 기준 구제역 발생 현황.hwp` | 68,096 | `b1e5282a4e6fc9d11aa1bf9acedfb2de84594ecd854c55ce383723521e7b83e6` |
+| `data/raw/mafra-fmd/576760-594147-250131 기준 구제역 발생 현황.hwpx` | 42,552 | `bb4bfb981f49bd23975aaeccdc772cb5e43e10b863d23bf7560a71df89174e9d` |
+| `data/raw/mafra-fmd/577041-594976-250220 기준 구제역 발생 현황(1).hwpx` | 44,683 | `0385e718814c653b3d1ff0bef14b50bf163cc4c2c3c8532b90d669db95a321b4` |
+| `data/raw/mafra-fmd/577155-596865-250228 기준 구제역 발생 현황.hwpx` | 46,791 | `005d389af7e28c271e6cd9520ae1c0787ab1f5dccba3c58e51b9f8ce4a0d90ca` |
+| `data/raw/mafra-fmd/578352-598556-260703 기준 구제역 발생 현황(1).hwpx` | 54,807 | `298e124d73a2bb2bfcf398f495b45eee6fb632c922ac3d4d13592445ca71e16e` |
+| `data/raw/mafra-fmd/mafra_fmd_map_data.js` | 4,007 | `d5d2e6c6c72506eb4fc8140e256bdc2fddc81d1292cd14997082ef68f59d1c2a` |
 
 ### 2. 실측 스냅샷 (축산물이력제 API 응답)
 
@@ -50,12 +81,7 @@ _현재 로컬에 파일이 없습니다._
 - **재확보**: `npm run verify -- --rcpNo <rcpNo>`
 - **비고**: 농장번호·상세주소 포함. 화면·배포는 이 파일을 읽지 않는다(data/public 사용).
 
-| 경로 | 바이트 | sha256 |
-|---|---:|---|
-| `data/reports/real-estate-bbric-hiwon/report-2026-08-23T00-00-00-000Z.json` | 17,585 | `5a68a3a3b5fa2e29d595ddb4806f0496095c74d3ad2328726a418177f9dbb3ea` |
-| `data/reports/real-estate-sou-daejeon-startup/report-2026-08-22T20-07-56-237Z.json` | 9,961 | `a77af71d53e97083c7adba80ffa0d21faa70695b2c7e54a81ace06cd5f975235` |
-| `data/reports/real-estate-sou-daejeon-startup/report-2026-08-22T20-11-20-411Z.json` | 7,416 | `64903a2fc51850adeb8f475935ba05e13073ba2154edeb6402e1411099b36cca` |
-| `data/reports/real-estate-sou-daejeon-startup/report-2026-08-22T20-13-42-535Z.json` | 7,446 | `332d3f866cf25d87eca3324648498b4a3d5858184277377d8a747caef4a81484` |
+_현재 로컬에 파일이 없습니다._
 
 ## 커밋 대상 산출물
 
@@ -67,43 +93,43 @@ _현재 로컬에 파일이 없습니다._
 
 | 경로 | 바이트 | sha256 |
 |---|---:|---|
-| `data/public/livestock-1/narrative-20240619000091.json` | 4,038 | `d317d0e7a71ae7f80bf1ece8e3370dd3eddfc5ec6a23cf4b77c8082fee196b55` |
+| `data/public/livestock-1/narrative-20240619000091.json` | 4,628 | `e0d97380e063782ddc771178d79bb2fa1504474b97fa85a252d466d6555c246d` |
 | `data/public/livestock-1/report-2026-08-14T17-37-47-180Z.json` | 342,356 | `a42ac41d188442fd090d6f51a4cd112c91984c5de89ca4173ee4c9c3d8971368` |
 | `data/public/livestock-1/report-2026-08-14T17-49-02-486Z.json` | 461,498 | `3147a46847793e88387899c9888ce66d5978b656b25876df709890dc70d11028` |
 | `data/public/livestock-1/report-2026-08-14T18-00-27-489Z.json` | 599,585 | `0b3a93b3f9fdbab6c681c314a39f7fd235f4d1d4928c91cbbae2ee7e6b1a20f3` |
 | `data/public/livestock-1/report-2026-08-14T18-14-36-550Z.json` | 599,557 | `187f22ff2642b8bc3a8cf6193f78d72fc86e325f373e2d47bafd229e38c41878` |
-| `data/public/livestock-2/narrative-20240911000124.json` | 4,470 | `bf6313f4248be19a2f79d2c91825e153024ab984f90ede8831366ff203dfda50` |
+| `data/public/livestock-2/narrative-20240911000124.json` | 5,579 | `401f45313f74ffa311c4e2f949d1ac78a338170b4499a5b212a741ad652fc54a` |
 | `data/public/livestock-2/report-2026-08-14T17-39-07-433Z.json` | 302,455 | `088a755b0c0d5e39efc43bc5af7ac49b082fad113da320795a36ecc4cbdca726` |
 | `data/public/livestock-2/report-2026-08-14T17-50-23-750Z.json` | 406,266 | `dfe4d989d95f57104d2efad60aa328d5d9727be469237c87e89bbb2fa298edfb` |
 | `data/public/livestock-2/report-2026-08-14T18-02-03-615Z.json` | 525,009 | `f953babc84dd0506f0443a192e1fc527c927b49ebc60005be525a772538688d2` |
 | `data/public/livestock-2/report-2026-08-14T18-17-47-890Z.json` | 524,981 | `f071e206338a1d24fc596d4fd944819b0f5054095ebfa67cd5e77d44d866822c` |
-| `data/public/livestock-3/narrative-20241220000182.json` | 4,001 | `60d610354f0d9611f3dd544f331333da3b2a31b0606398a0e9d3e7f6d84abc43` |
+| `data/public/livestock-3/narrative-20241220000182.json` | 4,745 | `e4979e9437f3afe05f2dd2024d2f181c92a7b608b9aaa2640bf66b5596d9a226` |
 | `data/public/livestock-3/report-2026-08-14T17-40-27-385Z.json` | 302,974 | `72760368356cdedd0c0186b72db1eb7bc73cdb35fe111fd68bb3b547d510ae5a` |
 | `data/public/livestock-3/report-2026-08-14T17-51-54-445Z.json` | 443,093 | `a420fff0e925518cbc2a8548b2abf00050f36e868cceacdf2d98dfd7436f37b0` |
 | `data/public/livestock-3/report-2026-08-14T18-03-29-214Z.json` | 575,687 | `a3603a8080fa61753ad7621e87af545812faf21847bfd4564eff40f00c101bbe` |
 | `data/public/livestock-3/report-2026-08-14T18-21-45-354Z.json` | 575,659 | `0af18765e6514dc126254b2181dba5ec23e80dbe0d1bbbccf38e7b0279fdb314` |
-| `data/public/livestock-4/narrative-20250421000094.json` | 3,704 | `e4ee3a7fae44554a8e7c400002b41fb58ab6f579ac9e6c0e431166ae834362f9` |
+| `data/public/livestock-4/narrative-20250421000094.json` | 3,768 | `e413c9deb60b8c0f6200dfecd9da8737792cb92ee655410630e447fa299bc2da` |
 | `data/public/livestock-4/report-2026-08-14T17-42-11-001Z.json` | 315,555 | `768d9dd196cdb0bf3a9db97a02bc3302ac9020b9d96f1c79769c6b185d708aed` |
 | `data/public/livestock-4/report-2026-08-14T17-53-24-537Z.json` | 447,745 | `9e943657787e689ee3c13da14646eeb7fa15bf3721d44539681d4c9f186d3e29` |
 | `data/public/livestock-4/report-2026-08-14T18-05-28-256Z.json` | 576,218 | `98a7d0163589f7a0586639dd6ceee0efab9e35fbb633ee2c21c782f324251319` |
 | `data/public/livestock-4/report-2026-08-14T18-27-09-373Z.json` | 576,190 | `a7a8041e7f67b74031c3b259aa9fb19f74bd55557906648868baca5fdfaeaa9b` |
-| `data/public/livestock-5/narrative-20250617000216.json` | 4,055 | `06bf222fe7223f4ca9134dea0eb0be22d3fe278b5b6d6dcdab6a336f87399c1e` |
+| `data/public/livestock-5/narrative-20250617000216.json` | 3,769 | `4d0ce6d0b55ab57935a2293e6ad928d700fc3dba219e7ade24afdb43948c0cab` |
 | `data/public/livestock-5/report-2026-08-14T17-43-25-627Z.json` | 240,873 | `c5017e7fc106e63e8068400987651431b4a270d4c397e4fa8f5b2e2d08a889e0` |
 | `data/public/livestock-5/report-2026-08-14T17-54-36-652Z.json` | 341,018 | `b3e5bd7ca6e378011647fd09835b52e9132cc67d78b522eebf78b7aa42e9830e` |
 | `data/public/livestock-5/report-2026-08-14T18-06-53-703Z.json` | 441,581 | `849dc4e881103c3a5f67751398db146f2571b52edcc5606db634dbae302c9ede` |
 | `data/public/livestock-5/report-2026-08-14T18-29-57-467Z.json` | 441,553 | `04328e6bc4bf55306d328b7429c7a50f09570ecfe8969c888f2c0d2f58ad470d` |
-| `data/public/livestock-6/narrative-20251031000477.json` | 4,224 | `b47ad3c7428f79bf5d418c9c5449d198a35420e59dcd4e2fe947372fd4f4821a` |
+| `data/public/livestock-6/narrative-20251031000477.json` | 4,105 | `359e13a7b450803acc61863e6e4a0f80774a46a6b379dc14d56db4668ff9250a` |
 | `data/public/livestock-6/report-2026-08-14T17-44-54-480Z.json` | 415,836 | `5c4e19cbe1e8373c309ef38f2642475b5a6d7369596828970ccf56cf81e9be12` |
 | `data/public/livestock-6/report-2026-08-14T18-08-34-097Z.json` | 537,463 | `f264bb85b41b334cd921d2d48fe1c8aa7555ba303e984adc7661b960307d019d` |
 | `data/public/livestock-6/report-2026-08-14T18-33-15-584Z.json` | 537,435 | `1f3944cb6fba20a22e3e70d1a169b4d72747cf0d294c82906ca5aaa2fc76371c` |
-| `data/public/livestock-7/narrative-20260225002022.json` | 4,647 | `c5ca88ccab88694e4c2b5ef97a383141a0b4f2e1d77333160cab8c0b684812f1` |
+| `data/public/livestock-7/narrative-20260225002022.json` | 4,721 | `47c6b1539bdc88c576de1ad50c9f7af701cee7abe79e5139d5ffedd776a7dc5e` |
 | `data/public/livestock-7/report-2026-08-14T06-19-19-348Z.json` | 460,762 | `0b6ed200cf1f119716711d938741e925b550abf0ea7e1883bbba33cc64339306` |
 | `data/public/livestock-7/report-2026-08-14T15-26-28-272Z.json` | 464,629 | `aa744a373cbc003334dfbc1183d6dedf4bd23f6965aac9a6a738ef2672d958e2` |
 | `data/public/livestock-7/report-2026-08-14T15-35-45-701Z.json` | 464,601 | `04bf6c12ffa441cefed8b84ebdc176a1f5c63c1abfc24a0b38d0c2d8f781ae7f` |
 | `data/public/livestock-7/report-2026-08-14T17-06-34-000Z.json` | 464,601 | `ea6c71e3dab93afaa8f8d143f45c5cb7a38d6b0fad3d4bb9ae3799670d3fb72e` |
 | `data/public/livestock-7/report-2026-08-14T17-16-17-542Z.json` | 464,601 | `52ea8426381fe2e0ac5ee306025a63220d4cff2f816ad58f37bfd3e41d068aa7` |
 | `data/public/livestock-7/report-2026-08-14T17-25-29-254Z.json` | 464,601 | `15591e82115100778e58a01201bfbd849a60eeabe9a0e98e14417a1782d07d1b` |
-| `data/public/livestock-8/narrative-20260414002068.json` | 4,147 | `4973b5a2adb6767299455e43c7291ba5a87454be85a55b00160e9ff0c2415501` |
+| `data/public/livestock-8/narrative-20260414002068.json` | 4,557 | `bc12e632ad6c419a8e37b6679e172d2e6781f414e243caebbf43a815dcd08963` |
 | `data/public/livestock-8/report-2026-08-14T06-37-40-268Z.json` | 755,587 | `1f8368bc644e028234c1df8cba6c5b1e49f6f9624a87de13875990c4549a7023` |
 | `data/public/livestock-8/report-2026-08-14T15-29-10-613Z.json` | 759,677 | `67d2bf596532b7b8db7196e3f28bc5a2fde27c4431c0b8ae6d9beba4dae4189f` |
 | `data/public/livestock-8/report-2026-08-14T15-41-05-021Z.json` | 759,480 | `b6fb51b3fcc85255d71f35b1265ad01312747018346162f8844ee1c9702fa525` |
@@ -130,7 +156,7 @@ _현재 로컬에 파일이 없습니다._
 | `data/public/livestock-9/report-2026-08-14T05-52-59-028Z.json` | 410,700 | `5391ed8bbf1455f3af56dfc9fb78c9dcc04b87ecf6bf9b98098ef019b812819d` |
 | `data/public/livestock-9/report-2026-08-14T15-30-30-662Z.json` | 412,860 | `c80032207a70e8a3b7d060cc6938bad29de130e477ac220e683c99a6c61a79d1` |
 | `data/public/livestock-9/report-2026-08-15T15-52-44-480Z.json` | 430,888 | `c989fb5dce8532b849ace669fed17f4b29ae7d5c52db028659a538c312807da3` |
-| `data/public/offerings/index.json` | 7,433 | `c08bf0320380c0e7b5d892f50c09f2ecacfb27d67fc2d4b2b50216be0540f72f` |
+| `data/public/offerings/index.json` | 11,459 | `32d9285a1e8d236dec73be43a544f9a3324a2d683cb6f809a0c3ecb57cb87d57` |
 | `data/public/real-estate-a/narrative-latest.json` | 3,840 | `37ca2a55c0afd61e2653e5cf3e05a1bd19f17d808889d219d32662ba87e31732` |
 | `data/public/real-estate-a/report-2026-08-13T17-53-03-085Z.json` | 14,835 | `669d4076a99a4878ca3b36a610578c878de5b8fce39fc04d3a4343723b512580` |
 | `data/public/real-estate-a/report-2026-08-14T04-34-57-566Z.json` | 50,627 | `2c08c4cf68d2c41d2c93f10ed107df3858e0aa441e18a8e8db9917c5894ec8af` |
@@ -245,13 +271,12 @@ _현재 로컬에 파일이 없습니다._
 | `data/reference/livestock-disease/lsd/mafra_lsd_events.json` | 92,031 | `003a25bb1391f0f0ead1a5d79f63b10b2724bdd7bc9d23f2a13e9e0940602abe` |
 | `data/reference/pig-asf/asf_events_20260320.json` | 470 | `210354ec16bd52fc3886b89fdacd9269e0bd9b0c6ace22be39df7e2570d824e8` |
 | `data/reference/pig-asf/asf_events_20260320.meta.json` | 866 | `5582efcdfd1c4d811c57ac5fc550282a7b2b3accaab0a6a369697cb380399dea` |
-| `data/reference/pig-asf/korea_outline.json` | 81,312 | `b8f328af41cba57f83f5f4b2d107efd8848942cd1973c38c50a11f1493f83382` |
 | `data/reference/pig-asf/mafra_asf_documents.json` | 83,560 | `10674d3063b07d8dec5dade9d9925a7ebfba7eb217af4889fab7032d52a3eb5b` |
 | `data/reference/pig-asf/mafra_asf_events.json` | 76,617 | `bbbb425b64fcd20d22ff8e488d4f1da74500e39e88252986e62b556291532adb` |
 | `data/reference/pig-auction-price/pig_price_20260815021618.csv` | 40,445 | `673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d` |
 | `data/reference/pig-auction-price/pig_price_20260815021618.meta.json` | 1,035 | `2d62daccfdbcc13ecb882df975b3275e1cc6f49daf6408882ff69a74fe87af83` |
-| `data/reference/rag/corpus-sources.json` | 4,809 | `d3dc06951b05c8915a5c3cce0a18f84a7dd1f2f726009d1a00679113062549db` |
-| `data/reference/rag/onboarding.json` | 1,345 | `b032ef0f4ddb64b56c18f4cbc271ed08b7528bf8cac2ebc485c397e4d12f07b3` |
+| `data/reference/rag/corpus-sources.json` | 5,068 | `08e3c87cc1c0f1fc523425104ca65886d1e7930db530793a7d8ccf6b2593d361` |
+| `data/reference/rag/onboarding.json` | 6,061 | `171842706b21b24b3c21ca362a2fe93d0cd1d3307a64e11e8d91b25ef201394c` |
 | `data/reference/rtms/11650-2021-05.json` | 16,087 | `266a5beda1d2ec27ee2195d278d74676f47117e50ea6308c28ec2d06b2a9c9bd` |
 | `data/reference/rtms/11650-2021-06.json` | 100,163 | `ea9eec5486547bc2ba855a5670fae82e59f44e8d92618fc6cab5dc299293c7b5` |
 | `data/reference/rtms/11650-2021-07.json` | 24,563 | `bf683644dd07ee08389d979f573205e27d72e1f02cea60f46dd413d1eb290ebc` |
@@ -284,9 +309,28 @@ _현재 로컬에 파일이 없습니다._
 | `data/offers/filing-facts/pig-1.json` | 2,005 | `4f15e93b1833ae19d654e0f523280069ff21c1cb9a191f018ef80a3bd2810826` |
 | `data/offers/filing-facts/pig-2.json` | 1,932 | `61323e19a54b212b367dde5daa5d4f5995ad0d50d950288a2d8d8f56ef758fe8` |
 | `data/offers/filing-facts/pig-3.json` | 1,916 | `e246f6fc8080627b48d70314510810c7099e2edbc8676f2db2ca146ebc31a199` |
+| `data/offers/livestock-1.json` | 208 | `bb104ab5f1c6f21a94cf679c3fa544fe59d633909001ae52605196390a8a683f` |
+| `data/offers/livestock-2.json` | 208 | `55cab2cedef7b3e05eb4ea49397a5eb7277d60faef19eff9cf2f9452ec363a74` |
+| `data/offers/livestock-3.json` | 208 | `cca8edafd1e83507057d4cec6fcc765faf2cc55d61d4ccb28e83dffd08e3c827` |
+| `data/offers/livestock-4.json` | 208 | `7cdb78524cc738c47f341d109063316c4a3c3d66b155929f83b4fd0bd5110dd8` |
+| `data/offers/livestock-5.json` | 208 | `2489c01b28388bbeb489e91d110c192e8a1d7d697137fc57660d05cc31559d1c` |
+| `data/offers/livestock-6.json` | 208 | `5e802dcd81e631cc2693c316bfad7b8189b9aa8573ff3b75f6a5ecf915df248e` |
+| `data/offers/livestock-7.json` | 297 | `55bdc290fabe14d8655f16700477be2204490006460caa977c27ef0d4a09a73a` |
+| `data/offers/livestock-8.json` | 297 | `50e4205363d9e038b760294fbf27af624dce0558c32a90f785b3f377850b370f` |
+| `data/offers/livestock-9.json` | 297 | `da3efff0ed1060aeaf600eb9fe98dfff056a0becfd35e979395e57af1221acb4` |
 | `data/offers/pig-1.json` | 1,116 | `6129f4ae364c72ee8c7a2afb4d29d0865fa540a833d1b1fc02c48061cdad5058` |
 | `data/offers/pig-2.json` | 1,116 | `71ed1f1184bb213a35c1572eec2e0f2fcaeb5bd7c540b8848aee87add430eb29` |
 | `data/offers/pig-3.json` | 1,116 | `cb4cf817c92a7d97e384f76bc89a66f2a44a6eb625f02e4e2559218c69e96536` |
 | `data/offers/real-estate-a.json` | 2,399 | `ec380f2f23d763d365db2aca2022c221d9bf89ca3c4e18a4bc6f733580975c08` |
 | `data/offers/real-estate-bbric-hiwon.json` | 23,619 | `397c1f576cb49f6c4b0177338d0f95e4e90d399d847bff2289289146459d7084` |
 | `data/offers/real-estate-sou-daejeon-startup.json` | 11,980 | `7bd788186416cc037ac04a835af5d5d3a0b6753a5d61d74153df9af5d8a6f164` |
+
+### 합성 미술품 카탈로그 (화면 검증용 · 커밋 대상)
+
+- **출처**: synthetic-feature-restore e65337f 합성 fixture (실제 작품·작가·플랫폼과 무관)
+- **재확보**: `git show e65337f:data/synthetic/art-investment.json > data/synthetic/art-investment.json`
+- **비고**: 화면·검색·상세 흐름 검증용. 외부 원문 대조나 투자 판단에 사용하지 않는다.
+
+| 경로 | 바이트 | sha256 |
+|---|---:|---|
+| `data/synthetic/art-investment.json` | 762,052 | `29b7d80b8a36a36b9d550694adf2c951de9f5ff3b2357e28111569ebd9ae716d` |

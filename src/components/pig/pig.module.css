@@ -8,7 +8,150 @@
   display: grid;
   gap: var(--ds-space-6);
   min-width: 0;
-  margin-top: var(--ds-space-6);
+  margin-top: 0;
+}
+
+.productAnalysis {
+  display: grid;
+  gap: var(--ds-space-6);
+  min-width: 0;
+}
+
+.productHeader {
+  display: grid;
+  grid-template-columns: minmax(18rem, 0.78fr) minmax(0, 1.22fr);
+  gap: var(--ds-layout-gap);
+  align-items: start;
+  padding-block: var(--ds-space-2) var(--ds-space-7);
+  border-bottom: 1px solid var(--ds-line);
+}
+
+.productImage {
+  position: relative;
+  min-height: clamp(20rem, 31vw, 28rem);
+  overflow: hidden;
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-bg-muted);
+}
+
+.productImage img {
+  object-fit: cover;
+}
+
+.productCopy {
+  display: grid;
+  gap: var(--ds-space-4);
+  align-content: start;
+  min-width: 0;
+}
+
+.productCopy h2 {
+  margin: 0;
+  color: var(--ds-ink);
+  font-size: var(--ds-heading-h1);
+  font-weight: var(--ds-weight-black);
+  letter-spacing: var(--ds-tracking-tight);
+  line-height: var(--ds-leading-tight);
+  word-break: keep-all;
+}
+
+.productCopy > p {
+  margin: 0;
+  color: var(--ds-ink-muted);
+  font-size: var(--ds-text-sm);
+  line-height: var(--ds-leading-relaxed);
+}
+
+.productStatus {
+  display: inline-flex;
+  width: fit-content;
+  min-height: 1.75rem;
+  align-items: center;
+  padding: 0.25rem 0.65rem;
+  border: 1px solid var(--ds-accent-line);
+  border-radius: var(--ds-radius-sm);
+  color: var(--ds-accent-ink);
+  background: var(--ds-accent-soft);
+  font-size: var(--ds-text-2xs);
+  font-weight: var(--ds-weight-bold);
+}
+
+.productFacts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ds-space-2);
+  margin: 0;
+}
+
+.productFacts > div {
+  min-width: 0;
+  padding: var(--ds-space-3) var(--ds-space-4);
+  background: var(--ds-bg-muted);
+}
+
+.productFacts dt {
+  color: var(--ds-ink-faint);
+  font-size: var(--ds-text-2xs);
+}
+
+.productFacts dd {
+  margin: var(--ds-space-1) 0 0;
+  color: var(--ds-ink);
+  font-size: var(--ds-text-sm);
+  font-weight: var(--ds-weight-bold);
+  line-height: var(--ds-leading-snug);
+  word-break: keep-all;
+}
+
+.productTabs {
+  position: sticky;
+  z-index: 10;
+  top: var(--ds-header-h);
+  display: flex;
+  min-width: 0;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--ds-line);
+  background: var(--ds-bg);
+  scrollbar-width: none;
+}
+
+.productTab {
+  position: relative;
+  flex: none;
+  min-height: var(--ds-control-h-sm);
+  padding: 0 var(--ds-space-4);
+  border: 0;
+  border-bottom: 3px solid transparent;
+  color: var(--ds-ink-faint);
+  background: transparent;
+  font: inherit;
+  font-size: var(--ds-text-sm);
+  font-weight: var(--ds-weight-bold);
+  cursor: pointer;
+}
+
+.productTab:first-child {
+  padding-left: 0;
+}
+
+.productTab:hover,
+.productTabActive {
+  color: var(--ds-ink);
+}
+
+.productTabActive {
+  border-color: var(--ds-accent);
+}
+
+@media (max-width: 720px) {
+  .productHeader {
+    grid-template-columns: 1fr;
+  }
+
+  .productImage {
+    min-height: 0;
+    aspect-ratio: 16 / 10;
+  }
 }
 
 .card {
@@ -29,15 +172,6 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: var(--ds-space-3);
-}
-
-.sectionLabel {
-  font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
-  letter-spacing: var(--ds-tracking-wide);
-  text-transform: uppercase;
-  color: var(--ds-ink-faint);
-  margin: 0;
 }
 
 .sectionTitle {
@@ -65,13 +199,6 @@
   color: var(--ds-ink);
   margin: var(--ds-space-1) 0 0;
   word-break: keep-all;
-}
-
-.eyebrow {
-  font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
-  letter-spacing: var(--ds-tracking-wide);
-  color: var(--ds-ink-faint);
 }
 
 .badge {
@@ -318,7 +445,7 @@
 .gallerySection {
   display: grid;
   gap: var(--ds-space-4);
-  padding-block: var(--ds-section-y-tight);
+  padding-block: 0 var(--ds-section-y-tight);
 }
 
 .galleryEmpty {
@@ -470,66 +597,10 @@
   color: var(--ds-ink);
 }
 
-.diseaseMap {
-  min-width: 0;
-  max-width: 100%;
-  margin: 0;
-  overflow: hidden;
-  border: 1px solid var(--ds-line);
-  border-radius: var(--ds-radius-lg);
-  background: var(--ds-bg-muted);
-}
-
-.diseaseMapHead {
-  display: grid;
-  gap: var(--ds-space-1);
-  padding: var(--ds-space-4) var(--ds-space-5);
-}
-
-.diseaseMapHead strong {
-  font-size: var(--ds-text-md);
-  color: var(--ds-ink);
-}
-
-.diseaseMapHead p,
-.diseaseMapCaption {
-  margin: 0;
-  color: var(--ds-ink-muted);
-  font-size: var(--ds-text-xs);
-  line-height: var(--ds-leading-relaxed);
-  word-break: keep-all;
-  overflow-wrap: anywhere;
-}
-
-.asfMapLayout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--ds-space-5);
-  border-top: 1px solid var(--ds-line);
-  background: var(--ds-surface);
-  padding: var(--ds-space-5);
-}
-
-.asfMapCanvas {
-  position: relative;
-  min-width: 0;
-  overflow: hidden;
-  border: 1px solid var(--ds-line-soft);
-  border-radius: var(--ds-radius-md);
-  background: #edf5f7;
-}
-
-.asfMapCanvas svg {
-  display: block;
-  width: 100%;
-  height: auto;
-  max-height: 39rem;
-}
-
 .asfKakaoStage {
   position: relative;
   height: clamp(27rem, 56vw, 39rem);
-  background: #edf5f7;
+  background: var(--ds-map-surface);
 }
 
 .asfKakaoMap {
@@ -579,29 +650,23 @@
   box-shadow: var(--ds-focus-ring);
 }
 
-.asfKakaoFallback {
+.asfKakaoUnavailable {
   position: absolute;
   inset: 0;
   display: grid;
   place-items: center;
+  padding: var(--ds-space-5);
 }
 
-.asfKakaoFallback svg {
-  width: 100%;
-  height: 100%;
-}
-
-.asfKakaoStatus {
-  position: absolute;
-  top: var(--ds-space-3);
-  right: var(--ds-space-3);
-  max-width: calc(100% - var(--ds-space-6));
+.asfKakaoUnavailable p {
+  margin: 0;
   padding: var(--ds-space-2) var(--ds-space-3);
   border: 1px solid rgb(255 255 255 / 80%);
   border-radius: var(--ds-radius-sm);
   background: rgb(255 255 255 / 90%);
   color: var(--ds-ink-muted);
   font-size: var(--ds-text-2xs);
+  text-align: center;
   backdrop-filter: blur(6px);
 }
 
@@ -613,9 +678,9 @@
   padding: 0;
   border: 2px solid var(--ds-surface);
   border-radius: 50%;
-  color: #fff;
+  color: var(--ds-surface);
   font-family: var(--ds-font-mono);
-  font-size: 0.62rem;
+  font-size: var(--ds-text-2xs);
   font-weight: var(--ds-weight-bold);
   line-height: 1;
   cursor: pointer;
@@ -643,28 +708,28 @@
 }
 
 .asfKakaoMarkerPast {
-  background: #829294;
-  color: #fff;
+  background: var(--ds-map-reference);
+  color: var(--ds-surface);
 }
 
 .asfKakaoMarkerCurrent {
   width: 1.45rem;
   height: 1.45rem;
-  background: #326fa8;
+  background: var(--ds-map-asf);
 }
 
 .asfKakaoMarkerFocus {
   width: 1.75rem;
   height: 1.75rem;
   border-width: 3px;
-  background: #b42318;
+  background: var(--ds-map-selected);
 }
 
 .fmdKakaoMarker {
   width: 1.45rem;
   height: 1.45rem;
   border-radius: 0;
-  background: #d96c1f;
+  background: var(--ds-map-fmd);
   clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
 }
 
@@ -672,7 +737,13 @@
   width: 1.35rem;
   height: 1.35rem;
   border-radius: 0.28rem;
-  background: #7048a8;
+  background: var(--ds-map-both);
+}
+
+.diseaseKakaoMarkerFocus {
+  outline: 3px solid var(--ds-map-selected);
+  outline-offset: 2px;
+  box-shadow: 0 2px 9px rgb(180 35 24 / 48%);
 }
 
 .asfKakaoSelection {
@@ -765,181 +836,6 @@
   grid-column: 1 / -1;
 }
 
-.asfLand {
-  fill: #f8f7f2;
-  stroke: #9faeaf;
-  stroke-width: 1.2;
-  vector-effect: non-scaling-stroke;
-}
-
-.asfPointPast,
-.asfPointCurrent,
-.asfPointFocus,
-.fmdPoint,
-.lsdPoint {
-  vector-effect: non-scaling-stroke;
-  stroke: var(--ds-surface);
-  stroke-width: 1.5;
-}
-
-.asfPointPast {
-  fill: #829294;
-  opacity: 0.72;
-}
-
-.asfPointCurrent {
-  fill: #326fa8;
-}
-
-.asfPointFocus {
-  fill: #b42318;
-  stroke-width: 2.5;
-}
-
-.fmdPoint {
-  fill: #d96c1f;
-  stroke-width: 2;
-}
-
-.lsdPoint {
-  fill: #7048a8;
-  stroke-width: 2;
-}
-
-.asfMapLegend {
-  position: absolute;
-  z-index: 7;
-  bottom: var(--ds-space-3);
-  left: var(--ds-space-3);
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--ds-space-2) var(--ds-space-4);
-  padding: var(--ds-space-2) var(--ds-space-3);
-  border: 1px solid rgb(255 255 255 / 80%);
-  border-radius: var(--ds-radius-sm);
-  background: rgb(255 255 255 / 88%);
-  backdrop-filter: blur(6px);
-  color: var(--ds-ink-muted);
-  font-size: var(--ds-text-2xs);
-}
-
-.asfMapLegend span {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--ds-space-1);
-}
-
-.asfMapLegend i {
-  width: 0.65rem;
-  height: 0.65rem;
-  border-radius: 50%;
-}
-
-.asfLegendPast {
-  background: #829294;
-}
-
-.asfLegendCurrent {
-  background: #326fa8;
-}
-
-.asfLegendFocus {
-  background: #b42318;
-}
-
-.asfMapLegend .fmdLegend {
-  border-radius: 1px;
-  background: #d96c1f;
-  transform: rotate(45deg) scale(0.78);
-}
-
-.asfMapLegend .lsdLegend {
-  border-radius: 2px;
-  background: #7048a8;
-}
-
-.asfMapStats {
-  display: grid;
-  gap: var(--ds-space-5);
-  align-content: start;
-}
-
-.asfMetricGrid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--ds-space-2);
-}
-
-.asfMetricGrid > div {
-  display: grid;
-  gap: var(--ds-space-1);
-  min-width: 0;
-  padding: var(--ds-space-3);
-  border: 1px solid var(--ds-line);
-  border-radius: var(--ds-radius-sm);
-  background: var(--ds-bg-muted);
-}
-
-.asfMetricGrid span,
-.asfYearRow span,
-.asfYearRow strong {
-  font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
-  color: var(--ds-ink-muted);
-}
-
-.asfMetricGrid strong {
-  color: var(--ds-ink);
-  font-size: var(--ds-text-lg);
-}
-
-.asfYearList {
-  display: grid;
-  gap: var(--ds-space-2);
-}
-
-.asfYearRow {
-  display: grid;
-  grid-template-columns: 2.7rem minmax(0, 1fr) 2rem;
-  align-items: center;
-  gap: var(--ds-space-2);
-}
-
-.asfYearRow i {
-  height: 0.5rem;
-  overflow: hidden;
-  border-radius: var(--ds-radius-pill);
-  background: var(--ds-bg-sunken);
-}
-
-.asfYearRow b {
-  display: block;
-  height: 100%;
-  border-radius: inherit;
-  background: #326fa8;
-}
-
-.asfYearRow strong {
-  color: var(--ds-ink);
-  text-align: right;
-}
-
-.asfMapNote {
-  margin: 0;
-  padding: var(--ds-space-3);
-  border-left: 3px solid var(--ds-line-strong);
-  background: var(--ds-bg-muted);
-  color: var(--ds-ink-muted);
-  font-size: var(--ds-text-xs);
-  line-height: var(--ds-leading-relaxed);
-}
-
-.diseaseMapCaption {
-  border-top: 1px solid var(--ds-line);
-  padding: var(--ds-space-3) var(--ds-space-5);
-  background: var(--ds-surface);
-}
-
 .priceDashboard {
   display: grid;
   grid-template-columns: 1fr;
@@ -957,11 +853,6 @@
 }
 
 @media (min-width: 60rem) {
-  .asfMapLayout {
-    grid-template-columns: minmax(22rem, 1.1fr) minmax(17rem, 0.9fr);
-    align-items: start;
-  }
-
   .priceDashboard {
     grid-template-columns: 1fr 1fr;
   }
@@ -1123,7 +1014,7 @@
 .offerReferenceLabel {
   fill: var(--ds-ink-muted);
   font-family: var(--ds-font-mono);
-  font-size: 10px;
+  font-size: var(--ds-text-2xs);
   font-weight: var(--ds-weight-medium);
 }
 

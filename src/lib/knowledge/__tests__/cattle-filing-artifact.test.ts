@@ -421,7 +421,7 @@ describe("livestock-9 approved filing artifact runtime adapter", () => {
     expect(search.results).toContainEqual(expect.objectContaining({
       id: PRODUCT_ID,
       namespace: "published-offer",
-      href: `/offers/${PRODUCT_ID}`,
+      href: `/cattle/products/${PRODUCT_ID}`,
       matchedFields: expect.arrayContaining(["filing"]),
     }));
 
