@@ -16,6 +16,11 @@ import type {
   ProductKnowledgeScope,
 } from "./types";
 
+const dartRcpNoFromDocumentId = (documentId: string): string | undefined =>
+  documentId.match(
+    /^(?:cattle|pig)-[a-z0-9-]+-dart-(?:full-)?(\d{14})$/,
+  )?.[1];
+
 const rowSchema = z.strictObject({
   source_id: z.string().min(1),
   document_id: z.string().min(1),
@@ -45,7 +50,7 @@ const rowSchema = z.strictObject({
   const safeUrl = row.data_nature === "observed"
     ? isSafeHttpsPublicSourceUrl(row.source_url)
     : isSafeHttpsPublicSourceUrl(row.source_url) || isSafeScenarioDocumentPath(row.source_url);
-  const rcpNo = row.document_id.match(/dart-(\d{14})$/)?.[1];
+  const rcpNo = dartRcpNoFromDocumentId(row.document_id);
   const exactDartUrl = (row.category_id === "cattle" || row.category_id === "pig") &&
     row.data_nature === "observed" &&
     rcpNo !== undefined &&
@@ -142,7 +147,7 @@ export const createDbProductKnowledgeRepository = (
     const documents = new Map<string, ProductKnowledgeDocument>();
     const chunks: ProductKnowledgeChunk[] = rows.map((row) => {
       const filingRcpNo = (row.category_id === "cattle" || row.category_id === "pig") && row.data_nature === "observed"
-        ? row.document_id.match(/^(?:cattle|pig)-[a-z0-9-]+-dart-(\d{14})$/)?.[1]
+        ? dartRcpNoFromDocumentId(row.document_id)
         : undefined;
       const isDartFiling = filingRcpNo !== undefined && (
         row.source_url === "https://dart.fss.or.kr/dsaf001/main.do" ||

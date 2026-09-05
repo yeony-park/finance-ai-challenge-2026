@@ -133,6 +133,27 @@ describe("DB product knowledge exact scope", () => {
     }
   });
 
+  test("DART 전체본문 canonical ID도 exact URL로 인식한다", async () => {
+    const rcpNo = "20260902000022";
+    const exact = `https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${rcpNo}`;
+    const result = await createDbProductKnowledgeRepository(async () => [dbRow({
+      product_id: "livestock-9",
+      document_id: `cattle-livestock-9-dart-full-${rcpNo}`,
+      chunk_id: `cattle-livestock-9-dart-full-${rcpNo}-chunk-0001`,
+      source_url: exact,
+    })]).findExact({
+      categoryId: "cattle",
+      productId: "livestock-9",
+      dataNature: "observed",
+    });
+
+    expect(result.documents[0]).toMatchObject({
+      documentId: `cattle-livestock-9-dart-full-${rcpNo}`,
+      sourceUrl: exact,
+      approvedForExternalAi: false,
+    });
+  });
+
   test("exact scope의 복수 승인 공시 document/chunk를 배열 계약으로 보존한다", async () => {
     const rows = ["20260806000159", "20260814003572"].map((rcpNo, index) => dbRow({
       source_id: `source-${index + 1}`,
