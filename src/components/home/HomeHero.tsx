@@ -11,7 +11,7 @@ import type {
   GlobalSearchResult,
 } from "@/lib/knowledge/global-search";
 import type { GenericKnowledgeEvidence } from "@/lib/knowledge/retrieval";
-import { safeCitationUrl } from "@/components/real-estate-scenario/ScenarioEvidenceQuery";
+import { safeCitationUrl } from "@/components/ai-assistant/EvidenceQuery";
 
 import {
   HERO_SHRINK_SCROLL_DISTANCE,
@@ -29,6 +29,7 @@ import visual from "./HomeHeroVisual.module.css";
 import motion from "./home-motion.module.css";
 import { useHomeHeroVisual } from "./useHomeHeroVisual";
 import { useHomeSectionDial } from "./useHomeStageNavigation";
+import { bindHomeIntroScroll } from "./home-intro-scroll";
 
 type SearchResult = Pick<
   GlobalSearchResult,
@@ -317,6 +318,10 @@ export function HomeHero() {
   const { activeSection, scrollToSection } = useHomeSectionDial(isSearchOpen);
 
   useEffect(() => {
+    if (!isSearchOpen) return bindHomeIntroScroll();
+  }, [isSearchOpen]);
+
+  useEffect(() => {
     if (isSearchOpen) scrollImmediately(0);
   }, [isSearchOpen]);
 
@@ -455,9 +460,7 @@ export function HomeHero() {
   };
 
   const handleScrollCue = () => {
-    document
-      .getElementById("category-grid-title")
-      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    scrollToSection(1);
   };
 
   return (

@@ -14,7 +14,7 @@ export const HERO_FRAME_MAX_WIDTH = 528;
 export const HERO_FRAME_MOBILE_MAX_WIDTH = 420;
 export const HERO_FRAME_GAP = 16;
 export const HERO_FRAME_ASPECT_RATIO = 16 / 9;
-/** 한 번의 휠 입력이 전환 대부분을 소모하지 않도록 한 화면에 가까운 거리를 쓴다. */
+/** 사진 축소가 끝나는 스크롤 좌표. 첫 휠 전환과 히어로 높이가 함께 사용한다. */
 export const HERO_SHRINK_SCROLL_DISTANCE = 720;
 export const SEARCH_TRANSITION_MS = 260;
 

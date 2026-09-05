@@ -10,7 +10,6 @@ import {
 
 import {
   HOME_DIAL_SECTIONS,
-  scrollImmediately,
   sectionScrollTarget,
   siteHeaderHeight,
 } from "./home-hero-config";
@@ -73,7 +72,14 @@ export function useHomeSectionDial(isSearchOpen: boolean): {
     const section = HOME_DIAL_SECTIONS[index];
     if (!section) return;
     const target = section.targetId ? sectionScrollTarget(section.targetId) : 0;
-    if (target !== null) scrollImmediately(target);
+    if (target !== null) {
+      window.scrollTo({
+        top: target,
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? "instant"
+          : "smooth",
+      });
+    }
   };
 
   return { activeSection, scrollToSection };
