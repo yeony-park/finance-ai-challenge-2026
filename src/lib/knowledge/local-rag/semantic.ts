@@ -7,7 +7,7 @@ import type {
 import type { GenericKnowledgeEvidence } from "../retrieval";
 import type { ChunkRecord, CommonChunkRecord } from "../schema";
 
-import { searchChunks, type SearchHit } from "../search";
+import { excerptOf, preferCurrentFilingChunks, searchChunks, type SearchHit } from "../search";
 import {
   collectCanonicalSemanticCorpus,
   exactCorpusScope,
@@ -115,7 +115,7 @@ const hitFromCanonical = (
   ...(chunk.scope.scenarioId ? { scenarioId: chunk.scope.scenarioId } : {}),
   title: chunk.title,
   page: chunk.page,
-  excerpt: chunk.text.replace(/\s+/g, " ").trim().slice(0, 320),
+  excerpt: excerptOf(chunk.text),
   sourceUrl: chunk.sourceUrl,
   asOf: chunk.asOf,
   dataNature: chunk.scope.dataNature,
@@ -170,6 +170,7 @@ export const searchSemanticKnowledge = async (
   const corpus = options.corpus ?? await collectCanonicalSemanticCorpus(options.dataRoot);
   const exact = exactCorpusScope(corpus, toLocalScope(options.scope), options.namespace);
   if (!exact.scope || exact.chunks.length === 0) return keyword("scope-unavailable");
+  const currentChunks = preferCurrentFilingChunks(exact.chunks, options.query);
   let vector: readonly number[];
   try {
     const embedder = options.embedder ?? createOpenAiLocalRagEmbedder(apiKey!);
@@ -185,11 +186,12 @@ export const searchSemanticKnowledge = async (
     contentVersion: corpus.contentVersion,
     scope: exact.scope,
     vector,
+    documentIds: [...new Set(currentChunks.map((chunk) => chunk.documentId))],
     limit: Math.min(limit * 3, 100),
   });
   if (searched.status !== "ok") return keyword("store-unavailable");
 
-  const canonicalById = new Map(exact.chunks.map((chunk) => [chunk.chunkId, chunk]));
+  const canonicalById = new Map(currentChunks.map((chunk) => [chunk.chunkId, chunk]));
   const hits = searched.hits.flatMap((hit): SearchHit[] => {
     if (hit.score < LOCAL_RAG_MIN_SCORE) return [];
     const canonical = canonicalById.get(hit.chunkId);

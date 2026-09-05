@@ -3,7 +3,7 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { buildDeterministicCachedAnswer, answerFromEvidence } from "../evidence";
 import { loadKnowledgeScope } from "../loader";
-import { isRankingRequest, normalizeSearchQuery, searchChunks } from "../search";
+import { excerptOf, isRankingRequest, normalizeSearchQuery, preferCurrentFilingChunks, searchChunks } from "../search";
 import { ParsedDocumentArtifactSchema } from "../schema";
 import { validChunk } from "./fixtures";
 
@@ -55,6 +55,45 @@ describe("knowledge chunk search", () => {
     };
     expect(searchChunks([offeringBasis, saleBasis], "매각가격 근거", 5).map((hit) => hit.chunkId))
       .toEqual(["sale-basis"]);
+  });
+
+  it("일반 질문은 최신 전체 공시를 우선하고 이력 질문은 이전 공시도 유지한다", () => {
+    const previous = {
+      ...validChunk(),
+      documentId: "cattle-livestock-9-dart-full-20260814003572",
+      chunkId: "previous-protection",
+      title: "증권신고서(투자계약증권) > 투자자 보호장치",
+      asOf: "2026-08-14",
+      text: "이전 투자자 보호장치와 분쟁처리 절차입니다.",
+    };
+    const current = {
+      ...previous,
+      documentId: "cattle-livestock-9-dart-full-20260902000022",
+      chunkId: "current-protection",
+      asOf: "2026-09-02",
+      text: "최신 투자자 보호장치와 분쟁처리 절차입니다.",
+    };
+
+    expect(searchChunks([previous, current], "투자자 보호장치 알려줘", 5).map((hit) => hit.chunkId))
+      .toEqual(["current-protection"]);
+    expect(preferCurrentFilingChunks([previous, current], "정정 전후 투자자 보호장치 비교").map((chunk) => chunk.chunkId))
+      .toEqual(["previous-protection", "current-protection"]);
+    expect(searchChunks([previous, current], "정정 전후 투자자 보호장치 비교", 5).map((hit) => hit.chunkId))
+      .toEqual(["current-protection", "previous-protection"]);
+    expect(searchChunks([previous, current], "이전 투자자 보호장치", 5).map((hit) => hit.chunkId))
+      .toEqual(["previous-protection", "current-protection"]);
+    expect(preferCurrentFilingChunks([previous, current], "비교적 낮은 보험료").map((chunk) => chunk.chunkId))
+      .toEqual(["current-protection"]);
+    expect(preferCurrentFilingChunks([previous, current], "축산물이력제 조회").map((chunk) => chunk.chunkId))
+      .toEqual(["current-protection"]);
+  });
+
+  it("긴 근거 미리보기는 단어 중간이 아니라 문장 경계에서 생략한다", () => {
+    const excerpt = excerptOf(
+      `투자자 보호장치 안내입니다. ${"보호 절차와 보상 기준을 확인합니다. ".repeat(20)}후속 내용입니다.`,
+    );
+    expect(excerpt.length).toBeLessThanOrEqual(320);
+    expect(excerpt).toMatch(/다\.$/);
   });
 
   it("승인 표준 질문을 실제 PDF의 관련 쪽에 연결하고 재생성 cache를 사용한다", async () => {

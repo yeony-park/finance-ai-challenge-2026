@@ -441,7 +441,7 @@ describe("pig DART filing artifact", () => {
     expect(pigChunks.every((item) => item.approvedForExternalAi === false)).toBe(true);
     expect(plan.documents.filter((item) => item.categoryId === "cattle" && item.sourceKind === "official-document" && !item.documentId.includes("-dart-full-"))).toHaveLength(9);
     expect(plan.documents.filter((item) => item.categoryId === "pig" && item.sourceKind === "official-document" && !item.documentId.includes("-dart-full-"))).toHaveLength(3);
-    expect(plan.documents.filter((item) => item.documentId.includes("-dart-full-"))).toHaveLength(36);
+    expect(plan.documents.filter((item) => item.documentId.includes("-dart-full-"))).toHaveLength(37);
     expect(plan.documents.filter((item) =>
       (item.categoryId === "cattle" || item.categoryId === "pig") && !item.approvedForExternalAi
     )).toHaveLength(plan.documents.filter((item) => item.categoryId === "cattle" || item.categoryId === "pig").length);

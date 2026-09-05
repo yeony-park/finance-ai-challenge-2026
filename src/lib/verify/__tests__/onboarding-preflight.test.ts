@@ -40,8 +40,8 @@ afterEach(async () => {
 });
 
 describe("12상품 onboarding preflight", () => {
-  test("25개 cattle pipeline RCP와 pig source chain을 exact catalog로 검증한다", async () => {
-    expect(Object.keys(CATTLE_RCP_NO_TO_OFFER)).toHaveLength(25);
+  test("26개 cattle pipeline RCP와 pig source chain을 exact catalog로 검증한다", async () => {
+    expect(Object.keys(CATTLE_RCP_NO_TO_OFFER)).toHaveLength(26);
     expect(ONBOARDING_CATALOG.every((item) => item.externalAiApproved === false)).toBe(true);
     expect(ONBOARDING_CATALOG.flatMap((item) => item.approvedFilings)).toHaveLength(12);
     expect(ONBOARDING_CATALOG.flatMap((item) => item.approvedFilings).every((item) =>
@@ -49,8 +49,8 @@ describe("12상품 onboarding preflight", () => {
       item.reviewer === "codex-local-deterministic-check" &&
       /^[a-f0-9]{64}$/.test(item.locatorSetHash)
     )).toBe(true);
-    expect(ONBOARDING_CATALOG.flatMap((item) => item.inventory)).toHaveLength(37);
-    expect(ONBOARDING_CATALOG.flatMap((item) => item.inventory).filter((item) => item.status === "local")).toHaveLength(36);
+    expect(ONBOARDING_CATALOG.flatMap((item) => item.inventory)).toHaveLength(38);
+    expect(ONBOARDING_CATALOG.flatMap((item) => item.inventory).filter((item) => item.status === "local")).toHaveLength(37);
     expect(ONBOARDING_CATALOG.flatMap((item) => item.inventory).filter((item) => item.status === "source-unavailable")).toEqual([
       { rcpNo: "20250113000307", status: "source-unavailable", unavailableReason: "opendart-014" },
     ]);
@@ -59,8 +59,8 @@ describe("12상품 onboarding preflight", () => {
       readyLocalProducts: 12,
       pendingProducts: 0,
       pendingCandidateRcpNos: 0,
-      totalCandidateRcpNos: 37,
-      localCandidateRcpNos: 36,
+      totalCandidateRcpNos: 38,
+      localCandidateRcpNos: 37,
       unavailableCandidateRcpNos: 1,
       minimumFutureDownloads: 0,
       externalAiEmbeddingCandidates: 0,
@@ -84,7 +84,7 @@ describe("12상품 onboarding preflight", () => {
   });
 
   test.skipIf(!hasFullLocalInventory)(
-    `full-local preflight는 36개 raw XML을 exact hash로 검증한다 ${
+    `full-local preflight는 37개 raw XML을 exact hash로 검증한다 ${
       missingLocalRawPath ? skipReason(missingLocalRawPath) : ""
     }`,
     async () => {

@@ -702,7 +702,7 @@ export const auditFilingCorpus = async (dataRoot = "data"): Promise<readonly str
     if (indexes.length === 0) return [];
     const documents = indexes.reduce((sum, index) => sum + index.documents.length, 0);
     const chunks = indexes.reduce((sum, index) => sum + index.chunks.length, 0);
-    return documents > 36 && chunks > documents ? [] : ["filing corpus 범위가 36개 공시와 외부 관측을 포함하지 않습니다."];
+    return documents > 37 && chunks > documents ? [] : ["filing corpus 범위가 37개 공시와 외부 관측을 포함하지 않습니다."];
   } catch (error) {
     return [(error as Error).message];
   }

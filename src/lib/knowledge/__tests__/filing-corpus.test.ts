@@ -10,12 +10,12 @@ import {
 import { searchOffers } from "../global-search";
 
 describe("full DART filing corpus", () => {
-  test("12개 상품의 local XML 36개와 unavailable 1개를 manifest에 고정한다", async () => {
+  test("12개 상품의 local XML 37개와 unavailable 1개를 manifest에 고정한다", async () => {
     const manifest = await filingCorpusSummary();
     expect(manifest.entries).toHaveLength(12);
-    expect(manifest.entries.flatMap((entry) => entry.localRcpNos)).toHaveLength(36);
+    expect(manifest.entries.flatMap((entry) => entry.localRcpNos)).toHaveLength(37);
     expect(manifest.entries.flatMap((entry) => entry.unavailableRcpNos)).toEqual(["20250113000307"]);
-    expect(manifest.entries.reduce((sum, entry) => sum + entry.documents, 0)).toBe(60);
+    expect(manifest.entries.reduce((sum, entry) => sum + entry.documents, 0)).toBe(61);
     expect(manifest.entries.reduce((sum, entry) => sum + entry.chunks, 0)).toBeGreaterThan(12_000);
     await expect(auditFilingCorpus()).resolves.toEqual([]);
   });

@@ -81,7 +81,7 @@ afterEach(async () => {
 });
 
 describe("knowledge ingest plan", () => {
-  test("검증 발췌 12문서와 전체 공시 36문서를 함께 exact scope로 계획한다", async () => {
+  test("검증 발췌 12문서와 전체 공시 37문서를 함께 exact scope로 계획한다", async () => {
     const plan = await buildKnowledgeIngestPlan("data");
     const documents = plan.documents.filter((item) =>
       item.sourceKind === "official-document" &&
@@ -96,7 +96,7 @@ describe("knowledge ingest plan", () => {
     const excerptChunks = chunks.filter((item) => excerptKeys.has(item.documentNaturalKey));
     expect(excerptDocuments).toHaveLength(12);
     expect(excerptChunks).toHaveLength(21);
-    expect(fullDocuments).toHaveLength(36);
+    expect(fullDocuments).toHaveLength(37);
     expect(chunks.length).toBeGreaterThan(12_000);
     expect(new Set(documents.map((item) => `${item.categoryId}/${item.productId}`)).size).toBe(12);
     expect(documents.every((item) => item.approvedForPublic && !item.approvedForExternalAi)).toBe(true);

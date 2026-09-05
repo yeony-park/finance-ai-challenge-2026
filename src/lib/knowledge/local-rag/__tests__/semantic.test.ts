@@ -179,6 +179,80 @@ describe("exact-scope semantic knowledge adapter", () => {
     })]);
   });
 
+  test("구버전 동점 청크가 100개를 넘어도 최신 공시 범위 안에서 의미검색한다", async () => {
+    const root = mkdtempSync(path.join(os.tmpdir(), "semantic-revisions-"));
+    roots.push(root);
+    const dbPath = path.join(root, "knowledge.sqlite");
+    const approvalReferenceKey = `canonical:${"c".repeat(64)}`;
+    const revisionScope = {
+      categoryId: "cattle" as const,
+      productId: "livestock-9",
+      scenarioId: null,
+      dataNature: "observed" as const,
+      approvalReferenceKey,
+    };
+    const oldChunks = Array.from({ length: 101 }, (_, index) => ({
+      namespace: "common" as const,
+      scope: {
+        categoryId: revisionScope.categoryId,
+        productId: revisionScope.productId,
+        scenarioId: revisionScope.scenarioId,
+        dataNature: revisionScope.dataNature,
+      },
+      approvalReferenceKey,
+      documentId: "cattle-livestock-9-dart-full-20260814003572",
+      chunkId: `cattle-livestock-9-dart-full-20260814003572-chunk-${String(index).padStart(4, "0")}`,
+      title: "증권신고서(투자계약증권) > 투자자 보호장치",
+      sourceUrl: "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260814003572",
+      sourceKind: "official-document" as const,
+      asOf: "2026-08-14",
+      page: 1,
+      text: "투자자 보호 체계 안내",
+      canonicalText: "투자자 보호 체계 안내",
+      sourceHash: "a".repeat(64),
+      chunkHash: (index + 10).toString(16).padStart(64, "0"),
+      contentHash: (index + 200).toString(16).padStart(64, "0"),
+      limitations: [],
+      approvedForExternalAi: true as const,
+      piiReviewStatus: "passed" as const,
+    }));
+    const latestChunk = {
+      ...oldChunks[0]!,
+      documentId: "cattle-livestock-9-dart-full-20260902000022",
+      chunkId: "cattle-livestock-9-dart-full-20260902000022-chunk-0001",
+      sourceUrl: "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260902000022",
+      asOf: "2026-09-02",
+      sourceHash: "b".repeat(64),
+      chunkHash: "d".repeat(64),
+      contentHash: "e".repeat(64),
+    };
+    const revisionCorpus: CanonicalSemanticCorpus = {
+      contentVersion: `canonical-${"f".repeat(64)}`,
+      scopes: [revisionScope],
+      chunks: [...oldChunks, latestChunk],
+    };
+    const embedder: LocalRagEmbedder = {
+      async embedDocuments(values) { return values.map(() => vector()); },
+      async embedQuery() { return vector(); },
+    };
+    await buildSemanticIndex({ apply: true, apiKey: "fake", dbPath, corpus: revisionCorpus, embedder });
+
+    const result = await searchSemanticKnowledge({
+      scope: { categoryId: "cattle", productId: "livestock-9", dataNature: "observed" },
+      query: "사고 대응 절차",
+      enabled: true,
+      dbPath,
+      corpus: revisionCorpus,
+      fallbackChunks: [],
+      embedder,
+    });
+
+    expect(result).toMatchObject({ strategy: "semantic", semantic: true, degraded: false });
+    expect(result.hits.map((hit) => hit.documentId)).toEqual([
+      "cattle-livestock-9-dart-full-20260902000022",
+    ]);
+  });
+
   test("scope 불일치면 query provider를 호출하지 않고 exact keyword 범위로 강등한다", async () => {
     let calls = 0;
     const result = await searchSemanticKnowledge({

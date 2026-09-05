@@ -43,6 +43,7 @@ export interface LocalRagSearchInput {
   readonly contentVersion: string;
   readonly scope: LocalRagScope;
   readonly vector: ReadonlyArray<number> | Float32Array;
+  readonly documentIds?: readonly string[];
   readonly limit?: number;
   readonly dbPath?: string;
 }

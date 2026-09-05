@@ -191,9 +191,9 @@ describe("product knowledge DB write", () => {
     await writeKnowledgeIngestPlan(plan, executor, KNOWLEDGE_FULL_SNAPSHOT);
     await writeKnowledgeIngestPlan(plan, executor, KNOWLEDGE_FULL_SNAPSHOT);
 
-    expect(documentCount).toBe(85);
+    expect(documentCount).toBe(86);
     expect(scopeTotals).toEqual({
-      cattle: { documents: 51, chunks: 8798 },
+      cattle: { documents: 52, chunks: 9166 },
       pig: { documents: 21, chunks: 3687 },
       "real-estate": { documents: 13, chunks: 255 },
     });
