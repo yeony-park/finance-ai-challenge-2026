@@ -24,8 +24,8 @@ const chunkHash = calculateCommonChunkHash({
 
 const dbRow = (overrides: Record<string, unknown> = {}) => ({
   source_id: "source-1",
-  document_id: "10",
-  chunk_id: "20",
+  document_id: "document-10",
+  chunk_id: "chunk-20",
   title: "상품 설명서",
   category_id: "cattle",
   product_id: "livestock-1",
@@ -73,14 +73,16 @@ describe("DB product knowledge exact scope", () => {
     expect(rendered?.sql).toContain("d.approved_for_public = true");
     expect(rendered?.sql).toContain("d.status IN ('ready', 'partial')");
     expect(rendered?.sql).toContain("c.status = 'ready'");
+    expect(rendered?.sql).toContain("d.canonical_document_id AS document_id");
+    expect(rendered?.sql).toContain("c.canonical_chunk_id AS chunk_id");
     expect(rendered?.params).toEqual([
       "cattle", "cattle", "livestock-1", "livestock-1",
       "observed", "observed", null, null,
     ]);
     expect(result.chunks[0]).toMatchObject({
       sourceId: "source-1",
-      documentId: "10",
-      chunkId: "20",
+      documentId: "document-10",
+      chunkId: "chunk-20",
       categoryId: "cattle",
       productId: "livestock-1",
       dataNature: "observed",
@@ -136,7 +138,7 @@ describe("DB product knowledge exact scope", () => {
       source_id: `source-${index + 1}`,
       product_id: "livestock-9",
       document_id: `cattle-livestock-9-dart-${rcpNo}`,
-      chunk_id: `${20 + index}`,
+      chunk_id: `cattle-livestock-9-dart-${rcpNo}-chunk-${index + 1}`,
       source_url: `https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${rcpNo}`,
       source_hash: `${index + 1}`.repeat(64),
     }));

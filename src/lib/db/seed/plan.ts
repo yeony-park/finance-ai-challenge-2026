@@ -41,6 +41,7 @@ const loadRagFixture = async (
   return (await loadGenericCorpusDocuments(dataDir)).map((doc) => ({
     document: ragDocumentRowSchema.parse({
       sourceId: doc.sourceId,
+      canonicalDocumentId: doc.sourceId,
       title: doc.title,
       url: doc.sourceUrl,
       license: "green",
@@ -60,6 +61,7 @@ const loadRagFixture = async (
       const identity = genericCorpusChunkIdentity(doc, chunk);
       return ragChunkRowSchema.parse({
         chunkIndex: chunk.chunkIndex,
+        canonicalChunkId: `general-${doc.sourceId}-${String(chunk.chunkIndex + 1).padStart(4, "0")}`,
         content: chunk.content,
         embedding: null,
         scopeKind: "generic",

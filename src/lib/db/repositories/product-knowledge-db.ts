@@ -72,8 +72,8 @@ export type ProductKnowledgeSqlExecutor = (query: SQL) => Promise<unknown>;
 
 export const productKnowledgeSql = (scope: ProductKnowledgeScope): SQL => sql`
   SELECT d.source_id,
-         d.id::text AS document_id,
-         c.id::text AS chunk_id,
+         d.canonical_document_id AS document_id,
+         c.canonical_chunk_id AS chunk_id,
          d.title,
          d.category_id,
          d.product_id,
@@ -117,6 +117,8 @@ export const productKnowledgeSql = (scope: ProductKnowledgeScope): SQL => sql`
     AND c.approved_for_public = true
     AND d.status IN ('ready', 'partial')
     AND c.status = 'ready'
+    AND d.canonical_document_id IS NOT NULL
+    AND c.canonical_chunk_id IS NOT NULL
   ORDER BY d.id, c.page, c.chunk_index
 `;
 

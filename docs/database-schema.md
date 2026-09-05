@@ -63,7 +63,7 @@ offerings (상품 1건당 1행)
 
 | 컬럼 묶음 | 컬럼 | 설명 |
 |---|---|---|
-| 식별 | `source_id`, `title` | 문서 고유 ID와 제목 |
+| 식별 | `source_id`, `canonical_document_id`, `title` | DB 적재 자연키, corpus의 정식 문서 ID, 제목 |
 | 범위 | `scope_kind`, `category_id`, `product_id`, `scenario_id`, `data_nature` | 일반지식 또는 정확한 상품 범위 |
 | 출처 | `source_kind`, `source_url`, `as_of`, `source_hash` | 자료 성격, 공개 URL, 기준일, 원문 SHA-256 |
 | 승인 | `approved_for_public`, `approved_for_external_ai`, `pii_review_status`, `status` | 공개·외부 AI 전송·PII 검토·처리 상태 |
@@ -76,6 +76,7 @@ offerings (상품 1건당 1행)
 | 컬럼 | 설명 |
 |---|---|
 | `document_id` | 소속 `rag_documents.id` |
+| `canonical_chunk_id` | corpus의 정식 청크 ID |
 | `chunk_index` | 문서 내 청크 순서 |
 | `content` | 검색과 답변에 사용하는 본문 |
 | `canonical_text` | 정규화된 원문 |

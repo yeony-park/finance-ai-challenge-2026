@@ -133,6 +133,7 @@ const documentValues = (
   owner: typeof KNOWLEDGE_ETL_OWNER,
 ) => ({
   sourceId: row.sourceId,
+  canonicalDocumentId: row.documentId,
   title: row.title,
   url: row.sourceUrl,
   // Product ETL only emits public-approved, rights-gated rows. Keep the legacy
@@ -169,6 +170,7 @@ export const knowledgeDocumentUpsertQuery = (
     .onConflictDoUpdate({
       target: ragDocuments.sourceId,
       set: {
+        canonicalDocumentId: values.canonicalDocumentId,
         title: values.title,
         url: values.url,
         license: values.license,
@@ -202,6 +204,7 @@ const chunkValues = (
   owner: typeof KNOWLEDGE_ETL_OWNER,
 ) => ({
   documentId,
+  canonicalChunkId: row.chunkId,
   chunkIndex: row.chunkIndex,
   content: row.content,
   scopeKind: row.scopeKind,
@@ -238,6 +241,7 @@ export const knowledgeChunkUpsertQuery = (
     .onConflictDoUpdate({
       target: [ragChunks.documentId, ragChunks.chunkIndex],
       set: {
+        canonicalChunkId: values.canonicalChunkId,
         content: values.content,
         sourceUrl: values.sourceUrl,
         asOf: values.asOf,

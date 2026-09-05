@@ -97,6 +97,7 @@ const seedRag = async (
       .onConflictDoUpdate({
         target: ragDocuments.sourceId,
         set: {
+          canonicalDocumentId: seed.document.canonicalDocumentId,
           title: seed.document.title,
           url: seed.document.url,
           license: seed.document.license,
@@ -125,6 +126,7 @@ const seedRag = async (
         .insert(ragChunks)
         .values({
           documentId,
+          canonicalChunkId: chunk.canonicalChunkId,
           chunkIndex: chunk.chunkIndex,
           content: chunk.content,
           embedding: chunk.embedding,
@@ -144,6 +146,7 @@ const seedRag = async (
         .onConflictDoUpdate({
           target: [ragChunks.documentId, ragChunks.chunkIndex],
           set: {
+            canonicalChunkId: chunk.canonicalChunkId,
             content: chunk.content,
             embedding: sql`CASE
               WHEN ${ragChunks.sourceHash} IS NOT DISTINCT FROM ${chunk.sourceHash}
