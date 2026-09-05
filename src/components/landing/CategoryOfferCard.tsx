@@ -116,9 +116,11 @@ export function CategoryOfferCard({
               className={s.analysisCardImage}
               unoptimized={media.unoptimized}
             />
-            <span className={s.analysisCardMediaLabel} aria-hidden="true">
-              {media.label}
-            </span>
+            {media.label !== assetLabel ? (
+              <span className={s.analysisCardMediaLabel} aria-hidden="true">
+                {media.label}
+              </span>
+            ) : null}
             {action ? (
               <span className={s.analysisCardMediaAction}>{action}</span>
             ) : null}
@@ -143,8 +145,6 @@ export function CategoryOfferCard({
             {showEyebrow ? (
               <div className={s.analysisCardTop}>
                 <p className={s.analysisCardEyebrow}>
-                  <span>{assetLabel}</span>
-                  <span aria-hidden="true">·</span>
                   <span>{badge}</span>
                   {notice ? (
                     <>
