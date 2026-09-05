@@ -3,6 +3,9 @@
 import Image from "next/image";
 import { useEffect, useState, type ReactNode } from "react";
 import { useProfile } from "@/components/site/profile";
+import { ProductAiSummary } from "@/components/ai-assistant/ProductAiSummary";
+import { ProductCopilot } from "@/components/ai-assistant/ProductCopilot";
+import { ProductFacts } from "@/components/product/ProductFacts";
 import type { NarrativeLevel } from "@/lib/verify/narrative/types";
 import type { DemoView, ExplainLevel } from "@/lib/verify/report/view-model";
 
@@ -42,6 +45,7 @@ export function ReportDocument({
   view,
   narrative = null,
   aiSummary = null,
+  copilot = null,
   overview = null,
   lifecycle,
   sections,
@@ -51,6 +55,7 @@ export function ReportDocument({
   readonly view?: DemoView;
   readonly narrative?: Readonly<Record<ExplainLevel, NarrativeLevel>> | null;
   readonly aiSummary?: ReactNode;
+  readonly copilot?: ReactNode;
   readonly overview?: ReactNode;
   readonly lifecycle?: ReactNode;
   readonly sections: readonly ReportSection[];
@@ -70,7 +75,6 @@ export function ReportDocument({
               view={view}
               level={level}
               narrative={narrative}
-              aiSummary={aiSummary}
               overview={overview}
               lifecycle={lifecycle}
               onLevelChange={setLevelOverride}
@@ -133,14 +137,14 @@ export function ReportDocument({
             <span className={s.productHeaderStatus}>{productHeader.status}</span>
             <h1 className={s.productHeaderTitle}>{productHeader.title}</h1>
             <p className={s.productHeaderMeta}>{productHeader.meta}</p>
-            <dl className={s.productHeaderFacts}>
+            <ProductFacts>
               {productHeader.facts.map((fact) => (
                 <div key={fact.label}>
                   <dt>{fact.label}</dt>
                   <dd>{fact.value}</dd>
                 </div>
               ))}
-            </dl>
+            </ProductFacts>
           </div>
         </header>
       ) : null}
@@ -154,8 +158,11 @@ export function ReportDocument({
         role="tabpanel"
         aria-labelledby={`report-tab-${activeSection.id}`}
       >
+        {aiSummary && activeSection.key === "verdict"
+          ? <div className={s.wrap}><ProductAiSummary>{aiSummary}</ProductAiSummary></div> : null}
         {content[activeSection.key] ?? null}
       </div>
+      {aiSummary || copilot ? <ProductCopilot>{copilot}</ProductCopilot> : null}
     </>
   );
 }

@@ -19,7 +19,7 @@ describe("합성 미술품 상세 화면", () => {
       expect(html).toContain(label);
     }
     expect(html).toContain("공개 비용 구성");
-    expect(html).not.toContain("네 개 분석축의 합성 데이터 메모");
+    expect(html).not.toContain("항목별 분석");
     expect(html).toContain('href="/art?tab=analysis"');
     expect(html).toContain("← 분석");
     expect(html).toContain("합성 데이터 · 대조 불가");

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ProductMetric } from "@/components/product/ProductMetric";
 
 import searchFieldStyles from "@/components/site/SearchField.module.css";
 import { SEARCH_PLACEHOLDER } from "@/lib/content/home";
@@ -27,16 +28,6 @@ function EntityBreadcrumb({ label }: { readonly label: string }) {
       <span aria-hidden="true">/</span>
       <strong aria-current="page">{label}</strong>
     </nav>
-  );
-}
-
-function MetricCard({ label, value, note }: { readonly label: string; readonly value: string; readonly note?: string }) {
-  return (
-    <article className={s.metricCard}>
-      <span>{label}</span>
-      <strong>{value}</strong>
-      {note ? <small>{note}</small> : null}
-    </article>
   );
 }
 
@@ -75,18 +66,17 @@ export function SyntheticArtistDetailView({
 
       <div className={s.entityContent}>
         <section className={s.neutralSummary}>
-          <p className={s.kicker}>가상 이력 분류</p>
           <h2>현재 상품과 과거 합성 이력을 분리해 표시합니다.</h2>
           <p>실제 작가·거래 기록이 아니며 투자 성과나 시장 전망으로 사용할 수 없습니다.</p>
         </section>
 
         <div className={s.metricGrid}>
-          <MetricCard label="현재 상품" value={`${currentProducts.length}건`} />
-          <MetricCard label="운용·매각 진행" value={`${operating.length}건`} />
-          <MetricCard label="과거 기록" value={`${historyProducts.length}건`} />
-          <MetricCard label="연결 거래·가격 표본" value={`${auctions.length}건`} />
-          <MetricCard label="낙찰률" value={formatSyntheticPercent(sellThrough)} />
-          <MetricCard label="중위 낙찰가" value={formatSyntheticKrw(syntheticMedianAuctionPrice(auctions))} />
+          <ProductMetric label="현재 상품" value={`${currentProducts.length}건`} />
+          <ProductMetric label="운용·매각 진행" value={`${operating.length}건`} />
+          <ProductMetric label="과거 기록" value={`${historyProducts.length}건`} />
+          <ProductMetric label="연결 거래·가격 표본" value={`${auctions.length}건`} />
+          <ProductMetric label="낙찰률" value={formatSyntheticPercent(sellThrough)} />
+          <ProductMetric label="중위 낙찰가" value={formatSyntheticKrw(syntheticMedianAuctionPrice(auctions))} />
         </div>
 
         {currentProducts.length ? (
@@ -256,16 +246,15 @@ export function SyntheticPlatformDetailView({
 
       <div className={s.entityContent}>
         <section className={s.neutralSummary}>
-          <p className={s.kicker}>가상 플랫폼</p>
           <h2>가상 플랫폼의 현재 상품과 과거 합성 이력을 표시합니다.</h2>
           <p>외부 원문과 연결하지 않으며 모든 값은 화면 검증용입니다.</p>
         </section>
 
         <div className={s.metricGrid}>
-          <MetricCard label="현재 합성 상품" value={`${currentProducts.length}건`} />
-          <MetricCard label="합성 과거 이력" value={`${historyProducts.length}건`} />
+          <ProductMetric label="현재 합성 상품" value={`${currentProducts.length}건`} />
+          <ProductMetric label="합성 과거 이력" value={`${historyProducts.length}건`} />
           {Object.entries(counts).map(([recordStatus, count]) => (
-            <MetricCard key={recordStatus} label={syntheticTrackStatusLabels[recordStatus as SyntheticTrackStatus]} value={`${count ?? 0}건`} />
+            <ProductMetric key={recordStatus} label={syntheticTrackStatusLabels[recordStatus as SyntheticTrackStatus]} value={`${count ?? 0}건`} />
           ))}
         </div>
 
@@ -280,7 +269,7 @@ export function SyntheticPlatformDetailView({
 
         <section className={s.section}>
           <div className={s.sectionHeading}>
-            <div><p className={s.kicker}>가상 회수 이력</p><h2>합성 과거 이력</h2><p>검색 결과 {sorted.length}건 · 페이지당 {pageSize}건</p></div>
+            <div><h2>합성 과거 이력</h2><p>검색 결과 {sorted.length}건 · 페이지당 {pageSize}건</p></div>
           </div>
           <form className={`${s.searchForm} ${s.historySearchForm}`} role="search">
             <div className={`${searchFieldStyles.field} ${s.searchControl}`}>

@@ -7,10 +7,11 @@ import CattlePage from "@/app/cattle/products/[id]/page";
 import { PigFilingArtifactDetail } from "@/components/pig/PigFilingArtifactDetail";
 
 vi.mock("@/components/report/ReportDocument", () => ({
-  ReportDocument: ({ productHeader, sectionContent }: {
+  ReportDocument: ({ productHeader, sectionContent, aiSummary, copilot }: {
     productHeader: { title: string; meta: string }; sectionContent: Record<string, ReactNode>;
+    aiSummary?: ReactNode; copilot?: ReactNode;
   }) => createElement("div", null, createElement("h1", null, productHeader.title),
-    createElement("p", null, productHeader.meta), ...Object.values(sectionContent)),
+    createElement("p", null, productHeader.meta), aiSummary, copilot, ...Object.values(sectionContent)),
 }));
 
 const OfferReportPage = async ({ params }: { params: Promise<{ id: string }> }) => {
@@ -45,7 +46,7 @@ import {
   PigFilingEvidenceQuery,
   safeCitationUrl,
   StructuredSourceList,
-} from "../ScenarioEvidenceQuery";
+} from "@/components/ai-assistant/EvidenceQuery";
 
 describe("부동산 시나리오 상세", () => {
   test("합성 미술품 내부 근거 링크만 엄격하게 허용한다", () => {
@@ -220,15 +221,14 @@ describe("부동산 시나리오 상세", () => {
     for (const question of ["공모가격", "예상 사업기간", "수수료", "투자자보호기금"]) {
       expect(markup).toContain(question);
     }
-    expect(markup).toContain("DART 공시와 축산물이력 외부 대조를 구분해 확인");
-    expect(markup).toContain("투자 판단이나 생성 답변을 만들지 않습니다");
+    expect(markup).toContain("이 상품의 DART 공시에서 답변 근거를 찾습니다.");
     expect(markup).not.toContain("청약 미달");
 
     const minimumMarkup = renderToStaticMarkup(createElement(CattleMinimumFilingEvidenceQuery, {
       productId: "livestock-1",
     }));
     expect(minimumMarkup).toContain("원금 미보장");
-    expect(minimumMarkup).toContain("정정 관계, 최신 조건, 개체 실재성은 답으로 만들지 않습니다");
+    expect(minimumMarkup).toContain("공시의 원금 미보장 문단만 확인할 수 있습니다.");
     expect(evidenceRequestBody(cattleFilingEvidenceScope("livestock-1"), "원금 미보장"))
       .toMatchObject({
         categoryId: "cattle",
@@ -299,8 +299,7 @@ describe("부동산 시나리오 상세", () => {
       });
     }
     expect(markup).not.toMatch(/청약·납입 일정|투자자보상장치|수수료와 비용/);
-    expect(markup).toContain("DART 공시의 상품 조건과 축산물이력 외부 대조를 구분해 확인");
-    expect(markup).toContain("투자 판단이나 생성 답변을 만들지 않습니다");
+    expect(markup).toContain("이 상품의 DART 공시에서 답변 근거를 찾습니다.");
     expect(markup).not.toMatch(/RAG|hash|registry/);
   });
 
@@ -401,9 +400,7 @@ describe("부동산 시나리오 상세", () => {
     expect(markup).toContain("현재 투자 추천이 아니라 가상 운영주체의 과거 시나리오 이력과 확인 기준을 살펴보는 사례입니다");
     expect(markup).toContain("가상 운영주체 A의 과거 종료 사례 · 2건");
     expect(markup).not.toContain(`<h4>${offer.asset.publicName}</h4>`);
-    expect(markup).toContain("투자 조건은 등록된 시나리오 조건에서 확인하고");
-    expect(markup).toContain("문서 질문은 해당 상품에 연결된 공개 문서 범위에서만 찾습니다");
-    expect(markup).toContain("확인 자료가 없으면 답을 만들지 않고 보류합니다");
+    expect(markup).toContain("시나리오 조건과 연결된 문서를 바탕으로 답합니다.");
     expect(markup.split("검토용 시나리오 · 실제 청약·판매 상품이 아닙니다.")).toHaveLength(2);
     expect(markup).toContain("최소투자금은 얼마인가요?");
     expect(markup).toContain("운용기간과 매각조건은 무엇인가요?");

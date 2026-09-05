@@ -1,6 +1,6 @@
 import { AiSummary } from "@/components/ai-summary/AiSummary";
 import { PigFilingArtifactDetail } from "@/components/pig/PigFilingArtifactDetail";
-import { PigFilingEvidenceQuery } from "@/components/real-estate-scenario/ScenarioEvidenceQuery";
+import { PigFilingEvidenceQuery } from "@/components/ai-assistant/EvidenceQuery";
 import { loadAiSummary } from "@/lib/ai-summary/cache";
 import { loadApprovedPigFilingArtifact } from "@/lib/knowledge/pig-filing-artifact";
 import type { Metadata } from "next";
@@ -190,11 +190,12 @@ export default async function PigReportPage({ params }: PigReportPageProps) {
 
       <ReportDocument
         productHeader={productHeaderFor(product)}
+        aiSummary={<AiSummary summary={aiSummary} />}
+        copilot={artifact ? <PigFilingEvidenceQuery productId={productId} /> : null}
         sections={PIG_REPORT_SECTIONS}
         sectionContent={{
           verdict: (
             <PigReportPanel id={VERDICT_HEADING_ID}>
-              {aiSummary ? <AiSummary summary={aiSummary} /> : null}
               <PigReviewSections product={product} summaryOnly />
             </PigReportPanel>
           ),
@@ -213,7 +214,6 @@ export default async function PigReportPage({ params }: PigReportPageProps) {
               {artifact ? (
                 <div className={s.wrap}>
                   <PigFilingArtifactDetail artifact={artifact} />
-                  <PigFilingEvidenceQuery productId={productId} />
                 </div>
               ) : null}
             </>

@@ -26,7 +26,7 @@ import {
   PHASE_LABEL,
   presentReviewText,
 } from "./ScenarioCatalog";
-import { ScenarioEvidenceQuery } from "./ScenarioEvidenceQuery";
+import { ScenarioEvidenceQuery } from "@/components/ai-assistant/EvidenceQuery";
 import s from "./scenario.module.css";
 
 const FACT_LABEL: Readonly<Record<string, string>> = {
@@ -243,7 +243,6 @@ function CompletionCashFlow({ offer }: { readonly offer: ScenarioOffer }) {
       aria-labelledby="scenario-completion-title"
     >
       <div className={s.detailWrap}>
-        <p className={s.eyebrow}>종료 상품 현금흐름</p>
         <h2 id="scenario-completion-title" className={s.sectionTitle}>
           매수부터 종료까지 입력값 한눈에 보기
         </h2>
@@ -430,7 +429,6 @@ function BuildingOverview({
       aria-labelledby="scenario-building-title"
     >
       <div className={s.detailWrap}>
-        <p className={s.eyebrow}>건물 기본정보</p>
         <h2 id="scenario-building-title" className={s.sectionTitle}>
           건물 정보
         </h2>
@@ -493,7 +491,6 @@ function ReviewAtAGlance({
       aria-labelledby="scenario-glance-title"
     >
       <div className={s.detailWrap}>
-        <p className={s.eyebrow}>핵심만 먼저 보기</p>
         <h2 id="scenario-glance-title" className={s.sectionTitle}>
           투자 검토 한눈에
         </h2>
@@ -546,7 +543,6 @@ function InvestorProtectionBlock({ offer }: { readonly offer: ScenarioOffer }) {
       aria-labelledby="scenario-protection-title"
     >
       <div className={s.detailWrap}>
-        <p className={s.eyebrow}>등록된 시나리오 조건</p>
         <h2 id="scenario-protection-title" className={s.sectionTitle}>
           권리와 투자자 보호구조
         </h2>
@@ -629,21 +625,23 @@ export function ScenarioDetail({
             { label: "기준일", value: formatDate(offer.asOf) },
           ],
         }}
+        aiSummary={<AiSummary summary={aiSummary ?? null} />}
+        copilot={<ScenarioEvidenceQuery scenarioId={offer.scenarioId} offerId={offer.offerId} />}
         sections={[
           { key: "verdict", id: "report-verdict-heading", label: "요약" },
           { key: "filing", id: "report-filing-heading", label: "상품 조건" },
           { key: "reality", id: "report-reality-heading", label: "건물 정보" },
           { key: "price", id: "report-price-heading", label: "수익·비용 검토" },
           { key: "history", id: "report-history-heading", label: "운영 이력" },
-          { key: "watch", id: "report-watch-heading", label: "근거 확인" },
         ]}
         sectionContent={{
           verdict: (
-            <div className={s.detailWrap}>
-              <p className={s.detailLead}>
-                {reviewHeadline(review)}. 기준일 {formatDate(offer.asOf)}.
-              </p>
-              {aiSummary ? <AiSummary summary={aiSummary} /> : null}
+            <div className={s.summaryContent}>
+              <div className={s.detailWrap}>
+                <p className={`${s.detailLead} ${s.summaryLead}`}>
+                  {reviewHeadline(review)}. 기준일 {formatDate(offer.asOf)}.
+                </p>
+              </div>
               {isSettled ? (
                 <CompletionCashFlow offer={offer} />
               ) : (
@@ -658,9 +656,6 @@ export function ScenarioDetail({
                 aria-labelledby="scenario-basic-title"
               >
                 <div className={s.detailWrap}>
-                  <p className={s.eyebrow}>
-                    {isSettled ? "종료 당시 입력 조건" : "상품 조건"}
-                  </p>
                   <h2 id="scenario-basic-title" className={s.sectionTitle}>
                     {isSettled ? "당시 상품 투자조건" : "상품 투자조건"}
                   </h2>
@@ -827,7 +822,6 @@ export function ScenarioDetail({
                   aria-labelledby="scenario-area-review-title"
                 >
                   <div className={s.detailWrap}>
-                    <p className={s.eyebrow}>5영역 투자 검토</p>
                     <h2
                       id="scenario-area-review-title"
                       className={s.sectionTitle}
@@ -856,11 +850,6 @@ export function ScenarioDetail({
                 aria-labelledby="scenario-review-title"
               >
                 <div className={s.detailWrap}>
-                  <p className={s.eyebrow}>
-                    {isSettled
-                      ? "과거 이력 검증 사례"
-                      : "확인 범위와 남은 질문"}
-                  </p>
                   <h2 id="scenario-review-title" className={s.sectionTitle}>
                     {isSettled
                       ? "가상 운영주체의 과거 종료 사례 검토"
@@ -948,14 +937,6 @@ export function ScenarioDetail({
                 </div>
               </section>
             </>
-          ),
-          watch: (
-            <div className={s.detailWrap}>
-              <ScenarioEvidenceQuery
-                scenarioId={offer.scenarioId}
-                offerId={offer.offerId}
-              />
-            </div>
           ),
         }}
       />

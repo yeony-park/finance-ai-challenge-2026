@@ -78,6 +78,20 @@ const renderDocument = (
   );
 
 describe("리포트 문서 템플릿", () => {
+  test("AI 요약은 요약 탭 첫 내용에, Copilot은 별도 패널에 배치한다", () => {
+    const html = renderToStaticMarkup(createElement(ReportDocument, {
+      sections: reportSectionsFor({ hasFilingFacts: true }),
+      sectionContent,
+      aiSummary: createElement("p", null, "공통 요약 내용"),
+      copilot: createElement("p", null, "공통 질문 영역"),
+    }));
+    expect(html.split("공통 요약 내용")).toHaveLength(2);
+    expect(html.split("공통 질문 영역")).toHaveLength(2);
+    expect(html.indexOf("공통 요약 내용")).toBeGreaterThan(html.indexOf('role="tabpanel"'));
+    expect(html.indexOf("공통 질문 영역")).toBeGreaterThan(html.indexOf('role="dialog"'));
+    expect(html).toContain('aria-label="Copilot 열기"');
+  });
+
   test("기본으로 요약 섹션 하나만 렌더한다", () => {
     const html = renderDocument(true);
     expect(html).toContain('id="report-section-panel"');

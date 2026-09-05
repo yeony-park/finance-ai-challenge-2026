@@ -29,7 +29,7 @@ import { ScenarioDetail } from "@/components/real-estate-scenario/ScenarioDetail
 import {
   CattleFilingEvidenceQuery,
   CattleMinimumFilingEvidenceQuery,
-} from "@/components/real-estate-scenario/ScenarioEvidenceQuery";
+} from "@/components/ai-assistant/EvidenceQuery";
 import {
   buildOfferSchedule,
   classifyRealEstateOffer,
@@ -294,6 +294,8 @@ export async function OfferReportPage({
             </nav>
           </div>
           <ReportDocument
+            aiSummary={<AiSummary summary={aiSummary} />}
+            copilot={<CattleMinimumFilingEvidenceQuery productId={id} />}
             productHeader={{
               imageSrc: "/category-cattle.jpg",
               imageAlt: "한우",
@@ -303,14 +305,13 @@ export async function OfferReportPage({
               facts: [],
             }}
             sections={[
+              { key: "verdict", id: "report-verdict-heading", label: "요약" },
               { key: "filing", id: FILING_HEADING_ID, label: "공시 근거" },
             ]}
             sectionContent={{
               filing: (
                 <div className={s.wrap}>
-                  {aiSummary ? <AiSummary summary={aiSummary} /> : null}
                   <CattleFilingArtifactDetail artifact={artifact} />
-                  <CattleMinimumFilingEvidenceQuery productId={id} />
                 </div>
               ),
             }}
@@ -413,7 +414,8 @@ export async function OfferReportPage({
           ],
         }}
         narrative={narrative?.levels ?? null}
-        aiSummary={aiSummary ? <AiSummary summary={aiSummary} /> : null}
+        aiSummary={<AiSummary summary={aiSummary} />}
+        copilot={cattleFilingArtifact ? <CattleFilingEvidenceQuery productId={id} /> : null}
         overview={
           productSummary ? (
             <>
@@ -438,11 +440,6 @@ export async function OfferReportPage({
                 {filingFacts ? (
                   <FilingFactsSection facts={filingFacts} />
                 ) : null}
-                {cattleFilingArtifact && filingFacts ? (
-                  <div className={s.wrap}>
-                    <CattleFilingEvidenceQuery productId={id} />
-                  </div>
-                ) : null}
                 {cattleFilingArtifact && !filingFacts ? (
                   <section
                     className={`${s.section} ${s.reportContentSection}`}
@@ -463,7 +460,7 @@ export async function OfferReportPage({
                         </h2>
                         <p className={s.sectionLead}>{FILING_SECTION_LEAD}</p>
                       </header>
-                      <CattleFilingEvidenceQuery productId={id} />
+                      <CattleFilingArtifactDetail artifact={cattleFilingArtifact} />
                     </div>
                   </section>
                 ) : null}

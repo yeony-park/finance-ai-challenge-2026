@@ -15,7 +15,7 @@ import {
   COMMON_EVIDENCE_EXAMPLES,
   EvidenceQuery,
   evidenceRequestBody,
-} from "../../real-estate-scenario/ScenarioEvidenceQuery";
+} from "@/components/ai-assistant/EvidenceQuery";
 import {
   CommonProductDetail,
   commonEvidenceScope,

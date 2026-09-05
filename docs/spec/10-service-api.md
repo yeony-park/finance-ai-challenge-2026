@@ -321,6 +321,10 @@ curl -sS \
 
 ## 9. 상품 근거 질문 — `POST /api/evidence/query`
 
+프론트는 네 카테고리 상세에서 공통 `components/ai-assistant/EvidenceQuery.tsx`를 사용한다.
+AI 요약은 요약 탭 아래, 질문 UI는 오른쪽 아래 버튼으로 여는 Copilot 패널에 표시한다. 질문 범위와 HTTP 계약은 기존대로 유지한다.
+RAG 담당자의 어댑터 연결, 로딩·오류·빈 상태는 [AI UI 연결 문서](../design/ai-ui-integration.md)를 참조한다.
+
 본문 크기·질의 길이·오류 형식은 홈 검색과 같다. `limit`은 1~20, 기본 5다.
 
 ```json
