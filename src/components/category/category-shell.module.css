@@ -5,7 +5,7 @@
  */
 .categorySection,
 .analysisSection {
-  padding-block: var(--ds-space-4) var(--ds-section-y-tight);
+  padding-block: var(--ds-space-4) var(--ds-page-section-gap);
   background: var(--ds-bg);
 }
 
@@ -274,6 +274,74 @@
 
 .analysisArea {
   margin-top: 0;
+}
+
+.embedded {
+  padding: 0;
+}
+
+.embedded .landingHero,
+.embedded .descriptionArea {
+  max-width: none;
+  padding-inline: 0;
+}
+
+.embedded .landingHero {
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--ds-space-5);
+}
+
+.embedded .aboutContent {
+  grid-column: 1;
+  grid-row: auto;
+  padding-bottom: 0;
+}
+
+.embedded .aboutContentWithVisuals {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ds-space-5);
+}
+
+.embedded .aboutShortcuts {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  max-width: none;
+  gap: var(--ds-space-4) var(--ds-space-5);
+}
+
+.embedded .aboutShortcut {
+  font-size: var(--ds-text-sm);
+  font-weight: var(--ds-weight-medium);
+}
+
+.embedded .descriptionArea {
+  margin-top: var(--ds-content-gap);
+}
+
+.embedded .descriptionArea > section {
+  padding-block: var(--ds-content-gap);
+  border-top-color: var(--ds-line-strong);
+}
+
+.embedded .descriptionArea > section:last-child {
+  padding-bottom: 0;
+}
+
+.embedded h2 {
+  font-size: var(--ds-heading-h3);
+  font-weight: var(--ds-weight-bold);
+}
+
+.embedded h3 {
+  font-size: var(--ds-heading-h4);
+  font-weight: var(--ds-weight-bold);
+}
+
+@media (max-width: 900px) {
+  .embedded .aboutContentWithVisuals {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 @media (max-width: 900px) {

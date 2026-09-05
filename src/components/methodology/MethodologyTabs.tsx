@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState, type KeyboardEvent, type ReactNode } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 
-import type { MethodologyTabId } from "@/lib/content/methodology-tabs";
+import { methodologyTabFromHash, type MethodologyTabId } from "@/lib/content/methodology-tabs";
 
 import s from "@/app/methodology/methodology.module.css";
 
@@ -12,20 +12,13 @@ export interface MethodologyTab {
   readonly content: ReactNode;
 }
 
-const tabFromHash = (
-  hash: string,
-  tabs: readonly MethodologyTab[],
-): MethodologyTabId | null => {
-  const id = hash.startsWith("#") ? hash.slice(1) : hash;
-  return tabs.some((tab) => tab.id === id) ? (id as MethodologyTabId) : null;
-};
-
 export function MethodologyTabs({
   tabs,
 }: {
   readonly tabs: readonly MethodologyTab[];
 }) {
   const defaultTab = tabs[0];
+  const navRef = useRef<HTMLElement>(null);
   const [activeId, setActiveId] = useState<MethodologyTabId | undefined>(
     defaultTab?.id,
   );
@@ -33,7 +26,7 @@ export function MethodologyTabs({
 
   useEffect(() => {
     const syncFromHash = () => {
-      setActiveId(tabFromHash(window.location.hash, tabs) ?? defaultTab?.id);
+      setActiveId(methodologyTabFromHash(window.location.hash) ?? defaultTab?.id);
     };
 
     syncFromHash();
@@ -43,7 +36,17 @@ export function MethodologyTabs({
       window.removeEventListener("hashchange", syncFromHash);
       window.removeEventListener("popstate", syncFromHash);
     };
-  }, [defaultTab?.id, tabs]);
+  }, [defaultTab?.id]);
+
+  useEffect(() => {
+    // A category anchor becomes available after its panel has mounted.
+    const hash = window.location.hash;
+    if (!methodologyTabFromHash(hash)) return;
+    const frame = requestAnimationFrame(() => {
+      document.getElementById(decodeURIComponent(hash.slice(1)))?.scrollIntoView({ block: "start" });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [activeId]);
 
   if (!activeTab) return null;
 
@@ -52,6 +55,11 @@ export function MethodologyTabs({
     const hash = `#${id}`;
     if (window.location.hash !== hash) {
       window.history.pushState(window.history.state, "", hash);
+    }
+    const nav = navRef.current;
+    const workspace = nav?.parentElement;
+    if (nav && workspace && workspace.getBoundingClientRect().top < Number.parseFloat(getComputedStyle(nav).top)) {
+      workspace.scrollIntoView({ block: "start", behavior: "instant" });
     }
   };
 
@@ -74,7 +82,7 @@ export function MethodologyTabs({
 
   return (
     <div className={s.tabWorkspace}>
-      <nav className={s.tabNav} aria-label="검증 방법 목차">
+      <nav ref={navRef} className={s.tabNav} aria-label="검증 방법 목차">
         <div className={s.tabNavRow} role="tablist" aria-label="검증 방법 항목">
           {tabs.map((tab, index) => {
             const isActive = tab.id === activeTab.id;
@@ -103,6 +111,7 @@ export function MethodologyTabs({
         id="methodology-tab-panel"
         role="tabpanel"
         aria-labelledby={`methodology-tab-${activeTab.id}`}
+        tabIndex={0}
       >
         {activeTab.content}
       </div>

@@ -3,21 +3,36 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, test } from "vitest";
 
 import { CategoryMethodologyContent } from "@/components/methodology/CategoryMethodologyContent";
-import { METHODOLOGY_TAB_COPY } from "@/lib/content/methodology-tabs";
 
 import MethodologyPage from "./page";
 
-describe("검증 방법 탭 문서", () => {
-  test("검증 항목과 네 카테고리를 한 탭 목록으로 렌더한다", () => {
+describe("검증 방법 문서", () => {
+  test("공통 검증 내용을 순서대로 렌더한다", () => {
     const html = renderToStaticMarkup(createElement(MethodologyPage));
 
     expect(html).toContain('role="tablist"');
-    expect(html.match(/role="tab"/g)).toHaveLength(METHODOLOGY_TAB_COPY.length);
-    for (const tab of METHODOLOGY_TAB_COPY) {
-      expect(html).toContain(`>${tab.label}<`);
+    expect(html.match(/role="tab"/g)).toHaveLength(5);
+    expect(html.match(/role="tabpanel"/g)).toHaveLength(1);
+    for (const id of ["common", "art", "cattle", "pig", "real-estate"]) {
+      expect(html).toContain(`id="methodology-tab-methodology-${id}"`);
     }
-    expect(html).toContain('id="pipeline-title"');
-    expect(html).not.toContain('id="layers-title"');
+    expect(html).toContain('aria-labelledby="methodology-tab-methodology-common"');
+    for (const id of [
+      "pipeline-title",
+      "layers-title",
+      "sources-title",
+      "verdicts-title",
+      "amendment-title",
+      "principles-title",
+      "limits-title",
+      "notice-title",
+    ]) {
+      expect(html).toContain(`id="${id}"`);
+    }
+    expect(html).toContain("1. 증권신고서 확인");
+    expect(html).toContain("어떤 데이터를 사용하나요");
+    expect(html).toContain("발행사 과거 공모 자료");
+    expect(html).toContain("공모 목록으로 돌아가기");
   });
 
   test.each([
