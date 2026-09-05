@@ -31,9 +31,10 @@ describe("PostgreSQL pgvector semantic repository", () => {
     const hits = await repository.searchGeneral(vector(), 5);
 
     expect(rendered.sql).toContain("<=>");
-    expect(rendered.sql).toContain("document.scope_kind = 'generic'");
-    expect(rendered.sql).toContain("document.approved_for_external_ai IS TRUE");
-    expect(rendered.sql).toContain("chunk.pii_review_status = 'passed'");
+    expect(rendered.sql).toContain("rag_documents.scope_kind = 'generic'");
+    expect(rendered.sql).toContain("rag_documents.approved_for_external_ai IS TRUE");
+    expect(rendered.sql).toContain("rag_chunks.pii_review_status = 'passed'");
+    expect(rendered.sql).not.toMatch(/FROM rag_chunks\s+chunk/);
     expect(hits).toEqual([expect.objectContaining({ sourceId: "source-1", score: 0.91 })]);
   });
 
@@ -51,9 +52,9 @@ describe("PostgreSQL pgvector semantic repository", () => {
       15,
     );
 
-    expect(rendered.sql).toContain("document.scope_kind = 'product'");
-    expect(rendered.sql).toContain("document.category_id =");
-    expect(rendered.sql).toContain("chunk.source_hash = ANY(");
+    expect(rendered.sql).toContain("rag_documents.scope_kind = 'product'");
+    expect(rendered.sql).toContain("rag_documents.category_id =");
+    expect(rendered.sql).toMatch(/"rag_chunks"\."source_hash" in \(/);
     expect(rendered.params).toContain("livestock-9");
     expect(rendered.params).toContain(row.source_hash);
   });

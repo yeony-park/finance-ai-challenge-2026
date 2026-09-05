@@ -1,4 +1,4 @@
-import { sql, type SQL } from "drizzle-orm";
+import { inArray, sql, type SQL } from "drizzle-orm";
 import { cosineDistance } from "drizzle-orm/sql/functions/vector";
 import { z } from "zod";
 
@@ -68,27 +68,27 @@ const parsedRows = (raw: unknown): readonly DbSemanticHit[] =>
   })).filter((row) => Number.isFinite(row.score));
 
 const selection = (distance: SQL): SQL => sql`
-  SELECT document.source_id,
-         chunk.category_id,
-         chunk.product_id,
-         chunk.scenario_id,
-         chunk.data_nature,
-         chunk.source_hash,
-         chunk.chunk_hash,
+  SELECT rag_documents.source_id,
+         rag_chunks.category_id,
+         rag_chunks.product_id,
+         rag_chunks.scenario_id,
+         rag_chunks.data_nature,
+         rag_chunks.source_hash,
+         rag_chunks.chunk_hash,
          1 - (${distance}) AS score
-  FROM rag_chunks chunk
-  JOIN rag_documents document ON document.id = chunk.document_id
+  FROM rag_chunks
+  JOIN rag_documents ON rag_documents.id = rag_chunks.document_id
 `;
 
 const publicReady = sql`
-  AND document.approved_for_public IS TRUE
-  AND chunk.approved_for_public IS TRUE
-  AND document.pii_review_status = 'passed'
-  AND chunk.pii_review_status = 'passed'
-  AND document.status IN ('ready', 'partial')
-  AND chunk.status = 'ready'
-  AND chunk.embedding IS NOT NULL
-  AND document.source_hash = chunk.source_hash
+  AND rag_documents.approved_for_public IS TRUE
+  AND rag_chunks.approved_for_public IS TRUE
+  AND rag_documents.pii_review_status = 'passed'
+  AND rag_chunks.pii_review_status = 'passed'
+  AND rag_documents.status IN ('ready', 'partial')
+  AND rag_chunks.status = 'ready'
+  AND rag_chunks.embedding IS NOT NULL
+  AND rag_documents.source_hash = rag_chunks.source_hash
 `;
 
 export const createDbSemanticSearchRepository = (
@@ -98,10 +98,10 @@ export const createDbSemanticSearchRepository = (
     const distance = cosineDistance(ragChunks.embedding, [...vector]);
     const raw = await execute(sql`
       ${selection(distance)}
-      WHERE document.scope_kind = 'generic'
-        AND chunk.scope_kind = 'generic'
-        AND document.approved_for_external_ai IS TRUE
-        AND chunk.approved_for_external_ai IS TRUE
+      WHERE rag_documents.scope_kind = 'generic'
+        AND rag_chunks.scope_kind = 'generic'
+        AND rag_documents.approved_for_external_ai IS TRUE
+        AND rag_chunks.approved_for_external_ai IS TRUE
         ${publicReady}
       ORDER BY ${distance}
       LIMIT ${checkedLimit(limit)}
@@ -114,17 +114,17 @@ export const createDbSemanticSearchRepository = (
     const distance = cosineDistance(ragChunks.embedding, [...vector]);
     const raw = await execute(sql`
       ${selection(distance)}
-      WHERE document.scope_kind = 'product'
-        AND chunk.scope_kind = 'product'
-        AND document.category_id = ${scope.categoryId}
-        AND chunk.category_id = ${scope.categoryId}
-        AND document.product_id = ${scope.productId}
-        AND chunk.product_id = ${scope.productId}
-        AND document.scenario_id IS NOT DISTINCT FROM ${scope.scenarioId ?? null}
-        AND chunk.scenario_id IS NOT DISTINCT FROM ${scope.scenarioId ?? null}
-        AND document.data_nature = ${scope.dataNature}
-        AND chunk.data_nature = ${scope.dataNature}
-        AND chunk.source_hash = ANY(${sourceHashes})
+      WHERE rag_documents.scope_kind = 'product'
+        AND rag_chunks.scope_kind = 'product'
+        AND rag_documents.category_id = ${scope.categoryId}
+        AND rag_chunks.category_id = ${scope.categoryId}
+        AND rag_documents.product_id = ${scope.productId}
+        AND rag_chunks.product_id = ${scope.productId}
+        AND rag_documents.scenario_id IS NOT DISTINCT FROM ${scope.scenarioId ?? null}
+        AND rag_chunks.scenario_id IS NOT DISTINCT FROM ${scope.scenarioId ?? null}
+        AND rag_documents.data_nature = ${scope.dataNature}
+        AND rag_chunks.data_nature = ${scope.dataNature}
+        AND ${inArray(ragChunks.sourceHash, [...sourceHashes])}
         ${publicReady}
       ORDER BY ${distance}
       LIMIT ${checkedLimit(limit)}
@@ -136,10 +136,10 @@ export const createDbSemanticSearchRepository = (
     const distance = cosineDistance(ragChunks.embedding, [...options.vector]);
     const raw = await execute(sql`
       ${selection(distance)}
-      WHERE document.scope_kind = 'product'
-        AND chunk.scope_kind = 'product'
-        ${options.categoryId ? sql`AND document.category_id = ${options.categoryId} AND chunk.category_id = ${options.categoryId}` : sql``}
-        ${options.dataNature ? sql`AND document.data_nature = ${options.dataNature} AND chunk.data_nature = ${options.dataNature}` : sql``}
+      WHERE rag_documents.scope_kind = 'product'
+        AND rag_chunks.scope_kind = 'product'
+        ${options.categoryId ? sql`AND rag_documents.category_id = ${options.categoryId} AND rag_chunks.category_id = ${options.categoryId}` : sql``}
+        ${options.dataNature ? sql`AND rag_documents.data_nature = ${options.dataNature} AND rag_chunks.data_nature = ${options.dataNature}` : sql``}
         ${publicReady}
       ORDER BY ${distance}
       LIMIT ${checkedLimit(options.limit)}
