@@ -42,6 +42,7 @@ export interface DbSemanticSearchRepository {
   ): Promise<readonly DbSemanticHit[]>;
   searchProducts(options: {
     readonly vector: readonly number[];
+    readonly sourceHashes: readonly string[];
     readonly categoryId?: ProductKnowledgeScope["categoryId"];
     readonly dataNature?: ProductKnowledgeScope["dataNature"];
     readonly limit: number;
@@ -133,6 +134,7 @@ export const createDbSemanticSearchRepository = (
   },
 
   async searchProducts(options) {
+    if (options.sourceHashes.length === 0) return [];
     const distance = cosineDistance(ragChunks.embedding, [...options.vector]);
     const raw = await execute(sql`
       ${selection(distance)}
@@ -140,6 +142,7 @@ export const createDbSemanticSearchRepository = (
         AND rag_chunks.scope_kind = 'product'
         ${options.categoryId ? sql`AND rag_documents.category_id = ${options.categoryId} AND rag_chunks.category_id = ${options.categoryId}` : sql``}
         ${options.dataNature ? sql`AND rag_documents.data_nature = ${options.dataNature} AND rag_chunks.data_nature = ${options.dataNature}` : sql``}
+        AND ${inArray(ragChunks.sourceHash, [...options.sourceHashes])}
         ${publicReady}
       ORDER BY ${distance}
       LIMIT ${checkedLimit(options.limit)}

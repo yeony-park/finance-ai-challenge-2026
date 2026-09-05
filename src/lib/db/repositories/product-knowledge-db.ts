@@ -45,7 +45,7 @@ const rowSchema = z.strictObject({
   chunk_approved_for_public: z.literal(true),
   chunk_limitations: z.array(z.string()),
   approved_for_external_ai: z.boolean(),
-  pii_review_status: z.enum(["passed", "not-reviewed"]),
+  pii_review_status: z.literal("passed"),
 }).superRefine((row, context) => {
   const safeUrl = row.data_nature === "observed"
     ? isSafeHttpsPublicSourceUrl(row.source_url)
@@ -122,6 +122,8 @@ export const productKnowledgeSql = (scope: ProductKnowledgeScope): SQL => sql`
     AND c.approved_for_public = true
     AND d.status IN ('ready', 'partial')
     AND c.status = 'ready'
+    AND d.pii_review_status = 'passed'
+    AND c.pii_review_status = 'passed'
     AND d.canonical_document_id IS NOT NULL
     AND c.canonical_chunk_id IS NOT NULL
   ORDER BY d.id, c.page, c.chunk_index

@@ -73,6 +73,8 @@ describe("DB product knowledge exact scope", () => {
     expect(rendered?.sql).toContain("d.approved_for_public = true");
     expect(rendered?.sql).toContain("d.status IN ('ready', 'partial')");
     expect(rendered?.sql).toContain("c.status = 'ready'");
+    expect(rendered?.sql).toContain("d.pii_review_status = 'passed'");
+    expect(rendered?.sql).toContain("c.pii_review_status = 'passed'");
     expect(rendered?.sql).toContain("d.canonical_document_id AS document_id");
     expect(rendered?.sql).toContain("c.canonical_chunk_id AS chunk_id");
     expect(rendered?.params).toEqual([
@@ -182,6 +184,17 @@ describe("DB product knowledge exact scope", () => {
       productId: "livestock-1",
       dataNature: "observed",
     })).resolves.toEqual({ documents: [], chunks: [] });
+  });
+
+  test("PII 검토 미통과 행은 executor가 반환해도 거부한다", async () => {
+    const repository = createDbProductKnowledgeRepository(async () => [
+      dbRow({ pii_review_status: "not-reviewed" }),
+    ]);
+    await expect(repository.findExact({
+      categoryId: "cattle",
+      productId: "livestock-1",
+      dataNature: "observed",
+    })).rejects.toThrow();
   });
 
   test("scenarioId가 잘못된 nature 조합은 executor를 호출하지 않는다", async () => {

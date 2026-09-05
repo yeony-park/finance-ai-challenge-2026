@@ -201,6 +201,10 @@ export const ragDocuments = pgTable(
       sql`${t.canonicalDocumentId} is null or ${t.canonicalDocumentId} ~ '^[a-zA-Z0-9][a-zA-Z0-9._-]{0,119}$'`,
     ),
     check(
+      "rag_documents_product_canonical_id_required_check",
+      sql`${t.scopeKind} <> 'product' or ${t.canonicalDocumentId} is not null`,
+    ),
+    check(
       "rag_documents_data_nature_check",
       sql`${t.dataNature} is null or ${t.dataNature} in ('observed','scenario')`,
     ),
@@ -326,6 +330,10 @@ export const ragChunks = pgTable(
     check(
       "rag_chunks_canonical_chunk_id_check",
       sql`${t.canonicalChunkId} is null or ${t.canonicalChunkId} ~ '^[a-zA-Z0-9][a-zA-Z0-9._-]{0,119}$'`,
+    ),
+    check(
+      "rag_chunks_product_canonical_id_required_check",
+      sql`${t.scopeKind} <> 'product' or ${t.canonicalChunkId} is not null`,
     ),
     check(
       "rag_chunks_data_nature_check",

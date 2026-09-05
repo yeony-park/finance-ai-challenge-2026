@@ -33,6 +33,16 @@ const productScope = {
   limitations: [],
 } as const;
 
+const productDocumentScope = {
+  ...productScope,
+  canonicalDocumentId: "product-document",
+} as const;
+
+const productChunkScope = {
+  ...productScope,
+  canonicalChunkId: "product-chunk",
+} as const;
+
 describe("RAG exact product scope row contract", () => {
   test("합성 PDF와 미술품 상품 경로만 내부 공개 출처로 허용한다", () => {
     expect(isSafeScenarioDocumentPath("/scenario-documents/sample.pdf")).toBe(true);
@@ -58,7 +68,7 @@ describe("RAG exact product scope row contract", () => {
     expect(
       ragDocumentRowSchema.safeParse({
         ...genericDocument,
-        ...productScope,
+        ...productDocumentScope,
       }).success,
     ).toBe(true);
 
@@ -66,7 +76,7 @@ describe("RAG exact product scope row contract", () => {
       chunkIndex: 0,
       content: "원문 인용",
       embedding: null,
-      ...productScope,
+      ...productChunkScope,
       page: 1,
       chunkHash: hash,
       canonicalText: "원문 인용",
@@ -87,7 +97,7 @@ describe("RAG exact product scope row contract", () => {
     expect(
       ragDocumentRowSchema.safeParse({
         ...genericDocument,
-        ...productScope,
+        ...productDocumentScope,
         approvedForExternalAi: true,
         piiReviewStatus: "not-reviewed",
       }).success,
@@ -95,7 +105,7 @@ describe("RAG exact product scope row contract", () => {
     expect(
       ragDocumentRowSchema.safeParse({
         ...genericDocument,
-        ...productScope,
+        ...productDocumentScope,
         approvedForExternalAi: true,
         piiReviewStatus: "passed",
       }).success,
@@ -104,7 +114,7 @@ describe("RAG exact product scope row contract", () => {
       ragChunkRowSchema.safeParse({
         chunkIndex: 0,
         content: "외부 AI 허용 원문",
-        ...productScope,
+        ...productChunkScope,
         approvedForExternalAi: true,
         piiReviewStatus: "passed",
         page: 1,
@@ -124,7 +134,7 @@ describe("RAG exact product scope row contract", () => {
     expect(
       ragDocumentRowSchema.safeParse({
         ...genericDocument,
-        ...productScope,
+        ...productDocumentScope,
         categoryId: null,
       }).success,
     ).toBe(false);
@@ -133,7 +143,7 @@ describe("RAG exact product scope row contract", () => {
         chunkIndex: 0,
         content: "원문 인용",
         embedding: null,
-        ...productScope,
+        ...productChunkScope,
         page: null,
         chunkHash: hash,
         canonicalText: "원문 인용",
@@ -142,7 +152,7 @@ describe("RAG exact product scope row contract", () => {
     expect(
       ragDocumentRowSchema.safeParse({
         ...genericDocument,
-        ...productScope,
+        ...productDocumentScope,
         productId: "real-estate:a",
       }).success,
     ).toBe(false);
@@ -152,14 +162,14 @@ describe("RAG exact product scope row contract", () => {
     expect(
       ragDocumentRowSchema.safeParse({
         ...genericDocument,
-        ...productScope,
+        ...productDocumentScope,
         scenarioId: "scenario-a",
       }).success,
     ).toBe(false);
     expect(
       ragDocumentRowSchema.safeParse({
         ...genericDocument,
-        ...productScope,
+        ...productDocumentScope,
         sourceKind: "scenario-input",
       }).success,
     ).toBe(false);
@@ -168,7 +178,7 @@ describe("RAG exact product scope row contract", () => {
   test("scenario product scope는 scenarioId를 필수로 요구한다", () => {
     const scenario = {
       ...genericDocument,
-      ...productScope,
+      ...productDocumentScope,
       dataNature: "scenario",
       sourceKind: "scenario-input",
     };
@@ -184,7 +194,7 @@ describe("RAG exact product scope row contract", () => {
         chunkIndex: 0,
         content: "시나리오 원문",
         embedding: null,
-        ...productScope,
+        ...productChunkScope,
         dataNature: "scenario",
         sourceKind: "scenario-input",
         page: 1,
@@ -192,6 +202,21 @@ describe("RAG exact product scope row contract", () => {
         canonicalText: "시나리오 원문",
       }).success,
     ).toBe(false);
+  });
+
+  test("product document와 chunk의 canonical ID 누락을 거부한다", () => {
+    expect(ragDocumentRowSchema.safeParse({
+      ...genericDocument,
+      ...productScope,
+    }).success).toBe(false);
+    expect(ragChunkRowSchema.safeParse({
+      chunkIndex: 0,
+      content: "원문 인용",
+      ...productScope,
+      page: 1,
+      chunkHash: hash,
+      canonicalText: "원문 인용",
+    }).success).toBe(false);
   });
 });
 
@@ -215,6 +240,30 @@ describe("0004 migration artifact", () => {
     expect(ddl).toContain("rag_documents_product_scope_idx");
     expect(ddl).toContain("rag_chunks_product_scope_idx");
     expect(ddl).not.toMatch(/\bDROP\s/i);
+  });
+});
+
+describe("0006/0007 canonical ID migration artifacts", () => {
+  test("ID 형식·고유성·product 필수 제약을 포함한다", async () => {
+    const [ids, required] = await Promise.all([
+      readFile("db/migrations/0006_rag_canonical_ids.sql", "utf8"),
+      readFile(
+        "db/migrations/0007_rag_product_canonical_ids_required.sql",
+        "utf8",
+      ),
+    ]);
+
+    expect(ids).toContain("canonical_document_id");
+    expect(ids).toContain("canonical_chunk_id");
+    expect(ids).toContain("CREATE UNIQUE INDEX");
+    expect(required).toContain(
+      "scope_kind <> 'product' OR canonical_document_id IS NOT NULL",
+    );
+    expect(required).toContain(
+      "scope_kind <> 'product' OR canonical_chunk_id IS NOT NULL",
+    );
+    expect(required).toContain("VALIDATE CONSTRAINT");
+    expect(`${ids}\n${required}`).not.toMatch(/\bDROP\s/i);
   });
 });
 

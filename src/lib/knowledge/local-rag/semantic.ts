@@ -315,8 +315,8 @@ export const searchSemanticProducts = async (options: {
   const scores = new Map<string, number>();
   const dbRepository = await resolveDbSemanticRepository(options.dbRepository);
   if (dbRepository) {
-    const canonicalByHash = new Map(corpus.chunks
-      .filter((chunk) => chunk.namespace !== "general" && chunk.scope.categoryId !== "general")
+    const searchableChunks = [...groups.values()].flatMap((group) => group.chunks);
+    const canonicalByHash = new Map(searchableChunks
       .map((chunk) => [productHashKey({
         categoryId: chunk.scope.categoryId,
         productId: chunk.scope.productId,
@@ -327,6 +327,7 @@ export const searchSemanticProducts = async (options: {
       }), chunk]));
     const hits = await dbRepository.searchProducts({
       vector,
+      sourceHashes: [...new Set(searchableChunks.map((chunk) => chunk.sourceHash))],
       categoryId: options.categoryId,
       dataNature: options.dataNature,
       limit: Math.min(Math.max(groups.size * 5, 20), 500),

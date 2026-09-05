@@ -59,6 +59,24 @@ describe("PostgreSQL pgvector semantic repository", () => {
     expect(rendered.params).toContain(row.source_hash);
   });
 
+  test("전체 상품 검색도 승인 corpus의 sourceHash만 후보로 사용한다", async () => {
+    let rendered = { sql: "", params: [] as unknown[] };
+    const repository = createDbSemanticSearchRepository(async (statement) => {
+      rendered = new PgDialect().sqlToQuery(statement);
+      return [row];
+    });
+
+    await repository.searchProducts({
+      vector: vector(),
+      sourceHashes: [row.source_hash],
+      categoryId: "cattle",
+      limit: 20,
+    });
+
+    expect(rendered.sql).toMatch(/"rag_chunks"\."source_hash" in \(/);
+    expect(rendered.params).toContain(row.source_hash);
+  });
+
   test("검색 limit은 고정 상한 밖 값을 거부한다", async () => {
     const repository = createDbSemanticSearchRepository(async () => []);
     await expect(repository.searchGeneral(vector(), 501)).rejects.toThrow("invalid DB semantic search limit");
