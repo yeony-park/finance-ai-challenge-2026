@@ -15,6 +15,7 @@ interface EvidenceHit {
   readonly dataNature?: "observed" | "scenario";
   readonly sourceKind?: string;
   readonly limitations?: readonly string[];
+  readonly knowledgeScope?: "general" | "product";
 }
 
 export interface EvidenceResult {
@@ -22,7 +23,8 @@ export interface EvidenceResult {
   readonly answer: string;
   readonly evidence: readonly EvidenceHit[];
   readonly limitations: readonly string[];
-  readonly answerSource: "structured" | "approved_cache" | "live_llm" | "none";
+  readonly answerSource: "structured" | "approved_cache" | "live_llm" | "general_llm" | "mixed_llm" | "none";
+  readonly knowledgeScope?: "general" | "product" | "mixed";
   readonly responseKind?: "scope-guidance";
   readonly structuredSources?: readonly StructuredSource[];
 }
@@ -41,9 +43,11 @@ const OUTCOME_LABEL: Readonly<Record<EvidenceResult["outcome"], string>> = {
 };
 
 export const evidenceResultTitle = (
-  result: Pick<EvidenceResult, "outcome" | "answerSource" | "structuredSources" | "responseKind">,
+  result: Pick<EvidenceResult, "outcome" | "answerSource" | "structuredSources" | "responseKind" | "knowledgeScope">,
 ): string => {
   if (result.responseKind === "scope-guidance") return "검색 범위 안내";
+  if (result.answerSource === "general_llm") return "공개 일반지식을 바탕으로 생성한 답변";
+  if (result.answerSource === "mixed_llm") return "일반 기준과 상품 원문을 바탕으로 생성한 답변";
   if (result.answerSource === "structured") {
     return result.structuredSources && result.structuredSources.length > 0
       ? "공식 공개정보에서 확인"
@@ -56,6 +60,13 @@ export const evidenceResultTitle = (
 
 export const evidenceSourceLabel = (result: EvidenceResult): string => {
   if (result.responseKind === "scope-guidance") return "검색 범위 안내";
+  if (result.knowledgeScope === "general") return "일반 공개정보";
+  if (result.knowledgeScope === "mixed") {
+    const scopes = new Set(result.evidence.map((item) => item.knowledgeScope));
+    if (scopes.has("general") && scopes.has("product")) return "일반 공개정보 · 현재 상품 문서";
+    if (scopes.has("general")) return "일반 공개정보";
+    if (scopes.has("product")) return "현재 상품 문서";
+  }
   if (result.answerSource === "structured") {
     return result.structuredSources && result.structuredSources.length > 0
       ? "공식 공개정보"
@@ -180,10 +191,15 @@ export function EvidenceResultPanel({ result }: { readonly result: EvidenceResul
             {result.evidence.map((item) => {
               const url = safeCitationUrl(item.sourceUrl);
               const isArtJson = url?.startsWith("/art?product=synthetic-offering-") === true;
+              const isGeneral = item.knowledgeScope === "general";
               const href = url
-                ? isArtJson ? `${url}#selected-art-product` : `${url.replace(/#.*$/, "")}#page=${item.page}`
+                ? isGeneral
+                  ? url
+                  : isArtJson ? `${url}#selected-art-product` : `${url.replace(/#.*$/, "")}#page=${item.page}`
                 : null;
-              const locator = isArtJson
+              const locator = isGeneral
+                ? "공통 지식"
+                : isArtJson
                 ? `근거 섹션 ${item.page}`
                 : item.chunkId.includes("-dart-full-")
                   ? `문서 섹션 ${item.page}`

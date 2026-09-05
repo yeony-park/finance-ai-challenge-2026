@@ -73,4 +73,67 @@ describe("공통 AI 연동", () => {
     expect(html).toContain("문서 섹션 1");
     expect(html).not.toContain("1쪽");
   });
+
+  test("일반지식 답변은 상품 원문으로 오인되지 않게 표시한다", () => {
+    const html = renderToStaticMarkup(createElement(EvidenceResultPanel, { result: {
+      outcome: "answer",
+      answer: "조각투자와 일반 주식은 권리 구조가 다릅니다.",
+      answerSource: "general_llm",
+      knowledgeScope: "general",
+      limitations: [],
+      evidence: [{
+        chunkId: "general-fsc-guideline-123456789abc",
+        title: "금융위원회 조각투자 가이드라인",
+        page: 1,
+        sourceUrl: "https://www.fsc.go.kr/example",
+        asOf: "2026-09-02",
+        excerpt: "조각투자는 재산적 가치가 있는 권리를 나누어 투자하는 형태입니다.",
+        dataNature: "observed",
+        sourceKind: "official-document",
+        knowledgeScope: "general",
+      }],
+    }}));
+    expect(html).toContain("공개 일반지식을 바탕으로 생성한 답변");
+    expect(html).toContain("근거 유형 · 일반 공개정보");
+    expect(html).toContain("공통 지식");
+    expect(html).toContain('href="https://www.fsc.go.kr/example"');
+    expect(html).not.toContain("#page=1");
+  });
+
+  test("혼합 답변은 일반 기준과 현재 상품 문서를 함께 사용했다고 표시한다", () => {
+    const html = renderToStaticMarkup(createElement(EvidenceResultPanel, { result: {
+      outcome: "answer",
+      answer: "일반 기준과 이 상품의 권리 구조를 함께 확인했습니다.",
+      answerSource: "mixed_llm",
+      knowledgeScope: "mixed",
+      limitations: [],
+      evidence: [
+        { chunkId: "general-1", title: "일반", page: 1, sourceUrl: "https://example.com/general", asOf: "2026-09-02", excerpt: "일반 근거", knowledgeScope: "general" },
+        { chunkId: "product-1", title: "상품", page: 2, sourceUrl: "https://example.com/product", asOf: "2026-09-02", excerpt: "상품 근거", knowledgeScope: "product" },
+      ],
+    }}));
+    expect(html).toContain("일반 기준과 상품 원문을 바탕으로 생성한 답변");
+    expect(html).toContain("근거 유형 · 일반 공개정보 · 현재 상품 문서");
+  });
+
+  test("혼합 검색에서 한쪽 근거만 찾으면 실제 근거 범위만 표시한다", () => {
+    const html = renderToStaticMarkup(createElement(EvidenceResultPanel, { result: {
+      outcome: "evidence_only",
+      answer: "한쪽에서만 근거를 찾았습니다.",
+      answerSource: "none",
+      knowledgeScope: "mixed",
+      limitations: [],
+      evidence: [{
+        chunkId: "general-1",
+        title: "일반",
+        page: 1,
+        sourceUrl: "https://example.com/general",
+        asOf: "2026-09-02",
+        excerpt: "일반 근거",
+        knowledgeScope: "general",
+      }],
+    }}));
+    expect(html).toContain("근거 유형 · 일반 공개정보");
+    expect(html).not.toContain("일반 공개정보 · 현재 상품 문서");
+  });
 });

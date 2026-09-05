@@ -35,7 +35,7 @@
 **구속 원칙: Postgres 도입은 "화면은 캐시만 읽는다"를 바꾸지 않는다.** DB에 접근하는 경로는 두 개뿐이다:
 
 1. **수집·생성 파이프라인(CLI)** — DB 유래 화면 자료는 export하고, common PDF는 `knowledge:index`가 승인 manifest만 검증·파싱해 generated index를 만든다. 원천 manifest/PDF와 review candidate는 화면·API에 직접 노출하지 않는다.
-2. **런타임 retrieval API** — `POST /api/search`는 공개 offering과 generic keyword RAG를, `POST /api/evidence/query`의 published-offer 경로는 구조화 항목과 exact product PDF 근거를 repository로 읽는다. 상품 질의에 generic corpus를 섞지 않는다.
+2. **런타임 retrieval API** — `POST /api/search`는 공개 offering과 generic keyword RAG를 읽는다. `POST /api/evidence/query`는 질의를 일반·상품·혼합 범위로 분류해, 일반 질문은 generic corpus, 상품·발행사 질문은 exact product corpus, 비교·적용 질문은 두 corpus의 근거를 분리해 사용한다.
 
 `DATABASE_URL` 미설정은 file mode와 `degraded` 메타데이터로 정직하게 동작한다. 반대로 DB가 설정된 뒤 조회가 실패하면 file로 조용히 폴백하지 않고 API 오류로 전파한다. 두 경우 모두 서버 컴포넌트의 파일 기반 화면은 DB와 독립적이다.
 

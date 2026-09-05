@@ -20,6 +20,7 @@ import {
   parseDeterministicAmountFilter,
   retrieveExactProductEvidence,
   SearchPlanSchema,
+  selectSupportedGeneralAnswer,
   validateGeneralAnswer,
   validateGeneralAnswerCandidate,
   validateGeneralGroundingReview,
@@ -505,6 +506,34 @@ describe("bounded search orchestration", () => {
       unsupportedClaimIndexes: [0],
     }, candidate)).toBe(false);
     expect(validateGeneralGroundingReview({ supported: true }, candidate)).toBe(false);
+  });
+
+  test("일반 답변 검증은 거절된 문장만 제외하고 근거가 확인된 문장을 보존한다", () => {
+    const firstHash = "a".repeat(64);
+    const secondHash = "b".repeat(64);
+    const input = {
+      query: "조각투자와 일반투자의 차이는?",
+      evidence: [
+        { sourceId: "fsc-guide", label: "금융위원회 가이드라인", excerpt: "조각투자는 청구권에 투자하는 형태입니다.", asOf: "2026-09-02", hash: firstHash },
+        { sourceId: "other", label: "다른 근거", excerpt: "일반 투자 설명입니다.", asOf: "2026-09-02", hash: secondHash },
+      ],
+    };
+    const candidate = validateGeneralAnswerCandidate({ claims: [
+      { sentence: "조각투자는 청구권에 투자하는 형태입니다.", evidenceHash: firstHash, exactQuote: "조각투자는 청구권에 투자하는 형태입니다." },
+      { sentence: "근거보다 넓은 비교 문장입니다.", evidenceHash: secondHash, exactQuote: "일반 투자 설명입니다." },
+    ] }, input)!;
+
+    expect(selectSupportedGeneralAnswer({
+      supported: false,
+      unsupportedClaimIndexes: [1],
+    }, candidate, input)).toEqual({
+      answer: "조각투자는 청구권에 투자하는 형태입니다.",
+      citedSourceIds: ["fsc-guide"],
+    });
+    expect(selectSupportedGeneralAnswer({
+      supported: false,
+      unsupportedClaimIndexes: [0, 1],
+    }, candidate, input)).toBeNull();
   });
 
   test("근거 충실성 검증이 실패하면 AI 답변만 생략하고 관련 근거는 유지한다", async () => {

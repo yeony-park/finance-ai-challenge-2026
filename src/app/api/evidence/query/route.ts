@@ -6,6 +6,7 @@ import {
   answerFromEvidence,
   answerFromOfferingKnowledge,
   answerFromProductKnowledge,
+  type EvidenceAnswer,
 } from "@/lib/knowledge/evidence";
 import { invalidRequest, internalError, parseEvidenceRequest } from "@/lib/knowledge/http";
 import {
@@ -17,7 +18,13 @@ import {
 import { findPublishedOfferingScope } from "@/lib/knowledge/retrieval";
 import {
   authorizeKnowledgeAiHttpRequest,
+  createGeneralAnswerer,
+  createGeneralAnswerVerifier,
+  isSearchPlannerInputEligible,
   retrieveExactProductEvidence,
+  selectSupportedGeneralAnswer,
+  validateGeneralAnswerCandidate,
+  type GeneralAnswerInput,
 } from "@/lib/knowledge/search-orchestration";
 import {
   loadApprovedCattleFilingArtifactsForProduct,
@@ -36,7 +43,17 @@ import {
   guardFilingCorpusLiveAnswer,
   isFilingCorpusApprovedForExternalAi,
 } from "@/lib/knowledge/local-rag/corpus";
-import { generateLiveEvidenceAnswer } from "@/lib/knowledge/live-answer";
+import { generateLiveEvidenceAnswer, isLiveEvidenceEnabled } from "@/lib/knowledge/live-answer";
+import { searchSemanticGeneralKnowledge } from "@/lib/knowledge/local-rag/semantic";
+import { searchApprovedGenericCorpus } from "@/lib/knowledge/local-rag/generic-corpus";
+import type { GenericKnowledgeEvidence } from "@/lib/knowledge/retrieval";
+import {
+  isProductEvidenceApprovedForExternalAi,
+  planProductCopilotQuery,
+  selectMixedEvidence,
+  type ProductCopilotPlan,
+} from "@/lib/knowledge/product-copilot-routing";
+import type { SearchHit } from "@/lib/knowledge/search";
 import {
   loadSyntheticArtCommonKnowledgeScope,
   isSyntheticArtApprovedForExternalAi,
@@ -46,13 +63,242 @@ import {
 
 export const runtime = "nodejs";
 
+interface RoutedEvidence {
+  readonly chunkId: string;
+  readonly title: string;
+  readonly page: number;
+  readonly sourceUrl: string;
+  readonly asOf: string;
+  readonly excerpt: string;
+  readonly dataNature: "observed" | "scenario";
+  readonly sourceKind: string;
+  readonly limitations: readonly string[];
+  readonly knowledgeScope: "general" | "product";
+}
+
+const generalEvidenceFor = async (
+  query: string,
+  limit: number,
+  runtimeAiAllowed: boolean,
+): Promise<{
+  readonly evidence: readonly GenericKnowledgeEvidence[];
+  readonly retrieval: {
+    readonly semantic: boolean;
+    readonly strategy: "semantic" | "keyword";
+    readonly degraded: boolean;
+    readonly reason?: string;
+  };
+}> => {
+  const semantic = await searchSemanticGeneralKnowledge({
+    query,
+    limit,
+    enabled: runtimeAiAllowed && process.env.KNOWLEDGE_SEMANTIC_ENABLED === "true",
+  });
+  if (semantic.evidence.length > 0) {
+    return {
+      evidence: semantic.evidence,
+      retrieval: {
+        semantic: semantic.semantic,
+        strategy: semantic.semantic ? "semantic" : "keyword",
+        degraded: semantic.degraded,
+        ...(semantic.reason ? { reason: semantic.reason } : {}),
+      },
+    };
+  }
+  return {
+    evidence: await searchApprovedGenericCorpus(query, "data", limit),
+    retrieval: {
+      semantic: false,
+      strategy: "keyword",
+      degraded: semantic.degraded,
+      ...(semantic.reason ? { reason: semantic.reason } : {}),
+    },
+  };
+};
+
+const generalUiEvidence = (evidence: GenericKnowledgeEvidence): RoutedEvidence => ({
+  chunkId: `general-${evidence.sourceId}-${evidence.hash.slice(0, 12)}`,
+  title: evidence.label,
+  page: 1,
+  sourceUrl: evidence.url,
+  asOf: evidence.asOf,
+  excerpt: evidence.excerpt,
+  dataNature: "observed",
+  sourceKind: "official-document",
+  limitations: ["일반 공개자료이며 특정 상품의 조건을 뜻하지 않습니다."],
+  knowledgeScope: "general",
+});
+
+const productUiEvidence = (evidence: SearchHit): RoutedEvidence => ({
+  chunkId: evidence.chunkId,
+  title: evidence.title,
+  page: evidence.page,
+  sourceUrl: evidence.sourceUrl,
+  asOf: evidence.asOf,
+  excerpt: evidence.excerpt,
+  dataNature: evidence.dataNature,
+  sourceKind: evidence.sourceKind,
+  limitations: evidence.limitations,
+  knowledgeScope: "product",
+});
+
+const groundedAnswerFor = async (
+  question: string,
+  evidence: GeneralAnswerInput["evidence"],
+  runtimeAiAllowed: boolean,
+  externalAiApprovalGuard: () => Promise<boolean> = async () => true,
+): Promise<{ readonly answer: string; readonly citedSourceIds: readonly string[] } | null> => {
+  if (
+    !runtimeAiAllowed ||
+    !isLiveEvidenceEnabled() ||
+    evidence.length === 0 ||
+    !isSearchPlannerInputEligible(question)
+  ) return null;
+  try {
+    if (!await externalAiApprovalGuard()) return null;
+    const input: GeneralAnswerInput = { query: question, evidence };
+    const apiKey = process.env.OPENAI_API_KEY;
+    const candidate = validateGeneralAnswerCandidate(await createGeneralAnswerer(apiKey)(input), input);
+    if (!candidate) return null;
+    if (!await externalAiApprovalGuard()) return null;
+    const review = await createGeneralAnswerVerifier(apiKey)({
+      query: input.query,
+      claims: candidate.claims,
+      evidence: input.evidence,
+    });
+    return selectSupportedGeneralAnswer(review, candidate, input);
+  } catch {
+    return null;
+  }
+};
+
+const finalizeCopilotAnswer = async (
+  productAnswer: EvidenceAnswer,
+  productEvidence: readonly SearchHit[],
+  productRetrieval: Readonly<Record<string, unknown>>,
+  productExternalAiApprovalGuard: () => Promise<boolean>,
+  plan: ProductCopilotPlan,
+  question: string,
+  limit: number,
+  runtimeAiAllowed: boolean,
+): Promise<Record<string, unknown>> => {
+  if (plan.target === "product") {
+    return { ...productAnswer, retrieval: productRetrieval, knowledgeScope: "product" };
+  }
+
+  const crossScopeBase = {
+    ...productAnswer,
+    responseKind: undefined,
+    citations: undefined,
+    review: undefined,
+    structuredSources: undefined,
+    structuredClaims: undefined,
+    conflicts: undefined,
+    evidenceGroups: undefined,
+  };
+
+  const generalSearch = await generalEvidenceFor(plan.generalQuery ?? question, limit, runtimeAiAllowed);
+  const generalMapped = generalSearch.evidence.map((item) => ({
+    sourceId: `general:${item.sourceId}:${item.hash.slice(0, 12)}`,
+    output: generalUiEvidence(item),
+    grounding: {
+      sourceId: `general:${item.sourceId}:${item.hash.slice(0, 12)}`,
+      label: item.label,
+      excerpt: item.excerpt,
+      asOf: item.asOf,
+      hash: item.hash,
+    },
+  }));
+
+  if (plan.target === "general") {
+    const generated = await groundedAnswerFor(
+      question,
+      generalMapped.map((item) => item.grounding),
+      runtimeAiAllowed,
+    );
+    const cited = generated
+      ? new Set(generated.citedSourceIds)
+      : new Set(generalMapped.map((item) => item.sourceId));
+    const evidence = generalMapped.filter((item) => cited.has(item.sourceId)).map((item) => item.output);
+    return {
+      ...crossScopeBase,
+      outcome: generated ? "answer" : evidence.length > 0 ? "evidence_only" : "abstain",
+      answer: generated?.answer ?? (evidence.length > 0
+        ? "관련 일반 공개자료를 찾았습니다. 아래 근거를 확인해 주세요."
+        : "승인된 일반 공개자료에서 질문에 답할 근거를 찾지 못했습니다."),
+      evidence,
+      limitations: ["일반 안내이며 특정 상품의 최신 조건은 해당 상품 공시에서 별도로 확인해야 합니다."],
+      cached: false,
+      answerSource: generated ? "general_llm" : "none",
+      knowledgeScope: "general",
+      retrieval: {
+        ...("storage" in productRetrieval ? { storage: productRetrieval.storage } : {}),
+        ...generalSearch.retrieval,
+        scope: "general",
+      },
+    };
+  }
+
+  const productMapped = productEvidence.map((item) => ({
+    sourceId: `product:${item.chunkId}`,
+    output: productUiEvidence(item),
+    grounding: {
+      sourceId: `product:${item.chunkId}`,
+      label: item.title,
+      excerpt: item.excerpt,
+      asOf: item.asOf,
+      hash: item.chunkHash,
+    },
+  }));
+  const combined = selectMixedEvidence(generalMapped, productMapped, limit);
+  const hasBothScopes = generalMapped.length > 0 && productMapped.length > 0;
+  const generated = hasBothScopes
+    ? await groundedAnswerFor(
+        question,
+        combined.map((item) => item.grounding),
+        runtimeAiAllowed,
+        productExternalAiApprovalGuard,
+      )
+    : null;
+  const cited = new Set(generated?.citedSourceIds ?? []);
+  const citesGeneral = generalMapped.some((item) => cited.has(item.sourceId));
+  const citesProduct = productMapped.some((item) => cited.has(item.sourceId));
+  const validMixedAnswer = generated && citesGeneral && citesProduct ? generated : null;
+  return {
+    ...crossScopeBase,
+    outcome: validMixedAnswer ? "answer" : combined.length > 0 ? "evidence_only" : "abstain",
+    answer: validMixedAnswer?.answer ?? (hasBothScopes
+      ? "일반 공개자료와 현재 상품 문서에서 관련 근거를 찾았습니다. 아래 근거를 구분해 확인해 주세요."
+      : combined.length > 0
+        ? "일반 기준과 현재 상품 중 한쪽에서만 근거를 찾았습니다. 확인된 근거만 제공합니다."
+      : "일반 공개자료와 현재 상품 문서에서 질문에 답할 근거를 찾지 못했습니다."),
+    evidence: (validMixedAnswer
+      ? combined.filter((item) => cited.has(item.sourceId))
+      : combined).map((item) => item.output),
+    limitations: [
+      ...new Set([
+        ...productAnswer.limitations,
+        "일반 기준과 현재 상품의 적용 여부를 구분해 확인해야 합니다.",
+      ]),
+    ],
+    cached: false,
+    answerSource: validMixedAnswer ? "mixed_llm" : "none",
+    knowledgeScope: "mixed",
+    retrieval: {
+      ...("storage" in productRetrieval ? { storage: productRetrieval.storage } : {}),
+      scope: "mixed",
+      general: generalSearch.retrieval,
+      product: productRetrieval,
+    },
+  };
+};
+
 export const POST = async (request: Request): Promise<Response> => {
   const query = await parseEvidenceRequest(request);
   if (!query) return invalidRequest();
 
   try {
     const access = authorizeKnowledgeAiHttpRequest(request);
-    const disabledLiveAnswer = access.allowed ? undefined : async () => null;
     if ("productId" in query) {
       const population = query.categoryId === "real-estate" ? await loadApprovedScenarios() : [];
       const scenario = query.dataNature === "scenario" && query.scenarioId
@@ -141,11 +387,19 @@ export const POST = async (request: Request): Promise<Response> => {
         const filingRuntimeReason = artifactBacked && !filingExternalAiApproved
           ? "disabled"
           : access.allowed ? undefined : access.reason;
+        if ((cattleArtifacts.length > 0 || query.categoryId === "pig") && publishedArtifactNamespace && !artifactBacked) return invalidRequest();
+        if (publishedScope?.status !== "found" && !artifactBacked) return invalidRequest();
+        const copilotPlan = await planProductCopilotQuery(query.query, {
+          runtimeAiAllowed: access.allowed,
+        });
+        const productSearchQuery = copilotPlan.productQuery ?? query.query;
+        const productRuntimeAiAllowed = access.allowed && copilotPlan.target !== "general";
+        const disabledLiveAnswer = access.allowed && copilotPlan.target === "product"
+          ? undefined
+          : async () => null;
         const liveAnswer = disabledLiveAnswer ?? (filingExternalAiApproved && filingSnapshot !== null
           ? guardFilingCorpusLiveAnswer("data", filingSnapshot.manifestSha256, generateLiveEvidenceAnswer)
           : artifactBacked ? async () => null : undefined);
-        if ((cattleArtifacts.length > 0 || query.categoryId === "pig") && publishedArtifactNamespace && !artifactBacked) return invalidRequest();
-        if (publishedScope?.status !== "found" && !artifactBacked) return invalidRequest();
         const exactRetrieval = await retrieveExactProductEvidence({
           scope: {
             categoryId: query.categoryId,
@@ -153,11 +407,11 @@ export const POST = async (request: Request): Promise<Response> => {
             dataNature: "observed",
           },
           namespace: "common",
-          query: query.query,
+          query: productSearchQuery,
           limit: query.limit,
           repository: productKnowledgeRepository,
           fallbackChunks: aiProductKnowledge.chunks,
-          runtimeAiAllowed: artifactBacked && !filingExternalAiApproved ? false : access.allowed,
+          runtimeAiAllowed: artifactBacked && !filingExternalAiApproved ? false : productRuntimeAiAllowed,
           ...(filingRuntimeReason ? { runtimeReason: filingRuntimeReason } : {}),
         });
         if (artifactBacked && exactRetrieval.evidence.some((item) => !productKnowledge.chunks.some((chunk) =>
@@ -183,7 +437,7 @@ export const POST = async (request: Request): Promise<Response> => {
           ...(publishedScope?.status === "found"
             ? await answerFromOfferingKnowledge(
                 publishedScope.offering,
-                query.query,
+                productSearchQuery,
                 productKnowledge,
                 {
                   limit: query.limit,
@@ -197,7 +451,7 @@ export const POST = async (request: Request): Promise<Response> => {
                   productId: query.productId,
                   dataNature: "observed",
                 },
-                query.query,
+                productSearchQuery,
                 productKnowledge,
                 {
                   limit: query.limit,
@@ -206,21 +460,37 @@ export const POST = async (request: Request): Promise<Response> => {
                 },
               )),
         };
-        if (filingExternalAiApproved && filingSnapshot !== null &&
-          !await isFilingCorpusApprovedForExternalAi("data", filingSnapshot.manifestSha256)) {
-          throw new Error("filing corpus external AI approval changed during request");
-        }
-        return Response.json(response);
+        return Response.json(await finalizeCopilotAnswer(
+          response,
+          exactRetrieval.evidence,
+          response.retrieval,
+          async () => productRuntimeAiAllowed &&
+            isProductEvidenceApprovedForExternalAi(exactRetrieval.evidence) &&
+            (!artifactBacked || filingSnapshot !== null &&
+              await isFilingCorpusApprovedForExternalAi("data", filingSnapshot.manifestSha256)),
+          copilotPlan,
+          query.query,
+          query.limit,
+          access.allowed,
+        ));
       }
       if (query.namespace === "legacy-scenario" && !scenario) return invalidRequest();
       if (scenario && query.namespace !== "common" && !commonScope?.product) {
+        const scope = await loadKnowledgeScope(scenario.scenarioId, scenario.offerId);
+        const copilotPlan = await planProductCopilotQuery(query.query, {
+          runtimeAiAllowed: access.allowed,
+        });
+        const productSearchQuery = copilotPlan.productQuery ?? query.query;
+        const productRuntimeAiAllowed = access.allowed && copilotPlan.target !== "general";
+        const disabledLiveAnswer = access.allowed && copilotPlan.target === "product"
+          ? undefined
+          : async () => null;
         const legacyQuery = {
           scenarioId: scenario.scenarioId,
           offerId: scenario.offerId,
-          q: query.query,
+          q: productSearchQuery,
           limit: query.limit,
         };
-        const scope = await loadKnowledgeScope(scenario.scenarioId, scenario.offerId);
         const exactRetrieval = await retrieveExactProductEvidence({
           scope: {
             categoryId: query.categoryId,
@@ -229,11 +499,16 @@ export const POST = async (request: Request): Promise<Response> => {
             dataNature: "scenario",
           },
           namespace: "legacy-scenario",
-          query: query.query,
+          query: productSearchQuery,
           limit: query.limit,
           fallbackChunks: scope.chunks,
-          runtimeAiAllowed: access.allowed,
+          runtimeAiAllowed: productRuntimeAiAllowed,
           ...(!access.allowed ? { runtimeReason: access.reason } : {}),
+        });
+        const answer = await answerFromEvidence(scope, legacyQuery, {
+          population,
+          evidence: exactRetrieval.evidence,
+          ...(disabledLiveAnswer ? { liveAnswer: disabledLiveAnswer } : {}),
         });
         return Response.json({
           categoryId: query.categoryId,
@@ -242,14 +517,29 @@ export const POST = async (request: Request): Promise<Response> => {
           dataNature: "scenario",
           namespace: "legacy-scenario",
           retrieval: exactRetrieval.retrieval,
-          ...(await answerFromEvidence(scope, legacyQuery, {
-            population,
-            evidence: exactRetrieval.evidence,
-            ...(disabledLiveAnswer ? { liveAnswer: disabledLiveAnswer } : {}),
-          })),
+          ...(await finalizeCopilotAnswer(
+            answer,
+            exactRetrieval.evidence,
+            exactRetrieval.retrieval,
+            async () => productRuntimeAiAllowed &&
+              isProductEvidenceApprovedForExternalAi(exactRetrieval.evidence),
+            copilotPlan,
+            query.query,
+            query.limit,
+            access.allowed,
+          )),
         });
       }
       const scope = commonScope ?? { product: null, documents: [], chunks: [] };
+      const scopeAvailable = scope.product !== null || scope.documents.length > 0 || scope.chunks.length > 0;
+      const copilotPlan = await planProductCopilotQuery(query.query, {
+        runtimeAiAllowed: access.allowed && scopeAvailable,
+      });
+      const productSearchQuery = copilotPlan.productQuery ?? query.query;
+      const productRuntimeAiAllowed = access.allowed && copilotPlan.target !== "general";
+      const disabledLiveAnswer = access.allowed && copilotPlan.target === "product"
+        ? undefined
+        : async () => null;
       const isSyntheticArtScope = query.categoryId === "art" &&
         query.dataNature === "scenario" &&
         query.scenarioId === SYNTHETIC_ART_SCENARIO_ID;
@@ -258,7 +548,7 @@ export const POST = async (request: Request): Promise<Response> => {
         syntheticArtSourceHash !== undefined &&
         await isSyntheticArtApprovedForExternalAi("data", syntheticArtSourceHash)
       );
-      const commonRuntimeAiAllowed = access.allowed && syntheticArtExternalAiApproved;
+      const commonRuntimeAiAllowed = productRuntimeAiAllowed && syntheticArtExternalAiApproved;
       const exactRetrieval = await retrieveExactProductEvidence({
         scope: {
           categoryId: query.categoryId,
@@ -267,7 +557,7 @@ export const POST = async (request: Request): Promise<Response> => {
           dataNature: query.dataNature,
         },
         namespace: "common",
-        query: query.query,
+        query: productSearchQuery,
         limit: query.limit,
         fallbackChunks: scope.chunks,
         runtimeAiAllowed: commonRuntimeAiAllowed,
@@ -278,6 +568,14 @@ export const POST = async (request: Request): Promise<Response> => {
           ? guardSyntheticArtLiveAnswer("data", syntheticArtSourceHash, generateLiveEvidenceAnswer)
           : async () => null
         : undefined);
+      const answer = await answerFromCommonEvidence(
+        scope,
+        { ...query, q: productSearchQuery },
+        {
+          evidence: exactRetrieval.evidence,
+          ...(commonLiveAnswer ? { liveAnswer: commonLiveAnswer } : {}),
+        },
+      );
       return Response.json({
         categoryId: query.categoryId,
         productId: query.productId,
@@ -285,13 +583,18 @@ export const POST = async (request: Request): Promise<Response> => {
         namespace: "common",
         retrieval: exactRetrieval.retrieval,
         ...(scope.product?.scenarioId ? { scenarioId: scope.product.scenarioId } : {}),
-        ...(await answerFromCommonEvidence(
-          scope,
-          { ...query, q: query.query },
-          {
-            evidence: exactRetrieval.evidence,
-            ...(commonLiveAnswer ? { liveAnswer: commonLiveAnswer } : {}),
-          },
+        ...(await finalizeCopilotAnswer(
+          answer,
+          exactRetrieval.evidence,
+          exactRetrieval.retrieval,
+          async () => commonRuntimeAiAllowed &&
+            isProductEvidenceApprovedForExternalAi(exactRetrieval.evidence) &&
+            (!isSyntheticArtScope || syntheticArtSourceHash !== undefined &&
+              await isSyntheticArtApprovedForExternalAi("data", syntheticArtSourceHash)),
+          copilotPlan,
+          query.query,
+          query.limit,
+          access.allowed,
         )),
       });
     }
@@ -299,6 +602,15 @@ export const POST = async (request: Request): Promise<Response> => {
       loadKnowledgeScope(query.scenarioId, query.offerId),
       loadApprovedScenarios(),
     ]);
+    const scopeAvailable = scope.scenario !== null || scope.documents.length > 0 || scope.chunks.length > 0;
+    const copilotPlan = await planProductCopilotQuery(query.query, {
+      runtimeAiAllowed: access.allowed && scopeAvailable,
+    });
+    const productSearchQuery = copilotPlan.productQuery ?? query.query;
+    const productRuntimeAiAllowed = access.allowed && copilotPlan.target !== "general";
+    const disabledLiveAnswer = access.allowed && copilotPlan.target === "product"
+      ? undefined
+      : async () => null;
     const exactRetrieval = await retrieveExactProductEvidence({
       scope: {
         categoryId: scope.scenario?.categoryId ?? "real-estate",
@@ -307,21 +619,32 @@ export const POST = async (request: Request): Promise<Response> => {
         dataNature: "scenario",
       },
       namespace: "legacy-scenario",
-      query: query.query,
+      query: productSearchQuery,
       limit: query.limit,
       fallbackChunks: scope.chunks,
-      runtimeAiAllowed: access.allowed,
+      runtimeAiAllowed: productRuntimeAiAllowed,
       ...(!access.allowed ? { runtimeReason: access.reason } : {}),
+    });
+    const answer = await answerFromEvidence(scope, { ...query, q: productSearchQuery }, {
+      population,
+      evidence: exactRetrieval.evidence,
+      ...(disabledLiveAnswer ? { liveAnswer: disabledLiveAnswer } : {}),
     });
     return Response.json({
       scenarioId: query.scenarioId,
       offerId: query.offerId,
       retrieval: exactRetrieval.retrieval,
-      ...(await answerFromEvidence(scope, { ...query, q: query.query }, {
-        population,
-        evidence: exactRetrieval.evidence,
-        ...(disabledLiveAnswer ? { liveAnswer: disabledLiveAnswer } : {}),
-      })),
+      ...(await finalizeCopilotAnswer(
+        answer,
+        exactRetrieval.evidence,
+        exactRetrieval.retrieval,
+        async () => productRuntimeAiAllowed &&
+          isProductEvidenceApprovedForExternalAi(exactRetrieval.evidence),
+        copilotPlan,
+        query.query,
+        query.limit,
+        access.allowed,
+      )),
     });
   } catch {
     return internalError();
