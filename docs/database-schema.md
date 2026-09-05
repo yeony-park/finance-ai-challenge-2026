@@ -5,7 +5,7 @@
 
 ## 현재 적용 상태
 
-- AWS RDS PostgreSQL 18에 `0006_rag_canonical_ids.sql`까지 적용돼 있다.
+- AWS RDS PostgreSQL 18에 `0007_rag_product_canonical_ids_required.sql`까지 적용돼 있다.
 - 상품 원장 26건, 일반지식 문서 11건, 상품 RAG 문서 95건·청크 13,219건을 적재했다.
 - RAG 전체 13,240청크 중 canonical corpus 대상 13,219청크에 `text-embedding-3-small` 벡터가 저장돼 있다.
 - 로컬 SQLite 임베딩을 해시 검증 후 RDS로 이전하는 `db:embedding:sync`와 DB 모드 pgvector 검색 경로가 실제 E2E를 통과했다.
