@@ -10,8 +10,8 @@ import {
 import {
   PIG_ASF_BOARD_URL,
   PIG_ASF_EVENTS,
-  PIG_ASF_MAP_URL,
 } from "@/lib/content/pig-asf";
+import { FMD_BOARD_URL } from "@/lib/content/livestock-disease";
 import {
   LIVESTOCK_TRACE_URL,
   PIG_REVIEW_COPY,
@@ -134,7 +134,12 @@ describe("한돈 분석 정적 렌더링 회귀", () => {
     expect(html).toContain("질병 지도를 불러오는 중입니다.");
     expect(html).toContain(`${PIG_ASF_EVENTS.length}건`);
     expect(html).toContain(`href="${PIG_ASF_BOARD_URL}"`);
-    expect(html).toContain(`href="${PIG_ASF_MAP_URL}"`);
+    expect(html).toContain(`href="${FMD_BOARD_URL}"`);
+    expect(html).toContain("ASF 원문 보기");
+    expect(html).toContain("구제역 원문 보기");
+    expect(html).not.toContain("보조 API 대조");
+    expect(html).not.toContain("공식 지도");
+    expect(html).not.toContain("최신 ASF 발생현황 첨부파일");
     expect(html).toContain("농장명·농장주 미사용");
     expect(html).not.toContain('data-map-provider="kakao"');
     expect(html).not.toContain("<iframe");

@@ -374,9 +374,7 @@ export const PIG_DISEASE = {
     "같은 시·군 공개 발생이 0건이라도 농장 감염이 없거나 문제가 없다는 뜻은 아닙니다. 원형은 ASF, 마름모는 구제역이며 화면 좌표는 실제 농장이 아닌 행정기관 기준점입니다.",
   noticeBody2:
     "공시 농장과 질병 사건을 잇는 공공 식별자가 없어 상세 위치, 실제 거리, 감염 여부 또는 손익 영향은 판단하지 않습니다.",
-  mapLink: "ASF 공식 지도 새 창에서 보기",
-  snapshotLink: "최신 ASF 발생현황 첨부파일",
-  boardLink: "ASF 발생현황 전체 자료실",
+  boardLink: "ASF 원문 보기",
 } as const;
 
 export const PIG_PRICE = {
