@@ -22,6 +22,7 @@ const DynamicLivestockDiseaseMap = dynamic(
 export function LazyLivestockDiseaseMap({
   species,
   focusProvinces,
+  viewportProvinces,
   throughDate,
   currentYear,
   ariaLabel,
@@ -29,6 +30,7 @@ export function LazyLivestockDiseaseMap({
 }: {
   readonly species: LivestockDiseaseMapSpecies;
   readonly focusProvinces: readonly string[];
+  readonly viewportProvinces?: readonly string[];
   readonly throughDate?: string;
   readonly currentYear: string;
   readonly ariaLabel: string;
@@ -65,6 +67,7 @@ export function LazyLivestockDiseaseMap({
         <DynamicLivestockDiseaseMap
           species={species}
           focusProvinces={focusProvinces}
+          viewportProvinces={viewportProvinces}
           throughDate={throughDate}
           currentYear={currentYear}
           ariaLabel={ariaLabel}

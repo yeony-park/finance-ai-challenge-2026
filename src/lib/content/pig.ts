@@ -1,3 +1,5 @@
+import { pigOfferingPeriod } from "./pig-offering-schedule";
+
 export type PigRound = 1 | 2 | 3;
 
 export interface PigDisclosureDocument {
@@ -105,7 +107,7 @@ export const PIG_DISCLOSURE_PRODUCTS: readonly PigDisclosureProduct[] = [
       units: 11_450,
       unitPriceWon: 20_000,
       issueAmountWon: 229_000_000,
-      subscriptionPeriod: "2026-06-29~2026-07-10",
+      subscriptionPeriod: pigOfferingPeriod(3),
       issuedAt: "2026-07-14",
     },
     farm: {
@@ -153,7 +155,7 @@ export const PIG_DISCLOSURE_PRODUCTS: readonly PigDisclosureProduct[] = [
       units: 10_640,
       unitPriceWon: 20_000,
       issueAmountWon: 212_800_000,
-      subscriptionPeriod: "2026-05-14~2026-05-27",
+      subscriptionPeriod: pigOfferingPeriod(2),
       issuedAt: "2026-05-29",
     },
     farm: {
@@ -201,7 +203,7 @@ export const PIG_DISCLOSURE_PRODUCTS: readonly PigDisclosureProduct[] = [
       units: 10_812,
       unitPriceWon: 20_000,
       issueAmountWon: 216_240_000,
-      subscriptionPeriod: "2026-01-29~2026-02-11",
+      subscriptionPeriod: pigOfferingPeriod(1),
       issuedAt: "2026-02-13",
     },
     farm: {
@@ -319,7 +321,6 @@ export const PIG_GALLERY = {
 
 export const PIG_OVERVIEW = {
   label: "선택 상품",
-  description: "공시 속 상품 조건과 그 밖의 공식 자료를 같은 기준일로 나눠 보여줍니다.",
   subscription: "청약 기간",
   amount: "발행금액",
   unit: "발행 단위",
@@ -363,20 +364,16 @@ export const PIG_DISEASE = {
   snapshotAriaLabel: "전북 ASF 공개 발생 지역 목록",
   mapEyebrow: "ASF·구제역 발생 지도",
   mapTitle: "농식품부 공개 파일로 재구성한 돼지 질병 지도",
-  mapDescription:
-    "농림축산식품부 발생현황 첨부파일을 JSON으로 정규화하고, ASF와 돼지 구제역을 서로 다른 핀으로 지도에 표시했습니다.",
   mapCaption:
     "선택 공시의 익명 농장과 발생 지점을 자동 연결하지 않습니다. 현재 선택:",
   officialLabel: "농림축산식품부 공식 자료",
   sourceAriaLabel: "ASF와 구제역 발생 현황 공식 출처",
   noticeHeading: "자료 해석",
   noticeBody:
-    "같은 시·군 공개 발생이 0건이라도 농장 감염이 없거나 문제가 없다는 뜻은 아닙니다. 원형은 ASF, 마름모는 구제역이며 화면 좌표는 실제 농장이 아닌 행정기관 기준점입니다.",
+    "같은 시·군 공개 발생이 0건이라도 농장 감염이 없거나 문제가 없다는 뜻은 아닙니다. 지도 핀은 실제 농장이 아닌 행정기관 기준점입니다.",
   noticeBody2:
     "공시 농장과 질병 사건을 잇는 공공 식별자가 없어 상세 위치, 실제 거리, 감염 여부 또는 손익 영향은 판단하지 않습니다.",
-  mapLink: "ASF 공식 지도 새 창에서 보기",
-  snapshotLink: "최신 ASF 발생현황 첨부파일",
-  boardLink: "ASF 발생현황 전체 자료실",
+  boardLink: "ASF 원문 보기",
 } as const;
 
 export const PIG_PRICE = {
@@ -432,7 +429,7 @@ export const PIG_ISSUER = {
   title: "발행사의 한돈 STO 발행 이력",
   descriptionPrefix: "DART",
   descriptionSuffix:
-    "기준 발행 3회, 최종 정산 결과 확인 1회입니다. 같은 상품의 최초·정정·발행실적 문서를 회차별로 묶었습니다.",
+    "기준 발행 3회 · 최종 정산 결과 확인 1회",
   badge: "3개 회차",
   completedNote: "정산 · 수익금",
   pendingNote: "발행실적 확인 · 최종 정산 숫자는 DART에 없음",
@@ -444,6 +441,14 @@ export const PIG_ISSUER = {
   documentsHeading: "선택 회차 공시 원문",
   documentLink: "원문 보기",
 } as const;
+
+export function searchPigDisclosureProducts(query: string): readonly PigDisclosureProduct[] {
+  const keyword = query.trim().toLocaleLowerCase("ko-KR");
+  return PIG_DISCLOSURE_PRODUCTS.filter((product) => [
+    product.productName, `한돈 ${product.round}호`, product.statusLabel,
+    product.farm.name, product.farm.region, product.farm.supplier,
+  ].some((value) => value.toLocaleLowerCase("ko-KR").includes(keyword)));
+}
 
 // 감사·회귀 테스트가 참조하는 전 문안 집합.
 export const pigCopyStrings = (): readonly string[] => {

@@ -23,6 +23,7 @@ interface CategoryAboutViewProps {
   readonly descriptionContent: ReactNode;
   readonly descriptionContentTitle: string;
   readonly embedded?: boolean;
+  readonly dataNotice?: string;
 }
 
 export function CategoryAboutView({
@@ -36,6 +37,7 @@ export function CategoryAboutView({
   descriptionContent,
   descriptionContentTitle,
   embedded = false,
+  dataNotice,
 }: CategoryAboutViewProps) {
   const hasInlineVisuals = leadVisual !== null || analysisHintVisual !== null;
 
@@ -69,6 +71,7 @@ export function CategoryAboutView({
           ) : (
             <h1 className={home.sectionTitle}>{title}</h1>
           )}
+          {dataNotice ? <p className={s.dataNotice}>{dataNotice}</p> : null}
         </div>
 
         <section

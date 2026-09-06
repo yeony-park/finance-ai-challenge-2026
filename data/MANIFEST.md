@@ -2,7 +2,7 @@
 
 # data/ 매니페스트
 
-생성 시각: 2026-09-05T07:40:59.874Z
+생성 시각: 2026-09-06T14:39:21.886Z
 
 ## 저장 정책
 
@@ -273,6 +273,9 @@ _현재 로컬에 파일이 없습니다._
 | `data/reference/pig-asf/asf_events_20260320.meta.json` | 866 | `5582efcdfd1c4d811c57ac5fc550282a7b2b3accaab0a6a369697cb380399dea` |
 | `data/reference/pig-asf/mafra_asf_documents.json` | 83,560 | `10674d3063b07d8dec5dade9d9925a7ebfba7eb217af4889fab7032d52a3eb5b` |
 | `data/reference/pig-asf/mafra_asf_events.json` | 76,617 | `bbbb425b64fcd20d22ff8e488d4f1da74500e39e88252986e62b556291532adb` |
+| `data/reference/pig-auction-price/normalized/2026-05.json` | 34,019 | `3fc4d8ffda053e2cb0ae07f62ae0e4a48b62fbb55fdefd58b01440c0e70993a7` |
+| `data/reference/pig-auction-price/normalized/2026-06.json` | 34,025 | `843de5a6562b6d7244c2b9a34dfc58d62053d423d0ee420f5297554bc0352f2a` |
+| `data/reference/pig-auction-price/normalized/2026-07.json` | 33,461 | `0b8486f9d4f3f4b6c5395bd88a6cb101101006d009779755ac633da46355b8ca` |
 | `data/reference/pig-auction-price/pig_price_20260815021618.csv` | 40,445 | `673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d` |
 | `data/reference/pig-auction-price/pig_price_20260815021618.meta.json` | 1,035 | `2d62daccfdbcc13ecb882df975b3275e1cc6f49daf6408882ff69a74fe87af83` |
 | `data/reference/rag/corpus-sources.json` | 5,068 | `08e3c87cc1c0f1fc523425104ca65886d1e7930db530793a7d8ccf6b2593d361` |

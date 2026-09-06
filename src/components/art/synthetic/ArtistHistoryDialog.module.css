@@ -1,0 +1,62 @@
+.dialog {
+  width: min(70rem, calc(100vw - 2 * var(--ds-gutter)));
+  max-width: none;
+  max-height: calc(100dvh - 2 * var(--ds-gutter));
+  margin: auto;
+  padding: 0;
+  border: 1px solid var(--ds-line);
+  border-radius: var(--ds-radius-xl);
+  background: var(--ds-surface);
+  color: var(--ds-ink);
+  box-shadow: var(--ds-shadow-md);
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.dialog::backdrop {
+  background: color-mix(in srgb, var(--ds-ink) 45%, transparent);
+}
+
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-4);
+  padding: var(--ds-space-4) var(--ds-gutter);
+  border-bottom: 1px solid var(--ds-line);
+  background: var(--ds-surface);
+}
+
+.toolbar h2 {
+  margin: 0;
+  font-size: var(--ds-heading-h4);
+  font-weight: var(--ds-weight-bold);
+}
+
+.close {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: var(--ds-tap-min);
+  height: var(--ds-tap-min);
+  border: 0;
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-bg-muted);
+  color: var(--ds-ink);
+  font-size: var(--ds-heading-h3);
+  cursor: pointer;
+}
+
+.close:focus-visible {
+  outline: none;
+  box-shadow: var(--ds-focus-ring);
+}
+
+.content {
+  position: relative;
+  z-index: 0;
+  min-width: 0;
+}

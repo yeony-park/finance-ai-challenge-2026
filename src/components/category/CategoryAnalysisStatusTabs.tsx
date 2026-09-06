@@ -6,6 +6,7 @@ import { CATEGORY_TAB_COPY } from "@/lib/content/category-tabs";
 import { SEARCH_PLACEHOLDER } from "@/lib/content/home";
 
 import s from "./category-shell.module.css";
+import type { CategoryStatusCounts } from "./category-status-counts";
 
 const STATUS_TABS: readonly {
   readonly phase: SubscriptionPhase | null;
@@ -29,7 +30,7 @@ export const buildCategoryAnalysisStatusHref = ({
   const params = new URLSearchParams({ tab: "analysis" });
 
   new URLSearchParams(preservedSearchParams).forEach((value, key) => {
-    if (key === "tab" || key === "status" || key === "verdict") return;
+    if (key === "tab" || key === "status" || key === "verdict" || key === "page") return;
     params.append(key, value);
   });
   if (phase !== null) params.set("status", phase);
@@ -43,15 +44,17 @@ export function CategoryAnalysisStatusTabs({
   preservedSearchParams,
   searchQuery = "",
   title = "카테고리",
+  counts,
 }: {
   readonly categoryHref: string;
   readonly selectedPhase: SubscriptionPhase | null;
   readonly preservedSearchParams?: string;
   readonly searchQuery?: string;
   readonly title?: string;
+  readonly counts?: CategoryStatusCounts;
 }) {
   const preservedFields = [...new URLSearchParams(preservedSearchParams)].filter(
-    ([key]) => key !== "q",
+    ([key]) => key !== "q" && key !== "page",
   );
 
   return (
@@ -75,6 +78,7 @@ export function CategoryAnalysisStatusTabs({
               aria-current={isActive ? "page" : undefined}
             >
               {tab.label}
+              {counts ? ` (${counts[tab.phase ?? "all"].toLocaleString("ko-KR")})` : null}
             </Link>
           );
         })}

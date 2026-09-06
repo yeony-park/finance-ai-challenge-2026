@@ -117,6 +117,7 @@ const loadEvidence = async (
             assetLabel: offer.assetLabel,
             schedule,
             verdictLine: "승인된 공시에서 원금 미보장 문단을 확인했습니다.",
+            evidenceKind: "filing-excerpts",
             tallies: [
               { value: artifact.chunks.length, label: "공시 근거", tone: "unk" },
             ],

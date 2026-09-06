@@ -4,6 +4,7 @@ import type { LivestockDiseaseMapDataset } from "@/lib/content/livestock-disease
 
 import {
   diseaseYearlyCounts,
+  diseaseMapFocusPoints,
   selectLivestockDiseaseMapEvents,
 } from "./map-view";
 
@@ -113,5 +114,24 @@ describe("축산 질병 지도 보고서 필터", () => {
         currentYear: "2026",
       }),
     ).toEqual([]);
+  });
+});
+
+describe("공시 지역으로 시작하는 지도", () => {
+  test("현재 발생이 없는 지역도 같은 도의 공개 좌표로 화면을 맞춘다", () => {
+    const points = diseaseMapFocusPoints(cattleDataset, ["경기"]);
+    expect(points).toHaveLength(2);
+    expect(points.every((point) => point.longitude < 127.3)).toBe(true);
+    expect(diseaseMapFocusPoints(cattleDataset, [])).toEqual([]);
+  });
+  test("한돈의 전국 발생 기록과 별개로 공시 지역만 초기 확대한다", () => {
+    expect(diseaseMapFocusPoints(pigDataset, ["충남"])).toEqual([pigDataset.events[2]]);
+  });
+  test("지역 미확인 한우도 미래 사건을 제외한 전국 맥락을 제공한다", () => {
+    const events = selectLivestockDiseaseMapEvents(cattleDataset, {
+      species: "cattle", focusProvinces: [], throughDate: "2023-12-31", currentYear: "2023",
+    });
+    expect(events).toHaveLength(2);
+    expect(events.every((event) => event.occurredAt <= "2023-12-31")).toBe(true);
   });
 });

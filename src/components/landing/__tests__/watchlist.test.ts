@@ -8,6 +8,12 @@ describe("parseWatchlist — 저장값을 믿지 않는다", () => {
     expect(parseWatchlist("")).toEqual([]);
   });
 
+  test("이전 한돈 저장 ID를 현재 상품 ID로 연결하고 중복을 제거한다", () => {
+    expect(parseWatchlist('["pig-round-3","pig-3","art-synthetic-offering-01"]')).toEqual([
+      "pig-3", "art-synthetic-offering-01",
+    ]);
+  });
+
   test("JSON이 깨져 있어도 빈 목록으로 떨어진다", () => {
     expect(parseWatchlist("{not-json")).toEqual([]);
   });

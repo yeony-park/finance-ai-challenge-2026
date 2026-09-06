@@ -28,6 +28,57 @@ describe("공통 AI 연동", () => {
     await expect(requestEvidence({ scenarioId: "scenario", offerId: "offer" }, "질문", new AbortController().signal)).rejects.toThrow();
   });
 
+  test.each([
+    null,
+    { error: "unavailable" },
+    { outcome: "other" },
+    { answer: { text: "답변" } },
+    { limitations: [null] },
+    { knowledgeScope: "other" },
+    { evidence: [null] },
+    { evidence: [{ chunkId: "chunk-1", title: "공시", page: 1, sourceUrl: "https://example.com", asOf: "2026-09-06", excerpt: "문단", knowledgeScope: "mixed" }] },
+    { evidence: [{ chunkId: "chunk-1", title: "공시", page: 1, sourceUrl: "https://example.com", asOf: "2026-09-06", excerpt: "문단", limitations: [42] }] },
+    { structuredSources: [{ label: "공시", url: "https://example.com", asOf: "2026-09-06", dataNature: "scenario" }] },
+  ])("잘못된 중첩 응답을 화면에 전달하지 않는다: %j", async (invalid) => {
+    const result = invalid === null ? null : {
+      outcome: "abstain", answer: "근거가 없습니다.", evidence: [], limitations: [], answerSource: "none",
+      ...invalid,
+    };
+    // An error envelope alone must not become a synthetic answer fixture.
+    const body = invalid && "error" in invalid ? invalid : result;
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON.stringify(body))));
+    await expect(requestEvidence({ scenarioId: "scenario", offerId: "offer" }, "질문", new AbortController().signal))
+      .rejects.toThrow("invalid evidence response");
+  });
+
+  test("공식 출처와 문서 근거가 있는 정상 응답을 유지한다", async () => {
+    const result = {
+      outcome: "answer", answer: "공시 내용입니다.", answerSource: "structured", limitations: [],
+      evidence: [{ chunkId: "chunk-1", title: "공시", page: 1, sourceUrl: "https://example.com", asOf: "2026-09-06", excerpt: "문단", limitations: ["정산 미확인"], dataNature: "observed", sourceKind: "official-document" }],
+      structuredSources: [{ label: "공시", url: "https://example.com", asOf: "2026-09-06", dataNature: "observed" }],
+      cached: true,
+    };
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON.stringify(result))));
+    await expect(requestEvidence({ scenarioId: "scenario", offerId: "offer" }, "질문", new AbortController().signal)).resolves.toEqual(result);
+  });
+
+  test.each([
+    ["general_llm", "general"],
+    ["mixed_llm", "mixed"],
+  ])("%s 응답을 검증한 뒤 일반·상품 근거 범위를 유지한다", async (answerSource, knowledgeScope) => {
+    const result = {
+      outcome: "answer", answer: "공개 근거를 확인했습니다.", answerSource, knowledgeScope, limitations: [],
+      evidence: [
+        { chunkId: "general-1", title: "일반", page: 1, sourceUrl: "https://example.com/general", asOf: "2026-09-06", excerpt: "일반 근거", knowledgeScope: "general" },
+        ...(knowledgeScope === "mixed" ? [
+          { chunkId: "product-1", title: "상품", page: 2, sourceUrl: "https://example.com/product", asOf: "2026-09-06", excerpt: "상품 근거", knowledgeScope: "product" },
+        ] : []),
+      ],
+    };
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON.stringify(result))));
+    await expect(requestEvidence({ scenarioId: "scenario", offerId: "offer" }, "질문", new AbortController().signal)).resolves.toEqual(result);
+  });
+
   test("복수 Copilot 입력의 접근성 ID가 겹치지 않는다", () => {
     const query = createElement(EvidenceQuery, { scope: { scenarioId: "scenario", offerId: "offer" }, examples: [], lead: "상품 문서에서 확인합니다." });
     const html = renderToStaticMarkup(createElement(Fragment, null, query, query));
@@ -53,6 +104,8 @@ describe("공통 AI 연동", () => {
     expect(html.match(new RegExp(`popoverTarget="${id}"`, "g"))).toHaveLength(2);
     expect(html).toContain('popoverTargetAction="hide"');
     expect(html).toContain('role="dialog"');
+    expect(html).toContain('aria-label="Copilot 창 이동"');
+    expect(html).toContain('aria-label="Copilot 창 크기 조절"');
   });
 
   test("DART 전체 공시의 논리 위치를 실제 PDF 쪽수처럼 표시하지 않는다", () => {

@@ -56,7 +56,6 @@ export function PigDisclosureDetail({
             <h3 className={s.sectionTitle} id="pig-overview-title">
               {product.productName}
             </h3>
-            <p className={s.sectionDescription}>{PIG_OVERVIEW.description}</p>
           </div>
           <span className={s.badge}>{product.statusLabel}</span>
         </div>
@@ -97,16 +96,17 @@ export function PigDisclosureDetail({
           <span className={s.badge}>{PIG_FARM.badge}</span>
         </div>
 
+        <div className={s.farmBand}>
         <dl className={s.farmFacts}>
           <div>
             <dt>{PIG_FARM.farmDt}</dt>
             <dd>{product.farm.name}</dd>
-            <small className={s.metaLine}>{product.farm.region}</small>
+            <small className={s.factDescription}>{product.farm.region}</small>
           </div>
           <div>
             <dt>{PIG_FARM.entryDt}</dt>
             <dd>{product.farm.entryDate}</dd>
-            <small className={s.metaLine}>
+            <small className={s.factDescription}>
               {product.offering.heads.toLocaleString("ko-KR")}
               {PIG_FARM.headsSuffix}
             </small>
@@ -114,18 +114,18 @@ export function PigDisclosureDetail({
           <div>
             <dt>{PIG_FARM.supplierDt}</dt>
             <dd>{product.farm.supplier}</dd>
-            <small className={s.metaLine}>{PIG_FARM.supplierNote}</small>
+            <small className={s.factDescription}>{PIG_FARM.supplierNote}</small>
           </div>
           <div>
             <dt>{PIG_FARM.priorDt}</dt>
             <dd>{priorLabel(product.round)}</dd>
-            <small className={s.metaLine}>{product.farm.participationHistory}</small>
+            <small className={s.factDescription}>{product.farm.participationHistory}</small>
           </div>
         </dl>
 
         <div className={s.settlementPanel}>
           <div>
-            <span className={s.metaLine}>{PIG_FARM.saleLabel}</span>
+            <span className={s.settlementLabel}>{PIG_FARM.saleLabel}</span>
             <strong className={s.mono}>
               {product.settlement.totalSaleWon === null
                 ? PIG_FARM.saleEmpty
@@ -133,7 +133,7 @@ export function PigDisclosureDetail({
             </strong>
           </div>
           <div>
-            <span className={s.metaLine}>{PIG_FARM.returnLabel}</span>
+            <span className={s.settlementLabel}>{PIG_FARM.returnLabel}</span>
             <strong className={s.mono}>
               {product.settlement.realizedReturnPercent === null
                 ? PIG_FARM.returnEmpty
@@ -144,6 +144,7 @@ export function PigDisclosureDetail({
           <a href={product.settlement.sourceUrl} target="_blank" rel="noopener noreferrer">
             {PIG_FARM.sourceLink}
           </a>
+        </div>
         </div>
         </section>
       ) : null}

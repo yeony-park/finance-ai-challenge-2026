@@ -46,7 +46,7 @@ export const categoryAnalysisPreservedSearchParams = (
   const preserved = new URLSearchParams();
 
   Object.entries(params).forEach(([key, value]) => {
-    if (key === "tab" || key === "status" || key === "verdict") return;
+    if (key === "tab" || key === "status" || key === "verdict" || key === "page") return;
 
     const values = Array.isArray(value) ? value : [value];
     values.forEach((entry) => {

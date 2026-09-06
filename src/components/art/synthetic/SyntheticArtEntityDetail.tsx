@@ -1,3 +1,4 @@
+import { ReportBreadcrumb } from "@/components/report/ReportBreadcrumb";
 import Link from "next/link";
 import { ProductMetric } from "@/components/product/ProductMetric";
 
@@ -21,20 +22,12 @@ import type {
 import { CurrentProductCard } from "./SyntheticArtCatalog";
 import s from "./synthetic-art.module.css";
 
-function EntityBreadcrumb({ label }: { readonly label: string }) {
-  return (
-    <nav className={s.breadcrumb} aria-label="현재 위치">
-      <Link href="/art?tab=analysis">← 분석</Link>
-      <span aria-hidden="true">/</span>
-      <strong aria-current="page">{label}</strong>
-    </nav>
-  );
-}
-
 export function SyntheticArtistDetailView({
   detail,
+  embedded = false,
 }: {
   readonly detail: SyntheticArtistDetail;
+  readonly embedded?: boolean;
 }) {
   const { artist, currentProducts, historyProducts, auctions, annualMetrics } = detail;
   const sellThrough = latestSyntheticAnnualSellThroughRate(annualMetrics, auctions);
@@ -53,10 +46,10 @@ export function SyntheticArtistDetailView({
 
   return (
     <div className={s.detailPage}>
-      <EntityBreadcrumb label={artist.nameKo} />
+      {embedded ? null : <ReportBreadcrumb href="/art?tab=analysis" title={artist.nameKo} className={s.breadcrumbInset} />}
       <header className={s.entityHeader}>
         <span className={s.syntheticBadge}>합성 데이터 · 대조 불가</span>
-        <h1>{artist.nameKo}</h1>
+        {embedded ? <h2>{artist.nameKo}</h2> : <h1>{artist.nameKo}</h1>}
         {artist.nameEn || artist.nationality ? (
           <p>{[artist.nameEn, artist.nationality].filter(Boolean).join(" · ")}</p>
         ) : null}
@@ -65,11 +58,6 @@ export function SyntheticArtistDetailView({
       </header>
 
       <div className={s.entityContent}>
-        <section className={s.neutralSummary}>
-          <h2>현재 상품과 과거 합성 이력을 분리해 표시합니다.</h2>
-          <p>실제 작가·거래 기록이 아니며 투자 성과나 시장 전망으로 사용할 수 없습니다.</p>
-        </section>
-
         <div className={s.metricGrid}>
           <ProductMetric label="현재 상품" value={`${currentProducts.length}건`} />
           <ProductMetric label="운용·매각 진행" value={`${operating.length}건`} />
@@ -236,7 +224,7 @@ export function SyntheticPlatformDetailView({
 
   return (
     <div className={s.detailPage}>
-      <EntityBreadcrumb label={platform.name} />
+      <ReportBreadcrumb href="/art?tab=analysis" title={platform.name} className={s.breadcrumbInset} />
       <header className={s.entityHeader}>
         <span className={s.syntheticBadge}>합성 데이터 · 대조 불가</span>
         <h1>{platform.name}</h1>
@@ -245,11 +233,6 @@ export function SyntheticPlatformDetailView({
       </header>
 
       <div className={s.entityContent}>
-        <section className={s.neutralSummary}>
-          <h2>가상 플랫폼의 현재 상품과 과거 합성 이력을 표시합니다.</h2>
-          <p>외부 원문과 연결하지 않으며 모든 값은 화면 검증용입니다.</p>
-        </section>
-
         <div className={s.metricGrid}>
           <ProductMetric label="현재 합성 상품" value={`${currentProducts.length}건`} />
           <ProductMetric label="합성 과거 이력" value={`${historyProducts.length}건`} />

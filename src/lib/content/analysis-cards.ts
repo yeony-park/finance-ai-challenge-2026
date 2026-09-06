@@ -2,6 +2,7 @@ export const ANALYSIS_CARD_COPY = {
   factsLabel: "주요 정보",
   verificationLabel: "대조 결과",
   reportCta: "검증 리포트 보기",
+  filingEvidenceLabel: "공시 근거",
   totalItemsLabel: "대조 항목",
   comparisonTargetLabel: "대조 대상",
   headUnit: "두",

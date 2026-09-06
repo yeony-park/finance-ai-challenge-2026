@@ -22,7 +22,7 @@
 }
 .lead {
   color: var(--ds-ink-muted);
-  font-size: var(--ds-text-sm);
+  font-size: var(--ds-text-base);
   line-height: var(--ds-leading-relaxed);
   word-break: keep-all;
 }
@@ -77,7 +77,7 @@
   background: transparent;
   color: var(--ds-ink-muted);
   font: inherit;
-  font-size: var(--ds-text-sm);
+  font-size: var(--ds-text-base);
   font-weight: var(--ds-weight-medium);
   white-space: nowrap;
   cursor: pointer;
@@ -130,7 +130,7 @@
 .paragraph {
   max-width: var(--ds-maxw-prose);
   color: var(--ds-ink-muted);
-  font-size: var(--ds-text-sm);
+  font-size: var(--ds-text-base);
   line-height: var(--ds-leading-relaxed);
   word-break: keep-all;
 }
@@ -142,13 +142,13 @@
 .stepList {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: var(--ds-space-4);
+  gap: var(--ds-space-5);
   list-style: none;
 }
 .stepItem {
-  padding: var(--ds-space-5);
-  border-radius: var(--ds-radius-lg);
-  background: var(--ds-bg-muted);
+  padding: var(--ds-content-gap);
+  border-radius: var(--ds-radius-xl);
+  background: var(--ds-surface);
   color: var(--ds-ink-muted);
   line-height: var(--ds-leading-relaxed);
   word-break: keep-all;
@@ -163,7 +163,7 @@
 }
 .stepDescription {
   margin: 0;
-  font-size: var(--ds-text-sm);
+  font-size: var(--ds-text-base);
 }
 
 .layerList {
@@ -176,8 +176,9 @@
   display: grid;
   align-content: start;
   gap: var(--ds-space-2);
-  padding-top: var(--ds-space-4);
-  border-top: 2px solid var(--ds-accent);
+  padding: var(--ds-content-gap);
+  border-radius: var(--ds-radius-xl);
+  background: var(--ds-surface);
 }
 .layerTitle {
   font-size: var(--ds-heading-h4);
@@ -188,8 +189,8 @@
 }
 .layerNote {
   font-family: var(--ds-font-mono);
-  font-size: var(--ds-heading-h5);
-  color: var(--ds-ink-faint);
+  font-size: var(--ds-text-base);
+  color: var(--ds-ink-muted);
   line-height: 1.7;
 }
 
@@ -202,7 +203,10 @@
   display: grid;
   align-content: start;
   justify-items: start;
-  gap: var(--ds-space-2);
+  gap: var(--ds-space-3);
+  padding: var(--ds-content-gap);
+  border-radius: var(--ds-radius-xl);
+  background: var(--ds-surface);
 }
 .verdictMatch .verdictTerm,
 .artVerdictGood .verdictTerm {
@@ -226,14 +230,14 @@
 .verdictTerm {
   padding: var(--ds-space-1) var(--ds-space-2);
   border-radius: var(--ds-radius-sm);
-  font-size: var(--ds-text-sm);
+  font-size: var(--ds-text-base);
   font-weight: var(--ds-weight-medium);
   letter-spacing: var(--ds-tracking-snug);
   line-height: var(--ds-leading-snug);
   word-break: keep-all;
 }
 .verdictDesc {
-  font-size: var(--ds-text-sm);
+  font-size: var(--ds-text-base);
   color: var(--ds-ink-muted);
   line-height: var(--ds-leading-relaxed);
   word-break: keep-all;
@@ -269,7 +273,7 @@
 
 .methodologyCopyStack p {
   color: var(--ds-ink-muted);
-  font-size: var(--ds-text-sm);
+  font-size: var(--ds-text-base);
   line-height: var(--ds-leading-relaxed);
   word-break: keep-all;
 }
@@ -293,7 +297,7 @@
 
 .verdictGroupIntro {
   color: var(--ds-ink-muted);
-  font-size: var(--ds-text-sm);
+  font-size: var(--ds-text-base);
   line-height: var(--ds-leading-relaxed);
 }
 
@@ -301,24 +305,27 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
+.stepList,
+.layerList,
+.verdictList,
+.ruleList {
+  padding: var(--ds-content-gap);
+  border-radius: var(--ds-radius-xl);
+  background: var(--ds-bg-muted);
+}
+
 .ruleList {
   display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ds-space-5);
 }
 .ruleItem {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
-  align-items: start;
-  gap: var(--ds-space-5);
-  padding-block: var(--ds-space-4);
-}
-.ruleItem + .ruleItem {
-  border-top: 1px solid var(--ds-line);
-}
-.ruleItem:first-child {
-  padding-top: 0;
-}
-.ruleItem:last-child {
-  padding-bottom: 0;
+  align-content: start;
+  gap: var(--ds-space-3);
+  padding: var(--ds-content-gap);
+  border-radius: var(--ds-radius-xl);
+  background: var(--ds-surface);
 }
 .ruleTerm {
   font-size: var(--ds-heading-h4);
@@ -328,7 +335,7 @@
 }
 .ruleDesc {
   color: var(--ds-ink-muted);
-  font-size: var(--ds-text-sm);
+  font-size: var(--ds-text-base);
   line-height: var(--ds-leading-relaxed);
   word-break: keep-all;
 }
@@ -341,7 +348,7 @@
 
 .statSource {
   font-size: var(--ds-text-xs);
-  color: var(--ds-ink-faint);
+  color: var(--ds-ink-muted);
   line-height: var(--ds-leading-relaxed);
 }
 
@@ -360,8 +367,8 @@
   display: block;
   margin-top: var(--ds-space-2);
   font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
-  color: var(--ds-ink-faint);
+  font-size: var(--ds-text-xs);
+  color: var(--ds-ink-muted);
 }
 
 .callout {
@@ -369,36 +376,12 @@
   border-left: 3px solid var(--ds-ink);
   background: var(--ds-bg-muted);
   border-radius: 0 var(--ds-radius-md) var(--ds-radius-md) 0;
-  font-size: var(--ds-text-sm);
+  font-size: var(--ds-text-base);
   line-height: var(--ds-leading-relaxed);
   word-break: keep-all;
 }
 .callout strong {
   font-weight: var(--ds-weight-bold);
-}
-
-.backLink {
-  justify-self: start;
-  display: inline-flex;
-  align-items: center;
-  gap: var(--ds-space-2);
-  padding: var(--ds-space-2) var(--ds-space-4);
-  border-radius: var(--ds-radius-pill);
-  background: var(--ds-bg-muted);
-  color: var(--ds-ink);
-  font-size: var(--ds-text-sm);
-  font-weight: var(--ds-weight-medium);
-  text-decoration: none;
-  transition: background-color var(--ds-duration-base) var(--ds-ease);
-}
-
-.backLink:hover {
-  background: var(--ds-accent-soft);
-}
-
-.backLink:focus-visible {
-  outline: none;
-  box-shadow: var(--ds-focus-ring);
 }
 
 @media (max-width: 900px) {
@@ -407,9 +390,6 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .ruleItem {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
-  }
 }
 
 @media (max-width: 640px) {
@@ -417,12 +397,15 @@
   .layerList,
   .verdictList,
   .artVerdictList,
-  .ruleItem {
+  .ruleList {
     grid-template-columns: 1fr;
   }
 
-  .stepItem {
-    padding: var(--ds-space-4);
+  .stepList,
+  .layerList,
+  .verdictList,
+  .ruleList {
+    padding: var(--ds-space-5);
   }
 
   .ruleItem {

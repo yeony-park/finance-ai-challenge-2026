@@ -4,11 +4,11 @@ import Link from "next/link";
 
 import { useWatchedIds } from "@/components/landing/watchlist";
 import { WATCH_HEADING_ID } from "@/components/report/ids";
+import { ANALYSIS_CARD_COPY } from "@/lib/content/analysis-cards";
 import {
   WATCH_BAND_LEAD,
   WATCH_BAND_TITLE,
   WATCH_DETECTION_FAILED,
-  WATCH_REPORT_LINK_LABEL,
 } from "@/lib/content/watch-band";
 
 import type { WatchSummaryEntry } from "./watch-summary";
@@ -29,6 +29,7 @@ export function WatchlistView({
         <header className={s.hero}>
           <h1 id="watchlist-title" className={s.title}>
             {WATCH_BAND_TITLE}
+            {` (${watched.length.toLocaleString("ko-KR")})`}
           </h1>
           <p className={s.lead}>{WATCH_BAND_LEAD}</p>
         </header>
@@ -50,11 +51,11 @@ export function WatchlistView({
                   ) : null}
                 </div>
                 <Link
-                  href={entry.isScenario ? entry.reportHref : `${entry.reportHref}#${WATCH_HEADING_ID}`}
+                  href={entry.isScenario || entry.isSynthetic ? entry.reportHref : `${entry.reportHref}#${WATCH_HEADING_ID}`}
                   className={s.watchLink}
-                  aria-label={`${entry.title} ${entry.isScenario ? "상품 검토 보기" : WATCH_REPORT_LINK_LABEL.replace(" →", "")}`}
+                  aria-label={`${entry.title} ${ANALYSIS_CARD_COPY.reportCta}`}
                 >
-                  {entry.isScenario ? "상품 검토 보기 →" : WATCH_REPORT_LINK_LABEL}
+                  {ANALYSIS_CARD_COPY.reportCta} <span aria-hidden="true">→</span>
                 </Link>
               </li>
             ))}

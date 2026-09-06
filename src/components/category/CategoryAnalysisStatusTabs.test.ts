@@ -8,6 +8,15 @@ import {
 } from "./CategoryAnalysisStatusTabs";
 
 describe("카테고리 분석 청약 상태 탭", () => {
+  test("현재 상태와 관계없이 검색 범위의 각 상태 개수를 표시한다", () => {
+    const html = renderToStaticMarkup(createElement(CategoryAnalysisStatusTabs, {
+      categoryHref: "/real-estate", selectedPhase: "open",
+      counts: { all: 13, upcoming: 0, open: 2, closed: 11 },
+    }));
+    for (const label of ["전체 (13)", "청약 예정 (0)", "진행 중 (2)", "청약 종료 (11)"]) {
+      expect(html).toContain(`>${label}<`);
+    }
+  });
   test("전체·청약 예정·진행 중·종료를 서버 링크로 렌더한다", () => {
     const html = renderToStaticMarkup(
       createElement(CategoryAnalysisStatusTabs, {

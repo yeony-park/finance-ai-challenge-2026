@@ -25,6 +25,7 @@ type CattleDiseaseEvent = FmdEvent | LsdEvent;
 
 export interface CattleDiseaseContextView {
   readonly provinces: readonly string[];
+  readonly disclosedProvinces: readonly string[];
   readonly submittedOn: string;
   readonly fmdEvents: readonly FmdEvent[];
   readonly lsdEvents: readonly LsdEvent[];
@@ -40,7 +41,19 @@ const isRelevantEvent = (
   provinces: readonly string[],
   submittedOn: string,
 ): boolean =>
-  provinces.includes(event.province) && event.occurredAt <= submittedOn;
+  (provinces.length === 0 || provinces.includes(event.province)) && event.occurredAt <= submittedOn;
+
+export const cattleDiseaseContextForDate = (
+  provinces: readonly string[],
+  submittedOn: string,
+  disclosedProvinces: readonly string[] = provinces,
+): CattleDiseaseContextView => ({
+  provinces,
+  disclosedProvinces,
+  submittedOn,
+  fmdEvents: CATTLE_FMD_EVENTS.filter((event) => isRelevantEvent(event, provinces, submittedOn)),
+  lsdEvents: CATTLE_LSD_EVENTS.filter((event) => isRelevantEvent(event, provinces, submittedOn)),
+});
 
 export const cattleDiseaseContextForReport = (
   report: ReportSnapshot,
@@ -70,16 +83,13 @@ export const cattleDiseaseContextForReport = (
 
   if (provinces.length === 0) return null;
 
-  return {
-    provinces,
-    submittedOn: report.document.submittedOn,
-    fmdEvents: CATTLE_FMD_EVENTS.filter((event) =>
-      isRelevantEvent(event, provinces, report.document.submittedOn),
-    ),
-    lsdEvents: CATTLE_LSD_EVENTS.filter((event) =>
-      isRelevantEvent(event, provinces, report.document.submittedOn),
-    ),
-  };
+  const disclosedProvinces = [...new Set(
+    [...report.judgements, ...report.unjudged]
+      .flatMap(({ claim }) => claim.kind === "custody_location" ? [claim.value] : [])
+      .map(publicProvinceOf)
+      .filter((province): province is string => province !== null),
+  )].sort((left, right) => left.localeCompare(right, "ko-KR"));
+  return cattleDiseaseContextForDate(provinces, report.document.submittedOn, disclosedProvinces);
 };
 
 export function CattleDiseaseContext({
@@ -91,10 +101,12 @@ export function CattleDiseaseContext({
     process.env.KAKAO_JAVASCRIPT_KEY ??
     process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY ??
     "";
-  const provinceLabel = context.provinces.join(" · ");
-  const sectionLead =
-    `공개 보관장소의 도 단위(${provinceLabel})를 함께 기준으로, ` +
-    `신고서 제출일(${context.submittedOn}) 이전의 공식 공개 발생 이력을 봅니다. ` +
+  const hasRegion = context.provinces.length > 0;
+  const provinceLabel = hasRegion ? context.provinces.join(" · ") : "전국";
+  const sectionLead = !hasRegion
+    ? `공시에서 확인된 사육 지역은 아직 연결되지 않았습니다. 공시 기준일(${context.submittedOn}) 이전의 전국 발생 자료를 표시합니다.`
+    : `공개 보관장소의 도 단위(${provinceLabel})를 함께 기준으로, ` +
+    `공시 기준일(${context.submittedOn}) 이전의 공식 공개 발생 이력을 봅니다. ` +
     "공고 개체나 농장과 질병 사건을 연결하지 않습니다.";
 
   return (
@@ -109,8 +121,7 @@ export function CattleDiseaseContext({
             <p>
               가축 질병 발생 API는 구제역 정본 42건 중{" "}
               {FMD_API_COMPARISON.matchedCanonicalCount}건만 날짜·축종·시군구가 맞아
-              지도 원본으로 사용하지 않습니다. 이 화면은 정본 파일에 선택 도와
-              신고서 제출일 조건을 적용했으며, API는 갱신 감지와 교차검증에만 둡니다.
+              지도 원본으로 사용하지 않습니다. API는 갱신 감지와 교차검증에만 둡니다.
             </p>
           </div>
 
@@ -149,13 +160,13 @@ export function CattleDiseaseContext({
       <div className={s.diseaseGrid}>
         <article className={s.diseaseRegion}>
           <span className={s.metaLine}>공개 보관장소 지역 범위</span>
-          <strong className={s.diseaseRegionValue}>{provinceLabel}</strong>
+          <strong className={s.diseaseRegionValue}>{hasRegion ? provinceLabel : "지역 미확인"}</strong>
           <small className={s.metaLine}>도 단위만 사용 · 개체·농장 연결 없음</small>
         </article>
 
         <article className={s.diseaseSnapshot}>
           <div className={s.diseaseSnapshotHead}>
-            <span className={s.metaLine}>제출일 이전 공개 발생</span>
+            <span className={s.metaLine}>기준일 이전 공개 발생</span>
             <strong>
               구제역 {context.fmdEvents.length}건 · 럼피스킨 {context.lsdEvents.length}건
             </strong>
@@ -171,12 +182,13 @@ export function CattleDiseaseContext({
         headingId="cattle-disease-map-heading"
         title={`${provinceLabel} 소 질병 공개 발생`}
         description="구제역은 농식품부 공식 지도 좌표, 럼피스킨은 공식 PDF의 시·군을 행정구역 대표 좌표로 변환했습니다. 두 핀 모두 실제 농장 위치가 아닙니다."
-        meta={`신고서 제출일 ${context.submittedOn} · 구제역 ${FMD_SNAPSHOT_ASOF} · 럼피스킨 ${CATTLE_LSD_SNAPSHOT.asOf}`}
+        meta={`공시 기준일 ${context.submittedOn} · 구제역 ${FMD_SNAPSHOT_ASOF} · 럼피스킨 ${CATTLE_LSD_SNAPSHOT.asOf}`}
         caption="공모 개체와 질병 사건을 자동 연결하지 않으며 농장명·농장주·상세주소를 사용하지 않습니다."
       >
         <LazyLivestockDiseaseMap
           species="cattle"
           focusProvinces={context.provinces}
+          viewportProvinces={context.disclosedProvinces}
           throughDate={context.submittedOn}
           currentYear={context.submittedOn.slice(0, 4)}
           ariaLabel={`${provinceLabel} 소 구제역 및 럼피스킨 발생 분포 지도`}

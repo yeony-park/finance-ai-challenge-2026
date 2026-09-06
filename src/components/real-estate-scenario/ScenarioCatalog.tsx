@@ -11,10 +11,13 @@ import {
   type ScenarioOffer,
 } from "@/lib/knowledge/schema";
 
-import { scenarioSubscriptionPhase } from "./scenario-catalog-status";
+import { scenarioMatchesQuery, scenarioSubscriptionPhase } from "./scenario-catalog-status";
 import cards from "@/components/landing/landing.module.css";
 import base from "@/components/category/category.module.css";
-import s from "./scenario.module.css";
+import type { CategoryPageSearchParams } from "@/lib/content/category-tabs";
+import { CatalogPagination } from "@/components/category/CatalogPagination";
+import { categoryCatalogHref, paginateCatalog } from "@/components/category/catalog-pagination";
+import pagination from "@/components/category/catalog-pagination.module.css";
 
 export const PHASE_LABEL: Readonly<Record<ScenarioOffer["offering"]["phase"], string>> = {
   "subscription-open": CATEGORY_TAB_COPY.open,
@@ -115,32 +118,40 @@ export function ScenarioCatalog({
   offers,
   query = "",
   status = null,
+  catalogSearchParams = {},
 }: {
   readonly offers: readonly ScenarioOffer[];
   readonly query?: string;
   readonly status?: SubscriptionPhase | null;
+  readonly catalogSearchParams?: CategoryPageSearchParams;
 }) {
-  const keyword = query.trim().toLocaleLowerCase("ko-KR");
   const visible = offers.filter((offer) =>
     (status === null || scenarioSubscriptionPhase(offer.offering.phase) === status) &&
-    `${offer.title} ${offer.asset.publicName} ${offer.asset.region}`.toLocaleLowerCase("ko-KR").includes(keyword),
+    scenarioMatchesQuery(offer, query),
   );
+  const result = paginateCatalog(visible, catalogSearchParams.page);
+  const hrefForPage = (page: number) => categoryCatalogHref("/real-estate", catalogSearchParams, page);
   return (
     <section className={`${base.slot} ${base.catalogSlot}`} aria-labelledby="scenario-catalog-title">
       <div className={base.slotGrid}>
-        <div>
+        <div className={pagination.header}>
           <h2 id="scenario-catalog-title" className={cards.categoryOfferSectionTitle}>
-            {ANALYSIS_CARD_COPY.catalogTitle} <span>{visible.length}</span>
+            {ANALYSIS_CARD_COPY.catalogTitle} ({visible.length.toLocaleString("ko-KR")})
           </h2>
-          <p className={s.demoNote}>검토용 시나리오 · 실제 청약·판매 상품이 아닙니다.</p>
+          <CatalogPagination {...result} hrefForPage={hrefForPage} label="부동산 목록 상단 페이지" />
         </div>
         {visible.length > 0 ? (
           <CategoryOfferCardGrid>
-            {visible.map((offer) => <ScenarioCard key={offer.offerId} offer={offer} population={offers} />)}
+            {result.items.map((offer) => <ScenarioCard key={offer.offerId} offer={offer} population={offers} />)}
           </CategoryOfferCardGrid>
         ) : (
           <p className={base.emptyNote}>조건에 맞는 상품이 없습니다. <Link href="/real-estate">검색 조건 초기화</Link></p>
         )}
+        {result.pageCount > 1 ? (
+          <div className={pagination.footer}>
+            <CatalogPagination {...result} hrefForPage={hrefForPage} label="부동산 목록 페이지" />
+          </div>
+        ) : null}
       </div>
     </section>
   );

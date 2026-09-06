@@ -138,7 +138,7 @@ export const formatScheduleDate = (
   return options.withYear ? `${kst.getUTCFullYear()}. ${md}` : md;
 };
 
-const scheduleLabel = (entry: OfferEntry): string => {
+const scheduleLabel = (entry: Pick<OfferEntry, "subscription">): string => {
   const { opensAt, closesAt, precision } = entry.subscription;
   if (precision === "day") {
     return `${formatScheduleDate(opensAt, { withYear: true })} ~ ${formatScheduleDate(closesAt)}`;
@@ -146,7 +146,7 @@ const scheduleLabel = (entry: OfferEntry): string => {
   return `${formatScheduleTime(opensAt)} ~ ${formatScheduleTime(closesAt)}`;
 };
 
-export const buildOfferSchedule = (entry: OfferEntry, now: Date): OfferSchedule => {
+export const buildOfferSchedule = (entry: Pick<OfferEntry, "subscription">, now: Date): OfferSchedule => {
   const { opensAt, closesAt } = entry.subscription;
   const label = scheduleLabel(entry);
   const base = { label, closesAt } as const;

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { CatalogPagination } from "@/components/category/CatalogPagination";
 import Link from "next/link";
 
 import {
@@ -94,105 +95,6 @@ const recordDate = (record: SyntheticTrackRecord): string =>
 const presentationTitle = (title: string): string =>
   title.replace(/\s*·\s*/g, " - ");
 
-type PaginationItem = number | "start-ellipsis" | "end-ellipsis";
-
-const paginationItems = (page: number, pageCount: number): PaginationItem[] => {
-  if (pageCount <= 7) {
-    return Array.from({ length: pageCount }, (_, index) => index + 1);
-  }
-  if (page <= 4) return [1, 2, 3, 4, 5, "end-ellipsis", pageCount];
-  if (page >= pageCount - 3) {
-    return [
-      1,
-      "start-ellipsis",
-      pageCount - 4,
-      pageCount - 3,
-      pageCount - 2,
-      pageCount - 1,
-      pageCount,
-    ];
-  }
-  return [
-    1,
-    "start-ellipsis",
-    page - 1,
-    page,
-    page + 1,
-    "end-ellipsis",
-    pageCount,
-  ];
-};
-
-function CatalogPagination({
-  filters,
-  page,
-  pageCount,
-  label,
-}: {
-  readonly filters: SyntheticCatalogFilters;
-  readonly page: number;
-  readonly pageCount: number;
-  readonly label: string;
-}) {
-  return (
-    <nav className={s.pageNumberNav} aria-label={label}>
-      {page > 1 ? (
-        <Link
-          className={s.pageNumberButton}
-          href={syntheticArtCatalogHref(paramsForFilters(filters, page - 1))}
-          aria-label="이전 페이지"
-        >
-          &lt;
-        </Link>
-      ) : (
-        <span className={s.pageNumberButtonDisabled} aria-hidden="true">
-          &lt;
-        </span>
-      )}
-      {paginationItems(page, pageCount).map((item) =>
-        typeof item === "number" ? (
-          item === page ? (
-            <span
-              className={`${s.pageNumberButton} ${s.pageNumberButtonCurrent}`}
-              aria-current="page"
-              aria-label={`${item}페이지, 현재 페이지`}
-              key={item}
-            >
-              {item}
-            </span>
-          ) : (
-            <Link
-              className={s.pageNumberButton}
-              href={syntheticArtCatalogHref(paramsForFilters(filters, item))}
-              aria-label={`${item}페이지`}
-              key={item}
-            >
-              {item}
-            </Link>
-          )
-        ) : (
-          <span className={s.pageNumberEllipsis} aria-hidden="true" key={item}>
-            …
-          </span>
-        ),
-      )}
-      {page < pageCount ? (
-        <Link
-          className={s.pageNumberButton}
-          href={syntheticArtCatalogHref(paramsForFilters(filters, page + 1))}
-          aria-label="다음 페이지"
-        >
-          &gt;
-        </Link>
-      ) : (
-        <span className={s.pageNumberButtonDisabled} aria-hidden="true">
-          &gt;
-        </span>
-      )}
-    </nav>
-  );
-}
-
 function SyntheticBadge() {
   return (
     <span className={s.syntheticBadge}>
@@ -222,6 +124,9 @@ export function CurrentProductCard({
             sizes="(max-width: 560px) 100vw, (max-width: 1024px) 210px, 280px"
           />
           <SyntheticBadge />
+          <span className={offerStyles.analysisCardMediaAction}>
+            <OfferWatchIconButton offerId={`art-${product.offering.id}`} offerTitle={product.offering.title} />
+          </span>
         </div>
         <div className={s.cardBody}>
           <div className={s.cardStatusRow}>
@@ -415,11 +320,11 @@ export function SyntheticArtCatalog({
               id="synthetic-art-results-title"
             >
               {ANALYSIS_CARD_COPY.catalogTitle}{" "}
-              <span className={s.resultsTitleCount}>({result.total}건)</span>
+              <span className={s.resultsTitleCount}>({result.total.toLocaleString("ko-KR")})</span>
             </h2>
             <div className={s.resultsPaginationSummary}>
               <CatalogPagination
-                filters={filters}
+                hrefForPage={(page) => syntheticArtCatalogHref(paramsForFilters(filters, page))}
                 page={result.page}
                 pageCount={result.pageCount}
                 label="합성 미술품 목록 상단 페이지"
@@ -450,7 +355,7 @@ export function SyntheticArtCatalog({
           {result.pageCount > 1 ? (
             <div className={s.paginationFooter}>
               <CatalogPagination
-                filters={filters}
+                hrefForPage={(page) => syntheticArtCatalogHref(paramsForFilters(filters, page))}
                 page={result.page}
                 pageCount={result.pageCount}
                 label="합성 미술품 목록 페이지"

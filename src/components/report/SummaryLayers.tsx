@@ -62,7 +62,6 @@ export function HistorySection({ view, trackRecord }: HistorySectionProps) {
     <ReportSectionFrame
       headingId={HISTORY_HEADING_ID}
       title="이행 이력"
-      lead="발행사의 트랙레코드를 분석해 문서와 재검증을 수행했습니다."
       compact
       footer={(
         <ReportSectionFooter

@@ -3,7 +3,6 @@ import { describe, expect, test } from "vitest";
 import { filterOutput } from "@/lib/spine/guardrail/output-filter";
 import { CATEGORY_REGISTRY } from "../categories";
 import {
-  CHECKLIST_BRIDGE_NOTE,
   CHECKLIST_NOTICE,
   checklistBridgeLabel,
   TRUST_CHECKLIST,
@@ -107,7 +106,7 @@ const ALL_COPY: readonly string[] = [
     item.engineNote,
     ...item.sources.flatMap((source) => [source.label, source.note ?? ""]),
   ]),
-  CHECKLIST_BRIDGE_NOTE,
+  ...CATEGORY_REGISTRY.map((entry) => `${entry.label} 공모에서 확인하기 →`),
   ...TRUST_CHECKLIST.filter((item) => item.reportChapter !== null).map((item) =>
     checklistBridgeLabel("가축 9호", item.reportChapter?.label ?? ""),
   ),
@@ -197,9 +196,6 @@ describe("확인 질문 → 리포트 챕터 다리", () => {
     expect(label).toContain("실재 확인");
   });
 
-  test("다리 규칙 고지는 기계 선정 규칙을 밝힌다", () => {
-    expect(CHECKLIST_BRIDGE_NOTE).toContain("가장 최근 공시가 접수된 공모");
-  });
 });
 
 describe("판정어 쉬운 병기 캡션", () => {

@@ -98,7 +98,7 @@ describe("카테고리 설명 바로가기", () => {
     expect(html).not.toContain("공시 분석 탭에서는");
   });
 
-  test("한우 소개에 제공된 두 이미지를 원본 경로와 대체 텍스트로 표시한다", () => {
+  test("한우 소개의 대조 자료와 확인 범위를 읽을 수 있는 본문으로 표시한다", () => {
     const html = renderToStaticMarkup(
       createElement(
         "div",
@@ -108,13 +108,14 @@ describe("카테고리 설명 바로가기", () => {
       ),
     );
 
-    expect(html).toContain('src="/cattle-disclosure-cross-check.png"');
-    expect(html).toContain('src="/cattle-analysis-evidence.png"');
-    expect(html).toContain("축산물이력제 원장 대조");
+    expect(html).not.toContain("<img");
+    expect(html.match(/<h3/g)).toHaveLength(2);
+    expect(html.match(/<dd/g)).toHaveLength(6);
+    expect(html).toContain("축산물이력제 원장과 대조");
     expect(html).toContain("현재 확인할 수 없는 범위");
   });
 
-  test("한돈 소개에 제공된 두 이미지를 원본 경로와 대체 텍스트로 표시한다", () => {
+  test("한돈 소개에 원장 대조 한계를 본문으로 표시한다", () => {
     const html = renderToStaticMarkup(
       createElement(
         "div",
@@ -124,13 +125,14 @@ describe("카테고리 설명 바로가기", () => {
       ),
     );
 
-    expect(html).toContain('src="/pig-disclosure-overview.svg"');
-    expect(html).toContain('src="/pig-analysis-scope.svg"');
+    expect(html).not.toContain("<img");
+    expect(html.match(/<h3/g)).toHaveLength(2);
+    expect(html.match(/<dd/g)).toHaveLength(6);
     expect(html).toContain("개체 이력번호가 없어 원장 대조는 불가");
     expect(html).toContain("현재 확인할 수 없는 범위");
   });
 
-  test("미술품 소개에 제공된 두 이미지를 원본 경로와 대체 텍스트로 표시한다", () => {
+  test("미술품 소개에 공시 범위와 독립 원장 한계를 본문으로 표시한다", () => {
     const html = renderToStaticMarkup(
       createElement(
         "div",
@@ -140,13 +142,14 @@ describe("카테고리 설명 바로가기", () => {
       ),
     );
 
-    expect(html).toContain('src="/art-disclosure-overview.svg"');
-    expect(html).toContain('src="/art-analysis-scope.svg"');
+    expect(html).not.toContain("<img");
+    expect(html.match(/<h3/g)).toHaveLength(2);
+    expect(html.match(/<dd/g)).toHaveLength(6);
     expect(html).toContain("미술품 투자계약증권 5건");
     expect(html).toContain("현재 확인할 수 없는 범위");
   });
 
-  test("부동산 소개에 제공된 두 이미지를 원본 경로와 대체 텍스트로 표시한다", () => {
+  test("부동산 소개에 건물 대조 범위와 한계를 본문으로 표시한다", () => {
     const html = renderToStaticMarkup(
       createElement(
         "div",
@@ -156,8 +159,9 @@ describe("카테고리 설명 바로가기", () => {
       ),
     );
 
-    expect(html).toContain('src="/real-estate-verification-overview.svg"');
-    expect(html).toContain('src="/real-estate-analysis-scope.svg"');
+    expect(html).not.toContain("<img");
+    expect(html.match(/<h3/g)).toHaveLength(2);
+    expect(html.match(/<dd/g)).toHaveLength(6);
     expect(html).toContain("건물 단위 실재");
     expect(html).toContain("확인이 제한됨");
   });

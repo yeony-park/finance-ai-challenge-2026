@@ -75,7 +75,7 @@ describe("db:ingest 빌더 — 커밋 참조 파일 → 원장 행 (R-STO-22)", 
     async (_label, prefix, build) => {
       const index = await loadManifestIndex();
       const relPath = [...index.keys()]
-        .filter((key) => key.startsWith(prefix))
+        .filter((key) => key.startsWith(prefix) && !key.slice(prefix.length).includes("/"))
         .sort()[0];
       const entry = index.get(relPath);
       expect(entry).toBeDefined();

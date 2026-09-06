@@ -1,9 +1,10 @@
 "use client";
 
 import Script from "next/script";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import s from "./pig.module.css";
+import pin from "@/components/livestock-disease/disease-pin.module.css";
 
 export type DiseaseCode = "ASF" | "FMD" | "LSD";
 
@@ -25,6 +26,14 @@ type KakaoLatLng = object;
 
 interface KakaoMapInstance {
   relayout(): void;
+  getLevel(): number;
+  setLevel(level: number): void;
+  setCenter(center: KakaoLatLng): void;
+  setBounds(bounds: KakaoLatLngBounds, top?: number, right?: number, bottom?: number, left?: number): void;
+}
+
+interface KakaoLatLngBounds {
+  extend(point: KakaoLatLng): void;
 }
 
 interface KakaoOverlayInstance {
@@ -33,6 +42,7 @@ interface KakaoOverlayInstance {
 
 interface KakaoMapsNamespace {
   load(callback: () => void): void;
+  LatLngBounds: new () => KakaoLatLngBounds;
   LatLng: new (latitude: number, longitude: number) => KakaoLatLng;
   Map: new (
     container: HTMLElement,
@@ -90,6 +100,8 @@ const groupEvents = (events: readonly KakaoDiseaseEvent[]): readonly EventGroup[
   }));
 };
 
+const NATIONAL_VIEW = { latitude: 36.35, longitude: 127.8, level: 13 } as const;
+
 const DISEASE_ORDER: readonly DiseaseCode[] = ["ASF", "FMD", "LSD"];
 
 const formatHeadCount = (event: KakaoDiseaseEvent): string | null => {
@@ -103,23 +115,23 @@ const formatHeadCount = (event: KakaoDiseaseEvent): string | null => {
 export function PigAsfKakaoMap({
   appKey,
   events,
+  focusPoints,
   ariaLabel = "국내 양돈농장 ASF 및 구제역 발생 분포 지도",
 }: {
   readonly appKey: string;
   readonly events: readonly KakaoDiseaseEvent[];
+  readonly focusPoints?: readonly { readonly latitude: number; readonly longitude: number }[];
   readonly ariaLabel?: string;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<KakaoMapInstance | null>(null);
-  const overlaysRef = useRef<
-    readonly { readonly disease: DiseaseCode; readonly overlay: KakaoOverlayInstance }[]
-  >([]);
-  const markerCleanupRef = useRef<readonly (() => void)[]>([]);
-  const mountedRef = useRef(true);
+  const selectionRef = useRef<HTMLElement>(null);
+  const selectedMarkerRef = useRef<HTMLButtonElement | null>(null);
+  const [sdkReady, setSdkReady] = useState(false);
   const [status, setStatus] = useState<"loading" | "ready" | "error">(
     appKey ? "loading" : "error",
   );
-  const [selectedGroup, setSelectedGroup] = useState<EventGroup | null>(null);
+  const [selectedGroupId, setSelectedGroupId] = useState<string | null>(null);
   const [activeDisease, setActiveDisease] = useState<"all" | DiseaseCode>("all");
   const groups = useMemo(() => groupEvents(events), [events]);
   const availableDiseases = useMemo(
@@ -137,66 +149,98 @@ export function PigAsfKakaoMap({
     [events],
   );
 
+  const visibleDisease = activeDisease === "all" || availableDiseases.includes(activeDisease)
+    ? activeDisease : "all";
+  const selectedGroup = groups.find((group) => group.id === selectedGroupId &&
+    (visibleDisease === "all" || group.disease === visibleDisease)) ?? null;
+
   useEffect(() => {
-    mountedRef.current = true;
-    return () => {
-      mountedRef.current = false;
-      for (const cleanup of markerCleanupRef.current) cleanup();
-      for (const { overlay } of overlaysRef.current) overlay.setMap(null);
-      markerCleanupRef.current = [];
-      overlaysRef.current = [];
-      mapRef.current = null;
-    };
-  }, []);
-
-  const initializeMap = useCallback(() => {
-    if (!appKey || !containerRef.current || !window.kakao?.maps) {
-      setStatus("error");
-      return;
-    }
-    if (mapRef.current) {
-      mapRef.current.relayout();
-      return;
-    }
-
+    if (!sdkReady || !appKey || !containerRef.current || !window.kakao?.maps) return;
+    let cancelled = false;
+    let resizeObserver: ResizeObserver | undefined;
+    const container = containerRef.current;
     window.kakao.maps.load(() => {
-      if (!mountedRef.current || !containerRef.current || !window.kakao?.maps) {
-        return;
-      }
-
+      if (cancelled || !window.kakao?.maps) return;
       try {
         const maps = window.kakao.maps;
-        const map = new maps.Map(containerRef.current, {
-          center: new maps.LatLng(36.35, 127.8),
-          level: 13,
+        const map = new maps.Map(container, {
+          center: new maps.LatLng(NATIONAL_VIEW.latitude, NATIONAL_VIEW.longitude),
+          level: NATIONAL_VIEW.level,
         });
-        const overlays: {
-          readonly disease: DiseaseCode;
-          readonly overlay: KakaoOverlayInstance;
-        }[] = [];
-        const markerCleanups: (() => void)[] = [];
+        mapRef.current = map;
+        if (typeof ResizeObserver !== "undefined") {
+          resizeObserver = new ResizeObserver(() => map.relayout());
+          resizeObserver.observe(container);
+        }
+        setStatus("ready");
+      } catch {
+        setStatus("error");
+      }
+    });
+    return () => {
+      cancelled = true;
+      resizeObserver?.disconnect();
+      mapRef.current = null;
+    };
+  }, [appKey, sdkReady]);
 
+  useEffect(() => {
+    const map = mapRef.current;
+    const maps = window.kakao?.maps;
+    if (!map || !maps || status !== "ready") return;
+    if (!focusPoints?.length) {
+      map.setCenter(new maps.LatLng(NATIONAL_VIEW.latitude, NATIONAL_VIEW.longitude));
+      map.setLevel(NATIONAL_VIEW.level);
+      return;
+    }
+    const bounds = new maps.LatLngBounds();
+    for (const point of focusPoints) {
+      bounds.extend(new maps.LatLng(point.latitude, point.longitude));
+    }
+    map.setBounds(bounds, 48, 48, 48, 48);
+    // A lone regional reference point must not look like an exact farm location.
+    if (map.getLevel() < 9) map.setLevel(9);
+  }, [focusPoints, status]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    const maps = window.kakao?.maps;
+    if (!map || !maps || status !== "ready") return;
+    const overlays: { readonly disease: DiseaseCode; readonly overlay: KakaoOverlayInstance }[] = [];
+    const markerCleanups: (() => void)[] = [];
+    let cancelled = false;
+    const cleanup = () => {
+      cancelled = true;
+      for (const removeListener of markerCleanups) removeListener();
+      for (const { overlay } of overlays) overlay.setMap(null);
+    };
+    maps.load(() => {
+      if (cancelled) return;
+      try {
         for (const group of groups) {
+          if (visibleDisease !== "all" && group.disease !== visibleDisease) continue;
           const marker = document.createElement("button");
-          const className = group.disease === "FMD"
-            ? s.fmdKakaoMarker
-            : group.disease === "LSD"
-              ? s.lsdKakaoMarker
-              : group.tone === "focus"
-                ? s.asfKakaoMarkerFocus
-                : group.tone === "current"
-                  ? s.asfKakaoMarkerCurrent
-                      : s.asfKakaoMarkerPast;
-          const focusClassName =
-            group.disease !== "ASF" && group.tone === "focus"
-              ? s.diseaseKakaoMarkerFocus
-              : "";
           const regions = [...new Set(group.events.map((event) => event.region))].join(", ");
-          const clickHandler = () => setSelectedGroup(group);
+          const clickHandler = () => {
+            selectedMarkerRef.current = marker;
+            setSelectedGroupId(group.id);
+          };
 
           marker.type = "button";
-          marker.className = `${s.asfKakaoMarker} ${className} ${focusClassName}`;
-          marker.textContent = group.events.length > 1 ? String(group.events.length) : "";
+          marker.className = s.asfKakaoMarker;
+          marker.dataset.disease = group.disease;
+          const icon = document.createElement("span");
+          icon.className = pin.pin;
+          icon.dataset.disease = group.disease;
+          icon.setAttribute("aria-hidden", "true");
+          marker.append(icon);
+          if (group.events.length > 1) {
+            const count = document.createElement("span");
+            count.className = s.diseasePinCount;
+            count.textContent = String(group.events.length);
+            count.setAttribute("aria-hidden", "true");
+            marker.append(count);
+          }
           marker.title = `${regions} · ${group.diseaseLabel} ${group.events.length}건`;
           marker.setAttribute("aria-label", marker.title);
           marker.addEventListener("click", clickHandler);
@@ -209,7 +253,7 @@ export function PigAsfKakaoMap({
               position: new maps.LatLng(group.latitude, group.longitude),
               content: marker,
               xAnchor: 0.5,
-              yAnchor: 0.5,
+              yAnchor: 1,
               zIndex:
                 group.disease === "FMD"
                   ? 5
@@ -223,24 +267,22 @@ export function PigAsfKakaoMap({
             }),
           });
         }
-
-        mapRef.current = map;
-        overlaysRef.current = overlays;
-        markerCleanupRef.current = markerCleanups;
-        setStatus("ready");
       } catch {
+        cleanup();
         setStatus("error");
       }
     });
-  }, [appKey, groups]);
+    return cleanup;
+  }, [groups, status, visibleDisease]);
 
   useEffect(() => {
-    const map = mapRef.current;
-    if (!map || status !== "ready") return;
-    for (const item of overlaysRef.current) {
-      item.overlay.setMap(activeDisease === "all" || item.disease === activeDisease ? map : null);
-    }
-  }, [activeDisease, status]);
+    if (selectedGroupId) selectionRef.current?.focus({ preventScroll: true });
+  }, [selectedGroupId]);
+
+  const closeSelection = () => {
+    setSelectedGroupId(null);
+    if (selectedMarkerRef.current?.isConnected) selectedMarkerRef.current.focus({ preventScroll: true });
+  };
 
   return (
     <div className={s.asfKakaoStage} data-map-provider="kakao">
@@ -263,7 +305,7 @@ export function PigAsfKakaoMap({
             <button
               key={value}
               type="button"
-              aria-pressed={activeDisease === value}
+              aria-pressed={visibleDisease === value}
               onClick={() => {
                 setActiveDisease(value);
                 if (
@@ -271,7 +313,7 @@ export function PigAsfKakaoMap({
                   value !== "all" &&
                   selectedGroup.disease !== value
                 ) {
-                  setSelectedGroup(null);
+                  setSelectedGroupId(null);
                 }
               }}
             >
@@ -292,13 +334,18 @@ export function PigAsfKakaoMap({
       ) : null}
 
       {selectedGroup && status === "ready" ? (
-        <section className={s.asfKakaoSelection} aria-label="선택 지점 가축 질병 발생 내역">
+        <section ref={selectionRef} tabIndex={-1} className={s.asfKakaoSelection} aria-label="선택 지점 가축 질병 발생 내역" onKeyDown={(event) => {
+          if (event.key === "Escape") {
+            event.stopPropagation();
+            closeSelection();
+          }
+        }}>
           <div className={s.asfKakaoSelectionHead}>
             <div>
               <span>{selectedGroup.diseaseLabel} · 비식별 대표 좌표</span>
               <strong>{selectedGroup.events[0].region}</strong>
             </div>
-            <button type="button" onClick={() => setSelectedGroup(null)} aria-label="발생 내역 닫기">
+            <button type="button" onClick={closeSelection} aria-label="발생 내역 닫기">
               ×
             </button>
           </div>
@@ -319,7 +366,10 @@ export function PigAsfKakaoMap({
           id="kakao-map-sdk"
           src={`https://dapi.kakao.com/v2/maps/sdk.js?appkey=${encodeURIComponent(appKey)}&autoload=false`}
           strategy="afterInteractive"
-          onReady={initializeMap}
+          onReady={() => {
+            if (window.kakao?.maps) setSdkReady(true);
+            else setStatus("error");
+          }}
           onError={() => setStatus("error")}
         />
       ) : null}

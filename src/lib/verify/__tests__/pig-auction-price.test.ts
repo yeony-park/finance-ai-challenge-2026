@@ -1,6 +1,14 @@
+import { readFile, readdir } from "node:fs/promises";
+import path from "node:path";
+
 import { describe, expect, test } from "vitest";
 
 import { PIG_GRADE_BAND, PIG_MARKET } from "@/lib/content/pig";
+import { buildPigAuctionRows } from "@/lib/db/ingest/build";
+import {
+  loadManifestIndex,
+  readVerifiedManifestFile,
+} from "@/lib/db/ingest/manifest";
 
 import {
   DEFAULT_PIG_AUCTION_FILTERS,
@@ -15,6 +23,35 @@ import {
 } from "../adapters/pig-auction-price-fake";
 
 describe("parsePigAuctionCsv — 커밋 CSV에서 월 집계 추출 (Green 원천)", () => {
+  test("월별 정규화 JSON이 원본 CSV의 DB 적재 행과 출처를 보존한다", async () => {
+    const index = await loadManifestIndex();
+    const expected = await buildPigAuctionRows("data", index);
+    const dir = "data/reference/pig-auction-price/normalized";
+    const files = (await readdir(dir)).filter((file) => file.endsWith(".json")).sort();
+    expect(files).toEqual(["2026-05.json", "2026-06.json", "2026-07.json"]);
+    const entries = [];
+    for (const file of files) {
+      const filePath = path.join(dir, file);
+      await readVerifiedManifestFile(index, filePath, filePath);
+      const snapshot = JSON.parse(await readFile(filePath, "utf8"));
+      expect(snapshot).toMatchObject({
+        schemaVersion: 1,
+        sourceId: PIG_AUCTION_SOURCE_ID,
+        month: file.slice(0, 7),
+        dataNature: "observed",
+        validationStatus: "source_hash_and_schema_checked",
+      });
+      expect(snapshot.entries).toEqual(
+        expected.filter((row) => row.month === snapshot.month),
+      );
+      entries.push(...snapshot.entries);
+    }
+    expect(entries).toHaveLength(176);
+    expect(new Set(entries.map((row) =>
+      JSON.stringify([row.month, row.skinType, row.sex, row.grade, row.region]),
+    )).size).toBe(entries.length);
+  });
+
   test("추출 결과가 content/pig.ts PIG_MARKET 스냅샷과 일치한다", async () => {
     const adapter = await resolvePigAuctionPriceAdapter();
     expect(adapter.sourceId).toBe(PIG_AUCTION_SOURCE_ID);

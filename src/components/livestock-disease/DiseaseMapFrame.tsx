@@ -5,7 +5,7 @@ import s from "./livestock-disease.module.css";
 interface DiseaseMapFrameProps {
   readonly headingId: string;
   readonly title: string;
-  readonly description: string;
+  readonly description?: string;
   readonly meta: string;
   readonly children: ReactNode;
   readonly caption: ReactNode;
@@ -23,7 +23,7 @@ export function DiseaseMapFrame({
     <figure className={s.mapFrame} aria-labelledby={headingId}>
       <div className={s.mapHead}>
         <h3 id={headingId}>{title}</h3>
-        <p>{description}</p>
+        {description ? <p>{description}</p> : null}
         <small className={s.mapMeta}>{meta}</small>
       </div>
       {children}

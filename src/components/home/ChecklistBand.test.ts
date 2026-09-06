@@ -1,64 +1,62 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { describe, expect, test } from "vitest";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 
-import { reportSectionsFor } from "@/components/report/report-sections";
+import { EMPTY_PROFILE, useProfile } from "@/components/site/profile";
+import { CATEGORY_IDS, categoryById } from "@/lib/content/categories";
 import { TRUST_CHECKLIST } from "@/lib/content/checklist";
-import type { ChecklistBridgeOffer } from "@/lib/content/checklist-links";
 
 import { ChecklistBand } from "./ChecklistBand";
 
-const CATTLE_BRIDGE: ChecklistBridgeOffer = {
-  id: "livestock-9",
-  title: "한우 9호",
-  assetKind: "livestock",
-  hasFilingFacts: true,
-  hasTrackRecord: true,
-};
+vi.mock("@/components/site/profile", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/components/site/profile")>();
+  return { ...actual, useProfile: vi.fn(() => actual.EMPTY_PROFILE) };
+});
 
-describe("신뢰 체크리스트 펼침 구조", () => {
-  test("질문 제목을 summary 안에 유지하고 별도 강조 요소로 감싼다", () => {
-    const html = renderToStaticMarkup(createElement(ChecklistBand));
+const renderChecklist = () => renderToStaticMarkup(createElement(ChecklistBand));
 
+const categoryHrefs = (html: string) =>
+  [...html.matchAll(/href="(\/art|\/pig|\/cattle|\/real-estate)"/g)].map((match) => match[1]);
+
+describe("관심 카테고리별 확인목록", () => {
+  beforeEach(() => {
+    vi.mocked(useProfile).mockReturnValue(EMPTY_PROFILE);
+  });
+
+  test("질문 제목과 공적 확인 경로를 유지한다", () => {
+    const html = renderChecklist();
     expect(html.match(/<details/g)).toHaveLength(TRUST_CHECKLIST.length);
-    expect(html).toMatch(
-      /<summary><span[^>]*>증권신고서가 있는가<\/span>/,
-    );
+    expect(html).toContain("증권신고서가 있는가");
     expect(html).toContain("이 상품의 증권신고서가 전자공시(DART)에 제출돼 있나요?");
+    expect(html).toContain('href="https://dart.fss.or.kr"');
   });
 
-  test("실측 링크는 카테고리 상품 경로와 실제 리포트 탭만 가리킨다", () => {
-    const html = renderToStaticMarkup(
-      createElement(ChecklistBand, { bridgeOffer: CATTLE_BRIDGE }),
-    );
-    const hrefs = [...html.matchAll(/href="([^"]*\/products\/[^"]+#([^"]+))"/g)];
-    const sectionIds = new Set(
-      reportSectionsFor({ hasFilingFacts: true, hasDiseaseContext: true }).map(
-        (section) => section.id,
-      ),
-    );
-
-    expect(hrefs).toHaveLength(TRUST_CHECKLIST.length);
-    expect(hrefs.every(([, href]) => href.startsWith("/cattle/products/livestock-9#"))).toBe(true);
-    expect(hrefs.every(([, , headingId]) => sectionIds.has(headingId))).toBe(true);
-    expect(html).not.toContain("/offers/");
+  test.each(CATEGORY_IDS)("%s만 선택하면 모든 질문에서 해당 카테고리만 연결한다", (id) => {
+    vi.mocked(useProfile).mockReturnValue({ ...EMPTY_PROFILE, interests: [id] });
+    const html = renderChecklist();
+    const category = categoryById(id);
+    expect(categoryHrefs(html)).toEqual(TRUST_CHECKLIST.map(() => category.href));
+    expect(html).toContain(`${category.label} 공모에서 확인하기`);
+    expect(html).not.toContain("한우 9호");
+    expect(html).not.toContain("/products/");
+    expect(html).not.toContain("가장 최근 공시");
   });
 
-  test("리포트에 없는 신고서·발행사 기록 앵커는 링크로 노출하지 않는다", () => {
-    const html = renderToStaticMarkup(
-      createElement(ChecklistBand, {
-        bridgeOffer: {
-          id: "real-estate-a",
-          title: "부동산 A",
-          assetKind: "real-estate",
-          hasFilingFacts: false,
-          hasTrackRecord: false,
-        },
-      }),
-    );
+  test("여러 관심 카테고리를 선택하면 선택 순서대로 링크를 제공한다", () => {
+    vi.mocked(useProfile).mockReturnValue({ ...EMPTY_PROFILE, interests: ["art", "pig"] });
+    expect(categoryHrefs(renderChecklist())).toEqual(TRUST_CHECKLIST.flatMap(() => ["/art", "/pig"]));
+  });
 
-    expect(html).not.toContain("#report-filing-heading");
-    expect(html).not.toContain("리포트 &#x27;발행사 기록&#x27;에서 실측 보기");
-    expect(html).toContain("/real-estate/products/real-estate-a#");
+  test("관심 카테고리가 없으면 네 카테고리 선택 경로를 제공한다", () => {
+    expect(categoryHrefs(renderChecklist())).toEqual(
+      TRUST_CHECKLIST.flatMap(() => CATEGORY_IDS.map((id) => categoryById(id).href)),
+    );
+  });
+
+  test("관심 질문 우선 표시와 카테고리 선택은 함께 적용된다", () => {
+    vi.mocked(useProfile).mockReturnValue({ ...EMPTY_PROFILE, concern: "exit-structure", interests: ["art"] });
+    const html = renderChecklist();
+    expect(html.indexOf("언제 팔 수 있는지 아는가")).toBeLessThan(html.indexOf("증권신고서가 있는가"));
+    expect(categoryHrefs(html)).toEqual(TRUST_CHECKLIST.map(() => "/art"));
   });
 });

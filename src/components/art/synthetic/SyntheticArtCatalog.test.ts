@@ -77,7 +77,7 @@ describe("합성 미술품 목록 카드", () => {
     );
 
     expect(html).toContain("공모 상품");
-    expect(html).toContain("(327건)");
+    expect(html).toContain("(327)");
     expect(html).toContain("data-category-analysis-card");
     expect(html).not.toContain("합성 데이터 · 대조 불가");
     expect(html).not.toContain("페이지 1 / 37");
@@ -114,15 +114,15 @@ describe("합성 미술품 목록 카드", () => {
       }),
     );
 
-    expect(html).toContain(">전체<");
-    expect(html).toContain(">청약 예정<");
+    expect(html).toContain(">전체 (327)<");
+    expect(html).toMatch(/>청약 예정 \(\d+\)</);
     expect(html).toContain('role="search"');
     expect(html).toContain('placeholder="궁금한 것을 질문하세요"');
     expect(html).toContain('aria-label="검색"');
     expect(html).toContain('name="currentStatus" value="upcoming"');
   });
 
-  test("상세 엔티티용 현재 상품 카드는 기존 가로형 구조를 유지한다", () => {
+  test("작가·플랫폼의 상품 카드도 관심 등록 버튼을 제공한다", () => {
     const product = getSyntheticArtProductById("synthetic-offering-01");
     if (!product || product.kind !== "current") throw new Error("fixture missing");
 
@@ -136,5 +136,7 @@ describe("합성 미술품 목록 카드", () => {
     expect(html).not.toContain(product.analysis.keyReasons[0].finding);
     expect(html).not.toContain("공모가 차이율");
     expect(html).toContain("검증 리포트 보기");
+    expect(html).toContain(`${product.offering.title} 관심 등록`);
+    expect(html).toContain('aria-pressed="false"');
   });
 });

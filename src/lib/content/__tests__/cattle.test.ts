@@ -26,7 +26,7 @@ const ALL_COPY: readonly string[] = [
   ISSUER_SLOT_TITLE,
   REPORT_OPEN_LABEL,
   ...CATTLE_FLOW_STEPS.flatMap((step) => [step.name, step.check, step.layer]),
-  ...CATTLE_TERMS.flatMap((item) => [item.term, item.easy, item.why, item.source.label]),
+  ...CATTLE_TERMS.flatMap((item) => [item.text, item.source.label]),
 ];
 
 describe("한우 특화 카피 — 출력 필터 전건 통과", () => {

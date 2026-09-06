@@ -383,24 +383,3 @@ export function LimitsSection() {
     </section>
   );
 }
-
-export function NoticeSection() {
-  return (
-    <section className={s.section} aria-labelledby={METHODOLOGY_ANCHOR.notice}>
-      <h2 id={METHODOLOGY_ANCHOR.notice} className={s.sectionTitle}>
-        유의사항
-      </h2>
-      <div className={s.methodologyCopyStack}>
-        <p>
-          JeomJeom의 검증 결과는 공시 내용과 공개 데이터를 바탕으로 제공하는 참고
-          정보입니다. 특정 상품의 청약이나 투자를 권유하거나, 만류하지 않으며,
-          수익을 보장하지 않습니다.
-        </p>
-        <p>
-          투자 판단과 그에 따른 결과는 이용자에게 있고, 본 서비스는 어떤 법적
-          근거로도 사용될 수 없습니다.
-        </p>
-      </div>
-    </section>
-  );
-}

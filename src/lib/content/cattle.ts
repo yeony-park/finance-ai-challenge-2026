@@ -44,9 +44,7 @@ export const CATTLE_FLOW_STEPS: readonly CattleFlowStep[] = [
 ];
 
 export interface CattleTerm {
-  readonly term: string;
-  readonly easy: string;
-  readonly why: string;
+  readonly text: string;
   readonly source: PublicSourceRef;
 }
 
@@ -54,38 +52,16 @@ export const CATTLE_TERMS_TITLE = "확인에 쓰이는 말들";
 
 export const CATTLE_TERMS: readonly CattleTerm[] = [
   {
-    term: "이력번호",
-    easy: "소 한 마리마다 붙는 12자리 국가 등록 번호입니다 — 이 번호로 누구나 원장을 조회할 수 있습니다.",
-    why: "실재 여부를 확인하는 첫 기준입니다.",
+    text: "이력번호는 소 한 마리마다 부여되는 12자리 등록번호입니다. 공시에 적힌 소가 실제로 등록되어 있는지 이 번호로 축산물이력제에서 조회합니다. 사육 중 거세가 이루어지면 원장의 성별도 ‘수’에서 ‘거세’로 바뀌므로, 공시된 상태와 기록을 함께 확인합니다.",
     source: {
-      label: "축산물이력제 (축산물품질평가원)",
+      label: "축산물이력제",
       url: "https://www.mtrace.go.kr",
     },
   },
   {
-    term: "거세",
-    easy: "수소를 거세해 사육하는 일반적인 방식입니다 — 원장에는 성별 '수'에서 '거세'로의 전이로 기록됩니다.",
-    why: "예상된 상태 변화인지 판단하는 기준입니다.",
+    text: "경락가는 도매시장 경매에서 실제로 낙찰된 가격입니다. 도축 후 판정되는 육질 등급에 따라 가격 통계도 나뉩니다. 공모가를 시장 가격과 비교할 때는 전국 경락가 통계에서 1++ 등 같은 육질 등급의 가격을 찾아 비교합니다.",
     source: {
-      label: "축산물이력제 개체 정보 항목",
-      url: "https://www.mtrace.go.kr",
-    },
-  },
-  {
-    term: "경락가",
-    easy: "도매시장 경매에서 실제로 낙찰된 가격입니다 — 전국 도축장 단위로 집계되는 공적 시장 통계입니다.",
-    why: "공모가의 시장 위치를 비교하는 기준입니다.",
-    source: {
-      label: "축산물 등급판정·경락 정보 (축산물품질평가원)",
-      url: "https://www.ekape.or.kr",
-    },
-  },
-  {
-    term: "육질 등급(1++ 등)",
-    easy: "도축 후 국가가 매기는 고기 품질 판정입니다 — 경락가 통계도 등급별로 나뉘어 집계됩니다.",
-    why: "같은 조건의 경락가 통계를 고르는 기준입니다.",
-    source: {
-      label: "축산물 등급판정 기준 (축산물품질평가원)",
+      label: "축산물품질평가원 등급판정·경락 정보",
       url: "https://www.ekape.or.kr",
     },
   },
