@@ -119,4 +119,63 @@ describe("POST /api/ai/ask-product", () => {
       error: "rate_limited",
     });
   });
+
+  test("live 모드에서 전역 AI 예산이 소진되면 demo 답변으로 강등하고 사유를 표시한다", async () => {
+    let gateCalls = 0;
+    const handler = createAskProductHandler({
+      rateLimiter: createMemoryRateLimiter(),
+      getProduct: async () => PRODUCT,
+      mode: "live",
+      budgetGate: {
+        check: async () => {
+          gateCalls += 1;
+          return { allowed: false, reason: "budget-exhausted", retryAfterMs: 1_000 };
+        },
+      },
+      answerQuestion: async (product, _question, options) => ({
+        answer: {
+          productId: product.id,
+          productVersion: "v1",
+          decisionStatus: "not_assessed",
+          answerBlocks: [],
+        },
+        mode: options?.mode ?? "live",
+        fallback: options?.mode === "demo",
+        fallbackReason: options?.mode === "demo" ? "demo_mode" : null,
+        limitation: "",
+      }),
+    });
+    const response = await handler(
+      request({ productId: "art-1", question: "공모금액은 얼마야?" }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(gateCalls).toBe(1);
+    await expect(response.json()).resolves.toMatchObject({
+      mode: "demo",
+      fallback: true,
+      fallbackReason: "budget_exhausted",
+    });
+  });
+
+  test("demo 모드에서는 전역 AI 예산을 소비하지 않는다", async () => {
+    let gateCalls = 0;
+    const handler = createAskProductHandler({
+      rateLimiter: createMemoryRateLimiter(),
+      getProduct: async () => PRODUCT,
+      mode: "demo",
+      budgetGate: {
+        check: async () => {
+          gateCalls += 1;
+          return { allowed: true, remaining: 1 };
+        },
+      },
+    });
+    const response = await handler(
+      request({ productId: "art-1", question: "공모금액은 얼마야?" }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(gateCalls).toBe(0);
+  });
 });

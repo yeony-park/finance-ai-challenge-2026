@@ -303,7 +303,7 @@ export const POST = async (request: Request): Promise<Response> => {
   if (!query) return invalidRequest();
 
   try {
-    const access = authorizeKnowledgeAiHttpRequest(request);
+    const access = await authorizeKnowledgeAiHttpRequest(request);
     if ("productId" in query) {
       const population = query.categoryId === "real-estate" ? await loadApprovedScenarios() : [];
       const scenario = query.dataNature === "scenario" && query.scenarioId

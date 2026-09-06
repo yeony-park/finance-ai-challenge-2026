@@ -1,6 +1,7 @@
 import { artProductIdSchema, type ArtProduct } from "@/lib/art/product-model";
 import { getArtProductById } from "@/lib/art/product-repository";
 import { screenInput } from "@/lib/spine/guardrail/input-screen";
+import type { AiBudgetGate } from "@/lib/spine/ops/ai-budget";
 import type { RateLimiter } from "@/lib/spine/ops/rate-limit";
 
 import {
@@ -12,6 +13,7 @@ import {
 } from "./request-guard";
 import {
   answerProductQuestion,
+  resolveCopilotMode,
   type AskProductResponse,
   type CopilotServiceOptions,
 } from "./service";
@@ -24,6 +26,7 @@ const NO_STORE_HEADERS = {
 
 interface AskProductHandlerDeps {
   readonly rateLimiter: RateLimiter;
+  readonly budgetGate?: AiBudgetGate;
   readonly getProduct?: (id: string) => Promise<ArtProduct | null>;
   readonly answerQuestion?: (
     product: ArtProduct,
@@ -48,6 +51,12 @@ const errorJson = (
   message: string,
   init: { readonly status: number; readonly headers?: HeadersInit },
 ): Response => json({ error: code, message }, init);
+
+const BUDGET_FALLBACK_REASON = {
+  "budget-exhausted": "budget_exhausted",
+  "kill-switch": "kill_switch",
+  "store-unavailable": "budget_store_unavailable",
+} as const;
 
 const clientKey = (request: Request): string =>
   (
@@ -117,11 +126,20 @@ export const createAskProductHandler =
         return errorJson("not_found", "상품이 없습니다.", { status: 404 });
       }
 
-      const response = await (deps.answerQuestion ?? answerProductQuestion)(
-        product,
-        question,
-        deps.mode ? { mode: deps.mode } : undefined,
-      );
+      const mode = deps.mode ?? resolveCopilotMode();
+      const budget =
+        mode === "live" && deps.budgetGate
+          ? await deps.budgetGate.check()
+          : null;
+      const answer = deps.answerQuestion ?? answerProductQuestion;
+      if (budget && !budget.allowed) {
+        const response = await answer(product, question, { mode: "demo" });
+        return json(
+          { ...response, fallbackReason: BUDGET_FALLBACK_REASON[budget.reason] },
+          { status: 200 },
+        );
+      }
+      const response = await answer(product, question, { mode });
       return json(response, { status: 200 });
     } catch (error) {
       if (error instanceof RequestOriginError) {
