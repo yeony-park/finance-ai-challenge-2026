@@ -1,13 +1,14 @@
 # JeomJeom 데이터베이스 명세
 
-기준일: 2026-09-06
+기준일: 2026-09-07
 정본: `src/lib/db/schema.ts`, `db/migrations/*.sql`
 
 ## 현재 적용 상태
 
-- AWS RDS PostgreSQL 18에 `0007_rag_product_canonical_ids_required.sql`까지 적용돼 있다.
-- 상품 원장 26건, 일반지식 문서 11건, 상품 RAG 문서 95건·청크 13,219건을 적재했다.
-- RAG 전체 13,240청크 중 canonical corpus 대상 13,219청크에 `text-embedding-3-small` 벡터가 저장돼 있다.
+- AWS RDS PostgreSQL 18에 `0009_grant_livestock_read_access.sql`까지 적용돼 있다.
+- 상품 원장 26건, 일반지식 문서 11건·청크 21건, 활성 상품 RAG 문서 185건·청크 13,309건을 적재했다.
+- 기존 canonical corpus의 `text-embedding-3-small` 벡터 13,219개는 보존돼 있다. 신규 질병 청크 93개는 외부 전송 승인과 임베딩 실행 전 상태다.
+- 구조화 축산 데이터는 한우 가격 458행, 한돈 가격 176행, 질병 발생 253행(ASF 79·FMD 42·LSD 132)이 적재돼 있다.
 - 로컬 SQLite 임베딩을 해시 검증 후 RDS로 이전하는 `db:embedding:sync`와 DB 모드 pgvector 검색 경로가 실제 E2E를 통과했다.
 - 제한 런타임 역할을 상속한 임시 `jj` 계정으로 공개 상품 뷰·RAG 조회, Home 검색, 상품 Copilot을 확인했다. `jj`는 원본 `offerings` 조회와 schema 객체 생성을 할 수 없다.
 - `DATABASE_URL`이 없으면 애플리케이션은 파일 및 로컬 SQLite 벡터 색인을 사용한다.
@@ -37,6 +38,7 @@ offerings (상품 1건당 1행)
 | `real_estate_trades` | 부동산 실거래 관측값 저장 |
 | `cattle_auction_prices` | 한우 월별 경매가격·등급·표본 저장 |
 | `pig_auction_prices` | 돼지 월별 경매가격·등급·지역 저장 |
+| `livestock_disease_events` | ASF·FMD·LSD 공개 발생일·시군·축종·공개 두수 저장 |
 | `offering_filing_facts` | DART 공시에서 추출한 구조화 사실 저장 |
 | `verification_runs` | 상품 검증 실행 상태와 산출물 해시 기록 |
 | `monitor_runs` | 정정공시 감시 실행 단위 기록 |
@@ -93,6 +95,7 @@ offerings (상품 1건당 1행)
 - `rag_chunks_embedding_hnsw`: 코사인 유사도 기반 pgvector 검색
 - `rag_chunks_tsv_gin`: PostgreSQL 키워드 검색
 - 상품 범위 인덱스: `category_id + product_id + data_nature + scenario_id`
+- 질병 조회 인덱스: `species + occurred_on`, `disease + province + occurred_on`
 - RLS: 공개 승인, PII 검토 통과, 준비 상태인 문서·청크만 런타임 조회 허용
 - `DATABASE_URL`: 제한된 런타임 역할
 - `DATABASE_URL_DIRECT`: migration·seed·ingest 전용 관리자 역할
@@ -101,7 +104,7 @@ offerings (상품 1건당 1행)
 
 1. `DATABASE_URL_DIRECT`로 `npm run db:migrate`를 실행해 구조를 만든다.
 2. `db/roles.sql`로 제한 런타임 역할을 만든다.
-3. 상품·외부 관측 데이터를 seed/ingest한다.
+3. 상품·가격·질병 등 외부 관측 데이터를 seed/ingest한다.
 4. 문서와 청크를 `rag_documents`, `rag_chunks`에 적재한다.
 5. `npm run db:embedding:sync -- --check`로 로컬 임베딩과 canonical corpus가 일치하는지 검사한다.
 6. `npm run db:embedding:sync`로 청크 임베딩을 `rag_chunks.embedding`에 저장한다.

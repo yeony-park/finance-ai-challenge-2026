@@ -347,9 +347,12 @@ RAG 담당자의 어댑터 연결, 로딩·오류·빈 상태는 [AI UI 연결 �
 - `namespace`: `common|legacy-scenario|published-offer`. 같은 ID가 여러 범위에 있으면 생략하지 않는다.
 - 합성 미술품: `categoryId=art`, `dataNature=scenario`, `namespace=common`, `scenarioId=synthetic-art-catalog`.
 - 질의 범위: 일반 개념·제도는 generic corpus, 현재 상품·발행사·운영사는 exact product corpus, 일반 기준을 현재 상품과 비교·적용하는 질문은 두 범위를 함께 검색한다.
+- 한우·한돈의 경락가격·가격 추세 질문은 구조화 가격 테이블을 조건 조회하고, 질병 발생 현황·건수·이력 질문은 구조화 질병 테이블을 조회한다. 조회 결과는 기존 상품 RAG 근거와 함께 답변 모델에 전달하지만, 생성 답변은 구조화 공개데이터를 한 건 이상 인용해야 한다.
+- 가격은 공개 경락 집계로서 해당 상품의 정산가격·수익을 뜻하지 않는다. 질병은 공개 시도·시군구 발생 이력이며 해당 상품 개별 가축의 감염·손실을 뜻하지 않는다. 농장명·농장주·상세주소는 질병 corpus와 응답에 포함하지 않는다.
 - 응답: `outcome`(`answer|evidence_only|abstain`), `answer`, `evidence`, `limitations`, `cached`,
-  `answerSource`(`structured|approved_cache|live_llm|general_llm|mixed_llm|none`),
+  `answerSource`(`structured|approved_cache|live_llm|general_llm|mixed_llm|hybrid_llm|none`),
   `knowledgeScope`(`product|general|mixed`). 출처·인용·확인 항목·충돌 정보는 해당할 때 추가한다.
+- 가격·질병 조회 시 `retrieval.structured`에 `kind`(`price|disease`), 저장소(`db|file`), 조회 행 수를 표시한다. 조건과 일치하는 행이 없으면 관련 없는 상품 문단으로 답하지 않고 `abstain`한다.
 - `mixed`는 범위별 최소 1건의 근거를 보존하므로 `limit=1`에서도 최대 2건의 근거를 반환할 수 있다.
 - 원문 승인·개인정보 검토·실행 게이트가 충족되지 않으면 외부 AI 생성을 하지 않는다.
   근거만 반환하거나 답변을 보류하는 동작을 유지한다.
