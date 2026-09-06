@@ -351,6 +351,10 @@ function normalizedItemText(item: SyntheticArtCatalogItem): string {
   ].filter((value) => value != null).join(" ")).toLowerCase();
 }
 
+const catalogSearchText = new Map(
+  [...currentProducts, ...historyProducts].map((item) => [item, normalizedItemText(item)]),
+);
+
 function filterCatalog(
   items: SyntheticArtCatalogItem[],
   filters: SyntheticCatalogFilters,
@@ -365,6 +369,7 @@ function filterCatalog(
       ? history.identityStatus
       : current?.offering.identityStatus ?? "unverified";
     const date = itemDate(item);
+    const searchText = catalogSearchText.get(item) ?? "";
 
     return (filters.scope === "all" || filters.scope === item.kind)
       && (!filters.currentStatus.length || Boolean(current && filters.currentStatus.includes(current.offering.status)))
@@ -376,7 +381,7 @@ function filterCatalog(
       && (!filters.dateTo || Boolean(date && date <= filters.dateTo))
       && (filters.returnMin == null || Boolean(history && returnValue != null && returnValue >= filters.returnMin))
       && (filters.returnMax == null || Boolean(history && returnValue != null && returnValue <= filters.returnMax))
-      && words.every((word) => normalizedItemText(item).includes(word));
+      && words.every((word) => searchText.includes(word));
   });
 }
 
@@ -508,6 +513,15 @@ export function querySyntheticArtCatalog(
     },
     historicalAggregate: historicalAggregate(aggregateItems),
   };
+}
+
+export function countSyntheticArtCatalog(
+  searchParams: SyntheticCatalogSearchParams = {},
+): number {
+  return filterCatalog(
+    getSyntheticCatalogItems(),
+    parseSyntheticCatalogSearchParams(searchParams),
+  ).length;
 }
 
 export function getSyntheticEvidenceByIds(ids: string[]) {

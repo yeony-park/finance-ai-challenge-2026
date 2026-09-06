@@ -328,11 +328,8 @@ export async function OfferReportPage({
     }
   }
 
-  const aiSummary = await loadAiSummary(
-    assetKind === "livestock" ? "cattle" : "real-estate",
-    id,
-  );
-  const [view, loaded] = await Promise.all([
+  const [aiSummary, view, loaded] = await Promise.all([
+    loadAiSummary(assetKind === "livestock" ? "cattle" : "real-estate", id),
     loadOfferView(id),
     loadPublishedReport(id),
   ]);
