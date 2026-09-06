@@ -4,11 +4,11 @@ import Link from "next/link";
 
 import { useWatchedIds } from "@/components/landing/watchlist";
 import { WATCH_HEADING_ID } from "@/components/report/ids";
+import { ANALYSIS_CARD_COPY } from "@/lib/content/analysis-cards";
 import {
   WATCH_BAND_LEAD,
   WATCH_BAND_TITLE,
   WATCH_DETECTION_FAILED,
-  WATCH_REPORT_LINK_LABEL,
 } from "@/lib/content/watch-band";
 
 import type { WatchSummaryEntry } from "./watch-summary";
@@ -53,9 +53,9 @@ export function WatchlistView({
                 <Link
                   href={entry.isScenario || entry.isSynthetic ? entry.reportHref : `${entry.reportHref}#${WATCH_HEADING_ID}`}
                   className={s.watchLink}
-                  aria-label={`${entry.title} ${entry.isScenario || entry.isSynthetic ? "상품 검토 보기" : WATCH_REPORT_LINK_LABEL.replace(" →", "")}`}
+                  aria-label={`${entry.title} ${ANALYSIS_CARD_COPY.reportCta}`}
                 >
-                  {entry.isScenario || entry.isSynthetic ? "상품 검토 보기 →" : WATCH_REPORT_LINK_LABEL}
+                  {ANALYSIS_CARD_COPY.reportCta} <span aria-hidden="true">→</span>
                 </Link>
               </li>
             ))}
