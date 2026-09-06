@@ -7,7 +7,7 @@
 
 - AWS RDS PostgreSQL 18에 `0009_grant_livestock_read_access.sql`까지 적용돼 있다.
 - 상품 원장 26건, 일반지식 문서 11건·청크 21건, 활성 상품 RAG 문서 185건·청크 13,309건을 적재했다.
-- 기존 canonical corpus의 `text-embedding-3-small` 벡터 13,219개는 보존돼 있다. 신규 질병 청크 93개는 외부 전송 승인과 임베딩 실행 전 상태다.
+- canonical semantic corpus 13,309개에 `text-embedding-3-small` 벡터가 저장돼 있고 로컬 SQLite와 AWS pgvector가 1:1로 동기화돼 있다. 신규 질병 청크 93개만 생성하고 기존 벡터 13,216개를 재사용했다.
 - 구조화 축산 데이터는 한우 가격 458행, 한돈 가격 176행, 질병 발생 253행(ASF 79·FMD 42·LSD 132)이 적재돼 있다.
 - 로컬 SQLite 임베딩을 해시 검증 후 RDS로 이전하는 `db:embedding:sync`와 DB 모드 pgvector 검색 경로가 실제 E2E를 통과했다.
 - 제한 런타임 역할을 상속한 임시 `jj` 계정으로 공개 상품 뷰·RAG 조회, Home 검색, 상품 Copilot을 확인했다. `jj`는 원본 `offerings` 조회와 schema 객체 생성을 할 수 없다.
