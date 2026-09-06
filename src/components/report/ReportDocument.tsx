@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { useProfile } from "@/components/site/profile";
 import { ProductAiSummary } from "@/components/ai-assistant/ProductAiSummary";
 import { ProductCopilot } from "@/components/ai-assistant/ProductCopilot";
@@ -66,6 +66,8 @@ export function ReportDocument({
   const [levelOverride, setLevelOverride] = useState<ExplainLevel | null>(null);
   const defaultSectionId = sections[0]?.id ?? "";
   const [activeId, setActiveId] = useState(defaultSectionId);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const scrollToPanel = useRef(false);
   const level: ExplainLevel = levelOverride ?? profile.level ?? "easy";
   const content: ReportSectionContent = {
     ...(view
@@ -106,11 +108,17 @@ export function ReportDocument({
     };
   }, [defaultSectionId, sections]);
 
+  useLayoutEffect(() => {
+    if (!scrollToPanel.current) return;
+    panelRef.current?.scrollIntoView({ block: "start", behavior: "instant" });
+    scrollToPanel.current = false;
+  }, [activeId]);
+
   const handleSectionSelect = (sectionId: string) => {
     if (!sections.some((section) => section.id === sectionId)) return;
     if (sectionId === activeSection.id) return;
 
-    window.scrollTo({ top: 0, behavior: "auto" });
+    scrollToPanel.current = true;
     setActiveId(sectionId);
     const hash = `#${sectionId}`;
     if (window.location.hash !== hash) {
@@ -154,6 +162,8 @@ export function ReportDocument({
         onSelect={handleSectionSelect}
       />
       <div
+        ref={panelRef}
+        className={s.sectionPanel}
         id={REPORT_SECTION_PANEL_ID}
         role="tabpanel"
         aria-labelledby={`report-tab-${activeSection.id}`}

@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { ReportBreadcrumb } from "@/components/report/ReportBreadcrumb";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 
 import {
   CattleDiseaseContext,
   cattleDiseaseContextForReport,
+  cattleDiseaseContextForDate,
 } from "@/components/cattle/CattleDiseaseContext";
 import { FilingFactsSection } from "@/components/report/FilingFactsSection";
 import {
@@ -14,6 +15,7 @@ import {
 } from "@/components/report/ids";
 import { AiSummary } from "@/components/ai-summary/AiSummary";
 import { CattleFilingArtifactDetail } from "@/components/cattle/CattleFilingArtifactDetail";
+import { CattleFilingSummary, CattlePendingReview, isCattlePendingSection } from "@/components/cattle/CattleFilingReview";
 import { LifecycleStrip } from "@/components/report/LifecycleStrip";
 import { RealEstateInvestmentReviewPanel } from "@/components/report/RealEstateInvestmentReviewPanel";
 import { RealEstateProductOverview } from "@/components/report/RealEstateProductOverview";
@@ -40,7 +42,6 @@ import {
 } from "@/components/site/offers";
 import { categoryById } from "@/lib/content/categories";
 import { loadFilingFacts } from "@/lib/verify/report/filing-facts";
-import { FILING_SECTION_LEAD } from "@/lib/content/filing";
 import {
   findRoutableLegacyScenario,
   loadApprovedScenarios,
@@ -282,17 +283,11 @@ export async function OfferReportPage({
   if (assetKind === "livestock" && isCattleArtifactOnlyId(id)) {
     const artifact = await loadCattleFilingArtifact(id);
     if (artifact) {
-      const aiSummary = await loadAiSummary("cattle", id);
+      const [aiSummary, watch] = await Promise.all([loadAiSummary("cattle", id), loadWatchStatus(id)]);
+      const sections = reportSectionsFor({ hasFilingFacts: true, hasDiseaseContext: true });
       return (
         <div className={s.reportPage}>
-          <div className={s.breadcrumbBar}>
-            <nav className={`${s.wrap} ${s.breadcrumb}`} aria-label="현재 위치">
-              <Link href="/cattle" className={s.breadcrumbBack}>
-                ← 한우 분석
-              </Link>
-              <span aria-current="page">{offerEntry.title}</span>
-            </nav>
-          </div>
+          <ReportBreadcrumb href="/cattle" title={offerEntry.title} />
           <ReportDocument
             aiSummary={<AiSummary summary={aiSummary} />}
             copilot={<CattleMinimumFilingEvidenceQuery productId={id} />}
@@ -302,21 +297,32 @@ export async function OfferReportPage({
               title: offerEntry.title,
               status: "공시 근거 확인",
               meta: "원금 미보장 문단 확인 · 정정 관계·최신 조건·개체 실재성 미확인",
-              facts: [],
+              facts: [
+                { label: "공시 기준일", value: artifact.document.asOf },
+                { label: "확인 자료", value: "DART 공시 일부" },
+                { label: "확인 항목", value: artifact.chunks.map((chunk) => chunk.title).join(" · ") },
+                { label: "대조 상태", value: "외부 대조 불가" },
+              ],
             }}
-            sections={[
-              { key: "verdict", id: "report-verdict-heading", label: "요약" },
-              { key: "filing", id: FILING_HEADING_ID, label: "공시 근거" },
-            ]}
+            sections={sections}
             sectionContent={{
-              filing: (
-                <div className={s.wrap}>
-                  <CattleFilingArtifactDetail artifact={artifact} />
-                </div>
-              ),
+              verdict: <CattleFilingSummary artifact={artifact} lifecycle={
+                <LifecycleStrip
+                  schedule={buildOfferSchedule(offerEntry, new Date())}
+                  assetKind={offerEntry.assetKind}
+                  assetLifecycle={offerEntry.assetLifecycle}
+                  isExitVerified={offerEntry.isExitVerified}
+                />
+              } />,
+              watch: <WatchSection watch={watch} />,
+              filing: <CattleFilingArtifactDetail artifact={artifact} />,
+              disease: <CattleDiseaseContext context={cattleDiseaseContextForDate([], artifact.document.asOf)} />,
+              ...Object.fromEntries(sections
+                .filter(isCattlePendingSection)
+                .map((section) => [section.key, <CattlePendingReview key={section.key} section={section} artifact={artifact} />])),
             }}
           />
-          <ReportFoot analysisHref="/cattle" />
+          <ReportFoot />
         </div>
       );
     }
@@ -380,20 +386,7 @@ export async function OfferReportPage({
 
   return (
     <div className={s.reportPage}>
-      <div className={s.breadcrumbBar}>
-        <nav className={`${s.wrap} ${s.breadcrumb}`} aria-label="현재 위치">
-          <Link href={analysisHref} className={s.breadcrumbBack}>
-            <span aria-hidden="true">←</span>
-            분석
-          </Link>
-          <span className={s.breadcrumbDivider} aria-hidden="true">
-            /
-          </span>
-          <span className={s.breadcrumbCurrent} aria-current="page">
-            {view.offer.title}
-          </span>
-        </nav>
-      </div>
+      <ReportBreadcrumb href={analysisHref} title={view.offer.title} />
 
       <ReportDocument
         view={view}
@@ -458,7 +451,6 @@ export async function OfferReportPage({
                         >
                           신고서 정보
                         </h2>
-                        <p className={s.sectionLead}>{FILING_SECTION_LEAD}</p>
                       </header>
                       <CattleFilingArtifactDetail artifact={cattleFilingArtifact} />
                     </div>
@@ -492,7 +484,7 @@ export async function OfferReportPage({
           ) : null
         }
       />
-      <ReportFoot analysisHref={analysisHref} />
+      <ReportFoot />
     </div>
   );
 }

@@ -108,7 +108,7 @@ function FindingGroup({
   defaultOpen = false,
 }: {
   readonly title: string;
-  readonly lead: string;
+  readonly lead?: string;
   readonly findings: readonly ReviewFinding[];
   readonly market?: boolean;
   readonly defaultOpen?: boolean;
@@ -117,7 +117,7 @@ function FindingGroup({
     <details className={s.reviewGroup} open={defaultOpen}>
       <summary>
         <span className={s.reviewGroupTitle}>{title}</span>
-        <span className={s.reviewGroupLead}>{lead}</span>
+        {lead ? <span className={s.reviewGroupLead}>{lead}</span> : null}
       </summary>
       <div className={s.reviewGroupBody}>
         {findings.map((finding, index) => (
@@ -221,7 +221,6 @@ export function RealEstateInvestmentReviewPanel({
         {review.materialEvents.length > 0 ? (
           <FindingGroup
             title="중요 상품 사건"
-            lead="직접 원문과 상품 연결 요건을 충족한 사건만 표시합니다."
             findings={review.materialEvents}
           />
         ) : (
@@ -240,7 +239,6 @@ export function RealEstateInvestmentReviewPanel({
         )}
         <FindingGroup
           title={isHistorical ? "매각·환매·정산 이력" : "매각·환매·정산과 거래"}
-          lead="운영사 발표, 직접 원문, 외부 관측의 근거 수준을 구분합니다."
           findings={review.areas.exit_terms}
         />
         <FindingGroup

@@ -22,7 +22,7 @@
 .facts dd {
   margin: var(--ds-space-2) 0 0;
   color: var(--ds-ink-muted);
-  font-size: var(--ds-text-sm);
+  font-size: var(--ds-text-base);
   font-weight: var(--ds-weight-regular);
   line-height: var(--ds-leading-relaxed);
   word-break: keep-all;

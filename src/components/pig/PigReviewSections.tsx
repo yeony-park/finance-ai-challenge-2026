@@ -23,7 +23,7 @@ export interface PigReviewSectionsProps {
 interface SectionHeadingProps {
   readonly id: string;
   readonly title: string;
-  readonly description: string;
+  readonly description?: string;
   readonly badge: string;
 }
 
@@ -39,20 +39,12 @@ function SectionHeading({
         <h3 className={s.sectionTitle} id={id}>
           {title}
         </h3>
-        <p className={s.sectionDescription}>{description}</p>
+        {description ? <p className={s.sectionDescription}>{description}</p> : null}
       </div>
       <span className={s.badge}>{badge}</span>
     </header>
   );
 }
-
-const insightClassName = (
-  key: "document" | "constraint" | "next",
-): string => {
-  if (key === "document") return `${s.insightCard} ${s.insightDocument}`;
-  if (key === "constraint") return `${s.insightCard} ${s.insightConstraint}`;
-  return `${s.insightCard} ${s.insightNext}`;
-};
 
 export function PigReviewGuide() {
   return (
@@ -80,24 +72,6 @@ export function PigReviewGuide() {
             </li>
           ))}
         </ol>
-
-        <div className={s.equation}>
-          <p className={s.srOnly}>
-            {PIG_REVIEW_COPY.beginner.equationAriaLabel}
-          </p>
-          <div className={s.equationVisual} aria-hidden="true">
-            {PIG_REVIEW_COPY.beginner.equation.map((part, index) => (
-              <span
-                className={
-                  part.kind === "term" ? s.equationTerm : s.equationOperator
-                }
-                key={`${part.kind}-${index}`}
-              >
-                {part.text}
-              </span>
-            ))}
-          </div>
-        </div>
 
         <div className={s.termsBlock}>
           <h4>{PIG_REVIEW_COPY.beginner.termsTitle}</h4>
@@ -140,7 +114,6 @@ export function PigReviewSections({
         <SectionHeading
           id="pig-review-layer-title"
           title={buildPigReviewLayerTitle(product)}
-          description={PIG_REVIEW_COPY.layerReview.description}
           badge={PIG_REVIEW_COPY.layerReview.badge}
         />
 
@@ -187,7 +160,7 @@ export function PigReviewSections({
 
         <div className={s.insightGrid}>
           {insights.map((insight) => (
-            <article className={insightClassName(insight.key)} key={insight.key}>
+            <article className={s.insightCard} key={insight.key}>
               <span>{insight.label}</span>
               <h4>{insight.title}</h4>
               <p>{insight.body}</p>
@@ -235,7 +208,6 @@ export function PigReviewSections({
         <SectionHeading
           id="pig-review-questions-title"
           title={PIG_REVIEW_COPY.questions.title}
-          description={PIG_REVIEW_COPY.questions.description}
           badge={PIG_REVIEW_COPY.questions.badge}
         />
 
@@ -259,7 +231,6 @@ export function PigReviewSections({
         <SectionHeading
           id="pig-review-sources-title"
           title={PIG_REVIEW_COPY.sources.title}
-          description={PIG_REVIEW_COPY.sources.description}
           badge={PIG_REVIEW_COPY.sources.badge}
         />
 

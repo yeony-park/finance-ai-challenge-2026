@@ -15,7 +15,6 @@ export const PIG_EXTRA_DISTRIBUTION_FILING = {
 } as const;
 
 export const PIG_REPORT_COPY = {
-  breadcrumbBack: "한돈 분석",
   imageAlt: "한돈 분석 대표 이미지",
   reportStatus: "검증 리포트",
   headerMetaPrefix: "DART 공시 기준",
@@ -61,15 +60,6 @@ export const PIG_REVIEW_COPY = {
         body: "공시로 확인한 범위와 외부에서 대조하지 못한 범위를 나누고, 추가로 요청할 원문과 원장을 질문으로 남깁니다.",
       },
     ],
-    equationAriaLabel:
-      "공시 제출, 실물 확인, 손익 확정은 서로 다른 단계입니다",
-    equation: [
-      { kind: "term", text: "공시 제출" },
-      { kind: "operator", text: "≠" },
-      { kind: "term", text: "실물 확인" },
-      { kind: "operator", text: "≠" },
-      { kind: "term", text: "손익 확정" },
-    ],
     termsTitle: "먼저 알아둘 네 가지 용어",
     guideUrl: "https://www.fsc.go.kr/no010101/86064",
     guideLinkLabel: "투자계약증권과 토큰증권 구분 근거 보기",
@@ -98,9 +88,7 @@ export const PIG_REVIEW_COPY = {
   },
   layerReview: {
     label: "선택 회차 검토",
-    titleSuffix: "를 세 층으로 나눠 봅니다",
-    description:
-      "공시 문서, 기초자산 연결, 판매·정산을 같은 표에 놓고 확인된 범위와 남은 범위를 구분합니다.",
+    titleSuffix: " 검토 결과",
     badge: "층위별 확인",
     tableCaption: "선택한 한돈 공모의 층위별 검토 결과",
     tableHeaders: ["확인 층위", "상태", "판단 근거"],
@@ -148,9 +136,7 @@ export const PIG_REVIEW_COPY = {
   },
   questions: {
     label: "발행사 확인 질문",
-    title: "원문 밖의 빈칸은 네 가지 질문으로 남깁니다",
-    description:
-      "공시 제출 사실만으로 알 수 없는 연결 근거와 정산 자료를 구체적으로 요청하기 위한 질문입니다.",
+    title: "발행사 확인 질문",
     badge: "확인 목록",
     listAriaLabel: "발행사에 확인할 네 가지 질문",
     items: [
@@ -162,9 +148,7 @@ export const PIG_REVIEW_COPY = {
   },
   sources: {
     label: "근거 수집 상태",
-    title: "공시 원문·축산 이력 경로·시장 저장본을 함께 봅니다",
-    description:
-      "세 자료는 확인하는 대상이 다릅니다. DART는 제출 문서를, 축산물이력제는 원장 조회 경로를, 시장 저장본은 월별 거래 집계를 보여줍니다.",
+    title: "근거 수집 상태",
     badge: "정적 자료",
     gridAriaLabel: "한돈 공시·축산 이력·시장 근거 수집 상태",
     dart: {
@@ -185,7 +169,7 @@ export const PIG_REVIEW_COPY = {
       linkLabel: "시장 통계 출처 보기",
     },
     disclaimer:
-      "이 화면은 공시 기재값·공식 시장 집계·공개 질병 자료를 서로 구분해 보여줍니다. 시장가격과 지역 발생 이력은 선택 상품의 실제 판매가·농장 감염·손익을 뜻하지 않습니다. 매수·청약 결정을 대신하지 않으며 수익률 예측이나 법률·회계 검토를 제공하지 않습니다.",
+      "시장가격과 지역 발생 이력은 선택 상품의 실제 판매가·농장 감염·손익을 뜻하지 않습니다.",
   },
 } as const;
 

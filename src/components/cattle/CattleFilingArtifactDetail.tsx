@@ -11,10 +11,7 @@ export function CattleFilingArtifactDetail({
     <section className={`${s.section} ${s.reportContentSection}`} aria-labelledby="cattle-filing-title">
       <div className={s.wrap}>
         <header className={`${s.layerHead} ${s.sectionHead}`}>
-          <h2 id="cattle-filing-title" className={s.layerTitle}>DART 공시에서 확인한 최소 사실</h2>
-          <p className={s.sectionLead}>
-            이 상품에 연결된 공시에서 승인된 문단만 표시합니다. 공시 간 정정 관계나 최신값은 확정하지 않습니다.
-          </p>
+          <h2 id="cattle-filing-title" className={s.layerTitle}>신고서 정보</h2>
         </header>
 
         <dl className={s.productFacts}>
