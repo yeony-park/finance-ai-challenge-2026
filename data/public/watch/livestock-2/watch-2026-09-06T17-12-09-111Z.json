@@ -1,0 +1,20 @@
+{
+  "offerId": "livestock-2",
+  "checkedAt": "2026-09-06T17:12:09.111Z",
+  "baseRcpNo": "20240821000374",
+  "checkedThrough": "20260907",
+  "amendmentCount": 1,
+  "amendments": [
+    {
+      "rcpNo": "20240911000124",
+      "receivedOn": "20240911",
+      "reportName": "[기재정정]증권신고서(투자계약증권)"
+    }
+  ],
+  "sourceName": "OpenDART 공시검색 (금융감독원 · opendart.fss.or.kr)",
+  "detectionFailed": false,
+  "notes": [
+    "같은 종류의 신규 신고서(20241202000302)가 접수되어 이 공모의 정정 계보는 그 앞에서 끊었습니다.",
+    "정정본 재대조가 실행되지 않아 변경 항목·판정 유지/변동을 아직 계산하지 못했습니다."
+  ]
+}
