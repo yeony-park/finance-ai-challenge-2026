@@ -12,6 +12,7 @@ export function generateStaticParams() {
 }
 
 export const dynamicParams = false;
+export const revalidate = 600;
 
 export function generateMetadata(props: OfferPageProps): Promise<Metadata> {
   return offerReportMetadata(props, "livestock");

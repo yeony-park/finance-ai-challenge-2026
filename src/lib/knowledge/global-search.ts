@@ -317,7 +317,7 @@ export const searchOffers = async (
     query.categoryId ?? intent.categoryId,
   );
   const repositoryById = new Map(repositoryOfferings.map((item) => [item.entry.id, item.offering]));
-  const published = OFFERS.map((offer) => {
+  const published = OFFERS.filter((offer) => offer.assetKind === "livestock").map((offer) => {
     const schedulePhase = buildOfferSchedule(offer, now).phase;
     const phase: GlobalSearchResult["phase"] =
       schedulePhase === "open" ? "subscription-open" : schedulePhase;
