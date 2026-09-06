@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { CategoryMethodologyContent } from "@/components/methodology/CategoryMethodologyContent";
 import { MethodologyTabs, type MethodologyTab } from "@/components/methodology/MethodologyTabs";
 import { METHODOLOGY_TAB_COPY } from "@/lib/content/methodology-tabs";
@@ -8,7 +7,6 @@ import {
   AmendmentSection,
   LayersSection,
   LimitsSection,
-  NoticeSection,
   PipelineSection,
   PrinciplesSection,
   SourcesSection,
@@ -36,7 +34,6 @@ const TABS: readonly MethodologyTab[] = [
         <AmendmentSection />
         <PrinciplesSection />
         <LimitsSection />
-        <NoticeSection />
       </>
     ),
   },
@@ -64,10 +61,6 @@ export default function MethodologyPage() {
       <div className={s.body}>
         <div className={s.wrap}>
           <MethodologyTabs tabs={TABS} />
-          <Link href="/offers" className={s.backLink}>
-            <span aria-hidden="true">←</span>
-            공모 목록으로 돌아가기
-          </Link>
         </div>
       </div>
     </>

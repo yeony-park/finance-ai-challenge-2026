@@ -194,7 +194,7 @@
   width: fit-content;
   padding-block: var(--ds-space-2);
   cursor: pointer;
-  font-size: var(--ds-text-2xs);
+  font-size: var(--ds-text-base);
   color: var(--ds-ink-muted);
   text-decoration: underline;
   text-decoration-color: var(--ds-accent);
@@ -216,7 +216,7 @@
 .chartScroll table {
   min-width: 460px;
   border-collapse: collapse;
-  font-size: var(--ds-text-2xs);
+  font-size: var(--ds-text-base);
   font-variant-numeric: tabular-nums;
 }
 

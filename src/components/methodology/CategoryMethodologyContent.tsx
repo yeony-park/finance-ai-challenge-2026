@@ -20,6 +20,7 @@ import { PigAboutContent } from "@/components/pig/PigAboutContent";
 import { categoryById, type CategoryId } from "@/lib/content/categories";
 import { CATTLE_FLOW_TITLE } from "@/lib/content/cattle";
 import { ART_PAGE_LEAD } from "@/lib/content/art";
+import { METHODOLOGY_DATA_NOTICES } from "@/lib/content/category-methodology";
 import { CATTLE_CATEGORY } from "@/lib/verify/contract/cattle";
 import { PIG_CATEGORY } from "@/lib/verify/contract/pig";
 import { REAL_ESTATE_CATEGORY } from "@/lib/verify/contract/real-estate";
@@ -39,6 +40,7 @@ export function CategoryMethodologyContent({
         heroImage={null}
         leadVisual={<CattleCrossCheckDiagram />}
         analysisHintVisual={<AnalysisEvidenceDiagram />}
+        replaceCopyWithVisuals
         descriptionContentTitle={CATTLE_FLOW_TITLE}
         descriptionContent={<CattleFlowBand />}
       />
@@ -57,7 +59,7 @@ export function CategoryMethodologyContent({
         analysisHintVisual={<PigAnalysisScopeDiagram />}
         replaceCopyWithVisuals
         descriptionContent={<PigAboutContent />}
-        descriptionContentTitle="한돈 공시 축 — 회차·가격·질병 맥락·발행사 이력"
+        descriptionContentTitle="한돈 공시는 어떻게 확인하나요?"
       />
     );
   }
@@ -67,6 +69,7 @@ export function CategoryMethodologyContent({
       <CategoryAboutView
         embedded
         title="부동산"
+        dataNotice={METHODOLOGY_DATA_NOTICES["real-estate"]}
         lead="종료된 공모의 사후 검증 리포트가 공개돼 있습니다 — 소재지·가격·이행을 공공 원장과 대조합니다."
         descriptor={REAL_ESTATE_CATEGORY}
         heroImage={null}
@@ -83,6 +86,7 @@ export function CategoryMethodologyContent({
     <CategoryAboutView
       embedded
       title={categoryById("art").label}
+      dataNotice={METHODOLOGY_DATA_NOTICES.art}
       lead={ART_PAGE_LEAD}
       descriptor={null}
       heroImage={null}
