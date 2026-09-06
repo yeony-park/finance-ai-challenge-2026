@@ -10,6 +10,7 @@ import {
 } from "../ingest/write-knowledge";
 import {
   cattleAuctionPrices,
+  livestockDiseaseEvents,
   offeringFilingFacts,
   pigAuctionPrices,
   reTrades,
@@ -135,6 +136,40 @@ const ingestPig = async (db: DbOrTx, plan: IngestPlan): Promise<void> => {
   }
 };
 
+const ingestLivestockDisease = async (
+  db: DbOrTx,
+  plan: IngestPlan,
+): Promise<void> => {
+  for (const row of plan.livestockDisease) {
+    const values = {
+      sourceEventId: row.sourceEventId,
+      disease: row.disease,
+      species: row.species,
+      occurredOn: row.occurredOn,
+      province: row.province,
+      cityCounty: row.cityCounty,
+      region: row.region,
+      headCount: row.headCount,
+      headCountBasis: row.headCountBasis,
+      latitude: String(row.latitude),
+      longitude: String(row.longitude),
+      locationPrecision: row.locationPrecision,
+      sourceUrl: row.sourceUrl,
+      sourceMeta: row.sourceMeta,
+    };
+    await db
+      .insert(livestockDiseaseEvents)
+      .values(values)
+      .onConflictDoUpdate({
+        target: [
+          livestockDiseaseEvents.disease,
+          livestockDiseaseEvents.sourceEventId,
+        ],
+        set: values,
+      });
+  }
+};
+
 const ingestFilingFacts = async (db: DbOrTx, plan: IngestPlan): Promise<void> => {
   for (const row of plan.filingFacts) {
     await db
@@ -173,7 +208,7 @@ const main = async (): Promise<void> => {
     "data/synthetic/art-investment.json",
   ]);
 
-  const counts = `cattle ${plan.cattleAuction.length} · real_estate_trades ${plan.reTrades.length} · pig ${plan.pigAuction.length} · filing_facts ${plan.filingFacts.length} · knowledge_docs ${knowledgePlan.documents.length} · knowledge_chunks ${knowledgePlan.chunks.length}`;
+  const counts = `cattle ${plan.cattleAuction.length} · real_estate_trades ${plan.reTrades.length} · pig ${plan.pigAuction.length} · disease ${plan.livestockDisease.length} · filing_facts ${plan.filingFacts.length} · knowledge_docs ${knowledgePlan.documents.length} · knowledge_chunks ${knowledgePlan.chunks.length}`;
 
   if (!directDatabaseUrl()) {
     console.log(
@@ -200,6 +235,7 @@ const main = async (): Promise<void> => {
   await db.transaction((tx) => ingestCattle(tx, plan));
   await db.transaction((tx) => ingestReTrades(tx, plan));
   await db.transaction((tx) => ingestPig(tx, plan));
+  await db.transaction((tx) => ingestLivestockDisease(tx, plan));
   await db.transaction((tx) => ingestFilingFacts(tx, plan));
   console.log(`[db:ingest] 완료 — ${counts} (멱등 자연키 ON CONFLICT).`);
 };

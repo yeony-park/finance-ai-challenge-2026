@@ -483,6 +483,54 @@ export const pigAuctionPrices = pgTable(
   ],
 );
 
+export const livestockDiseaseEvents = pgTable(
+  "livestock_disease_events",
+  {
+    id: bigint("id", { mode: "bigint" }).primaryKey().generatedAlwaysAsIdentity(),
+    sourceEventId: text("source_event_id").notNull(),
+    disease: text("disease").notNull(),
+    species: text("species").notNull(),
+    occurredOn: date("occurred_on").notNull(),
+    province: text("province").notNull(),
+    cityCounty: text("city_county").notNull(),
+    region: text("region").notNull(),
+    headCount: integer("head_count"),
+    headCountBasis: text("head_count_basis").notNull(),
+    latitude: numeric("latitude", { precision: 10, scale: 7 }).notNull(),
+    longitude: numeric("longitude", { precision: 10, scale: 7 }).notNull(),
+    locationPrecision: text("location_precision").notNull(),
+    sourceUrl: text("source_url").notNull(),
+    sourceMeta: jsonb("source_meta").$type<Record<string, unknown>>().notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [
+    unique("livestock_disease_events_natural_key").on(t.disease, t.sourceEventId),
+    check(
+      "livestock_disease_events_disease_check",
+      sql`${t.disease} in ('ASF','FMD','LSD')`,
+    ),
+    check(
+      "livestock_disease_events_species_check",
+      sql`${t.species} in ('cattle','pig','goat')`,
+    ),
+    check(
+      "livestock_disease_events_head_count_basis_check",
+      sql`${t.headCountBasis} in ('raised','culled')`,
+    ),
+    index("livestock_disease_events_species_date_idx").on(
+      t.species,
+      t.occurredOn,
+    ),
+    index("livestock_disease_events_disease_region_idx").on(
+      t.disease,
+      t.province,
+      t.occurredOn,
+    ),
+  ],
+);
+
 export const offeringFilingFacts = pgTable(
   "offering_filing_facts",
   {

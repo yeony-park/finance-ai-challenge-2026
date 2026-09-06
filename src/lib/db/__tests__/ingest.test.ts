@@ -9,6 +9,7 @@ import {
   buildCattleAuctionRows,
   buildFilingFactRows,
   buildIngestPlan,
+  buildLivestockDiseaseRows,
   buildPigAuctionRows,
   buildReTradeRows,
 } from "../ingest/build";
@@ -69,14 +70,17 @@ describe("db:ingest 빌더 — 커밋 참조 파일 → 원장 행 (R-STO-22)", 
     ["cattle JSON", "data/reference/auction-price/", buildCattleAuctionRows],
     ["RTMS JSON", "data/reference/rtms/", buildReTradeRows],
     ["pig CSV/meta", "data/reference/pig-auction-price/", buildPigAuctionRows],
+    ["disease JSON", "data/reference/pig-asf/mafra_asf_events.json", buildLivestockDiseaseRows],
     ["filing JSON", "data/offers/filing-facts/", buildFilingFactRows],
   ])(
     "%s 빌더도 MANIFEST 불일치를 거부한다",
     async (_label, prefix, build) => {
       const index = await loadManifestIndex();
-      const relPath = [...index.keys()]
-        .filter((key) => key.startsWith(prefix) && !key.slice(prefix.length).includes("/"))
-        .sort()[0];
+      const relPath = prefix.endsWith(".json")
+        ? prefix
+        : [...index.keys()]
+            .filter((key) => key.startsWith(prefix) && !key.slice(prefix.length).includes("/"))
+            .sort()[0];
       const entry = index.get(relPath);
       expect(entry).toBeDefined();
       if (!entry) throw new Error(`${prefix} MANIFEST fixture가 없습니다.`);
@@ -125,6 +129,16 @@ describe("db:ingest 빌더 — 커밋 참조 파일 → 원장 행 (R-STO-22)", 
     const keys = rows.map((row) => `${row.offerSlug}:${row.rcpNo}:${row.factId}`);
     expect(new Set(keys).size).toBe(keys.length);
     expect(rows.every((row) => /^\d{14}$/.test(row.rcpNo))).toBe(true);
+  });
+
+  test("질병 발생 행은 공개 행정구역 정보 253건만 정규화한다", async () => {
+    const rows = await buildLivestockDiseaseRows("data", await loadManifestIndex());
+    expect(rows).toHaveLength(253);
+    expect(rows.filter((row) => row.disease === "ASF")).toHaveLength(79);
+    expect(rows.filter((row) => row.disease === "FMD")).toHaveLength(42);
+    expect(rows.filter((row) => row.disease === "LSD")).toHaveLength(132);
+    expect(rows.every((row) => row.locationPrecision.length > 0)).toBe(true);
+    expect(rows.every((row) => !row.region.match(/(?:읍|면|동|리)\s/))).toBe(true);
   });
 
   test("ingest 계획 원천 경로는 전부 커밋 가능(R-STO-03a 가드 통과)", async () => {

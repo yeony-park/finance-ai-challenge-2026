@@ -1,5 +1,6 @@
 import { readdir } from "node:fs/promises";
 import path from "node:path";
+import { z } from "zod";
 
 import {
   AUCTION_ENDPOINT,
@@ -19,9 +20,11 @@ import type { SourceMeta } from "../records";
 import {
   type CattleAuctionRow,
   type FilingFactRow,
+  type LivestockDiseaseRow,
   type PigAuctionRow,
   cattleAuctionRowSchema,
   filingFactRowSchema,
+  livestockDiseaseRowSchema,
   pigAuctionRowSchema,
 } from "./records";
 import { type ManifestIndex, readVerifiedManifestFile } from "./manifest";
@@ -192,6 +195,83 @@ export const buildPigAuctionRows = async (
   );
 };
 
+const diseaseDatasetSchema = z.object({
+  asOf: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  source: z.object({
+    boardUrl: z.string().url(),
+    downloadUrl: z.string().url().optional(),
+    collectedAt: z.string().min(1),
+  }),
+  events: z.array(z.object({
+    id: z.string().min(1),
+    disease: z.enum(["FMD", "LSD"]).optional(),
+    occurredAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    species: z.enum(["cattle", "pig", "goat"]).optional(),
+    raisedHeadCount: z.number().int().nonnegative().nullable().optional(),
+    culledHeadCount: z.number().int().nonnegative().nullable().optional(),
+    province: z.string().min(1),
+    cityCounty: z.string().min(1),
+    region: z.string().min(1),
+    source: z.object({ sourceUrl: z.string().url() }).optional(),
+    coordinates: z.object({
+      latitude: z.number(),
+      longitude: z.number(),
+      precision: z.string().min(1),
+    }),
+  })),
+});
+
+const DISEASE_SOURCES = [
+  { path: "reference/pig-asf/mafra_asf_events.json", disease: "ASF", species: "pig" },
+  { path: "reference/livestock-disease/fmd/mafra_fmd_events.json", disease: "FMD" },
+  { path: "reference/livestock-disease/lsd/mafra_lsd_events.json", disease: "LSD", species: "cattle" },
+] as const;
+
+export const buildLivestockDiseaseRows = async (
+  dataDir: string,
+  index: ManifestIndex,
+): Promise<readonly LivestockDiseaseRow[]> => {
+  const rows: LivestockDiseaseRow[] = [];
+  for (const source of DISEASE_SOURCES) {
+    const relPath = `data/${source.path}`;
+    const verified = await readVerifiedManifestFile(
+      index,
+      relPath,
+      path.join(path.resolve(dataDir), source.path),
+    );
+    const dataset = diseaseDatasetSchema.parse(
+      JSON.parse(verified.raw.toString("utf8")),
+    );
+    const meta = referenceMeta(verified.sha256, {
+      sourceUrl: dataset.source.boardUrl,
+      method: "official_document_normalized",
+      retrievedAt: dataset.source.collectedAt,
+    });
+    for (const event of dataset.events) {
+      const disease = event.disease ?? source.disease;
+      const species = event.species ?? ("species" in source ? source.species : undefined);
+      const culled = "culledHeadCount" in event;
+      rows.push(livestockDiseaseRowSchema.parse({
+        sourceEventId: event.id,
+        disease,
+        species,
+        occurredOn: event.occurredAt,
+        province: event.province,
+        cityCounty: event.cityCounty,
+        region: event.region,
+        headCount: culled ? event.culledHeadCount ?? null : event.raisedHeadCount ?? null,
+        headCountBasis: culled ? "culled" : "raised",
+        latitude: event.coordinates.latitude,
+        longitude: event.coordinates.longitude,
+        locationPrecision: event.coordinates.precision,
+        sourceUrl: event.source?.sourceUrl ?? dataset.source.downloadUrl ?? dataset.source.boardUrl,
+        sourceMeta: meta,
+      }));
+    }
+  }
+  return rows;
+};
+
 const listCsv = async (dir: string): Promise<readonly string[]> => {
   try {
     return [...(await readdir(dir))].filter((file) => file.endsWith(".csv")).sort();
@@ -245,6 +325,7 @@ export interface IngestPlan {
   readonly cattleAuction: readonly CattleAuctionRow[];
   readonly reTrades: readonly ReTradeRow[];
   readonly pigAuction: readonly PigAuctionRow[];
+  readonly livestockDisease: readonly LivestockDiseaseRow[];
   readonly filingFacts: readonly FilingFactRow[];
   readonly sourcePaths: readonly string[];
 }
@@ -256,11 +337,14 @@ export const buildIngestPlan = async (
   cattleAuction: await buildCattleAuctionRows(dataDir, index),
   reTrades: await buildReTradeRows(dataDir, index),
   pigAuction: await buildPigAuctionRows(dataDir, index),
+  livestockDisease: await buildLivestockDiseaseRows(dataDir, index),
   filingFacts: await buildFilingFactRows(dataDir, index),
   sourcePaths: [
     path.join(dataDir, "reference/auction-price"),
     path.join(dataDir, "reference/rtms"),
     path.join(dataDir, "reference/pig-auction-price"),
+    path.join(dataDir, "reference/pig-asf"),
+    path.join(dataDir, "reference/livestock-disease"),
     path.join(dataDir, "offers/filing-facts"),
   ],
 });

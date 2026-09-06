@@ -40,6 +40,27 @@ export const pigAuctionRowSchema = z
 
 export type PigAuctionRow = z.infer<typeof pigAuctionRowSchema>;
 
+export const livestockDiseaseRowSchema = z
+  .object({
+    sourceEventId: z.string().min(1),
+    disease: z.enum(["ASF", "FMD", "LSD"]),
+    species: z.enum(["cattle", "pig", "goat"]),
+    occurredOn: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    province: z.string().min(1),
+    cityCounty: z.string().min(1),
+    region: z.string().min(1),
+    headCount: z.number().int().nonnegative().nullable(),
+    headCountBasis: z.enum(["raised", "culled"]),
+    latitude: z.number().min(-90).max(90),
+    longitude: z.number().min(-180).max(180),
+    locationPrecision: z.string().min(1),
+    sourceUrl: z.string().url(),
+    sourceMeta: sourceMetaSchema,
+  })
+  .strict();
+
+export type LivestockDiseaseRow = z.infer<typeof livestockDiseaseRowSchema>;
+
 export const filingFactRowSchema = z
   .object({
     offerSlug: z.string().min(1),

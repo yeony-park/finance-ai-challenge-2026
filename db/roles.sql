@@ -20,6 +20,8 @@ ALTER ROLE jeomjeom_rag_ro LOGIN PASSWORD :ro_password;
 
 GRANT USAGE ON SCHEMA public TO jeomjeom_rag_ro;
 GRANT SELECT ON rag_documents, rag_chunks TO jeomjeom_rag_ro;
+GRANT SELECT ON cattle_auction_prices, pig_auction_prices, livestock_disease_events
+TO jeomjeom_rag_ro;
 
 -- 원본 detail/source_meta JSON은 런타임에 열지 않고 0005의 화이트리스트 뷰만 허용한다.
 -- DATABASE_URL_DIRECT는 CLI ingest/migration 전용이며 런타임 repository에서 사용하지 않는다.
