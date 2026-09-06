@@ -6,15 +6,10 @@ import { Reveal } from "@/components/motion/Reveal";
 import { OnboardingOpenButton } from "@/components/site/OnboardingOpenButton";
 import { orderByConcern, useProfile } from "@/components/site/profile";
 import {
-  CHECKLIST_BRIDGE_NOTE,
   CHECKLIST_NOTICE,
-  checklistBridgeLabel,
   TRUST_CHECKLIST,
 } from "@/lib/content/checklist";
-import {
-  checklistReportHref,
-  type ChecklistBridgeOffer,
-} from "@/lib/content/checklist-links";
+import { CATEGORY_IDS, categoryById } from "@/lib/content/categories";
 import { CONCERN_TAG } from "@/lib/content/onboarding";
 
 import controls from "./home-controls.module.css";
@@ -24,13 +19,10 @@ import tags from "./home-tags.module.css";
 import { HomeSectionFrame, HomeSectionHeader } from "./HomeSection";
 import s from "./ChecklistBand.module.css";
 
-interface ChecklistBandProps {
-  bridgeOffer?: ChecklistBridgeOffer | null;
-}
-
-export function ChecklistBand({ bridgeOffer = null }: ChecklistBandProps) {
+export function ChecklistBand() {
   const profile = useProfile();
   const items = orderByConcern(TRUST_CHECKLIST, profile.concern);
+  const categories = (profile.interests.length ? profile.interests : CATEGORY_IDS).map(categoryById);
 
   return (
     <HomeSectionFrame id="checklist" labelledBy="checklist-title">
@@ -52,13 +44,7 @@ export function ChecklistBand({ bridgeOffer = null }: ChecklistBandProps) {
         </HomeSectionHeader>
         <Reveal>
         <div>
-          {items.map((item) => {
-            const reportHref =
-              item.reportChapter && bridgeOffer
-                ? checklistReportHref(bridgeOffer, item.reportChapter)
-                : null;
-
-            return (
+          {items.map((item) => (
               <details key={item.id} className={s.checkItem}>
                 <summary>
                   <span className={s.checkSummaryText}>{item.title}</span>
@@ -68,18 +54,14 @@ export function ChecklistBand({ bridgeOffer = null }: ChecklistBandProps) {
                 </summary>
                 <div className={s.checkDetail}>
                   <p>{item.question}</p>
-                  <p>{item.why}</p>
-                  <p>{item.engineNote}</p>
-                  {item.reportChapter && bridgeOffer && reportHref ? (
-                    <p className={s.checkBridge}>
-                      <Link href={reportHref}>
-                        {checklistBridgeLabel(
-                          bridgeOffer.title,
-                          item.reportChapter.label,
-                        )}
+                  <p>{item.why} {item.engineNote}</p>
+                  <div className={s.checkBridge}>
+                    {categories.map((category) => (
+                      <Link key={category.id} href={category.href}>
+                        {category.label} 공모에서 확인하기 →
                       </Link>
-                    </p>
-                  ) : null}
+                    ))}
+                  </div>
                   <ul className={content.sourceList}>
                     {item.sources.map((source) => (
                       <li key={`${item.id}-${source.url}`}>
@@ -91,18 +73,16 @@ export function ChecklistBand({ bridgeOffer = null }: ChecklistBandProps) {
                         >
                           {source.label}
                         </a>
-                        {source.note ? ` — ${source.note}` : null}
+                        {source.note ? ` ${source.note}` : null}
                       </li>
                     ))}
                   </ul>
                 </div>
               </details>
-            );
-          })}
+          ))}
         </div>
         </Reveal>
         <ul className={s.checkNotices}>
-          {bridgeOffer ? <li>{CHECKLIST_BRIDGE_NOTE}</li> : null}
           <li>{CHECKLIST_NOTICE}</li>
         </ul>
     </HomeSectionFrame>
