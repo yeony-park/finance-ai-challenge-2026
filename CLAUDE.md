@@ -108,6 +108,8 @@ npm run db:export    # DB → data/public/offerings/index.json (마스킹 게이
 - [ ] PR의 `Verify` 체크 그린 (`npm run lint`·`npx tsc --noEmit`·`npm test`·`npm run build`). PR을 거치지 않는 긴급 배포라면 같은 명령을 로컬에서 완주 (키·DB 없이 통과 — R-INV-05)
 - [ ] DB에서 화면 데이터를 새로 뽑았다면, **직전 `npm run db:export` 산출물이 익명화 게이트 테스트를 그린으로 통과**했는가 (R-STO-03 — DB 유래라고 마스킹 게이트 우회 금지). export는 `DATABASE_URL_DIRECT` 전용, 미설정이면 not_configured로 정직 종료하며 화면 데이터를 만들지 않는다.
 
+**심사 중 긴급 차단(재배포 불필요)**: Upstash 콘솔에서 KV 키 `ai:kill-switch`에 `1`을 넣으면 검색 플래너·근거 질의·Copilot live 호출이 즉시 정적 경로로 강등된다(해제는 키 삭제 또는 `0`). 전역 일일 AI 호출 예산은 `AI_DAILY_REQUEST_BUDGET`(기본 100), IP 분당 한도는 `RATE_LIMIT_MAX_REQUESTS`(10). 사이트 전체 봇 차단은 Vercel 대시보드 Firewall → Attack Challenge Mode.
+
 Vercel CLI 수동 배포 — git 연동 없음(푸시는 배포를 트리거하지 않는다):
 `npx -y vercel@58.9.2 deploy --prod --scope viowlet`
 (58.9.4는 "Not authorized" 회귀. `--scope` 생략 시에도 같은 "Not authorized"로 실패한 사례 있음 — 항상 명시. 팀 슬러그는 2026-08-31 lostarkofzephyr → viowlet으로 변경 — 구 슬러그는 실패한다).

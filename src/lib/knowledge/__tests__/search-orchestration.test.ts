@@ -1,7 +1,7 @@
 import { mkdtempSync, rmSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { afterEach, describe, expect, test } from "vitest";
+import { afterEach, describe, expect, test, vi } from "vitest";
 
 import { createMemoryRateLimiter } from "@/lib/spine/ops/rate-limit";
 import { createLiveVerifyGate } from "@/lib/verify/live/policy";
@@ -15,6 +15,7 @@ import type { CanonicalSemanticCorpus } from "../local-rag/corpus";
 import { buildSemanticIndex } from "../local-rag/index-cli";
 import { LOCAL_RAG_VECTOR_DIMENSION } from "../local-rag/types";
 import {
+  authorizeKnowledgeAiHttpRequest,
   authorizeKnowledgeAiRequest,
   orchestrateGlobalSearch,
   parseDeterministicAmountFilter,
@@ -1019,6 +1020,39 @@ describe("bounded search orchestration", () => {
       gate: dailyGate,
       now: 2,
     })).toEqual({ allowed: false, reason: "rate-limited" });
+  });
+  test("HTTP 인가는 client·daily gate 통과 후 전역 AI 예산을 확인한다", async () => {
+    vi.stubEnv("KNOWLEDGE_SEMANTIC_ENABLED", "true");
+    vi.stubEnv("KNOWLEDGE_RUNTIME_AI_ENABLED", "true");
+    try {
+      const request = new Request("http://localhost/api/search", {
+        method: "POST",
+        headers: { "x-forwarded-for": "203.0.113.7" },
+      });
+      let budgetCalls = 0;
+      const exhausted = {
+        check: async () => {
+          budgetCalls += 1;
+          return { allowed: false as const, reason: "budget-exhausted" as const, retryAfterMs: 1_000 };
+        },
+      };
+      await expect(authorizeKnowledgeAiHttpRequest(request, { budget: exhausted, now: 1 }))
+        .resolves.toEqual({ allowed: false, reason: "budget-exhausted" });
+      expect(budgetCalls).toBe(1);
+
+      const killed = {
+        check: async () => ({ allowed: false as const, reason: "kill-switch" as const, retryAfterMs: 1_000 }),
+      };
+      await expect(authorizeKnowledgeAiHttpRequest(request, { budget: killed, now: 2 }))
+        .resolves.toEqual({ allowed: false, reason: "kill-switch" });
+
+      vi.stubEnv("KNOWLEDGE_RUNTIME_AI_ENABLED", "false");
+      await expect(authorizeKnowledgeAiHttpRequest(request, { budget: exhausted, now: 3 }))
+        .resolves.toEqual({ allowed: false, reason: "runtime-disabled" });
+      expect(budgetCalls).toBe(1);
+    } finally {
+      vi.unstubAllEnvs();
+    }
   });
 });
 

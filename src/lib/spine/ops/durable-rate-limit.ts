@@ -3,6 +3,7 @@ import {
   RATE_LIMIT_WINDOW_MS,
 } from "../constants";
 
+import { kvPipeline, resolveKvCredentials, type KvCredentials } from "./kv-rest";
 import {
   createMemoryRateLimiter,
   type RateLimiter,
@@ -19,45 +20,15 @@ export interface DurableRateLimitOptions {
   readonly windowMs?: number;
 }
 
-interface DurableCredentials {
-  readonly url: string;
-  readonly token: string;
-}
-
-const durableCredentials = (): DurableCredentials | null => {
-  const url =
-    process.env.UPSTASH_REDIS_REST_URL ?? process.env.KV_REST_API_URL ?? "";
-  const token =
-    process.env.UPSTASH_REDIS_REST_TOKEN ?? process.env.KV_REST_API_TOKEN ?? "";
-  return url.length > 0 && token.length > 0 ? { url, token } : null;
-};
-
-export const rateLimiterMode = (): "durable" | "memory" =>
-  durableCredentials() === null ? "memory" : "durable";
-
 const pipelineCount = async (
-  credentials: DurableCredentials,
+  credentials: KvCredentials,
   redisKey: string,
   windowMs: number,
 ): Promise<number> => {
-  const response = await fetch(`${credentials.url}/pipeline`, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${credentials.token}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify([
-      ["INCR", redisKey],
-      ["PEXPIRE", redisKey, String(windowMs), "NX"],
-    ]),
-  });
-  if (!response.ok) {
-    throw new Error(`upstash pipeline ${response.status}`);
-  }
-  const results = (await response.json()) as readonly {
-    readonly result?: unknown;
-    readonly error?: string;
-  }[];
+  const results = await kvPipeline(credentials, [
+    ["INCR", redisKey],
+    ["PEXPIRE", redisKey, String(windowMs), "NX"],
+  ]);
   const count = Number(results[0]?.result);
   if (!Number.isFinite(count)) {
     throw new Error(results[0]?.error ?? "unexpected pipeline result");
@@ -65,8 +36,11 @@ const pipelineCount = async (
   return count;
 };
 
+export const rateLimiterMode = (): "durable" | "memory" =>
+  resolveKvCredentials() === null ? "memory" : "durable";
+
 const createDurableRateLimiter = (
-  credentials: DurableCredentials,
+  credentials: KvCredentials,
   options: DurableRateLimitOptions,
 ): RateLimiter => {
   const maxRequests = options.maxRequests ?? RATE_LIMIT_MAX_REQUESTS;
@@ -106,7 +80,7 @@ const createDurableRateLimiter = (
 export const resolveRateLimiter = (
   options: DurableRateLimitOptions,
 ): RateLimiter => {
-  const credentials = durableCredentials();
+  const credentials = resolveKvCredentials();
   if (credentials === null) {
     return createMemoryRateLimiter(
       options.maxRequests ?? RATE_LIMIT_MAX_REQUESTS,
