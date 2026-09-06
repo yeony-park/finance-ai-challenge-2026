@@ -3,9 +3,16 @@ import { generateObject } from "ai";
 import { z } from "zod";
 
 import type { ProductKnowledgeChunk, ProductKnowledgeRepository, ProductKnowledgeScope } from "@/lib/db/repositories/types";
-import { createLiveVerifyGate, type LiveVerifyGate } from "@/lib/verify/live/policy";
+import {
+  createLiveVerifyGate,
+  LIVE_VERIFY_BURST_MAX,
+  LIVE_VERIFY_BURST_WINDOW_MS,
+  type LiveVerifyGate,
+} from "@/lib/verify/live/policy";
 import { filterOutput } from "@/lib/spine/guardrail/output-filter";
 import { resolveAiBudgetGate, type AiBudgetDenialReason, type AiBudgetGate } from "@/lib/spine/ops/ai-budget";
+import { resolveRateLimiter } from "@/lib/spine/ops/durable-rate-limit";
+import type { RateLimiter } from "@/lib/spine/ops/rate-limit";
 
 import {
   isGenericKnowledgeQuery,
@@ -156,6 +163,11 @@ export type KnowledgeAiAccess =
 
 const processKnowledgeAiGate = createLiveVerifyGate();
 const processAiBudgetGate = resolveAiBudgetGate();
+const processKnowledgeAiClientLimiter = resolveRateLimiter({
+  prefix: "knowledge-ai",
+  maxRequests: LIVE_VERIFY_BURST_MAX,
+  windowMs: LIVE_VERIFY_BURST_WINDOW_MS,
+});
 
 export const authorizeKnowledgeAiRequest = (options: {
   readonly clientKey: string;
@@ -174,15 +186,22 @@ export const authorizeKnowledgeAiRequest = (options: {
 
 export const authorizeKnowledgeAiHttpRequest = async (
   request: Request,
-  options: { readonly budget?: AiBudgetGate; readonly now?: number } = {},
+  options: {
+    readonly budget?: AiBudgetGate;
+    readonly clientLimiter?: RateLimiter;
+    readonly now?: number;
+  } = {},
 ): Promise<KnowledgeAiAccess> => {
+  const clientKey = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "local";
   const access = authorizeKnowledgeAiRequest({
-    clientKey: request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "local",
+    clientKey,
     featureEnabled:
       process.env.KNOWLEDGE_SEMANTIC_ENABLED === "true" || isLiveEvidenceEnabled(),
     now: options.now,
   });
   if (!access.allowed) return access;
+  const durable = await (options.clientLimiter ?? processKnowledgeAiClientLimiter).check(clientKey, options.now);
+  if (!durable.allowed) return { allowed: false, reason: "rate-limited" };
   const budget = await (options.budget ?? processAiBudgetGate).check(options.now);
   return budget.allowed ? { allowed: true } : { allowed: false, reason: budget.reason };
 };

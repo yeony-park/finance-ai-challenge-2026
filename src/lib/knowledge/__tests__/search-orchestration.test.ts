@@ -1021,6 +1021,44 @@ describe("bounded search orchestration", () => {
       now: 2,
     })).toEqual({ allowed: false, reason: "rate-limited" });
   });
+  test("HTTP 인가는 내구 client 한도가 거부하면 예산을 소비하지 않는다", async () => {
+    vi.stubEnv("KNOWLEDGE_SEMANTIC_ENABLED", "true");
+    vi.stubEnv("KNOWLEDGE_RUNTIME_AI_ENABLED", "true");
+    try {
+      const request = new Request("http://localhost/api/search", {
+        method: "POST",
+        headers: { "x-forwarded-for": "203.0.113.9" },
+      });
+      let budgetCalls = 0;
+      const budget = {
+        check: async () => {
+          budgetCalls += 1;
+          return { allowed: true as const, remaining: 1 };
+        },
+      };
+      const limitedKeys: string[] = [];
+      const clientLimiter = {
+        check: (key: string) => {
+          limitedKeys.push(key);
+          return { allowed: false, remaining: 0, retryAfterMs: 1_000 };
+        },
+      };
+      await expect(authorizeKnowledgeAiHttpRequest(request, { budget, clientLimiter, now: 1 }))
+        .resolves.toEqual({ allowed: false, reason: "rate-limited" });
+      expect(limitedKeys).toEqual(["203.0.113.9"]);
+      expect(budgetCalls).toBe(0);
+
+      const open = {
+        check: () => ({ allowed: true, remaining: 1, retryAfterMs: 0 }),
+      };
+      await expect(authorizeKnowledgeAiHttpRequest(request, { budget, clientLimiter: open, now: 2 }))
+        .resolves.toEqual({ allowed: true });
+      expect(budgetCalls).toBe(1);
+    } finally {
+      vi.unstubAllEnvs();
+    }
+  });
+
   test("HTTP 인가는 client·daily gate 통과 후 전역 AI 예산을 확인한다", async () => {
     vi.stubEnv("KNOWLEDGE_SEMANTIC_ENABLED", "true");
     vi.stubEnv("KNOWLEDGE_RUNTIME_AI_ENABLED", "true");
