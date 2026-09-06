@@ -19,8 +19,8 @@
 .title {
   margin: 0;
   color: var(--ds-ink);
-  font-size: var(--ds-heading-h1);
-  font-weight: var(--ds-weight-black);
+  font-size: var(--ds-heading-h2);
+  font-weight: var(--ds-weight-regular);
   letter-spacing: var(--ds-tracking-tight);
   line-height: var(--ds-leading-tight);
   word-break: keep-all;
