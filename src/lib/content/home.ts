@@ -41,8 +41,7 @@ export const AI_ROLE_SENTENCE =
 
 export const SEARCH_PLACEHOLDER = "궁금한 것을 질문하세요";
 
-export const AI_TRANSMISSION_NOTICE =
-  "질문은 답변 생성을 위해 외부 AI 서비스로 전송됩니다. 이름·연락처·계좌번호 같은 개인정보는 입력하지 마세요.";
+export const AI_TRANSMISSION_NOTICE = "질문은 외부 AI로 전송됩니다.";
 
 export type GuideTarget = "intro" | "protection" | "lifecycle" | "checklist";
 
