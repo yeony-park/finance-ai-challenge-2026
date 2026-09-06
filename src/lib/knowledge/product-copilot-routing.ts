@@ -255,7 +255,7 @@ export const planProductCopilotQuery = async (
       options.categoryId,
     );
     const parsed = ProductCopilotPlanSchema.safeParse(await planner(question));
-    return parsed.success ? focusStructuredProductQuery(question, parsed.data) : fallback;
+    return focusStructuredProductQuery(question, parsed.success ? parsed.data : fallback);
   } catch {
     return focusStructuredProductQuery(question, fallback);
   }
