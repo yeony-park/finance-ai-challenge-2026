@@ -4,10 +4,16 @@
   scroll-margin-top: var(--ds-scroll-offset);
 }
 
+.summaryWrap > .panel {
+  padding: var(--ds-content-gap);
+  border-radius: var(--ds-radius-xl);
+  background: var(--ds-bg-muted);
+}
+
 .panel {
   min-width: 0;
   color: var(--ds-ink);
-  font-size: var(--ds-text-sm);
+  font-size: var(--ds-text-base);
   line-height: var(--ds-leading-normal);
   overflow-wrap: anywhere;
 }
@@ -33,7 +39,7 @@
 .lead {
   margin: 0;
   color: var(--ds-ink-muted);
-  font-size: var(--ds-text-sm);
+  font-size: var(--ds-text-base);
   line-height: var(--ds-leading-normal);
 }
 
@@ -53,7 +59,7 @@
   background: var(--ds-bg-muted);
   color: var(--ds-ink);
   font: inherit;
-  font-size: var(--ds-text-xs);
+  font-size: var(--ds-text-base);
   cursor: pointer;
 }
 
@@ -93,7 +99,7 @@
   background: var(--ds-accent);
   border-color: var(--ds-accent-line);
   color: var(--ds-accent-ink);
-  font-size: var(--ds-text-sm);
+  font-size: var(--ds-text-base);
   font-weight: var(--ds-weight-bold);
 }
 
@@ -117,7 +123,7 @@
 .resultHeading,
 .resultOutcome {
   margin: 0 0 var(--ds-space-2);
-  font-size: var(--ds-text-sm);
+  font-size: var(--ds-text-base);
   font-weight: var(--ds-weight-bold);
 }
 
@@ -178,20 +184,19 @@
   color: var(--ds-accent-ink);
   box-shadow: var(--ds-shadow-md);
   font: inherit;
-  font-size: var(--ds-text-sm);
+  font-size: var(--ds-text-base);
   font-weight: var(--ds-weight-bold);
   cursor: pointer;
 }
 
 .copilotPopover {
   position: fixed;
-  inset: auto var(--ds-space-5) max(var(--ds-space-5), env(safe-area-inset-bottom)) auto;
-  width: min(28rem, calc(100vw - var(--ds-space-5) * 2));
-  max-height: min(42rem, calc(100dvh - var(--ds-header-h) - var(--ds-space-5) * 2));
+  inset: auto var(--ds-space-4) var(--ds-space-4) auto;
+  width: min(560px, calc(100vw - var(--ds-space-4) * 2));
+  height: min(640px, calc(100dvh - var(--ds-space-4) * 2));
   margin: 0;
-  padding: var(--ds-space-5);
-  overflow-y: auto;
-  overscroll-behavior: contain;
+  padding: 0;
+  overflow: hidden;
   border: 0;
   border-radius: var(--ds-radius-xl);
   background: var(--ds-surface);
@@ -199,16 +204,58 @@
   box-shadow: var(--ds-shadow-lg);
 }
 
+.copilotPopover:popover-open {
+  display: flex;
+  flex-direction: column;
+}
+
+.copilotHeader {
+  display: flex;
+  flex: none;
+  align-items: center;
+  padding: var(--ds-space-2) var(--ds-space-3);
+  border-bottom: 1px solid var(--ds-line);
+}
+
+.copilotDrag {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--ds-space-2);
+  min-height: var(--ds-tap-min);
+  padding: var(--ds-space-2);
+  border: 0;
+  border-radius: var(--ds-radius-md);
+  background: transparent;
+  color: var(--ds-ink);
+  font: inherit;
+  font-size: var(--ds-heading-h4);
+  font-weight: var(--ds-weight-bold);
+  text-align: left;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.copilotDrag:active { cursor: grabbing; }
+
+.copilotBody {
+  flex: 1;
+  min-height: 0;
+  padding: var(--ds-space-5);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.copilotBody > div > .panel > .title,
+.copilotBody > .panel > .title { display: none; }
+
 .copilotClose {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  float: right;
   display: grid;
+  flex: none;
   place-items: center;
   width: var(--ds-tap-min);
   height: var(--ds-tap-min);
-  margin: calc(var(--ds-space-2) * -1) calc(var(--ds-space-2) * -1) 0 0;
   border: 0;
   border-radius: var(--ds-radius-md);
   background: var(--ds-surface);
@@ -217,17 +264,35 @@
   cursor: pointer;
 }
 
-.copilotLauncher:focus-visible,
-.copilotClose:focus-visible {
-  outline: none;
-  box-shadow: var(--ds-focus-ring);
+.copilotResize {
+  display: grid;
+  flex: none;
+  align-self: flex-end;
+  place-items: center;
+  width: var(--ds-tap-min);
+  height: var(--ds-space-8);
+  padding: var(--ds-space-1);
+  border: 0;
+  border-radius: var(--ds-radius-md);
+  background: transparent;
+  color: var(--ds-ink-muted);
+  cursor: nwse-resize;
+  touch-action: none;
+  user-select: none;
 }
 
-@media (max-width: 600px) {
-  .copilotPopover {
-    inset-inline: var(--ds-space-3);
-    bottom: max(var(--ds-space-3), env(safe-area-inset-bottom));
-    width: auto;
-    padding: var(--ds-space-4);
-  }
+.copilotResize svg {
+  width: var(--ds-space-5);
+  height: var(--ds-space-5);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+
+.copilotLauncher:focus-visible,
+.copilotClose:focus-visible,
+.copilotDrag:focus-visible,
+.copilotResize:focus-visible {
+  outline: none;
+  box-shadow: var(--ds-focus-ring);
 }
