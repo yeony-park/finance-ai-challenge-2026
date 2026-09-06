@@ -1,4 +1,7 @@
 .checkBridge {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-2) var(--ds-space-4);
   margin: 0;
 }
 .checkBridge a {

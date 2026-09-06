@@ -35,7 +35,7 @@ describe("한우 기본 분석 화면", () => {
       expect(model.visibleEvidence).toHaveLength(model.evidence.length);
       expect(html).toContain('aria-label="한우 공모 상태"');
       expect(html).toContain('aria-current="page"');
-      expect(html).toContain(">전체</a>");
+      expect(html).toContain(`>전체 (${model.evidence.length})</a>`);
       expect(html).toContain('data-category-analysis-card="true"');
       expect(model.analysisLayout.slots).toEqual(["evidence"]);
       expect(html).not.toContain('id="한우-verdicts"');

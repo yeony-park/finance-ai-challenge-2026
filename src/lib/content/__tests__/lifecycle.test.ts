@@ -3,7 +3,6 @@ import { describe, expect, test } from "vitest";
 import { filterOutput } from "@/lib/spine/guardrail/output-filter";
 import {
   FILING_NOTICE,
-  FILING_SECTION_LEAD,
   FILING_SECTION_TITLE,
   FILING_SOURCE_PREFIX,
   filingSourceLine,
@@ -23,7 +22,6 @@ const ALL_COPY: readonly string[] = [
   LIFECYCLE_NOTE,
   ...Object.values(HOLDING_STAGE_LABELS),
   FILING_SECTION_TITLE,
-  FILING_SECTION_LEAD,
   FILING_NOTICE,
   FILING_SOURCE_PREFIX,
   filingSourceLine("20260814003572"),

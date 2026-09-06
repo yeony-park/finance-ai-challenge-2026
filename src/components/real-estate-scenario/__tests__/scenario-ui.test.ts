@@ -256,7 +256,8 @@ describe("부동산 시나리오 상세", () => {
       expect(markup).toContain(artifact.chunks[0]!.text);
       expect(markup).toContain("공시 간 정정·보충 관계와 현재 최신값은 확정하지 않았습니다");
       expect(markup).toContain("개체의 실제 존재 여부나 사육 이력은 이 공시 문단만으로 확인할 수 없습니다");
-      expect(markup.match(/<article/g)).toHaveLength(1);
+      const filingMarkup = markup.match(/aria-label="승인된 공시 근거">([\s\S]*?)<\/div>/)?.[1] ?? "";
+      expect(filingMarkup.match(/<article/g)).toHaveLength(1);
       expect(markup).not.toMatch(/품종|성별|취득시기|일치 \d+건|\bRAG\b|hash|registry|최신값으로 확정|개체 실재 확인/);
     }
   });
@@ -316,7 +317,7 @@ describe("부동산 시나리오 상세", () => {
     expect(markup).toContain('target="_blank"');
     expect(markup).toContain('rel="noopener noreferrer"');
     expect(artifact.chunks).toHaveLength(5);
-    expect(markup).toContain("승인된 5개 문단만 보여줍니다");
+    expect(markup.match(/<article\b/g)).toHaveLength(5);
     for (const chunk of artifact.chunks) {
       expect(markup).toContain(chunk.title);
       expect(markup).toContain(chunk.text);
@@ -337,7 +338,7 @@ describe("부동산 시나리오 상세", () => {
       expect(markup).toContain(artifact.registry.rcpNo);
       expect(markup).toContain(artifact.chunks[0]!.text);
       expect(artifact.chunks).toHaveLength(1);
-      expect(markup).toContain("승인된 1개 문단만 보여줍니다");
+      expect(markup.match(/<article\b/g)).toHaveLength(1);
     }
   });
 
@@ -401,7 +402,8 @@ describe("부동산 시나리오 상세", () => {
     expect(markup).toContain("가상 운영주체 A의 과거 종료 사례 · 2건");
     expect(markup).not.toContain(`<h4>${offer.asset.publicName}</h4>`);
     expect(markup).toContain("시나리오 조건과 연결된 문서를 바탕으로 답합니다.");
-    expect(markup.split("검토용 시나리오 · 실제 청약·판매 상품이 아닙니다.")).toHaveLength(2);
+    expect(markup).not.toContain("검토용 시나리오 · 실제 청약·판매 상품이 아닙니다.");
+    expect(markup).toContain("공개정보 기반 가상 투자조건");
     expect(markup).toContain("최소투자금은 얼마인가요?");
     expect(markup).toContain("운용기간과 매각조건은 무엇인가요?");
     expect(markup).toContain("가상 운영주체의 과거 이력은 무엇인가요?");

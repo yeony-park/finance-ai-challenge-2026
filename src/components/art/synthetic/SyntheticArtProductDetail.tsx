@@ -1,3 +1,4 @@
+import { ReportBreadcrumb } from "@/components/report/ReportBreadcrumb";
 import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -17,6 +18,7 @@ import {
   syntheticUnexplainedDifference,
 } from "@/lib/synthetic-art/calculations";
 import {
+  getSyntheticArtistById,
   syntheticOfferingStatusLabels,
   syntheticTrackStatusLabels,
 } from "@/lib/synthetic-art/repository";
@@ -29,6 +31,8 @@ import type {
 } from "@/lib/synthetic-art/types";
 
 import s from "./synthetic-art.module.css";
+import { ArtistHistoryDialog } from "./ArtistHistoryDialog";
+import { SyntheticArtistDetailView } from "./SyntheticArtEntityDetail";
 
 const detailTabs = [
   ["summary", "요약"],
@@ -47,16 +51,6 @@ export function syntheticDetailTab(value: string | string[] | undefined): Synthe
   return detailTabs.some(([key]) => key === selected)
     ? (selected as SyntheticDetailTab)
     : "summary";
-}
-
-function Breadcrumb({ title }: { readonly title: string }) {
-  return (
-    <nav className={s.breadcrumb} aria-label="현재 위치">
-      <Link href="/art?tab=analysis">← 분석</Link>
-      <span aria-hidden="true">/</span>
-      <strong aria-current="page">{title}</strong>
-    </nav>
-  );
 }
 
 function SyntheticBadge() {
@@ -198,16 +192,6 @@ function CurrentHeader({ product }: { readonly product: SyntheticCurrentProduct 
 }
 
 function CurrentSummary({ product }: { readonly product: SyntheticCurrentProduct }) {
-  const axes: ReadonlyArray<
-    readonly [string, SyntheticAnalysisSection, SyntheticDetailTab]
-  > = [
-    ["공모가격", product.analysis.priceInsight, "price"],
-    ["작가 시장성", product.analysis.artistInsight, "artist"],
-    ["회수 가능성", product.analysis.exitInsight, "exit"],
-    ["발행사·플랫폼 이력", product.analysis.platformInsight, "platform"],
-  ];
-  const productPath = `/art/products/${encodeURIComponent(product.offering.id)}`;
-
   return (
     <div className={s.tabPanel}>
       <section className={s.summaryOverview}>
@@ -222,22 +206,6 @@ function CurrentSummary({ product }: { readonly product: SyntheticCurrentProduct
               <p className={s.reasonFinding}>{reason.finding}</p>
               <p className={s.reasonImplication}>{reason.implication}</p>
             </article>
-          ))}
-        </div>
-      </section>
-      <section className={s.section}>
-        <div className={s.sectionHeading}>
-          <div>
-            <h2>항목별 분석</h2>
-          </div>
-        </div>
-        <div className={s.axisGrid}>
-          {axes.map(([label, section, key]) => (
-            <Link className={s.axisCard} href={`${productPath}?tab=${key}`} aria-label={`${label} 상세 보기`} key={key}>
-              <h3>{label}</h3>
-              <p>{section.conclusion}</p>
-              <span className={s.axisAction} aria-hidden="true">→</span>
-            </Link>
           ))}
         </div>
       </section>
@@ -327,6 +295,7 @@ function ComparablesPanel({ product }: { readonly product: SyntheticCurrentProdu
 }
 
 function ArtistPanel({ product }: { readonly product: SyntheticCurrentProduct }) {
+  const artistDetail = getSyntheticArtistById(product.artist.id);
   const sellThrough = latestSyntheticAnnualSellThroughRate(
     product.annualMetrics,
     product.auctions,
@@ -343,7 +312,11 @@ function ArtistPanel({ product }: { readonly product: SyntheticCurrentProduct })
       <section className={s.section}>
         <div className={s.sectionHeading}>
           <div><h2>{product.artist.nameKo} 거래 표본</h2><p>합성 경매 기록 {product.auctions.length}건</p></div>
-          <Link className={s.secondaryButton} href={`/art/artists/${encodeURIComponent(product.artist.id)}`}>작가 전체 이력</Link>
+          {artistDetail ? (
+            <ArtistHistoryDialog>
+              <SyntheticArtistDetailView detail={artistDetail} embedded />
+            </ArtistHistoryDialog>
+          ) : null}
         </div>
         <div className={s.dataTableWrap}>
           <table className={s.dataTable}>
@@ -456,8 +429,7 @@ function EvidencePanel({ product }: { readonly product: SyntheticCurrentProduct 
       <section className={s.neutralSummary}>
         <h2>합성 데이터 근거와 계산식</h2>
         <p>
-          외부 원문과 연결하지 않은 합성 fixture입니다. 아래 값은 화면과 계산
-          흐름 확인에만 사용하며 검증 판정을 만들지 않습니다.
+          외부 원문 미연결 · 합성 데이터 · 검증 판정 미제공
         </p>
       </section>
       {product.analysis.conflicts.length ? (
@@ -502,7 +474,7 @@ function CurrentProductDetail({
   const productPath = `/art/products/${encodeURIComponent(product.offering.id)}`;
   return (
     <>
-      <Breadcrumb title={product.offering.title} />
+      <ReportBreadcrumb href="/art?tab=analysis" title={product.offering.title} className={s.breadcrumbInset} />
       <CurrentHeader product={product} />
       <DetailTabs productPath={productPath} tab={tab} />
       {tab === "summary" ? <ProductAiSummary>{aiSummary}</ProductAiSummary> : null}
@@ -526,18 +498,21 @@ function DetailTabs({
   readonly tab: SyntheticDetailTab;
 }) {
   return (
-    <nav className={s.detailTabs} aria-label="상품 상세 분석 탭">
-      {detailTabs.map(([key, label]) => (
-        <Link
-          key={key}
-          className={tab === key ? s.activeTab : undefined}
-          aria-current={tab === key ? "page" : undefined}
-          href={`${productPath}?tab=${key}`}
-        >
-          {label}
-        </Link>
-      ))}
-    </nav>
+    <>
+      <div id="art-detail-tabs" className={s.detailTabsAnchor} />
+      <nav className={s.detailTabs} aria-label="상품 상세 분석 탭">
+        {detailTabs.map(([key, label]) => (
+          <Link
+            key={key}
+            className={tab === key ? s.activeTab : undefined}
+            aria-current={tab === key ? "page" : undefined}
+            href={`${productPath}?tab=${key}#art-detail-tabs`}
+          >
+            {label}
+          </Link>
+        ))}
+      </nav>
+    </>
   );
 }
 
@@ -642,7 +617,7 @@ function HistoricalProductDetail({
 
   return (
     <>
-      <Breadcrumb title={product.offering.title} />
+      <ReportBreadcrumb href="/art?tab=analysis" title={product.offering.title} className={s.breadcrumbInset} />
       <header className={s.detailHeader}>
         <div className={s.detailImage}>
           <Image

@@ -213,7 +213,7 @@
   border-radius: var(--ds-radius-sm);
   color: var(--ds-ink-muted);
   font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
+  font-size: var(--ds-text-base);
   cursor: pointer;
   text-decoration: underline;
   text-decoration-color: var(--ds-accent);
@@ -242,7 +242,7 @@
   min-width: 34rem;
   border-collapse: collapse;
   font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
+  font-size: var(--ds-text-base);
   font-variant-numeric: tabular-nums;
 }
 
@@ -269,7 +269,7 @@
 .caveat,
 .emptyNote {
   color: var(--ds-ink-muted);
-  font-size: var(--ds-text-xs);
+  font-size: var(--ds-text-base);
   line-height: var(--ds-leading-relaxed);
   word-break: keep-all;
 }

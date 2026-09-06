@@ -1,5 +1,47 @@
-.diagramImage {
-  display: block;
-  width: min(100%, 27rem);
-  height: auto;
+.panel {
+  height: 100%;
+  padding: var(--ds-content-gap);
+  border-radius: var(--ds-radius-xl);
+  background: var(--ds-surface);
+}
+
+.title {
+  margin: 0 0 var(--ds-space-5);
+  font-size: var(--ds-heading-h4);
+  font-weight: var(--ds-weight-bold);
+  line-height: var(--ds-leading-snug);
+  word-break: keep-all;
+}
+
+.items {
+  display: grid;
+  gap: var(--ds-space-5);
+  margin: 0;
+}
+
+.item {
+  display: grid;
+  gap: var(--ds-space-2);
+}
+
+.label {
+  font-size: var(--ds-text-base);
+  font-weight: var(--ds-weight-bold);
+  color: var(--ds-ink);
+  line-height: var(--ds-leading-snug);
+}
+
+.description {
+  margin: 0;
+  font-size: var(--ds-text-base);
+  color: var(--ds-ink-muted);
+  line-height: var(--ds-leading-relaxed);
+  word-break: keep-all;
+}
+
+.sourceNote {
+  margin: var(--ds-space-5) 0 0;
+  font-size: var(--ds-text-xs);
+  color: var(--ds-ink-muted);
+  line-height: var(--ds-leading-normal);
 }

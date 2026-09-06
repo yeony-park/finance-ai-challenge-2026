@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 import { METHODOLOGY_ANCHOR } from "@/app/methodology/anchors";
 import { Reveal } from "@/components/motion/Reveal";
 import { DATA_SOURCES } from "@/components/site/service";
@@ -9,7 +7,7 @@ import s from "./report.module.css";
 
 const FOOT_HEADING_ID = "report-foot-heading";
 
-export function ReportFoot({ analysisHref }: { readonly analysisHref: string }) {
+export function ReportFoot() {
   return (
     <section
       className={`${s.section} ${s.reportContentSection}`}
@@ -18,12 +16,8 @@ export function ReportFoot({ analysisHref }: { readonly analysisHref: string }) 
       <Reveal className={s.wrap}>
         <header className={`${s.layerHead} ${s.sectionHead}`}>
           <h2 id={FOOT_HEADING_ID} className={s.layerTitle}>
-            고지
+            데이터 출처
           </h2>
-          <p className={s.sectionLead}>
-            공시·공개 자료에서 확인한 내용과 확인하지 못한 범위를 함께 표시합니다.
-            시나리오의 가정과 실제 관측 자료는 구분하며, 투자 권유나 수익 예측을 제공하지 않습니다.
-          </p>
         </header>
 
         <details className={`${s.supportingDetails} ${s.questionDetails}`}>
@@ -47,15 +41,6 @@ export function ReportFoot({ analysisHref }: { readonly analysisHref: string }) 
           label="어떤 데이터와 대조하나요?"
         />
 
-        <div className={s.footLinks}>
-          <Link href={analysisHref} className={s.buttonGhost}>
-            <span aria-hidden="true">←</span>
-            분석으로 돌아가기
-          </Link>
-          <Link href="/#checklist-title" className={s.buttonGhost}>
-            확인 질문 8가지 보기
-          </Link>
-        </div>
       </Reveal>
     </section>
   );

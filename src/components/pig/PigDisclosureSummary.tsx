@@ -37,12 +37,8 @@ export function PigDisclosureSummary({ products }: PigDisclosureSummaryProps) {
       <div className={s.sectionHeading}>
         <div>
           <h3 className={s.sectionTitle} id="pig-snapshot-title">
-            3개 회차를 같은 기준으로 펼쳐 봅니다
+            회차별 공시 현황
           </h3>
-          <p className={s.sectionDescription}>
-            회차별 발행 조건·가격 기준·정산 공개 여부와 원문을 한 줄씩 놓았습니다.
-            아래에서 회차를 선택하면 세부 분석을 이어서 볼 수 있습니다.
-          </p>
         </div>
         <span className={s.badge}>DART 공시 기준</span>
       </div>

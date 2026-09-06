@@ -45,7 +45,7 @@ export const CATEGORY_ANALYSIS_LAYOUTS: Readonly<
   art: STANDARD_LAYOUT,
   cattle: CARD_ONLY_LAYOUT,
   pig: {
-    slots: ["custom", "track-record", "market", "questions"],
+    slots: ["custom", "track-record", "market"],
     customPresentation: "inline",
     customNavigation: [
       {

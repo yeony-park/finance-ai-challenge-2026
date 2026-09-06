@@ -6,18 +6,18 @@ import nextConfig from "../../../../next.config";
 import RealEstatePage, { metadata } from "../page";
 
 describe("부동산 승인 시나리오 목록", () => {
-  test("13개 시나리오를 공통 탭과 카드로 표시하고 실제 상품은 노출하지 않는다", async () => {
+  test("13개 시나리오 중 첫 9개를 공통 탭과 카드로 표시한다", async () => {
     const markup = renderToStaticMarkup(
       await RealEstatePage({ searchParams: Promise.resolve({ tab: "analysis" }) }),
     );
 
     expect(markup).toContain("서울스퀘어");
     expect(markup).toContain("센터원");
-    expect(markup).toContain("파크원 타워1");
-    expect(markup.match(/data-category-analysis-card="true"/g)).toHaveLength(13);
-    expect(markup).toContain(">청약 예정</a>");
-    expect(markup).toContain(">진행 중</a>");
-    expect(markup).toContain(">청약 종료</a>");
+    expect(markup).not.toContain("파크원 타워1");
+    expect(markup.match(/data-category-analysis-card="true"/g)).toHaveLength(9);
+    expect(markup).toContain(">청약 예정 (0)</a>");
+    expect(markup).toContain(">진행 중 (2)</a>");
+    expect(markup).toContain(">청약 종료 (11)</a>");
     expect(markup).toContain("거래 중");
     expect(markup).toContain("정산 완료");
     expect(markup).not.toContain('href="/offers/real-estate-bbric-hiwon"');
@@ -26,7 +26,8 @@ describe("부동산 승인 시나리오 목록", () => {
     expect(markup).not.toContain("한강대로 416");
     expect(markup).not.toContain("부동산 · 공개정보 확인");
     expect(markup).not.toContain("부동산 상품 검토");
-    expect(markup.split("검토용 시나리오 · 실제 청약·판매 상품이 아닙니다.")).toHaveLength(2);
+    expect(markup).not.toContain("검토용 시나리오 · 실제 청약·판매 상품이 아닙니다.");
+    expect(markup.match(/검토용 시나리오/g)).toHaveLength(9);
     expect(metadata.robots).toEqual({ index: false, follow: false });
   });
 
@@ -62,7 +63,8 @@ describe("부동산 승인 시나리오 목록", () => {
     const markup = renderToStaticMarkup(
       await RealEstatePage({ searchParams: Promise.resolve({ status }) }),
     );
-    expect(markup.match(/data-category-analysis-card="true"/g) ?? []).toHaveLength(count);
+    expect(markup.match(/data-category-analysis-card="true"/g) ?? []).toHaveLength(Math.min(count, 9));
+    expect(markup).toContain(`공모 상품 (${count})`);
   });
 
   test("제거된 실제 부동산 상세 경로에만 검색 차단 응답 헤더를 둔다", async () => {

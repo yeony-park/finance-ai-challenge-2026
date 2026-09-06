@@ -2,18 +2,12 @@ import {
   PIG_ASF_BOARD_URL,
   PIG_ASF_COLLECTED_AT,
   PIG_ASF_EVENTS,
-  PIG_ASF_MAP_URL,
   PIG_ASF_SNAPSHOT_ASOF,
-  PIG_ASF_SNAPSHOT_URL,
   pigAsfEventsForProvince,
 } from "@/lib/content/pig-asf";
 import {
-  ASF_API_COMPARISON,
-  FMD_API_COMPARISON,
-  FMD_API_DOC_URL,
   FMD_BOARD_URL,
   FMD_COLLECTED_AT,
-  FMD_MAP_URL,
   FMD_SNAPSHOT_ASOF,
   PIG_FMD_EVENTS,
 } from "@/lib/content/livestock-disease";
@@ -86,7 +80,6 @@ export function PigDiseaseContext({
       <DiseaseMapFrame
         headingId="pig-disease-map-heading"
         title={PIG_DISEASE.mapTitle}
-        description={PIG_DISEASE.mapDescription}
         meta={`ASF ${PIG_ASF_SNAPSHOT_ASOF} · ${PIG_ASF_EVENTS.length}건 / 구제역 ${FMD_SNAPSHOT_ASOF} · 돼지 ${PIG_FMD_EVENTS.length}건`}
         caption={(
           <>
@@ -112,20 +105,8 @@ export function PigDiseaseContext({
         <a href={PIG_ASF_BOARD_URL} target="_blank" rel="noopener noreferrer">
           {PIG_DISEASE.boardLink}
         </a>
-        <a href={PIG_ASF_SNAPSHOT_URL} target="_blank" rel="noopener noreferrer">
-          {PIG_DISEASE.snapshotLink}
-        </a>
-        <a href={PIG_ASF_MAP_URL} target="_blank" rel="noopener noreferrer">
-          {PIG_DISEASE.mapLink}
-        </a>
         <a href={FMD_BOARD_URL} target="_blank" rel="noopener noreferrer">
-          구제역 발생현황 전체 자료실
-        </a>
-        <a href={FMD_MAP_URL} target="_blank" rel="noopener noreferrer">
-          구제역 공식 지도
-        </a>
-        <a href={FMD_API_DOC_URL} target="_blank" rel="noopener noreferrer">
-          보조 API 대조: FMD {FMD_API_COMPARISON.matchedCanonicalCount}/{FMD_API_COMPARISON.canonicalCount} · ASF {ASF_API_COMPARISON.matchedCanonicalCount}/{ASF_API_COMPARISON.canonicalCount}
+          구제역 원문 보기
         </a>
       </div>
     </section>

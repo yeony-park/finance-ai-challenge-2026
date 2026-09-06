@@ -44,11 +44,29 @@ const WATCH: WatchState = {
 };
 
 describe("관심 공모 정정 감시 요약", () => {
-  test("승인된 부동산 시나리오는 감시 대상과 구분해 다시 열 수 있다", async () => {
+  test("한돈 공시와 미술품·부동산 검토 자료를 저장 목록에서 다시 열 수 있다", async () => {
     const entries = await loadWatchSummaries([]);
-    expect(entries).toHaveLength(13);
+    expect(entries.filter((entry) => entry.isScenario)).toHaveLength(13);
     expect(entries).toContainEqual(expect.objectContaining({
-      id: "re-offer-01", reportHref: "/real-estate/products/re-offer-01", isScenario: true,
+      id: "art-synthetic-offering-01",
+      reportHref: "/art/products/synthetic-offering-01",
+      isSynthetic: true,
+      amendmentLine: "합성 데이터 · 실제 공시 감시 대상이 아닙니다.",
+    }));
+    expect(entries.some((entry) =>
+      entry.id.startsWith("art-historical-offering-") && entry.isSynthetic,
+    )).toBe(true);
+    for (const round of [1, 2, 3]) {
+      expect(entries).toContainEqual(expect.objectContaining({
+        id: `pig-${round}`,
+        reportHref: `/pig/products/round-${round}`,
+        title: `한돈 ${round}호`,
+      }));
+    }
+    expect(entries).toContainEqual(expect.objectContaining({
+      id: "re-offer-01",
+      reportHref: "/real-estate/products/re-offer-01",
+      isScenario: true,
       amendmentLine: "검토용 시나리오 · 실제 공시 감시 대상이 아닙니다.",
     }));
   });

@@ -44,16 +44,16 @@ describe("카테고리 분석 템플릿", () => {
     );
 
     const customPosition = html.indexOf('data-template-marker="pig-custom"');
-    const questionsPosition = html.indexOf('id="한돈-questions"');
 
     expect(customPosition).toBeGreaterThanOrEqual(0);
-    expect(questionsPosition).toBeGreaterThan(customPosition);
+    expect(html).not.toContain('id="한돈-questions"');
+    expect(html).not.toContain("확인 질문 8가지 전체 보기");
     expect(html).not.toContain('id="한돈-evidence"');
     expect(html).not.toContain('id="한돈-verdicts"');
     expect(html).not.toContain('id="한돈-custom"');
     expect(html).toContain('aria-label="한돈 공모 상태"');
     expect(html).toContain(shell.analysisHeaderSticky);
-    expect(html).toContain(">전체<");
+    expect(html).toContain(">전체 (3)<");
     expect(html).not.toContain(">설명<");
     expect(html).not.toContain(">분석<");
     expect(html).not.toContain("<details");

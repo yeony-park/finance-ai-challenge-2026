@@ -8,7 +8,7 @@
 .evidence {
   margin: var(--ds-space-2) 0 0;
   color: var(--ds-ink-muted);
-  font-size: var(--ds-text-2xs);
+  font-size: var(--ds-text-xs);
   line-height: var(--ds-leading-snug);
 }
 

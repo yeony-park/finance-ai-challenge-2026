@@ -1,3 +1,5 @@
+import { pigOfferingSchedule } from "@/lib/content/pig-offering-schedule";
+import type { CategoryPageSearchParams } from "@/lib/content/category-tabs";
 import { Fragment, type ReactNode } from "react";
 
 import { Reveal } from "@/components/motion/Reveal";
@@ -14,6 +16,8 @@ import { CategoryQuestions } from "./CategoryQuestions";
 import { CategoryVerdictSection } from "./CategoryVerdictSection";
 import base from "./category.module.css";
 import shell from "./category-shell.module.css";
+import { countCategoryPhases } from "./category-status-counts";
+import { searchPigDisclosureProducts } from "@/lib/content/pig";
 
 interface CategoryAnalysisViewProps {
   readonly categoryId: CategoryId;
@@ -23,6 +27,7 @@ interface CategoryAnalysisViewProps {
   readonly showStatusTabs: boolean;
   readonly statusTabsSearchParams?: string;
   readonly searchQuery?: string;
+  readonly catalogSearchParams?: CategoryPageSearchParams;
   readonly preview: readonly string[] | null;
   readonly custom: ReactNode;
   readonly customTitle: string;
@@ -37,11 +42,25 @@ export function CategoryAnalysisView({
   showStatusTabs,
   statusTabsSearchParams,
   searchQuery = "",
+  catalogSearchParams = {},
   preview,
   custom,
   customTitle,
   market,
 }: CategoryAnalysisViewProps) {
+  const normalizedQuery = searchQuery.toLocaleLowerCase("ko-KR");
+  const now = new Date();
+  const statusCounts = countCategoryPhases(
+    categoryId === "pig"
+      ? searchPigDisclosureProducts(searchQuery).map((product) => pigOfferingSchedule(product, now).phase)
+      : model.evidence
+          .filter(({ offer }) =>
+            [offer.title, offer.assetLabel, offer.id].some((value) =>
+              value.toLocaleLowerCase("ko-KR").includes(normalizedQuery),
+            ),
+          )
+          .map(({ schedule }) => schedule.phase),
+  );
   const renderSlot = (slot: CategoryAnalysisSlot): ReactNode => {
     switch (slot) {
       case "evidence":
@@ -54,6 +73,8 @@ export function CategoryAnalysisView({
             analysisStatus={analysisStatus}
             preview={preview}
             searchQuery={searchQuery}
+            catalogSearchParams={catalogSearchParams}
+            categoryHref={model.categoryHref}
           />
         );
       case "custom":
@@ -113,6 +134,7 @@ export function CategoryAnalysisView({
         showStatusTabs={showStatusTabs}
         statusTabsSearchParams={statusTabsSearchParams}
         searchQuery={searchQuery}
+        statusCounts={statusCounts}
         headerClassName={shell.analysisHeaderSticky}
       >
         <div className={shell.analysisArea}>

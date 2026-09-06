@@ -114,6 +114,17 @@ describe("상태별 공모 카드 공통 구조", () => {
     expect(html).not.toContain(s.toneUnk);
   });
 
+  test("공시 문단 수를 한우 개체 수로 표시하지 않는다", () => {
+    const card: OfferCardView = {
+      ...cardFor("closed"),
+      evidenceKind: "filing-excerpts",
+      tallies: [{ value: 1, label: "공시 근거", tone: "unk" }],
+    };
+    const html = renderToStaticMarkup(createElement(OfferCard, { card, appearance: "analysis" }));
+    expect(html).toContain("<dt>공시 근거</dt><dd>1건</dd>");
+    expect(html).not.toContain("1두");
+  });
+
   test("부동산 분석 카드는 부동산 캔버스와 건 단위를 사용한다", () => {
     const card = {
       ...cardFor("closed"),

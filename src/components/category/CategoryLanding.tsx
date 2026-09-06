@@ -1,3 +1,4 @@
+import type { CategoryPageSearchParams } from "@/lib/content/category-tabs";
 import type { ReactNode } from "react";
 
 import type { OfferEntry, SubscriptionPhase } from "@/components/site/offers";
@@ -17,6 +18,7 @@ export interface CategoryLandingProps {
   readonly showStatusTabs?: boolean;
   readonly statusTabsSearchParams?: string;
   readonly searchQuery?: string;
+  readonly catalogSearchParams?: CategoryPageSearchParams;
 }
 
 export async function CategoryLanding({
@@ -30,6 +32,7 @@ export async function CategoryLanding({
   showStatusTabs = false,
   statusTabsSearchParams,
   searchQuery = "",
+  catalogSearchParams = {},
   categoryId,
 }: CategoryLandingProps) {
   const model = await loadCategoryLandingModel({
@@ -47,6 +50,7 @@ export async function CategoryLanding({
       showStatusTabs={showStatusTabs}
       statusTabsSearchParams={statusTabsSearchParams}
       searchQuery={searchQuery}
+      catalogSearchParams={catalogSearchParams}
       preview={preview}
       custom={custom}
       customTitle={customTitle}

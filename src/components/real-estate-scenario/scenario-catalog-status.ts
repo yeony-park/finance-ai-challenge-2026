@@ -6,6 +6,11 @@ export const scenarioSubscriptionPhase = (
   phase: ScenarioOffer["offering"]["phase"],
 ): SubscriptionPhase => phase === "subscription-open" ? "open" : "closed";
 
+export function scenarioMatchesQuery(offer: ScenarioOffer, query: string): boolean {
+  return `${offer.title} ${offer.asset.publicName} ${offer.asset.region}`
+    .toLocaleLowerCase("ko-KR").includes(query.trim().toLocaleLowerCase("ko-KR"));
+}
+
 /** 기존 부동산 필터 주소도 공통 청약 상태로 연결한다. */
 export const scenarioCatalogStatus = (
   value: string | string[] | undefined,

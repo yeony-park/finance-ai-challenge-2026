@@ -25,7 +25,7 @@ const watchStatusText = (watch: WatchStatusView): string => {
 
 const pendingText = (watch: WatchStatusView | null | undefined): string =>
   watch && watch.amendments.length > 0
-    ? "접수가 확인된 정정신고서의 원문이 아직 공개되지 않아 재대조 전입니다 — 원문이 공개되는 대로 같은 절차로 다시 대조한 기록이 이 자리에 남습니다."
+    ? "접수된 정정신고서의 변경 항목은 아직 재대조하지 않았습니다."
     : "정정신고서가 접수되면 같은 절차로 다시 대조한 기록이 이 자리에 남습니다. 정정 접수 여부는 자동으로 조회됩니다.";
 
 interface WatchSectionProps {
@@ -40,12 +40,12 @@ export function WatchSection({
   showNotificationNotice = true,
 }: WatchSectionProps) {
   const latestAmendment = watch?.amendments.at(-1);
+  const hasWatchResult = watch != null && !watch.isDetectionFailed;
 
   return (
     <ReportSectionFrame
       headingId={WATCH_HEADING_ID}
       title="정정 이력"
-      lead="이 공모의 정정 접수와 재대조 기록을 같은 절차로 확인합니다."
       muted
       footer={(
         <ReportSectionFooter
@@ -63,11 +63,13 @@ export function WatchSection({
         <div className={s.watchMetric} data-tone="accent">
           <dt>정정신고서</dt>
           <dd>
-            {watch?.isDetectionFailed ? "—" : (watch?.amendmentCount ?? 0)}
-            {!watch?.isDetectionFailed ? <small>건</small> : null}
+            {hasWatchResult ? watch.amendmentCount : "—"}
+            {hasWatchResult ? <small>건</small> : null}
           </dd>
           <p>
-            {watch?.isDetectionFailed
+            {!watch
+              ? "조회 자료 미연결"
+              : watch.isDetectionFailed
               ? "조회 결과 확인 불가"
               : latestAmendment
                 ? `최근 접수 ${latestAmendment.receivedOnLabel}`

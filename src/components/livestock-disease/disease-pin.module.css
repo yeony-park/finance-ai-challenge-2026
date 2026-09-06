@@ -1,0 +1,33 @@
+.pin {
+  position: relative;
+  display: block;
+  flex: none;
+  width: 21px;
+  height: 28px;
+  background: var(--disease-pin-color);
+  mask: url("/map-pin.svg") center / contain no-repeat;
+  pointer-events: none;
+}
+
+.pin::after {
+  position: absolute;
+  top: 18.75%;
+  left: 25%;
+  width: 50%;
+  height: 37.5%;
+  border-radius: 50%;
+  background: var(--ds-surface);
+  content: "";
+}
+
+.pin[data-disease="ASF"] {
+  --disease-pin-color: var(--ds-map-asf);
+}
+
+.pin[data-disease="FMD"] {
+  --disease-pin-color: var(--ds-map-fmd);
+}
+
+.pin[data-disease="LSD"] {
+  --disease-pin-color: var(--ds-map-both);
+}

@@ -4,7 +4,7 @@ import { PigFilingEvidenceQuery } from "@/components/ai-assistant/EvidenceQuery"
 import { loadAiSummary } from "@/lib/ai-summary/cache";
 import { loadApprovedPigFilingArtifact } from "@/lib/knowledge/pig-filing-artifact";
 import type { Metadata } from "next";
-import Link from "next/link";
+import { ReportBreadcrumb } from "@/components/report/ReportBreadcrumb";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 
@@ -173,20 +173,7 @@ export default async function PigReportPage({ params }: PigReportPageProps) {
 
   return (
     <div className={s.reportPage}>
-      <div className={s.breadcrumbBar}>
-        <nav className={`${s.wrap} ${s.breadcrumb}`} aria-label="현재 위치">
-          <Link href="/pig?tab=analysis" className={s.breadcrumbBack}>
-            <span aria-hidden="true">←</span>
-            {PIG_REPORT_COPY.breadcrumbBack}
-          </Link>
-          <span className={s.breadcrumbDivider} aria-hidden="true">
-            /
-          </span>
-          <span className={s.breadcrumbCurrent} aria-current="page">
-            {product.productName}
-          </span>
-        </nav>
-      </div>
+      <ReportBreadcrumb href="/pig?tab=analysis" title={product.productName} />
 
       <ReportDocument
         productHeader={productHeaderFor(product)}
@@ -245,7 +232,7 @@ export default async function PigReportPage({ params }: PigReportPageProps) {
           ),
         }}
       />
-      <ReportFoot analysisHref="/pig?tab=analysis" />
+      <ReportFoot />
     </div>
   );
 }

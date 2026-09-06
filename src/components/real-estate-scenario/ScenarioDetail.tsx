@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { ReportBreadcrumb } from "@/components/report/ReportBreadcrumb";
 import { ReportDocument } from "@/components/report/ReportDocument";
 import { ReportFoot } from "@/components/report/ReportFoot";
 import report from "@/components/report/report.module.css";
@@ -246,10 +246,6 @@ function CompletionCashFlow({ offer }: { readonly offer: ScenarioOffer }) {
         <h2 id="scenario-completion-title" className={s.sectionTitle}>
           매수부터 종료까지 입력값 한눈에 보기
         </h2>
-        <p className={s.sectionLead}>
-          현재 투자 추천이나 실제 상품 성과가 아닙니다. 완료 시나리오의 입력값과
-          입력값으로 계산한 금액을 순서대로 표시합니다.
-        </p>
         <div className={s.completionTotals}>
           <FactGrid>
             <Fact
@@ -597,24 +593,14 @@ export function ScenarioDetail({
 
   return (
     <div className={report.reportPage}>
-      <div className={report.breadcrumbBar}>
-        <nav
-          className={`${report.wrap} ${report.breadcrumb}`}
-          aria-label="현재 위치"
-        >
-          <Link href="/real-estate" className={report.breadcrumbBack}>
-            ← 부동산 분석
-          </Link>
-          <span aria-current="page">{offer.asset.publicName}</span>
-        </nav>
-      </div>
+      <ReportBreadcrumb href="/real-estate" title={offer.asset.publicName} />
       <ReportDocument
         productHeader={{
           imageSrc: "/category-real-estate.jpg",
           imageAlt: "부동산",
           title: offer.asset.publicName,
           status: `${PHASE_LABEL[offer.offering.phase]} · 검토용 시나리오`,
-          meta: "검토용 시나리오 · 실제 청약·판매 상품이 아닙니다.",
+          meta: "공개정보 기반 가상 투자조건",
           facts: [
             { label: "공모총액", value: formatWon(offer.offering.amountWon) },
             {
@@ -828,10 +814,6 @@ export function ScenarioDetail({
                     >
                       공개정보 기반 검토 결과
                     </h2>
-                    <p className={s.sectionLead}>
-                      상단 검토 결과를 건물 기본정보, 수익·비용, 금융, 회수,
-                      가상 운영주체 이력으로 나눠 확인합니다.
-                    </p>
                     <p className={s.reviewDisclaimer}>
                       투자 적합성·안전성·수익성을 평가한 결과가 아닙니다.
                     </p>
@@ -855,11 +837,6 @@ export function ScenarioDetail({
                       ? "가상 운영주체의 과거 종료 사례 검토"
                       : "남은 확인 범위와 운영 이력"}
                   </h2>
-                  <p className={s.sectionLead}>
-                    {isSettled
-                      ? "현재 투자 대상의 추천이 아니라, 종료 시나리오에 같은 확인 기준을 적용한 결과와 남은 확인 항목을 보여줍니다."
-                      : "추천이나 안전성 점수가 아니라, 이 화면에서 확인한 범위와 확인하지 못한 범위를 보여줍니다."}
-                  </p>
 
                   {isSettled ? (
                     <ReviewSummary review={review} historical />
@@ -943,7 +920,7 @@ export function ScenarioDetail({
       <aside className={s.disclosure} aria-label="시나리오 데이터 안내">
         <div className={s.wrap}>{SCENARIO_DEMO_DISCLOSURE}</div>
       </aside>
-      <ReportFoot analysisHref="/real-estate" />
+      <ReportFoot />
     </div>
   );
 }

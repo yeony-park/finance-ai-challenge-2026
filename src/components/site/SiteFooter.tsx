@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-import { FIXED_NOTICES } from "@/lib/verify/contract/notices";
 import { SERVICE_NAME } from "./service";
 import s from "./shell.module.css";
 
@@ -8,8 +7,6 @@ const GITHUB_REPOSITORY_URL =
   "https://github.com/yeony-park/finance-ai-challenge-2026";
 
 export function SiteFooter() {
-  const [primaryNotice] = FIXED_NOTICES;
-
   return (
     <footer className={s.footer}>
       <div className={s.inner}>
@@ -42,11 +39,16 @@ export function SiteFooter() {
 
         <ul className={s.disclaimer}>
           <li>
-            <span className={s.disclaimerStrong}>{primaryNotice}</span>
+            <span className={s.disclaimerStrong}>
+              검증 결과는 공시 내용과 공개 데이터를 바탕으로 제공하는 참고 정보입니다.
+              특정 상품의 청약이나 투자를 권유하거나 만류하지 않으며, 투자 자문·중개를
+              제공하거나 수익을 보장하지 않습니다.
+            </span>
           </li>
           <li>
             <span className={s.disclaimerStrong}>
-              자료가 부족하다는 사실 자체는 부정적 판단의 근거가 아닙니다.
+              투자 판단과 그에 따른 결과 및 책임은 이용자에게 있습니다. 본 서비스는
+              어떤 법적 근거로도 사용될 수 없습니다.
             </span>
           </li>
           <li>

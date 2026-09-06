@@ -39,7 +39,7 @@
 
 .slotLead {
   margin-top: 0;
-  font-size: var(--ds-text-sm);
+  font-size: var(--ds-text-base);
   line-height: var(--ds-leading-relaxed);
   color: var(--ds-ink-muted);
   max-width: 52rem;
@@ -62,7 +62,7 @@
   border-collapse: collapse;
   table-layout: fixed;
   background: var(--ds-surface);
-  font-size: var(--ds-text-sm);
+  font-size: var(--ds-text-base);
 }
 
 .layerTable th:first-child,
@@ -85,7 +85,7 @@
 
 .layerTable th {
   padding-block: var(--ds-space-3);
-  font-size: var(--ds-text-xs);
+  font-size: var(--ds-text-base);
   font-weight: var(--ds-weight-medium);
   letter-spacing: var(--ds-tracking-normal);
   color: var(--ds-ink-muted);
@@ -111,7 +111,7 @@
   border-radius: var(--ds-radius-sm);
   background: var(--ds-verdict-match-soft);
   color: var(--ds-verdict-match);
-  font-size: var(--ds-text-2xs);
+  font-size: var(--ds-text-xs);
   font-weight: var(--ds-weight-bold);
   line-height: 1;
   white-space: nowrap;
@@ -167,9 +167,9 @@
 .tallyMeta {
   margin-top: var(--ds-space-2);
   font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
+  font-size: var(--ds-text-xs);
   line-height: 1.75;
-  color: var(--ds-ink-faint);
+  color: var(--ds-ink-muted);
 }
 
 .offerRow {
@@ -198,15 +198,15 @@ span.offerName {
 }
 
 .offerCounts {
-  font-size: var(--ds-text-sm);
+  font-size: var(--ds-text-base);
   color: var(--ds-ink-muted);
   word-break: keep-all;
 }
 
 .offerMeta {
   font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
-  color: var(--ds-ink-faint);
+  font-size: var(--ds-text-xs);
+  color: var(--ds-ink-muted);
   line-height: 1.75;
 }
 
@@ -215,7 +215,7 @@ span.offerName {
   padding: var(--ds-space-4) var(--ds-space-5);
   border: 1px dashed var(--ds-line-dashed);
   border-radius: var(--ds-radius-lg);
-  font-size: var(--ds-text-sm);
+  font-size: var(--ds-text-base);
   line-height: var(--ds-leading-relaxed);
   color: var(--ds-ink-muted);
   word-break: keep-all;
@@ -234,7 +234,7 @@ span.offerName {
 .questionBridge {
   display: inline-block;
   margin-left: var(--ds-space-2);
-  font-size: var(--ds-text-xs);
+  font-size: var(--ds-text-base);
   font-weight: var(--ds-weight-bold);
   color: var(--ds-ink);
   text-decoration: none;
@@ -253,7 +253,7 @@ span.offerName {
 
 .previewList li {
   margin-bottom: var(--ds-space-2);
-  font-size: var(--ds-text-sm);
+  font-size: var(--ds-text-base);
   color: var(--ds-ink-muted);
 }
 
@@ -273,7 +273,7 @@ span.offerName {
 .groupTitle {
   margin-top: var(--ds-space-5);
   margin-bottom: var(--ds-space-3);
-  font-size: var(--ds-text-sm);
+  font-size: var(--ds-text-base);
   font-weight: var(--ds-weight-medium);
   letter-spacing: 0.02em;
   color: var(--ds-ink-muted);
@@ -285,7 +285,7 @@ span.offerName {
   border-left: 2px solid var(--ds-line-strong);
   background: var(--ds-bg-muted);
   color: var(--ds-ink-muted);
-  font-size: var(--ds-text-xs);
+  font-size: var(--ds-text-base);
   line-height: var(--ds-leading-relaxed);
   word-break: keep-all;
 }
@@ -307,16 +307,16 @@ span.offerName {
 .layerSub {
   display: block;
   margin-top: var(--ds-space-1);
-  font-size: var(--ds-text-2xs);
+  font-size: var(--ds-text-xs);
   font-weight: var(--ds-weight-regular, 400);
-  color: var(--ds-ink-faint);
+  color: var(--ds-ink-muted);
 }
 
 .tileCaption {
   max-width: 16rem;
-  font-size: var(--ds-text-2xs);
+  font-size: var(--ds-text-base);
   line-height: 1.5;
-  color: var(--ds-ink-faint);
+  color: var(--ds-ink-muted);
   word-break: keep-all;
 }
 
@@ -324,7 +324,7 @@ span.offerName {
   display: flex;
   align-items: center;
   gap: var(--ds-space-2);
-  font-size: var(--ds-text-sm);
+  font-size: var(--ds-text-base);
   color: var(--ds-ink-muted);
 }
 
@@ -432,13 +432,13 @@ span.offerName {
 
 .chartAxisText {
   font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
+  font-size: var(--ds-text-xs);
   fill: var(--ds-ink-faint);
 }
 
 .chartLabelStrong {
   font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
+  font-size: var(--ds-text-xs);
   font-weight: var(--ds-weight-bold);
   fill: var(--ds-ink);
 }
@@ -479,7 +479,7 @@ span.offerName {
   background: var(--ds-ink);
   color: var(--ds-ink-invert);
   font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
+  font-size: var(--ds-text-xs);
   line-height: 1.55;
   white-space: nowrap;
   pointer-events: none;
@@ -499,8 +499,8 @@ span.offerName {
   padding-top: var(--ds-space-3);
   border-top: 1px solid var(--ds-line);
   font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
-  color: var(--ds-ink-faint);
+  font-size: var(--ds-text-xs);
+  color: var(--ds-ink-muted);
 }
 
 .chartRaw {
@@ -512,7 +512,7 @@ span.offerName {
   padding-block: var(--ds-space-2);
   cursor: pointer;
   font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
+  font-size: var(--ds-text-base);
   color: var(--ds-ink-muted);
   text-decoration: underline;
   text-decoration-color: var(--ds-accent);
@@ -535,7 +535,7 @@ span.offerName {
   min-width: 460px;
   border-collapse: collapse;
   font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
+  font-size: var(--ds-text-base);
   font-variant-numeric: tabular-nums;
 }
 
@@ -628,7 +628,7 @@ span.offerName {
   background: var(--ds-bg-muted);
   color: var(--ds-ink-muted);
   font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
+  font-size: var(--ds-text-xs);
   letter-spacing: 0.04em;
   white-space: nowrap;
 }
@@ -641,7 +641,7 @@ span.offerName {
   background: var(--ds-accent-soft);
   color: var(--ds-accent-ink);
   font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
+  font-size: var(--ds-text-xs);
   font-weight: var(--ds-weight-bold);
   letter-spacing: 0.04em;
   white-space: nowrap;
@@ -658,7 +658,7 @@ span.offerName {
   justify-content: space-between;
   align-items: center;
   gap: var(--ds-space-3);
-  font-size: var(--ds-text-sm);
+  font-size: var(--ds-text-base);
   color: var(--ds-ink-muted);
 }
 
@@ -676,17 +676,17 @@ span.offerName {
 
 .offerCardMeta {
   font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
-  color: var(--ds-ink-faint);
+  font-size: var(--ds-text-xs);
+  color: var(--ds-ink-muted);
   line-height: 1.65;
 }
 
 .offerProductPlatform,
 .offerVerificationMeta {
   font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
+  font-size: var(--ds-text-xs);
   line-height: 1.65;
-  color: var(--ds-ink-faint);
+  color: var(--ds-ink-muted);
 }
 
 .offerReviewAxes {
@@ -706,13 +706,13 @@ span.offerName {
 
 .offerReviewAxes dt {
   font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
-  color: var(--ds-ink-faint);
+  font-size: var(--ds-text-base);
+  color: var(--ds-ink-muted);
 }
 
 .offerReviewAxes dd {
   margin: 0;
-  font-size: var(--ds-text-xs);
+  font-size: var(--ds-text-base);
   font-weight: var(--ds-weight-bold);
   line-height: var(--ds-leading-snug);
   color: var(--ds-ink);
@@ -733,8 +733,8 @@ span.offerName {
 }
 
 .offerProductFacts dt {
-  font-size: var(--ds-text-2xs);
-  color: var(--ds-ink-faint);
+  font-size: var(--ds-text-base);
+  color: var(--ds-ink-muted);
 }
 
 .offerProductFacts dd {
@@ -760,7 +760,7 @@ span.offerName {
 .offerCardCta {
   align-self: flex-start;
   color: var(--ds-ink);
-  font-size: var(--ds-text-xs);
+  font-size: var(--ds-text-base);
   font-weight: var(--ds-weight-bold);
   border-bottom: 2px solid var(--ds-accent);
   padding-bottom: 1px;
@@ -784,14 +784,14 @@ span.offerName {
 }
 
 .reviewSummaryItem h3 {
-  font-size: var(--ds-text-sm);
+  font-size: var(--ds-heading-h4);
   font-weight: var(--ds-weight-bold);
   color: var(--ds-ink);
 }
 
 .reviewSummaryItem p {
   margin-top: var(--ds-space-2);
-  font-size: var(--ds-text-sm);
+  font-size: var(--ds-text-base);
   line-height: var(--ds-leading-relaxed);
   color: var(--ds-ink-muted);
   word-break: keep-all;
@@ -868,13 +868,13 @@ span.offerName {
 .timelineDate {
   display: block;
   font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
+  font-size: var(--ds-text-xs);
   color: var(--ds-ink-muted);
 }
 
 .timelineRcp {
   margin-left: var(--ds-space-3);
-  color: var(--ds-ink-faint);
+  color: var(--ds-ink-muted);
 }
 
 .timelineName {
@@ -887,7 +887,7 @@ span.offerName {
 .timelineDetail {
   display: block;
   margin-top: 0.1rem;
-  font-size: var(--ds-text-sm);
+  font-size: var(--ds-text-base);
   color: var(--ds-ink-muted);
   max-width: 52ch;
 }
@@ -899,7 +899,7 @@ span.offerName {
 }
 .chartMarkerText {
   font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
+  font-size: var(--ds-text-xs);
   fill: var(--ds-ink-faint);
 }
 
@@ -952,19 +952,19 @@ span.offerName {
 }
 .factStripTitle {
   font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
+  font-size: var(--ds-text-xs);
   letter-spacing: 0.06em;
-  color: var(--ds-ink-faint);
+  color: var(--ds-ink-muted);
 }
 .factStripItem {
-  font-size: var(--ds-text-sm);
+  font-size: var(--ds-text-base);
   color: var(--ds-ink);
   word-break: keep-all;
 }
 .factStripItem + .factStripItem::before {
   content: "·";
   margin-right: var(--ds-space-2);
-  color: var(--ds-ink-faint);
+  color: var(--ds-ink-muted);
 }
 
 .chapterLinks {
@@ -987,7 +987,7 @@ span.offerName {
   align-content: start;
 }
 .flowName {
-  font-size: var(--ds-text-md);
+  font-size: var(--ds-heading-h4);
   font-weight: var(--ds-weight-bold);
   word-break: keep-all;
 }
@@ -999,11 +999,11 @@ span.offerName {
   background: var(--ds-accent-soft);
   color: var(--ds-accent-ink);
   font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
+  font-size: var(--ds-text-xs);
 }
 .flowCheck {
   margin: 0;
-  font-size: var(--ds-text-sm);
+  font-size: var(--ds-text-base);
   line-height: var(--ds-leading-relaxed);
   color: var(--ds-ink-muted);
   word-break: keep-all;
@@ -1021,12 +1021,12 @@ span.offerName {
   border-bottom: 1px solid var(--ds-line);
 }
 .termName {
-  font-size: var(--ds-text-md);
+  font-size: var(--ds-heading-h4);
   font-weight: var(--ds-weight-bold);
 }
 .termEasy {
   margin: 0;
-  font-size: var(--ds-text-sm);
+  font-size: var(--ds-text-base);
   line-height: var(--ds-leading-relaxed);
   color: var(--ds-ink-muted);
   word-break: keep-all;
@@ -1034,6 +1034,6 @@ span.offerName {
 .termWhy {
   margin: 0;
   font-family: var(--ds-font-mono);
-  font-size: var(--ds-text-2xs);
-  color: var(--ds-ink-faint);
+  font-size: var(--ds-text-base);
+  color: var(--ds-ink-muted);
 }

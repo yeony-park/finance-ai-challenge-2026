@@ -21,8 +21,8 @@
 .metric dd {
   margin: 0;
   color: var(--ds-ink);
-  font-size: var(--ds-heading-h3);
-  font-weight: var(--ds-weight-bold);
+  font-size: var(--ds-heading-h4);
+  font-weight: var(--ds-weight-regular);
   line-height: var(--ds-leading-snug);
   font-variant-numeric: tabular-nums;
   overflow-wrap: anywhere;
@@ -30,7 +30,7 @@
 
 .metric .note {
   color: var(--ds-ink-muted);
-  font-size: var(--ds-text-sm);
+  font-size: var(--ds-text-base);
   font-weight: var(--ds-weight-regular);
 }
 

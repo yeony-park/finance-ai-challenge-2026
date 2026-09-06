@@ -1,0 +1,61 @@
+.pageNumberNav {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-1);
+}
+
+.pageNumberButton,
+.pageNumberButtonDisabled {
+  display: inline-grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--ds-ink);
+  font-size: var(--ds-heading-h5);
+  text-decoration: none;
+}
+
+.pageNumberButton:hover {
+  color: var(--ds-accent-ink);
+}
+
+.pageNumberButton:focus-visible {
+  outline: none;
+  box-shadow: var(--ds-focus-ring);
+}
+
+.pageNumberButtonDisabled {
+  color: var(--ds-ink-faint);
+  opacity: 0.45;
+}
+
+.pageNumberButtonCurrent {
+  font-weight: var(--ds-weight-bold);
+}
+
+.pageNumberEllipsis {
+  display: inline-grid;
+  width: 1.5rem;
+  height: 2rem;
+  place-items: center;
+  color: var(--ds-ink-faint);
+  font-size: var(--ds-heading-h5);
+}
+
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--ds-space-3);
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  padding-top: var(--ds-space-4);
+}

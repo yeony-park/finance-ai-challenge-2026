@@ -12,6 +12,7 @@ import type { ReportSnapshot } from "@/lib/verify/report/snapshot";
 import {
   CattleDiseaseContext,
   cattleDiseaseContextForReport,
+  cattleDiseaseContextForDate,
 } from "./CattleDiseaseContext";
 
 const document: DocumentRef = {
@@ -71,6 +72,16 @@ const report: ReportSnapshot = {
 };
 
 describe("한우 공고별 질병 맥락", () => {
+  test("지역 미연결 회차도 공시 기준일 이전 전국 지도와 미확인 상태를 제공한다", () => {
+    const context = cattleDiseaseContextForDate([], "2024-02-20");
+    expect(context.fmdEvents.length + context.lsdEvents.length).toBeGreaterThan(0);
+    expect([...context.fmdEvents, ...context.lsdEvents].every((event) => event.occurredAt <= "2024-02-20")).toBe(true);
+    const html = renderToStaticMarkup(createElement(CattleDiseaseContext, { context }));
+    expect(html).toContain("전국 소 질병 공개 발생");
+    expect(html).toContain("지역 미확인");
+    expect(html).toContain("cattle-disease-map-heading");
+  });
+
   test("판정·미판정 보관장소의 도를 합쳐 제출일 이전 사건만 남긴다", () => {
     const context = cattleDiseaseContextForReport(report);
 
@@ -78,6 +89,7 @@ describe("한우 공고별 질병 맥락", () => {
     if (!context) return;
 
     expect(context.provinces).toEqual(["경기", "경북", "전북"]);
+    expect(context.disclosedProvinces).toEqual(["경기", "전북"]);
     expect(context.fmdEvents).toEqual(
       CATTLE_FMD_EVENTS.filter(
         (event) =>
@@ -110,7 +122,7 @@ describe("한우 공고별 질병 맥락", () => {
     );
 
     expect(html).toContain("경기 · 경북 · 전북");
-    expect(html).toContain(`신고서 제출일(${context.submittedOn}) 이전의 공식 공개 발생`);
+    expect(html).toContain(`공시 기준일(${context.submittedOn}) 이전의 공식 공개 발생`);
     expect(html).toContain("공고 개체나 농장과 질병 사건을 연결하지 않습니다.");
     expect(html).toContain(`구제역 ${context.fmdEvents.length}건`);
     expect(html).toContain(`럼피스킨 ${context.lsdEvents.length}건`);

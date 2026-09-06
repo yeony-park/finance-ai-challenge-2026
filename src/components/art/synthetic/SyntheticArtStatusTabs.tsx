@@ -11,6 +11,7 @@ import type { SyntheticCatalogSearchParams } from "@/lib/synthetic-art/types";
 import shell from "@/components/category/category-shell.module.css";
 import { SearchField } from "@/components/site/SearchField";
 import s from "./synthetic-art.module.css";
+import { countSyntheticArtCatalog } from "@/lib/synthetic-art/repository";
 
 export function SyntheticArtStatusTabs({
   searchParams,
@@ -29,6 +30,12 @@ export function SyntheticArtStatusTabs({
   const isOpen = filters.scope === "current"
     && filters.currentStatus.length === 1
     && filters.currentStatus[0] === "open";
+  const counts = {
+    all: countSyntheticArtCatalog(baseParams),
+    upcoming: countSyntheticArtCatalog({ ...baseParams, scope: "current", currentStatus: "upcoming" }),
+    open: countSyntheticArtCatalog({ ...baseParams, scope: "current", currentStatus: "open" }),
+    closed: countSyntheticArtCatalog({ ...baseParams, scope: "history" }),
+  };
 
   return (
     <div className={s.analysisStatusToggle}>
@@ -43,6 +50,7 @@ export function SyntheticArtStatusTabs({
           href={syntheticArtCatalogHref(baseParams)}
         >
           {CATEGORY_TAB_COPY.all}
+          {` (${counts.all.toLocaleString("ko-KR")})`}
         </Link>
         <Link
           className={
@@ -58,6 +66,7 @@ export function SyntheticArtStatusTabs({
           })}
         >
           {CATEGORY_TAB_COPY.upcoming}
+          {` (${counts.upcoming.toLocaleString("ko-KR")})`}
         </Link>
         <Link
           className={
@@ -73,6 +82,7 @@ export function SyntheticArtStatusTabs({
           })}
         >
           {CATEGORY_TAB_COPY.open}
+          {` (${counts.open.toLocaleString("ko-KR")})`}
         </Link>
         <Link
           className={
@@ -84,6 +94,7 @@ export function SyntheticArtStatusTabs({
           href={syntheticArtCatalogHref({ ...baseParams, scope: "history" })}
         >
           {CATEGORY_TAB_COPY.closed}
+          {` (${counts.closed.toLocaleString("ko-KR")})`}
         </Link>
       </div>
 

@@ -1,5 +1,4 @@
 import {
-  FILING_SECTION_LEAD,
   FILING_SOURCE_PREFIX,
   filingSourceLine,
 } from "@/lib/content/filing";
@@ -17,7 +16,6 @@ export function FilingFactsSection({ facts }: { readonly facts: FilingFacts }) {
     <ReportSectionFrame
       headingId={FILING_HEADING_ID}
       title="신고서 정보"
-      lead={FILING_SECTION_LEAD}
       animated={false}
       footer={(
         <ReportSectionFooter

@@ -19,9 +19,11 @@ describe("합성 미술품 상세 화면", () => {
       expect(html).toContain(label);
     }
     expect(html).toContain("공개 비용 구성");
+    expect(html).toContain('id="art-detail-tabs"');
+    expect(html).toContain('?tab=price#art-detail-tabs"');
     expect(html).not.toContain("항목별 분석");
     expect(html).toContain('href="/art?tab=analysis"');
-    expect(html).toContain("← 분석");
+    expect(html).toMatch(/aria-label="현재 위치"[^]*?>공시<\/a>/);
     expect(html).toContain("합성 데이터 · 대조 불가");
   });
 
@@ -35,6 +37,8 @@ describe("합성 미술품 상세 화면", () => {
 
     expect(html).not.toMatch(/worth_considering|conditional|caution|danger/);
     expect(html).not.toContain("Synthetic positive signal");
+    expect(html).not.toContain("항목별 분석");
+    expect(html).toContain(product.analysis.headline);
   });
 
   test("과거 이력도 같은 7개 탭과 분석 복귀 경로를 제공한다", () => {
@@ -47,6 +51,8 @@ describe("합성 미술품 상세 화면", () => {
 
     expect(html).toContain('href="/art?tab=analysis"');
     expect(html).toContain("합성 이력 필드");
+    expect(html).toContain('id="art-detail-tabs"');
+    expect(html).toContain('?tab=price#art-detail-tabs"');
     expect(html).toContain("시뮬레이션 수익률");
     for (const label of ["요약", "공모가", "유사 작품", "작가 기록", "회수 분석", "플랫폼 이력", "근거"]) {
       expect(html).toContain(label);

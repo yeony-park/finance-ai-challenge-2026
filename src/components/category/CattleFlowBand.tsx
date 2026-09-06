@@ -46,25 +46,23 @@ export function CattleFlowBand() {
         <h3 id="cattle-terms-title" className={s.termTitle}>
           {CATTLE_TERMS_TITLE}
         </h3>
-        <dl className={s.termList}>
+        <div className={s.termProse}>
           {CATTLE_TERMS.map((item) => (
-            <div key={item.term} className={s.termItem}>
-              <dt className={s.termName}>{item.term}</dt>
-              <dd className={s.termEasy}>{item.easy}</dd>
-              <dd className={s.termWhy}>
-                {item.why} 자세한 기준은{" "}
-                <a
-                  href={item.source.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {item.source.label}
-                </a>
-                {"에서 확인할 수 있습니다."}
-              </dd>
-            </div>
+            <p key={item.source.url}>{item.text}</p>
           ))}
-        </dl>
+        </div>
+        <div className={s.termSources}>
+          {CATTLE_TERMS.map((item) => (
+            <a
+              key={item.source.url}
+              href={item.source.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {item.source.label}
+            </a>
+          ))}
+        </div>
       </section>
     </>
   );

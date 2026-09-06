@@ -144,6 +144,7 @@ export async function CategoryPage({
     preview: info.preview,
     analysisStatus: context.analysisStatus,
     searchQuery: context.searchQuery,
+    catalogSearchParams: context.params,
     showStatusTabs: true,
     statusTabsSearchParams: context.statusTabsSearchParams,
     custom,

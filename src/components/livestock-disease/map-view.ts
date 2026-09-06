@@ -28,7 +28,7 @@ export const selectLivestockDiseaseMapEvents = (
     .filter((event) => {
       if (filter.species === "pig") return true;
       return (
-        filter.focusProvinces.includes(event.province) &&
+        (filter.focusProvinces.length === 0 || filter.focusProvinces.includes(event.province)) &&
         (!filter.throughDate || event.occurredAt <= filter.throughDate)
       );
     })
@@ -49,7 +49,7 @@ export const selectLivestockDiseaseMapEvents = (
         isCurrent,
         isFocus:
           filter.species === "cattle"
-            ? true
+            ? isFocusProvince
             : isFocusProvince && (event.disease !== "ASF" || isCurrent),
       };
     });
@@ -74,3 +74,10 @@ export const diseaseYearlyCounts = (
     left.localeCompare(right),
   );
 };
+
+/** Viewport points represent the disclosed province, never an individual farm. */
+export const diseaseMapFocusPoints = (
+  dataset: LivestockDiseaseMapDataset,
+  provinces: readonly string[],
+): readonly { readonly latitude: number; readonly longitude: number }[] =>
+  dataset.events.filter((event) => provinces.includes(event.province));

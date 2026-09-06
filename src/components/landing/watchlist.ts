@@ -9,7 +9,9 @@ export const parseWatchlist = (raw: string | null): readonly string[] => {
   try {
     const parsed: unknown = JSON.parse(raw);
     if (!Array.isArray(parsed)) return [];
-    return parsed.filter((item): item is string => typeof item === "string");
+    return [...new Set(parsed
+      .filter((item): item is string => typeof item === "string")
+      .map((id) => id.replace(/^pig-round-(\d+)$/, "pig-$1")))];
   } catch {
     return [];
   }

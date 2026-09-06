@@ -1,3 +1,4 @@
+import type { CategoryPageSearchParams } from "@/lib/content/category-tabs";
 import { CategoryOfferCardGrid } from "@/components/landing/CategoryOfferCard";
 import { OfferCard } from "@/components/landing/OfferCard";
 import offerStyles from "@/components/landing/landing.module.css";
@@ -7,6 +8,9 @@ import type { SubscriptionPhase } from "@/components/site/offers";
 
 import type { OfferEvidence } from "./category-landing-model";
 import base from "./category.module.css";
+import { CatalogPagination } from "./CatalogPagination";
+import { categoryCatalogHref, paginateCatalog } from "./catalog-pagination";
+import pagination from "./catalog-pagination.module.css";
 
 interface CategoryEvidenceSectionProps {
   readonly className?: string;
@@ -16,6 +20,8 @@ interface CategoryEvidenceSectionProps {
   readonly analysisStatus: SubscriptionPhase | null;
   readonly preview: readonly string[] | null;
   readonly searchQuery?: string;
+  readonly catalogSearchParams?: CategoryPageSearchParams;
+  readonly categoryHref?: string;
 }
 
 export function CategoryEvidenceSection({
@@ -26,6 +32,8 @@ export function CategoryEvidenceSection({
   analysisStatus,
   preview,
   searchQuery = "",
+  catalogSearchParams = {},
+  categoryHref = "/cattle",
 }: CategoryEvidenceSectionProps) {
   const listedEvidence = [...visibleEvidence]
     .sort(
@@ -34,21 +42,28 @@ export function CategoryEvidenceSection({
         Date.parse(left.offer.subscription.opensAt),
     );
 
+  const result = paginateCatalog(listedEvidence, catalogSearchParams.page);
+  const hrefForPage = (page: number) => categoryCatalogHref(categoryHref, catalogSearchParams, page);
+
   return (
     <section
       className={`${base.slot} ${className ?? ""}`}
       aria-labelledby={`${title}-evidence`}
     >
       <Reveal className={base.slotGrid}>
-        <h2
-          id={`${title}-evidence`}
-          className={offerStyles.categoryOfferSectionTitle}
-        >
-          {OFFERS_SECTION_TITLE}
-        </h2>
+        <div className={pagination.header}>
+          <h2
+            id={`${title}-evidence`}
+            className={offerStyles.categoryOfferSectionTitle}
+          >
+            {OFFERS_SECTION_TITLE}
+            {` (${listedEvidence.length.toLocaleString("ko-KR")})`}
+          </h2>
+          <CatalogPagination {...result} hrefForPage={hrefForPage} label={`${title} 목록 상단 페이지`} />
+        </div>
         {listedEvidence.length > 0 ? (
           <CategoryOfferCardGrid>
-            {listedEvidence.map((entry) => (
+            {result.items.map((entry) => (
               <OfferCard
                 key={entry.offer.id}
                 card={entry.card}
@@ -73,6 +88,11 @@ export function CategoryEvidenceSection({
             이 카테고리에는 아직 공개 리포트가 없습니다.
           </p>
         )}
+        {result.pageCount > 1 ? (
+          <div className={pagination.footer}>
+            <CatalogPagination {...result} hrefForPage={hrefForPage} label={`${title} 목록 페이지`} />
+          </div>
+        ) : null}
       </Reveal>
     </section>
   );
