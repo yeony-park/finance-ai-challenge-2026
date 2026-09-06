@@ -102,6 +102,9 @@ const EXTERNAL_DISEASE_CONTEXT = /(?:발생|현황|이력|건수|사례|지역|�
 export const needsCrossScopePlanning = (question: string): boolean =>
   CROSS_SCOPE_TOPIC.test(question.normalize("NFKC"));
 
+export const referencesCurrentProduct = (question: string): boolean =>
+  CURRENT_PRODUCT_REFERENCE.test(question.normalize("NFKC"));
+
 const normalizedMonth = (year: string, month: string): string =>
   `${year}-${month.padStart(2, "0")}`;
 
@@ -185,6 +188,16 @@ const fallbackPlan = (question: string, categoryId?: string): ProductCopilotPlan
     : { target: "general", generalQuery: question, productQuery: null, structuredQuery: null };
 };
 
+const focusStructuredProductQuery = (
+  question: string,
+  plan: ProductCopilotPlan,
+): ProductCopilotPlan => {
+  if (!plan.structuredQuery || plan.target === "general") return plan;
+  const reference = CURRENT_PRODUCT_REFERENCE.exec(question);
+  if (!reference || reference.index === 0) return plan;
+  return { ...plan, productQuery: question.slice(reference.index).trim() };
+};
+
 export const createProductCopilotPlanner = (apiKey?: string, categoryId?: string): ProductCopilotPlanner => {
   if (!process.env.AI_GATEWAY_API_KEY && !apiKey?.trim()) throw new Error("AI provider key is required");
   const modelId = process.env.KNOWLEDGE_ANSWER_MODEL ?? process.env.OPENAI_MODEL ?? "gpt-4.1-mini";
@@ -203,6 +216,7 @@ export const createProductCopilotPlanner = (apiKey?: string, categoryId?: string
         "현재 상품의 조건·문서·위험·발행사·운영사에 관한 질문은 target=product입니다.",
         "현재 카테고리가 cattle 또는 pig이고 질문이 외부 시장가격·경락가격·가격 추세에 관한 것이면 structuredQuery.kind=price로 분류하세요.",
         "질병 발생 현황·건수·이력에 관한 것이면 structuredQuery.kind=disease로 분류하세요. 특정 상품의 감염 여부로 확대하지 마세요.",
+        "외부 가격·질병 집계와 현재 상품 조건을 함께 묻는 질문은 productQuery에 현재 상품에 관한 부분만 남기세요.",
         "기간·성별·등급·돈피·지역·질병명은 질문에 명시된 값만 채우고 추정하지 마세요. '최근'은 기간을 null로 둡니다.",
         "가격이나 질병 질문이 아니거나 현재 카테고리가 cattle/pig가 아니면 structuredQuery=null입니다.",
         "일반 기준을 현재 상품과 비교하거나 적용하는 질문만 target=mixed입니다.",
@@ -233,7 +247,7 @@ export const planProductCopilotQuery = async (
     question.length > 200 ||
     containsObviousPii(question) ||
     containsCredentialLikeSecret(question)
-  ) return fallback;
+  ) return focusStructuredProductQuery(question, fallback);
 
   try {
     const planner = options.planner ?? createProductCopilotPlanner(
@@ -241,8 +255,8 @@ export const planProductCopilotQuery = async (
       options.categoryId,
     );
     const parsed = ProductCopilotPlanSchema.safeParse(await planner(question));
-    return parsed.success ? parsed.data : fallback;
+    return parsed.success ? focusStructuredProductQuery(question, parsed.data) : fallback;
   } catch {
-    return fallback;
+    return focusStructuredProductQuery(question, fallback);
   }
 };

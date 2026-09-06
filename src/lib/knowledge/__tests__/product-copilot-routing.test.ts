@@ -135,6 +135,30 @@ describe("상품 Copilot 검색 범위 라우팅", () => {
     });
   });
 
+  test("외부 질병 통계와 상품 위험을 함께 물으면 상품 검색어만 분리한다", async () => {
+    const question = "2025년 경기 ASF 발생 건수와 이 상품에서 확인할 위험을 설명해줘";
+    await expect(planProductCopilotQuery(question, {
+      runtimeAiAllowed: true,
+      categoryId: "pig",
+      planner: async () => ({
+        target: "product",
+        generalQuery: null,
+        productQuery: question,
+        structuredQuery: {
+          kind: "disease",
+          mode: "count",
+          fromDate: "2025-01-01",
+          toDate: "2025-12-31",
+          disease: "ASF",
+          region: "경기",
+        },
+      }),
+    })).resolves.toMatchObject({
+      productQuery: "이 상품에서 확인할 위험을 설명해줘",
+      structuredQuery: { kind: "disease" },
+    });
+  });
+
   test("상품의 질병 위험·보험 조건은 외부 발생 이력으로 바꾸지 않는다", async () => {
     await expect(planProductCopilotQuery("이 상품의 질병 위험과 보험 보장 조건", {
       runtimeAiAllowed: false,

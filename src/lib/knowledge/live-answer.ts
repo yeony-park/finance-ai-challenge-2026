@@ -156,7 +156,6 @@ export const generateLiveEvidenceAnswer: LiveAnswerGenerator = async (input) => 
           limitations: item.limitations.slice(0, 5).map((value) => value.slice(0, 300)),
         })),
       }),
-      temperature: 0,
       maxOutputTokens: LIVE_ANSWER_MAX_OUTPUT_TOKENS,
       maxRetries: 0,
       abortSignal: AbortSignal.timeout(LIVE_ANSWER_TIMEOUT_MS),

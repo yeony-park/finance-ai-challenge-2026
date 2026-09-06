@@ -53,6 +53,7 @@ import {
 import {
   isProductEvidenceApprovedForExternalAi,
   planProductCopilotQuery,
+  referencesCurrentProduct,
   selectMixedEvidence,
   type ProductCopilotPlan,
 } from "@/lib/knowledge/product-copilot-routing";
@@ -176,20 +177,35 @@ const groundedAnswerFor = async (
     evidence.length === 0 ||
     !isSearchPlannerInputEligible(question)
   ) return null;
+  let stage = "answer-generation";
   try {
-    if (!await externalAiApprovalGuard()) return null;
+    if (!await externalAiApprovalGuard()) {
+      console.warn("[copilot] grounded-answer fallback reason=external-ai-not-approved");
+      return null;
+    }
     const input: GeneralAnswerInput = { query: question, evidence };
     const apiKey = process.env.OPENAI_API_KEY;
     const candidate = validateGeneralAnswerCandidate(await createGeneralAnswerer(apiKey)(input), input);
-    if (!candidate) return null;
-    if (!await externalAiApprovalGuard()) return null;
+    if (!candidate) {
+      console.warn("[copilot] grounded-answer fallback reason=answer-validation-failed");
+      return null;
+    }
+    stage = "grounding-verification";
+    if (!await externalAiApprovalGuard()) {
+      console.warn("[copilot] grounded-answer fallback reason=external-ai-approval-revoked");
+      return null;
+    }
     const review = await createGeneralAnswerVerifier(apiKey)({
       query: input.query,
       claims: candidate.claims,
       evidence: input.evidence,
     });
-    return selectSupportedGeneralAnswer(review, candidate, input);
-  } catch {
+    const selected = selectSupportedGeneralAnswer(review, candidate, input);
+    if (!selected) console.warn("[copilot] grounded-answer fallback reason=grounding-verification-failed");
+    return selected;
+  } catch (error) {
+    const errorName = error instanceof Error ? error.name : "UnknownError";
+    console.warn(`[copilot] grounded-answer fallback reason=${stage}-error error=${errorName}`);
     return null;
   }
 };
@@ -301,8 +317,19 @@ const finalizeCopilotAnswer = async (
     const cited = new Set(generated?.citedSourceIds ?? []);
     const citesStructured = structuredMapped.some((item) => cited.has(item.sourceId));
     const citesGeneral = generalMapped.some((item) => cited.has(item.sourceId));
+    const citesProduct = approvedProductMapped.some((item) => cited.has(item.sourceId));
+    const requiresProduct = approvedProductMapped.length > 0 && referencesCurrentProduct(question);
     const validAnswer = generated && citesStructured &&
-      (plan.target !== "mixed" || citesGeneral) ? generated : null;
+      (plan.target !== "mixed" || citesGeneral) &&
+      (!requiresProduct || citesProduct) ? generated : null;
+    if (generated && !validAnswer) {
+      const missing = [
+        !citesStructured ? "structured" : null,
+        plan.target === "mixed" && !citesGeneral ? "general" : null,
+        requiresProduct && !citesProduct ? "product" : null,
+      ].filter(Boolean).join(",");
+      console.warn(`[copilot] grounded-answer fallback reason=required-scope-not-cited missing=${missing}`);
+    }
     const evidence = (validAnswer
       ? combined.filter((item) => cited.has(item.sourceId))
       : plan.target === "mixed"
@@ -550,7 +577,7 @@ export const POST = async (request: Request): Promise<Response> => {
         });
         const productSearchQuery = copilotPlan.productQuery ?? query.query;
         const productRuntimeAiAllowed = access.allowed && copilotPlan.target !== "general";
-        const disabledLiveAnswer = access.allowed && copilotPlan.target === "product"
+        const disabledLiveAnswer = access.allowed && copilotPlan.target === "product" && !copilotPlan.structuredQuery
           ? undefined
           : async () => null;
         const liveAnswer = disabledLiveAnswer ?? (filingExternalAiApproved && filingSnapshot !== null
@@ -640,7 +667,7 @@ export const POST = async (request: Request): Promise<Response> => {
         });
         const productSearchQuery = copilotPlan.productQuery ?? query.query;
         const productRuntimeAiAllowed = access.allowed && copilotPlan.target !== "general";
-        const disabledLiveAnswer = access.allowed && copilotPlan.target === "product"
+        const disabledLiveAnswer = access.allowed && copilotPlan.target === "product" && !copilotPlan.structuredQuery
           ? undefined
           : async () => null;
         const legacyQuery = {
@@ -697,7 +724,7 @@ export const POST = async (request: Request): Promise<Response> => {
       });
       const productSearchQuery = copilotPlan.productQuery ?? query.query;
       const productRuntimeAiAllowed = access.allowed && copilotPlan.target !== "general";
-      const disabledLiveAnswer = access.allowed && copilotPlan.target === "product"
+      const disabledLiveAnswer = access.allowed && copilotPlan.target === "product" && !copilotPlan.structuredQuery
         ? undefined
         : async () => null;
       const isSyntheticArtScope = query.categoryId === "art" &&
@@ -770,7 +797,7 @@ export const POST = async (request: Request): Promise<Response> => {
     });
     const productSearchQuery = copilotPlan.productQuery ?? query.query;
     const productRuntimeAiAllowed = access.allowed && copilotPlan.target !== "general";
-    const disabledLiveAnswer = access.allowed && copilotPlan.target === "product"
+    const disabledLiveAnswer = access.allowed && copilotPlan.target === "product" && !copilotPlan.structuredQuery
       ? undefined
       : async () => null;
     const exactRetrieval = await retrieveExactProductEvidence({
