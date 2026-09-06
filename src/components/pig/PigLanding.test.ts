@@ -53,7 +53,10 @@ describe("한돈 분석 정적 렌더링 회귀", () => {
     expect(html).toContain('data-category-analysis-card="true"');
     expect(html).toContain("category-pig.jpg");
     expect(html).toContain(">대조 불가</dt><dd>1</dd>");
-    expect(html).toContain("공모 상품</h2>");
+    for (const [label, tone] of [["일치", "good"], ["원장 불일치", "warn"], ["대조 불가", "unknown"]]) {
+      expect(html.match(new RegExp(`data-tone="${tone}" aria-hidden="true"></span><dt>${label}</dt>`, "g"))).toHaveLength(3);
+    }
+    expect(html).toContain("공모 상품 (3)</h2>");
     expect(html).not.toContain("최근 발행된 한돈 STO 3개 회차");
     expect(html).not.toContain(sourceState.dartValue);
     expect(html).not.toContain(`href="${LIVESTOCK_TRACE_URL}"`);
@@ -66,7 +69,7 @@ describe("한돈 분석 정적 렌더링 회귀", () => {
     expect(html).toContain('id="pig-axes-title"');
     expect(html).toContain('id="pig-snapshot-title"');
     expect(html).toContain('id="pig-review-beginner-title"');
-    expect(html).toContain("3개 회차를 같은 기준으로 펼쳐 봅니다");
+    expect(html).toContain("회차별 공시 현황");
   });
 
   test("등급 가격 차트는 키보드 탐색과 원자료 표를 함께 렌더한다", () => {

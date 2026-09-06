@@ -24,6 +24,7 @@ export interface OfferCardView {
   readonly schedule: OfferSchedule;
   readonly verdictLine: string;
   readonly tallies: readonly TallyView[];
+  readonly evidenceKind?: "verification" | "filing-excerpts";
   readonly lastVerifiedAt: string;
   readonly amendment: string;
   readonly amendmentIsAlert: boolean;

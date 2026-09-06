@@ -7,6 +7,7 @@ import home from "@/components/home/home.module.css";
 import { CategoryPageNav } from "./CategoryPageNav";
 import { CategoryAnalysisStatusTabs } from "./CategoryAnalysisStatusTabs";
 import s from "./category-shell.module.css";
+import type { CategoryStatusCounts } from "./category-status-counts";
 
 interface CategoryAnalysisWorkspaceProps {
   readonly categoryId: CategoryId;
@@ -19,6 +20,7 @@ interface CategoryAnalysisWorkspaceProps {
   readonly analysisControls?: ReactNode;
   readonly headerClassName?: string;
   readonly children: ReactNode;
+  readonly statusCounts?: CategoryStatusCounts;
 }
 
 export function CategoryAnalysisWorkspace({
@@ -32,6 +34,7 @@ export function CategoryAnalysisWorkspace({
   analysisControls,
   headerClassName,
   children,
+  statusCounts,
 }: CategoryAnalysisWorkspaceProps) {
   const statusControls = analysisControls ?? (
     showStatusTabs ? (
@@ -41,6 +44,7 @@ export function CategoryAnalysisWorkspace({
         preservedSearchParams={statusTabsSearchParams}
         searchQuery={searchQuery}
         title={title}
+        counts={statusCounts}
       />
     ) : undefined
   );

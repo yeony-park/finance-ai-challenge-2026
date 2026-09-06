@@ -16,6 +16,7 @@ export function OfferCard({
   readonly appearance?: CategoryOfferCardAppearance;
 }) {
   const totalItems = card.tallies.reduce((sum, tally) => sum + tally.value, 0);
+  const isFilingOnly = card.evidenceKind === "filing-excerpts";
   const isLivestock = card.assetLabel === categoryById("cattle").label;
 
   return (
@@ -39,11 +40,13 @@ export function OfferCard({
       primaryMetric={
         appearance === "analysis"
           ? {
-              label: isLivestock
+              label: isFilingOnly
+                ? ANALYSIS_CARD_COPY.filingEvidenceLabel
+                : isLivestock
                 ? ANALYSIS_CARD_COPY.comparisonTargetLabel
                 : ANALYSIS_CARD_COPY.totalItemsLabel,
               value: `${totalItems.toLocaleString("ko-KR")}${
-                isLivestock
+                isLivestock && !isFilingOnly
                   ? ANALYSIS_CARD_COPY.headUnit
                   : ANALYSIS_CARD_COPY.itemUnit
               }`,

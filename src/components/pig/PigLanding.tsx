@@ -1,5 +1,7 @@
+import { pigOfferingSchedule } from "@/lib/content/pig-offering-schedule";
+import type { CategoryPageSearchParams } from "@/lib/content/category-tabs";
 import type { SubscriptionPhase } from "@/components/site/offers";
-import { PIG_DISCLOSURE_PRODUCTS } from "@/lib/content/pig";
+import { searchPigDisclosureProducts } from "@/lib/content/pig";
 
 import { PigDisclosureGallery } from "./PigDisclosureGallery";
 import s from "./pig.module.css";
@@ -7,34 +9,22 @@ import s from "./pig.module.css";
 interface PigLandingProps {
   readonly analysisStatus?: SubscriptionPhase | null;
   readonly searchQuery?: string;
+  readonly catalogSearchParams?: CategoryPageSearchParams;
 }
 
 export function PigLanding({
   analysisStatus = null,
   searchQuery = "",
+  catalogSearchParams = {},
 }: PigLandingProps) {
-  const matchesFilters = analysisStatus === null || analysisStatus === "closed";
-  const normalizedQuery = searchQuery.trim().toLocaleLowerCase("ko-KR");
-  const visibleProducts = matchesFilters
-    ? PIG_DISCLOSURE_PRODUCTS.filter((product) =>
-        normalizedQuery === ""
-          ? true
-          : [
-              product.productName,
-              `한돈 ${product.round}호`,
-              product.statusLabel,
-              product.farm.name,
-              product.farm.region,
-              product.farm.supplier,
-            ].some((value) =>
-              value.toLocaleLowerCase("ko-KR").includes(normalizedQuery),
-            ),
-      )
-    : [];
+  const now = new Date();
+  const visibleProducts = searchPigDisclosureProducts(searchQuery).filter(
+    (product) => analysisStatus === null || pigOfferingSchedule(product, now).phase === analysisStatus,
+  );
 
   return (
     <div className={s.landing}>
-      <PigDisclosureGallery products={visibleProducts} />
+      <PigDisclosureGallery products={visibleProducts} catalogSearchParams={catalogSearchParams} now={now} />
     </div>
   );
 }
