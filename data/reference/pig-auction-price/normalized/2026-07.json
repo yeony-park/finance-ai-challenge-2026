@@ -1,0 +1,1053 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "kape-pig-auction-price",
+  "month": "2026-07",
+  "dataNature": "observed",
+  "validationStatus": "source_hash_and_schema_checked",
+  "entries": [
+    {
+      "month": "2026-07",
+      "skinType": "박피",
+      "sex": "거세",
+      "grade": "2",
+      "region": "전국(제주제외)",
+      "headCount": 21,
+      "priceWonPerKg": 3621.12424,
+      "amountWon": 6586825,
+      "weightKg": 1819,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "박피",
+      "sex": "거세",
+      "grade": "등외",
+      "region": "전국(제주제외)",
+      "headCount": 17,
+      "priceWonPerKg": 2897.44216,
+      "amountWon": 4233163,
+      "weightKg": 1461,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "박피",
+      "sex": "거세",
+      "grade": "등외제외",
+      "region": "전국(제주제외)",
+      "headCount": 21,
+      "priceWonPerKg": 3621.12424,
+      "amountWon": 6586825,
+      "weightKg": 1819,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "박피",
+      "sex": "거세",
+      "grade": "전체",
+      "region": "전국(제주제외)",
+      "headCount": 38,
+      "priceWonPerKg": 3298.77683,
+      "amountWon": 10819988,
+      "weightKg": 3280,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "박피",
+      "sex": "수",
+      "grade": "등외",
+      "region": "전국(제주제외)",
+      "headCount": 94,
+      "priceWonPerKg": 2862.58209,
+      "amountWon": 42543695,
+      "weightKg": 14862,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "박피",
+      "sex": "수",
+      "grade": "전체",
+      "region": "전국(제주제외)",
+      "headCount": 94,
+      "priceWonPerKg": 2862.58209,
+      "amountWon": 42543695,
+      "weightKg": 14862,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "박피",
+      "sex": "암",
+      "grade": "1",
+      "region": "전국(제주제외)",
+      "headCount": 55,
+      "priceWonPerKg": 7528.61832,
+      "amountWon": 35090890,
+      "weightKg": 4661,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "박피",
+      "sex": "암",
+      "grade": "1+",
+      "region": "전국(제주제외)",
+      "headCount": 12,
+      "priceWonPerKg": 7510.09969,
+      "amountWon": 7157125,
+      "weightKg": 953,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "박피",
+      "sex": "암",
+      "grade": "2",
+      "region": "전국(제주제외)",
+      "headCount": 167,
+      "priceWonPerKg": 5799.00167,
+      "amountWon": 87019819,
+      "weightKg": 15006,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "박피",
+      "sex": "암",
+      "grade": "등외",
+      "region": "전국(제주제외)",
+      "headCount": 3848,
+      "priceWonPerKg": 3595.22768,
+      "amountWon": 2143460360,
+      "weightKg": 596196,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "박피",
+      "sex": "암",
+      "grade": "등외제외",
+      "region": "전국(제주제외)",
+      "headCount": 234,
+      "priceWonPerKg": 6269.05112,
+      "amountWon": 129267834,
+      "weightKg": 20620,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "박피",
+      "sex": "암",
+      "grade": "전체",
+      "region": "전국(제주제외)",
+      "headCount": 4082,
+      "priceWonPerKg": 3684.61291,
+      "amountWon": 2272728194,
+      "weightKg": 616816,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "박피",
+      "sex": "전체",
+      "grade": "1",
+      "region": "전국(제주제외)",
+      "headCount": 55,
+      "priceWonPerKg": 7528.61832,
+      "amountWon": 35090890,
+      "weightKg": 4661,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "박피",
+      "sex": "전체",
+      "grade": "1+",
+      "region": "전국(제주제외)",
+      "headCount": 12,
+      "priceWonPerKg": 7510.09969,
+      "amountWon": 7157125,
+      "weightKg": 953,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "박피",
+      "sex": "전체",
+      "grade": "2",
+      "region": "전국(제주제외)",
+      "headCount": 188,
+      "priceWonPerKg": 5563.54496,
+      "amountWon": 93606644,
+      "weightKg": 16825,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "박피",
+      "sex": "전체",
+      "grade": "등외",
+      "region": "전국(제주제외)",
+      "headCount": 3959,
+      "priceWonPerKg": 3575.78658,
+      "amountWon": 2190237218,
+      "weightKg": 612519,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "박피",
+      "sex": "전체",
+      "grade": "등외제외",
+      "region": "전국(제주제외)",
+      "headCount": 255,
+      "priceWonPerKg": 6054.39899,
+      "amountWon": 135854659,
+      "weightKg": 22439,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "박피",
+      "sex": "전체",
+      "grade": "전체",
+      "region": "전국(제주제외)",
+      "headCount": 4214,
+      "priceWonPerKg": 3663.37912,
+      "amountWon": 2326091877,
+      "weightKg": 634958,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "전체",
+      "sex": "거세",
+      "grade": "1",
+      "region": "전국(제주제외)",
+      "headCount": 4580,
+      "priceWonPerKg": 6299.18607,
+      "amountWon": 2501381593,
+      "weightKg": 397096,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "전체",
+      "sex": "거세",
+      "grade": "1+",
+      "region": "전국(제주제외)",
+      "headCount": 3675,
+      "priceWonPerKg": 6345.873,
+      "amountWon": 2030044772,
+      "weightKg": 319900,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "전체",
+      "sex": "거세",
+      "grade": "2",
+      "region": "전국(제주제외)",
+      "headCount": 7055,
+      "priceWonPerKg": 5795.00488,
+      "amountWon": 3279810504,
+      "weightKg": 565972,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "전체",
+      "sex": "거세",
+      "grade": "등외",
+      "region": "전국(제주제외)",
+      "headCount": 3822,
+      "priceWonPerKg": 3955.39394,
+      "amountWon": 790161137,
+      "weightKg": 199768,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "전체",
+      "sex": "거세",
+      "grade": "등외제외",
+      "region": "전국(제주제외)",
+      "headCount": 15310,
+      "priceWonPerKg": 6088.4113,
+      "amountWon": 7811236869,
+      "weightKg": 1282968,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "전체",
+      "sex": "거세",
+      "grade": "전체",
+      "region": "전국(제주제외)",
+      "headCount": 19132,
+      "priceWonPerKg": 5801.03134,
+      "amountWon": 8601398006,
+      "weightKg": 1482736,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "전체",
+      "sex": "수",
+      "grade": "등외",
+      "region": "전국(제주제외)",
+      "headCount": 909,
+      "priceWonPerKg": 3949.10046,
+      "amountWon": 336190871,
+      "weightKg": 85131,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "전체",
+      "sex": "수",
+      "grade": "전체",
+      "region": "전국(제주제외)",
+      "headCount": 909,
+      "priceWonPerKg": 3949.10046,
+      "amountWon": 336190871,
+      "weightKg": 85131,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "전체",
+      "sex": "암",
+      "grade": "1",
+      "region": "전국(제주제외)",
+      "headCount": 6066,
+      "priceWonPerKg": 6549.81714,
+      "amountWon": 3481804193,
+      "weightKg": 531588,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "전체",
+      "sex": "암",
+      "grade": "1+",
+      "region": "전국(제주제외)",
+      "headCount": 6128,
+      "priceWonPerKg": 6625.09097,
+      "amountWon": 3545523433,
+      "weightKg": 535166,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "전체",
+      "sex": "암",
+      "grade": "2",
+      "region": "전국(제주제외)",
+      "headCount": 7125,
+      "priceWonPerKg": 5903.879,
+      "amountWon": 3388820640,
+      "weightKg": 573999,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "전체",
+      "sex": "암",
+      "grade": "등외",
+      "region": "전국(제주제외)",
+      "headCount": 11408,
+      "priceWonPerKg": 3565.32731,
+      "amountWon": 5314929685,
+      "weightKg": 1490727,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "전체",
+      "sex": "암",
+      "grade": "등외제외",
+      "region": "전국(제주제외)",
+      "headCount": 19319,
+      "priceWonPerKg": 6348.39508,
+      "amountWon": 10416148266,
+      "weightKg": 1640753,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "전체",
+      "sex": "암",
+      "grade": "전체",
+      "region": "전국(제주제외)",
+      "headCount": 30727,
+      "priceWonPerKg": 5023.52816,
+      "amountWon": 15731077951,
+      "weightKg": 3131480,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "전체",
+      "sex": "전체",
+      "grade": "1",
+      "region": "전국(제주제외)",
+      "headCount": 10646,
+      "priceWonPerKg": 6442.6498,
+      "amountWon": 5983185786,
+      "weightKg": 928684,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "전체",
+      "sex": "전체",
+      "grade": "1+",
+      "region": "전국(제주제외)",
+      "headCount": 9803,
+      "priceWonPerKg": 6520.62906,
+      "amountWon": 5575568205,
+      "weightKg": 855066,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "전체",
+      "sex": "전체",
+      "grade": "2",
+      "region": "전국(제주제외)",
+      "headCount": 14180,
+      "priceWonPerKg": 5849.82525,
+      "amountWon": 6668631144,
+      "weightKg": 1139971,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "전체",
+      "sex": "전체",
+      "grade": "등외",
+      "region": "전국(제주제외)",
+      "headCount": 16139,
+      "priceWonPerKg": 3627.61172,
+      "amountWon": 6441281693,
+      "weightKg": 1775626,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "전체",
+      "sex": "전체",
+      "grade": "등외제외",
+      "region": "전국(제주제외)",
+      "headCount": 34629,
+      "priceWonPerKg": 6234.31071,
+      "amountWon": 18227385135,
+      "weightKg": 2923721,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "전체",
+      "sex": "전체",
+      "grade": "전체",
+      "region": "전국(제주제외)",
+      "headCount": 50768,
+      "priceWonPerKg": 5249.38185,
+      "amountWon": 24668666828,
+      "weightKg": 4699347,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "탕박",
+      "sex": "거세",
+      "grade": "1",
+      "region": "전국(제주제외)",
+      "headCount": 4580,
+      "priceWonPerKg": 6299.18607,
+      "amountWon": 2501381593,
+      "weightKg": 397096,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "탕박",
+      "sex": "거세",
+      "grade": "1+",
+      "region": "전국(제주제외)",
+      "headCount": 3675,
+      "priceWonPerKg": 6345.873,
+      "amountWon": 2030044772,
+      "weightKg": 319900,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "탕박",
+      "sex": "거세",
+      "grade": "2",
+      "region": "전국(제주제외)",
+      "headCount": 7034,
+      "priceWonPerKg": 5802.01413,
+      "amountWon": 3273223679,
+      "weightKg": 564153,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "탕박",
+      "sex": "거세",
+      "grade": "등외",
+      "region": "전국(제주제외)",
+      "headCount": 3805,
+      "priceWonPerKg": 3963.18826,
+      "amountWon": 785927974,
+      "weightKg": 198307,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "탕박",
+      "sex": "거세",
+      "grade": "등외제외",
+      "region": "전국(제주제외)",
+      "headCount": 15289,
+      "priceWonPerKg": 6091.9144,
+      "amountWon": 7804650044,
+      "weightKg": 1281149,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "탕박",
+      "sex": "거세",
+      "grade": "전체",
+      "region": "전국(제주제외)",
+      "headCount": 19094,
+      "priceWonPerKg": 5806.57892,
+      "amountWon": 8590578018,
+      "weightKg": 1479456,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "탕박",
+      "sex": "수",
+      "grade": "등외",
+      "region": "전국(제주제외)",
+      "headCount": 815,
+      "priceWonPerKg": 4178.90074,
+      "amountWon": 293647176,
+      "weightKg": 70269,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "탕박",
+      "sex": "수",
+      "grade": "전체",
+      "region": "전국(제주제외)",
+      "headCount": 815,
+      "priceWonPerKg": 4178.90074,
+      "amountWon": 293647176,
+      "weightKg": 70269,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "탕박",
+      "sex": "암",
+      "grade": "1",
+      "region": "전국(제주제외)",
+      "headCount": 6011,
+      "priceWonPerKg": 6541.15903,
+      "amountWon": 3446713303,
+      "weightKg": 526927,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "탕박",
+      "sex": "암",
+      "grade": "1+",
+      "region": "전국(제주제외)",
+      "headCount": 6116,
+      "priceWonPerKg": 6623.51217,
+      "amountWon": 3538366308,
+      "weightKg": 534213,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "탕박",
+      "sex": "암",
+      "grade": "2",
+      "region": "전국(제주제외)",
+      "headCount": 6958,
+      "priceWonPerKg": 5906.6944,
+      "amountWon": 3301800821,
+      "weightKg": 558993,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "탕박",
+      "sex": "암",
+      "grade": "등외",
+      "region": "전국(제주제외)",
+      "headCount": 7560,
+      "priceWonPerKg": 3545.39901,
+      "amountWon": 3171469325,
+      "weightKg": 894531,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "탕박",
+      "sex": "암",
+      "grade": "등외제외",
+      "region": "전국(제주제외)",
+      "headCount": 19085,
+      "priceWonPerKg": 6349.40491,
+      "amountWon": 10286880432,
+      "weightKg": 1620133,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "탕박",
+      "sex": "암",
+      "grade": "전체",
+      "region": "전국(제주제외)",
+      "headCount": 26645,
+      "priceWonPerKg": 5351.94752,
+      "amountWon": 13458349757,
+      "weightKg": 2514664,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "탕박",
+      "sex": "전체",
+      "grade": "1",
+      "region": "전국(제주제외)",
+      "headCount": 10591,
+      "priceWonPerKg": 6437.17191,
+      "amountWon": 5948094896,
+      "weightKg": 924023,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "탕박",
+      "sex": "전체",
+      "grade": "1+",
+      "region": "전국(제주제외)",
+      "headCount": 9791,
+      "priceWonPerKg": 6519.52503,
+      "amountWon": 5568411080,
+      "weightKg": 854113,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "탕박",
+      "sex": "전체",
+      "grade": "2",
+      "region": "전국(제주제외)",
+      "headCount": 13992,
+      "priceWonPerKg": 5854.1138,
+      "amountWon": 6575024500,
+      "weightKg": 1123146,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "탕박",
+      "sex": "전체",
+      "grade": "등외",
+      "region": "전국(제주제외)",
+      "headCount": 12180,
+      "priceWonPerKg": 3654.90404,
+      "amountWon": 4251044475,
+      "weightKg": 1163107,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "탕박",
+      "sex": "전체",
+      "grade": "등외제외",
+      "region": "전국(제주제외)",
+      "headCount": 34374,
+      "priceWonPerKg": 6235.70217,
+      "amountWon": 18091530476,
+      "weightKg": 2901282,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    },
+    {
+      "month": "2026-07",
+      "skinType": "탕박",
+      "sex": "전체",
+      "grade": "전체",
+      "region": "전국(제주제외)",
+      "headCount": 46554,
+      "priceWonPerKg": 5497.15466,
+      "amountWon": 22342574951,
+      "weightKg": 4064389,
+      "sourceMeta": {
+        "sourceUrl": "https://www.data.go.kr/data/15148902/fileData.do",
+        "license": "green",
+        "method": "official_download",
+        "retrievedAt": "2026-08-15 02:16:18 KST",
+        "sha256": "673a3ca60df390f1df2c623306e7bf846784958736ded9c29aee175162dcd13d"
+      }
+    }
+  ]
+}

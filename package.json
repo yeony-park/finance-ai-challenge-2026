@@ -30,6 +30,7 @@
     "replay:actual": "tsx --env-file-if-exists=.env src/lib/verify/amend/actual-replay-cli.ts",
     "verify:realestate": "tsx src/lib/verify/real-estate-cli.ts",
     "reference:collect": "tsx --env-file-if-exists=.env src/lib/verify/reference/auction-collect-cli.ts",
+    "reference:pig-normalize": "tsx src/lib/verify/reference/pig-auction-normalize-cli.ts",
     "reference:rtms": "tsx --env-file-if-exists=.env src/lib/verify/reference/rtms-collect-cli.ts",
     "reference:ecos": "tsx --env-file-if-exists=.env src/lib/verify/reference/ecos-collect-cli.ts",
     "reference:building-hub": "tsx --env-file-if-exists=.env src/lib/verify/reference/building-hub-collect-cli.ts",
