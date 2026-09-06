@@ -6,10 +6,6 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 
 import { type GuideTarget } from "@/lib/content/home";
 import type { ScaffoldMatch } from "@/lib/content/scaffold-match";
-import type {
-  GlobalSearchResponse,
-  GlobalSearchResult,
-} from "@/lib/knowledge/global-search";
 import type { GenericKnowledgeEvidence } from "@/lib/knowledge/retrieval";
 import { safeCitationUrl } from "@/components/ai-assistant/EvidenceQuery";
 
@@ -30,12 +26,8 @@ import motion from "./home-motion.module.css";
 import { useHomeHeroVisual } from "./useHomeHeroVisual";
 import { useHomeSectionDial } from "./useHomeStageNavigation";
 import { bindHomeIntroScroll } from "./home-intro-scroll";
+import { parseSearchResponse, type SearchResponse, type SearchResult } from "./search-response";
 
-type SearchResult = Pick<
-  GlobalSearchResult,
-  "id" | "productId" | "title" | "isScenario" | "phase" | "href"
->;
-type SearchResponse = GlobalSearchResponse;
 type ReviewArea = NonNullable<
   SearchResponse["guidance"]
 >["reviewAreas"][number];
@@ -375,7 +367,7 @@ export function HomeHero() {
         body: JSON.stringify({ q: searchQuery, limit: 10 }),
       });
       if (!response.ok) throw new Error("search failed");
-      const body = (await response.json()) as SearchResponse;
+      const body = parseSearchResponse(await response.json());
       if (request.signal.aborted) return;
       const found = body.results ?? [];
       const generic = body.genericEvidence ?? [];

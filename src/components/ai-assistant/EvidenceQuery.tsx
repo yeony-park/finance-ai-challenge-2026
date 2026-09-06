@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useId, useRef, useState, type FormEvent } from "react";
+import { isRecord, isStringArray } from "@/lib/client-response";
+import type { EvidenceAnswer } from "@/lib/knowledge/evidence";
 
 import { AiPanel } from "./AiPanel";
 import s from "./ai-assistant.module.css";
@@ -17,22 +19,35 @@ interface EvidenceHit {
   readonly limitations?: readonly string[];
 }
 
-export interface EvidenceResult {
-  readonly outcome: "answer" | "evidence_only" | "abstain";
-  readonly answer: string;
+export interface EvidenceResult extends Pick<EvidenceAnswer,
+  "outcome" | "answer" | "limitations" | "answerSource" | "responseKind" | "structuredSources"
+> {
   readonly evidence: readonly EvidenceHit[];
-  readonly limitations: readonly string[];
-  readonly answerSource: "structured" | "approved_cache" | "live_llm" | "none";
-  readonly responseKind?: "scope-guidance";
-  readonly structuredSources?: readonly StructuredSource[];
 }
 
-interface StructuredSource {
-  readonly label: string;
-  readonly url: string;
-  readonly asOf: string;
-  readonly dataNature: "observed";
-}
+type StructuredSource = NonNullable<EvidenceAnswer["structuredSources"]>[number];
+
+const isEvidenceResult = (value: unknown): value is EvidenceResult =>
+  isRecord(value) &&
+  (value.outcome === "answer" || value.outcome === "evidence_only" || value.outcome === "abstain") &&
+  typeof value.answer === "string" &&
+  (value.answerSource === "structured" || value.answerSource === "approved_cache" ||
+    value.answerSource === "live_llm" || value.answerSource === "none") &&
+  (value.responseKind === undefined || value.responseKind === "scope-guidance") &&
+  isStringArray(value.limitations) &&
+  Array.isArray(value.evidence) && value.evidence.every((item: unknown) =>
+    isRecord(item) &&
+    [item.chunkId, item.title, item.sourceUrl, item.asOf, item.excerpt].every((field) => typeof field === "string") &&
+    typeof item.page === "number" && Number.isInteger(item.page) && item.page > 0 &&
+    (item.dataNature === undefined || item.dataNature === "observed" || item.dataNature === "scenario") &&
+    (item.sourceKind === undefined || typeof item.sourceKind === "string") &&
+    (item.limitations === undefined || isStringArray(item.limitations))
+  ) &&
+  (value.structuredSources === undefined ||
+    (Array.isArray(value.structuredSources) && value.structuredSources.every((item: unknown) =>
+      isRecord(item) && item.dataNature === "observed" &&
+      [item.label, item.url, item.asOf].every((field) => typeof field === "string")
+    )));
 
 const OUTCOME_LABEL: Readonly<Record<EvidenceResult["outcome"], string>> = {
   answer: "상품 문서에서 확인",
@@ -265,7 +280,9 @@ export const requestEvidence: AskEvidence = async (scope, question, signal) => {
     signal,
   });
   if (!response.ok) throw new Error("request failed");
-  return (await response.json()) as EvidenceResult;
+  const result: unknown = await response.json();
+  if (!isEvidenceResult(result)) throw new Error("invalid evidence response");
+  return result;
 };
 
 export interface EvidenceQueryProps {
