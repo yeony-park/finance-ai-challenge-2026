@@ -10,7 +10,13 @@ export const PRODUCT_COPILOT_ROUTER_TIMEOUT_MS = 10_000;
 export const PRODUCT_COPILOT_ROUTER_MAX_OUTPUT_TOKENS = 180;
 
 const MonthSchema = z.string().regex(/^\d{4}-(0[1-9]|1[0-2])$/);
-const DateSchema = z.string().regex(/^\d{4}-(0[1-9]|1[0-2])-([0-2]\d|3[01])$/);
+const isCalendarDate = (value: string): boolean => {
+  const parsed = new Date(`${value}T00:00:00.000Z`);
+  return !Number.isNaN(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value;
+};
+const DateSchema = z.string()
+  .regex(/^\d{4}-(0[1-9]|1[0-2])-([0-2]\d|3[01])$/)
+  .refine(isCalendarDate, "calendar date is required");
 
 export const LivestockStructuredQuerySchema = z.discriminatedUnion("kind", [
   z.strictObject({
@@ -50,6 +56,14 @@ const ProductCopilotPlanObjectSchema = z.strictObject({
   if (value.target === "general" && value.structuredQuery !== null) {
     context.addIssue({ code: "custom", path: ["structuredQuery"], message: "general query cannot use product data" });
   }
+  if (value.structuredQuery?.kind === "price" && value.structuredQuery.fromMonth &&
+    value.structuredQuery.toMonth && value.structuredQuery.fromMonth > value.structuredQuery.toMonth) {
+    context.addIssue({ code: "custom", path: ["structuredQuery"], message: "price range is reversed" });
+  }
+  if (value.structuredQuery?.kind === "disease" && value.structuredQuery.fromDate &&
+    value.structuredQuery.toDate && value.structuredQuery.fromDate > value.structuredQuery.toDate) {
+    context.addIssue({ code: "custom", path: ["structuredQuery"], message: "disease range is reversed" });
+  }
 });
 
 const ProductCopilotPlanSchema = z.preprocess((value) =>
@@ -80,8 +94,10 @@ export const selectMixedEvidence = <T>(
 const CROSS_SCOPE_TOPIC = /(?:조각\s*투자|토큰\s*증권|일반\s*(?:투자|주식|증권)|금융위원회|가이드라인|자본시장법|투자계약증권(?:이란|의미|정의)|공시\s*(?:읽는|확인하는)\s*법|제도\s*(?:설명|안내|차이)|용어\s*(?:설명|뜻))/;
 const CURRENT_PRODUCT_REFERENCE = /(?:이|본|해당|현재)\s*(?:상품|공모|증권)|발행사|운영사|사업자/;
 const PRICE_TOPIC = /(?:경락가|경락가격|시장\s*가격|시세|가격\s*(?:추세|변화|흐름|비교)|최근\s*(?:한우|한돈|돼지)?\s*가격|(?:한우|한돈|돼지)\s*가격)/;
-const DISEASE_TOPIC = /(?:질병|전염병|발생\s*(?:현황|이력|건수|사례)|아프리카돼지열병|ASF|구제역|FMD|럼피스킨|LSD)/i;
+const DISEASE_TOPIC = /(?:(?:질병|전염병)\s*(?:발생|현황|이력|건수|사례)|발생\s*(?:현황|이력|건수|사례)|아프리카돼지열병|ASF|구제역|FMD|럼피스킨|LSD)/i;
 const REGION = /(서울|부산|대구|인천|광주|대전|울산|세종|경기|강원|충북|충남|전북|전남|경북|경남|제주)(?:\s+[가-힣]+(?:시|군|구))?/;
+const EXTERNAL_PRICE_CONTEXT = /(?:경락|시장|시세|최근|추세|변화|흐름|비교|상승|하락)/;
+const EXTERNAL_DISEASE_CONTEXT = /(?:발생|현황|이력|건수|사례|지역|언제|어디)/;
 
 export const needsCrossScopePlanning = (question: string): boolean =>
   CROSS_SCOPE_TOPIC.test(question.normalize("NFKC"));
@@ -89,15 +105,22 @@ export const needsCrossScopePlanning = (question: string): boolean =>
 const normalizedMonth = (year: string, month: string): string =>
   `${year}-${month.padStart(2, "0")}`;
 
+const normalizedDate = (year: string, month: string, day: string): string | null => {
+  const value = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+  return isCalendarDate(value) ? value : null;
+};
+
 const fallbackStructuredQuery = (
   question: string,
   categoryId?: string,
 ): LivestockStructuredQuery | null => {
   if (categoryId !== "cattle" && categoryId !== "pig") return null;
   const normalized = question.normalize("NFKC");
-  if (PRICE_TOPIC.test(normalized)) {
+  const currentProduct = CURRENT_PRODUCT_REFERENCE.test(normalized);
+  if (PRICE_TOPIC.test(normalized) && (!currentProduct || EXTERNAL_PRICE_CONTEXT.test(normalized))) {
     const months = [...normalized.matchAll(/((?:19|20)\d{2})[.\-/년\s]+(1[0-2]|0?[1-9])(?:월)?/g)]
       .map((match) => normalizedMonth(match[1]!, match[2]!));
+    if (months.length > 1 && months[0]! > months.at(-1)!) return null;
     const sex = /거세/.test(normalized) ? "거세"
       : /(?:암소|암퇘지|암컷)/.test(normalized) ? "암"
       : /(?:수소|수퇘지|수컷)/.test(normalized) ? "수" : null;
@@ -116,20 +139,37 @@ const fallbackStructuredQuery = (
       region: normalized.match(REGION)?.[0] ?? null,
     };
   }
-  if (!DISEASE_TOPIC.test(normalized)) return null;
+  if (!DISEASE_TOPIC.test(normalized) || currentProduct && !EXTERNAL_DISEASE_CONTEXT.test(normalized)) return null;
   const disease = /(?:아프리카돼지열병|ASF)/i.test(normalized) ? "ASF"
     : /(?:구제역|FMD)/i.test(normalized) ? "FMD"
     : /(?:럼피스킨|LSD)/i.test(normalized) ? "LSD" : null;
-  const dates = [...normalized.matchAll(/((?:19|20)\d{2})[.\-/](0?[1-9]|1[0-2])[.\-/](0?[1-9]|[12]\d|3[01])/g)]
-    .map((match) => `${match[1]}-${match[2]!.padStart(2, "0")}-${match[3]!.padStart(2, "0")}`);
-  const year = dates.length === 0 ? normalized.match(/((?:19|20)\d{2})년/)?.[1] : undefined;
+  const dateMatches = [...normalized.matchAll(
+    /((?:19|20)\d{2})[.\-/년\s]+(0?[1-9]|1[0-2])[.\-/월\s]+(3[01]|[12]\d|0?[1-9])(?=일|[\s.,?]|$)(?:일)?/g,
+  )];
+  const parsedDates = dateMatches.map((match) => normalizedDate(match[1]!, match[2]!, match[3]!));
+  if (parsedDates.some((date) => date === null)) return null;
+  const dates = parsedDates as string[];
+  if (dates.length > 1 && dates[0]! > dates.at(-1)!) return null;
+  const diseaseMonths = dateMatches.length === 0
+    ? [...normalized.matchAll(/((?:19|20)\d{2})[.\-/년\s]+(1[0-2]|0?[1-9])(?:월)?/g)]
+      .map((match) => normalizedMonth(match[1]!, match[2]!))
+    : [];
+  if (diseaseMonths.length > 1 && diseaseMonths[0]! > diseaseMonths.at(-1)!) return null;
+  const firstMonth = diseaseMonths.at(0);
+  const lastMonth = diseaseMonths.at(-1);
+  const lastMonthDate = lastMonth
+    ? `${lastMonth}-${new Date(Date.UTC(Number(lastMonth.slice(0, 4)), Number(lastMonth.slice(5, 7)), 0)).getUTCDate()}`
+    : null;
+  const year = dateMatches.length === 0 && diseaseMonths.length === 0
+    ? normalized.match(/((?:19|20)\d{2})년/)?.[1]
+    : undefined;
   return {
     kind: "disease",
     mode: /(?:연도별|추세|변화)/.test(normalized) ? "trend"
       : /(?:몇\s*건|건수)/.test(normalized) ? "count"
       : /(?:이력|사례|언제|어디)/.test(normalized) ? "detail" : "latest",
-    fromDate: dates.at(0) ?? (year ? `${year}-01-01` : null),
-    toDate: dates.at(-1) ?? (year ? `${year}-12-31` : null),
+    fromDate: dates.at(0) ?? (firstMonth ? `${firstMonth}-01` : year ? `${year}-01-01` : null),
+    toDate: dates.at(-1) ?? lastMonthDate ?? (year ? `${year}-12-31` : null),
     disease,
     region: normalized.match(REGION)?.[0] ?? null,
   };

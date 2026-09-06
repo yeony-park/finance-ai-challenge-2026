@@ -135,6 +135,65 @@ describe("상품 Copilot 검색 범위 라우팅", () => {
     });
   });
 
+  test("상품의 질병 위험·보험 조건은 외부 발생 이력으로 바꾸지 않는다", async () => {
+    await expect(planProductCopilotQuery("이 상품의 질병 위험과 보험 보장 조건", {
+      runtimeAiAllowed: false,
+      categoryId: "cattle",
+    })).resolves.toMatchObject({
+      target: "product",
+      structuredQuery: null,
+    });
+    await expect(planProductCopilotQuery("이 상품의 ASF 보험 면책 조건", {
+      runtimeAiAllowed: false,
+      categoryId: "cattle",
+    })).resolves.toMatchObject({ structuredQuery: null });
+    await expect(planProductCopilotQuery("이 상품의 한우 가격 산정 기준", {
+      runtimeAiAllowed: false,
+      categoryId: "cattle",
+    })).resolves.toMatchObject({ structuredQuery: null });
+  });
+
+  test("한국어 연월일은 해당 날짜만 질병 조회 조건으로 사용한다", async () => {
+    await expect(planProductCopilotQuery("2025년 3월 1일 ASF 발생 사례", {
+      runtimeAiAllowed: false,
+      categoryId: "pig",
+    })).resolves.toMatchObject({
+      structuredQuery: {
+        kind: "disease",
+        fromDate: "2025-03-01",
+        toDate: "2025-03-01",
+      },
+    });
+  });
+
+  test("존재하지 않는 날짜나 역전된 기간은 구조화 조회로 보내지 않는다", async () => {
+    await expect(planProductCopilotQuery("2025년 2월 31일 ASF 발생 건수", {
+      runtimeAiAllowed: true,
+      categoryId: "pig",
+      planner: async () => ({
+        target: "product",
+        generalQuery: null,
+        productQuery: "ASF 발생 건수",
+        structuredQuery: {
+          kind: "disease",
+          mode: "count",
+          fromDate: "2026-12-31",
+          toDate: "2026-01-01",
+          disease: "ASF",
+          region: null,
+        },
+      }),
+    })).resolves.toMatchObject({ structuredQuery: null });
+    await expect(planProductCopilotQuery("2026년 12월부터 2026년 1월 ASF 발생 건수", {
+      runtimeAiAllowed: false,
+      categoryId: "pig",
+    })).resolves.toMatchObject({ structuredQuery: null });
+    await expect(planProductCopilotQuery("2026년 8월부터 2026년 6월 한우 가격 추세", {
+      runtimeAiAllowed: false,
+      categoryId: "cattle",
+    })).resolves.toMatchObject({ structuredQuery: null });
+  });
+
   test("혼합 답변은 승인·PII 검토를 모두 통과한 상품 근거만 외부 AI에 전송한다", () => {
     expect(isProductEvidenceApprovedForExternalAi([
       { approvedForExternalAi: true, piiReviewStatus: "passed" },

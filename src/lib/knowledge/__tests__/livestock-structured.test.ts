@@ -23,6 +23,8 @@ const data: LivestockStructuredData = {
   disease: [
     { sourceEventId: "1", disease: "ASF", species: "pig", occurredOn: "2025-01-01", province: "경기", cityCounty: "파주시", region: "경기 파주시", headCount: 100, headCountBasis: "raised", latitude: 37, longitude: 127, locationPrecision: "행정기관 기준점", sourceUrl: meta.sourceUrl, sourceMeta: meta },
     { sourceEventId: "2", disease: "ASF", species: "pig", occurredOn: "2025-02-01", province: "강원", cityCounty: "철원군", region: "강원 철원군", headCount: 200, headCountBasis: "raised", latitude: 38, longitude: 127, locationPrecision: "행정기관 기준점", sourceUrl: meta.sourceUrl, sourceMeta: meta },
+    { sourceEventId: "3", disease: "FMD", species: "pig", occurredOn: "2025-03-01", province: "충북", cityCounty: "청주시", region: "충북 청주시", headCount: 30, headCountBasis: "culled", latitude: 36, longitude: 127, locationPrecision: "행정기관 기준점", sourceUrl: meta.sourceUrl, sourceMeta: meta },
+    { sourceEventId: "4", disease: "FMD", species: "cattle", occurredOn: "2025-03-02", province: "충북", cityCounty: "청주시", region: "충북 청주시", headCount: 20, headCountBasis: "culled", latitude: 36, longitude: 127, locationPrecision: "행정기관 기준점", sourceUrl: meta.sourceUrl, sourceMeta: meta },
   ],
 };
 
@@ -56,5 +58,26 @@ describe("축산 구조화 Copilot 근거", () => {
     expect(evidence[0]?.rowCount).toBe(1);
     expect(evidence[0]?.excerpt).toContain("경기 파주시");
     expect(evidence[0]?.limitations.join(" ")).toContain("개별 가축 감염");
+    expect(JSON.stringify(evidence)).not.toMatch(/latitude|longitude|sourceMeta|상세주소.*파주시/);
+  });
+
+  test("같은 구제역 자료에서도 질문 상품의 축종만 집계한다", () => {
+    const pigEvidence = buildLivestockStructuredEvidence("pig", {
+      kind: "disease", mode: "count", disease: "FMD",
+      fromDate: null, toDate: null, region: null,
+    }, data);
+    const cattleEvidence = buildLivestockStructuredEvidence("cattle", {
+      kind: "disease", mode: "count", disease: "FMD",
+      fromDate: null, toDate: null, region: null,
+    }, data);
+    expect(pigEvidence[0]?.rowCount).toBe(1);
+    expect(cattleEvidence[0]?.rowCount).toBe(1);
+  });
+
+  test("조건과 일치하는 질병 이력이 없으면 근거를 만들지 않는다", () => {
+    expect(buildLivestockStructuredEvidence("pig", {
+      kind: "disease", mode: "count", disease: "LSD",
+      fromDate: null, toDate: null, region: null,
+    }, data)).toEqual([]);
   });
 });

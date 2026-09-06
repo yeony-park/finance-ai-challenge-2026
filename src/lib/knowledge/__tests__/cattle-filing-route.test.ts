@@ -62,7 +62,7 @@ describe("cattle filing evidence route", () => {
     });
   });
 
-  test("한우 가격 질문은 공개 가격 집계를 상품 RAG와 함께 반환한다", async () => {
+  test("한우 가격 질문은 관련 없는 상품 문단 대신 공개 가격 집계를 반환한다", async () => {
     const response = await POST(request("최근 한우 가격 추세"));
     expect(response.status).toBe(200);
     expect(await response.json()).toMatchObject({

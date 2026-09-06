@@ -268,7 +268,31 @@ const finalizeCopilotAnswer = async (
     const approvedProductMapped = await productExternalAiApprovalGuard()
       ? productMapped
       : [];
-    const combined = selectMixedEvidence(structuredMapped, approvedProductMapped, limit);
+    const generalSearch = plan.target === "mixed"
+      ? await generalEvidenceFor(plan.generalQuery ?? question, limit, runtimeAiAllowed)
+      : null;
+    const generalMapped = (generalSearch?.evidence ?? []).map((item) => ({
+      sourceId: `general:${item.sourceId}:${item.hash.slice(0, 12)}`,
+      output: generalUiEvidence(item),
+      grounding: {
+        sourceId: `general:${item.sourceId}:${item.hash.slice(0, 12)}`,
+        label: item.label,
+        excerpt: item.excerpt,
+        asOf: item.asOf,
+        hash: item.hash,
+      },
+    }));
+    const combined = plan.target === "mixed"
+      ? [
+          generalMapped[0],
+          structuredMapped[0],
+          approvedProductMapped[0],
+          ...generalMapped.slice(1),
+          ...structuredMapped.slice(1),
+          ...approvedProductMapped.slice(1),
+        ].filter((item): item is NonNullable<typeof item> => item !== undefined)
+          .slice(0, Math.max(2, limit))
+      : selectMixedEvidence(structuredMapped, approvedProductMapped, limit);
     const generated = await groundedAnswerFor(
       question,
       combined.map((item) => item.grounding),
@@ -276,10 +300,14 @@ const finalizeCopilotAnswer = async (
     );
     const cited = new Set(generated?.citedSourceIds ?? []);
     const citesStructured = structuredMapped.some((item) => cited.has(item.sourceId));
-    const validAnswer = generated && citesStructured ? generated : null;
+    const citesGeneral = generalMapped.some((item) => cited.has(item.sourceId));
+    const validAnswer = generated && citesStructured &&
+      (plan.target !== "mixed" || citesGeneral) ? generated : null;
     const evidence = (validAnswer
       ? combined.filter((item) => cited.has(item.sourceId))
-      : structuredMapped).map((item) => item.output);
+      : plan.target === "mixed"
+        ? combined.filter((item) => item.sourceId.startsWith("general:") || item.sourceId.startsWith("structured:"))
+        : structuredMapped).map((item) => item.output);
     return {
       ...crossScopeBase,
       outcome: validAnswer ? "answer" : "evidence_only",
@@ -289,11 +317,14 @@ const finalizeCopilotAnswer = async (
         ...new Set([
           ...structuredSearch.evidence.flatMap((item) => item.limitations),
           ...productAnswer.limitations,
+          ...(plan.target === "mixed"
+            ? ["일반 기준과 현재 상품·외부 관측값의 적용 범위를 구분해 확인해야 합니다."]
+            : []),
         ]),
       ],
       cached: false,
       answerSource: validAnswer ? "hybrid_llm" : "none",
-      knowledgeScope: "product",
+      knowledgeScope: plan.target === "mixed" ? "mixed" : "product",
       retrieval: {
         ...productRetrieval,
         structured: {
@@ -301,6 +332,7 @@ const finalizeCopilotAnswer = async (
           storage: structuredSearch.storage,
           rows: structuredSearch.evidence.reduce((sum, item) => sum + item.rowCount, 0),
         },
+        ...(generalSearch ? { general: generalSearch.retrieval } : {}),
       },
     };
   }

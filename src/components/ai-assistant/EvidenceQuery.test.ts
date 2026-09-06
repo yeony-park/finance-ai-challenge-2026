@@ -190,4 +190,20 @@ describe("공통 AI 연동", () => {
     expect(html).toContain("근거 유형 · 일반 공개정보");
     expect(html).not.toContain("일반 공개정보 · 현재 상품 문서");
   });
+
+  test("혼합 검색의 외부 가격·질병 근거를 현재 상품 문서로 오인하지 않는다", () => {
+    const html = renderToStaticMarkup(createElement(EvidenceResultPanel, { result: {
+      outcome: "answer",
+      answer: "일반 기준과 외부 관측값을 함께 확인했습니다.",
+      answerSource: "hybrid_llm",
+      knowledgeScope: "mixed",
+      limitations: [],
+      evidence: [
+        { chunkId: "general-1", title: "일반", page: 1, sourceUrl: "https://example.com/general", asOf: "2026-09-02", excerpt: "일반 근거", knowledgeScope: "general", sourceKind: "official-document" },
+        { chunkId: "price-1", title: "가격", page: 1, sourceUrl: "https://example.com/price", asOf: "2026-09-02", excerpt: "가격 근거", knowledgeScope: "product", sourceKind: "external-observation" },
+      ],
+    }}));
+    expect(html).toContain("근거 유형 · 일반 공개정보 · 외부 관측정보");
+    expect(html).not.toContain("현재 상품 문서");
+  });
 });

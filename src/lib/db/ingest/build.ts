@@ -237,7 +237,7 @@ export const buildLivestockDiseaseRows = async (
     const verified = await readVerifiedManifestFile(
       index,
       relPath,
-      path.join(path.resolve(dataDir), source.path),
+      path.join(/* turbopackIgnore: true */ path.resolve(dataDir), source.path),
     );
     const dataset = diseaseDatasetSchema.parse(
       JSON.parse(verified.raw.toString("utf8")),

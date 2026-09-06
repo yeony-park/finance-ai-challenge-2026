@@ -69,7 +69,7 @@ export const evidenceResultTitle = (
   if (result.responseKind === "scope-guidance") return "검색 범위 안내";
   if (result.answerSource === "general_llm") return "공개 일반지식을 바탕으로 생성한 답변";
   if (result.answerSource === "mixed_llm") return "일반 기준과 상품 원문을 바탕으로 생성한 답변";
-  if (result.answerSource === "hybrid_llm") return "상품 원문과 외부 공개정보를 바탕으로 생성한 답변";
+  if (result.answerSource === "hybrid_llm") return "공개정보와 상품 근거를 바탕으로 생성한 답변";
   if (result.answerSource === "structured") {
     return result.structuredSources && result.structuredSources.length > 0
       ? "공식 공개정보에서 확인"
@@ -85,9 +85,18 @@ export const evidenceSourceLabel = (result: EvidenceResult): string => {
   if (result.knowledgeScope === "general") return "일반 공개정보";
   if (result.knowledgeScope === "mixed") {
     const scopes = new Set(result.evidence.map((item) => item.knowledgeScope));
-    if (scopes.has("general") && scopes.has("product")) return "일반 공개정보 · 현재 상품 문서";
+    const hasExternalObservation = result.evidence.some((item) => item.sourceKind === "external-observation");
+    const hasProductDocument = result.evidence.some((item) =>
+      item.knowledgeScope === "product" && item.sourceKind !== "external-observation"
+    );
+    if (scopes.has("general") && hasProductDocument && hasExternalObservation) {
+      return "일반 공개정보 · 현재 상품 문서 · 외부 관측정보";
+    }
+    if (scopes.has("general") && hasExternalObservation) return "일반 공개정보 · 외부 관측정보";
+    if (scopes.has("general") && hasProductDocument) return "일반 공개정보 · 현재 상품 문서";
     if (scopes.has("general")) return "일반 공개정보";
-    if (scopes.has("product")) return "현재 상품 문서";
+    if (hasExternalObservation) return "외부 관측정보";
+    if (hasProductDocument) return "현재 상품 문서";
   }
   if (result.answerSource === "structured") {
     return result.structuredSources && result.structuredSources.length > 0
