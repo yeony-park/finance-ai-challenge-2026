@@ -318,7 +318,7 @@ const finalizeCopilotAnswer = async (
     const citesStructured = structuredMapped.some((item) => cited.has(item.sourceId));
     const citesGeneral = generalMapped.some((item) => cited.has(item.sourceId));
     const citesProduct = approvedProductMapped.some((item) => cited.has(item.sourceId));
-    const requiresProduct = approvedProductMapped.length > 0 && referencesCurrentProduct(question);
+    const requiresProduct = referencesCurrentProduct(question);
     const validAnswer = generated && citesStructured &&
       (plan.target !== "mixed" || citesGeneral) &&
       (!requiresProduct || citesProduct) ? generated : null;
