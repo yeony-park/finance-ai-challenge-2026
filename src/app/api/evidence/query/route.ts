@@ -56,6 +56,10 @@ import {
   selectMixedEvidence,
   type ProductCopilotPlan,
 } from "@/lib/knowledge/product-copilot-routing";
+import {
+  retrieveLivestockStructuredEvidence,
+  type LivestockStructuredEvidence,
+} from "@/lib/knowledge/livestock-structured";
 import type { SearchHit } from "@/lib/knowledge/search";
 import {
   loadSyntheticArtCommonKnowledgeScope,
@@ -147,6 +151,19 @@ const productUiEvidence = (evidence: SearchHit): RoutedEvidence => ({
   knowledgeScope: "product",
 });
 
+const structuredUiEvidence = (evidence: LivestockStructuredEvidence): RoutedEvidence => ({
+  chunkId: evidence.sourceId,
+  title: evidence.title,
+  page: 1,
+  sourceUrl: evidence.sourceUrl,
+  asOf: evidence.asOf,
+  excerpt: evidence.excerpt,
+  dataNature: "observed",
+  sourceKind: "external-observation",
+  limitations: evidence.limitations,
+  knowledgeScope: "product",
+});
+
 const groundedAnswerFor = async (
   question: string,
   evidence: GeneralAnswerInput["evidence"],
@@ -186,7 +203,108 @@ const finalizeCopilotAnswer = async (
   question: string,
   limit: number,
   runtimeAiAllowed: boolean,
+  categoryId: string,
 ): Promise<Record<string, unknown>> => {
+  const structuredSearch = await retrieveLivestockStructuredEvidence(
+    categoryId,
+    plan.structuredQuery,
+  );
+  if (plan.target !== "general" && plan.structuredQuery) {
+    const crossScopeBase = {
+      ...productAnswer,
+      responseKind: undefined,
+      citations: undefined,
+      review: undefined,
+      structuredSources: undefined,
+      structuredClaims: undefined,
+      conflicts: undefined,
+      evidenceGroups: undefined,
+    };
+    if (structuredSearch.evidence.length === 0) {
+      return {
+        ...crossScopeBase,
+        outcome: "abstain",
+        answer: "질문의 조건과 일치하는 공개 가격·질병 집계를 찾지 못했습니다.",
+        evidence: [],
+        limitations: [
+          "조회 기간·지역·등급 조건을 바꾸거나 공개 데이터의 수록 범위를 확인해 주세요.",
+        ],
+        cached: false,
+        answerSource: "none",
+        knowledgeScope: "product",
+        retrieval: {
+          ...productRetrieval,
+          structured: {
+            kind: plan.structuredQuery.kind,
+            storage: structuredSearch.storage,
+            rows: 0,
+          },
+        },
+      };
+    }
+
+    const structuredMapped = structuredSearch.evidence.map((item) => ({
+      sourceId: `structured:${item.sourceId}`,
+      output: structuredUiEvidence(item),
+      grounding: {
+        sourceId: `structured:${item.sourceId}`,
+        label: item.title,
+        excerpt: item.excerpt,
+        asOf: item.asOf,
+        hash: item.chunkHash,
+      },
+    }));
+    const productMapped = productEvidence.map((item) => ({
+      sourceId: `product:${item.chunkId}`,
+      output: productUiEvidence(item),
+      grounding: {
+        sourceId: `product:${item.chunkId}`,
+        label: item.title,
+        excerpt: item.excerpt,
+        asOf: item.asOf,
+        hash: item.chunkHash,
+      },
+    }));
+    const approvedProductMapped = await productExternalAiApprovalGuard()
+      ? productMapped
+      : [];
+    const combined = selectMixedEvidence(structuredMapped, approvedProductMapped, limit);
+    const generated = await groundedAnswerFor(
+      question,
+      combined.map((item) => item.grounding),
+      runtimeAiAllowed,
+    );
+    const cited = new Set(generated?.citedSourceIds ?? []);
+    const citesStructured = structuredMapped.some((item) => cited.has(item.sourceId));
+    const validAnswer = generated && citesStructured ? generated : null;
+    const evidence = (validAnswer
+      ? combined.filter((item) => cited.has(item.sourceId))
+      : structuredMapped).map((item) => item.output);
+    return {
+      ...crossScopeBase,
+      outcome: validAnswer ? "answer" : "evidence_only",
+      answer: validAnswer?.answer ?? "관련 공개 가격·질병 집계를 찾았습니다. 아래 근거를 확인해 주세요.",
+      evidence,
+      limitations: [
+        ...new Set([
+          ...structuredSearch.evidence.flatMap((item) => item.limitations),
+          ...productAnswer.limitations,
+        ]),
+      ],
+      cached: false,
+      answerSource: validAnswer ? "hybrid_llm" : "none",
+      knowledgeScope: "product",
+      retrieval: {
+        ...productRetrieval,
+        structured: {
+          kind: plan.structuredQuery.kind,
+          storage: structuredSearch.storage,
+          rows: structuredSearch.evidence.reduce((sum, item) => sum + item.rowCount, 0),
+        },
+      },
+    };
+  }
+
   if (plan.target === "product") {
     return { ...productAnswer, retrieval: productRetrieval, knowledgeScope: "product" };
   }
@@ -396,6 +514,7 @@ export const POST = async (request: Request): Promise<Response> => {
         if (publishedScope?.status !== "found" && !artifactBacked) return invalidRequest();
         const copilotPlan = await planProductCopilotQuery(query.query, {
           runtimeAiAllowed: access.allowed,
+          categoryId: query.categoryId,
         });
         const productSearchQuery = copilotPlan.productQuery ?? query.query;
         const productRuntimeAiAllowed = access.allowed && copilotPlan.target !== "general";
@@ -477,6 +596,7 @@ export const POST = async (request: Request): Promise<Response> => {
           query.query,
           query.limit,
           access.allowed,
+          query.categoryId,
         ));
       }
       if (query.namespace === "legacy-scenario" && !scenario) return invalidRequest();
@@ -484,6 +604,7 @@ export const POST = async (request: Request): Promise<Response> => {
         const scope = await loadKnowledgeScope(scenario.scenarioId, scenario.offerId);
         const copilotPlan = await planProductCopilotQuery(query.query, {
           runtimeAiAllowed: access.allowed,
+          categoryId: query.categoryId,
         });
         const productSearchQuery = copilotPlan.productQuery ?? query.query;
         const productRuntimeAiAllowed = access.allowed && copilotPlan.target !== "general";
@@ -532,6 +653,7 @@ export const POST = async (request: Request): Promise<Response> => {
             query.query,
             query.limit,
             access.allowed,
+            query.categoryId,
           )),
         });
       }
@@ -539,6 +661,7 @@ export const POST = async (request: Request): Promise<Response> => {
       const scopeAvailable = scope.product !== null || scope.documents.length > 0 || scope.chunks.length > 0;
       const copilotPlan = await planProductCopilotQuery(query.query, {
         runtimeAiAllowed: access.allowed && scopeAvailable,
+        categoryId: query.categoryId,
       });
       const productSearchQuery = copilotPlan.productQuery ?? query.query;
       const productRuntimeAiAllowed = access.allowed && copilotPlan.target !== "general";
@@ -600,6 +723,7 @@ export const POST = async (request: Request): Promise<Response> => {
           query.query,
           query.limit,
           access.allowed,
+          query.categoryId,
         )),
       });
     }
@@ -610,6 +734,7 @@ export const POST = async (request: Request): Promise<Response> => {
     const scopeAvailable = scope.scenario !== null || scope.documents.length > 0 || scope.chunks.length > 0;
     const copilotPlan = await planProductCopilotQuery(query.query, {
       runtimeAiAllowed: access.allowed && scopeAvailable,
+      categoryId: scope.scenario?.categoryId ?? "real-estate",
     });
     const productSearchQuery = copilotPlan.productQuery ?? query.query;
     const productRuntimeAiAllowed = access.allowed && copilotPlan.target !== "general";
@@ -649,6 +774,7 @@ export const POST = async (request: Request): Promise<Response> => {
         query.query,
         query.limit,
         access.allowed,
+        scope.scenario?.categoryId ?? "real-estate",
       )),
     });
   } catch {

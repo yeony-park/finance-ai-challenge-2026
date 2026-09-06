@@ -35,7 +35,7 @@ vi.mock("@/lib/db/repositories/product-knowledge", () => ({
 
 import { POST } from "@/app/api/evidence/query/route";
 
-const request = () => new Request("http://localhost/api/evidence/query", {
+const request = (query = "원금 미보장") => new Request("http://localhost/api/evidence/query", {
   method: "POST",
   headers: { "content-type": "application/json" },
   body: JSON.stringify({
@@ -43,7 +43,7 @@ const request = () => new Request("http://localhost/api/evidence/query", {
     productId: "livestock-9",
     dataNature: "observed",
     namespace: "published-offer",
-    query: "원금 미보장",
+    query,
   }),
 });
 
@@ -59,6 +59,22 @@ describe("cattle filing evidence route", () => {
       categoryId: "cattle",
       productId: "livestock-9",
       namespace: "published-offer",
+    });
+  });
+
+  test("한우 가격 질문은 공개 가격 집계를 상품 RAG와 함께 반환한다", async () => {
+    const response = await POST(request("최근 한우 가격 추세"));
+    expect(response.status).toBe(200);
+    expect(await response.json()).toMatchObject({
+      outcome: "evidence_only",
+      answerSource: "none",
+      knowledgeScope: "product",
+      retrieval: {
+        structured: { kind: "price", storage: "file" },
+      },
+      evidence: [expect.objectContaining({
+        sourceKind: "external-observation",
+      })],
     });
   });
 

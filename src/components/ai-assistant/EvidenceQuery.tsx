@@ -24,7 +24,7 @@ export interface EvidenceResult extends Pick<EvidenceAnswer,
   "outcome" | "answer" | "limitations" | "responseKind" | "structuredSources"
 > {
   readonly evidence: readonly EvidenceHit[];
-  readonly answerSource: EvidenceAnswer["answerSource"] | "general_llm" | "mixed_llm";
+  readonly answerSource: EvidenceAnswer["answerSource"] | "general_llm" | "mixed_llm" | "hybrid_llm";
   readonly knowledgeScope?: "general" | "product" | "mixed";
 }
 
@@ -36,7 +36,8 @@ const isEvidenceResult = (value: unknown): value is EvidenceResult =>
   typeof value.answer === "string" &&
   (value.answerSource === "structured" || value.answerSource === "approved_cache" ||
     value.answerSource === "live_llm" || value.answerSource === "general_llm" ||
-    value.answerSource === "mixed_llm" || value.answerSource === "none") &&
+    value.answerSource === "mixed_llm" || value.answerSource === "hybrid_llm" ||
+    value.answerSource === "none") &&
   (value.knowledgeScope === undefined || value.knowledgeScope === "general" ||
     value.knowledgeScope === "product" || value.knowledgeScope === "mixed") &&
   (value.responseKind === undefined || value.responseKind === "scope-guidance") &&
@@ -68,6 +69,7 @@ export const evidenceResultTitle = (
   if (result.responseKind === "scope-guidance") return "검색 범위 안내";
   if (result.answerSource === "general_llm") return "공개 일반지식을 바탕으로 생성한 답변";
   if (result.answerSource === "mixed_llm") return "일반 기준과 상품 원문을 바탕으로 생성한 답변";
+  if (result.answerSource === "hybrid_llm") return "상품 원문과 외부 공개정보를 바탕으로 생성한 답변";
   if (result.answerSource === "structured") {
     return result.structuredSources && result.structuredSources.length > 0
       ? "공식 공개정보에서 확인"

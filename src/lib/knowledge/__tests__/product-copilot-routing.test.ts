@@ -13,6 +13,7 @@ describe("상품 Copilot 검색 범위 라우팅", () => {
       target: "product",
       generalQuery: null,
       productQuery: "최소투자금",
+      structuredQuery: null,
     }));
     await expect(planProductCopilotQuery("최소투자금은 얼마인가요?", {
       runtimeAiAllowed: true,
@@ -21,6 +22,7 @@ describe("상품 Copilot 검색 범위 라우팅", () => {
       target: "product",
       generalQuery: null,
       productQuery: "최소투자금",
+      structuredQuery: null,
     });
     expect(planner).toHaveBeenCalledWith("최소투자금은 얼마인가요?");
   });
@@ -37,6 +39,7 @@ describe("상품 Copilot 검색 범위 라우팅", () => {
       target: "product",
       generalQuery: null,
       productQuery: "현재 상품의 투자자 보호장치",
+      structuredQuery: null,
     });
   });
 
@@ -66,6 +69,7 @@ describe("상품 Copilot 검색 범위 라우팅", () => {
       target: "general",
       generalQuery: "조각투자 일반 투자 차이",
       productQuery: null,
+      structuredQuery: null,
     });
   });
 
@@ -81,6 +85,7 @@ describe("상품 Copilot 검색 범위 라우팅", () => {
       target: "mixed",
       generalQuery: "일반 주식과 조각투자 차이",
       productQuery: "현재 상품의 권리 구조",
+      structuredQuery: null,
     });
   });
 
@@ -91,6 +96,42 @@ describe("상품 Copilot 검색 범위 라우팅", () => {
       target: "general",
       generalQuery: "금융위원회의 조각투자 가이드라인",
       productQuery: null,
+      structuredQuery: null,
+    });
+  });
+
+  test("LLM 없이도 한돈 가격 추세를 구조화 조회로 계획한다", async () => {
+    await expect(planProductCopilotQuery("최근 한돈 가격 추세", {
+      runtimeAiAllowed: false,
+      categoryId: "pig",
+    })).resolves.toMatchObject({
+      target: "product",
+      structuredQuery: { kind: "price", mode: "trend" },
+    });
+  });
+
+  test("짧은 한우 가격 질문도 상품 공모가격이 아닌 외부 시세 조회로 분류한다", async () => {
+    await expect(planProductCopilotQuery("한우 가격은 어때", {
+      runtimeAiAllowed: false,
+      categoryId: "cattle",
+    })).resolves.toMatchObject({
+      structuredQuery: { kind: "price", mode: "latest" },
+    });
+  });
+
+  test("LLM 없이도 연도·지역·질병 조건을 보수적으로 추출한다", async () => {
+    await expect(planProductCopilotQuery("2025년 경기 ASF 발생 건수", {
+      runtimeAiAllowed: false,
+      categoryId: "pig",
+    })).resolves.toMatchObject({
+      structuredQuery: {
+        kind: "disease",
+        mode: "count",
+        disease: "ASF",
+        region: "경기",
+        fromDate: "2025-01-01",
+        toDate: "2025-12-31",
+      },
     });
   });
 

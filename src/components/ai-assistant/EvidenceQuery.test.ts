@@ -65,6 +65,7 @@ describe("공통 AI 연동", () => {
   test.each([
     ["general_llm", "general"],
     ["mixed_llm", "mixed"],
+    ["hybrid_llm", "product"],
   ])("%s 응답을 검증한 뒤 일반·상품 근거 범위를 유지한다", async (answerSource, knowledgeScope) => {
     const result = {
       outcome: "answer", answer: "공개 근거를 확인했습니다.", answerSource, knowledgeScope, limitations: [],
