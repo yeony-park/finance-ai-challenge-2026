@@ -2,12 +2,13 @@
 
 import type { FormEvent, RefObject } from "react";
 
-import { SEARCH_PLACEHOLDER } from "@/lib/content/home";
+import { AI_TRANSMISSION_NOTICE, SEARCH_PLACEHOLDER } from "@/lib/content/home";
 import type { ScaffoldMatch } from "@/lib/content/scaffold-match";
 import { SearchField } from "@/components/site/SearchField";
 
 import { HERO_CHIPS } from "./home-hero-config";
 import { HomeScaffoldPanel } from "./HomeScaffoldPanel";
+import home from "./home.module.css";
 import s from "./HomeHeroSearch.module.css";
 import visual from "./HomeHeroVisual.module.css";
 
@@ -72,6 +73,7 @@ export function HomeSearchScaffold({
           </div>
         ) : null}
       </SearchField>
+      <p className={home.aiAnswerNote}>{AI_TRANSMISSION_NOTICE}</p>
     </div>
   );
 }

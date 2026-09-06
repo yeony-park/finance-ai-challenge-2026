@@ -7,6 +7,8 @@ import {
   useState,
 } from "react";
 
+import { AI_TRANSMISSION_NOTICE } from "@/lib/content/home";
+
 import s from "./ArtEvidenceCopilot.module.css";
 
 interface CopilotProductOption {
@@ -305,6 +307,7 @@ export function ArtEvidenceCopilot({
           </button>
         </div>
       </form>
+      <p className={s.lead}>{AI_TRANSMISSION_NOTICE}</p>
 
       {error ? (
         <p className={s.error} role="alert">

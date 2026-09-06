@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 import { isRecord, isStringArray } from "@/lib/client-response";
+import { AI_TRANSMISSION_NOTICE } from "@/lib/content/home";
 import type { EvidenceAnswer } from "@/lib/knowledge/evidence";
 
 import { AiPanel } from "./AiPanel";
@@ -423,6 +424,7 @@ function EvidenceQueryForm({
           {status === "loading" ? "확인 중…" : "Copilot에게 묻기"}
         </button>
       </form>
+      <p className={s.resultNote}>{AI_TRANSMISSION_NOTICE}</p>
 
       <p className={status === "loading" ? s.resultNote : "sr-only"} role="status" aria-live="polite">{statusMessage}</p>
       {status === "error" ? (
