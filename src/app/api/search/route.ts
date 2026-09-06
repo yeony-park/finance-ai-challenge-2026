@@ -11,7 +11,7 @@ export const POST = async (request: Request): Promise<Response> => {
   if (!query) return invalidRequest();
 
   try {
-    const access = authorizeKnowledgeAiHttpRequest(request);
+    const access = await authorizeKnowledgeAiHttpRequest(request);
     return Response.json(await orchestrateGlobalSearch(query, {
       runtimeAiAllowed: access.allowed,
       ...(!access.allowed ? { runtimeReason: access.reason } : {}),

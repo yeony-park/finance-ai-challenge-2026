@@ -44,7 +44,9 @@ export interface SemanticKnowledgeResult {
     | "unsafe-query"
     | "provider-failed"
     | "store-unavailable"
-    | "scope-unavailable";
+    | "scope-unavailable"
+    | "budget-exhausted"
+    | "kill-switch";
 }
 
 export interface SemanticKnowledgeOptions {

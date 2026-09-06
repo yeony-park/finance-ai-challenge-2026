@@ -5,6 +5,7 @@ import { z } from "zod";
 import type { ProductKnowledgeChunk, ProductKnowledgeRepository, ProductKnowledgeScope } from "@/lib/db/repositories/types";
 import { createLiveVerifyGate, type LiveVerifyGate } from "@/lib/verify/live/policy";
 import { filterOutput } from "@/lib/spine/guardrail/output-filter";
+import { resolveAiBudgetGate, type AiBudgetDenialReason, type AiBudgetGate } from "@/lib/spine/ops/ai-budget";
 
 import {
   isGenericKnowledgeQuery,
@@ -142,11 +143,18 @@ export interface GeneralAnswerVerificationInput {
 
 export type GeneralAnswerVerifier = (input: GeneralAnswerVerificationInput) => Promise<unknown>;
 
+export type KnowledgeAiDeniedReason =
+  | "disabled"
+  | "runtime-disabled"
+  | "rate-limited"
+  | AiBudgetDenialReason;
+
 export type KnowledgeAiAccess =
   | { readonly allowed: true }
-  | { readonly allowed: false; readonly reason: "disabled" | "runtime-disabled" | "rate-limited" };
+  | { readonly allowed: false; readonly reason: KnowledgeAiDeniedReason };
 
 const processKnowledgeAiGate = createLiveVerifyGate();
+const processAiBudgetGate = resolveAiBudgetGate();
 
 export const authorizeKnowledgeAiRequest = (options: {
   readonly clientKey: string;
@@ -163,12 +171,20 @@ export const authorizeKnowledgeAiRequest = (options: {
   return decision.allowed ? { allowed: true } : { allowed: false, reason: "rate-limited" };
 };
 
-export const authorizeKnowledgeAiHttpRequest = (request: Request): KnowledgeAiAccess =>
-  authorizeKnowledgeAiRequest({
+export const authorizeKnowledgeAiHttpRequest = async (
+  request: Request,
+  options: { readonly budget?: AiBudgetGate; readonly now?: number } = {},
+): Promise<KnowledgeAiAccess> => {
+  const access = authorizeKnowledgeAiRequest({
     clientKey: request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "local",
     featureEnabled:
       process.env.KNOWLEDGE_SEMANTIC_ENABLED === "true" || isLiveEvidenceEnabled(),
+    now: options.now,
   });
+  if (!access.allowed) return access;
+  const budget = await (options.budget ?? processAiBudgetGate).check(options.now);
+  return budget.allowed ? { allowed: true } : { allowed: false, reason: budget.reason };
+};
 
 export const isSearchPlannerInputEligible = (query: string): boolean =>
   query.length <= 200 &&
@@ -402,7 +418,7 @@ export interface SearchOrchestrationOptions {
   readonly corpus?: CanonicalSemanticCorpus;
   readonly dbPath?: string;
   readonly runtimeAiAllowed?: boolean;
-  readonly runtimeReason?: "disabled" | "runtime-disabled" | "rate-limited";
+  readonly runtimeReason?: KnowledgeAiDeniedReason;
   readonly answerEnabled?: boolean;
   readonly answerer?: SearchAnswerer;
   readonly generalAnswerer?: GeneralAnswerer;
@@ -802,7 +818,7 @@ export const retrieveExactProductEvidence = async (options: {
   readonly repository?: ProductKnowledgeRepository;
   readonly fallbackChunks?: readonly (ChunkRecord | CommonChunkRecord | ProductKnowledgeChunk)[];
   readonly runtimeAiAllowed?: boolean;
-  readonly runtimeReason?: "disabled" | "runtime-disabled" | "rate-limited";
+  readonly runtimeReason?: KnowledgeAiDeniedReason;
 }): Promise<ExactProductRetrievalResult> => {
   const runtimeAiAllowed = options.runtimeAiAllowed ?? process.env.KNOWLEDGE_RUNTIME_AI_ENABLED === "true";
   const result = await searchSemanticKnowledge({

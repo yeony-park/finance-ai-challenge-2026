@@ -2,7 +2,11 @@ export const BLOCK_SCORE_THRESHOLD = 5;
 export const FLAG_SCORE_THRESHOLD = 2;
 
 export const RATE_LIMIT_WINDOW_MS = 60_000;
-export const RATE_LIMIT_MAX_REQUESTS = 20;
+export const RATE_LIMIT_MAX_REQUESTS = 10;
+
+export const AI_BUDGET_WINDOW_MS = 24 * 60 * 60_000;
+export const AI_DAILY_REQUEST_BUDGET_DEFAULT = 100;
+export const AI_KILL_SWITCH_KEY = "ai:kill-switch";
 
 export const PENDING_ACTION_TTL_MS = 10 * 60_000;
 
