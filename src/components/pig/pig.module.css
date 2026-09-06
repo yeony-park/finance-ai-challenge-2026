@@ -672,39 +672,32 @@
 .asfKakaoMarker {
   position: relative;
   display: grid;
-  place-items: center;
-  width: 44px;
-  height: 48px;
+  place-items: end center;
+  width: 32px;
+  height: 36px;
   padding: 0;
   border: 0;
   background: transparent;
   cursor: pointer;
   transform-origin: 50% 100%;
   transition: transform var(--ds-duration-fast) var(--ds-ease);
-}
-
-.asfKakaoMarker img {
-  display: block;
-  width: 36px;
-  height: 48px;
-  pointer-events: none;
   filter: drop-shadow(0 1px 2px rgb(255 255 255 / 85%));
 }
 
 .diseasePinCount {
   position: absolute;
-  top: -4px;
-  right: -4px;
+  top: 0;
+  right: 0;
   display: grid;
   place-items: center;
-  min-width: 22px;
-  height: 22px;
+  min-width: 18px;
+  height: 18px;
   padding: 0 var(--ds-space-1);
   border: 1px solid var(--ds-surface);
   border-radius: var(--ds-radius-pill);
   background: var(--ds-ink);
   color: var(--ds-surface);
-  font-size: var(--ds-text-xs);
+  font-size: var(--ds-text-2xs);
   line-height: 1;
   pointer-events: none;
 }

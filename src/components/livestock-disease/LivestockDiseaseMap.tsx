@@ -20,6 +20,7 @@ import {
 } from "./map-view";
 import { isLivestockDiseaseMapDataset } from "./map-response";
 import s from "./livestock-disease.module.css";
+import pin from "./disease-pin.module.css";
 
 interface LivestockDiseaseMapProps {
   readonly species: LivestockDiseaseMapSpecies;
@@ -148,7 +149,12 @@ export function LivestockDiseaseMap({
           ariaLabel={ariaLabel}
         />
         <div className={s.mapLegend} aria-label="지도 범례">
-          <span><i aria-hidden="true" />질병 발생 지점 · 숫자는 발생 건수</span>
+          {(species === "pig"
+            ? [["ASF", "ASF"], ["FMD", "구제역"]]
+            : [["FMD", "구제역"], ["LSD", "럼피스킨"]]
+          ).map(([disease, label]) => (
+            <span key={disease}><i className={pin.pin} data-disease={disease} aria-hidden="true" />{label}</span>
+          ))}
         </div>
       </div>
 

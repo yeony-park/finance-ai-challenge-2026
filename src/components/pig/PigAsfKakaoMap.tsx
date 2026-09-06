@@ -4,6 +4,7 @@ import Script from "next/script";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import s from "./pig.module.css";
+import pin from "@/components/livestock-disease/disease-pin.module.css";
 
 export type DiseaseCode = "ASF" | "FMD" | "LSD";
 
@@ -227,12 +228,11 @@ export function PigAsfKakaoMap({
 
           marker.type = "button";
           marker.className = s.asfKakaoMarker;
-          const icon = document.createElement("img");
-          icon.src = "/map-pin.svg";
-          icon.alt = "";
-          icon.width = 36;
-          icon.height = 48;
-          icon.draggable = false;
+          marker.dataset.disease = group.disease;
+          const icon = document.createElement("span");
+          icon.className = pin.pin;
+          icon.dataset.disease = group.disease;
+          icon.setAttribute("aria-hidden", "true");
           marker.append(icon);
           if (group.events.length > 1) {
             const count = document.createElement("span");
