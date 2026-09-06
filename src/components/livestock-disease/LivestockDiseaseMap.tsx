@@ -14,14 +14,17 @@ import {
 } from "./LivestockDiseaseKakaoMap";
 import {
   diseaseYearlyCounts,
+  diseaseMapFocusPoints,
   selectLivestockDiseaseMapEvents,
   type LivestockDiseaseMapViewEvent,
 } from "./map-view";
+import { isLivestockDiseaseMapDataset } from "./map-response";
 import s from "./livestock-disease.module.css";
 
 interface LivestockDiseaseMapProps {
   readonly species: LivestockDiseaseMapSpecies;
   readonly focusProvinces: readonly string[];
+  readonly viewportProvinces?: readonly string[];
   readonly throughDate?: string;
   readonly currentYear: string;
   readonly ariaLabel: string;
@@ -31,39 +34,21 @@ interface LivestockDiseaseMapProps {
 type LoadState =
   | { readonly status: "loading" }
   | { readonly status: "ready"; readonly dataset: LivestockDiseaseMapDataset }
-  | { readonly status: "error" };
+  | { readonly status: "error"; readonly species: LivestockDiseaseMapSpecies };
 
-function MapState({
-  state,
-  onRetry,
-}: {
-  readonly state: "empty" | "error";
-  readonly onRetry?: () => void;
-}) {
+function MapState({ onRetry }: { readonly onRetry: () => void }) {
   return (
     <div className={s.mapLayout}>
       <div className={s.mapCanvas}>
-        <div className={s.mapPlaceholder} data-map-placeholder data-state={state}>
+        <div className={s.mapPlaceholder} data-map-placeholder data-state="error">
           <div>
-            <p className={s.mapStateText} role={state === "error" ? "alert" : "status"}>
-              {state === "error"
-                ? "질병 지도 데이터를 불러오지 못했습니다."
-                : "이 공고의 공개 지역·기준일 조건에서 확인된 발생이 없습니다. 발생 미확인은 안전을 뜻하지 않습니다."}
-            </p>
-            {state === "error" && onRetry ? (
-              <button className={s.retryButton} type="button" onClick={onRetry}>
-                다시 불러오기
-              </button>
-            ) : null}
+            <p className={s.mapStateText} role="alert">질병 지도 데이터를 불러오지 못했습니다.</p>
+            <button className={s.retryButton} type="button" onClick={onRetry}>다시 불러오기</button>
           </div>
         </div>
       </div>
       <aside className={s.mapStats}>
-        <p className={s.mapNote}>
-          {state === "error"
-            ? "공식 출처 링크와 보고서의 다른 검증 결과는 계속 확인할 수 있습니다."
-            : "공개 자료에 사건이 없다는 사실만 표시하며 질병 부재를 판정하지 않습니다."}
-        </p>
+        <p className={s.mapNote}>공식 출처 링크와 보고서의 다른 검증 결과는 계속 확인할 수 있습니다.</p>
       </aside>
     </div>
   );
@@ -72,6 +57,7 @@ function MapState({
 export function LivestockDiseaseMap({
   species,
   focusProvinces,
+  viewportProvinces,
   throughDate,
   currentYear,
   ariaLabel,
@@ -89,19 +75,16 @@ export function LivestockDiseaseMap({
     })
       .then(async (response) => {
         if (!response.ok) throw new Error("disease_map_fetch_failed");
-        const dataset = (await response.json()) as LivestockDiseaseMapDataset;
-        if (
-          dataset.species !== species ||
-          typeof dataset.asOf !== "string" ||
-          !Array.isArray(dataset.events)
-        ) {
+        const dataset: unknown = await response.json();
+        if (controller.signal.aborted) return;
+        if (!isLivestockDiseaseMapDataset(dataset, species)) {
           throw new Error("disease_map_contract_mismatch");
         }
         setLoadState({ status: "ready", dataset });
       })
       .catch((error: unknown) => {
-        if (error instanceof DOMException && error.name === "AbortError") return;
-        setLoadState({ status: "error" });
+        if (controller.signal.aborted || (error instanceof DOMException && error.name === "AbortError")) return;
+        setLoadState({ status: "error", species });
       });
 
     return () => controller.abort();
@@ -120,11 +103,14 @@ export function LivestockDiseaseMap({
     [currentYear, focusProvinces, loadState, species, throughDate],
   );
 
-  if (loadState.status === "loading") return <DiseaseMapLoading />;
+  if (
+    loadState.status === "loading" ||
+    (loadState.status === "ready" && loadState.dataset.species !== species) ||
+    (loadState.status === "error" && loadState.species !== species)
+  ) return <DiseaseMapLoading />;
   if (loadState.status === "error") {
     return (
       <MapState
-        state="error"
         onRetry={() => {
           setLoadState({ status: "loading" });
           setAttempt((current) => current + 1);
@@ -132,7 +118,6 @@ export function LivestockDiseaseMap({
       />
     );
   }
-  if (events.length === 0) return <MapState state="empty" />;
 
   const yearlyCounts = diseaseYearlyCounts(events, species);
   const maxYearCount = Math.max(1, ...yearlyCounts.map(([, count]) => count));
@@ -159,21 +144,11 @@ export function LivestockDiseaseMap({
         <LivestockDiseaseKakaoMap
           appKey={kakaoAppKey}
           events={kakaoEvents}
+          focusPoints={diseaseMapFocusPoints(loadState.dataset, viewportProvinces ?? focusProvinces)}
           ariaLabel={ariaLabel}
         />
         <div className={s.mapLegend} aria-label="지도 범례">
-          {species === "pig" ? (
-            <>
-              <span><i className={s.legendPast} />ASF 과거 발생</span>
-              <span><i className={s.legendCurrent} />ASF {currentYear}</span>
-              <span><i className={s.legendFmd} />구제역 · 돼지</span>
-            </>
-          ) : (
-            <>
-              <span><i className={s.legendFmd} />구제역 · 소 {diseaseCount("FMD")}건</span>
-              <span><i className={s.legendLsd} />럼피스킨 · 소 {diseaseCount("LSD")}건</span>
-            </>
-          )}
+          <span><i aria-hidden="true" />질병 발생 지점 · 숫자는 발생 건수</span>
         </div>
       </div>
 
@@ -192,11 +167,12 @@ export function LivestockDiseaseMap({
             <>
               <div><span>구제역 · 소</span><strong>{diseaseCount("FMD")}건</strong></div>
               <div><span>럼피스킨</span><strong>{diseaseCount("LSD")}건</strong></div>
-              <div><span>선택 도</span><strong>{focusProvinces.length}곳</strong></div>
+              <div><span>선택 도</span><strong>{focusProvinces.length ? `${focusProvinces.length}곳` : "지역 미확인"}</strong></div>
             </>
           )}
         </div>
 
+        {events.length === 0 ? <p className={s.mapNote}>이 지역·기준일 조건에서 확인된 발생이 없습니다. 발생 미확인은 안전을 뜻하지 않습니다.</p> : null}
         <div className={s.yearList}>
           {yearlyCounts.map(([year, count]) => (
             <div className={s.yearRow} key={year}>
@@ -211,8 +187,8 @@ export function LivestockDiseaseMap({
 
         <p className={s.mapNote}>
           {species === "pig"
-            ? "원형은 ASF, 마름모는 구제역입니다. 점은 행정기관 기준 대표 좌표이며 실제 농장 위치가 아닙니다."
-            : "구제역과 럼피스킨 모두 신고서 제출일 이전의 공개 발생만 표시합니다. 실제 농장 위치나 상세주소는 사용하지 않습니다."}
+            ? "핀을 누르면 질병 종류와 발생 내역을 확인할 수 있습니다. 핀은 행정기관 기준 대표 좌표이며 실제 농장 위치가 아닙니다."
+            : "구제역과 럼피스킨 모두 공시 기준일 이전의 공개 발생만 표시합니다. 실제 농장 위치나 상세주소는 사용하지 않습니다."}
         </p>
       </aside>
     </div>
