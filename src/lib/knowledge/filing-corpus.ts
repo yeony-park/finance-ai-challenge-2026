@@ -293,11 +293,12 @@ const externalDocument = (input: {
   readonly asOf: string;
   readonly sourceHash: string;
   readonly text: string;
+  readonly limitations?: readonly string[];
 }): { readonly document: CommonDocumentRecord; readonly chunks: readonly CommonChunkRecord[] } => {
   const documentId = `${input.categoryId}-${input.productId}-external-${input.suffix}`;
-  const limitations = [
+  const limitations = [...(input.limitations ?? [
     "공개 외부자료의 비식별 집계만 상품 검토 문맥에 연결했으며 해당 상품의 개별 자산과 직접 일치함을 뜻하지 않습니다.",
-  ];
+  ])];
   const document = CommonDocumentRecordSchema.parse({
     schemaVersion: 1,
     categoryId: input.categoryId,
@@ -328,15 +329,76 @@ const readJson = async <T>(file: string): Promise<{ readonly value: T; readonly 
   return { value: JSON.parse(new TextDecoder().decode(bytes)) as T, bytes };
 };
 
+interface DiseaseEventSource {
+  readonly asOf: string;
+  readonly source: { readonly boardUrl: string };
+  readonly events: readonly {
+    readonly disease?: "FMD" | "LSD";
+    readonly occurredAt: string;
+    readonly species?: "cattle" | "pig" | "goat";
+    readonly raisedHeadCount?: number | null;
+    readonly culledHeadCount?: number | null;
+    readonly province: string;
+    readonly region: string;
+  }[];
+}
+
+const DISEASE_LABELS = {
+  ASF: "아프리카돼지열병",
+  FMD: "구제역",
+  LSD: "럼피스킨",
+} as const;
+
+const diseaseDocuments = (
+  product: OnboardingProduct,
+  input: {
+    readonly code: keyof typeof DISEASE_LABELS;
+    readonly source: DiseaseEventSource;
+    readonly bytes: Uint8Array;
+  },
+): readonly { readonly document: CommonDocumentRecord; readonly chunks: readonly CommonChunkRecord[] }[] => {
+  const events = input.source.events.filter((event) =>
+    (event.species ?? "pig") === product.categoryId,
+  );
+  const byYear = Map.groupBy(events, (event) => event.occurredAt.slice(0, 4));
+  return [...byYear.entries()].sort(([left], [right]) => left.localeCompare(right)).map(([year, rows]) => {
+    const provinces = [...Map.groupBy(rows, (event) => event.province)]
+      .map(([province, values]) => `${province} ${values.length}건`)
+      .sort((left, right) => left.localeCompare(right, "ko-KR"));
+    const occurrences = rows.map((event) => {
+      const count = event.culledHeadCount ?? event.raisedHeadCount;
+      const countLabel = event.culledHeadCount !== undefined ? "살처분 규모" : "사육두수";
+      return `${event.occurredAt} ${event.region}${count === null || count === undefined ? "" : ` (${countLabel} ${count.toLocaleString("ko-KR")}두)`}`;
+    });
+    const label = DISEASE_LABELS[input.code];
+    return externalDocument({
+      categoryId: product.categoryId,
+      productId: product.productId,
+      suffix: `disease-${input.code.toLocaleLowerCase()}-${year}`,
+      title: `${label}(${input.code}) 공개 발생 이력 — ${year}년`,
+      sourceUrl: input.source.source.boardUrl,
+      asOf: input.source.asOf,
+      sourceHash: sha256(input.bytes),
+      text: `${year}년 ${product.categoryId === "cattle" ? "한우" : "한돈"} 관련 ${label}(${input.code}) 공개 발생 ${rows.length}건. 지역별 집계: ${provinces.join(", ")}. 발생 목록: ${occurrences.join("; ")}.`,
+      limitations: [
+        "농림축산식품부 공개 발생일·시도·시군구 자료이며 농장명·농장주·읍면동 이하 상세주소는 포함하지 않습니다.",
+        "공개 지역 발생 이력은 해당 상품의 개별 가축 감염이나 손익 영향을 뜻하지 않습니다.",
+      ],
+    });
+  });
+};
+
 const buildExternalDocuments = async (
   dataRoot: string,
   product: OnboardingProduct,
 ): Promise<readonly { readonly document: CommonDocumentRecord; readonly chunks: readonly CommonChunkRecord[] }[]> => {
   if (product.categoryId === "cattle") {
-    const [auction, artifacts] = await Promise.all([readJson<{
+    const [auction, artifacts, fmd, lsd] = await Promise.all([readJson<{
       month: string; partial: boolean; sourceName: string; entries: readonly { sexName: string; status: string; averagePricePerKg?: number; sampleSize?: number }[];
     }>(path.join(dataRoot, "reference/auction-price/024001-2026-08.json")),
-    loadApprovedCattleFilingArtifactsForProduct("cattle", product.productId, dataRoot)]);
+    loadApprovedCattleFilingArtifactsForProduct("cattle", product.productId, dataRoot),
+    readJson<DiseaseEventSource>(path.join(dataRoot, "reference/livestock-disease/fmd/mafra_fmd_events.json")),
+    readJson<DiseaseEventSource>(path.join(dataRoot, "reference/livestock-disease/lsd/mafra_lsd_events.json"))]);
     const text = `한우 경락가격 공개 집계 ${auction.value.month}${auction.value.partial ? "(부분 월)" : ""}. ` +
       auction.value.entries.filter((item) => item.status === "ok").map((item) =>
         `${item.sexName} 평균 ${item.averagePricePerKg?.toLocaleString("ko-KR")}원/kg, 표본 ${item.sampleSize?.toLocaleString("ko-KR")}두`
@@ -362,23 +424,16 @@ const buildExternalDocuments = async (
       text: trace.fieldSummary.map((item) =>
         `${item.field}: 일치 ${item.matchCount}건, 불일치 ${item.mismatchCount}건, 대조 불가 ${item.unverifiableCount}건`
       ).join("; "),
-    })] : [])];
+    })] : []),
+    ...diseaseDocuments(product, { code: "FMD", source: fmd.value, bytes: fmd.bytes }),
+    ...diseaseDocuments(product, { code: "LSD", source: lsd.value, bytes: lsd.bytes })];
   }
-  const [asf, priceMeta] = await Promise.all([
-    readJson<{ asOf: string; scope: string; events: readonly { occurredAt: string; region: string }[]; limitation: string }>(path.join(dataRoot, "reference/pig-asf/asf_events_20260320.json")),
+  const [asf, fmd, priceMeta] = await Promise.all([
+    readJson<DiseaseEventSource>(path.join(dataRoot, "reference/pig-asf/mafra_asf_events.json")),
+    readJson<DiseaseEventSource>(path.join(dataRoot, "reference/livestock-disease/fmd/mafra_fmd_events.json")),
     readJson<{ sourceName: string; sourceUrl: string; sha256: string; filters: Record<string, string>; derivedMonths: readonly string[]; note: string }>(path.join(dataRoot, "reference/pig-auction-price/pig_price_20260815021618.meta.json")),
   ]);
   return [
-    externalDocument({
-      categoryId: "pig",
-      productId: product.productId,
-      suffix: "asf-2026-03-20",
-      title: asf.value.scope,
-      sourceUrl: "https://www.mafra.go.kr/bbs/FMD-AI2/404/577369/artclView.do",
-      asOf: asf.value.asOf,
-      sourceHash: sha256(asf.bytes),
-      text: `공개 ASF 발생 지역 ${asf.value.events.length}건: ${asf.value.events.map((event) => `${event.occurredAt} ${event.region}`).join(", ")}. ${asf.value.limitation}`,
-    }),
     externalDocument({
       categoryId: "pig",
       productId: product.productId,
@@ -389,6 +444,8 @@ const buildExternalDocuments = async (
       sourceHash: priceMeta.value.sha256,
       text: `돼지 경락가격 공개 파일의 필터는 ${Object.values(priceMeta.value.filters).join(", ")}이고 파생 월은 ${priceMeta.value.derivedMonths.join(", ")}입니다. ${priceMeta.value.note}`,
     }),
+    ...diseaseDocuments(product, { code: "ASF", source: asf.value, bytes: asf.bytes }),
+    ...diseaseDocuments(product, { code: "FMD", source: fmd.value, bytes: fmd.bytes }),
   ];
 };
 

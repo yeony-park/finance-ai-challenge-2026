@@ -15,7 +15,7 @@ describe("full DART filing corpus", () => {
     expect(manifest.entries).toHaveLength(12);
     expect(manifest.entries.flatMap((entry) => entry.localRcpNos)).toHaveLength(37);
     expect(manifest.entries.flatMap((entry) => entry.unavailableRcpNos)).toEqual(["20250113000307"]);
-    expect(manifest.entries.reduce((sum, entry) => sum + entry.documents, 0)).toBe(61);
+    expect(manifest.entries.reduce((sum, entry) => sum + entry.documents, 0)).toBeGreaterThan(61);
     expect(manifest.entries.reduce((sum, entry) => sum + entry.chunks, 0)).toBeGreaterThan(12_000);
     await expect(auditFilingCorpus()).resolves.toEqual([]);
   });
@@ -24,7 +24,9 @@ describe("full DART filing corpus", () => {
     const corpus = await loadFilingCorpusForProduct("cattle", "livestock-1");
     expect(corpus).not.toBeNull();
     expect(corpus?.documents.filter((item) => item.sourceKind === "official-document")).toHaveLength(5);
-    expect(corpus?.documents.filter((item) => item.sourceKind === "external-observation")).toHaveLength(2);
+    expect(corpus?.documents.filter((item) => item.sourceKind === "external-observation").length).toBeGreaterThan(2);
+    expect(corpus?.documents.some((item) => item.documentId.includes("-disease-fmd-"))).toBe(true);
+    expect(corpus?.documents.some((item) => item.documentId.includes("-disease-lsd-"))).toBe(true);
     expect(corpus?.chunks.length).toBeGreaterThan(500);
     expect(corpus?.chunks.every((item) =>
       item.approvedForPublic && !item.approvedForExternalAi &&
@@ -39,7 +41,8 @@ describe("full DART filing corpus", () => {
       dataNature: "observed",
     });
     expect(knowledge.documents.filter((item) => item.documentId.includes("-dart-full-"))).toHaveLength(4);
-    expect(knowledge.documents.filter((item) => item.sourceKind === "external-observation")).toHaveLength(2);
+    expect(knowledge.documents.filter((item) => item.sourceKind === "external-observation").length).toBeGreaterThan(2);
+    expect(knowledge.documents.some((item) => item.documentId.includes("-disease-asf-"))).toBe(true);
     expect(knowledge.chunks.length).toBeGreaterThan(1_000);
 
     const result = await searchOffers({ q: "돼지 아프리카돼지열병 발생 지역", limit: 10 });
