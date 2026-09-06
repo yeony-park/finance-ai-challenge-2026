@@ -8,6 +8,7 @@ import { filterOutput } from "@/lib/spine/guardrail/output-filter";
 
 import {
   isGenericKnowledgeQuery,
+  retrieveGenericKnowledge,
   resolveRetrievalRepositories,
   type GenericKnowledgeEvidence,
   type RetrievalRepositories,
@@ -30,7 +31,6 @@ import {
 } from "./local-rag/semantic";
 import type { CanonicalSemanticCorpus } from "./local-rag/corpus";
 import type { LocalRagEmbedder } from "./local-rag/embedding";
-import { searchApprovedGenericCorpus } from "./local-rag/generic-corpus";
 import type { ChunkRecord, CommonChunkRecord } from "./schema";
 import type { SearchHit } from "./search";
 
@@ -306,6 +306,35 @@ export const validateGeneralGroundingReview = (
     indexes.length === 0 &&
     new Set(indexes).size === indexes.length &&
     indexes.every((index) => index < candidate.claims.length);
+};
+
+export const selectSupportedGeneralAnswer = (
+  review: unknown,
+  candidate: GeneralAnswerCandidate,
+  input: GeneralAnswerInput,
+): Pick<GeneralAnswerCandidate, "answer" | "citedSourceIds"> | null => {
+  const parsed = GeneralGroundingReviewSchema.safeParse(review);
+  if (!parsed.success) return null;
+  const indexes = parsed.data.unsupportedClaimIndexes;
+  if (
+    new Set(indexes).size !== indexes.length ||
+    indexes.some((index) => index >= candidate.claims.length) ||
+    parsed.data.supported !== (indexes.length === 0)
+  ) return null;
+
+  const unsupported = new Set(indexes);
+  const claims = candidate.claims.filter((_, index) => !unsupported.has(index));
+  if (claims.length === 0) return null;
+  const sourceByHash = new Map(input.evidence.map((item) => [item.hash, item.sourceId]));
+  const citedSourceIds = claims.flatMap((claim) => {
+    const sourceId = sourceByHash.get(claim.evidenceHash);
+    return sourceId ? [sourceId] : [];
+  });
+  if (citedSourceIds.length !== claims.length) return null;
+  const screened = filterOutput(claims.map((claim) => claim.sentence).join(" "));
+  return screened.ok && screened.text.trim()
+    ? { answer: screened.text.trim(), citedSourceIds: [...new Set(citedSourceIds)] }
+    : null;
 };
 
 export const validateGeneralAnswer = (
@@ -627,7 +656,10 @@ export const orchestrateGlobalSearch = async (
     const repositories = options.repositories ?? await resolveRetrievalRepositories({ dataDir: options.dataRoot });
     const keywordEvidence = semantic.evidence.length > 0
       ? []
-      : await searchApprovedGenericCorpus(plan.semanticQuery, options.dataRoot, request.limit);
+      : (await retrieveGenericKnowledge(
+          repositories.rag,
+          plan.semanticQuery,
+        )).evidence.slice(0, request.limit);
     const evidence = semantic.evidence.length > 0
       ? semantic.evidence
       : keywordEvidence;

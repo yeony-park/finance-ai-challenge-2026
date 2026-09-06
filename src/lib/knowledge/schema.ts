@@ -60,8 +60,9 @@ const validateProvenance = (
 };
 
 export const isSafeScenarioDocumentPath = (value: string): boolean => {
-  const match = value.match(/^\/scenario-documents\/([a-zA-Z0-9][a-zA-Z0-9._-]*\.pdf)$/);
-  return match !== null && !match[1].includes("..");
+  const pdf = value.match(/^\/scenario-documents\/([a-zA-Z0-9][a-zA-Z0-9._-]*\.pdf)$/);
+  if (pdf) return !pdf[1].includes("..");
+  return /^\/art\?product=[a-zA-Z0-9][a-zA-Z0-9._-]{0,119}$/.test(value);
 };
 
 export const isSafeHttpsPublicSourceUrl = (value: string): boolean => {

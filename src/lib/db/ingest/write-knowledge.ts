@@ -133,6 +133,7 @@ const documentValues = (
   owner: typeof KNOWLEDGE_ETL_OWNER,
 ) => ({
   sourceId: row.sourceId,
+  canonicalDocumentId: row.documentId,
   title: row.title,
   url: row.sourceUrl,
   // Product ETL only emits public-approved, rights-gated rows. Keep the legacy
@@ -169,6 +170,7 @@ export const knowledgeDocumentUpsertQuery = (
     .onConflictDoUpdate({
       target: ragDocuments.sourceId,
       set: {
+        canonicalDocumentId: values.canonicalDocumentId,
         title: values.title,
         url: values.url,
         license: values.license,
@@ -202,6 +204,7 @@ const chunkValues = (
   owner: typeof KNOWLEDGE_ETL_OWNER,
 ) => ({
   documentId,
+  canonicalChunkId: row.chunkId,
   chunkIndex: row.chunkIndex,
   content: row.content,
   scopeKind: row.scopeKind,
@@ -238,6 +241,7 @@ export const knowledgeChunkUpsertQuery = (
     .onConflictDoUpdate({
       target: [ragChunks.documentId, ragChunks.chunkIndex],
       set: {
+        canonicalChunkId: values.canonicalChunkId,
         content: values.content,
         sourceUrl: values.sourceUrl,
         asOf: values.asOf,
@@ -250,7 +254,13 @@ export const knowledgeChunkUpsertQuery = (
         page: values.page,
         chunkHash: values.chunkHash,
         canonicalText: values.canonicalText,
-        embedding: values.embedding,
+        embedding: sql`CASE
+          WHEN ${ragChunks.sourceHash} IS NOT DISTINCT FROM ${values.sourceHash}
+           AND ${ragChunks.chunkHash} IS NOT DISTINCT FROM ${values.chunkHash}
+           AND ${ragChunks.canonicalText} IS NOT DISTINCT FROM ${values.canonicalText}
+          THEN ${ragChunks.embedding}
+          ELSE NULL
+        END`,
       },
       setWhere: and(
         eq(ragChunks.scopeKind, "product"),

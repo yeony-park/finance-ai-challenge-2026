@@ -346,8 +346,11 @@ RAG 담당자의 어댑터 연결, 로딩·오류·빈 상태는 [AI UI 연결 �
 - `dataNature`: `observed|scenario`. 시나리오는 `scenarioId`도 지정한다.
 - `namespace`: `common|legacy-scenario|published-offer`. 같은 ID가 여러 범위에 있으면 생략하지 않는다.
 - 합성 미술품: `categoryId=art`, `dataNature=scenario`, `namespace=common`, `scenarioId=synthetic-art-catalog`.
+- 질의 범위: 일반 개념·제도는 generic corpus, 현재 상품·발행사·운영사는 exact product corpus, 일반 기준을 현재 상품과 비교·적용하는 질문은 두 범위를 함께 검색한다.
 - 응답: `outcome`(`answer|evidence_only|abstain`), `answer`, `evidence`, `limitations`, `cached`,
-  `answerSource`(`structured|approved_cache|live_llm|none`). 출처·인용·확인 항목·충돌 정보는 해당할 때 추가한다.
+  `answerSource`(`structured|approved_cache|live_llm|general_llm|mixed_llm|none`),
+  `knowledgeScope`(`product|general|mixed`). 출처·인용·확인 항목·충돌 정보는 해당할 때 추가한다.
+- `mixed`는 범위별 최소 1건의 근거를 보존하므로 `limit=1`에서도 최대 2건의 근거를 반환할 수 있다.
 - 원문 승인·개인정보 검토·실행 게이트가 충족되지 않으면 외부 AI 생성을 하지 않는다.
   근거만 반환하거나 답변을 보류하는 동작을 유지한다.
 - 잘못된 요청은 400 `INVALID_REQUEST`, 내부 처리 오류는 500 `INTERNAL_ERROR`다.

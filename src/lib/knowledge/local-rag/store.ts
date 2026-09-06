@@ -524,6 +524,8 @@ export const searchLocalRagStore = (
       );
 
     // ponytail: exact-scope O(n) scan is intentional; add ANN only after corpus benchmarks require it.
+    const documentIds = input.documentIds ? new Set(input.documentIds) : null;
+    input.documentIds?.forEach((documentId) => assertReferenceKey("documentId", documentId));
     const hits: LocalRagHit[] = rows.map((row) => {
       if (
         typeof row.document_id !== "string" ||
@@ -545,7 +547,7 @@ export const searchLocalRagStore = (
         chunkHash: row.chunk_hash,
         score: dotProduct(query, decodeVector(row.embedding)),
       };
-    });
+    }).filter((hit) => documentIds === null || documentIds.has(hit.documentId));
     hits.sort(
       (left, right) =>
         right.score - left.score || left.chunkId.localeCompare(right.chunkId),

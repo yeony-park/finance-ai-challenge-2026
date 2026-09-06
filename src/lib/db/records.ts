@@ -289,6 +289,7 @@ export type ReTradeRow = z.infer<typeof reTradeRowSchema>;
 export const ragDocumentRowSchema = z
   .object({
     sourceId: z.string().min(1),
+    canonicalDocumentId: ragScopeIdSchema.nullable().default(null),
     title: z.string().min(1),
     url: z.string().nullable(),
     license: licenseSchema,
@@ -322,13 +323,23 @@ export const ragDocumentRowSchema = z
     limitations: ragLimitationsSchema.nullable().default(null),
   })
   .strict()
-  .superRefine(validateRagScope);
+  .superRefine((value, ctx) => {
+    validateRagScope(value, ctx);
+    if (value.scopeKind === "product" && value.canonicalDocumentId === null) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["canonicalDocumentId"],
+        message: "product RAG document에는 canonicalDocumentId가 필요합니다.",
+      });
+    }
+  });
 
 export type RagDocumentRow = z.infer<typeof ragDocumentRowSchema>;
 
 export const ragChunkRowSchema = z
   .object({
     chunkIndex: z.number().int().min(0),
+    canonicalChunkId: ragScopeIdSchema.nullable().default(null),
     content: z.string().min(1),
     embedding: z.array(z.number()).length(1536).nullable().default(null),
     scopeKind: ragScopeKindSchema.default("generic"),
@@ -354,7 +365,7 @@ export const ragChunkRowSchema = z
   .superRefine((value, ctx) => {
     validateRagScope(value, ctx);
     if (value.scopeKind === "product") {
-      for (const field of ["page", "chunkHash", "canonicalText"] as const) {
+      for (const field of ["canonicalChunkId", "page", "chunkHash", "canonicalText"] as const) {
         if (value[field] === null) {
           ctx.addIssue({
             code: "custom",

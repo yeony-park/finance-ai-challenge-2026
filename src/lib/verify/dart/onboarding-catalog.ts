@@ -44,7 +44,7 @@ const BASE_CATALOG = [
   { categoryId: "cattle", productId: "livestock-6", candidateRcpNos: ["20251010000109", "20251031000477"], activeRcpNo: "20251010000109", status: "ready-local", externalAiApproved: false },
   { categoryId: "cattle", productId: "livestock-7", candidateRcpNos: ["20260203000427", "20260210000785", "20260225002022"], activeRcpNo: "20260203000427", status: "ready-local", externalAiApproved: false },
   { categoryId: "cattle", productId: "livestock-8", candidateRcpNos: ["20260326001272", "20260414002068"], activeRcpNo: "20260326001272", status: "ready-local", externalAiApproved: false },
-  { categoryId: "cattle", productId: "livestock-9", candidateRcpNos: ["20260806000159", "20260814003572"], activeRcpNo: "20260814003572", status: "ready-local", externalAiApproved: false },
+  { categoryId: "cattle", productId: "livestock-9", candidateRcpNos: ["20260806000159", "20260814003572", "20260902000022"], activeRcpNo: "20260814003572", status: "ready-local", externalAiApproved: false },
   { categoryId: "pig", productId: "pig-1", candidateRcpNos: ["20251215000259", "20260107000209", "20260129000008", "20260213000150"], activeRcpNo: "20251215000259", status: "ready-local", externalAiApproved: false },
   { categoryId: "pig", productId: "pig-2", candidateRcpNos: ["20260420000157", "20260506000437", "20260514000004", "20260528001031"], activeRcpNo: "20260420000157", status: "ready-local", externalAiApproved: false },
   { categoryId: "pig", productId: "pig-3", candidateRcpNos: ["20260605000175", "20260624000508", "20260626000400", "20260714000008"], activeRcpNo: "20260605000175", status: "ready-local", externalAiApproved: false },
@@ -185,8 +185,8 @@ export const validateOnboardingCatalog = (
       throw new Error(`active RCP가 후보 집합에 없습니다: ${product.productId}`);
     }
   }
-  if (allRcpNos.size !== 37 || localCount !== 36 || unavailableCount !== 1) {
-    throw new Error("onboarding inventory는 후보 37개, local 36개, source-unavailable 1개여야 합니다.");
+  if (allRcpNos.size !== 38 || localCount !== 37 || unavailableCount !== 1) {
+    throw new Error("onboarding inventory는 후보 38개, local 37개, source-unavailable 1개여야 합니다.");
   }
   return catalog;
 };

@@ -46,6 +46,7 @@ M1은 **기존 파일 무수정·순수 추가**만 한다. 기존 `adapters/`·
 | `08-api-contract.md` | 규범 API 계약 — 예외 경로 3분류·에러 레지스트리·검색 확장 예약 | 전원 (2026-08-23 추가) |
 | `09-stack-and-storage.md` | 확정 스택·저장 3층·Postgres 더미 원장·RAG(pgvector)·시드 규약 | 전원 + DB 작업자 (2026-08-23 추가) |
 | `10-service-api.md` | 현행 서비스 HTTP API 실측 기술 — 상태 확인·라이브 재검증·정정 감시의 요청·응답 | 프론트엔드·운영 |
+| `../database-schema.md` | PostgreSQL 테이블 역할, RAG 문서·청크 관계, 컬럼·인덱스·접근 제어 요약 | 전원 + DB 작업자 |
 
 계약의 타입 정의는 `src/lib/verify/contract/`가 단일 진실이다 — 문서와 타입이 다르면 타입을 따르고 문서를 정정한다.
 

@@ -45,6 +45,7 @@
     "db:migrate": "tsx --env-file-if-exists=.env src/lib/db/cli/migrate.ts",
     "db:seed": "tsx --env-file-if-exists=.env src/lib/db/cli/seed.ts",
     "db:ingest": "tsx --env-file-if-exists=.env src/lib/db/cli/ingest.ts",
+    "db:embedding:sync": "tsx --env-file-if-exists=.env src/lib/db/cli/sync-embeddings.ts",
     "db:export": "tsx --env-file-if-exists=.env src/lib/db/cli/export.ts",
     "data:manifest": "node scripts/update-data-manifest.mjs",
     "test": "vitest run"

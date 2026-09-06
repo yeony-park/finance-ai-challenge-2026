@@ -15,6 +15,7 @@ import {
   text,
   timestamp,
   unique,
+  uniqueIndex,
   vector,
 } from "drizzle-orm/pg-core";
 
@@ -149,6 +150,7 @@ export const ragDocuments = pgTable(
   {
     id: bigint("id", { mode: "bigint" }).primaryKey().generatedAlwaysAsIdentity(),
     sourceId: text("source_id").notNull().unique(),
+    canonicalDocumentId: text("canonical_document_id"),
     title: text("title").notNull(),
     url: text("url"),
     license: text("license").notNull(),
@@ -193,6 +195,14 @@ export const ragDocuments = pgTable(
     check(
       "rag_documents_ingest_owner_check",
       sql`${t.ingestOwner} is null or ${t.ingestOwner} ~ '^[a-zA-Z0-9][a-zA-Z0-9._-]{0,119}$'`,
+    ),
+    check(
+      "rag_documents_canonical_document_id_check",
+      sql`${t.canonicalDocumentId} is null or ${t.canonicalDocumentId} ~ '^[a-zA-Z0-9][a-zA-Z0-9._-]{0,119}$'`,
+    ),
+    check(
+      "rag_documents_product_canonical_id_required_check",
+      sql`${t.scopeKind} <> 'product' or ${t.status} = 'revoked' or ${t.canonicalDocumentId} is not null`,
     ),
     check(
       "rag_documents_data_nature_check",
@@ -261,6 +271,9 @@ export const ragDocuments = pgTable(
     index("rag_documents_ingest_owner_idx")
       .on(t.scopeKind, t.ingestOwner, t.sourceId)
       .where(sql`${t.scopeKind} = 'product' and ${t.ingestOwner} is not null`),
+    uniqueIndex("rag_documents_product_canonical_id_key")
+      .on(t.canonicalDocumentId)
+      .where(sql`${t.scopeKind} = 'product' and ${t.canonicalDocumentId} is not null`),
   ],
 );
 
@@ -271,6 +284,7 @@ export const ragChunks = pgTable(
     documentId: bigint("document_id", { mode: "bigint" })
       .notNull()
       .references(() => ragDocuments.id, { onDelete: "cascade" }),
+    canonicalChunkId: text("canonical_chunk_id"),
     chunkIndex: integer("chunk_index").notNull(),
     content: text("content").notNull(),
     scopeKind: text("scope_kind").notNull().default("generic"),
@@ -312,6 +326,14 @@ export const ragChunks = pgTable(
     check(
       "rag_chunks_ingest_owner_check",
       sql`${t.ingestOwner} is null or ${t.ingestOwner} ~ '^[a-zA-Z0-9][a-zA-Z0-9._-]{0,119}$'`,
+    ),
+    check(
+      "rag_chunks_canonical_chunk_id_check",
+      sql`${t.canonicalChunkId} is null or ${t.canonicalChunkId} ~ '^[a-zA-Z0-9][a-zA-Z0-9._-]{0,119}$'`,
+    ),
+    check(
+      "rag_chunks_product_canonical_id_required_check",
+      sql`${t.scopeKind} <> 'product' or ${t.status} = 'revoked' or ${t.canonicalChunkId} is not null`,
     ),
     check(
       "rag_chunks_data_nature_check",
@@ -391,6 +413,9 @@ export const ragChunks = pgTable(
     index("rag_chunks_ingest_owner_idx")
       .on(t.scopeKind, t.ingestOwner, t.documentId)
       .where(sql`${t.scopeKind} = 'product' and ${t.ingestOwner} is not null`),
+    uniqueIndex("rag_chunks_product_canonical_id_key")
+      .on(t.canonicalChunkId)
+      .where(sql`${t.scopeKind} = 'product' and ${t.canonicalChunkId} is not null`),
     index("rag_chunks_embedding_hnsw").using(
       "hnsw",
       t.embedding.op("vector_cosine_ops"),

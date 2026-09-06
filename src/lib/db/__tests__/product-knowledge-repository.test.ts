@@ -24,8 +24,8 @@ const chunkHash = calculateCommonChunkHash({
 
 const dbRow = (overrides: Record<string, unknown> = {}) => ({
   source_id: "source-1",
-  document_id: "10",
-  chunk_id: "20",
+  document_id: "document-10",
+  chunk_id: "chunk-20",
   title: "상품 설명서",
   category_id: "cattle",
   product_id: "livestock-1",
@@ -73,14 +73,18 @@ describe("DB product knowledge exact scope", () => {
     expect(rendered?.sql).toContain("d.approved_for_public = true");
     expect(rendered?.sql).toContain("d.status IN ('ready', 'partial')");
     expect(rendered?.sql).toContain("c.status = 'ready'");
+    expect(rendered?.sql).toContain("d.pii_review_status = 'passed'");
+    expect(rendered?.sql).toContain("c.pii_review_status = 'passed'");
+    expect(rendered?.sql).toContain("d.canonical_document_id AS document_id");
+    expect(rendered?.sql).toContain("c.canonical_chunk_id AS chunk_id");
     expect(rendered?.params).toEqual([
       "cattle", "cattle", "livestock-1", "livestock-1",
       "observed", "observed", null, null,
     ]);
     expect(result.chunks[0]).toMatchObject({
       sourceId: "source-1",
-      documentId: "10",
-      chunkId: "20",
+      documentId: "document-10",
+      chunkId: "chunk-20",
       categoryId: "cattle",
       productId: "livestock-1",
       dataNature: "observed",
@@ -131,12 +135,33 @@ describe("DB product knowledge exact scope", () => {
     }
   });
 
+  test("DART 전체본문 canonical ID도 exact URL로 인식한다", async () => {
+    const rcpNo = "20260902000022";
+    const exact = `https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${rcpNo}`;
+    const result = await createDbProductKnowledgeRepository(async () => [dbRow({
+      product_id: "livestock-9",
+      document_id: `cattle-livestock-9-dart-full-${rcpNo}`,
+      chunk_id: `cattle-livestock-9-dart-full-${rcpNo}-chunk-0001`,
+      source_url: exact,
+    })]).findExact({
+      categoryId: "cattle",
+      productId: "livestock-9",
+      dataNature: "observed",
+    });
+
+    expect(result.documents[0]).toMatchObject({
+      documentId: `cattle-livestock-9-dart-full-${rcpNo}`,
+      sourceUrl: exact,
+      approvedForExternalAi: false,
+    });
+  });
+
   test("exact scope의 복수 승인 공시 document/chunk를 배열 계약으로 보존한다", async () => {
     const rows = ["20260806000159", "20260814003572"].map((rcpNo, index) => dbRow({
       source_id: `source-${index + 1}`,
       product_id: "livestock-9",
       document_id: `cattle-livestock-9-dart-${rcpNo}`,
-      chunk_id: `${20 + index}`,
+      chunk_id: `cattle-livestock-9-dart-${rcpNo}-chunk-${index + 1}`,
       source_url: `https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${rcpNo}`,
       source_hash: `${index + 1}`.repeat(64),
     }));
@@ -159,6 +184,17 @@ describe("DB product knowledge exact scope", () => {
       productId: "livestock-1",
       dataNature: "observed",
     })).resolves.toEqual({ documents: [], chunks: [] });
+  });
+
+  test("PII 검토 미통과 행은 executor가 반환해도 거부한다", async () => {
+    const repository = createDbProductKnowledgeRepository(async () => [
+      dbRow({ pii_review_status: "not-reviewed" }),
+    ]);
+    await expect(repository.findExact({
+      categoryId: "cattle",
+      productId: "livestock-1",
+      dataNature: "observed",
+    })).rejects.toThrow();
   });
 
   test("scenarioId가 잘못된 nature 조합은 executor를 호출하지 않는다", async () => {

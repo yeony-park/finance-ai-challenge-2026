@@ -24,4 +24,5 @@ export const CATTLE_RCP_NO_TO_OFFER: Readonly<Record<string, string>> = {
   "20260414002068": "livestock-8",
   "20260806000159": "livestock-9",
   "20260814003572": "livestock-9",
+  "20260902000022": "livestock-9",
 };

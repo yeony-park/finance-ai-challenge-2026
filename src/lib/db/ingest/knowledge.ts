@@ -12,6 +12,7 @@ import { loadDerivedRealEstateRegistry } from "@/lib/knowledge/loader";
 import { loadApprovedCattleFilingArtifacts } from "@/lib/knowledge/cattle-filing-artifact";
 import { loadApprovedPigFilingArtifacts } from "@/lib/knowledge/pig-filing-artifact";
 import { loadFilingCorpusIfPresent } from "@/lib/knowledge/filing-corpus";
+import { listSyntheticArtKnowledgeIfPresent } from "@/lib/art/synthetic-catalog";
 
 type DataNature = "observed" | "scenario";
 type SourceKind = "issuer-claim" | "platform-claim" | "official-document" | "external-observation" | "scenario-input";
@@ -115,6 +116,46 @@ type InputChunk = Omit<InputDocument, "status"> & {
   readonly text: string;
   readonly canonicalText: string;
   readonly chunkHash: string;
+};
+
+const productKnowledgeInputs = (
+  groups: Awaited<ReturnType<typeof listSyntheticArtKnowledgeIfPresent>>,
+): { readonly documents: readonly InputDocument[]; readonly chunks: readonly InputChunk[] } => {
+  const documents = groups.flatMap(({ knowledge }) =>
+    knowledge.documents.map((document): InputDocument => ({
+      origin: "derived",
+      categoryId: document.categoryId,
+      productId: document.productId,
+      scenarioId: document.scenarioId ?? null,
+      dataNature: document.dataNature,
+      sourceKind: document.sourceKind,
+      documentId: document.documentId,
+      title: document.title,
+      sourceUrl: document.sourceUrl,
+      asOf: document.asOf,
+      sourceHash: document.sourceHash,
+      status: document.status,
+      limitations: document.limitations,
+      approvedForExternalAi: document.approvedForExternalAi,
+      piiReviewStatus: document.piiReviewStatus,
+    })),
+  );
+  const byId = new Map(documents.map((document) => [document.documentId, document]));
+  const chunks = groups.flatMap(({ knowledge }) =>
+    knowledge.chunks.map((chunk): InputChunk => {
+      const document = byId.get(chunk.documentId);
+      if (!document) throw new KnowledgeIngestError(`synthetic art document scope missing: ${chunk.documentId}`);
+      return {
+        ...document,
+        chunkId: chunk.chunkId,
+        page: chunk.page,
+        text: chunk.text,
+        canonicalText: chunk.canonicalText,
+        chunkHash: chunk.chunkHash,
+      };
+    }),
+  );
+  return { documents, chunks };
 };
 
 const scopeKey = (value: Scope): string =>
@@ -298,12 +339,13 @@ const toPlan = (documents: readonly InputDocument[], chunks: readonly InputChunk
 
 export const buildKnowledgeIngestPlan = async (dataRoot = "data"): Promise<KnowledgeIngestPlan> => {
   const root = path.resolve(dataRoot);
-  const [common, derived, cattleFilings, pigFilings, filingCorpus] = await Promise.all([
+  const [common, derived, cattleFilings, pigFilings, filingCorpus, syntheticArt] = await Promise.all([
     readCommonIndex(root),
     loadDerivedRealEstateRegistry(root),
     loadApprovedCattleFilingArtifacts(root),
     loadApprovedPigFilingArtifacts(root),
     loadFilingCorpusIfPresent(root),
+    listSyntheticArtKnowledgeIfPresent(root),
   ]);
   const publicProducts = new Set(common.products
     .filter((product) => product.approvedForPublic)
@@ -361,8 +403,9 @@ export const buildKnowledgeIngestPlan = async (dataRoot = "data"): Promise<Knowl
     if (!document) throw new KnowledgeIngestError(`filing corpus document scope missing: ${chunk.documentId}`);
     return commonChunk(chunk, document);
   }));
+  const art = productKnowledgeInputs(syntheticArt);
   return toPlan(
-    [...commonDocuments, ...derivedDocuments, ...filingDocuments, ...corpusDocuments],
-    [...commonChunks, ...derivedChunks, ...filingChunks, ...corpusChunks],
+    [...commonDocuments, ...derivedDocuments, ...filingDocuments, ...corpusDocuments, ...art.documents],
+    [...commonChunks, ...derivedChunks, ...filingChunks, ...corpusChunks, ...art.chunks],
   );
 };

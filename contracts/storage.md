@@ -61,6 +61,8 @@ rationale: docs/spec/09-stack-and-storage.md
 npm run db:migrate   # 수기 SQL 마이그레이션 적용 (자체 러너, _migrations 추적)
 npm run db:ingest    # 참조 원장 + 승인 file knowledge snapshot을 각 트랜잭션으로 적재
 npm run db:seed      # 결정적·멱등 synthetic 시드 (+ 플랜 외 synthetic prune)
+npm run db:embedding:sync -- --check # SQLite 임베딩과 canonical corpus 1:1 대조(쓰기 없음)
+npm run db:embedding:sync # 해시·scope가 일치하는 PostgreSQL 청크에 기존 임베딩 이전
 npm run db:export    # DB → data/public/·data/reference/ (마스킹 게이트 경유)
 ```
 

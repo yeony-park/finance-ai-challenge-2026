@@ -32,6 +32,15 @@ export const createDbRagSearchRepository = (
         JOIN rag_documents d ON d.id = c.document_id
         WHERE c.scope_kind = 'generic'
           AND d.scope_kind = 'generic'
+          AND d.approved_for_public IS TRUE
+          AND c.approved_for_public IS TRUE
+          AND d.approved_for_external_ai IS TRUE
+          AND c.approved_for_external_ai IS TRUE
+          AND d.pii_review_status = 'passed'
+          AND c.pii_review_status = 'passed'
+          AND d.status IN ('ready', 'partial')
+          AND c.status = 'ready'
+          AND d.source_hash = c.source_hash
           AND c.tsv @@ websearch_to_tsquery('simple', ${query})
         ORDER BY score DESC
         LIMIT ${MAX_HITS}

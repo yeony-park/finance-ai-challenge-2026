@@ -34,6 +34,10 @@ const STANDARD_QUERY_TERMS: Readonly<Record<string, readonly string[]>> = {
   "운영그룹 과거이력": ["운영그룹", "완료", "이력"],
 };
 
+const HISTORY_CONTROL_WORDS = new Set(["전후", "원본", "차이", "비교", "이전", "과거", "이력"]);
+const SEARCH_CONTROL_WORDS = new Set([...HISTORY_CONTROL_WORDS, "정정"]);
+const MAX_EVIDENCE_CHARS = 1_800;
+
 export const normalizeKorean = (value: string): string =>
   value
     .normalize("NFKC")
@@ -78,6 +82,15 @@ export const normalizeSearchQuery = (value: string): string =>
     .filter(Boolean)
     .join(" ");
 
+const isFilingHistoryQuery = (query: string): boolean => {
+  const terms = normalizeSearchQuery(query).split(" ");
+  if (terms.includes("최신")) return false;
+  return terms.some((term) => HISTORY_CONTROL_WORDS.has(term));
+};
+
+const isAmendmentSummaryQuery = (query: string): boolean =>
+  /정정/.test(normalizeKorean(query)) && !isFilingHistoryQuery(query);
+
 export const isRankingRequest = (value: string): boolean =>
   normalizeKorean(value)
     .split(" ")
@@ -90,8 +103,11 @@ export const isPricingBasisQuery = (value: string): boolean => {
 };
 
 const termGroupsOf = (query: string): readonly (readonly string[])[] => {
+  if (isAmendmentSummaryQuery(query)) return [["기재정정"]];
   const normalized = normalizeSearchQuery(query);
-  const terms = STANDARD_QUERY_TERMS[normalized] ?? normalized.split(" ").filter(Boolean);
+  const terms = STANDARD_QUERY_TERMS[normalized] ?? normalized
+    .split(" ")
+    .filter((term) => term && !SEARCH_CONTROL_WORDS.has(term));
   return terms.map((term) => [...new Set([term, ...(SYNONYMS[term] ?? [])])]);
 };
 
@@ -105,15 +121,84 @@ const occurrences = (haystack: string, needle: string): number => {
   return Math.min(count, 5);
 };
 
-const snippetOf = (text: string, terms: readonly string[]): string => {
-  const normalized = normalizeKorean(text);
+export const excerptOf = (text: string, terms: readonly string[] = []): string => {
+  const compact = text.replace(/\s+/g, " ").trim();
+  if (compact.length <= MAX_EVIDENCE_CHARS) return compact;
+  const comparable = compact.normalize("NFKC").toLocaleLowerCase("ko-KR");
   const first = terms
-    .map((term) => normalized.indexOf(term))
+    .map((term) => comparable.indexOf(term))
     .filter((index) => index >= 0)
     .sort((a, b) => a - b)[0];
-  const start = Math.max(0, (first ?? 0) - 80);
-  const compact = text.replace(/\s+/g, " ").trim();
-  return compact.slice(start, start + 320);
+  const start = Math.max(0, Math.min((first ?? 0) - 80, compact.length - MAX_EVIDENCE_CHARS));
+  const end = Math.min(compact.length, start + MAX_EVIDENCE_CHARS);
+  const excerpt = compact.slice(start, end);
+  if (end === compact.length) return excerpt;
+
+  const sentenceBoundary = Math.max(
+    excerpt.lastIndexOf("다."),
+    excerpt.lastIndexOf("요."),
+    excerpt.lastIndexOf("니다."),
+  );
+  const boundary = sentenceBoundary >= 160
+    ? sentenceBoundary + 2
+    : excerpt.lastIndexOf(" ");
+  return excerpt.slice(0, boundary > 0 ? boundary : excerpt.length).trimEnd();
+};
+
+const AMENDMENT_DETAILS_MARKER = "기재정정사항은 하기의 정정사항을 확인하여 주시기 바랍니다";
+
+const skipRepeatedTableHeading = (value: string): string => {
+  let result = value;
+  while (true) {
+    const separator = result.indexOf(" | ");
+    if (separator < 0) return result;
+    const heading = result.slice(0, separator).trim();
+    const rest = result.slice(separator + 3).trimStart();
+    if (!heading || !rest.startsWith(heading)) return result;
+    result = rest;
+    const suffix = result.slice(heading.length);
+    if (/^\s+\d+\./.test(suffix)) return suffix.trimStart();
+  }
+};
+
+export const evidenceExcerptOf = (
+  text: string,
+  query: string,
+  terms: readonly string[] = [],
+): string => {
+  if (/정정/.test(normalizeKorean(query)) && !isFilingHistoryQuery(query)) {
+    const compact = text.replace(/\s+/g, " ").trim();
+    const marker = compact.lastIndexOf(AMENDMENT_DETAILS_MARKER);
+    const details = marker < 0
+      ? ""
+      : compact.slice(marker + AMENDMENT_DETAILS_MARKER.length).replace(/^\s*\|\s*/, "").trim();
+    if (details) return excerptOf(skipRepeatedTableHeading(details), terms);
+  }
+  return excerptOf(text, terms);
+};
+
+export const preferCurrentFilingChunks = <T extends {
+  readonly documentId: string;
+  readonly title: string;
+  readonly asOf: string;
+}>(chunks: readonly T[], query: string): readonly T[] => {
+  if (isFilingHistoryQuery(query)) return chunks;
+
+  const latestByFamily = new Map<string, string>();
+  for (const chunk of chunks) {
+    const match = /^(.*)-dart-full-\d{14}$/.exec(chunk.documentId);
+    if (!match) continue;
+    const family = `${match[1]}\u0000${chunk.title.split(" > ")[0]}`;
+    const latest = latestByFamily.get(family);
+    if (!latest || chunk.asOf > latest) latestByFamily.set(family, chunk.asOf);
+  }
+
+  return chunks.filter((chunk) => {
+    const match = /^(.*)-dart-full-\d{14}$/.exec(chunk.documentId);
+    if (!match) return true;
+    const family = `${match[1]}\u0000${chunk.title.split(" > ")[0]}`;
+    return chunk.asOf === latestByFamily.get(family);
+  });
 };
 
 export interface SearchHit {
@@ -149,7 +234,7 @@ export const searchChunks = (
   const termGroups = termGroupsOf(query);
   const terms = [...new Set(termGroups.flat())];
 
-  return chunks
+  const ranked = preferCurrentFilingChunks(chunks, query)
     .map((chunk) => {
       const title = normalizeKorean(chunk.title);
       const body = normalizeKorean("canonicalText" in chunk ? chunk.canonicalText : chunk.text);
@@ -192,7 +277,18 @@ export const searchChunks = (
       };
     })
     .filter(({ score }) => score > 0)
-    .sort((left, right) => right.score - left.score || left.chunk.chunkId.localeCompare(right.chunk.chunkId))
+    .sort((left, right) => right.score - left.score || right.chunk.asOf.localeCompare(left.chunk.asOf) || left.chunk.chunkId.localeCompare(right.chunk.chunkId));
+  const representatives = [...new Map(
+    ranked
+      .filter(({ chunk }) => chunk.documentId.includes("-dart-full-"))
+      .map((item) => [item.chunk.documentId, item]),
+  ).values()];
+  const representativeIds = new Set(representatives.map(({ chunk }) => chunk.chunkId));
+  const selected = isFilingHistoryQuery(query)
+    ? [...representatives, ...ranked.filter(({ chunk }) => !representativeIds.has(chunk.chunkId))]
+    : ranked;
+
+  return selected
     .slice(0, limit)
     .map(({ chunk, score }) => ({
       sourceId: "sourceId" in chunk ? chunk.sourceId : chunk.documentId,
@@ -203,7 +299,7 @@ export const searchChunks = (
       ...(chunk.scenarioId ? { scenarioId: chunk.scenarioId } : {}),
       title: chunk.title,
       page: chunk.page,
-      excerpt: snippetOf(chunk.text, terms),
+      excerpt: evidenceExcerptOf(chunk.text, query, terms),
       sourceUrl: chunk.sourceUrl,
       asOf: chunk.asOf,
       dataNature: chunk.dataNature,

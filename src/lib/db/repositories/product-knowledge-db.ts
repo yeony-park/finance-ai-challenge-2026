@@ -16,6 +16,11 @@ import type {
   ProductKnowledgeScope,
 } from "./types";
 
+const dartRcpNoFromDocumentId = (documentId: string): string | undefined =>
+  documentId.match(
+    /^(?:cattle|pig)-[a-z0-9-]+-dart-(?:full-)?(\d{14})$/,
+  )?.[1];
+
 const rowSchema = z.strictObject({
   source_id: z.string().min(1),
   document_id: z.string().min(1),
@@ -40,12 +45,12 @@ const rowSchema = z.strictObject({
   chunk_approved_for_public: z.literal(true),
   chunk_limitations: z.array(z.string()),
   approved_for_external_ai: z.boolean(),
-  pii_review_status: z.enum(["passed", "not-reviewed"]),
+  pii_review_status: z.literal("passed"),
 }).superRefine((row, context) => {
   const safeUrl = row.data_nature === "observed"
     ? isSafeHttpsPublicSourceUrl(row.source_url)
     : isSafeHttpsPublicSourceUrl(row.source_url) || isSafeScenarioDocumentPath(row.source_url);
-  const rcpNo = row.document_id.match(/dart-(\d{14})$/)?.[1];
+  const rcpNo = dartRcpNoFromDocumentId(row.document_id);
   const exactDartUrl = (row.category_id === "cattle" || row.category_id === "pig") &&
     row.data_nature === "observed" &&
     rcpNo !== undefined &&
@@ -72,8 +77,8 @@ export type ProductKnowledgeSqlExecutor = (query: SQL) => Promise<unknown>;
 
 export const productKnowledgeSql = (scope: ProductKnowledgeScope): SQL => sql`
   SELECT d.source_id,
-         d.id::text AS document_id,
-         c.id::text AS chunk_id,
+         d.canonical_document_id AS document_id,
+         c.canonical_chunk_id AS chunk_id,
          d.title,
          d.category_id,
          d.product_id,
@@ -117,6 +122,10 @@ export const productKnowledgeSql = (scope: ProductKnowledgeScope): SQL => sql`
     AND c.approved_for_public = true
     AND d.status IN ('ready', 'partial')
     AND c.status = 'ready'
+    AND d.pii_review_status = 'passed'
+    AND c.pii_review_status = 'passed'
+    AND d.canonical_document_id IS NOT NULL
+    AND c.canonical_chunk_id IS NOT NULL
   ORDER BY d.id, c.page, c.chunk_index
 `;
 
@@ -140,7 +149,7 @@ export const createDbProductKnowledgeRepository = (
     const documents = new Map<string, ProductKnowledgeDocument>();
     const chunks: ProductKnowledgeChunk[] = rows.map((row) => {
       const filingRcpNo = (row.category_id === "cattle" || row.category_id === "pig") && row.data_nature === "observed"
-        ? row.document_id.match(/^(?:cattle|pig)-[a-z0-9-]+-dart-(\d{14})$/)?.[1]
+        ? dartRcpNoFromDocumentId(row.document_id)
         : undefined;
       const isDartFiling = filingRcpNo !== undefined && (
         row.source_url === "https://dart.fss.or.kr/dsaf001/main.do" ||

@@ -52,7 +52,6 @@ const sameIdentity = (
   cached.productId === chunk.scope.productId &&
   cached.scenarioId === chunk.scope.scenarioId &&
   cached.dataNature === chunk.scope.dataNature &&
-  cached.approvalReferenceKey === chunk.approvalReferenceKey &&
   cached.documentId === chunk.documentId &&
   cached.chunkId === chunk.chunkId &&
   cached.sourceHash === chunk.sourceHash &&

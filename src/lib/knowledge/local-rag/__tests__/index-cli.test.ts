@@ -123,6 +123,31 @@ describe("semantic index CLI core", () => {
     expect(calls).toBe(2);
   });
 
+  test("승인 manifest만 갱신되면 같은 청크의 임베딩을 재사용한다", async () => {
+    const root = mkdtempSync(path.join(os.tmpdir(), "semantic-index-"));
+    roots.push(root);
+    const dbPath = path.join(root, "knowledge.sqlite");
+    const original = corpus();
+    const approvalReferenceKey = `canonical:${"b".repeat(64)}`;
+    const reapproved: CanonicalSemanticCorpus = {
+      ...original,
+      contentVersion: `canonical-${"d".repeat(64)}`,
+      scopes: original.scopes.map((item) => ({ ...item, approvalReferenceKey })),
+      chunks: original.chunks.map((item) => ({ ...item, approvalReferenceKey })),
+    };
+    let calls = 0;
+    const embedder: LocalRagEmbedder = {
+      async embedDocuments(values) { calls += values.length; return values.map(() => vector()); },
+      async embedQuery() { return vector(); },
+    };
+
+    await buildSemanticIndex({ apply: true, apiKey: "fake", dbPath, corpus: original, embedder });
+    const result = await buildSemanticIndex({ apply: true, apiKey: "fake", dbPath, corpus: reapproved, embedder });
+
+    expect(result).toMatchObject({ reused: 1, embedded: 0 });
+    expect(calls).toBe(1);
+  });
+
   test("schema v2 상품 벡터는 v3 일반 지식 색인 전환 때 재사용한다", async () => {
     const root = mkdtempSync(path.join(os.tmpdir(), "semantic-index-"));
     roots.push(root);
