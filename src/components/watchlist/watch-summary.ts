@@ -12,6 +12,8 @@ import {
   type WatchState,
 } from "@/lib/verify/amend/watch-state";
 import { formatKstDateTime } from "@/lib/verify/report/format";
+import { getSyntheticCatalogItems } from "@/lib/synthetic-art/repository";
+import { PIG_DISCLOSURE_PRODUCTS } from "@/lib/content/pig";
 
 export interface WatchSummaryEntry {
   readonly id: string;
@@ -21,6 +23,7 @@ export interface WatchSummaryEntry {
   readonly checkedLine: string | null;
   readonly isDetectionFailed: boolean;
   readonly isScenario?: boolean;
+  readonly isSynthetic?: boolean;
 }
 
 export const buildWatchSummaryEntry = (
@@ -40,7 +43,7 @@ export const buildWatchSummaryEntry = (
 export const loadWatchSummaries = async (
   offers: readonly OfferEntry[] = OFFERS,
 ): Promise<readonly WatchSummaryEntry[]> => {
-  const [reports, scenarios] = await Promise.all([
+  const [reports, scenarios, pigReports] = await Promise.all([
     Promise.all(
       offers
         .filter((offer) => isPublicVerificationScopeAllowed(offer.id))
@@ -49,9 +52,28 @@ export const loadWatchSummaries = async (
         ),
     ),
     loadApprovedScenarios(),
+    Promise.all(
+      PIG_DISCLOSURE_PRODUCTS
+        .filter((product) => isPublicVerificationScopeAllowed(`pig-${product.round}`))
+        .map(async (product): Promise<WatchSummaryEntry> => {
+          const id = `pig-${product.round}`;
+          const watch = await loadLatestWatchState(id);
+          return {
+            id,
+            title: `한돈 ${product.round}호`,
+            reportHref: `/pig/products/${product.id}`,
+            amendmentLine: watchAmendmentSummary(watch),
+            checkedLine: watch
+              ? watchCheckedLine(formatKstDateTime(watch.checkedAt))
+              : null,
+            isDetectionFailed: watch?.detectionFailed ?? false,
+          };
+        }),
+    ),
   ]);
   return [
     ...reports,
+    ...pigReports,
     ...scenarios.map(
       (offer): WatchSummaryEntry => ({
         id: offer.offerId,
@@ -63,5 +85,14 @@ export const loadWatchSummaries = async (
         isScenario: true,
       }),
     ),
+    ...getSyntheticCatalogItems().map((product): WatchSummaryEntry => ({
+      id: `art-${product.offering.id}`,
+      title: product.offering.title.replace(/\s*·\s*/g, " - "),
+      reportHref: `/art/products/${encodeURIComponent(product.offering.id)}`,
+      amendmentLine: "합성 데이터 · 실제 공시 감시 대상이 아닙니다.",
+      checkedLine: `${product.offering.asOfDate} 기준`,
+      isDetectionFailed: false,
+      isSynthetic: true,
+    })),
   ];
 };

@@ -14,10 +14,9 @@ const WATCHLIST_PATH = "/watchlist";
 export function WatchlistNavLink() {
   const pathname = usePathname();
   const watchedIds = useWatchedIds();
-  const hasWatchedOffers = watchedIds.some((id) => /^re-offer-\d{2}$/.test(id)) || hasKnownWatchedOffer(
-    watchedIds,
-    PUBLISHED_OFFER_IDS,
-  );
+  const hasWatchedOffers = watchedIds.some((id) =>
+    /^(pig-[1-3]|re-offer-\d{2}|art-(synthetic|historical)-offering-.+)$/.test(id),
+  ) || hasKnownWatchedOffer(watchedIds, PUBLISHED_OFFER_IDS);
   const isCurrent =
     pathname === WATCHLIST_PATH || pathname.startsWith(`${WATCHLIST_PATH}/`);
 

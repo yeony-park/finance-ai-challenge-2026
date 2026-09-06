@@ -29,6 +29,7 @@ export function WatchlistView({
         <header className={s.hero}>
           <h1 id="watchlist-title" className={s.title}>
             {WATCH_BAND_TITLE}
+            {` (${watched.length.toLocaleString("ko-KR")})`}
           </h1>
           <p className={s.lead}>{WATCH_BAND_LEAD}</p>
         </header>
@@ -50,11 +51,11 @@ export function WatchlistView({
                   ) : null}
                 </div>
                 <Link
-                  href={entry.isScenario ? entry.reportHref : `${entry.reportHref}#${WATCH_HEADING_ID}`}
+                  href={entry.isScenario || entry.isSynthetic ? entry.reportHref : `${entry.reportHref}#${WATCH_HEADING_ID}`}
                   className={s.watchLink}
-                  aria-label={`${entry.title} ${entry.isScenario ? "상품 검토 보기" : WATCH_REPORT_LINK_LABEL.replace(" →", "")}`}
+                  aria-label={`${entry.title} ${entry.isScenario || entry.isSynthetic ? "상품 검토 보기" : WATCH_REPORT_LINK_LABEL.replace(" →", "")}`}
                 >
-                  {entry.isScenario ? "상품 검토 보기 →" : WATCH_REPORT_LINK_LABEL}
+                  {entry.isScenario || entry.isSynthetic ? "상품 검토 보기 →" : WATCH_REPORT_LINK_LABEL}
                 </Link>
               </li>
             ))}
