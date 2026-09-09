@@ -2,7 +2,7 @@
 
 # data/ 매니페스트
 
-생성 시각: 2026-09-06T17:16:16.379Z
+생성 시각: 2026-09-09T05:36:06.551Z
 
 ## 저장 정책
 
@@ -162,36 +162,45 @@
 | `data/public/watch/livestock-1/watch-2026-08-14T18-35-42-968Z.json` | 1,171 | `4a3771bd31c62c04dc72a06008fba547293b3643d2f9e9cb41aaa63560c1f232` |
 | `data/public/watch/livestock-1/watch-2026-08-29T16-49-41-551Z.json` | 1,171 | `716ee5ec07a27cc14b9a0e2175cbd225205e3672816c1104fdff31912463384d` |
 | `data/public/watch/livestock-1/watch-2026-09-06T17-12-09-111Z.json` | 1,171 | `455de78601939723fb57416cd3225c0a81dcdd5a4f626f25f03151c6a9a3170a` |
+| `data/public/watch/livestock-1/watch-2026-09-09T05-35-23-736Z.json` | 1,171 | `43f2779ba10ea86e008784a9fb0f790736d9598deb3aa27a1c7f59544f3fcb9c` |
 | `data/public/watch/livestock-2/watch-2026-08-14T18-35-42-968Z.json` | 721 | `81f0d97b95bbc09dc0dc6670b97fc4f556d18b8fd7fd6e4d38d26a5cb0e358a2` |
 | `data/public/watch/livestock-2/watch-2026-08-29T16-49-41-551Z.json` | 721 | `4feb8fadb4355afcb0f0908c5fb417406db0cd000a68954fdd876a02762c7c79` |
 | `data/public/watch/livestock-2/watch-2026-09-06T17-12-09-111Z.json` | 721 | `e962a4bfad07640b5ff2b55b6f563ebaa855f118d72a1c5bcaf76dad82a9f4df` |
+| `data/public/watch/livestock-2/watch-2026-09-09T05-35-23-736Z.json` | 721 | `903f96971c1cd19db232f938c2876bc79096917cbe7df54443d79fdb0192574e` |
 | `data/public/watch/livestock-3/watch-2026-08-14T18-35-42-968Z.json` | 871 | `cac2870b27cfdcc57fcf73431d43fdbd84830f813cd07b10597f65e8d0e058a7` |
 | `data/public/watch/livestock-3/watch-2026-08-29T16-49-41-551Z.json` | 871 | `f9d5d0f7137ae0ad63f7eacd5c605f63ed621448a14da21b50b5aafb1457b4aa` |
 | `data/public/watch/livestock-3/watch-2026-09-06T17-12-09-111Z.json` | 871 | `83fcef9041dad9523951437f74e0289d7cba8132562ba34121f248af4e9cce72` |
+| `data/public/watch/livestock-3/watch-2026-09-09T05-35-23-736Z.json` | 871 | `8f0986188992f131470f94c8845eef08cdfd640fe9598023a51285deb2f3e5d4` |
 | `data/public/watch/livestock-4/watch-2026-08-14T18-35-42-968Z.json` | 871 | `008fb59f6d02b640108738edf7e7b45cf605447182dcce6f346d84597b21e02c` |
 | `data/public/watch/livestock-4/watch-2026-08-29T16-49-41-551Z.json` | 871 | `afb4c2d3d17537dc91b2bd9be836799878e09dade8019bb528ea38c398b5b78d` |
 | `data/public/watch/livestock-4/watch-2026-09-06T17-12-09-111Z.json` | 871 | `5d92b3c4e0014d533ba85f982a19c4dbb24e221027a3b9219fb9cd2ba0811f7f` |
+| `data/public/watch/livestock-4/watch-2026-09-09T05-35-23-736Z.json` | 871 | `6318d2e2ec1933219e0fbd86e58a7c722320ab1258fc82b54d3111a1737bf6c1` |
 | `data/public/watch/livestock-5/watch-2026-08-14T18-35-42-968Z.json` | 871 | `98244f386560890e1ecf0deb61d036e3c8020f0555fba584f01411da0dc4814b` |
 | `data/public/watch/livestock-5/watch-2026-08-29T16-49-41-551Z.json` | 871 | `17ee1545b262d80d923746e73b58dc9dff09f8729819ec37d66b0806a5864ede` |
 | `data/public/watch/livestock-5/watch-2026-09-06T17-12-09-111Z.json` | 871 | `fb51f0efc48948054b2de31b361d223c7be07ef7a1a958f20409e0bbe959203e` |
+| `data/public/watch/livestock-5/watch-2026-09-09T05-35-23-736Z.json` | 871 | `d5b3126630ac098de8edb95231317a829f0b0612c72bfa5bba77b50118ab1690` |
 | `data/public/watch/livestock-6/watch-2026-08-14T18-35-42-968Z.json` | 721 | `03eeacc03d1d026da5a39c18006bf01d7cf017a3dca4032bef5f4f64baaa0139` |
 | `data/public/watch/livestock-6/watch-2026-08-29T16-49-41-551Z.json` | 721 | `f025b35655f1ecd8d7a9c95acb18c914c54700dc93692ff3e2229bf395bff1d0` |
 | `data/public/watch/livestock-6/watch-2026-09-06T17-12-09-111Z.json` | 721 | `068182652e3c97bb55fc34ac271878059250e8cbccec9b3d4757b218f4467a69` |
+| `data/public/watch/livestock-6/watch-2026-09-09T05-35-23-736Z.json` | 721 | `10524d679723a5dba843806ae50ec8cfe035a8fa51ebbbbc0a0c7b51bbcc046c` |
 | `data/public/watch/livestock-7/watch-2026-08-14T06-13-49-913Z.json` | 871 | `c53178b0cb2d21a6ee6d224c482ddc349d387e2322cf564e73efe9bb07c9dcb0` |
 | `data/public/watch/livestock-7/watch-2026-08-14T15-45-06-801Z.json` | 871 | `858c0d3864d0ea134bc6f754cd6f9d3557ecb6feddc7a9aad98c699a80af01d9` |
 | `data/public/watch/livestock-7/watch-2026-08-14T18-35-42-968Z.json` | 871 | `46a24c8024338497a2be9eae1cfabc75e90fc2295cf2cf89a59ac63bf74802c2` |
 | `data/public/watch/livestock-7/watch-2026-08-29T16-49-41-551Z.json` | 871 | `5277aa52869d327da40871910fd593155a1f54ab2cae7688fe258a09f71dc02b` |
 | `data/public/watch/livestock-7/watch-2026-09-06T17-12-09-111Z.json` | 871 | `a1798a76bb50ee97a613eecae6af099dc77a458e3c50362ac73669e5cc2f8f5a` |
+| `data/public/watch/livestock-7/watch-2026-09-09T05-35-23-736Z.json` | 871 | `71a6a5224e7cb7fef4dd9b09691622e89338865ce18a8f1d7b7be3980b7612a6` |
 | `data/public/watch/livestock-8/watch-2026-08-14T06-42-10-127Z.json` | 721 | `834eed88a3ce60f16975cd4c91d5c2a346d227eb1f1eccebc0029b0428012da7` |
 | `data/public/watch/livestock-8/watch-2026-08-14T15-45-06-801Z.json` | 721 | `1cc81588f0f10c552a5723825a1cbe0856bf1fe0726d4f768ba7dd6a6566deba` |
 | `data/public/watch/livestock-8/watch-2026-08-14T18-35-42-968Z.json` | 721 | `b5760ea6376a26890849572ecc7e6e4ce50694f72eca8128b1ccc6b74708cf5b` |
 | `data/public/watch/livestock-8/watch-2026-08-29T16-49-41-551Z.json` | 721 | `05bc8afcc8e050bc4a64291a73b54bb4cd705e3267096f8f2be1006613f7a6aa` |
 | `data/public/watch/livestock-8/watch-2026-09-06T17-12-09-111Z.json` | 721 | `e950aa88787b840b6380fae82b966016565e6575a7c878db7bc3aff743734d20` |
+| `data/public/watch/livestock-8/watch-2026-09-09T05-35-23-736Z.json` | 721 | `e3604b00439f54dbfd60bda17551653880c1f25f1826494661f1313e7c90ee89` |
 | `data/public/watch/livestock-9/watch-2026-08-13T17-45-24-412Z.json` | 306 | `736ddcedeb167093837493f8cbb9c7b3c48a847cc58a3fb4a245be50f68eaace` |
 | `data/public/watch/livestock-9/watch-2026-08-14T15-45-06-801Z.json` | 586 | `d3b20117631a19394b2de153303630c2ba07fc9da4da557c9f8fa6877c4d7500` |
 | `data/public/watch/livestock-9/watch-2026-08-14T18-35-42-968Z.json` | 586 | `8fbb543341acb54d8d944b772d032694423f3ef6c47948e553ce35058cc9df93` |
 | `data/public/watch/livestock-9/watch-2026-08-29T16-49-41-551Z.json` | 586 | `f804d24ac91c3c6b4bc99e3f0479354d2fafb9cc5b39daaba5a9a7b8a8d254a7` |
 | `data/public/watch/livestock-9/watch-2026-09-06T17-12-09-111Z.json` | 586 | `20017e185418ec2ba1acbeab9bde5ca84293628a7566d4a178be44fd3a0e654a` |
+| `data/public/watch/livestock-9/watch-2026-09-09T05-35-23-736Z.json` | 586 | `71aefec76830f1c95566836b04bd4c9488105b4633060f0c5a4441b1bf4651ca` |
 | `data/public/watch/real-estate-a/watch-2026-08-14T15-45-06-801Z.json` | 368 | `6a7a5b800aa85d36c3ff94aec9a39ff40d016da01ee309179e0c1540f54f2049` |
 | `data/public/watch/real-estate-a/watch-2026-08-14T18-35-42-968Z.json` | 368 | `f3a56f90883a532ca7a789d3cd916b7f478dccf381559a4c7d3427a9ec5b9ce7` |
 | `data/public/watch/real-estate-a/watch-2026-08-29T16-49-41-551Z.json` | 368 | `b1f4210006fa1ddffa325bf44116191acbaf582f926a67575c204cc564eb9dab` |
