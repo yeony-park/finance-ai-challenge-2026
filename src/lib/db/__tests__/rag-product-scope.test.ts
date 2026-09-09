@@ -327,12 +327,23 @@ describe("runtime DB role contract", () => {
     expect(roles).toMatch(
       /GRANT SELECT \(run_key\) ON verification_runs TO jeomjeom_rag_ro;/,
     );
-    expect(roles).toMatch(
-      /GRANT SELECT \(id, checked_at\) ON monitor_runs TO jeomjeom_rag_ro;/,
+    // 0010(2026-09-09): 정정 감시 화면이 cron 기록을 읽는 열만 column-level SELECT.
+    const monitorRunsGrant =
+      /GRANT SELECT \(id, checked_at, source\) ON monitor_runs TO jeomjeom_rag_ro;/;
+    const monitorEventsGrant =
+      /GRANT SELECT \(monitor_run_id, offer_slug, kind, base_rcp_no, checked_through, amendment_rcp_nos\)\s+ON monitor_events TO jeomjeom_rag_ro;/;
+    expect(roles).toMatch(monitorRunsGrant);
+    expect(roles).toMatch(monitorEventsGrant);
+    const grantMigration = await readFile(
+      "db/migrations/0010_grant_monitor_read_access.sql",
+      "utf8",
     );
+    expect(grantMigration).toMatch(monitorRunsGrant);
+    expect(grantMigration).toMatch(monitorEventsGrant);
     expect(roles).not.toMatch(
       /GRANT SELECT ON (verification_runs|monitor_runs|monitor_events)/i,
     );
+    expect(roles).not.toMatch(/GRANT SELECT \([^)]*(event_counts|blob_key)/);
     expect(roles).toMatch(
       /GRANT USAGE ON SEQUENCE\s+verification_runs_id_seq,\s+monitor_runs_id_seq,\s+monitor_events_id_seq\s+TO jeomjeom_rag_ro;/,
     );

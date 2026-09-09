@@ -1,0 +1,26 @@
+# 정정 감시 화면의 cron 기록 반영 (worklog)
+
+> 규약: `docs/worklog/README.md` 4섹션(결정과 근거/트레이드오프/검증 영향/알려진 한계).
+> 배경: 2026-09-09 배포 검증에서 cron `/api/cron/monitor`는 9/7 09:11 KST에 실행되어 `monitor_runs`에 기록됐으나(정정 감지 9건·실패 0), 화면은 커밋된 `data/public/watch/` 파일(9/7 02:12 확인)만 읽어 자동 조회 결과가 화면에 닿지 않았다. 사용자 지시로 화면이 cron 기록을 읽게 했다.
+
+## 작업 1 — 화면 로더를 파일+원장 합성으로 교체 (2026-09-09)
+
+**결정과 근거** — `loadLatestWatchState`(파일)를 호출하던 세 곳(상품 상세 `OfferReportPage`, 카테고리 목록 `category-landing-model`, 관심 공모 `watch-summary`)을 `resolveLatestWatchState`(`watch-source.ts`)로 바꿨다. 파일 기록과 `monitor_runs ⋈ monitor_events`의 최근 6건을 같이 읽고 `mergeWatchState`(`watch-merge.ts`, 순수 함수)로 합친다. 규칙은 "더 최근 확인이 이긴다". 원장에는 접수번호 배열만 있고 서류명·접수일이 없어(`monitor_events` 스키마), 파일에 있는 접수번호는 파일의 서류명을 재사용하고 새 접수번호는 접수번호 앞 8자리를 접수일로 쓰며 서류명은 "정정신고서(서류명 확인 전)"으로 둔다. 최신 자동 조회가 `detection_failed`면 그 앞의 성공 기록(원장 또는 파일)을 보여주고 실패 시각을 notes에 남긴다. 접수번호 필터 `isPublicVerificationDocumentAllowed`는 파일 경로와 동일하게 적용한다.
+
+실측: 로컬 `.env`(읽기 전용 역할, 0010 미적용)로 `resolveLatestWatchState("livestock-9")` 실행 → `permission denied` → 566ms 만에 파일 기록으로 물러남. DART 실조회(9/9)로 9호 정정은 여전히 9/2 1건임을 확인해, 배포 직후 화면은 확인 시각만 "9/7 09:11"(cron)로 바뀌고 건수·서류명은 그대로다.
+
+**트레이드오프** — 대안 ① 원장에 서류명·접수일 열을 추가: 마이그레이션 전 배포 시 cron INSERT가 깨져 기록이 유실된다(배포·마이그레이션 순서 결합). ② 클라이언트에서 API로 갱신: SSR 결과와 불일치·깜빡임, 새 API 표면. ③ cron이 Blob에 쓰고 화면이 Blob을 읽기: BLOB 토큰 미등록, 결국 같은 읽기 문제. 채택안의 비용: 서버 컴포넌트가 DB를 직접 읽는 첫 사례(09 §1 "직독 불가" 원칙의 명시 예외), 렌더당 DB 왕복 1회(상세는 ISR 600초라 10분에 1회, 목록은 요청마다 공모 수만큼 — 3초 상한·실패 시 파일 폴백), 새 접수번호의 서류명이 다음 `watch:refresh` 커밋 전까지 "확인 전"으로 보임.
+
+**검증 영향** — `watch-merge.test.ts` 11건 신설(원장 없음/파일이 더 최근/원장이 더 최근·서류명 재사용/새 접수번호 파생/파일 없음/0건/실패 폴백 2종/전부 없음/접수일 파생). 기존 `watch-summary.test.ts`·`report-load.test.ts`·`offer-card.test.ts`는 파일 로더를 그대로 쓰므로 영향 없음. 테스트 환경은 `DATABASE_URL` 미설정이라 원장 경로는 단위 테스트에서 `not_configured`로 건너뛴다.
+
+**알려진 한계** — 원장 읽기는 프로덕션 런타임 역할에 0010 권한이 적용된 뒤에야 켜진다(적용 전엔 지금과 동일하게 파일 기록 표시, 실패 로그는 사유당 프로세스 1회). 자동 조회가 정정을 새로 잡아도 재대조(리플레이)는 여전히 실행되지 않으므로 화면의 "재대조 미실행" 문구는 유지된다. 상세 페이지는 ISR이라 cron 실행 후 최대 10분 지연.
+
+## 작업 2 — 런타임 역할 column-level SELECT 개방 (2026-09-09)
+
+**결정과 근거** — `db/roles.sql`은 런타임 역할에 `monitor_runs(id, checked_at)`만 SELECT를 주고 `monitor_events`는 INSERT만 허용했다(09 §5 규칙 3). `0010_grant_monitor_read_access.sql`로 `monitor_runs(id, checked_at, source)`·`monitor_events(monitor_run_id, offer_slug, kind, base_rcp_no, checked_through, amendment_rcp_nos)`에 SELECT를 열고 `roles.sql`도 같은 내용으로 갱신했다. `monitor-read.ts`는 이 열만 명시 select한다(`select()` 전체 열은 권한 오류). `event_counts`·`blob_key`·`verification_runs` 상세 열은 계속 닫는다. 09 §1 표·§2 역할 분리·§5 규칙 3·4에 개정 날짜와 예외 조건을 적었다.
+
+**트레이드오프** — 최소권한 원칙의 예외가 하나 늘었다. 열 단위 GRANT로 범위를 좁혔고, 열을 하나라도 더 읽으려면 마이그레이션이 다시 필요하다(의도한 마찰).
+
+**검증 영향** — 0010 적용 후 프로덕션 9호 상세의 정정 이력 푸터가 "조회 2026. 9. 7. 09:11"(또는 9/10 크론 이후 시각)로 바뀌는지 확인한다. 적용 전에는 "조회 2026. 9. 7. 02:12"가 유지되어야 한다.
+
+**알려진 한계** — 마이그레이션 실행은 `DATABASE_URL_DIRECT`(오너 CLI) 전용이라 이 PR은 코드·SQL만 담고 DB 적용은 오너가 `npm run db:migrate`로 수행한다. 순서는 무관하다(코드 먼저 배포되면 파일 폴백, SQL 먼저 적용되면 다음 배포에서 켜짐).

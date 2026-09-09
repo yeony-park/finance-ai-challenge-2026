@@ -6,10 +6,8 @@ import type {
 import { buildOfferSchedule, reportHrefForOffer } from "@/components/site/offers";
 import { categoryById, type CategoryId } from "@/lib/content/categories";
 import type { ChecklistBridgeOffer } from "@/lib/content/checklist-links";
-import {
-  loadLatestWatchState,
-  type WatchState,
-} from "@/lib/verify/amend/watch-state";
+import { resolveLatestWatchState } from "@/lib/verify/amend/watch-source";
+import type { WatchState } from "@/lib/verify/amend/watch-state";
 import { isPublicVerificationScopeAllowed } from "@/lib/verify/dart/onboarding-catalog";
 import { loadApprovedCattleFilingArtifacts } from "@/lib/knowledge/cattle-filing-artifact";
 import type { CattleFilingDerivedArtifact } from "@/lib/verify/dart/filing-derived";
@@ -81,7 +79,7 @@ const loadEvidence = async (
       try {
         const [loaded, watch, filingFacts] = await Promise.all([
           loadLatestReport(offer.id),
-          loadLatestWatchState(offer.id),
+          resolveLatestWatchState(offer.id),
           loadFilingFacts(offer.id),
         ]);
         const card = buildOfferCard({

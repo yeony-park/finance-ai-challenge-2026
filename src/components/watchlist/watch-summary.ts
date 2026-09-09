@@ -7,10 +7,8 @@ import {
 } from "@/components/site/offers";
 import { watchCheckedLine } from "@/lib/content/watch-band";
 import { watchAmendmentSummary } from "@/lib/verify/amend/watch-label";
-import {
-  loadLatestWatchState,
-  type WatchState,
-} from "@/lib/verify/amend/watch-state";
+import { resolveLatestWatchState } from "@/lib/verify/amend/watch-source";
+import type { WatchState } from "@/lib/verify/amend/watch-state";
 import { formatKstDateTime } from "@/lib/verify/report/format";
 import { getSyntheticCatalogItems } from "@/lib/synthetic-art/repository";
 import { PIG_DISCLOSURE_PRODUCTS } from "@/lib/content/pig";
@@ -48,7 +46,7 @@ export const loadWatchSummaries = async (
       offers
         .filter((offer) => isPublicVerificationScopeAllowed(offer.id))
         .map(async (offer) =>
-          buildWatchSummaryEntry(offer, await loadLatestWatchState(offer.id)),
+          buildWatchSummaryEntry(offer, await resolveLatestWatchState(offer.id)),
         ),
     ),
     loadApprovedScenarios(),
@@ -57,7 +55,7 @@ export const loadWatchSummaries = async (
         .filter((product) => isPublicVerificationScopeAllowed(`pig-${product.round}`))
         .map(async (product): Promise<WatchSummaryEntry> => {
           const id = `pig-${product.round}`;
-          const watch = await loadLatestWatchState(id);
+          const watch = await resolveLatestWatchState(id);
           return {
             id,
             title: `한돈 ${product.round}호`,
