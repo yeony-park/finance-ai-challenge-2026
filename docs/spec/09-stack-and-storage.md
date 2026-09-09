@@ -26,7 +26,7 @@
 |---|---|---|---|
 | ① 파일 캐시 | `data/public/`·`data/reference/`·`data/offers/`·승인 scenario/common knowledge index | 검증 리포트·시장 통계·공모 좌표·승인 문서 인덱스 | 서버 컴포넌트 및 file repository 직독 |
 | ② Vercel Blob | 정정 감시 이벤트 스토어 | cron 간 상태 보존 | 불가 |
-| ③ Postgres | **AWS RDS PostgreSQL + pgvector (ap-northeast-2) — 2026-08-31 이전** | §3 더미·참조 데이터 원장 + §4 generic/product RAG + §5 검증 실행 이력·원장 관측 | 서버 컴포넌트 직독 불가; search/evidence API와 이력 기록만 허용 |
+| ③ Postgres | **AWS RDS PostgreSQL + pgvector (ap-northeast-2) — 2026-08-31 이전** | §3 더미·참조 데이터 원장 + §4 generic/product RAG + §5 검증 실행 이력·원장 관측 | 서버 컴포넌트 직독 불가; search/evidence API와 이력 기록만 허용. 예외: 정정 감시 상태의 cron 기록 읽기(§5 규칙 4, 2026-09-09) |
 
 호스팅 비교는 2026-08-29에 Neon·Supabase·Oracle을 대상으로 수행했지만, 2026-08-31 오너 결정으로 AWS RDS를 최종 채택했다. 이전 후보의 일시정지 방어와 풀러 구성은 현재 운영 계약이 아니다.
 
@@ -45,7 +45,7 @@
 - **연결 문자열 2종 분리 (의무)**:
   - `DATABASE_URL` — RDS 단일 엔드포인트(5432), **제한 역할(`jeomjeom_rag_ro`)** 자격증명, 런타임 전용. 풀러가 없으므로 서버리스 동시 인보케이션은 postgres-js 커넥션 풀 상한(인스턴스당 1~2)으로 방어하고, 필요 시 RDS Proxy를 후속 옵션으로 둔다. (구 Supavisor 6543 서술은 2026-08-31 이전으로 폐기.)
   - `DATABASE_URL_DIRECT` — 같은 RDS 엔드포인트(5432)의 마스터/RW 자격증명으로 migration·seed·ingest·export CLI에서만 사용한다.
-- **자격증명 역할 분리 (의무)**: `db/roles.sql`의 런타임 역할은 RLS가 공개 범위를 제한하는 `rag_documents`·`rag_chunks` SELECT, `runtime_public_offerings` 화이트리스트 뷰 SELECT, `verification_runs`·`monitor_runs`·`monitor_events` INSERT를 갖는다. 실행 이력 상세 열은 읽지 못하되 멱등 INSERT와 `RETURNING`에 필요한 열 및 identity sequence USAGE만 예외로 허용한다. 원장 쓰기와 DDL은 `DATABASE_URL_DIRECT` 전용이다.
+- **자격증명 역할 분리 (의무)**: `db/roles.sql`의 런타임 역할은 RLS가 공개 범위를 제한하는 `rag_documents`·`rag_chunks` SELECT, `runtime_public_offerings` 화이트리스트 뷰 SELECT, `verification_runs`·`monitor_runs`·`monitor_events` INSERT를 갖는다. 실행 이력 상세 열은 읽지 못하되 멱등 INSERT와 `RETURNING`에 필요한 열, 정정 감시 화면이 읽는 monitor 열(§5 규칙 3 예외, 0010) 및 identity sequence USAGE만 예외로 허용한다. 원장 쓰기와 DDL은 `DATABASE_URL_DIRECT` 전용이다.
 - **확장 가용 실측 (2026-08-31 RDS)**: `vector` 0.8.1 · `pg_trgm` 1.6 · `unaccent` 1.1. `CREATE EXTENSION`은 마이그레이션에서 수행한다.
 - `DATABASE_URL` 미설정이면 **file 모드** — 어댑터 fake 트윈 관례(`01` §1) 그대로, DB 리포지토리의 트윈이 `data/` JSON을 읽어 같은 인터페이스로 응답한다. 팀원 로컬·CI에서 DB 불필요 원칙.
 - 금액은 원화 정수 `bigint`(won), 시각은 `timestamptz`, 문자열은 `text`, id는 `bigint identity` + 공개 슬러그 별도 열. 외래키에는 인덱스 필수.
@@ -317,8 +317,8 @@ CREATE INDEX ON ledger_observations (subject_key, observed_at);
 **집행 규칙**:
 1. **자유문장 금지**: `Evidence.observed` 원문 문자열을 어떤 컬럼에도 복사하지 않는다 — 마스킹 전 실명·주소가 따라 들어가는 경로다. `fields`는 Zod strict 화이트리스트만, `farmerNm`·`farmAddr` 계열 필드명은 리터럴 금지어.
 2. **기록 주체 (2026-08-30 정정)**: CLI는 `DATABASE_URL_DIRECT`로 기록. **cron·라이브 API는 런타임 자격증명으로 기록** — 프로덕션에서 이 경로들은 직결을 갖지 않으므로(직결은 CLI 전용, 배포 안 함) 직결을 요구하면 영구 무기록이 된다. 라이브 API(`POST /api/verify`)는 응답 후 `after()`로 실행 보장, cron(`monitor_runs/events`)은 요청 내 트랜잭션으로 기록. DB 실패가 응답을 실패시키지 않는다(무중단 요건, 실패는 loud 로그). DB 미설정(file 모드)이면 기록 생략이 정직한 동작.
-3. **런타임 역할 확장 (R-STO-16 재개정)**: 런타임 자격증명 = 공개 승인 RLS가 적용된 rag 2테이블 SELECT + `runtime_public_offerings` SELECT + `verification_runs`·`monitor_runs`·`monitor_events` INSERT. `ON CONFLICT`의 `verification_runs.run_key`·`monitor_runs.checked_at`과 `RETURNING`의 `monitor_runs.id`만 column-level SELECT하고, 세 identity sequence의 USAGE만 허용한다. 공개 경로가 다른 실행 이력 열을 읽거나 타 원장·sequence를 사용하는 것은 계속 차단한다.
-4. **watch 이중 경로 정리**: cron은 Blob(원본 아카이브) + `monitor_runs/events`(질의용) 이중 기록. 화면의 `data/public/watch/` 파일은 CLI 산출 유지 — 캐시 전용 원칙 불변.
+3. **런타임 역할 확장 (R-STO-16 재개정, 2026-09-09 재개정)**: 런타임 자격증명 = 공개 승인 RLS가 적용된 rag 2테이블 SELECT + `runtime_public_offerings` SELECT + `verification_runs`·`monitor_runs`·`monitor_events` INSERT. `ON CONFLICT`의 `verification_runs.run_key`와 `RETURNING`의 `monitor_runs.id`만 column-level SELECT하고, 세 identity sequence의 USAGE만 허용한다. **예외(0010, 2026-09-09)**: 정정 감시 화면이 cron 기록을 읽도록 `monitor_runs(id, checked_at, source)`·`monitor_events(monitor_run_id, offer_slug, kind, base_rcp_no, checked_through, amendment_rcp_nos)`만 SELECT를 연다. `event_counts`·`blob_key`·`verification_runs` 상세 열은 계속 닫는다.
+4. **watch 이중 경로 정리 (2026-09-09 개정)**: cron은 Blob(원본 아카이브) + `monitor_runs/events`(질의용) 이중 기록. 화면은 `src/lib/verify/amend/watch-source.ts`로 `data/public/watch/` 파일 기록과 원장의 최근 cron 기록을 합쳐 읽는다 — 더 최근 확인이 이기고, 원장에는 접수번호만 있으므로 서류명·접수일은 파일 기록을 재사용하며 파일에 없는 접수번호는 "서류명 확인 전"으로 표시한다. DB 미설정·권한 없음·3초 초과는 파일 기록으로 물러난다(file 모드 완주 원칙). 파일은 여전히 CLI 산출·커밋 대상이며 서류명의 출처다. 이 읽기는 §1 표의 "서버 컴포넌트 직독 불가" 원칙의 명시적 예외이며 명시 열 select와 시간 상한을 조건으로 한다.
 5. 골드셋 **점수**(라벨 본문 제외)의 DB 기록은 `[팀 결정 대기]` — 현재 stdout 증발 문제만 명세에 기록해 둔다.
 
 ## 6. 환경 변수 (DB 도입 PR에서 `.env.example` 반영 의무 — PR 체크 항목)

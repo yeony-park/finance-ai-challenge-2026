@@ -52,7 +52,7 @@ import {
   toAmendmentReplayView,
   type AmendmentReplayView,
 } from "@/lib/verify/amend/replay-view";
-import { loadLatestWatchState } from "@/lib/verify/amend/watch-state";
+import { resolveLatestWatchState } from "@/lib/verify/amend/watch-source";
 import { loadNarrativeForReport } from "@/lib/verify/narrative/cache";
 import type { NarrativeDocument } from "@/lib/verify/narrative/types";
 import {
@@ -155,7 +155,7 @@ const loadOfferNarrative = cache(
 
 const loadWatchStatus = cache(
   async (offerId: string): Promise<WatchStatusView | null> => {
-    const state = await loadLatestWatchState(offerId);
+    const state = await resolveLatestWatchState(offerId);
     return state ? toWatchStatusView(state) : null;
   },
 );
